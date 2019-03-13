@@ -1,63 +1,62 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, RoomHistoryQuery, RoomQuery } from 'openland-api';
+import { RoomReadMutation, ChatHistoryQuery, RoomQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
-import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions, MessageFull_serviceMetadata, MessageFull_alphaMentions, MessageFull_reply, MessageFull_sender, MessageType, MessageFull_alphaAttachments, MessageFull_alphaButtons } from 'openland-api/Types';
+import { UserShort as UserShortFragnemt, FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, MessageFull_mentions } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
+import { FullMessage as FullMessageFragment } from 'openland-api/fragments/Message';
+import { UserTiny } from 'openland-api/fragments/UserTiny';
+import { RoomShort } from 'openland-api/fragments/RoomShort';
 
 const CHAT_SUBSCRIPTION = gql`
-  subscription ChatSubscription($conversationId: ID!, $state: String) {
-    event: conversationUpdates(conversationId: $conversationId, fromState: $state) {
-        ... on ConversationUpdateSingle {
+  subscription ChatSubscription($chatId: ID!, $fromState: String) {
+    event: chatUpdates(chatId: $chatId, fromState: $fromState) {
+        ... on ChatUpdateSingle {
             seq
             state
             update {
-                ...ConversationUpdateFragment
+                ...ChatUpdateFragment
             }
         }
-        ... on ConversationUpdateBatch {
+        ... on ChatUpdateBatch {
             fromSeq
             seq
             state
             updates {
-                ...ConversationUpdateFragment
+                ...ChatUpdateFragment
             }
         }
        
     }
   }
-  fragment ConversationUpdateFragment on ConversationUpdate {
-    ... on ConversationMessageReceived {
+  fragment ChatUpdateFragment on ChatUpdate {
+    ... on ChatMessageReceived {
         message {
-            ...MessageFull
+            ...FullMessageFragment
+        }
+        repeatKey
+    }
+    ... on ChatMessageUpdated {
+        message {
+            ...FullMessageFragment
         }
     }
-    ... on ConversationMessageUpdated {
-        message {
-            ...MessageFull
-        }
-    }
-    ... on ConversationMessageDeleted {
+    ... on ChatMessageDeleted {
         message {
             id
         }
     }
-    ... on ConversationDialogUpdate {
-        dialog {
-            haveMention,
-            mute
-        }
-    }
    
   }
-  ${MessageFull}
+  ${FullMessageFragment}
+  ${UserTiny}
   ${UserShort}
+  ${RoomShort}
 `;
 
 export interface ConversationStateHandler {
@@ -69,7 +68,6 @@ const CONVERSATION_PAGE_SIZE = 15;
 
 export interface DataSourceMessageItem {
     type: 'message';
-    messageType: MessageType;
     key: string;
     id?: string;
     date: number;
@@ -80,26 +78,14 @@ export interface DataSourceMessageItem {
     senderPhoto?: string;
     text?: string;
     title?: string;
-    file?: {
-        fileName: string,
-        fileId?: string,
-        uri?: string,
-        fileSize?: number,
-        isImage: boolean,
-        isGif: boolean,
-        imageSize?: { width: number, height: number }
-    };
     isEdited?: boolean;
-    reply?: MessageFull_reply[];
-    urlAugmentation?: MessageFull_urlAugmentation;
-    reactions?: MessageFull_reactions[];
-    mentions?: MessageFull_alphaMentions[];
-    attachments?: MessageFull_alphaAttachments[];
-    buttons?: (MessageFull_alphaButtons[] | null)[];
+    reply?: FullMessage_GeneralMessage_quotedMessages[];
+    reactions?: FullMessage_GeneralMessage_reactions[];
+    attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
-    serviceMetaData?: MessageFull_serviceMetadata;
+    serviceMetaData?: FullMessage_ServiceMessage_serviceMetadata;
     isService?: boolean;
     progress?: number;
 }
@@ -112,12 +98,13 @@ export interface DataSourceDateItem {
     year: number;
 }
 
-export function convertMessage(src: MessageFullFragment & { local?: boolean }, engine: MessengerEngine, prev?: MessageFullFragment, next?: MessageFullFragment): DataSourceMessageItem {
+export function convertMessage(src: FullMessage & { local?: boolean }, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
+    let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
+    let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
     return {
         type: 'message',
-        messageType: src.alphaType,
         id: src.id,
-        key: (src.local && src.repeatKey) || src.id,
+        key: src.id,
         date: parseInt(src.date, 10),
         isOut: src.sender.id === engine.user.id,
         senderId: src.sender.id,
@@ -125,27 +112,15 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         senderPhoto: src.sender.photo || undefined,
         sender: src.sender,
         text: src.message || undefined,
-        title: src.alphaTitle || undefined,
-        file: src.file ? {
-            fileName: src.fileMetadata!!.name,
-            fileId: src.file,
-            fileSize: src.fileMetadata!!.size,
-            isImage: src.fileMetadata!!.isImage,
-            isGif: src.fileMetadata!!.isImage && src.fileMetadata!!.imageFormat === 'GIF',
-            imageSize: src.fileMetadata!!.isImage ? { width: src.fileMetadata!!.imageWidth!!, height: src.fileMetadata!!.imageHeight!! } : undefined
-        } : undefined,
         isSending: false,
-        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && (next.isService === src.isService) : false,
-        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && (prev.isService === src.isService) : false,
-        urlAugmentation: src.urlAugmentation || undefined,
-        reactions: src.reactions || undefined,
-        serviceMetaData: src.serviceMetadata || undefined,
-        isService: src.isService || undefined,
-        mentions: src.alphaMentions || (src.mentions || []).map(m => ({ user: { ...m }, __typename: 'UserMention' as 'UserMention' })),
-        attachments: src.alphaAttachments || undefined,
-        buttons: src.alphaButtons || undefined,
-        reply: src.reply || undefined,
-        isEdited: src.edited,
+        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && ((next.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
+        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && ((prev.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
+        reactions: generalMessage && generalMessage.reactions,
+        serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
+        isService: !!serviceMessage,
+        attachments: generalMessage && generalMessage.attachments,
+        reply: generalMessage && generalMessage.quotedMessages,
+        isEdited: generalMessage && generalMessage.edited,
 
     };
 }
@@ -182,7 +157,7 @@ export class ConversationEngine implements MessageSendHandler {
     private isStarted = false;
     private watcher: SequenceModernWatcher | null = null;
     private isOpen = false;
-    private messages: (MessageFullFragment | PendingMessage)[] = [];
+    private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
     private lastTopMessageRead: string | null = null;
     private listeners: ConversationStateHandler[] = [];
@@ -207,7 +182,7 @@ export class ConversationEngine implements MessageSendHandler {
         console.info('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
-                return await this.engine.client.client.query(RoomHistoryQuery, { roomId: this.conversationId });
+                return await this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId });
             } catch (e) {
                 console.warn(e);
                 throw e;
@@ -216,7 +191,7 @@ export class ConversationEngine implements MessageSendHandler {
         if (!this.isStarted) {
             return;
         }
-        this.messages = [...(initialChat as any).messages];
+        this.messages = [...(initialChat).messages];
         this.messages.reverse();
 
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
@@ -227,7 +202,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         // Update Data Source
         let dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
-        let sourceFragments = [...(initialChat as any).messages as MessageFullFragment[]];
+        let sourceFragments = [...(initialChat as any).messages as FullMessage[]];
         let prevDate: string | undefined;
         for (let i = 0; i < sourceFragments.length; i++) {
 
@@ -274,15 +249,15 @@ export class ConversationEngine implements MessageSendHandler {
             if (!first) {
                 return;
             }
-            id = (first as MessageFullFragment).id;
+            id = (first as FullMessage).id;
         }
         if (this.loadingHistory === undefined) {
             this.loadingHistory = id;
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, true, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
-            let loaded = await backoff(() => this.engine.client.client.query(RoomHistoryQuery, { roomId: this.conversationId, before: id }));
+            let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: id }));
 
-            let history = [...(loaded.messages as any as MessageFullFragment[])].filter((remote: MessageFullFragment) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
+            let history = [...(loaded.messages as any as FullMessage[])].filter((remote: FullMessage) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
             history.reverse();
 
             this.messages = [...history, ...this.messages];
@@ -534,7 +509,7 @@ export class ConversationEngine implements MessageSendHandler {
                     let msgs = [...this.messages];
                     msgs[existing] = {
                         ...event.message,
-                        file: msgs[existing].file,
+                        attachments: (msgs[existing] as any).attachments,
                         date: msgs[existing].date
                     };
                     this.messages = msgs;
@@ -602,12 +577,11 @@ export class ConversationEngine implements MessageSendHandler {
         if (isServerMessage(src)) {
             conv = convertMessage(src, this.engine, undefined);
 
-            conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id && !!prev.serviceMetaData === !!src.isService : false;
+            conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id && !!prev.serviceMetaData === !!(src.__typename === 'ServiceMessage') : false;
         } else {
             let p = src as PendingMessage;
             conv = {
                 type: 'message',
-                messageType: MessageType.MESSAGE,
                 key: src.key,
                 date: parseInt(src.date, 10),
                 senderId: this.engine.user.id,
@@ -618,15 +592,24 @@ export class ConversationEngine implements MessageSendHandler {
                 isSending: true,
                 text: src.message ? src.message : undefined,
                 attachBottom: false,
-                mentions: src.mentions ? src.mentions.map(m => ({ user: { ...m }, __typename: 'UserMention' as 'UserMention' })) : undefined,
-                file: p.uri ? {
+                attachments: p.uri ? [{
+                    __typename: "MessageAttachmentFile",
                     uri: p.uri,
-                    fileName: p.file || 'image.png',
-                    fileSize: p.fileSize,
-                    isImage: !!p.isImage,
-                    imageSize: p.imageSize,
-                    isGif: false
-                } : undefined,
+                    id: '',
+                    fileId: '',
+                    fallback: 'Document',
+                    filePreview: '',
+                    fileMetadata: {
+                        __typename: 'FileMetadata',
+                        mimeType: '',
+                        imageFormat: '',
+                        name: p.file || 'image.png',
+                        size: p.fileSize || 0,
+                        isImage: !!p.isImage,
+                        imageWidth: p.imageSize && p.imageSize.width || 0,
+                        imageHeight: p.imageSize && p.imageSize.height || 0,
+                    }
+                }] : undefined,
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false
             };
         }
@@ -644,12 +627,12 @@ export class ConversationEngine implements MessageSendHandler {
                     this.dataSource.addItem(createDateDataSourceItem(new Date(conv.date)), 0);
                     conv.attachTop = false;
                 } else {
-                    this.dataSource.updateItem({ 
-                        ...prev!!, 
-                        attachBottom: true 
+                    this.dataSource.updateItem({
+                        ...prev!!,
+                        attachBottom: true
                     });
                 }
-            } else  {
+            } else {
                 const dateToAdd = createDateDataSourceItem(new Date(conv.date))
                 if (!this.dataSource.hasItem(dateToAdd.key) && (!prev || prev.date && !isSameIntDate(prev.date, conv.date))) {
                     this.dataSource.addItem(dateToAdd, 0);
@@ -694,7 +677,8 @@ export class ConversationEngine implements MessageSendHandler {
         //
         let prepareSenderIfNeeded = (sender: UserShortFragnemt, message: ModelMessage, date: number) => {
             let day = prepareDateIfNeeded(date);
-            if (prevMessageSender === sender.id && prevMessageDate !== undefined && message.isService === prevMessageIsService) {
+            let isService = isServerMessage(message) && message.__typename === 'ServiceMessage';
+            if (prevMessageSender === sender.id && prevMessageDate !== undefined && isService === prevMessageIsService) {
                 // 10 sec
                 if (prevMessageDate - date < 10000 && currentCollapsed < 10) {
                     prevMessageDate = date;
@@ -703,7 +687,7 @@ export class ConversationEngine implements MessageSendHandler {
                 }
             }
 
-            prevMessageIsService = message.isService;
+            prevMessageIsService = isService;
             prevMessageDate = date;
             prevMessageSender = sender.id;
             currentCollapsed = 0;

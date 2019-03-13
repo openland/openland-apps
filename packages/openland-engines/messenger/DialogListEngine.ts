@@ -10,7 +10,7 @@ import {
     TinyMessage,
 } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
-import { DialogsQuery, RoomQuery, RoomHistoryQuery } from 'openland-api';
+import { DialogsQuery, RoomQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
 

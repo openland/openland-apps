@@ -1,13 +1,13 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
-import { RoomMessageFull } from '../fragments/MessageFull';
+import { RoomMessageFull, MessageFull } from '../fragments/MessageFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { RoomMessageShort } from '../fragments/MessageShort';
 import { MessageLightShort } from '../fragments/MessageLightShort';
 import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
-import { TinyMessage } from 'openland-api/fragments/Message';
+import { TinyMessage, FullMessage } from 'openland-api/fragments/Message';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -172,6 +172,21 @@ export const RoomHistoryQuery = gql`
     }
     ${RoomMessageFull}
     ${UserShort}
+`;
+
+export const ChatHistoryQuery = gql`
+    query ChatHistory($chatId: ID!, $before: ID, $first: Int = 15) {
+        messages(chatId: $chatId, first: $first, before: $before) {
+            ...FullMessage
+        }
+        state: conversationState(id: $chatId) {
+            state
+        }
+    }
+    ${FullMessage}
+    ${UserShort}
+    ${UserTiny}
+    ${RoomShort}
 `;
 
 export const SendMessageMutation = gql`

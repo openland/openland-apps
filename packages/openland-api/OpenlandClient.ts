@@ -198,6 +198,18 @@ export class OpenlandClient {
     useWithoutLoaderRoomHistory(variables: Types.RoomHistoryVariables): Types.RoomHistory | null {
         return this.client.useWithoutLoaderQuery(Source.RoomHistoryQuery, variables);
     }
+    async queryChatHistory(variables: Types.ChatHistoryVariables): Promise<Types.ChatHistory> {
+        return this.client.query(Source.ChatHistoryQuery, variables);
+    }
+    async refetchChatHistory(variables: Types.ChatHistoryVariables): Promise<Types.ChatHistory> {
+        return this.client.refetch(Source.ChatHistoryQuery, variables);
+    }
+    useChatHistory(variables: Types.ChatHistoryVariables): Types.ChatHistory {
+        return this.client.useQuery(Source.ChatHistoryQuery, variables);
+    }
+    useWithoutLoaderChatHistory(variables: Types.ChatHistoryVariables): Types.ChatHistory | null {
+        return this.client.useWithoutLoaderQuery(Source.ChatHistoryQuery, variables);
+    }
     async queryChatSearchGroup(variables: Types.ChatSearchGroupVariables): Promise<Types.ChatSearchGroup> {
         return this.client.query(Source.ChatSearchGroupQuery, variables);
     }

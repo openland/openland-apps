@@ -19,6 +19,8 @@ import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { file } from '@babel/types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 
 export const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
 export const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</ASText>;
@@ -44,17 +46,22 @@ export let renderPrprocessedText = (v: Span, i: number, message: DataSourceMessa
 
 export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((props) => {
     let theme = React.useContext(ThemeContext);
-    let hasImage = !!(props.message.file && props.message.file.isImage);
-    let hasReply = props.message.reply;
-    let hasText = props.message.text;
-    let hasUrlAug = props.message.urlAugmentation;
+
+    // todo: handle multiple attaches
+    let attaches = (props.message.attachments || []);
+    let fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+    let augmenationAttach = attaches.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
+    let hasImage = !!(fileAttach && fileAttach.fileMetadata.isImage);
+    let hasReply = !!(props.message.reply && props.message.reply.length > 0);
+    let hasText = !!(props.message.text);
+    let hasUrlAug = !!augmenationAttach;
 
     let layout;
     if (hasImage) {
         layout = layoutImage(props.message);
         hasImage = hasImage && !!layout;
     }
-    let hasDocument = props.message.file && !hasImage;
+    let hasDocument = !!(fileAttach && !hasImage);
     let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
 
     return (
@@ -67,7 +74,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                 {hasReply && <ReplyContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
                 {hasText && <TextContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
                 {hasUrlAug && <UrlAugmentationContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
-                {(hasImage && layout) && <MediaContent layout={layout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />}
+                {(hasImage && layout) && <MediaContent layout={layout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />}
                 {hasDocument && <DocumentContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
 
                 <ASFlex

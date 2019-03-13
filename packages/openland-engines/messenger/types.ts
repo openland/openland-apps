@@ -1,4 +1,4 @@
-import { MessageFull, MessageFull_mentions } from 'openland-api/Types';
+import { MessageFull, MessageFull_mentions, FullMessage } from 'openland-api/Types';
 
 export interface PendingMessage {
     isService?: false,
@@ -15,18 +15,14 @@ export interface PendingMessage {
     failed?: boolean;
 }
 
-export type ModelMessage = PendingMessage | MessageFull;
+export type ModelMessage = PendingMessage | FullMessage;
 
 export function isPendingMessage(src: ModelMessage): src is PendingMessage {
     return !(src as any).__typename;
 }
 
-export function isServerMessage(message: MessageFull | PendingMessage): message is MessageFull {
+export function isServerMessage(message: FullMessage | PendingMessage): message is FullMessage {
     return !!(message as any).__typename;
-}
-
-export function extractKey(message: ModelMessage) {
-    return isServerMessage(message) ? (message.repeatKey ? message.repeatKey : message.id) : message.key;
 }
 
 export interface FileMetadata {

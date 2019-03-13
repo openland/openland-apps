@@ -14,10 +14,10 @@ import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { Prompt } from '../components/Prompt';
-import { AsyncServiceMessageView } from './components/AsyncServiceMessageView';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
+import { FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -43,7 +43,8 @@ export class MobileMessenger {
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
                     if (item.serviceMetaData || item.isService) {
-                        return (<ThemeProvider><AsyncServiceMessageView message={item} engine={eng} onUserPress={this.handleAvatarClick} onRoomPress={this.handleDialogClick} /></ThemeProvider>);
+                        // return (<ThemeProvider><AsyncServiceMessageView message={item} engine={eng} onUserPress={this.handleAvatarClick} onRoomPress={this.handleDialogClick} /></ThemeProvider>);
+                        return (<ThemeProvider><AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} /></ThemeProvider>);
                     } else {
                         return (<ThemeProvider><AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} /></ThemeProvider>);
                     }
@@ -56,10 +57,11 @@ export class MobileMessenger {
     }
 
     private handleMediaClick = (document: DataSourceMessageItem, event: { path: string } & ASPressEvent) => {
+        let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         showPictureModal({
             url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
-            width: document.file!!.imageSize!!.width,
-            height: document.file!!.imageSize!!.height,
+            width: attach.fileMetadata.imageWidth!,
+            height: attach.fileMetadata.imageWidth!!,
             isGif: false,
             animate: {
                 x: event.x,
@@ -80,8 +82,9 @@ export class MobileMessenger {
     }
 
     private handleDocumentClick = (document: DataSourceMessageItem) => {
+        let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         // { config: { uuid, name, size }
-        this.history.navigationManager.push('FilePreview', { config: { uuid: document.file!!.fileId, name: document.file!!.fileName, size: document.file!!.fileSize } });
+        this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
     }
 
     private handleDialogClick = (id: string) => {

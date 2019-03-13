@@ -11,10 +11,12 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '../AsyncBubbleView';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 
 interface MediaContentProps {
     single?: boolean;
     message: DataSourceMessageItem;
+    attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
     onUserPress: (id: string) => void;
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
@@ -27,8 +29,11 @@ export let layoutImage = (message: DataSourceMessageItem) => {
         ios: Math.min(Dimensions.get('window').width - 120, 400),
         android: Math.min(Dimensions.get('window').width - 120, 400)
     });
-    if (message.file && message.file.imageSize) {
-        return layoutMedia(message.file!!.imageSize!!.width, message.file!!.imageSize!!.height, maxSize, maxSize);
+    let attaches = (message.attachments || []);
+    let fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+
+    if (fileAttach && fileAttach.fileMetadata.imageHeight && fileAttach.fileMetadata.imageWidth) {
+        return layoutMedia(fileAttach.fileMetadata.imageWidth, fileAttach.fileMetadata.imageHeight, maxSize, maxSize);
     }
     return undefined;
 }
@@ -43,24 +48,25 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     private downloadManagerWatch?: WatchSubscription;
     private handlePress = (event: ASPressEvent) => {
         // Ignore clicks for not-downloaded files
-        let path = (this.state.downloadState && this.state.downloadState.path) || (this.props.message.file && this.props.message.file.uri);
+        let path = (this.state.downloadState && this.state.downloadState.path) || (this.props.attach && this.props.attach.uri);
         if (path) {
             this.props.onMediaPress(this.props.message, { path, ...event });
         }
     }
 
     bindDownloadManager = () => {
-        if (this.props.message.file && this.props.message.file.fileId) {
+        let fileAttach = this.props.attach;
+        if (fileAttach && fileAttach.fileId && fileAttach!!.fileMetadata.imageWidth!! && fileAttach!!.fileMetadata.imageHeight!!) {
             this.serverDownloadManager = true;
-            let optimalSize = layoutMedia(this.props.message.file!!.imageSize!!.width, this.props.message.file!!.imageSize!!.height, 1024, 1024);
-            this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.file!!.fileId!, !this.props.message.file!!.isGif ? optimalSize : null, (state) => {
+            let optimalSize = layoutMedia(fileAttach!!.fileMetadata.imageWidth!!, fileAttach!!.fileMetadata.imageHeight!!, 1024, 1024);
+            this.downloadManagerWatch = DownloadManagerInstance.watch(fileAttach!!.fileId!, (fileAttach!!.fileMetadata.imageFormat !== 'gif') ? optimalSize : null, (state) => {
                 if (this.mounted) {
                     this.setState({ downloadState: state });
                 }
             });
         }
 
-        if (this.props.message.file && this.props.message.file.uri) {
+        if (fileAttach && fileAttach.uri) {
             this.downloadManagerWatch = UploadManagerInstance.watch(this.props.message.key, s => {
                 if (this.mounted) {
                     this.setState({ downloadState: { progress: s.progress } })
@@ -81,7 +87,9 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     componentDidUpdate() {
-        if (this.props.message.file && this.props.message.file.fileId && !this.serverDownloadManager) {
+        let fileAttach = this.props.attach;
+
+        if (fileAttach && fileAttach.fileId && !this.serverDownloadManager) {
             this.unbindDownloadManager();
             this.bindDownloadManager();
         }
@@ -93,7 +101,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     render() {
-
+        let fileAttach = this.props.attach;
         return (
             <ASFlex
                 flexDirection="column"
@@ -107,8 +115,8 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 <ASImage
                     maxWidth={this.props.layout.width}
                     onPress={this.handlePress}
-                    source={{ uri: (this.props.message.file && this.props.message.file.uri) ? this.props.message.file.uri : (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
-                    isGif={this.props.message.file!!.isGif}
+                    source={{ uri: (fileAttach && fileAttach.uri) ? fileAttach.uri : (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
+                    isGif={fileAttach!!.fileMetadata.imageFormat === 'gif'}
                     borderRadius={16}
                     marginLeft={2}
                     marginRight={2}

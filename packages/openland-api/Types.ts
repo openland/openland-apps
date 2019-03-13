@@ -1762,6 +1762,417 @@ export interface RoomHistoryVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: ChatHistory
+// ====================================================
+
+export interface ChatHistory_messages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ChatHistory_messages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+  organization: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+}
+
+export type ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room = ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type ChatHistory_messages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanLink;
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment" | "MessageAttachmentPost";
+  id: string;
+  fallback: string;
+}
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type ChatHistory_messages_GeneralMessage_attachments = ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment | ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages {
+  __typename: "ServiceMessage" | "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface ChatHistory_messages_GeneralMessage_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_reactions {
+  __typename: "ModernMessageReaction";
+  user: ChatHistory_messages_GeneralMessage_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface ChatHistory_messages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: ChatHistory_messages_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: ChatHistory_messages_GeneralMessage_spans[];
+  edited: boolean;
+  attachments: ChatHistory_messages_GeneralMessage_attachments[];
+  quotedMessages: ChatHistory_messages_GeneralMessage_quotedMessages[];
+  reactions: ChatHistory_messages_GeneralMessage_reactions[];
+}
+
+export interface ChatHistory_messages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ChatHistory_messages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+  organization: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+}
+
+export type ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room = ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type ChatHistory_messages_ServiceMessage_spans = ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanLink;
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata";
+  users: ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata";
+  photo: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
+  __typename: "PostRespondServiceMetadata";
+  respondType: string;
+}
+
+export type ChatHistory_messages_ServiceMessage_serviceMetadata = ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata | ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata | ChatHistory_messages_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | ChatHistory_messages_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | ChatHistory_messages_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
+
+export interface ChatHistory_messages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: ChatHistory_messages_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: ChatHistory_messages_ServiceMessage_spans[];
+  serviceMetadata: ChatHistory_messages_ServiceMessage_serviceMetadata | null;
+}
+
+export type ChatHistory_messages = ChatHistory_messages_GeneralMessage | ChatHistory_messages_ServiceMessage;
+
+export interface ChatHistory_state {
+  __typename: "ConversationUpdateState";
+  state: string | null;
+}
+
+export interface ChatHistory {
+  messages: ChatHistory_messages[];
+  state: ChatHistory_state;
+}
+
+export interface ChatHistoryVariables {
+  chatId: string;
+  before?: string | null;
+  first?: number | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: SendMessage
 // ====================================================
 
@@ -8054,6 +8465,401 @@ export type TinyMessage = TinyMessage_ServiceMessage | TinyMessage_GeneralMessag
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: FullMessage
+// ====================================================
+
+export interface FullMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment" | "MessageAttachmentPost";
+  id: string;
+  fallback: string;
+}
+
+export interface FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface FullMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type FullMessage_GeneralMessage_attachments = FullMessage_GeneralMessage_attachments_MessageRichAttachment | FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface FullMessage_GeneralMessage_quotedMessages {
+  __typename: "ServiceMessage" | "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface FullMessage_GeneralMessage_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_GeneralMessage_reactions {
+  __typename: "ModernMessageReaction";
+  user: FullMessage_GeneralMessage_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+  organization: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+}
+
+export type FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room = FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type FullMessage_GeneralMessage_spans = FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_spans_MessageSpanLink;
+
+export interface FullMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: FullMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  attachments: FullMessage_GeneralMessage_attachments[];
+  quotedMessages: FullMessage_GeneralMessage_quotedMessages[];
+  reactions: FullMessage_GeneralMessage_reactions[];
+  spans: FullMessage_GeneralMessage_spans[];
+}
+
+export interface FullMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: FullMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+  organization: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+}
+
+export type FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room = FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type FullMessage_ServiceMessage_spans = FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_ServiceMessage_spans_MessageSpanUserMention | FullMessage_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_ServiceMessage_spans_MessageSpanLink;
+
+export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata";
+  users: FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata";
+  photo: string | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
+  __typename: "PostRespondServiceMetadata";
+  respondType: string;
+}
+
+export type FullMessage_ServiceMessage_serviceMetadata = FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata | FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata | FullMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | FullMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | FullMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
+
+export interface FullMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: FullMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: FullMessage_ServiceMessage_spans[];
+  serviceMetadata: FullMessage_ServiceMessage_serviceMetadata | null;
+}
+
+export type FullMessage = FullMessage_GeneralMessage | FullMessage_ServiceMessage;
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: MessageFull
 // ====================================================
 
@@ -9850,6 +10656,15 @@ export enum MediaStreamState {
 export enum MessageButtonStyle {
   DEFAULT = "DEFAULT",
   LIGHT = "LIGHT",
+}
+
+export enum MessageReactionType {
+  ANGRY = "ANGRY",
+  CRYING = "CRYING",
+  JOY = "JOY",
+  LIKE = "LIKE",
+  SCREAM = "SCREAM",
+  THUMB_UP = "THUMB_UP",
 }
 
 export enum MessageType {

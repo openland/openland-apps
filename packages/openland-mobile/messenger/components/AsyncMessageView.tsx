@@ -35,7 +35,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     let theme = React.useContext(ThemeContext);
 
     let res = [];
-    if ((props.message.text || props.message.reply || props.message.file)) {
+    if ((props.message.text || props.message.reply || (props.message.attachments && props.message.attachments.length))) {
         res.push(
             <AsyncMessageContentView key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onAvatarPress} />
         );
@@ -91,7 +91,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                 </ASFlex>
 
                 {props.message.reactions && <AsyncMessageReactionsView message={props.message} />}
-                <ASFlex backgroundColor={theme.backgroundColor}  height={50} marginBottom={-50} />
+                <ASFlex backgroundColor={theme.backgroundColor} height={50} marginBottom={-50} />
 
             </ASFlex>
             <ASFlex key="margin-bottom" backgroundColor={theme.backgroundColor} height={4} marginBottom={-2} />
