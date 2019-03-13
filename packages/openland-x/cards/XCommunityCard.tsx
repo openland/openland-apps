@@ -22,7 +22,6 @@ interface XCommunityCardProps {
         name: string;
         photo: string | null;
         isMine: boolean;
-        channels: any[];
         members: any[];
     };
     path?: string;
