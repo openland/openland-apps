@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
 import { RoomMessageFull } from '../fragments/MessageFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
-import { OrganizationFull } from '../fragments/OrganizationFull';
+import { OrganizationMedium } from '../fragments/OrganizationMedium';
 import { RoomMessageShort } from '../fragments/MessageShort';
 import { MessageLightShort } from '../fragments/MessageLightShort';
 import { RoomFull } from '../fragments/RoomFull';
@@ -51,7 +51,7 @@ export const RoomQuery = gql`
     }
     ${RoomFull}
     ${UserShort}
-    ${OrganizationFull}
+    ${OrganizationMedium}
 `;
 
 export const RoomTinyQuery = gql`
@@ -282,7 +282,7 @@ export const RoomAddMemberMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationFull}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -293,7 +293,7 @@ export const RoomDeclineJoinReuestMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationFull}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -304,7 +304,7 @@ export const RoomAddMembersMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationFull}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -315,7 +315,7 @@ export const RoomKickMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationFull}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -326,7 +326,7 @@ export const RoomLeaveMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationFull}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -363,7 +363,7 @@ export const RoomSearchQuery = gql`
     }
     ${RoomFull}
     ${UserShort}
-    ${OrganizationFull}
+    ${OrganizationMedium}
 `;
 
 export const RoomAlterFeaturedMutation = gql`
@@ -425,7 +425,7 @@ export const RoomJoinMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationFull}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -442,7 +442,7 @@ export const RoomJoinInviteLinkMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationFull}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 

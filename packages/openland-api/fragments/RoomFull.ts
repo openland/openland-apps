@@ -20,7 +20,7 @@ export const RoomFull = gql`
             socialImage
             description
             organization {
-                ...OrganizationFull
+                ...OrganizationMedium
             }
             membership
             role
