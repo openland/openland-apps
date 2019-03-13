@@ -53,3 +53,39 @@ patch-package
        });
  
      let borderBottomWidth = restricted?
+@@ -390,14 +391,14 @@ export default class TextField extends PureComponent {
+ 
+     let inputContainerStyle = {
+       paddingTop: labelHeight,
+-      paddingBottom: inputContainerPadding,
++      paddingBottom: 0, // inputContainerPadding,
+ 
+       ...(disabled?
+         { overflow: 'hidden' }:
+         { borderBottomColor, borderBottomWidth }),
+ 
+       ...(props.multiline?
+-        { height: 'web' === Platform.OS ? 'auto' : labelHeight + inputContainerPadding + height }:
++        { height: 'web' === Platform.OS ? 'auto' : labelHeight + 4 + height }:
+         { height: labelHeight + inputContainerPadding + fontSize * 1.5 }),
+     };
+ 
+@@ -418,7 +419,7 @@ export default class TextField extends PureComponent {
+             android: { textAlignVertical: 'top' },
+           }),
+         }:
+-        { height: fontSize * 1.5 }),
++        { height: fontSize * 1.5 + 8 }),
+     };
+ 
+     let errorStyle = {
+--- a/node_modules/react-native-material-textfield/src/components/field/styles.js
++++ b/node_modules/react-native-material-textfield/src/components/field/styles.js
+@@ -10,6 +10,7 @@ export default StyleSheet.create({
+     padding: 0,
+     margin: 0,
+     flex: 1,
++    paddingBottom: 8,
+   },
+ 
+   row: {
