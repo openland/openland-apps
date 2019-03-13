@@ -6,12 +6,18 @@ import { XDate } from 'openland-x/XDate';
 import { XAvatar } from 'openland-x/XAvatar';
 import { emoji } from 'openland-y-utils/emoji';
 
-export const DialogViewCompact = (props: DialogViewProps) => {
+export const DialogViewCompact = React.memo((props: DialogViewProps) => {
     let dialog = props.item;
+
+    let path = '/mail/' + dialog.key;
+    if (dialog.isOrganization) {
+        path = '/mail/o/' + dialog.key;
+    }
+
     return (
         <XLink2
             ref={props.handleRef}
-            path={'/mail/' + dialog.key}
+            path={path}
             height={50}
             flexDirection="row"
             paddingLeft={16}
@@ -87,4 +93,4 @@ export const DialogViewCompact = (props: DialogViewProps) => {
             </XView>
         </XLink2>
     );
-};
+});
