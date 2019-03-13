@@ -7,12 +7,12 @@ import { MessageLightShort } from '../fragments/MessageLightShort';
 import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
+import { TinyMessage } from 'openland-api/fragments/Message';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
         dialogs(first: 20, after: $after) {
             items {
-                id
                 cid
                 fid
                 kind
@@ -21,11 +21,8 @@ export const DialogsQuery = gql`
                 unreadCount
                 isMuted
                 haveMention
-                topMessage {
-                    ...MessageLightShort
-                }
-                betaTopMessage {
-                    ...RoomMessageShort
+                topMessage: alphaTopMessage {
+                    ...TinyMessage
                 }
             }
             cursor
@@ -40,13 +37,15 @@ export const DialogsQuery = gql`
     }
     ${MessageLightShort}
     ${UserTiny}
+    ${TinyMessage}
+    ${RoomShort}
     ${RoomMessageShort}
 `;
 
 export const RoomQuery = gql`
     query Room($id: ID!) {
         room(id: $id) {
-            ... RoomFull
+            ...RoomFull
         }
     }
     ${RoomFull}
@@ -57,7 +56,7 @@ export const RoomQuery = gql`
 export const RoomTinyQuery = gql`
     query RoomTiny($id: ID!) {
         room(id: $id) {
-            ... RoomShort
+            ...RoomShort
         }
     }
     ${RoomShort}
@@ -95,16 +94,40 @@ export const MessageUnsetReactionMutation = gql`
 `;
 
 export const SendPostMessageMutation = gql`
-    mutation SendPostMessage($conversationId: ID!, $title: String!, $text: String!, $attachments: [String!], $postType: PostMessageType!) {
-        sendPostMessage: alphaSendPostMessage(conversationId: $conversationId, title: $title, text: $text, attachments: $attachments, postType: $postType) {
+    mutation SendPostMessage(
+        $conversationId: ID!
+        $title: String!
+        $text: String!
+        $attachments: [String!]
+        $postType: PostMessageType!
+    ) {
+        sendPostMessage: alphaSendPostMessage(
+            conversationId: $conversationId
+            title: $title
+            text: $text
+            attachments: $attachments
+            postType: $postType
+        ) {
             seq
         }
     }
 `;
 
 export const EditPostMessageMutation = gql`
-    mutation EditPostMessage($messageId: ID!, $title: String!, $text: String!, $attachments: [String!], $postType: PostMessageType!) {
-        editPostMessage: alphaEditPostMessage(messageId: $messageId, title: $title, text: $text, attachments: $attachments, postType: $postType) {
+    mutation EditPostMessage(
+        $messageId: ID!
+        $title: String!
+        $text: String!
+        $attachments: [String!]
+        $postType: PostMessageType!
+    ) {
+        editPostMessage: alphaEditPostMessage(
+            messageId: $messageId
+            title: $title
+            text: $text
+            attachments: $attachments
+            postType: $postType
+        ) {
             seq
         }
     }
@@ -152,14 +175,33 @@ export const RoomHistoryQuery = gql`
 `;
 
 export const SendMessageMutation = gql`
-    mutation SendMessage($message: String, $file: String, $repeatKey: String, $replyMessages: [ID!], $mentions: [ID!], $room: ID!) {
-        sentMessage: betaMessageSend(message: $message, file: $file, repeatKey: $repeatKey, replyMessages: $replyMessages, mentions: $mentions, room: $room)
+    mutation SendMessage(
+        $message: String
+        $file: String
+        $repeatKey: String
+        $replyMessages: [ID!]
+        $mentions: [ID!]
+        $room: ID!
+    ) {
+        sentMessage: betaMessageSend(
+            message: $message
+            file: $file
+            repeatKey: $repeatKey
+            replyMessages: $replyMessages
+            mentions: $mentions
+            room: $room
+        )
     }
 `;
 
 export const ReplyMessageMutation = gql`
     mutation ReplyMessage($roomId: ID!, $message: String, $replyMessages: [ID!], $mentions: [ID!]) {
-        replyMessage: betaMessageSend(room: $roomId, message: $message, replyMessages: $replyMessages, mentions: $mentions)
+        replyMessage: betaMessageSend(
+            room: $roomId
+            message: $message
+            replyMessages: $replyMessages
+            mentions: $mentions
+        )
     }
 `;
 
@@ -179,8 +221,24 @@ export const ChatSearchGroupQuery = gql`
 `;
 
 export const RoomCreateMutation = gql`
-    mutation RoomCreate($kind: SharedRoomKind!, $members: [ID!]!, $message: String, $title: String, $description: String, $photoRef: ImageRefInput, $organizationId: ID) {
-        room: betaRoomCreate(kind: $kind, members: $members, message: $message, title: $title, description: $description, photoRef: $photoRef, organizationId: $organizationId) {
+    mutation RoomCreate(
+        $kind: SharedRoomKind!
+        $members: [ID!]!
+        $message: String
+        $title: String
+        $description: String
+        $photoRef: ImageRefInput
+        $organizationId: ID
+    ) {
+        room: betaRoomCreate(
+            kind: $kind
+            members: $members
+            message: $message
+            title: $title
+            description: $description
+            photoRef: $photoRef
+            organizationId: $organizationId
+        ) {
             id
         }
     }
@@ -194,7 +252,13 @@ export const RoomCreateIntroMutation = gql`
 
 export const RoomEditIntroMutation = gql`
     mutation RoomEditIntro($messageId: ID!, $uid: ID!, $about: String, $file: String) {
-        intro: betaIntroEdit(mid: $messageId, uid: $uid, about: $about, file: $file, message: $about)
+        intro: betaIntroEdit(
+            mid: $messageId
+            uid: $uid
+            about: $about
+            file: $file
+            message: $about
+        )
     }
 `;
 
@@ -212,8 +276,8 @@ export const CancelTypingMutation = gql`
 
 export const RoomAddMemberMutation = gql`
     mutation RoomAddMember($roomId: ID!, $userId: ID!) {
-        betaRoomInvite(roomId: $roomId, invites: [{userId: $userId, role: MEMBER}]) {
-           ...RoomFull
+        betaRoomInvite(roomId: $roomId, invites: [{ userId: $userId, role: MEMBER }]) {
+            ...RoomFull
         }
     }
     ${UserShort}
@@ -224,7 +288,7 @@ export const RoomAddMemberMutation = gql`
 export const RoomDeclineJoinReuestMutation = gql`
     mutation RoomDeclineJoinReuest($roomId: ID!, $userId: ID!) {
         betaRoomDeclineJoinRequest(roomId: $roomId, userId: $userId) {
-           ...RoomFull
+            ...RoomFull
         }
     }
     ${UserShort}
@@ -235,7 +299,7 @@ export const RoomDeclineJoinReuestMutation = gql`
 export const RoomAddMembersMutation = gql`
     mutation RoomAddMembers($roomId: ID!, $invites: [RoomInviteInput!]!) {
         betaRoomInvite(roomId: $roomId, invites: $invites) {
-           ...RoomFull
+            ...RoomFull
         }
     }
     ${UserShort}
@@ -246,7 +310,7 @@ export const RoomAddMembersMutation = gql`
 export const RoomKickMutation = gql`
     mutation RoomKick($roomId: ID!, $userId: ID!) {
         betaRoomKick(roomId: $roomId, userId: $userId) {
-           ...RoomFull
+            ...RoomFull
         }
     }
     ${UserShort}
@@ -257,7 +321,7 @@ export const RoomKickMutation = gql`
 export const RoomLeaveMutation = gql`
     mutation RoomLeave($roomId: ID!) {
         betaRoomLeave(roomId: $roomId) {
-           ...RoomFull
+            ...RoomFull
         }
     }
     ${UserShort}
@@ -282,7 +346,7 @@ export const RoomSearchQuery = gql`
         items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {
             edges {
                 node {
-                    ... RoomFull
+                    ...RoomFull
                 }
                 cursor
             }
@@ -312,7 +376,7 @@ export const RoomAlterFeaturedMutation = gql`
 `;
 
 export const RoomAlterHiddenMutation = gql`
-     mutation RoomAlterHidden($roomId: ID!, $listed: Boolean!) {
+    mutation RoomAlterHidden($roomId: ID!, $listed: Boolean!) {
         betaRoomAlterListed(roomId: $roomId, listed: $listed) {
             id
             listed
@@ -325,7 +389,7 @@ export const RoomMembersShortQuery = gql`
     query RoomMembersShort($roomId: ID!) {
         members: roomMembers(roomId: $roomId) {
             user {
-               id
+                id
             }
         }
     }
@@ -335,7 +399,7 @@ export const RoomMembersQuery = gql`
     query RoomMembers($roomId: ID!) {
         members: roomMembers(roomId: $roomId) {
             user {
-               ...UserShort
+                ...UserShort
             }
             role
             membership
@@ -373,7 +437,7 @@ export const RoomSendEmailInviteMutation = gql`
 export const RoomJoinInviteLinkMutation = gql`
     mutation RoomJoinInviteLink($invite: String!) {
         join: betaRoomInviteLinkJoin(invite: $invite) {
-           ...RoomFull
+            ...RoomFull
         }
     }
     ${UserShort}
@@ -426,7 +490,7 @@ export const RoomInviteInfoQuery = gql`
 
 export const RoomUpdateMutation = gql`
     mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {
-        betaRoomUpdate(roomId: $roomId, input: $input){
+        betaRoomUpdate(roomId: $roomId, input: $input) {
             ... on PrivateRoom {
                 id
             }
@@ -462,8 +526,20 @@ export const RoomDeleteUrlAugmentationMutation = gql`
 `;
 
 export const RoomEditMessageMutation = gql`
-    mutation RoomEditMessage($messageId: ID!, $message: String) {
-        betaMessageEdit(mid: $messageId, message: $message)
+    mutation RoomEditMessage(
+        $messageId: ID!
+        $message: String
+        $file: String
+        $replyMessages: [ID!]
+        $mentions: [ID!]
+    ) {
+        betaMessageEdit(
+            mid: $messageId
+            message: $message
+            file: $file
+            replyMessages: $replyMessages
+            mentions: $mentions
+        )
     }
 `;
 

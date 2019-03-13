@@ -1,27 +1,42 @@
+import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
+
 const getDraftKey = (conversationId?: string): string => {
     if (!conversationId) {
         return '';
     }
-    return 'conversation_draft_1_' + conversationId;
+    return 'conversation_draft_2_' + conversationId;
 };
 
-export const getDraftMessage = (conversationId?: string): string | null => {
-    let result;
+export const getDraftMessage = (
+    conversationId?: string,
+): { text: string | null; mentions: MentionDataT[] } => {
+    let text, mentions;
     if (!conversationId) {
-        result = null;
+        text = null;
     }
 
-    result = window.localStorage.getItem(getDraftKey(conversationId)) || '';
+    text = window.localStorage.getItem(`${getDraftKey(conversationId)}_text`) || '';
+
+    const mentionsString =
+        window.localStorage.getItem(`${getDraftKey(conversationId)}_mentions`) || '[]';
+    mentions = JSON.parse(
+        !mentionsString || mentionsString === 'undefined' ? '[]' : mentionsString,
+    );
+
     let draftKey = getDraftKey(conversationId);
 
-    if (result === draftKey) {
-        result = null;
+    if (text === draftKey) {
+        text = null;
     }
 
-    return result;
+    return { text, mentions };
 };
 
-export const setDraftMessage = (conversationId?: string, src?: string): void => {
+export const setDraftMessage = (
+    conversationId?: string,
+    src?: string,
+    mentions?: MentionDataT[],
+): void => {
     if (!conversationId) {
         return;
     }
@@ -29,7 +44,11 @@ export const setDraftMessage = (conversationId?: string, src?: string): void => 
         return;
     }
 
-    window.localStorage.setItem(getDraftKey(conversationId), src);
+    window.localStorage.setItem(`${getDraftKey(conversationId)}_text`, src);
+    window.localStorage.setItem(
+        `${getDraftKey(conversationId)}_mentions`,
+        JSON.stringify(mentions || []),
+    );
 };
 
 export const cleanDraftMessage = (conversationId?: string): void => {
@@ -38,5 +57,6 @@ export const cleanDraftMessage = (conversationId?: string): void => {
     }
 
     let draftKey = getDraftKey(conversationId);
-    window.localStorage.setItem(draftKey, draftKey);
+    window.localStorage.setItem(`${draftKey}_text`, draftKey);
+    window.localStorage.setItem(`${draftKey}_mentions`, '[]');
 };

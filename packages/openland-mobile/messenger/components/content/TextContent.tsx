@@ -14,6 +14,7 @@ interface TextContentProps {
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     padded?: boolean;
+    fontStyle?: 'italic' | 'normal';
 }
 export class TextContent extends React.PureComponent<TextContentProps> {
     render() {
@@ -48,6 +49,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                     letterSpacing={-0.3}
                     fontSize={big ? 52 : 16}
                     fontWeight={TextStyles.weight.regular}
+                    fontStyle={this.props.fontStyle}
                 >
                     {parts}
                     {this.props.padded !== false && !message.urlAugmentation ? (message.isOut ? paddedTextOut : paddedText) : undefined}

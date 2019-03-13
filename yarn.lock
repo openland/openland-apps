@@ -2220,6 +2220,11 @@
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.1.tgz#5c85d662f76fa1d34575766c5dcd6615abcd30d8"
 
+"@yarnpkg/lockfile@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
+  integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
+
 "@zeit/next-bundle-analyzer@0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@zeit/next-bundle-analyzer/-/next-bundle-analyzer-0.1.2.tgz#356e3b695a8d7d691a857d11e9ff410058b8248f"
@@ -4554,6 +4559,11 @@ chrome-trace-event@^1.0.0:
 ci-info@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.6.0.tgz#2ca20dbb9ceb32d4524a683303313f0304b1e497"
+
+ci-info@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-2.0.0.tgz#67a9e964be31a51e15e5010d58e6f12834002f46"
+  integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
 
 cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   version "1.0.4"
@@ -7920,6 +7930,13 @@ is-ci@^1.0.10, is-ci@^1.1.0:
   dependencies:
     ci-info "^1.5.0"
 
+is-ci@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/is-ci/-/is-ci-2.0.0.tgz#6bc6334181810e04b5c22b3d589fdca55026404c"
+  integrity sha512-YfJT7rkpQB0updsdHLGWrvhBJfcfzNNawYDNIyQXJz0IViGf75O8EBPKSdvw2rF+LGCsX4FZ8tcr3b19LcZq4w==
+  dependencies:
+    ci-info "^2.0.0"
+
 is-data-descriptor@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/is-data-descriptor/-/is-data-descriptor-0.1.4.tgz#0b5ee648388e2c860282e793f1856fec3f301b56"
@@ -9016,6 +9033,13 @@ kind-of@^5.0.0, kind-of@^5.0.2:
 kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
+
+klaw-sync@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/klaw-sync/-/klaw-sync-4.0.0.tgz#7785692ea1a320ac3dda7a6c0c22b33a30aa3b3f"
+  integrity sha512-go/5tXbgLkgwxQ2c2ewaMen6TpQtI9fTzzmTdlSGK8XxKcFSsJvn/Sgn75Vg+mOJwkKVPrqLw2Xq7x/zP1v7PQ==
+  dependencies:
+    graceful-fs "^4.1.11"
 
 klaw@^1.0.0:
   version "1.3.1"
@@ -10916,18 +10940,23 @@ password-prompt@^1.0.7:
     ansi-escapes "^3.1.0"
     cross-spawn "^6.0.5"
 
-patch-package@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/patch-package/-/patch-package-5.1.1.tgz#e5e82fe08bed760b773b8eb73a7bcb7c1634f802"
+patch-package@6.0.5:
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/patch-package/-/patch-package-6.0.5.tgz#2ddd34575df098e27e7beb7de67c6d169c323cdb"
+  integrity sha512-5npWp++yo3sNwOumUv6zv6T0tXWxN7wVWdXb+jMwBOeBVHfBCv9TuQFYLZBUTYi+RRMlCdC8QChE+hE8ymDuLw==
   dependencies:
+    "@yarnpkg/lockfile" "^1.1.0"
     chalk "^1.1.3"
-    cross-spawn "^5.1.0"
+    cross-spawn "^6.0.5"
     fs-extra "^4.0.1"
+    is-ci "^2.0.0"
+    klaw-sync "^4.0.0"
     minimist "^1.2.0"
-    rimraf "^2.6.1"
+    rimraf "^2.6.2"
+    semver "^5.6.0"
     slash "^1.0.0"
     tmp "^0.0.31"
-    update-notifier "^2.2.0"
+    update-notifier "^2.4.0"
 
 path-browserify@0.0.0:
   version "0.0.0"
@@ -14648,7 +14677,7 @@ upath@^1.0.5:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/upath/-/upath-1.1.0.tgz#35256597e46a581db4793d0ce47fa9aebfc9fabd"
 
-update-notifier@^2.2.0, update-notifier@^2.3.0, update-notifier@^2.5.0:
+update-notifier@^2.3.0, update-notifier@^2.4.0, update-notifier@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/update-notifier/-/update-notifier-2.5.0.tgz#d0744593e13f161e406acb1d9408b72cad08aff6"
   dependencies:

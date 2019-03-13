@@ -74,7 +74,7 @@ object LithoTextSpec {
                         override fun updateDrawState(ds: TextPaint?) {
                             super.updateDrawState(ds)
                             if(ds!=null){
-                                ds.typeface = resolveFont(context, s.fontWeight)
+                                ds.typeface = resolveFont(context, s.fontWeight, s.fontStyle)
                             }
 
                         }
@@ -100,7 +100,7 @@ object LithoTextSpec {
         val res = Text.create(context)
                 .key(spec.key)
                 .textSizeDip(fontSize)
-                .typeface(resolveFont(context, spec.fontWeight))
+                .typeface(resolveFont(context, spec.fontWeight, spec.fontStyle))
                 .textColor(spec.color)
                 .shouldIncludeFontPadding(false)
         if(spec.touchableKey != null){
@@ -145,14 +145,22 @@ object LithoTextSpec {
                 .emit("async_on_press", map)
     }
 
-    private fun resolveFont(context: ComponentContext, weight: String?): Typeface?{
-        return when (weight) {
+    private fun resolveFont(context: ComponentContext, weight: String?, style: String?): Typeface?{
+        val weightStyle = weight + (if (style == "italic") "-italic" else "")
+
+        return when (weightStyle) {
             "100" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Thin.ttf")
             "300" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Light.ttf")
             "400" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Regular.ttf")
             "500" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Medium.ttf")
             "700" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Bold.ttf")
             "900" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Black.ttf")
+            "100-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-ThinItalic.ttf")
+            "300-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-LightItalic.ttf")
+            "400-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Italic.ttf")
+            "500-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-MediumItalic.ttf")
+            "700-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-BoldItalic.ttf")
+            "900-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-BlackItalic.ttf")
             else -> null
         }
     }

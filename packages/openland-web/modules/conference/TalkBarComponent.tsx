@@ -4,28 +4,14 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { ConferenceQuery } from 'openland-api';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XButton } from 'openland-x/XButton';
-import { TalkContext } from './TalkProviderComponent';
 import { TalkWatchComponent } from './TalkWatchComponent';
 import { XView } from 'react-mental';
-
-// class TalkVideo extends React.Component<{ src: MediaStream }> {
-//     ref = React.createRef<HTMLVideoElement>();
-//     componentDidMount() {
-//         let video = this.ref.current!;
-//         video.muted = true;
-//         video.autoplay = true;
-//         video.setAttribute('playsinline', 'true');
-//         video.controls = false;
-//         video.srcObject = this.props.src;
-//     }
-//     render() {
-//         return <video ref={this.ref} width={28} height={28} />;
-//     }
-// }
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 export const TalkBarComponent = (props: { conversationId: string }) => {
     const apollo = React.useContext(YApolloContext)!;
-    let ctx = React.useContext(TalkContext);
+    let calls = React.useContext(MessengerContext).calls;
+    let callState = calls.useState();
     return (
         <XView height={0} alignSelf="stretch">
             <YQuery query={ConferenceQuery} variables={{ id: props.conversationId }}>
@@ -67,6 +53,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                                 size="m-small"
                                                 style="user"
                                                 objectId={v.user.id}
+                                                objectName={v.user.name}
                                                 online={false}
                                                 cloudImageUuid={v.user.photo || undefined}
                                             />
@@ -75,31 +62,31 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                         <XView width={8} />
                                     </React.Fragment>
                                 ))}
-                                {ctx.cid === props.conversationId && (
+                                {callState.conversationId === props.conversationId && (
                                     <>
                                         <XButton
                                             style="success"
-                                            text={ctx.muted ? 'Unmute' : 'Mute'}
-                                            onClick={() => ctx.toggleMute()}
+                                            text={callState.mute ? 'Unmute' : 'Mute'}
+                                            onClick={() => calls.setMute(callState.mute)}
                                         />
                                         <XView width={8} />
                                         <XButton
                                             style="success"
                                             text={
-                                                ctx.state === 'connecting' ? 'Connecting' : 'Leave'
+                                                callState.status === 'connecting' ? 'Connecting' : 'Leave'
                                             }
-                                            onClick={() => ctx.leaveCall()}
+                                            onClick={() => calls.leaveCall()}
                                         />
                                     </>
                                 )}
-                                {ctx.cid !== props.conversationId && (
+                                {(callState.conversationId !== props.conversationId) && (
                                     <XButton
                                         style="success"
-                                        text={ctx.cid ? 'Leave' : 'Join'}
+                                        text={callState.conversationId ? 'Leave' : 'Join'}
                                         onClick={
-                                            ctx.cid
-                                                ? () => ctx.leaveCall()
-                                                : () => ctx.joinCall(props.conversationId)
+                                            callState.conversationId
+                                                ? () => calls.leaveCall()
+                                                : () => calls.joinCall(props.conversationId)
                                         }
                                     />
                                 )}

@@ -1,14 +1,6 @@
 import * as React from 'react';
 import { RoomMembers_members } from 'openland-api/Types';
-
-export type MentionDataT = {
-    id: string;
-    name: string;
-    avatar: string;
-    title: string;
-    online: boolean;
-    isYou: boolean;
-};
+import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 
 export type MentionsStateT = {
     mentionsData: MentionDataT[];
@@ -17,7 +9,7 @@ export type MentionsStateT = {
     setCurrentMentions: (a: MentionDataT[]) => void;
 };
 
-const convertChannelMembersDataToMentionsData = (data?: RoomMembers_members[]) => {
+export const convertChannelMembersDataToMentionsData = (data?: RoomMembers_members[]) => {
     if (!data) {
         return [];
     }

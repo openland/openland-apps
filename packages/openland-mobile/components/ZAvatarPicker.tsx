@@ -7,9 +7,7 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { startLoader, stopLoader } from './ZGlobalLoader';
 import { ZAvatar } from './ZAvatar';
-import { Alert } from './AlertBlanket';
-import AndroidOpenSettings from 'react-native-android-open-settings';
-import { handlePermissionDismiss } from 'openland-y-utils/PermissionManager/handlePermissionDismiss';
+import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
 
 interface AvatarImageRef {
     uuid: string;

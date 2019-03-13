@@ -43,7 +43,6 @@ const imageClassName = css`
     display: block;
     border-radius: 6px;
     margin-left: -3px;
-    height: auto !important;
 `;
 
 interface MessageImageComponentProps {

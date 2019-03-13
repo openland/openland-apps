@@ -42,9 +42,14 @@ export const addEmoji = ({
     }
 
     const contentState = editorState.getCurrentContent();
+
+    const unifiedWithoutUnicodeSeparators = unified
+        ? unified.replace(/-200d/g, '').replace(/-fe0f/g, '')
+        : undefined;
+
     const contentStateWithEntity = contentState.createEntity('emoji', 'IMMUTABLE', {
         emojiUnicode: emoji,
-        unified: unified ? unified.replace(/-200d/g, '').replace(/-fe0f/g, '') : undefined,
+        unified: unifiedWithoutUnicodeSeparators,
     });
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
     const currentSelectionState = editorState.getSelection();

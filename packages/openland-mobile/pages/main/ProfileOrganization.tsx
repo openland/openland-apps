@@ -17,7 +17,7 @@ import { View } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { Organization_organization_members } from 'openland-api/Types';
-import { GroupView } from './components/GoupView';
+import { GroupView } from './components/GroupView';
 
 let isMember = (a: Organization_organization_members) => {
     return a.role === 'MEMBER';
@@ -136,8 +136,18 @@ function ProfileOrganizationContent(props: PageProps) {
                     <ZListItemGroup
                         header="Groups"
                         divider={false}
-                        actionRight={organization.isMine ? { title: '+ New', onPress: () => props.router.push('CreateGroupAttrs', { organizationId: organization.id }) } : undefined}
+                        actionRight={organization.rooms.length > 3 ? { title: 'See All', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name + ' groups' }) } : undefined}
                     >
+                        {organization.isMine && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-add-24.png')}
+                                text="Create group"
+                                path="CreateGroupAttrs"
+                                pathParams={{
+                                    organizationId: organization.id,
+                                }}
+                                navigationIcon={false}
+                            />)}
                         {organization.rooms
                             .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0))
                             .filter((c, i) => i <= 2)
@@ -155,17 +165,6 @@ function ProfileOrganizationContent(props: PageProps) {
                                     }
                                 />
                             ))}
-                        {organization.rooms.length > 3 && (
-                            <ZListItem
-                                leftIcon={require('assets/ic-more-24.png')}
-                                text="More groups"
-                                path="ProfileOrganizationGroups"
-                                pathParams={{
-                                    organizationId: organization.id,
-                                    title: organization.name + ' groups',
-                                }}
-                                navigationIcon={false}
-                            />)}
                     </ZListItemGroup>
                 )
             }

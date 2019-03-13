@@ -96,7 +96,6 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                     action={async src => {
                         this.validateEmail(src.email);
 
-                        Keyboard.dismiss();
                         email = src.email;
 
                         await requestActivationCode();
@@ -165,7 +164,6 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                     action={async src => {
                         this.validateCode(src.code);
 
-                        Keyboard.dismiss();
                         let res = await http({
                             url: 'https://api.openland.com/auth/checkCode',
                             body: {

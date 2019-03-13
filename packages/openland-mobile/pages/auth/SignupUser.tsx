@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StyleSheet, TextStyle, View, Text } from 'react-native';
-import { ZTextInput } from '../../components/ZTextInput';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
@@ -12,6 +11,8 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { SilentError } from 'openland-y-forms/errorHandling';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 
 export const signupStyles = StyleSheet.create({
     input: {
@@ -26,7 +27,6 @@ export const signupStyles = StyleSheet.create({
         borderBottomWidth: 0.5,
         marginLeft: 16,
         paddingRight: 16
-
     } as TextStyle,
 });
 
@@ -71,22 +71,19 @@ const SignupUserContent = XMemo<PageProps>((props) => {
                 <View alignSelf="center" marginTop={30} marginBottom={10}>
                     <ZAvatarPicker field="input.photoRef" initialUrl={prefill && prefill.picture || undefined} />
                 </View>
-                <ZTextInput
-                    field="input.firstName"
-                    placeholder="First name"
-                    style={signupStyles.input}
-                    width="100%"
-                />
-                <ZTextInput
-                    field="input.lastName"
-                    placeholder="Last name"
-                    style={signupStyles.input}
-                    width="100%"
-                />
-
-                <Text style={styles.hint}>
-                    Please, provide your name. This information is part of your public profile.
-                </Text>
+                <ZListItemGroup
+                    divider={false}
+                    footer="Please, provide your name. This information is part of your public profile."
+                >
+                    <ZTextInput
+                        field="input.firstName"
+                        placeholder="First name"
+                    />
+                    <ZTextInput
+                        field="input.lastName"
+                        placeholder="Last name"
+                    />
+                </ZListItemGroup>
             </ZForm>
         </>
     )

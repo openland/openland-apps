@@ -1,8 +1,8 @@
 import { Watcher } from 'openland-y-utils/Watcher';
 import RNFetchBlob from 'rn-fetch-blob';
 import { DownloadState, DownloadManagerInterface } from './DownloadManagerInterface';
-import { Platform, PermissionsAndroid } from 'react-native';
-import { handlePermissionDismiss } from 'openland-y-utils/PermissionManager/handlePermissionDismiss';
+import { Platform } from 'react-native';
+import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 
 export class DownloadManager implements DownloadManagerInterface {
 
@@ -16,10 +16,13 @@ export class DownloadManager implements DownloadManagerInterface {
         }
     })();
 
-    resolvePath(uuid: string, resize: { width: number, height: number } | null) {
+    resolvePath(uuid: string, resize: { width: number, height: number } | null, local?: boolean) {
         let suffix = '';
         if (resize) {
             suffix = '_' + resize.width + 'x' + resize.height;
+        }
+        if (local) {
+            suffix = '_local';
         }
         let path = this.rootDir + '/' + uuid + suffix;
         return path;
@@ -101,12 +104,16 @@ export class DownloadManager implements DownloadManagerInterface {
                     suffix = '_' + resize.width + 'x' + resize.height;
                 }
                 let path = this.rootDir + '/' + uuid + suffix;
+                let pathLocal = this.rootDir + '/' + uuid + '_local';
 
                 // Check if exists
                 let exists = false;
                 try {
                     if (await (RNFetchBlob as any).fs.exists(path)) {
                         exists = true;
+                    } else if (await (RNFetchBlob as any).fs.exists(pathLocal)) {
+                        exists = true;
+                        path = pathLocal;
                     }
                 } catch (e) {
                     // How to handle?
@@ -125,7 +132,6 @@ export class DownloadManager implements DownloadManagerInterface {
     }
 
     getFilePathWithRealName = async (uuid: string, resize: { width: number, height: number } | null, fileName: string) => {
-        // Init
         let suffix = '';
         if (resize) {
             suffix = '_' + resize.width + 'x' + resize.height;
@@ -136,32 +142,31 @@ export class DownloadManager implements DownloadManagerInterface {
         let fileById = this.rootDir + '/' + uuid + suffix;
         let fileByName = targetPath + '/' + fileName;
 
-        let hasPermissions = false;
-
-        if (Platform.OS === 'android') {
-            try {
-                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
-
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    hasPermissions = true;
-                } else {
-                    handlePermissionDismiss('android-storage');
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        } else {
-            hasPermissions = true;
-        }
-
-        if (hasPermissions) {
+        if (await checkPermissions('android-storage')) {
             if (await (RNFetchBlob as any).fs.exists(fileByName)) {
                 await (RNFetchBlob as any).fs.unlink(fileByName);
             }
-    
+
             await (RNFetchBlob as any).fs.cp(fileById, fileByName);
 
             return fileByName;
+        } else {
+            return undefined;
+        }
+    }
+
+    copyFileWithNewName = async (file: string, newName: string) => {
+        let targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
+        let fileWithExt = targetPath + '/' + newName;
+
+        if (await checkPermissions('android-storage')) {
+            if (await (RNFetchBlob as any).fs.exists(fileWithExt)) {
+                await (RNFetchBlob as any).fs.unlink(fileWithExt);
+            }
+
+            await (RNFetchBlob as any).fs.cp(file, fileWithExt);
+
+            return fileWithExt;
         } else {
             return undefined;
         }

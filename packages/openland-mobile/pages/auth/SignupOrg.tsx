@@ -27,7 +27,6 @@ class SignupOrgComponent extends React.PureComponent<PageProps & { onComplete: (
                 >
                     <ZTextInput field="input.name" placeholder="Name" style={signupStyles.input} width="100%" />
                 </ZForm>
-                )}
             </>
         );
     }

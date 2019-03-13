@@ -88,6 +88,11 @@ export function emoji({
             marginTop: -2,
         };
     }
+    if (size === 20) {
+        style = {
+            marginTop: -6,
+        };
+    }
     if (size === 38) {
         style = {
             marginTop: -6,

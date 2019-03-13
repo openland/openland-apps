@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
+import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 
 export type InputMethodsStateT = XRichTextInput2RefMethods & {
     focusIfNeeded: Function;
@@ -34,6 +35,16 @@ export function useInputMethods({
         if (inputRef.current) {
             return inputRef.current.getMentions();
         }
+        return [];
+    };
+
+    const setInputValue = ({ text, mentions }: { text: string; mentions: MentionDataT[] }) => {
+        if (inputRef.current) {
+            return inputRef.current.setInputValue({
+                text,
+                mentions,
+            });
+        }
     };
 
     const getHasFocus = () => {
@@ -46,5 +57,6 @@ export function useInputMethods({
         getHasFocus,
         focusIfNeeded,
         getMentions,
+        setInputValue,
     };
 }

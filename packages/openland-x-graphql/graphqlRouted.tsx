@@ -62,6 +62,15 @@ export function graphqlRouted<TResult, TVars>(
                 if (results.error) {
                     console.warn(preparedVariables);
                     console.warn(results.error);
+
+                    // whitelist Access Denied error propagation
+                    if (
+                        results.error.graphQLErrors &&
+                        results.error.graphQLErrors.length &&
+                        results.error.graphQLErrors[0].message === 'Access Denied'
+                    ) {
+                        throw results.error;
+                    }
                 }
 
                 // console.log('isActive', this.props.isActive);

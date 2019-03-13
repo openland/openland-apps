@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { SaveDraftMessageVariables, SaveDraftMessage } from 'openland-api/Types';
 import { MutationFunc } from 'react-apollo';
+import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 import * as DraftStore from './DraftStore';
 
 export type DraftStateT = {
@@ -12,7 +13,6 @@ export type DraftStateT = {
     cleanDraft: Function;
 };
 
-// TODO decalare state object
 export function useDraft({
     conversationId,
     saveDraft,
@@ -24,13 +24,13 @@ export function useDraft({
 }) {
     const [beDrafted, setBeDrafted] = React.useState(false);
 
-    const changeDraft = (message: string) => {
+    const changeDraft = (message: string, mentions: MentionDataT[]) => {
         if (!beDrafted) {
             setBeDrafted(true);
         }
 
         if (conversationId) {
-            DraftStore.setDraftMessage(conversationId, message);
+            DraftStore.setDraftMessage(conversationId, message, mentions);
         }
 
         saveDraft({
@@ -42,18 +42,20 @@ export function useDraft({
     };
 
     const getNextDraft = () => {
-        let result = '';
+        let text = '';
+        let mentions: MentionDataT[] = [];
         const storedDraft = DraftStore.getDraftMessage(conversationId);
 
-        if (storedDraft === null) {
+        if (storedDraft.text === null) {
             if (draft !== null && draft !== undefined) {
-                result = draft;
+                text = draft;
             }
         } else {
-            result = storedDraft;
+            text = storedDraft.text;
+            mentions = storedDraft.mentions;
         }
 
-        return result;
+        return { text, mentions };
     };
 
     const getDefaultValue = () => {
@@ -61,7 +63,7 @@ export function useDraft({
     };
 
     const cleanDraft = () => {
-        changeDraft('');
+        changeDraft('', []);
         DraftStore.cleanDraftMessage(conversationId);
     };
 

@@ -12,6 +12,25 @@ export const ConferenceQuery = gql`
     ${UserShort}
 `;
 
+export const ConferenceMediaQuery = gql`
+    query ConferenceMedia($id: ID!, $peerId: ID!) {
+        conferenceMedia(id: $id, peerId: $peerId) {
+            id
+            streams {
+                id
+                state
+                sdp
+                ice
+            }
+            iceServers {
+                urls
+                username
+                credential
+            }
+        }
+    }
+`;
+
 export const ConferenceJoinMutation = gql`
     mutation ConferenceJoin($id: ID!) {
         conferenceJoin(id: $id) {
@@ -73,4 +92,46 @@ export const ConferenceCandidateMutation = gql`
     }
     ${ConferenceFull}
     ${UserShort}
+`;
+
+export const MediaOfferMutation = gql`
+    mutation MediaOffer($id: ID!, $peerId: ID!, $offer: String!) {
+        mediaStreamOffer(id: $id, peerId: $peerId, offer: $offer) {
+            id
+            streams {
+                id
+                state
+                sdp
+                ice
+            }
+        }
+    }
+`;
+
+export const MediaAnswerMutation = gql`
+    mutation MediaAnswer($id: ID!, $peerId: ID!, $answer: String!) {
+        mediaStreamAnswer(id: $id, peerId: $peerId, answer: $answer) {
+            id
+            streams {
+                id
+                state
+                sdp
+                ice
+            }
+        }
+    }
+`;
+
+export const MediaCandidateMutation = gql`
+    mutation MediaCandidate($id: ID!, $peerId: ID!, $candidate: String!) {
+        mediaStreamCandidate(id: $id, peerId: $peerId, candidate: $candidate) {
+            id
+            streams {
+                id
+                state
+                sdp
+                ice
+            }
+        }
+    }
 `;

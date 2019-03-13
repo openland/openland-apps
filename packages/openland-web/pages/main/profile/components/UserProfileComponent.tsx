@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { css } from 'linaria';
-import { withUser } from '../../../../api/withUserSimple';
+import { withUser } from 'openland-web/api/withUserSimple';
 import { User_user } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
@@ -22,7 +22,7 @@ import {
     extractHostname,
 } from './OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { withOnline } from '../../../../api/withOnline';
+import { withOnline } from 'openland-web/api/withOnline';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../../components/XOverflow';
 import { XSocialButton } from 'openland-x/XSocialButton';
@@ -31,6 +31,7 @@ import { XDate } from 'openland-x/XDate';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import { emoji } from 'openland-y-utils/emoji';
 
 const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
@@ -79,6 +80,9 @@ const StatusWrapperOnline = css`
 `;
 
 const UserStatus = withOnline(props => {
+    if ((props as any).isBot) {
+        return <div className={StatusWrapperOnline}>bot</div>;
+    }
     if (
         props.data.user &&
         (props.data.user.lastSeen &&
@@ -100,7 +104,7 @@ const UserStatus = withOnline(props => {
     } else {
         return null;
     }
-}) as React.ComponentType<{ variables: { userId: string } }>;
+}) as React.ComponentType<{ variables: { userId: string }; isBot: boolean }>;
 
 const AvatarModal = (props: { photo?: string; userName: string; userId: string }) => {
     return (
@@ -141,7 +145,7 @@ const Header = (props: { user: User_user }) => {
                 <XView paddingTop={1} justifyContent="center" flexGrow={1}>
                     <XHorizontal separator={4}>
                         <XView fontSize={18} fontWeight="600" lineHeight="20px" color="#000000">
-                            {user.name}
+                            {emoji({ src: user.name, size: 20 })}
                         </XView>
                         {user.primaryOrganization && (
                             <XView
@@ -159,7 +163,7 @@ const Header = (props: { user: User_user }) => {
                             </XView>
                         )}
                     </XHorizontal>
-                    <UserStatus variables={{ userId: user.id }} />
+                    <UserStatus variables={{ userId: user.id }} isBot={user.isBot} />
                 </XView>
                 <XView paddingTop={13}>
                     <XHorizontal separator={8} alignItems="center">

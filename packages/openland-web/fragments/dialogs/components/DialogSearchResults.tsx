@@ -4,7 +4,7 @@ import { DialogViewCompact } from './DialogViewCompact';
 import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { withChatSearchText } from 'openland-web/api/withChatSearchText';
+import { withGlobalSearch } from 'openland-web/api/withGlobalSearch';
 
 const PlaceholderEmpty = Glamorous(XText)({
     opacity: 0.5,
@@ -27,13 +27,20 @@ const Image = Glamorous.div({
     backgroundPosition: 'center',
 });
 
-export const DialogSearchResults = withChatSearchText(props => {
-    if (!props.data || !props.data.items) {
+type DialogSearchResultsT = {
+    onClick: () => void;
+    onSelect?: () => void;
+    variables: { query: string };
+};
+
+export const DialogSearchResults = withGlobalSearch(props => {
+    const typeProps = props as typeof props & DialogSearchResultsT;
+    if (!typeProps.data || !typeProps.data.items) {
         return <PlaceholderLoader color="#334562" />;
     }
 
     // Why?
-    let items = props.data.items.reduce(
+    let items = typeProps.data.items.reduce(
         (p, x) => {
             if (!p.find(c => c.id === x.id)) {
                 p.push(x);
@@ -54,21 +61,53 @@ export const DialogSearchResults = withChatSearchText(props => {
 
     return (
         <>
-            {items.map((i, j) => (
-                <DialogViewCompact
-                    key={i.id}
-                    onSelect={(props as any).onSelect}
-                    onClick={(props as any).onClick}
-                    item={{
+            {items.map(i => {
+                let item;
+
+                if (i.__typename === 'SharedRoom') {
+                    item = {
                         key: i.id,
-                        flexibleId: i.flexibleId,
+                        flexibleId: i.id,
                         kind: i.kind,
                         title: i.title,
-                        photo: i.photo || i.photos[0],
+                        fallback: i.title,
+                        photo: i.roomPhoto,
                         unread: 0,
-                    }}
-                />
-            ))}
+                    };
+                } else if (i.__typename === 'Organization') {
+                    item = {
+                        key: i.id,
+                        flexibleId: i.id,
+                        kind: i.kind,
+                        title: i.name || '',
+                        fallback: i.name || '',
+                        photo: i.photo,
+                        unread: 0,
+                        isOrganization: true,
+                    };
+                } else if (i.__typename === 'User') {
+                    item = {
+                        key: i.id,
+                        flexibleId: i.id,
+                        kind: i.kind,
+                        title: i.name || '',
+                        fallback: i.name || '',
+                        photo: i.photo,
+                        unread: 0,
+                    };
+                } else {
+                    return null;
+                }
+
+                return (
+                    <DialogViewCompact
+                        key={i.id}
+                        onSelect={typeProps.onSelect}
+                        onClick={typeProps.onClick}
+                        item={item}
+                    />
+                );
+            })}
         </>
     );
-}) as React.ComponentType<{ onClick: () => void; variables: { query: string } }>;
+}) as React.ComponentType<DialogSearchResultsT>;

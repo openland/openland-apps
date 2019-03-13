@@ -311,7 +311,7 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                             />
                             <div>
                                 <RoomTitle>{room.title}</RoomTitle>
-                                {(room.membersCount && room.membersCount >= 100) && (
+                                {room.membersCount && room.membersCount >= 100 && (
                                     <RoomCounter>
                                         <ProfileIcon />
                                         <span>
@@ -343,7 +343,7 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                                         refetchVars={{
                                             conversationId: room.id!,
                                         }}
-                                        text="Request Invite"
+                                        text="Join group"
                                     />
                                 )}
                             {this.props.inviteLink && (

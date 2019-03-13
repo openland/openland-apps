@@ -17,6 +17,8 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
     let { title, prefix, border, invalid, enabled, ...others } = props;
     let theme = React.useContext(ThemeContext);
 
+    let realBorder = typeof border === 'undefined' ? true : border;
+
     return (
         <View paddingLeft={16} flexDirection="column">
             <View flexDirection="row" alignItems="stretch" flexGrow={1}>
@@ -51,7 +53,7 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                     style={{
                         color: theme.textColor,
                         flex: 1,
-                        minHeight: border ? 43 : 44,
+                        minHeight: realBorder ? 43 : 44,
                         fontSize: 17,
                         padding: 0,
                         margin: 0,
@@ -61,11 +63,11 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                 />
             </View>
     
-            {border && (
+            {realBorder && (
                 <View
                     style={{
                         height: 1,
-                        marginLeft: (border === 'force-full') ? 0 : title ? 111 : 0,
+                        marginLeft: (realBorder === 'force-full') ? 0 : title ? 111 : 0,
                         backgroundColor: (invalid || !enabled) ? '#f6564e' : theme.separatorColor
                     }}
                 />

@@ -12,9 +12,9 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import PlusIcon from 'openland-icons/ic-add-small.svg';
 import LinkIcon from 'openland-icons/ic-link.svg';
-import { withChanneSendlnviteLink } from '../../../../api/withChanneSendlnviteLink';
+import { withChanneSendlnviteLink } from 'openland-web/api/withChanneSendlnviteLink';
 import { XWithRouter } from 'openland-x-routing/withRouter';
-import { withChannelnviteLink } from '../../../../api/withChannelnviteLink';
+import { withChannelnviteLink } from 'openland-web/api/withChannelnviteLink';
 import { XMutation } from 'openland-x/XMutation';
 import { XButton } from 'openland-x/XButton';
 import CloseIcon from 'openland-icons/ic-close-1.svg';
@@ -59,7 +59,7 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
     };
 
     copy = (e: any) => {
-        if (this.input && this.input.inputRef && this.input.inputRef) {
+        if (this.input && this.input.inputRef) {
             this.input.inputRef.inputRef.select();
         }
         document.execCommand('copy');

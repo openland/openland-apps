@@ -1,10 +1,11 @@
 import { Watcher } from 'openland-y-utils/Watcher';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
-import { UploadStatus, FileMetadata } from 'openland-engines/messenger/types';
+import { UploadStatus } from 'openland-engines/messenger/types';
 import { getMessenger } from '../utils/messenger';
 import RNFetchBlob from 'rn-fetch-blob';
-import { Platform, PermissionsAndroid } from 'react-native';
-import { handlePermissionDismiss } from 'openland-y-utils/PermissionManager/handlePermissionDismiss';
+import { Image } from 'react-native';
+import { DownloadManagerInstance } from './DownloadManager';
+import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 
 export interface UploadState {
     status: UploadStatus;
@@ -29,38 +30,27 @@ export class UploadManager {
     }
 
     registerUpload = async (conversationId: string, name: string, uri: string, fileSize?: number) => {
-
-        let hasPermissions = false;
-        if (Platform.OS === 'android') {
-            try {
-                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
-
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    hasPermissions = true;
-                } else {
-                    handlePermissionDismiss('android-storage');
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        } else {
-            hasPermissions = true;
-        }
-
-        if (!hasPermissions) {
+        if (!(await checkPermissions('android-storage'))) {
             return;
         }
 
         const w = new Watcher<UploadState>();
         w.setState({ progress: 0, status: UploadStatus.UPLOADING });
         let messageId = getMessenger().engine.getConversation(conversationId).sendFile({
-            fetchInfo: () => new Promise((resolver) => {
+            fetchInfo: () => new Promise(async (resolver, onError) => {
+                let isImage = uri.endsWith('.png') || uri.endsWith('.jpg') || uri.endsWith('.jpeg');
+                let imageSize: { width: number, height: number } | undefined = undefined;
+                if (isImage) {
+                    imageSize = await new Promise<{ width: number, height: number }>((res) => {
+                        Image.getSize(uri, (width, height) => res({ width, height }), e => onError(e));
+                    });
+                }
                 if (fileSize === undefined) {
                     RNFetchBlob.fs.stat(uri.replace('file://', ''))
-                        .then((s: any) => resolver({ name, uri, fileSize: s.size }))
-                        .catch((e: any) => console.warn('boom', e.message));
+                        .then((s: any) => resolver({ name, uri, fileSize: s.size, isImage, imageSize }))
+                        .catch((e: any) => onError(e));
                 } else {
-                    resolver({ name, uri, fileSize })
+                    resolver({ name, uri, fileSize, isImage, imageSize })
                 }
             }),
             watch: (handler) => w.watch(handler)
@@ -85,6 +75,7 @@ export class UploadManager {
                 // TODO: Handle
             } else if (s.status === UploadStatus.COMPLETED) {
                 this._queue.splice(0, 1);
+                RNFetchBlob.fs.cp(q.uri.replace('file://', ''), DownloadManagerInstance.resolvePath(s.uuid!, null, true));
                 this.getWatcher(q.messageId).setState({ progress: 1, status: s.status, uuid: s.uuid });
 
                 (async () => {

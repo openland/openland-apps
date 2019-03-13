@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
-import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfile';
-import { withQueryLoader } from '../../../components/withQueryLoader';
+import { withApp } from 'openland-web/components/withApp';
+import { withMyOrganizationProfile } from 'openland-web/api/withMyOrganizationProfile';
+import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { SettingsNavigation } from './components/SettingsNavigation';
 import { InvitesHistory } from './components/invitesHistory';
 import { XButton } from 'openland-x/XButton';

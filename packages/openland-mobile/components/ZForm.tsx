@@ -32,39 +32,53 @@ export class ZForm extends React.PureComponent<ZFormProps> {
         }
     }
 
-    handleAction = async (args: any) => {
-        try {
-            startLoader();
-            await this.props.action(args);
-            if (this.props.onSuccess) {
-                try {
-                    this.props.onSuccess();
-                } catch (e) {
-                    console.warn(e);
-                }
-            }
-        } catch (e) {
-            if (this.props.onError) {
-                this.props.onError(e);
-            } else {
-                let error = formatError(e);
-                if (error) {
-                    Alert.alert(error);
-                }
-            }
-        } finally {
-            stopLoader();
-        }
-    }
+    // handleAction = async (args: any) => {
+    //     try {
+    //         startLoader();
+    //         await this.props.action(args);
+    //         if (this.props.onSuccess) {
+    //             try {
+    //                 this.props.onSuccess();
+    //             } catch (e) {
+    //                 console.warn(e);
+    //             }
+    //         }
+    //     } catch (e) {
+    //         if (this.props.onError) {
+    //             this.props.onError(e);
+    //         } else {
+    //             let error = formatError(e);
+    //             if (error) {
+    //                 Alert.alert(error);
+    //             }
+    //         }
+    //     } finally {
+    //         stopLoader();
+    //     }
+    // }
 
     render() {
         return (
-            <YForm defaultAction={this.handleAction} defaultData={this.props.defaultData} staticData={this.props.staticData} ref={this.ref}>
-                <SScrollView>
-                    <KeyboardAvoidingView behavior="position">
+            <YForm
+                defaultAction={this.props.action}
+                defaultData={this.props.defaultData}
+                staticData={this.props.staticData}
+                ref={this.ref}
+                onSuccess={this.props.onSuccess}
+                onError={this.props.onError}
+            >
+                {Platform.OS === 'android' &&
+                    <SScrollView safeAreaViaMargin={true}>
                         {this.props.children}
-                    </KeyboardAvoidingView>
-                </SScrollView>
+                    </SScrollView>
+                }
+
+                {Platform.OS === 'ios' && <KeyboardAvoidingView flexGrow={1} behavior={'padding'} >
+                    <SScrollView>
+                        {this.props.children}
+                    </SScrollView>
+                </KeyboardAvoidingView>}
+
             </YForm >
         );
     }

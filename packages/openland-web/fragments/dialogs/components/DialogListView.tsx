@@ -20,6 +20,7 @@ const LoadingWrapper = Glamorous.div({
 });
 
 const dialogSearchWrapperClassName = css`
+    justify-content: flex-start !important;
     overflow: scroll;
     display: flex;
     justify-content: center;
@@ -47,12 +48,9 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             );
         };
     }, []);
-    const renderDialog = React.useMemo(
-        () => {
-            return (item: DialogDataSourceItem) => <DialogView item={item} />;
-        },
-        [props.onDialogClick],
-    );
+    const renderDialog = React.useMemo(() => {
+        return (item: DialogDataSourceItem) => <DialogView item={item} />;
+    }, [props.onDialogClick]);
 
     const getCurrentConversationId = () => {
         return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
@@ -125,16 +123,15 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                             />
                         )}
                     </div>
-                    {canUseDOM &&
-                        !isSearching && (
-                            <XListView
-                                dataSource={messenger.dialogList.dataSource}
-                                itemHeight={72}
-                                loadingHeight={60}
-                                renderItem={renderDialog}
-                                renderLoading={renderLoading}
-                            />
-                        )}
+                    {canUseDOM && !isSearching && (
+                        <XListView
+                            dataSource={messenger.dialogList.dataSource}
+                            itemHeight={72}
+                            loadingHeight={60}
+                            renderItem={renderDialog}
+                            renderLoading={renderLoading}
+                        />
+                    )}
                 </XView>
             </XView>
         </XShortcuts>

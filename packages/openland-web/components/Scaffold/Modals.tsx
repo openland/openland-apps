@@ -11,7 +11,7 @@ import { SharedRoomKind } from 'openland-api/Types';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { withCreateOrganization } from '../../api/withCreateOrganization';
 import { InitTexts } from '../../pages/init/_text';
-import { withCreateChannel } from '../../api/withCreateChannel';
+import { withCreateChannel } from 'openland-web/api/withCreateChannel';
 
 export const CreateRoom = withCreateChannel(props => {
     return (

@@ -1,26 +1,23 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { cx, css } from 'linaria';
 import Glamorous from 'glamorous';
+import { XView } from 'react-mental';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { XView } from 'react-mental';
 import { XInput } from 'openland-x/XInput';
-import { XSelect } from 'openland-x/XSelect';
 import { InitTexts } from '../_text';
 import { XForm } from 'openland-x-forms/XForm2';
-import { XPopper } from 'openland-x/XPopper';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { XFormField2 } from 'openland-x-forms/XFormField2';
-import IcInfo from 'openland-icons/ic-info.svg';
-import IcAdd from 'openland-icons/ic-add-medium-active.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
-import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XText } from 'openland-x/XText';
+import { XPopper } from 'openland-x/XPopper';
+import IcInfo from 'openland-icons/ic-info.svg';
 import { useIsMobile } from 'openland-web/hooks';
 
 export const SubTitle = Glamorous.div({
@@ -699,7 +696,7 @@ export const InviteInfoInner = ({
                         objectId={inviter.id}
                     />
                     <XText fontSize={16} color="#000000">
-                        {inviter.name + ' invites you to join group'}
+                        {inviter.name + ' invites you to join'}
                     </XText>
                 </XHorizontal>
             </XVertical>
@@ -1334,68 +1331,17 @@ const InfoText = Glamorous.span({
     fontSize: 14,
 });
 
-const OrganizationSelector = Glamorous(XSelect)({
-    minWidth: 330,
-    '& .Select-option:only-child .new-org::before': {
-        display: 'none',
-    },
-    '@media(max-width: 450px)': {
-        minWidth: 200,
-    },
-});
-
-const NewOrganizationButtonWrapper = Glamorous.div({
-    position: 'relative',
-    '&::before': {
-        content: `''`,
-        position: 'absolute',
-        bottom: -8,
-        left: -16,
-        width: 'calc(100% + 32px)',
-        height: 1,
-        background: 'rgb(116, 188, 255)',
-        display: 'block',
-    },
-});
-
-const NewOrganizationButton = ({
-    onClick,
-    title,
-}: {
-    onClick?: (event: React.MouseEvent<any>) => void;
-    title: string;
-}) => {
-    let text = 'New';
-    if (title !== '') {
-        text = `${title} (New)`;
+const organizationInputClassName = css`
+    width: 300px;
+    @media (max-width: 450px) {
+        width: 250px;
     }
-    return (
-        <NewOrganizationButtonWrapper
-            onClick={onClick}
-            data-test-id="new-organization-button"
-            className="new-org"
-        >
-            <XView flexDirection="row" alignItems="center">
-                <XView>
-                    <IcAdd />
-                </XView>
-                <XView color="#1790ff" marginLeft={6}>
-                    <span>{text}</span>
-                </XView>
-            </XView>
-        </NewOrganizationButtonWrapper>
-    );
-};
+`;
 
-const NEW_ORGANIZATION_BUTTON_VALUE = '____new organization button____';
-
-const OrganizationErrorText = Glamorous.div({
-    fontSize: '12px',
-    color: '#d75454',
-    marginLeft: '17px',
-    marginTop: '5px',
-    maxWidth: '249px',
-});
+const organizationInputErrorClassName = css`
+    display: flex;
+    align-self: flex-start;
+`;
 
 export class CreateOrganizationFormInner extends React.Component<
     {
@@ -1415,149 +1361,6 @@ export class CreateOrganizationFormInner extends React.Component<
         };
     }
 
-    getOrganizations = () => {
-        if (this.state.inputValue !== '') {
-            return [
-                {
-                    value: NEW_ORGANIZATION_BUTTON_VALUE,
-                    label: <NewOrganizationButton title={this.state.inputValue} />,
-                },
-                ...this.props.organizations.data,
-            ];
-        }
-        return [...this.props.organizations.data];
-    };
-
-    handleOnChange = (src: any, store: any) => {
-        if (!store) {
-            return;
-        }
-        let val = src ? (src.value as string) : 'unknown';
-        let cval = null;
-        if (Array.isArray(src)) {
-            if (src.length > 0) {
-                cval = src.map(r => r.value);
-            }
-        } else if (val !== 'unknown') {
-            cval = val;
-        }
-
-        if (cval === NEW_ORGANIZATION_BUTTON_VALUE) {
-            store.writeValue('fields.input.name', {
-                label: this.state.inputValue,
-                value: NEW_ORGANIZATION_BUTTON_VALUE,
-            });
-            return;
-        }
-
-        if (!src) {
-            store.writeValue('fields.input.name', {
-                label: '',
-                value: cval,
-            });
-            return;
-        }
-        store.writeValue('fields.input.name', {
-            label: src.label,
-            value: cval,
-        });
-    };
-
-    filterOptions = (_: any, val: any) => {
-        const res = this.getOrganizations().filter(
-            ({ label, value }: any) =>
-                (label.includes && label.toLowerCase().includes(val.toLowerCase())) ||
-                value === NEW_ORGANIZATION_BUTTON_VALUE,
-        );
-
-        return res;
-    };
-
-    renderSelect = (store: any) => {
-        if (!store) {
-            return;
-        }
-        const selectedNewOrganization =
-            store.readValue('fields.input.name') &&
-            store.readValue('fields.input.name').value === NEW_ORGANIZATION_BUTTON_VALUE;
-        return (
-            <div>
-                <XVertical alignItems="center" separator="none">
-                    <XFormField2 field="input.name">
-                        {({ showError }: { showError: boolean }) => (
-                            <>
-                                <div>
-                                    <XHorizontal separator="none" alignItems="center">
-                                        <OrganizationSelector
-                                            menuStyle={{ maxHeight: 150 }}
-                                            invalid={showError}
-                                            noArrow
-                                            onSelectResetsInput={false}
-                                            onBlurResetsInput={false}
-                                            filterOptions={this.filterOptions}
-                                            field="input.name"
-                                            dataTestId="organization-name"
-                                            title={InitTexts.create_organization.name}
-                                            onInputChange={
-                                                ((inputValue: any) => {
-                                                    this.setState(
-                                                        {
-                                                            inputValue,
-                                                        },
-                                                        () => {
-                                                            this.props.onPrefixChanges(inputValue);
-                                                        },
-                                                    );
-                                                }) as any
-                                            }
-                                            onChange={(src: any) => {
-                                                this.handleOnChange(src, store);
-                                            }}
-                                            options={this.getOrganizations()}
-                                        />
-                                        <XPopper
-                                            content={
-                                                <InfoText>
-                                                    To register as an individual, simply enter your
-                                                    name
-                                                </InfoText>
-                                            }
-                                            showOnHover={true}
-                                            placement="top"
-                                            style="dark"
-                                        >
-                                            <XIconWrapper>
-                                                <IcInfo />
-                                            </XIconWrapper>
-                                        </XPopper>
-                                    </XHorizontal>
-                                </div>
-                                {showError && (
-                                    <XFormError
-                                        field="input.name"
-                                        fieldErrorComponent={OrganizationErrorText}
-                                    />
-                                )}
-                            </>
-                        )}
-                    </XFormField2>
-                    <XView marginTop={50}>
-                        <XFormSubmit
-                            dataTestId="continue-button"
-                            style="primary"
-                            text={
-                                selectedNewOrganization
-                                    ? InitTexts.create_organization.createAndContinue
-                                    : InitTexts.create_organization.continue
-                            }
-                            size="large"
-                        />
-                    </XView>
-                </XVertical>
-            </div>
-        );
-    };
-
     render() {
         const { roomView, defaultAction } = this.props;
 
@@ -1572,21 +1375,17 @@ export class CreateOrganizationFormInner extends React.Component<
                 <XForm
                     defaultAction={(data: any) => {
                         defaultAction({
-                            name: data.input.name.label,
-                            id:
-                                data.input.name.value !== NEW_ORGANIZATION_BUTTON_VALUE
-                                    ? data.input.name.value
-                                    : undefined,
+                            name: data.input.organization,
                         });
                     }}
                     defaultData={{
                         input: {
-                            name: '',
+                            organization: '',
                         },
                     }}
                     validate={{
                         input: {
-                            name: [
+                            organization: [
                                 {
                                     rule: (value: string) => value !== '',
                                     errorMessage: InitTexts.auth.organizationIsEmptyError,
@@ -1600,7 +1399,68 @@ export class CreateOrganizationFormInner extends React.Component<
                         <XFormError width={472} />
                         <XFormLoadingContent>
                             <ButtonsWrapper marginBottom={84} marginTop={34}>
-                                <XStoreContext.Consumer>{this.renderSelect}</XStoreContext.Consumer>
+                                <div>
+                                    <XVertical alignItems="center" separator="none">
+                                        <XFormField2 field="input.organization">
+                                            {({ showError }: { showError: boolean }) => (
+                                                <XVertical separator="none" alignItems="center">
+                                                    <>
+                                                        <XHorizontal
+                                                            alignItems="center"
+                                                            separator="none"
+                                                        >
+                                                            <XInput
+                                                                invalid={showError}
+                                                                field="input.organization"
+                                                                size="large"
+                                                                title="Organization name"
+                                                                dataTestId="organization"
+                                                                flexGrow={1}
+                                                                className={
+                                                                    organizationInputClassName
+                                                                }
+                                                            />
+                                                            <XPopper
+                                                                content={
+                                                                    <InfoText>
+                                                                        To register as an
+                                                                        individual, simply enter
+                                                                        your name
+                                                                    </InfoText>
+                                                                }
+                                                                showOnHover={true}
+                                                                placement="top"
+                                                                style="dark"
+                                                            >
+                                                                <XIconWrapper>
+                                                                    <IcInfo />
+                                                                </XIconWrapper>
+                                                            </XPopper>
+                                                        </XHorizontal>
+                                                        {showError && (
+                                                            <div
+                                                                className={cx(
+                                                                    organizationInputClassName,
+                                                                    organizationInputErrorClassName,
+                                                                )}
+                                                            >
+                                                                <XFormError field="input.organization" />
+                                                            </div>
+                                                        )}
+                                                    </>
+                                                </XVertical>
+                                            )}
+                                        </XFormField2>
+                                        <XView marginTop={50}>
+                                            <XFormSubmit
+                                                dataTestId="continue-button"
+                                                style="primary"
+                                                text={InitTexts.create_organization.continue}
+                                                size="large"
+                                            />
+                                        </XView>
+                                    </XVertical>
+                                </div>
                             </ButtonsWrapper>
                         </XFormLoadingContent>
                     </XVertical>

@@ -1,11 +1,15 @@
 {
     "operations": [
         { "name": "ConferenceQuery", "type": "query", "hasVariables": true },
+        { "name": "ConferenceMediaQuery", "type": "query", "hasVariables": true },
         { "name": "ConferenceJoinMutation", "type": "mutation", "hasVariables": true },
         { "name": "ConferenceLeaveMutation", "type": "mutation", "hasVariables": true },
         { "name": "ConferenceKeepAliveMutation", "type": "mutation", "hasVariables": true },
         { "name": "ConferenceOfferMutation", "type": "mutation", "hasVariables": true },
         { "name": "ConferenceAnswerMutation", "type": "mutation", "hasVariables": true },
-        { "name": "ConferenceCandidateMutation", "type": "mutation", "hasVariables": true }
+        { "name": "ConferenceCandidateMutation", "type": "mutation", "hasVariables": true },
+        { "name": "MediaOfferMutation", "type": "mutation", "hasVariables": true },
+        { "name": "MediaAnswerMutation", "type": "mutation", "hasVariables": true },
+        { "name": "MediaCandidateMutation", "type": "mutation", "hasVariables": true }
     ]
 }

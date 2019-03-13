@@ -4,78 +4,149 @@ import { ZForm } from '../../components/ZForm';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { View } from 'react-native';
-import { ZAvatarPicker } from '../../components/ZAvatarPicker';
-import { ZTextInput } from '../../components/ZTextInput';
-import { AppStyles } from '../../styles/AppStyles';
-import { UserShort, SharedRoomKind } from 'openland-api/Types';
+import { Platform, View } from 'react-native';
+import { SharedRoomKind, RoomMemberRole } from 'openland-api/Types';
 import { UserError } from 'openland-y-forms/errorHandling';
 import { Modals } from '../main/modals/Modals';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
-interface CreateGroupComponentState {
-    query: string;
-}
+const CreateGroupComponent = (props: PageProps) => {
+    const ref = React.createRef<ZForm>();
 
-class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupComponentState> {
-    constructor(props: any) {
-        super(props);
-        this.state = { query: '' };
-    }
-    private ref = React.createRef<ZForm>();
+    let organizations = getClient().useMyOrganizations().myOrganizations;
 
-    handleChange = (query: string) => {
-        this.setState({ query });
-    }
+    const [selectedKind, setSelectedKind] = React.useState<SharedRoomKind.GROUP | SharedRoomKind.PUBLIC>(SharedRoomKind.GROUP);
+    const [selectedOrg, setSelectedOrg] = React.useState(organizations[0].id);
+    const handleKindPress = React.useCallback(() => {
+        let builder = new ActionSheetBuilder();
 
-    render() {
-        let orgId = this.props.router.params.organizationId;
-        let kind = orgId ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP;
+        builder.action('Secret group', () => {
+            setSelectedKind(SharedRoomKind.GROUP);
+        }, false, Platform.OS === 'android' ? require('assets/ic-secret-24.png') : undefined);
 
-        return (
-            <>
-                <SHeader title="New group" />
-                <SHeaderButton title="Next" onPress={() => { this.ref.current!.submitForm(); }} />
-                <ZForm
-                    ref={this.ref}
-                    action={async (src) => {
-                        if (!src.title) {
-                            throw new UserError('Group name can\'t be empty');
-                        }
-                        Modals.showUserMuptiplePicker(
-                            this.props.router,
-                            {
-                                title: 'Create',
-                                action: async (users: UserShort[]) => {
-                                    let res = await getClient().mutateRoomCreate({
-                                        kind: kind,
-                                        title: src.title,
-                                        photoRef: src.photoRef,
-                                        members: users.map(u => u.id),
-                                        organizationId: orgId,
+        builder.action('Shared group', () => {
+            setSelectedKind(SharedRoomKind.PUBLIC);
+        }, false, Platform.OS === 'android' ? require('assets/ic-community-24.png') : undefined);
+
+        builder.show();
+    }, []);
+
+    let orgIdFromRouter = props.router.params.organizationId;
+
+    return (
+        <>
+            <SHeader title="Create group" />
+            <SHeaderButton title="Next" onPress={() => { ref.current!.submitForm(); }} />
+            <ZForm
+                ref={ref}
+                action={async (src) => {
+                    if (!src.title) {
+                        throw new UserError('Group name can\'t be empty');
+                    }
+
+                    let orgId = orgIdFromRouter ? orgIdFromRouter : (selectedKind === SharedRoomKind.PUBLIC ? selectedOrg : undefined);
+                    let kind = orgIdFromRouter ? SharedRoomKind.PUBLIC : selectedKind;
+
+                    let res = await getClient().mutateRoomCreate({
+                        kind: kind,
+                        title: src.title,
+                        photoRef: src.photoRef,
+                        members: [],
+                        organizationId: orgId,
+                    });
+                                
+                    if (orgId) {
+                        await getClient().refetchOrganization({ organizationId: orgId });
+                    }
+
+                    Modals.showUserMuptiplePicker(props.router,
+                        {
+                            title: 'Add',
+                            action: async (users) => {
+                                startLoader();
+                                try {
+                                    await getClient().mutateRoomAddMembers({
+                                        invites: users.map(u => ({
+                                            userId: u.id,
+                                            role: RoomMemberRole.MEMBER
+                                        })),
+                                        roomId: res.room.id
                                     });
-                                    
-                                    if (orgId) {
-                                        await getClient().refetchOrganization({ organizationId: orgId });
-                                    }
 
-                                    this.props.router.pushAndReset('Conversation', { id: res.room.id });
+                                    props.router.pushAndReset('Conversation', { id: res.room.id });
+                                } catch (e) {
+                                    Alert.alert(e.message);
                                 }
+                                stopLoader();
                             },
-                            src.title);
-                    }}
-                >
-                    <View flexDirection="row" marginLeft={16} marginVertical={16}>
-                        <ZAvatarPicker field="photoRef" size={70} />
-                        <View flexDirection="column" marginLeft={16} flexGrow={1} flexBasis={0} minWidth={0} height={70} justifyContent="center">
-                            <ZTextInput placeholder="Group name" field="title" height={44} style={{ fontSize: 16 }} placeholderTextColor="#a0a0a0" autoFocus={true} />
-                            <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
-                        </View>
+
+                            titleEmpty: 'Skip',
+                            actionEmpty: () => {
+                                props.router.pushAndReset('Conversation', { id: res.room.id });
+                            }
+                        },
+                        'Add members',
+                        [],
+                        {
+                            path: 'ProfileGroupLink',
+                            pathParams: { id: res.room.id },
+                            onPress: () => {
+                                props.router.push('ProfileGroupLink', { id: res.room.id });
+                            }
+                        },
+                        true
+                    );
+                }}
+            >
+                <ZAvatarPickerInputsGroup avatarField="photoRef">
+                    <ZTextInput
+                        placeholder="Group name"
+                        field="title"
+                        autoFocus={true}
+                    />
+                </ZAvatarPickerInputsGroup>
+
+                {!orgIdFromRouter && (
+                    <View marginTop={20}>
+                        <ZListItemGroup footer={selectedKind === SharedRoomKind.GROUP ? 'Secret group is a place that people can view and join only by invite from a group member.' : undefined}>
+                            <ZListItem
+                                onPress={handleKindPress}
+                                text="Group type"
+                                description={selectedKind === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
+                                descriptionColor={selectedKind === SharedRoomKind.GROUP ? '#129f25' : undefined}
+                                descriptionIcon={selectedKind === SharedRoomKind.GROUP ? require('assets/ic-secret-14.png') : undefined}
+                                navigationIcon={true}
+                            />
+                        </ZListItemGroup>
+        
+                        {selectedKind === SharedRoomKind.PUBLIC && (
+                            <View marginTop={20}>
+                                {organizations.map(org => (
+                                    <ZListItem
+                                        text={org.name}
+                                        leftAvatar={{
+                                            photo: org.photo,
+                                            key: org.id,
+                                            title: org.name
+                                        }}
+                                        checkmark={org.id === selectedOrg}
+                                        onPress={() => setSelectedOrg(org.id)}
+                                    />
+                                ))}
+                            </View>
+                        )}
                     </View>
-                </ZForm>
-            </>
-        );
-    }
+                )}
+            </ZForm>
+        </>
+    );
 }
 
 export const CreateGroupAttrs = withApp(CreateGroupComponent, { navigationAppearance: 'small' });

@@ -49,9 +49,10 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                 marginLeft={10}
                                 color={this.props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}
                                 letterSpacing={-0.3}
-                                fontSize={12}
+                                fontSize={13}
                                 onPress={() => this.props.onUserPress(m.sender.id)}
                                 fontWeight={TextStyles.weight.medium}
+                                marginBottom={2}
                             >
                                 {m.sender.name || ''}
                             </ASText>
@@ -60,7 +61,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                 marginLeft={10}
                                 color={mainTextColor}
                                 lineHeight={20}
-                                fontSize={14}
+                                fontSize={16}
                                 fontWeight={TextStyles.weight.regular}
                             >
                                 {preprocessText(m.message, this.props.message.mentions).map((p, j) => renderPrprocessedText(p, j, this.props.message, this.props.onUserPress))}

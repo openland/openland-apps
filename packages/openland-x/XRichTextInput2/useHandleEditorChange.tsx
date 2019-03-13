@@ -1,28 +1,40 @@
 import * as React from 'react';
-import { EditorState, ContentState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import { EmojiData } from 'emoji-mart';
 import { addEmoji } from './modifiers/addEmoji';
 import { getSearchText } from './utils/getSearchText';
 import { addMention, findActiveWord } from './modifiers/addMention';
 import { MentionDataT } from './components/MentionSuggestionsEntry';
+import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
 import { decorator } from './decorator';
 
 type useHandleEditorChangeT = {
     onChange?: (a: { text: string; mentions: MentionDataT[] }) => void;
     value: string;
+    mentionsData?: MentionDataT[];
 };
 
-export function useHandleEditorChange({ onChange, value }: useHandleEditorChangeT) {
+export const getEditorStateFromText = ({
+    text,
+    mentions,
+}: {
+    text: string;
+    mentions: MentionDataT[];
+}) => {
+    return EditorState.moveFocusToEnd(
+        EditorState.createWithContent(
+            convertFromRaw(getEmojiAndMentionBlocksAndEntityMap(text, mentions) as any),
+            decorator,
+        ),
+    );
+};
+
+export function useHandleEditorChange({ onChange, value, mentionsData }: useHandleEditorChangeT) {
     const [plainText, setPlainText] = React.useState('');
     const [activeWord, setActiveWord] = React.useState<string>('');
-
-    const getEditorStateFromText = (text: string) => {
-        return EditorState.moveFocusToEnd(
-            EditorState.createWithContent(ContentState.createFromText(text), decorator),
-        );
-    };
-
-    const [editorState, setEditorState] = React.useState(getEditorStateFromText(value));
+    const [editorState, setEditorState] = React.useState(() =>
+        getEditorStateFromText({ text: value, mentions: mentionsData || [] }),
+    );
 
     const updateEditorState = (newEditorState: EditorState) => {
         const newPlainText = newEditorState.getCurrentContent().getPlainText();
@@ -31,8 +43,19 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         setPlainText(newPlainText);
     };
 
-    const updateEditorStateFromText = (text: string) => {
-        updateEditorState(getEditorStateFromText(text));
+    const updateEditorStateFromTextAndMentions = ({
+        text,
+        mentions,
+    }: {
+        text: string;
+        mentions: MentionDataT[];
+    }) => {
+        updateEditorState(
+            getEditorStateFromText({
+                text,
+                mentions,
+            }),
+        );
     };
 
     const handleEditorChange = (newEditorState: EditorState) => {
@@ -111,7 +134,8 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         addMention: finalAddMention,
         addEmoji: finalAddEmoji,
         handleEditorChange,
-        updateEditorStateFromText,
+        updateEditorState,
+        updateEditorStateFromTextAndMentions,
         editorState,
         setEditorState,
         onEmojiPicked,

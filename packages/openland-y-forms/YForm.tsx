@@ -5,6 +5,9 @@ import { XStoreState } from 'openland-y-store/XStoreState';
 import { storeMerge } from 'openland-y-store/utils/storeMerge';
 import { YFormContextValue, YFormContext } from './YFormContext';
 import { formatError, exportWrongFields } from './errorHandling';
+import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { Keyboard } from 'react-native';
 
 const LOGGING = false;
 
@@ -13,6 +16,9 @@ export interface YFormProps {
     staticData?: any;
     defaultAction: (data: any) => any;
     resetAfterSubmit?: boolean;
+
+    onSuccess?: () => void;
+    onError?: (e: Error) => void;
 }
 
 interface YFormControllerProps {
@@ -20,6 +26,9 @@ interface YFormControllerProps {
     defaultAction: (data: any) => any;
     store: XStoreState;
     resetAfterSubmit?: boolean;
+
+    onSuccess?: () => void;
+    onError?: (e: Error) => void;
 }
 
 class YFormController extends React.PureComponent<YFormControllerProps, { loading: boolean, error?: string }> {
@@ -72,16 +81,12 @@ class YFormController extends React.PureComponent<YFormControllerProps, { loadin
         this.setState({ loading: true, error: undefined });
         let act = action || this.props.defaultAction;
         try {
+            Keyboard.dismiss();
+
+            startLoader();
+
             await act(data);
-            // if (this.props.autoClose) {
-            //     if (this.props.modal) {
-            //         if (typeof this.props.autoClose === 'number') {
-            //             delay(this.props.autoClose).then(this.props.modal.close);
-            //         } else {
-            //             this.props.modal.close();
-            //         }
-            //     }
-            // }
+
             this.setState({ loading: false, error: undefined });
             if (this.props.resetAfterSubmit) {
                 this.props.store.reset();
@@ -89,8 +94,16 @@ class YFormController extends React.PureComponent<YFormControllerProps, { loadin
                 this.props.store.writeValue('form.error', null);
                 this.props.store.writeValue('errors', null);
             }
+
+            // moved from ZForm
+            if (this.props.onSuccess) {
+                try {
+                    this.props.onSuccess();
+                } catch (e) {
+                    console.warn(e);
+                }
+            }
         } catch (e) {
-            console.warn(e);
             if (LOGGING) {
                 console.warn(e);
             }
@@ -109,7 +122,18 @@ class YFormController extends React.PureComponent<YFormControllerProps, { loadin
                 console.warn(e);
             }
 
+            // moved from ZForm
+            if (this.props.onError) {
+                this.props.onError(e);
+            } else {
+                let error = formatError(e);
+                if (error) {
+                    Alert.alert(error);
+                }
+            }
         } finally {
+            stopLoader();
+
             this._isLoading = false;
             this.props.store.writeValue('form.loading', false);
             this.props.store.writeValue('form.enabled', true);
@@ -168,6 +192,8 @@ export class YForm extends React.PureComponent<YFormProps> {
                             store={store!!}
                             resetAfterSubmit={this.props.resetAfterSubmit}
                             ref={this.ref}
+                            onSuccess={this.props.onSuccess}
+                            onError={this.props.onError}
                         >
                             {this.props.children}
                         </YFormController>

@@ -294,6 +294,18 @@ export class OpenlandClient {
     useWithoutLoaderConference(variables: Types.ConferenceVariables): Types.Conference | null {
         return this.client.useWithoutLoaderQuery(Source.ConferenceQuery, variables);
     }
+    async queryConferenceMedia(variables: Types.ConferenceMediaVariables): Promise<Types.ConferenceMedia> {
+        return this.client.query(Source.ConferenceMediaQuery, variables);
+    }
+    async refetchConferenceMedia(variables: Types.ConferenceMediaVariables): Promise<Types.ConferenceMedia> {
+        return this.client.refetch(Source.ConferenceMediaQuery, variables);
+    }
+    useConferenceMedia(variables: Types.ConferenceMediaVariables): Types.ConferenceMedia {
+        return this.client.useQuery(Source.ConferenceMediaQuery, variables);
+    }
+    useWithoutLoaderConferenceMedia(variables: Types.ConferenceMediaVariables): Types.ConferenceMedia | null {
+        return this.client.useWithoutLoaderQuery(Source.ConferenceMediaQuery, variables);
+    }
     async queryAvailableRooms(): Promise<Types.AvailableRooms> {
         return this.client.query(Source.AvailableRoomsQuery);
     }
@@ -707,6 +719,15 @@ export class OpenlandClient {
     }
     async mutateConferenceCandidate(variables: Types.ConferenceCandidateVariables): Promise<Types.ConferenceCandidate> {
         return this.client.mutate(Source.ConferenceCandidateMutation, variables);
+    }
+    async mutateMediaOffer(variables: Types.MediaOfferVariables): Promise<Types.MediaOffer> {
+        return this.client.mutate(Source.MediaOfferMutation, variables);
+    }
+    async mutateMediaAnswer(variables: Types.MediaAnswerVariables): Promise<Types.MediaAnswer> {
+        return this.client.mutate(Source.MediaAnswerMutation, variables);
+    }
+    async mutateMediaCandidate(variables: Types.MediaCandidateVariables): Promise<Types.MediaCandidate> {
+        return this.client.mutate(Source.MediaCandidateMutation, variables);
     }
     async mutateFeatureFlagAdd(variables: Types.FeatureFlagAddVariables): Promise<Types.FeatureFlagAdd> {
         return this.client.mutate(Source.FeatureFlagAddMutation, variables);

@@ -75,7 +75,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
 
     const draftState = useDraft(messageComposeProps);
 
-    const [inputValue, setInputValue] = React.useState(draftState.getDefaultValue());
+    const [inputValue, setInputValue] = React.useState(draftState.getDefaultValue().text);
 
     const quoteState = useQuote({
         inputMethodsState,
@@ -124,14 +124,30 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         );
     };
 
+    const [currentConversation, setCurrentConversation] = React.useState<string | undefined>(
+        undefined,
+    );
+
+    React.useEffect(() => {
+        if (
+            messageComposeProps.conversationId &&
+            currentConversation !== messageComposeProps.conversationId
+        ) {
+            setCurrentConversation(messageComposeProps.conversationId);
+        }
+    });
+
     React.useEffect(() => {
         if (isActive) {
+            const newInputValue = hasReply()
+                ? draftState.getNextDraft()
+                : { text: '', mentions: [] };
             messagesContext.changeForwardConverstion();
-            setInputValue(hasReply() ? draftState.getNextDraft() : '');
+            setInputValue(newInputValue.text);
             draftState.setBeDrafted(hasReply());
             inputMethodsState.focusIfNeeded();
         }
-    }, [isActive]);
+    }, [isActive, currentConversation]);
 
     return (
         <>

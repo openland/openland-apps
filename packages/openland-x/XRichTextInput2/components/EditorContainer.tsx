@@ -33,11 +33,11 @@ class ContainerWrapper extends React.PureComponent {
 type EditorContainerContainer = XRichTextInput2Props & {
     editorState: EditorState;
     setEditorState: (a: EditorState) => void;
-    activeWord: string;
     mentionState: MentionSuggestionsStateT;
     onMentionPicked: (mention: MentionDataT) => void;
     emojiState: EmojiSuggestionsStateT;
     onEmojiPicked: (emoji: EmojiData) => void;
+    finalAddEmoji: (emoji: { shortName: string; unified: string }) => void;
     children: any;
 };
 
@@ -71,8 +71,8 @@ export const EditorContainer = (props: EditorContainerContainer) => {
         mentionState,
         emojiState,
         onEmojiPicked,
+        finalAddEmoji,
         onMentionPicked,
-        activeWord,
     } = props;
 
     const mentionSuggestionsItems = mentionState.suggestions.map(
@@ -110,6 +110,7 @@ export const EditorContainer = (props: EditorContainerContainer) => {
                 cacheBustParam={constants.cacheBustParam}
                 imagePath={constants.imagePath}
                 imageType={constants.imageType}
+                onClick={() => finalAddEmoji(emoji)}
             />
         );
     });
@@ -122,7 +123,11 @@ export const EditorContainer = (props: EditorContainerContainer) => {
                 sizeOfContainer={sizeOfContainer}
             />
 
-            <EmojiSuggestions show={emojiState.isSelecting} items={emojiSuggestionsItems} />
+            <EmojiSuggestions
+                cursorXPosition={emojiState.cursorXPosition}
+                show={emojiState.isSelecting}
+                items={emojiSuggestionsItems}
+            />
 
             {children}
             <EmojiButton onEmojiPicked={onEmojiPicked} />

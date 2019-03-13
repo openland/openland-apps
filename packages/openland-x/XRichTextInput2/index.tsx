@@ -4,7 +4,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles } from '../basics/Flex';
 import { EditorContainer } from './components/EditorContainer';
 import { useMentionSuggestions } from './useMentionSuggestions';
-import { useEmojiSuggestions } from './useEmojiSuggestions';
+import { useEmojiSuggestions, EmojiDataT } from './useEmojiSuggestions';
 import { useInputMethods, XRichTextInput2RefMethods } from './useInputMethods';
 import { useHandleEditorChange } from './useHandleEditorChange';
 import { useDraftKeyHandling } from './useDraftKeyHandling';
@@ -37,7 +37,7 @@ export const XRichTextInput2 = React.memo(
             const {
                 editorState,
                 setEditorState,
-                updateEditorStateFromText,
+                updateEditorStateFromTextAndMentions,
                 activeWord,
                 setActiveWord,
                 handleEditorChange,
@@ -45,14 +45,17 @@ export const XRichTextInput2 = React.memo(
                 addEmoji,
                 onEmojiPicked,
                 getMentions,
+                updateEditorState,
             } = useHandleEditorChange({
                 onChange,
                 value,
+                mentionsData,
             });
 
-            const { handlePastedText } = useHandlePastedText({ setEditorState });
+            const { handlePastedText } = useHandlePastedText({ editorState, updateEditorState });
 
             const { resetAndFocus } = useInputMethods({
+                updateEditorStateFromTextAndMentions,
                 ref,
                 editorRef,
                 editorState,
@@ -82,16 +85,20 @@ export const XRichTextInput2 = React.memo(
                 }
             };
 
+            const applyEmoji = (emojiData: EmojiDataT) => {
+                addEmoji(emojiData);
+                setActiveWord('');
+            };
+
             const applyCurrentSuggestedEmoji = () => {
                 const emojiData = emojiState.suggestions[emojiState.selectedEntryIndex];
                 if (emojiData) {
-                    addEmoji(emojiData);
-                    setActiveWord('');
+                    applyEmoji(emojiData);
                 }
             };
 
             const { keyBinding, onHandleKey } = useDraftKeyHandling({
-                updateEditorStateFromText,
+                updateEditorStateFromTextAndMentions,
                 onSubmit,
                 mentionState,
                 emojiState,
@@ -104,9 +111,9 @@ export const XRichTextInput2 = React.memo(
                     {...props}
                     editorState={editorState}
                     setEditorState={setEditorState}
-                    activeWord={activeWord}
                     emojiState={emojiState}
                     onEmojiPicked={onEmojiPicked}
+                    finalAddEmoji={applyEmoji}
                     mentionState={mentionState}
                     onMentionPicked={(mentionEntry: MentionDataT) => {
                         if (mentionEntry) {

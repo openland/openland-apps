@@ -6,11 +6,10 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { View } from 'react-native';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
-import { ZTextInput } from '../../components/ZTextInput';
-import { AppStyles } from '../../styles/AppStyles';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { UserError } from 'openland-y-forms/errorHandling';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 
 interface CreateChannelComponentState {
     query: string;
@@ -60,14 +59,14 @@ class CreateChannelComponent extends React.PureComponent<PageProps, CreateChanne
                         this.props.router.pushAndReset('Conversation', { id: channel.room.id });
                     }}
                 >
-                    <View >
+                    <View>
                         <View alignSelf="center" marginTop={30} marginBottom={10}>
                             <ZAvatarPicker field="photoRef" />
                         </View>
-                        <ZTextInput marginLeft={16} autoFocus={true} placeholder="Title" field="title" height={44} style={{ fontSize: 16 }} />
-                        <View marginLeft={16} height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
-                        <ZTextInput marginLeft={16} marginTop={21} placeholder="Description" field="description" height={44} style={{ fontSize: 16 }} />
-                        <View marginLeft={16} height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
+                        <ZTextInput autoFocus={true} placeholder="Title" field="title" />
+                        <View marginTop={21}>
+                            <ZTextInput placeholder="Description" field="description" multiline={true} />
+                        </View>
                     </View>
                 </ZForm>
             </>

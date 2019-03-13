@@ -64,7 +64,7 @@ export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, comp
                     {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                         <ASText fontSize={14} lineHeight={18} height={36} color={theme.dialogSenderColor} numberOfLines={2}>
                             {item.showSenderName && `${item.sender}: `}
-                            <ASText fontSize={14} height={36} lineHeight={18} color={theme.dialogMessageColor} numberOfLines={2}>{item.message}</ASText>
+                            <ASText fontSize={14} height={36} lineHeight={18} color={theme.dialogMessageColor} numberOfLines={2}>{item.fallback}</ASText>
                         </ASText>
                     </ASFlex>}
                     {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>

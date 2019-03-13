@@ -10,6 +10,7 @@ import { OnlineWatcher } from './messenger/Online';
 import { DialogListEngine } from './messenger/DialogListEngine';
 import { OnlineReportEngine } from './OnlineReportEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { CallsEngine } from './CallsEngine';
 
 export class MessengerEngine {
 
@@ -20,6 +21,7 @@ export class MessengerEngine {
     readonly onlineReporter: OnlineReportEngine;
     readonly user: UserShort;
     readonly notifications: NotificationsEngine;
+    readonly calls: CallsEngine;
     private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number, unread: number }>();
     private readonly activeTypings = new Map<string, TypingEngine>();
@@ -35,6 +37,7 @@ export class MessengerEngine {
 
         this.client = client;
         this.user = user;
+        this.calls = new CallsEngine(this);
 
         // Onlines
         this.onlineWatcher = new OnlineWatcher(this.client);

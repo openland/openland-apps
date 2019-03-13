@@ -42,7 +42,7 @@ export function useKeydownHandler({
                     (m: any) => isServerMessage(m) && m.message && user && m.sender.id === user.id,
                 );
             let messageData = messages[messages.length - 1];
-            if (messageData && isServerMessage(messageData)) {
+            if (messageData && isServerMessage(messageData) && !messagesContext.editMessageId) {
                 e.preventDefault();
                 messagesContext.setEditMessage(messageData.id, messageData.message);
             }

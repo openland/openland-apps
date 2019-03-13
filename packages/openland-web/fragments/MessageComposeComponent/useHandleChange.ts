@@ -1,5 +1,5 @@
 import { DraftStateT } from './useDraft';
-import { MentionDataT } from './useMentions';
+import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 import { MentionsStateT } from './useMentions';
 
 export type GeneralComposeStateT = {
@@ -34,7 +34,7 @@ export function useHandleChange({
 
         if (supportDraft()) {
             if (draftState!!.changeDraft && draftState!!.beDrafted!!) {
-                draftState!!.changeDraft(text);
+                draftState!!.changeDraft(text, mentions);
             }
         }
     };

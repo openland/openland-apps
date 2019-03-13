@@ -8,14 +8,14 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { GroupView } from './components/GoupView';
+import { GroupView } from './components/GroupView';
 
-class ChannelsList extends React.PureComponent<{ channels: (Organization_organization_rooms | null)[], router: SRouter }> {
+class GroupsList extends React.PureComponent<{ groups: (Organization_organization_rooms | null)[], router: SRouter }> {
     render() {
         return (
             <SScrollView>
                 <ZListItemGroup divider={false}>
-                    {this.props.channels
+                    {this.props.groups
                         .sort((a, b) => (b!.membersCount || 0) - (a!.membersCount || 0))
                         .map((v) => (
                             <GroupView
@@ -31,11 +31,11 @@ class ChannelsList extends React.PureComponent<{ channels: (Organization_organiz
 }
 
 const ProfileOrganizationGroupsComponent = XMemo<PageProps>((props) => {
-    let org = getClient().useOrganization({ organizationId: props.router.params.organizationId });
+    let organization = getClient().useOrganization({ organizationId: props.router.params.organizationId }).organization;
     return (
         <>
             <SHeader title={props.router.params.title || 'Groups'} />
-            <ChannelsList router={props.router} channels={org.organization.rooms} />
+            <GroupsList router={props.router} groups={organization.rooms} />
         </>
     )
 });

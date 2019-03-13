@@ -64,51 +64,56 @@ export const DialogView = XMemo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{emojifyMessage(dialog.sender)}: </>
     ) : (
-        ''
-    );
+                    ''
+                );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
     if (dialog.typing) {
         message = <>{emojifyMessage(dialog.typing)}</>;
     } else {
-        if (dialog.fileMeta) {
-            if (dialog.fileMeta.isImage) {
-                message = (
-                    <span>
-                        {sender}
-                        <XViewSelectedContext.Consumer>
-                            {active => (
-                                <PhotoIcon className={active ? iconActiveClass : iconClass} />
-                            )}
-                        </XViewSelectedContext.Consumer>
-                        Image
-                    </span>
-                );
-            } else {
-                message = (
-                    <span>
-                        {sender}
-                        <XViewSelectedContext.Consumer>
-                            {active => (
-                                <FileIcon
-                                    className={
-                                        (active ? iconActiveClass : iconClass) + ' ' + documentIcon
-                                    }
-                                />
-                            )}
-                        </XViewSelectedContext.Consumer>
-                        Document
-                    </span>
-                );
-            }
-        } else if (dialog.message) {
+        message = dialog.fallback;
+        if (dialog.message) {
             message = (
                 <span>
                     {!isService && sender}
                     {dialog.messageEmojified}
                 </span>
             );
-        } else if (dialog.date) {
+        } else if (dialog.attachments && dialog.attachments.length === 1) {
+            let attachment = dialog.attachments[0];
+            if (attachment.__typename === 'MessageAttachmentFile') {
+                if (attachment.fileMetadata.isImage) {
+                    message = (
+                        <span>
+                            {sender}
+                            <XViewSelectedContext.Consumer>
+                                {active => (
+                                    <PhotoIcon className={active ? iconActiveClass : iconClass} />
+                                )}
+                            </XViewSelectedContext.Consumer>
+                            Image
+                        </span>
+                    );
+                } else {
+                    message = (
+                        <span>
+                            {sender}
+                            <XViewSelectedContext.Consumer>
+                                {active => (
+                                    <FileIcon
+                                        className={
+                                            (active ? iconActiveClass : iconClass) + ' ' + documentIcon
+                                        }
+                                    />
+                                )}
+                            </XViewSelectedContext.Consumer>
+                            Document
+                        </span>
+                    );
+                }
+            }
+            message = message || attachment.fallback;
+        } else if (dialog.forward) {
             message = (
                 <span>
                     {sender}

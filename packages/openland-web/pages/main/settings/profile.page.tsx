@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
+import { withApp } from 'openland-web/components/withApp';
 import { XView } from 'react-mental';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
-import { withProfile } from '../../../api/withProfile';
+import { withProfile } from 'openland-web/api/withProfile';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { sanitizeImageRef } from '../../../utils/sanitizer';
 import { XFormError } from 'openland-x-forms/XFormError';
-import { withQueryLoader } from '../../../components/withQueryLoader';
+import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { XSelect } from 'openland-x/XSelect';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -91,31 +91,6 @@ class MakeWebFastCheckbox extends React.PureComponent<{}, { fast: boolean }> {
             <XCheckbox
                 label="Make web great again"
                 checked={this.state.fast}
-                onChange={this.onChange}
-            />
-        );
-    }
-}
-
-class HighlightSecretChat extends React.PureComponent<{}, { highlight: boolean }> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            highlight: canUseDOM && localStorage.getItem('highlight_secret_chat') === 'true',
-        };
-    }
-
-    onChange = (checked: { label: string; checked: boolean }) => {
-        localStorage.setItem('highlight_secret_chat', checked.checked ? 'true' : 'false');
-        this.setState({ highlight: checked.checked });
-        EmojiFlags.ignoreEmojione = checked.checked;
-    };
-
-    render() {
-        return (
-            <XCheckbox
-                label="Highlight secret chat"
-                checked={this.state.highlight}
                 onChange={this.onChange}
             />
         );
@@ -377,7 +352,6 @@ export default withApp(
                                         )}
                                         <XVertical separator={2}>
                                             <MakeWebFastCheckbox />
-                                            <HighlightSecretChat />
                                         </XVertical>
                                     </CardsWrapper>
                                 </XWithRole>

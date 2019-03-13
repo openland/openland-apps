@@ -28,22 +28,33 @@ export const MentionEntry = ({
 }: MentionEntryT) => {
     const [isFocused, setIsFocused] = React.useState(false);
 
-    React.useEffect(() => {
-        setIsFocused(isSelected);
-    }, [isSelected]);
+    React.useEffect(
+        () => {
+            setIsFocused(isSelected);
+        },
+        [isSelected],
+    );
 
     const onMouseLeave = () => setIsFocused(false);
     const onMouseEnter = () => setIsFocused(true);
 
-    const emojifiedName = React.useMemo(() => {
-        return emoji({
-            src: name,
-            size: 15,
-        });
-    }, [name]);
+    const emojifiedName = React.useMemo(
+        () => {
+            return emoji({
+                src: name,
+                size: 15,
+            });
+        },
+        [name],
+    );
 
     return (
-        <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick}>
+        <div
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onClick={onClick}
+            style={{ height: 40, flexShrink: 0 }}
+        >
             <XView
                 position="relative"
                 width="100%"

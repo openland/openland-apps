@@ -1,8 +1,10 @@
 export const useKeyupDown = ({
+    isSelecting,
     suggestionsList,
     selectedEntryIndex,
     setSelectedEntryIndex,
 }: {
+    isSelecting: boolean;
     suggestionsList: any[];
     selectedEntryIndex: number;
     setSelectedEntryIndex: Function;
@@ -18,17 +20,17 @@ export const useKeyupDown = ({
     };
 
     const handleUp = (event: React.KeyboardEvent<any>) => {
-        if (!suggestionsList.length) {
-            return;
+        if (isSelecting) {
+            event.preventDefault();
+            setSelectedEntryIndex(boundSelection(selectedEntryIndex - 1));
         }
-        setSelectedEntryIndex(boundSelection(selectedEntryIndex - 1));
     };
 
     const handleDown = (event: React.KeyboardEvent<any>) => {
-        if (!suggestionsList.length) {
-            return;
+        if (isSelecting) {
+            event.preventDefault();
+            setSelectedEntryIndex(boundSelection(selectedEntryIndex + 1));
         }
-        setSelectedEntryIndex(boundSelection(selectedEntryIndex + 1));
     };
 
     return { handleUp, handleDown };

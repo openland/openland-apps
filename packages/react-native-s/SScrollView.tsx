@@ -7,6 +7,7 @@ import { STrackedValue } from './STrackedValue';
 export interface SScrollViewProps extends ScrollViewProps {
     syncWithBar?: boolean;
     adjustPaddings?: 'all' | 'top' | 'bottom' | 'none';
+    safeAreaViaMargin?: boolean;
 }
 
 export class SScrollView extends React.Component<SScrollViewProps> {
@@ -27,7 +28,8 @@ export class SScrollView extends React.Component<SScrollViewProps> {
                                 style={[other.style, {
                                     // backgroundColor: Platform.OS === 'ios' ? '#fff' : undefined,
                                     // Work-around for freezing navive animation driver
-                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset))
+                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
+                                    marginBottom: this.props.safeAreaViaMargin ? area.bottom : undefined
                                 }]}
                                 onScroll={this.contentOffset.event}
                                 scrollEventThrottle={1}
@@ -37,7 +39,7 @@ export class SScrollView extends React.Component<SScrollViewProps> {
                                 }}
                                 contentContainerStyle={{
                                     paddingTop: area.top,
-                                    paddingBottom: area.bottom
+                                    paddingBottom: !this.props.safeAreaViaMargin ? area.bottom : undefined
                                 }}
                             >
                                 {this.props.children}

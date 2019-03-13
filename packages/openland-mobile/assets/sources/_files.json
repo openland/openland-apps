@@ -191,5 +191,25 @@
         "name": "ic-photo-fill",
         "src": "ic-cell-photo-ios.svg",
         "sizes": [24]
+    }, {
+        "name": "ic-clear",
+        "src": "ic-clear.svg",
+        "sizes": [16]
+    }, {
+        "name": "ic-community",
+        "src": "ic-community.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-room",
+        "src": "ic-room.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-secret",
+        "src": "ic-secret.svg",
+        "sizes": [14, 24]
+    }, {
+        "name": "ic-attachment",
+        "src": "ic-attachment.svg",
+        "sizes": [11]
     }]
 }

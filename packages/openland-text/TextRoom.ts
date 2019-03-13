@@ -4,6 +4,6 @@ export const TextRoom = {
     myRooms: 'My rooms',
     recommended: 'Recommended',
 
-    buttonRequestInvite: 'Request invite',
+    buttonRequestInvite: 'Join group',
     buttonCreateRoom: 'Create room',
 };

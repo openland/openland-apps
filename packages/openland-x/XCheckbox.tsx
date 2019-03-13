@@ -6,16 +6,18 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { makeActionable, ActionableParentProps } from './Actionable';
 import { XLoadingCircular } from './XLoadingCircular';
 
-const CheckboxInputDiv = Glamorous.div<{ active: boolean, disabled?: boolean, marginBottom?: number }>([
-    (props) => ({
+const CheckboxInputDiv = Glamorous.div<{
+    active: boolean;
+    disabled?: boolean;
+}>([
+    props => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         userSelect: 'none',
         position: 'relative',
-        marginBottom: props.marginBottom !== undefined ? props.marginBottom : 14,
         '> input': {
-            display: 'none'
+            display: 'none',
         },
         '> label': {
             ...XStyles.text.h400,
@@ -30,7 +32,7 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean, disabled?: boolean, ma
                 flexDirection: 'row',
                 alignItems: 'center',
                 '> span': {
-                    color: '#1f3449'
+                    color: '#1f3449',
                 },
             },
             '& .bottom-content': {
@@ -39,9 +41,9 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean, disabled?: boolean, ma
                 opacity: 0.4,
                 fontSize: 13,
                 lineHeight: 1.23,
-                letterSpacing: - 0.1,
-                color: '#1f3449'
-            }
+                letterSpacing: -0.1,
+                color: '#1f3449',
+            },
         },
         '& .loading-icon': {
             width: 32,
@@ -49,26 +51,28 @@ const CheckboxInputDiv = Glamorous.div<{ active: boolean, disabled?: boolean, ma
             position: 'absolute',
             top: '50%',
             left: '30px',
-            transform: 'translate(0, -50%)'
-        }
+            transform: 'translate(0, -50%)',
+        },
     }),
-    (props) => (props.disabled && {
-        opacity: 0.6,
-        cursor: 'default',
+    props =>
+        (props.disabled && {
+            opacity: 0.6,
+            cursor: 'default',
 
-        '& *': {
-            cursor: 'default'
-        }
-    } || {}),
+            '& *': {
+                cursor: 'default',
+            },
+        }) ||
+        {},
 ]);
 
-const CheckIcon = Glamorous.div<{ active?: boolean; rounded?: boolean }>((props) => ({
+const CheckIcon = Glamorous.div<{ active?: boolean; rounded?: boolean }>(props => ({
     width: 18,
     height: 18,
     borderRadius: props.rounded ? 18 : 4,
     color: '#ffffff',
     backgroundColor: props.active ? '#1790ff' : '#ffffff',
-    backgroundImage: props.active ? 'url(\'/static/img/icons/check-form.svg\')' : 'none',
+    backgroundImage: props.active ? "url('/static/img/icons/check-form.svg')" : 'none',
     backgroundSize: '10px 8px',
     backgroundPosition: 'center 4px',
     backgroundRepeat: 'no-repeat',
@@ -77,7 +81,7 @@ const CheckIcon = Glamorous.div<{ active?: boolean; rounded?: boolean }>((props)
     marginRight: 12,
 }));
 
-const CheckSwitcher = Glamorous.div<{ active?: boolean }>((props) => ({
+const CheckSwitcher = Glamorous.div<{ active?: boolean }>(props => ({
     width: 28,
     height: 14,
     borderRadius: 14,
@@ -95,7 +99,7 @@ const CheckSwitcher = Glamorous.div<{ active?: boolean }>((props) => ({
         position: 'absolute',
         top: -2,
         left: props.active ? 'calc(100% - 18px)' : 0,
-    }
+    },
 }));
 
 const Divided = Glamorous.div({
@@ -106,21 +110,23 @@ const Divided = Glamorous.div({
         borderBottom: 'none',
         marginBottom: 0,
         '& > div': {
-            marginBottom: 0
-        }
-    }
+            marginBottom: 0,
+        },
+    },
 });
 
-interface XCheckboxBasicProps { 
-    label: string; 
-    trueValue?: string; 
-    marginBottom?: number; 
-    falseValue?: string; 
+interface XCheckboxBasicProps {
+    label: string;
+    trueValue?: string;
+    falseValue?: string;
     value?: string;
     switcher?: boolean;
-    onChange?: (checked: { 
-        label: string, checked: boolean 
-    }) => void; 
+    onChange?: (
+        checked: {
+            label: string;
+            checked: boolean;
+        },
+    ) => void;
     checked?: boolean;
     disabled?: boolean;
     hint?: string;
@@ -131,39 +137,58 @@ interface XCheckboxBasicProps {
 
 export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChecked: boolean }> {
     static defaultProps = {
-        _isCheckBox: true
+        _isCheckBox: true,
     };
     constructor(props: XCheckboxBasicProps) {
         super(props);
 
         this.state = {
-            isChecked: this.props.checked !== undefined ? this.props.checked : this.props.value !== undefined && this.props.value === this.props.trueValue
+            isChecked:
+                this.props.checked !== undefined
+                    ? this.props.checked
+                    : this.props.value !== undefined && this.props.value === this.props.trueValue,
         };
-
     }
 
     componentWillReceiveProps(props: any) {
         this.setState({
-            isChecked: props.checked !== undefined ? props.checked : props.value !== undefined && props.value === props.trueValue
+            isChecked:
+                props.checked !== undefined
+                    ? props.checked
+                    : props.value !== undefined && props.value === props.trueValue,
         });
     }
 
     handleChange = () => {
         if (!this.props.disabled) {
             if (this.props.onChange) {
-                this.props.onChange({ label: this.props.value !== undefined ? this.props.value : this.props.label, checked: !this.state.isChecked });
+                this.props.onChange({
+                    label: this.props.value !== undefined ? this.props.value : this.props.label,
+                    checked: !this.state.isChecked,
+                });
             }
             this.setState({
-                isChecked: !this.state.isChecked
+                isChecked: !this.state.isChecked,
             });
         }
-    }
+    };
 
     render() {
-        const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
+        const id = `toggle_${Math.random()
+            .toString()
+            .replace(/0\./, '')}`;
         return (
-            <CheckboxInputDiv disabled={this.props.disabled} active={this.state.isChecked} marginBottom={this.props.marginBottom} onClick={this.props.onClick}>
-                <input onChange={this.handleChange} id={id} type="checkbox" checked={this.state.isChecked} />
+            <CheckboxInputDiv
+                disabled={this.props.disabled}
+                active={this.state.isChecked}
+                onClick={this.props.onClick}
+            >
+                <input
+                    onChange={this.handleChange}
+                    id={id}
+                    type="checkbox"
+                    checked={this.state.isChecked}
+                />
                 <label htmlFor={id}>
                     <div className="top-content">
                         {this.props.switcher && (
@@ -171,9 +196,15 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
                                 <div />
                             </CheckSwitcher>
                         )}
-                        {!this.props.switcher && (<CheckIcon active={this.state.isChecked} rounded={this.props.rounded} />)}
-                        <span style={{ opacity: this.props.loading ? 0 : 1 }}>{this.props.label}</span>
-                        {this.props.loading && <XLoadingCircular className="loading-icon" color="#1790ff" />}
+                        {!this.props.switcher && (
+                            <CheckIcon active={this.state.isChecked} rounded={this.props.rounded} />
+                        )}
+                        <span style={{ opacity: this.props.loading ? 0 : 1 }}>
+                            {this.props.label}
+                        </span>
+                        {this.props.loading && (
+                            <XLoadingCircular className="loading-icon" color="#1790ff" />
+                        )}
                     </div>
                     {this.props.hint && <div className="bottom-content">{this.props.hint}</div>}
                 </label>
@@ -183,20 +214,21 @@ export class XCheckboxBasic extends React.Component<XCheckboxBasicProps, { isChe
 }
 
 interface XCheckboxGroupProps {
-    elements: string[] | {
-        value: string,
-        label: string,
-        hint?: string
-    }[];
+    elements:
+        | string[]
+        | {
+              value: string;
+              label: string;
+              hint?: string;
+          }[];
     selected?: string[];
     onChange?: (value: string[]) => void;
     divided?: boolean;
 }
 
 export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selected?: string[] }> {
-
     static defaultProps = {
-        _isCheckboxGroup: true
+        _isCheckboxGroup: true,
     };
 
     selected = new Set<string>();
@@ -204,7 +236,7 @@ export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selec
     constructor(props: XCheckboxGroupProps) {
         super(props);
         this.state = {
-            selected: props.selected
+            selected: props.selected,
         };
         if (props.selected) {
             for (let s of props.selected) {
@@ -212,18 +244,17 @@ export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selec
             }
         }
     }
-    handleChange = (checked: { label: string, checked: boolean }) => {
+    handleChange = (checked: { label: string; checked: boolean }) => {
         if (checked.checked) {
             this.selected.add(checked.label);
         } else {
             this.selected.delete(checked.label);
-
         }
         if (this.props.onChange) {
             this.props.onChange([...this.selected]);
         }
         this.setState({ selected: [...this.selected] });
-    }
+    };
 
     render() {
         let res = [];
@@ -232,43 +263,67 @@ export class XCheckboxGroup extends React.Component<XCheckboxGroupProps, { selec
             let value = (element as any).value !== undefined ? (element as any).value : element;
             let hint = (element as any).hint !== undefined ? (element as any).hint : undefined;
 
-            let checkboxProps = { key: label + '_' + value, label: label, value: value, checked: this.state.selected && this.selected.has(value), onChange: this.handleChange, hint: hint };
+            let checkboxProps = {
+                key: label + '_' + value,
+                label: label,
+                value: value,
+                checked: this.state.selected && this.selected.has(value),
+                onChange: this.handleChange,
+                hint: hint,
+            };
 
             res.push(
                 this.props.divided ? (
-                    <Divided key={label + '_' + value} >
+                    <Divided key={label + '_' + value}>
                         <XCheckboxBasic {...checkboxProps} />
                     </Divided>
                 ) : (
-                        <XCheckboxBasic {...checkboxProps} />
-                    ));
+                    <XCheckboxBasic {...checkboxProps} />
+                ),
+            );
         }
-        return (
-            res
-        );
+        return res;
     }
 }
 
 class XCheckboxStored extends React.PureComponent<XCheckboxProps & { store: XStoreState }> {
-    handleChange = (src: { label: string, checked: boolean }) => {
-        let val = src.checked ? (this.props.trueValue !== undefined ? this.props.trueValue : 'true') : (this.props.falseValue !== undefined ? this.props.falseValue : 'false');
-        this.props.store.writeValue(this.props.valueStoreKey || ('fields.' + this.props.field), val);
-    }
+    handleChange = (src: { label: string; checked: boolean }) => {
+        let val = src.checked
+            ? this.props.trueValue !== undefined
+                ? this.props.trueValue
+                : 'true'
+            : this.props.falseValue !== undefined
+                ? this.props.falseValue
+                : 'false';
+        this.props.store.writeValue(this.props.valueStoreKey || 'fields.' + this.props.field, val);
+    };
 
     render() {
         let { valueStoreKey, store, field, ...other } = this.props;
         let value: any = this.props.value;
         if (valueStoreKey || field) {
-            value = store.readValue(valueStoreKey || ('fields.' + field));
+            value = store.readValue(valueStoreKey || 'fields.' + field);
         }
-        return <XCheckboxBasic {...other} checked={this.props.trueValue !== undefined ? this.props.trueValue === value : value === 'true'} onChange={this.handleChange} />;
+        return (
+            <XCheckboxBasic
+                {...other}
+                checked={
+                    this.props.trueValue !== undefined
+                        ? this.props.trueValue === value
+                        : value === 'true'
+                }
+                onChange={this.handleChange}
+            />
+        );
     }
 }
 
-export type XCheckboxProps = ActionableParentProps<XCheckboxBasicProps & {
-    field?: string;
-    valueStoreKey?: string;
-}>;
+export type XCheckboxProps = ActionableParentProps<
+    XCheckboxBasicProps & {
+        field?: string;
+        valueStoreKey?: string;
+    }
+>;
 
 class XCheckboxRaw extends React.PureComponent<XCheckboxProps> {
     render() {
@@ -293,14 +348,11 @@ class XCheckboxRaw extends React.PureComponent<XCheckboxProps> {
                     }}
                 </XStoreContext.Consumer>
             );
-
         }
         return <XCheckboxBasic {...this.props} />;
     }
 }
 
-export const XCheckbox = makeActionable<XCheckboxProps>((props) => {
-    return (
-        <XCheckboxRaw {...props} />
-    );
+export const XCheckbox = makeActionable<XCheckboxProps>(props => {
+    return <XCheckboxRaw {...props} />;
 });

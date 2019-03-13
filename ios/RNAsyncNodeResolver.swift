@@ -246,10 +246,16 @@ private func resolveAttributedText(spec: AsyncTextSpec, parent: AsyncTextSpec?, 
   }
   
   // innerAttributes[NSLinkAttributeName]
-    let fontSize = spec.fontSize != nil ?  spec.fontSize! : (parent != nil && parent!.fontSize != nil) ?  parent!.fontSize! : nil
-    let fontWeight = spec.fontWeight != nil ? spec.fontWeight! : (parent != nil && parent!.fontWeight != nil) ?  parent!.fontWeight! :nil
-    if fontSize != nil || fontWeight != nil {
-    innerAttributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(fontSize != nil ? fontSize! : 12), weight: fontWeight != nil ? fontWeight!  :UIFontWeightRegular)
+  let fontSize = spec.fontSize != nil ?  spec.fontSize! : (parent != nil && parent!.fontSize != nil) ?  parent!.fontSize! : nil
+  let fontWeight = spec.fontWeight != nil ? spec.fontWeight! : (parent != nil && parent!.fontWeight != nil) ?  parent!.fontWeight! :nil
+  let fontStyle = spec.fontStyle != nil ? spec.fontStyle! : (parent != nil && parent!.fontStyle != nil) ?  parent!.fontStyle! :nil
+
+  if fontSize != nil || fontWeight != nil {
+    if fontStyle == "italic" {
+      innerAttributes[NSFontAttributeName] = UIFont.italicSystemFont(ofSize: CGFloat(fontSize != nil ? fontSize! : 12))
+    } else {
+      innerAttributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(fontSize != nil ? fontSize! : 12), weight: fontWeight != nil ? fontWeight!  :UIFontWeightRegular)
+    }
   }
   
   for v in spec.children {

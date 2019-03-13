@@ -47,7 +47,7 @@ export const DefaultTheme: AppTheme = {
     tabColorActive: Platform.OS === 'android' ? '#0084fe' : '#0084fe',
 
     dialogTitleColor: '#181818',
-    dialogTitleSecureColor: 'green',
+    dialogTitleSecureColor: '#1daf30',
     dialogDateColor: '#aaaaaa',
     dialogSenderColor: '#181818',
     dialogMessageColor: Platform.OS === 'android' ? '#676767' : '#7b7b7b',

@@ -33,11 +33,12 @@ const emojiSuggestionsClassName = css`
 `;
 
 type EmojiSuggestionsProps = {
+    cursorXPosition: number;
     items: any;
     show: boolean;
 };
 
-export const EmojiSuggestions = ({ items, show }: EmojiSuggestionsProps) => {
+export const EmojiSuggestions = ({ cursorXPosition, items, show }: EmojiSuggestionsProps) => {
     const [key] = React.useState(genKey());
 
     return (
@@ -46,6 +47,9 @@ export const EmojiSuggestions = ({ items, show }: EmojiSuggestionsProps) => {
                 emojiSuggestionsClassName,
                 show ? emojiSuggestionsShow : emojiSuggestionsHide,
             )}
+            style={{
+                left: cursorXPosition,
+            }}
             role="listbox"
             id={`emojis-list-${key}`}
         >
