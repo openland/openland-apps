@@ -12,14 +12,10 @@ export const OrganizationSearch = gql`
         featured: alphaFeatured
         members: alphaOrganizationMembers {
             user {
-               id
-               name
-               picture
+                id
+                name
+                picture
             }
-        }
-        channels: alphaCreatedChannels {
-            id
-            hidden
         }
     }
 `;
