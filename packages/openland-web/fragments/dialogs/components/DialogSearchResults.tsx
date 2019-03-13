@@ -80,6 +80,7 @@ export const DialogSearchResults = withGlobalSearch(props => {
                         flexibleId: i.id,
                         kind: i.kind,
                         title: i.name || '',
+                        fallback: i.name || '',
                         photo: i.photo,
                         unread: 0,
                         isOrganization: true,
