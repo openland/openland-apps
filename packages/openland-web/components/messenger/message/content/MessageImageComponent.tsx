@@ -8,6 +8,7 @@ import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { MobileSidebarContext } from '../../../Scaffold/MobileSidebarContext';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const ModalBody = css`
     display: flex;
@@ -62,6 +63,7 @@ interface MessageImageComponentProps {
 export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
     let [isOpen, handleOpen] = React.useState(false);
     const { isMobile } = React.useContext(MobileSidebarContext);
+    const UserInfo = React.useContext(UserInfoContext);
     const openView = (e: any) => {
         if (props.startSelected) {
             return;
@@ -126,8 +128,15 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
     let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
 
     let radiusForImages = false;
-    if (localStorage.getItem('image_view_alternative') === 'true') {
-        radiusForImages = true;
+    let localSettingsRadius = localStorage.getItem('image_view_alternative');
+    if (localSettingsRadius) {
+        if (localSettingsRadius === 'true') {
+            radiusForImages = true;
+        }
+    } else {
+        if ((UserInfo && UserInfo.user && UserInfo.user.id === 'LOaDEWDj9zsVv999DDpJiEj05K')) {
+            radiusForImages = true;
+        }
     }
 
     return (
