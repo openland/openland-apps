@@ -93,12 +93,101 @@ class HighlightSecretGroups extends React.PureComponent<
     }
 }
 
+class ImagesView extends React.PureComponent<
+    {},
+    { images: boolean; confirm: boolean; beChange: boolean }
+> {
+    timer: any;
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            images: canUseDOM && localStorage.getItem('image_view_alternative') === 'true',
+            confirm: false,
+            beChange: false,
+        };
+    }
+
+    handleOn = () => {
+        clearInterval(this.timer);
+        this.setState({
+            images: true,
+            confirm: false,
+            beChange: true,
+        });
+    };
+
+    handleOff = () => {
+        clearInterval(this.timer);
+        this.setState({
+            images: false,
+            confirm: false,
+            beChange: true,
+        });
+    };
+
+    onSave = () => {
+        this.setState({
+            confirm: true,
+        });
+        localStorage.setItem('image_view_alternative', this.state.images ? 'true' : 'false');
+        this.timer = setTimeout(() => {
+            this.setState({
+                beChange: false,
+            });
+        }, 1000);
+    };
+
+    resetButtonStyle = () => {
+        clearInterval(this.timer);
+        this.setState({
+            confirm: false,
+        });
+    };
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
+    }
+
+    render() {
+        const { images, confirm, beChange } = this.state;
+        return (
+            <XVertical separator={12}>
+                <XVertical separator={9}>
+                    <GroupTitle>Image display in chat</GroupTitle>
+                    <XRadioItem
+                        label="Default: No radius and shadow."
+                        checked={!images}
+                        onChange={this.handleOff}
+                    />
+                    <XRadioItem
+                        label={'"We made the buttons on the screen look so good you\'ll want to lick them." © Steve Jobs'}
+                        checked={images}
+                        onChange={this.handleOn}
+                    />
+                </XVertical>
+                {beChange && (
+                    <XButton
+                        text={confirm ? 'Saved!' : 'Save changes'}
+                        style={confirm ? 'success' : 'primary'}
+                        alignSelf="flex-start"
+                        onClick={this.onSave}
+                        onSuccess={this.resetButtonStyle}
+                    />
+                )}
+            </XVertical>
+        );
+    }
+}
+
 export default withApp('Appearance', 'viewer', () => (
     <SettingsNavigation title="Appearance">
         <Content>
             <XVertical separator={12} maxWidth={660}>
                 <Header>Appearance</Header>
-                <HighlightSecretGroups />
+                <XVertical separator={24}>
+                    <HighlightSecretGroups />
+                    <ImagesView />
+                </XVertical>
             </XVertical>
         </Content>
     </SettingsNavigation>
