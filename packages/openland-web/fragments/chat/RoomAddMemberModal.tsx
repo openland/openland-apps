@@ -55,7 +55,8 @@ interface ExplorePeopleProps {
 }
 
 const ExplorePeople = withExplorePeople(props => {
-    if (!props.data.items) {
+    const typedProps = props as typeof props & ExplorePeopleProps;
+    if (!typedProps.data.items) {
         return (
             <XView flexGrow={1} flexShrink={0}>
                 <XLoader loading={true} />
@@ -63,31 +64,29 @@ const ExplorePeople = withExplorePeople(props => {
         );
     }
 
-    let linkInvitePath = `/mail/${(props as any).roomId}?inviteByLink=true`;
+    let linkInvitePath = `/mail/${typedProps.roomId}?inviteByLink=true`;
 
-    if ((props as any).linkInvitePath !== undefined) {
-        linkInvitePath = (props as any).linkInvitePath;
+    if (typedProps.linkInvitePath !== undefined) {
+        linkInvitePath = typedProps.linkInvitePath;
     }
 
     return (
         <XView flexGrow={1} flexShrink={0}>
             <XScrollView2 flexGrow={1} flexShrink={0}>
                 <XView paddingHorizontal={16} flexDirection="column">
-                    {!(props as any).searchQuery &&
-                        (!(props as any).selectedUsers ||
-                            (props as any).selectedUsers.size === 0) && (
+                    {!typedProps.searchQuery &&
+                        (!typedProps.selectedUsers || typedProps.selectedUsers.size === 0) && (
                             <XCreateCard
                                 text="Invite with a link"
                                 path={linkInvitePath}
                                 icon={<LinkIcon />}
                             />
                         )}
-                    {props.data.items.edges.map(i => {
+                    {typedProps.data.items.edges.map(i => {
                         if (
-                            ((props as any).selectedUsers &&
-                                (props as any).selectedUsers.has(i.node.id)) ||
-                            ((props as any).roomUsers &&
-                                (props as any).roomUsers.find(
+                            (typedProps.selectedUsers && typedProps.selectedUsers.has(i.node.id)) ||
+                            (typedProps.roomUsers &&
+                                typedProps.roomUsers.find(
                                     (j: RoomMembersShort_members) => j.user.id === i.node.id,
                                 ))
                         ) {
@@ -96,7 +95,7 @@ const ExplorePeople = withExplorePeople(props => {
                         return (
                             <XView
                                 key={i.node.id}
-                                onClick={() => (props as any).onPick(i.node.name, i.node.id)}
+                                onClick={() => typedProps.onPick(i.node.name, i.node.id)}
                             >
                                 <XUserCard user={i.node} noPath={true} customButton={null} />
                             </XView>

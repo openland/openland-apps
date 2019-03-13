@@ -4602,6 +4602,36 @@ export interface OrganizationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: OrganizationMembersShort
+// ====================================================
+
+export interface OrganizationMembersShort_organization_members_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface OrganizationMembersShort_organization_members {
+  __typename: "OrganizationJoinedMember";
+  user: OrganizationMembersShort_organization_members_user;
+}
+
+export interface OrganizationMembersShort_organization {
+  __typename: "Organization";
+  members: OrganizationMembersShort_organization_members[];
+}
+
+export interface OrganizationMembersShort {
+  organization: OrganizationMembersShort_organization;
+}
+
+export interface OrganizationMembersShortVariables {
+  organizationId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: OrganizationProfile
 // ====================================================
 
