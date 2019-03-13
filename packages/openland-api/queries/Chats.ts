@@ -282,7 +282,7 @@ export const RoomAddMemberMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationFull}
     ${RoomFull}
 `;
 
@@ -293,7 +293,7 @@ export const RoomDeclineJoinReuestMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationFull}
     ${RoomFull}
 `;
 
@@ -304,7 +304,7 @@ export const RoomAddMembersMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationFull}
     ${RoomFull}
 `;
 
@@ -315,7 +315,7 @@ export const RoomKickMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationFull}
     ${RoomFull}
 `;
 
@@ -326,7 +326,7 @@ export const RoomLeaveMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationFull}
     ${RoomFull}
 `;
 
@@ -363,7 +363,7 @@ export const RoomSearchQuery = gql`
     }
     ${RoomFull}
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationFull}
 `;
 
 export const RoomAlterFeaturedMutation = gql`
@@ -425,7 +425,7 @@ export const RoomJoinMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationFull}
     ${RoomFull}
 `;
 
@@ -442,7 +442,7 @@ export const RoomJoinInviteLinkMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationFull}
     ${RoomFull}
 `;
 
@@ -503,9 +503,6 @@ export const RoomUpdateMutation = gql`
             }
         }
     }
-    ${RoomFull}
-    ${OrganizationShort}
-    ${UserShort}
 `;
 
 export const RoomDeleteMessageMutation = gql`
