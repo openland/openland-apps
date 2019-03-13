@@ -173,7 +173,7 @@ function ProfileOrganizationContent(props: PageProps) {
                 {organization.isMine && (
                     <ZListItem
                         leftIcon={require('assets/ic-add-24.png')}
-                        text="Add Members"
+                        text="Add members"
                         onPress={handleAddMember}
                     />
                 )}

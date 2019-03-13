@@ -43,40 +43,10 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
         props.router.pushAndReset('Conversation', { 'flexibleId': props.router.params.id });
     }, [props.router.params.id]);
 
-    const handlePhotoSet = React.useCallback<{ (src: PickerImage): void }>((img) => {
-        startLoader();
-        let uploading = new UploadCareDirectUploading('photo.jpg', img.path);
-        uploading.watch((v) => {
-            if (v.status === UploadStatus.COMPLETED) {
-                let completed = {
-                    uuid: v.uuid!!,
-                    crop: {
-                        x: 0,
-                        y: 0,
-                        w: img.width,
-                        h: img.height
-                    }
-                };
-                (async () => {
-                    try {
-                        await client.mutateRoomUpdate({
-                            input: { photoRef: completed },
-                            roomId: room.id
-                        });
-                    } finally {
-                        stopLoader();
-                    }
-                })();
-            } else if (v.status === UploadStatus.FAILED) {
-                stopLoader();
-            }
-        });
-    }, []);
-
     const handleLeave = React.useCallback(() => {
-        Alert.builder().title(`Are you sure you want to leave ${room.kind === 'GROUP' ? 'and delete' : ''} ${room.title}?`)
+        Alert.builder().title(`Are you sure you want to leave group? You may not be able to join it again.`)
             .button('Cancel', 'cancel')
-            .action('Leave', 'destructive', async () => {
+            .action('Leave and delete', 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId: props.router.params.id });
                 props.router.pushAndResetRoot('Home');
             })
@@ -221,7 +191,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             <ZListItemGroup header={Platform.OS === 'ios' ? undefined : null} divider={false}>
                 <ZListItem
                     leftIcon={require('assets/ic-leave-24.png')}
-                    text={`Leave ${room.kind === 'PUBLIC' ? 'room' : 'and delete group'}`}
+                    text="Leave and delete"
                     appearance="danger"
                     onPress={handleLeave}
                 />

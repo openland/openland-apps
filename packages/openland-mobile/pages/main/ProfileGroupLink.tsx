@@ -16,7 +16,7 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
     let link = getClient().useRoomInviteLink({ roomId: props.router.params.id }).link;
     return (
         <>
-            <ZListItemGroup header={null} footer="Anyone who has Openland installed will be abble to join your room by following this link.">
+            <ZListItemGroup header={null} footer="Anyone who has Openland installed will be abble to join your group by following this link.">
                 <ZListItem
                     key="add"
                     text={`https://openland.com/joinChannel/${link}`}
