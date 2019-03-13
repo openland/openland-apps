@@ -9,6 +9,7 @@ import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/compo
 import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
 import { Navigation } from '../../../../components/Navigation';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { ErrorPage } from 'openland-web/pages/root/ErrorPage';
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {
@@ -20,6 +21,33 @@ const getId = (myPath: string, substring: string) => {
     }
     return result;
 };
+
+class ErrorBoundary extends React.Component<any, any> {
+    static getDerivedStateFromError(error: any) {
+        return { hasError: true };
+    }
+
+    constructor(props: any) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    componentWillReceiveProps() {
+        this.setState({
+            hasError: false,
+        });
+    }
+
+    render() {
+        if (this.state.hasError) {
+            // You can render any custom fallback UI
+            return <ErrorPage statusCode={404} />;
+        }
+
+        return this.props.children;
+    }
+}
+
 export const MessagesNavigation = XMemo(
     ({ path, cid, oid, uid }: { cid?: string; oid?: string; uid?: string; path?: any }) => {
         let tab: tabsT = tabs.empty;
@@ -86,7 +114,7 @@ export const MessagesNavigation = XMemo(
                     />
                 }
                 secondFragmentHeader={
-                    <>
+                    <ErrorBoundary>
                         {chatId && (
                             <ChatHeaderViewLoader
                                 variables={{
@@ -95,13 +123,15 @@ export const MessagesNavigation = XMemo(
                             />
                         )}
                         <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
-                    </>
+                    </ErrorBoundary>
                 }
                 firstFragment={<DialogListFragment />}
                 secondFragment={
-                    <ConversationContainerWrapper
-                        {...{ tab, conversationId: cid, oid, uid, cid }}
-                    />
+                    <ErrorBoundary>
+                        <ConversationContainerWrapper
+                            {...{ tab, conversationId: cid, oid, uid, cid }}
+                        />
+                    </ErrorBoundary>
                 }
             />
         );
