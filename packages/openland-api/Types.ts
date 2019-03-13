@@ -839,120 +839,15 @@ export interface Room_room_PrivateRoom {
   settings: Room_room_PrivateRoom_settings;
 }
 
-export interface Room_room_SharedRoom_organization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface Room_room_SharedRoom_organization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: Room_room_SharedRoom_organization_members_user_primaryOrganization | null;
-}
-
-export interface Room_room_SharedRoom_organization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: Room_room_SharedRoom_organization_members_user;
-}
-
-export interface Room_room_SharedRoom_organization_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface Room_room_SharedRoom_organization_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: Room_room_SharedRoom_organization_requests_user_primaryOrganization | null;
-}
-
-export interface Room_room_SharedRoom_organization_requests {
-  __typename: "OrganizationRequestedMember";
-  role: OrganizationMemberRole;
-  user: Room_room_SharedRoom_organization_requests_user;
-}
-
-export interface Room_room_SharedRoom_organization_rooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface Room_room_SharedRoom_organization_rooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: Room_room_SharedRoom_organization_rooms_organization | null;
-}
-
 export interface Room_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
+  name: string;
+  photo: string | null;
   isMine: boolean;
   isOwner: boolean;
   isAdmin: boolean;
-  featured: boolean;
   isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  shortname: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  members: Room_room_SharedRoom_organization_members[];
-  requests: Room_room_SharedRoom_organization_requests[];
-  rooms: Room_room_SharedRoom_organization_rooms[];
 }
 
 export interface Room_room_SharedRoom_members_user_primaryOrganization {
@@ -2080,120 +1975,15 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom {
   settings: RoomAddMember_betaRoomInvite_PrivateRoom_settings;
 }
 
-export interface RoomAddMember_betaRoomInvite_SharedRoom_organization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAddMember_betaRoomInvite_SharedRoom_organization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_organization_members_user_primaryOrganization | null;
-}
-
-export interface RoomAddMember_betaRoomInvite_SharedRoom_organization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: RoomAddMember_betaRoomInvite_SharedRoom_organization_members_user;
-}
-
-export interface RoomAddMember_betaRoomInvite_SharedRoom_organization_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAddMember_betaRoomInvite_SharedRoom_organization_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_organization_requests_user_primaryOrganization | null;
-}
-
-export interface RoomAddMember_betaRoomInvite_SharedRoom_organization_requests {
-  __typename: "OrganizationRequestedMember";
-  role: OrganizationMemberRole;
-  user: RoomAddMember_betaRoomInvite_SharedRoom_organization_requests_user;
-}
-
-export interface RoomAddMember_betaRoomInvite_SharedRoom_organization_rooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAddMember_betaRoomInvite_SharedRoom_organization_rooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: RoomAddMember_betaRoomInvite_SharedRoom_organization_rooms_organization | null;
-}
-
 export interface RoomAddMember_betaRoomInvite_SharedRoom_organization {
   __typename: "Organization";
   id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
+  name: string;
+  photo: string | null;
   isMine: boolean;
   isOwner: boolean;
   isAdmin: boolean;
-  featured: boolean;
   isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  shortname: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  members: RoomAddMember_betaRoomInvite_SharedRoom_organization_members[];
-  requests: RoomAddMember_betaRoomInvite_SharedRoom_organization_requests[];
-  rooms: RoomAddMember_betaRoomInvite_SharedRoom_organization_rooms[];
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_members_user_primaryOrganization {
@@ -2337,120 +2127,15 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom {
   settings: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_settings;
 }
 
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_members_user_primaryOrganization | null;
-}
-
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_members_user;
-}
-
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_requests_user_primaryOrganization | null;
-}
-
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_requests {
-  __typename: "OrganizationRequestedMember";
-  role: OrganizationMemberRole;
-  user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_requests_user;
-}
-
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_rooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_rooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_rooms_organization | null;
-}
-
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization {
   __typename: "Organization";
   id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
+  name: string;
+  photo: string | null;
   isMine: boolean;
   isOwner: boolean;
   isAdmin: boolean;
-  featured: boolean;
   isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  shortname: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  members: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_members[];
-  requests: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_requests[];
-  rooms: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_rooms[];
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_user_primaryOrganization {
@@ -2591,120 +2276,15 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom {
   settings: RoomAddMembers_betaRoomInvite_PrivateRoom_settings;
 }
 
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_organization_members_user_primaryOrganization | null;
-}
-
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: RoomAddMembers_betaRoomInvite_SharedRoom_organization_members_user;
-}
-
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_organization_requests_user_primaryOrganization | null;
-}
-
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization_requests {
-  __typename: "OrganizationRequestedMember";
-  role: OrganizationMemberRole;
-  user: RoomAddMembers_betaRoomInvite_SharedRoom_organization_requests_user;
-}
-
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization_rooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization_rooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: RoomAddMembers_betaRoomInvite_SharedRoom_organization_rooms_organization | null;
-}
-
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization {
   __typename: "Organization";
   id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
+  name: string;
+  photo: string | null;
   isMine: boolean;
   isOwner: boolean;
   isAdmin: boolean;
-  featured: boolean;
   isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  shortname: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  members: RoomAddMembers_betaRoomInvite_SharedRoom_organization_members[];
-  requests: RoomAddMembers_betaRoomInvite_SharedRoom_organization_requests[];
-  rooms: RoomAddMembers_betaRoomInvite_SharedRoom_organization_rooms[];
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_members_user_primaryOrganization {
@@ -2848,120 +2428,15 @@ export interface RoomKick_betaRoomKick_PrivateRoom {
   settings: RoomKick_betaRoomKick_PrivateRoom_settings;
 }
 
-export interface RoomKick_betaRoomKick_SharedRoom_organization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomKick_betaRoomKick_SharedRoom_organization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_organization_members_user_primaryOrganization | null;
-}
-
-export interface RoomKick_betaRoomKick_SharedRoom_organization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: RoomKick_betaRoomKick_SharedRoom_organization_members_user;
-}
-
-export interface RoomKick_betaRoomKick_SharedRoom_organization_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomKick_betaRoomKick_SharedRoom_organization_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_organization_requests_user_primaryOrganization | null;
-}
-
-export interface RoomKick_betaRoomKick_SharedRoom_organization_requests {
-  __typename: "OrganizationRequestedMember";
-  role: OrganizationMemberRole;
-  user: RoomKick_betaRoomKick_SharedRoom_organization_requests_user;
-}
-
-export interface RoomKick_betaRoomKick_SharedRoom_organization_rooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomKick_betaRoomKick_SharedRoom_organization_rooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: RoomKick_betaRoomKick_SharedRoom_organization_rooms_organization | null;
-}
-
 export interface RoomKick_betaRoomKick_SharedRoom_organization {
   __typename: "Organization";
   id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
+  name: string;
+  photo: string | null;
   isMine: boolean;
   isOwner: boolean;
   isAdmin: boolean;
-  featured: boolean;
   isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  shortname: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  members: RoomKick_betaRoomKick_SharedRoom_organization_members[];
-  requests: RoomKick_betaRoomKick_SharedRoom_organization_requests[];
-  rooms: RoomKick_betaRoomKick_SharedRoom_organization_rooms[];
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_members_user_primaryOrganization {
@@ -3102,120 +2577,15 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom {
   settings: RoomLeave_betaRoomLeave_PrivateRoom_settings;
 }
 
-export interface RoomLeave_betaRoomLeave_SharedRoom_organization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomLeave_betaRoomLeave_SharedRoom_organization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_organization_members_user_primaryOrganization | null;
-}
-
-export interface RoomLeave_betaRoomLeave_SharedRoom_organization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: RoomLeave_betaRoomLeave_SharedRoom_organization_members_user;
-}
-
-export interface RoomLeave_betaRoomLeave_SharedRoom_organization_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomLeave_betaRoomLeave_SharedRoom_organization_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_organization_requests_user_primaryOrganization | null;
-}
-
-export interface RoomLeave_betaRoomLeave_SharedRoom_organization_requests {
-  __typename: "OrganizationRequestedMember";
-  role: OrganizationMemberRole;
-  user: RoomLeave_betaRoomLeave_SharedRoom_organization_requests_user;
-}
-
-export interface RoomLeave_betaRoomLeave_SharedRoom_organization_rooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomLeave_betaRoomLeave_SharedRoom_organization_rooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: RoomLeave_betaRoomLeave_SharedRoom_organization_rooms_organization | null;
-}
-
 export interface RoomLeave_betaRoomLeave_SharedRoom_organization {
   __typename: "Organization";
   id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
+  name: string;
+  photo: string | null;
   isMine: boolean;
   isOwner: boolean;
   isAdmin: boolean;
-  featured: boolean;
   isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  shortname: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  members: RoomLeave_betaRoomLeave_SharedRoom_organization_members[];
-  requests: RoomLeave_betaRoomLeave_SharedRoom_organization_requests[];
-  rooms: RoomLeave_betaRoomLeave_SharedRoom_organization_rooms[];
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_members_user_primaryOrganization {
@@ -3342,120 +2712,15 @@ export interface RoomSearchTextVariables {
 // GraphQL query operation: RoomSearch
 // ====================================================
 
-export interface RoomSearch_items_edges_node_organization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomSearch_items_edges_node_organization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomSearch_items_edges_node_organization_members_user_primaryOrganization | null;
-}
-
-export interface RoomSearch_items_edges_node_organization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: RoomSearch_items_edges_node_organization_members_user;
-}
-
-export interface RoomSearch_items_edges_node_organization_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomSearch_items_edges_node_organization_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomSearch_items_edges_node_organization_requests_user_primaryOrganization | null;
-}
-
-export interface RoomSearch_items_edges_node_organization_requests {
-  __typename: "OrganizationRequestedMember";
-  role: OrganizationMemberRole;
-  user: RoomSearch_items_edges_node_organization_requests_user;
-}
-
-export interface RoomSearch_items_edges_node_organization_rooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomSearch_items_edges_node_organization_rooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: RoomSearch_items_edges_node_organization_rooms_organization | null;
-}
-
 export interface RoomSearch_items_edges_node_organization {
   __typename: "Organization";
   id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
+  name: string;
+  photo: string | null;
   isMine: boolean;
   isOwner: boolean;
   isAdmin: boolean;
-  featured: boolean;
   isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  shortname: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  members: RoomSearch_items_edges_node_organization_members[];
-  requests: RoomSearch_items_edges_node_organization_requests[];
-  rooms: RoomSearch_items_edges_node_organization_rooms[];
 }
 
 export interface RoomSearch_items_edges_node_members_user_primaryOrganization {
@@ -3762,120 +3027,15 @@ export interface RoomJoin_join_PrivateRoom {
   settings: RoomJoin_join_PrivateRoom_settings;
 }
 
-export interface RoomJoin_join_SharedRoom_organization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomJoin_join_SharedRoom_organization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomJoin_join_SharedRoom_organization_members_user_primaryOrganization | null;
-}
-
-export interface RoomJoin_join_SharedRoom_organization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: RoomJoin_join_SharedRoom_organization_members_user;
-}
-
-export interface RoomJoin_join_SharedRoom_organization_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomJoin_join_SharedRoom_organization_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomJoin_join_SharedRoom_organization_requests_user_primaryOrganization | null;
-}
-
-export interface RoomJoin_join_SharedRoom_organization_requests {
-  __typename: "OrganizationRequestedMember";
-  role: OrganizationMemberRole;
-  user: RoomJoin_join_SharedRoom_organization_requests_user;
-}
-
-export interface RoomJoin_join_SharedRoom_organization_rooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomJoin_join_SharedRoom_organization_rooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: RoomJoin_join_SharedRoom_organization_rooms_organization | null;
-}
-
 export interface RoomJoin_join_SharedRoom_organization {
   __typename: "Organization";
   id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
+  name: string;
+  photo: string | null;
   isMine: boolean;
   isOwner: boolean;
   isAdmin: boolean;
-  featured: boolean;
   isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  shortname: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  members: RoomJoin_join_SharedRoom_organization_members[];
-  requests: RoomJoin_join_SharedRoom_organization_requests[];
-  rooms: RoomJoin_join_SharedRoom_organization_rooms[];
 }
 
 export interface RoomJoin_join_SharedRoom_members_user_primaryOrganization {
@@ -4034,120 +3194,15 @@ export interface RoomJoinInviteLink_join_PrivateRoom {
   settings: RoomJoinInviteLink_join_PrivateRoom_settings;
 }
 
-export interface RoomJoinInviteLink_join_SharedRoom_organization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomJoinInviteLink_join_SharedRoom_organization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_organization_members_user_primaryOrganization | null;
-}
-
-export interface RoomJoinInviteLink_join_SharedRoom_organization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: RoomJoinInviteLink_join_SharedRoom_organization_members_user;
-}
-
-export interface RoomJoinInviteLink_join_SharedRoom_organization_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomJoinInviteLink_join_SharedRoom_organization_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_organization_requests_user_primaryOrganization | null;
-}
-
-export interface RoomJoinInviteLink_join_SharedRoom_organization_requests {
-  __typename: "OrganizationRequestedMember";
-  role: OrganizationMemberRole;
-  user: RoomJoinInviteLink_join_SharedRoom_organization_requests_user;
-}
-
-export interface RoomJoinInviteLink_join_SharedRoom_organization_rooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomJoinInviteLink_join_SharedRoom_organization_rooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: RoomJoinInviteLink_join_SharedRoom_organization_rooms_organization | null;
-}
-
 export interface RoomJoinInviteLink_join_SharedRoom_organization {
   __typename: "Organization";
   id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
+  name: string;
+  photo: string | null;
   isMine: boolean;
   isOwner: boolean;
   isAdmin: boolean;
-  featured: boolean;
   isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  shortname: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  members: RoomJoinInviteLink_join_SharedRoom_organization_members[];
-  requests: RoomJoinInviteLink_join_SharedRoom_organization_requests[];
-  rooms: RoomJoinInviteLink_join_SharedRoom_organization_rooms[];
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_members_user_primaryOrganization {
@@ -10318,6 +9373,24 @@ export interface OrganizationFull {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: OrganizationMedium
+// ====================================================
+
+export interface OrganizationMedium {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
+  isCommunity: boolean;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: OrganizationProfileFull
 // ====================================================
 
@@ -10444,120 +9517,15 @@ export interface RoomFull_PrivateRoom {
   settings: RoomFull_PrivateRoom_settings;
 }
 
-export interface RoomFull_SharedRoom_organization_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomFull_SharedRoom_organization_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomFull_SharedRoom_organization_members_user_primaryOrganization | null;
-}
-
-export interface RoomFull_SharedRoom_organization_members {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: RoomFull_SharedRoom_organization_members_user;
-}
-
-export interface RoomFull_SharedRoom_organization_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomFull_SharedRoom_organization_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomFull_SharedRoom_organization_requests_user_primaryOrganization | null;
-}
-
-export interface RoomFull_SharedRoom_organization_requests {
-  __typename: "OrganizationRequestedMember";
-  role: OrganizationMemberRole;
-  user: RoomFull_SharedRoom_organization_requests_user;
-}
-
-export interface RoomFull_SharedRoom_organization_rooms_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomFull_SharedRoom_organization_rooms {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: RoomFull_SharedRoom_organization_rooms_organization | null;
-}
-
 export interface RoomFull_SharedRoom_organization {
   __typename: "Organization";
   id: string;
-  /**
-   * # Refactor?
-   */
-  superAccountId: string;
+  name: string;
+  photo: string | null;
   isMine: boolean;
   isOwner: boolean;
   isAdmin: boolean;
-  featured: boolean;
   isCommunity: boolean;
-  name: string;
-  photo: string | null;
-  shortname: string | null;
-  website: string | null;
-  about: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  linkedin: string | null;
-  members: RoomFull_SharedRoom_organization_members[];
-  requests: RoomFull_SharedRoom_organization_requests[];
-  rooms: RoomFull_SharedRoom_organization_rooms[];
 }
 
 export interface RoomFull_SharedRoom_members_user_primaryOrganization {
