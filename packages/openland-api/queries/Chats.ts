@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
 import { RoomMessageFull } from '../fragments/MessageFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
+import { OrganizationFull } from '../fragments/OrganizationFull';
 import { RoomMessageShort } from '../fragments/MessageShort';
 import { MessageLightShort } from '../fragments/MessageLightShort';
 import { RoomFull } from '../fragments/RoomFull';
@@ -50,7 +51,7 @@ export const RoomQuery = gql`
     }
     ${RoomFull}
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationFull}
 `;
 
 export const RoomTinyQuery = gql`

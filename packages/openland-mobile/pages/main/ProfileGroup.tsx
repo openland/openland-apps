@@ -8,7 +8,7 @@ import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { Room_room_SharedRoom, RoomMemberRole, UserShort, RoomMembers_members } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomMemberRole, UserShort, RoomMembers_members, SharedRoomKind } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -105,6 +105,18 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
     //     changeThemeModal(room.id);
     // }, [room.id])
 
+    let canEditInfo = false;
+
+    if (room.kind === SharedRoomKind.GROUP) {
+        canEditInfo = true;
+    }
+
+    if (room.kind === SharedRoomKind.PUBLIC) {
+        if (room.role === RoomMemberRole.OWNER || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
+            canEditInfo = true;
+        }
+    }
+
     // Sort members by name (admins should go first)
     const sortedMembers = room.members
         .sort((a, b) => a.user.name.localeCompare(b.user.name))
@@ -114,7 +126,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
 
     return (
         <>
-            {(room.role === 'ADMIN' || room.role === 'OWNER' || (room.role === 'MEMBER' && room.kind === 'GROUP')) && (
+            {canEditInfo && (
                 <SHeaderButton
                     title="Edit"
                     onPress={() => props.router.push('EditGroup', { id: props.router.params.id })}
