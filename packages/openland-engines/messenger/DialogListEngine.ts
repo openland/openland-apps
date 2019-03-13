@@ -38,6 +38,7 @@ export interface DialogDataSourceItem {
     forward?: boolean;
     messageId?: string;
     message?: string;
+    fallback: string
     messageEmojified?: any;
     isService?: boolean;
     sender?: string;
@@ -113,7 +114,8 @@ export const extractDialog = (
         key: cid,
         flexibleId: fid,
         unread: unreadCount,
-        message: msg,
+        message: topMessage && topMessage.message ? msg : undefined,
+        fallback: msg,
         attachments: topMessage && topMessage.__typename === 'GeneralMessage' ? topMessage.attachments : undefined,
         isOut: topMessage ? topMessage!!.sender.id === uid : undefined,
         sender: sender,
@@ -323,7 +325,8 @@ export class DialogListEngine {
                 isOut: isOut,
                 sender: sender,
                 messageId: event.message.id,
-                message: msg,
+                message: event.message && event.message.message ? msg : undefined,
+                fallback: msg,
                 messageEmojified: msg ? emojifyMessage(msg) : undefined,
                 date: parseInt(event.message.date, 10),
                 attachments: event.message.attachments,
@@ -374,10 +377,11 @@ export class DialogListEngine {
                     isOut: isOut,
                     sender: sender,
                     messageId: event.message.id,
-                    message: msg,
+                    message: event.message && event.message.message ? msg : undefined,
+                    fallback: msg,
                     messageEmojified: msg ? emojifyMessage(msg) : undefined,
                     date: parseInt(event.message.date, 10),
-                    forward: !event.message.message && event.message.quotedMessages && !!event.message.quotedMessages.length,
+                    forward: event.message.quotedMessages && !!event.message.quotedMessages.length,
                     attachments: event.message.attachments,
                     online: privateRoom ? privateRoom.user.online : false,
                     showSenderName:
