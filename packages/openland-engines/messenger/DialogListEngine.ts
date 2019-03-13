@@ -105,7 +105,6 @@ export const extractDialog = (
             : topMessage!!.sender.firstName
         : undefined;
     let isService = (topMessage && topMessage.__typename === 'ServiceMessage') || undefined;
-    console.warn('boom', topMessage, isService);
     return {
         online: undefined,
         haveMention,
@@ -431,7 +430,6 @@ export class DialogListEngine {
             let converted = res.dialogs.items.map((c: any) =>
                 extractDialog(c, this.engine.user.id),
             );
-            console.warn('boom', res.dialogs.items);
 
             this.dataSource.loadedMore(converted, !this.next);
 
