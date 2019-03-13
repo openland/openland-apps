@@ -39,7 +39,7 @@ export const EditAppModal = withAppProfile(({ updateApp, apps, router: { query }
                         appId: app.id,
                         input: {
                             name: input.name,
-                            shortname: input.shortname,
+                            shortname: (input.shortname === '') ? null : (input.shortname === shortname ? undefined : input.shortname),
                             photoRef: input.photoRef,
                             about: input.about,
                         },
