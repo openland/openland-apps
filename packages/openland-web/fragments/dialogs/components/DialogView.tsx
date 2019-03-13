@@ -71,7 +71,15 @@ export const DialogView = XMemo<DialogViewProps>(props => {
     if (dialog.typing) {
         message = <>{emojifyMessage(dialog.typing)}</>;
     } else {
-        if (dialog.attachments && dialog.attachments.length === 1) {
+        message = dialog.fallback;
+        if (dialog.message) {
+            message = (
+                <span>
+                    {!isService && sender}
+                    {dialog.messageEmojified}
+                </span>
+            );
+        } else if (dialog.attachments && dialog.attachments.length === 1) {
             let attachment = dialog.attachments[0];
             if (attachment.__typename === 'MessageAttachmentFile') {
                 if (attachment.fileMetadata.isImage) {
@@ -119,13 +127,6 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                         )}
                     </XViewSelectedContext.Consumer>
                     Forward
-                </span>
-            );
-        } else if (dialog.message) {
-            message = (
-                <span>
-                    {!isService && sender}
-                    {dialog.messageEmojified}
                 </span>
             );
         }
