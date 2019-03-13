@@ -53,8 +53,12 @@ patch-package
        });
  
      let borderBottomWidth = restricted?
-@@ -390,14 +391,14 @@ export default class TextField extends PureComponent {
+@@ -388,16 +389,18 @@ export default class TextField extends PureComponent {
+         outputRange: [activeLineWidth, lineWidth, activeLineWidth],
+       });
  
++    // Input include bottom line in view bounds
++
      let inputContainerStyle = {
        paddingTop: labelHeight,
 -      paddingBottom: inputContainerPadding,
@@ -70,7 +74,7 @@ patch-package
          { height: labelHeight + inputContainerPadding + fontSize * 1.5 }),
      };
  
-@@ -418,7 +419,7 @@ export default class TextField extends PureComponent {
+@@ -418,7 +421,7 @@ export default class TextField extends PureComponent {
              android: { textAlignVertical: 'top' },
            }),
          }:
