@@ -5,7 +5,7 @@ import { XButton } from 'openland-x/XButton';
 import { XView, XImage } from 'react-mental';
 import { css } from 'linaria';
 
-const Description = css`
+const descriptionClassName = css`
     text-align: center;
     font-size: 14px;
     line-height: 22px;
@@ -21,14 +21,18 @@ const Description = css`
     }
 `;
 
+const errorClassName = css`
+    text-align: center;
+`;
+
 interface ErrorPageProps {
     statusCode: number | null | undefined;
     message?: string;
 }
 
-export const ErrorPage = (props: ErrorPageProps) => (
+export const ErrorPage = ({ statusCode, message }: ErrorPageProps) => (
     <>
-        <XDocumentHead title={props.statusCode === 404 ? 'Not found' : 'Something went wrong'} />
+        <XDocumentHead title={statusCode === 404 ? 'Not found' : 'Something went wrong'} />
         <XTrack event="View 404">
             <XView minHeight="100vh" width="100%" backgroundColor="#ffffff" alignItems="center">
                 <XView
@@ -50,12 +54,20 @@ export const ErrorPage = (props: ErrorPageProps) => (
                             src="/static/X/illustration-error.png"
                             srcSet="/static/X/illustration-error@2x.png 2x"
                         />
-                        <XView fontSize={24} lineHeight="29px" color="#000000" marginBottom={10}>
-                            {props.statusCode === 404
-                                ? 'Not found'
-                                : props.message || 'Something went wrong'}
+                        <XView
+                            fontSize={24}
+                            lineHeight="29px"
+                            color="#000000"
+                            marginBottom={10}
+                            maxWidth={700}
+                        >
+                            <span className={errorClassName}>
+                                {statusCode === 404
+                                    ? 'Not found'
+                                    : message || 'Something went wrong'}
+                            </span>
                         </XView>
-                        <div className={Description}>
+                        <div className={descriptionClassName}>
                             Return home or contact our team at{' '}
                             <a href="mailto:hello@openland.com">hello@openland.com</a>
                         </div>
