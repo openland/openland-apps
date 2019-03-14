@@ -2,6 +2,8 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { showSheetModal } from './showSheetModal';
 import { ZActionSheetItem } from './ZActionSheetItem';
+import { AppStyles } from 'openland-mobile/styles/AppStyles';
+import { ZModalController } from './ZModal';
 
 interface ActionSheetBuilderActionItem {
     __typename: "ActionItem";
@@ -15,7 +17,7 @@ interface ActionSheetBuilderActionItem {
 interface ActionSheetBuilderViewItem {
     __typename: "ViewItem";
 
-    view: any;
+    view: (ctx: ZModalController) => void;
 }
 
 export class ActionSheetBuilder {
@@ -56,7 +58,12 @@ export class ActionSheetBuilder {
                                     onPress={() => { ctx.hide(); a.callback(); }}
                                 />
                             )}
-                            {a.__typename === 'ViewItem' && a.view}
+                            {a.__typename === 'ViewItem' && (
+                                <>
+                                    {a.view(ctx)}
+                                    <View style={{ backgroundColor: AppStyles.separatorColor, height: 1 }} />
+                                </>
+                            )}
                         </>
                     ))}
                 </View>

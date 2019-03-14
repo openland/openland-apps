@@ -2,14 +2,13 @@ import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ASDataView } from 'react-native-async-view/ASDataView';
-import { ASFlex } from 'react-native-async-view/ASFlex';
 import { DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
 import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Platform } from 'react-native';
+import { Clipboard, Platform, View, Text, TouchableOpacity } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
@@ -18,6 +17,7 @@ import { AsyncServiceMessageView } from './components/AsyncServiceMessageView';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
+import { ZModalController } from 'openland-mobile/components/ZModal';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -91,12 +91,42 @@ export class MobileMessenger {
         this.history.navigationManager.push('ProfileUser', { id });
     }
 
+    private handleReactionSetUnset = async (message: DataSourceMessageItem, r: string) => {
+        startLoader();
+        try {
+            let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
+            if (remove) {
+                this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
+            } else {
+                this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: r });
+            }
+        } catch (e) {
+            Alert.alert(e.message);
+        }
+        stopLoader();
+    }
+
     private handleMessageLongPress = (message: DataSourceMessageItem) => {
         let builder = new ActionSheetBuilder();
+
+        const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
+
+        builder.view((ctx: ZModalController) => (
+            <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={56} paddingHorizontal={10}>
+                {defaultReactions.map(r => (
+                    <TouchableOpacity
+                        onPress={() => {
+                            ctx.hide();
+                            this.handleReactionSetUnset(message, r);
+                        }}
+                    >
+                        <Text style={{ fontSize: 30 }}>{r}</Text>
+                    </TouchableOpacity>
+                ))}
+            </View>
+        ));
+
         if (message.text) {
-            builder.action('Copy', () => {
-                Clipboard.setString(message.text!!);
-            });
             if (message.senderId === this.engine.user.id) {
                 builder.action('Edit', () => {
                     Prompt.builder()
@@ -114,7 +144,12 @@ export class MobileMessenger {
                         .show();
                 });
             }
+
+            builder.action('Copy', () => {
+                Clipboard.setString(message.text!!);
+            });
         }
+
         if (message.senderId === this.engine.user.id) {
             builder.action('Delete', async () => {
                 try {
@@ -128,26 +163,7 @@ export class MobileMessenger {
                 } catch (e) {
                     Alert.alert(e.message);
                 }
-            });
-        }
-
-        if (message.id) {
-            (message.reactions || []).reduce((res: string[], r) => res.indexOf(r.reaction) > -1 ? res : [r.reaction, ...res], ['❤️']).filter(r => r !== 'respondPost').map(r => {
-                builder.action(r, async () => {
-                    startLoader();
-                    try {
-                        let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
-                        if (remove) {
-                            this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
-                        } else {
-                            this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: r });
-                        }
-                    } catch (e) {
-                        Alert.alert(e.message);
-                    }
-                    stopLoader();
-                });
-            });
+            }, true);
         }
 
         builder.show();

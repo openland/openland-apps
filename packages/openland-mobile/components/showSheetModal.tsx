@@ -148,7 +148,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                     {Platform.OS === 'ios' && (
                         <View onLayout={this.onLayout}>
                             <ZBlurredView
-                                intensity="normal"
+                                intensity="high"
                                 borderRadius={12}
                                 marginHorizontal={10}
                                 overflow="hidden"
@@ -156,7 +156,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                                 {this.contents}
                             </ZBlurredView>
                             <ZBlurredView
-                                intensity="normal"
+                                intensity="high"
                                 borderRadius={12}
                                 marginBottom={this.props.safe.bottom}
                                 marginTop={10}
