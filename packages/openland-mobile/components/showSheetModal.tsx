@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { ZModalController, showModal, ZModal } from './ZModal';
-import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler } from 'react-native';
+import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform } from 'react-native';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
+import { ZActionSheetItem } from './ZActionSheetItem';
+import { ZBlurredView } from './ZBlurredView';
 
 class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea }> implements ZModalController {
 
@@ -50,12 +52,20 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
         // Srtart
         SAnimated.beginTransaction();
         SAnimated.setPropertyAnimator((name, prop, from, to) => {
-            SAnimated.timing(name, {
-                property: prop,
-                from: from,
-                to: to,
-                easing: 'material'
-            });
+            if (Platform.OS === 'ios') {
+                SAnimated.spring(name, {
+                    property: prop,
+                    from: from,
+                    to: to,
+                });
+            } else {
+                SAnimated.timing(name, {
+                    property: prop,
+                    from: from,
+                    to: to,
+                    easing: 'material'
+                });
+            }
         });
         this.contentView.translateY = 0;
         this.bgView.opacity = 1;
@@ -70,12 +80,20 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
 
         SAnimated.beginTransaction();
         SAnimated.setPropertyAnimator((name, prop, from, to) => {
-            SAnimated.timing(name, {
-                property: prop,
-                from: from,
-                to: to,
-                easing: 'material'
-            });
+            if (Platform.OS === 'ios') {
+                SAnimated.spring(name, {
+                    property: prop,
+                    from: from,
+                    to: to,
+                });
+            } else {
+                SAnimated.timing(name, {
+                    property: prop,
+                    from: from,
+                    to: to,
+                    easing: 'material'
+                });
+            }
         });
         this.contentView.translateY = this.contentHeight;
         this.bgView.opacity = 0;
@@ -104,7 +122,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                                 left: 0,
                                 right: 0,
                                 bottom: 0,
-                                backgroundColor: 'rgba(0,0,0,0.3)',
+                                backgroundColor: Platform.OS === 'android' ? 'rgba(0,0,0,0.3)' : 'rgba(4, 4, 15, 0.4)',
                                 opacity: 0
                             }}
                         />
@@ -115,16 +133,40 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                     name={this.key + '--ctns'}
                     style={{ opacity: 0 }}
                 >
-                    <View
-                        backgroundColor="#fff"
-                        borderTopRightRadius={16}
-                        borderTopLeftRadius={16}
-                        paddingTop={8}
-                        paddingBottom={this.props.safe.bottom + 8}
-                        onLayout={this.onLayout}
-                    >
-                        {this.contents}
-                    </View>
+                    {Platform.OS === 'android' && (
+                        <View
+                            backgroundColor="#ffffff"
+                            borderTopRightRadius={12}
+                            borderTopLeftRadius={12}
+                            paddingTop={12}
+                            paddingBottom={this.props.safe.bottom + 8}
+                            onLayout={this.onLayout}
+                        >
+                            {this.contents}
+                        </View>
+                    )}
+                    {Platform.OS === 'ios' && (
+                        <View onLayout={this.onLayout}>
+                            <ZBlurredView
+                                intensity="normal"
+                                borderRadius={12}
+                                marginHorizontal={10}
+                                overflow="hidden"
+                            >
+                                {this.contents}
+                            </ZBlurredView>
+                            <ZBlurredView
+                                intensity="normal"
+                                borderRadius={12}
+                                marginBottom={this.props.safe.bottom}
+                                marginTop={10}
+                                marginHorizontal={10}
+                                overflow="hidden"
+                            >
+                                <ZActionSheetItem name="Cancel" onPress={this.hide} appearance="cancel" />
+                            </ZBlurredView>
+                        </View>
+                    )}
                 </SAnimated.View>
             </View>
         )
