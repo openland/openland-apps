@@ -111,12 +111,12 @@ android {
     dexOptions {
         preDexLibraries = false
     }
-    compileSdkVersion 28
-    buildToolsVersion '27.0.3'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.openland.app"
         minSdkVersion 23
-        targetSdkVersion 26
+        targetSdkVersion rootProject.ext.targetSdkVersion
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -216,6 +216,7 @@ dependencies {
     compile project(':react-native-push-notification')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
     compile 'com.facebook.react:react-native:+'
     implementation 'com.facebook.litho:litho-core:0.18.0'
     implementation 'com.facebook.litho:litho-widget:0.18.0'
