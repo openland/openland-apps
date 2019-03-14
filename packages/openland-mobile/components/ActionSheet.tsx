@@ -2,8 +2,8 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { showSheetModal } from './showSheetModal';
 import { ZActionSheetItem } from './ZActionSheetItem';
-import { AppStyles } from 'openland-mobile/styles/AppStyles';
 import { ZModalController } from './ZModal';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface ActionSheetBuilderActionItem {
     __typename: "ActionItem";
@@ -56,12 +56,19 @@ export class ActionSheetBuilder {
                                     appearance={a.distructive ? 'danger' : 'default'}
                                     name={a.name}
                                     onPress={() => { ctx.hide(); a.callback(); }}
+                                    separator={i !== this._items.length - 1}
                                 />
                             )}
                             {a.__typename === 'ViewItem' && (
                                 <>
                                     {a.view(ctx)}
-                                    <View style={{ backgroundColor: AppStyles.separatorColor, height: 1 }} />
+                                    {(i !== this._items.length - 1) && (
+                                        <ThemeContext.Consumer>
+                                            {theme => (
+                                                <View style={{ backgroundColor: theme.separatorColor, height: 1 }} />
+                                            )}
+                                        </ThemeContext.Consumer>
+                                    )}
                                 </>
                             )}
                         </>

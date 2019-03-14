@@ -163,7 +163,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                                 marginHorizontal={10}
                                 overflow="hidden"
                             >
-                                <ZActionSheetItem name="Cancel" onPress={this.hide} appearance="cancel" />
+                                <ZActionSheetItem name="Cancel" onPress={this.hide} appearance="cancel" separator={false} />
                             </ZBlurredView>
                         </View>
                     )}

@@ -4,6 +4,14 @@ import { ZListItem } from './ZListItem';
 import { ZListItemBase } from './ZListItemBase';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
+interface ZActionSheetItemProps {
+    name: string;
+    icon?: any;
+    appearance?: 'default' | 'danger' | 'cancel';
+    onPress: () => void;
+    separator?: boolean;
+}
+
 const styles = StyleSheet.create({
     text: {
         fontSize: 20,
@@ -20,7 +28,7 @@ const styles = StyleSheet.create({
     } as TextStyle
 })
 
-export const ZActionSheetItem = (props: { name: string; icon?: any; appearance?: 'default' | 'danger' | 'cancel'; onPress: () => void }) => {
+export const ZActionSheetItem = (props: ZActionSheetItemProps) => {
     if (Platform.OS === 'android') {
         return (
             <ZListItem
@@ -41,6 +49,7 @@ export const ZActionSheetItem = (props: { name: string; icon?: any; appearance?:
             <ZListItemBase
                 onPress={props.onPress}
                 height={56}
+                separator={props.separator}
             >
                 <View alignItems="center" justifyContent="center" flexGrow={1} height={56}>
                     <Text style={textStyle}>{props.name}</Text>
