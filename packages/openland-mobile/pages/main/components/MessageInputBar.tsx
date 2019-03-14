@@ -79,6 +79,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                             style={styles.textInput}
                             editable={this.props.enabled !== false}
                             multiline={true}
+                            allowFontScaling={false}
                         />
                         <TouchableOpacity disabled={!hasText} onPress={this.props.onSubmitPress}>
                             <View alignItems="center" justifyContent="center" width={52} height={50} paddingLeft={2}>
