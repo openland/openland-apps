@@ -7,10 +7,12 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
 import { DownloadState } from '../../files/DownloadManagerInterface';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 
 export interface AsyncMessageMediaViewProps {
     message: DataSourceMessageItem;
     onPress: (document: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
+    attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
 }
 
 export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessageMediaViewProps, { downloadState?: DownloadState }> {
@@ -31,8 +33,8 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
     }
 
     componentWillMount() {
-        let optimalSize = layoutMedia(this.props.message.file!!.imageSize!!.width, this.props.message.file!!.imageSize!!.height, 1024, 1024);
-        this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.file!!.fileId!, !this.props.message.file!!.isGif ? optimalSize : null, (state) => {
+        let optimalSize = layoutMedia(this.props.attach!!.fileMetadata.imageWidth || 0, this.props.attach!!.fileMetadata.imageHeight || 0, 1024, 1024);
+        this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.attach!!.fileId!, (this.props.attach!!.fileMetadata.mimeType !== 'gif') ? optimalSize : null, (state) => {
             this.setState({ downloadState: state });
         });
     }
@@ -45,7 +47,7 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
 
     render() {
         let maxSize = 100;
-        let layout = layoutMedia(this.props.message.file!!.imageSize!!.width, this.props.message.file!!.imageSize!!.height, maxSize, maxSize);
+        let layout = layoutMedia(this.props.attach!!.fileMetadata.imageWidth || 0, this.props.attach!!.fileMetadata.imageHeight || 0, maxSize, maxSize);
         return (
             <ASFlex width={layout.width} height={layout.height} marginLeft={10} marginTop={5} marginRight={7}>
                 <ASImage
@@ -53,7 +55,7 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
                     source={{ uri: (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
                     width={layout.width}
                     height={layout.height}
-                    isGif={this.props.message.file!!.isGif}
+                    isGif={this.props.attach!!.fileMetadata.imageFormat === 'gif'}
                 />
 
             </ASFlex>

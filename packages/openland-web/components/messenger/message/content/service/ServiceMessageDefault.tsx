@@ -3,11 +3,11 @@ import { Container } from './views/Container';
 import { preprocessMentions } from '../utils/preprocessMentions';
 import { MentionedUser } from './views/MentionedUser';
 import { emoji } from 'openland-y-utils/emoji';
-import { MessageFull_alphaMentions } from 'openland-api/Types';
+import { FullMessage_ServiceMessage_spans } from 'openland-api/Types';
 
 export interface ServiceMessageDefaultProps {
     message: string;
-    alphaMentions: MessageFull_alphaMentions[];
+    spans?: FullMessage_ServiceMessage_spans[];
 }
 
 const EmojifiedText = React.memo(({ text }: { text: string }) => {
@@ -27,20 +27,20 @@ const EmojifiedText = React.memo(({ text }: { text: string }) => {
                     })}
                 </strong>
             ) : (
-                <>
-                    {emoji({
-                        src: refactorText,
-                        size: 16,
-                    })}
-                </>
-            )}
+                    <>
+                        {emoji({
+                            src: refactorText,
+                            size: 16,
+                        })}
+                    </>
+                )}
         </span>
     );
 });
 
 export const ServiceMessageDefault = React.memo(
-    ({ message, alphaMentions }: ServiceMessageDefaultProps) => {
-        let mentions = preprocessMentions(message, null, alphaMentions);
+    ({ message, spans }: ServiceMessageDefaultProps) => {
+        let mentions = preprocessMentions(message, null, []);
         let res: any[] = [];
         let i = 0;
         for (let m of mentions) {

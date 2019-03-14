@@ -15,9 +15,11 @@ import { bubbleMaxWidth } from '../AsyncBubbleView';
 import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
+import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 
 interface UrlAugmentationContentProps {
     message: DataSourceMessageItem;
+    attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
     onUserPress: (id: string) => void;
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
@@ -27,10 +29,10 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
     private downloadManagerWatch?: WatchSubscription;
 
     componentWillMount() {
-        if (this.props.message.urlAugmentation && this.props.message.urlAugmentation.imageURL) {
+        if (this.props.attach && this.props.attach.image) {
             let maxSize = (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidth) - 90
-            let width = this.props.message.urlAugmentation.imageInfo && this.props.message.urlAugmentation.imageInfo.imageWidth || maxSize;
-            let height = this.props.message.urlAugmentation.imageInfo && this.props.message.urlAugmentation.imageInfo.imageHeight || maxSize;
+            let width = this.props.attach.image && this.props.attach.image.metadata!.imageWidth || maxSize;
+            let height = this.props.attach.image && this.props.attach.image.metadata!.imageHeight || maxSize;
             this.augLayout = layoutMedia(width!, height!, maxSize, maxSize);
 
             let imageSize = {
@@ -38,7 +40,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                 height: Math.round(this.augLayout.height * PixelRatio.get()),
             };
 
-            this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.urlAugmentation.imageURL, imageSize, (state) => {
+            this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.attach.image.url, imageSize, (state) => {
                 this.setState({ downloadState: state });
             });
         }
@@ -53,7 +55,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
     render() {
         let mainTextColor = this.props.message.isOut ? DefaultConversationTheme.textColorOut : DefaultConversationTheme.textColorIn;
 
-        let preprocessed = preprocessText(this.props.message.text || '', this.props.message.mentions);
+        let preprocessed = preprocessText(this.props.message.text || '', []);
         let big = false;
         if (this.props.message.text) {
             big = this.props.message.text.length <= 3 && this.props.message.text.search(/(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g) !== -1;
@@ -66,20 +68,20 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{this.props.message.title}</ASText>);
         }
         let lineBAckgroundPatch: any;
-        if (this.props.message.urlAugmentation || this.props.message.reply) {
+        if (this.props.attach || this.props.message.reply) {
             // for left accent line
             let image = require('assets/chat-link-line-my.png');
             lineBAckgroundPatch = Image.resolveAssetSource(image);
         }
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
 
-        let link = this.props.message.urlAugmentation!.url;
+        let link = this.props.attach!.titleLink || '';
 
         return (
             <>
-                {this.props.message.urlAugmentation && (
+                {this.props.attach && (
                     <ASFlex onPress={resolveInternalLink(link, async () => await Linking.openURL(link))} flexDirection="column" marginTop={12} marginBottom={5} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? 'rgba(255,255,255, 0.5)' : DefaultConversationTheme.linkColorIn}>
-                        {this.props.message.urlAugmentation.imageURL && this.augLayout && (
+                        {this.props.attach.image && this.augLayout && (
                             <ASFlex marginBottom={8}>
                                 <ASImage
                                     marginLeft={10}
@@ -104,7 +106,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                             </ASFlex>
                         )}
 
-                        {!!this.props.message.urlAugmentation.title && <ASText
+                        {!!this.props.attach.title && <ASText
                             marginLeft={10}
                             color={mainTextColor}
                             lineHeight={20}
@@ -113,11 +115,11 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                             marginTop={-3}
                             fontWeight={TextStyles.weight.medium}
                         >
-                            {this.props.message.urlAugmentation.title}
-                            {!this.props.message.urlAugmentation.description && (this.props.message.isOut ? paddedTextOut : paddedText)}
+                            {this.props.attach.title}
+                            {!this.props.attach.subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)}
                         </ASText>
                         }
-                        {!!this.props.message.urlAugmentation.description && <ASText
+                        {!!this.props.attach.subTitle && <ASText
                             marginLeft={10}
                             color={mainTextColor}
                             lineHeight={20}
@@ -125,7 +127,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                             fontSize={16}
                             fontWeight={TextStyles.weight.regular}
                         >
-                            {this.props.message.urlAugmentation.description}
+                            {this.props.attach.subTitle}
                             {this.props.message.isOut ? paddedTextOut : paddedText}
                         </ASText>}
 

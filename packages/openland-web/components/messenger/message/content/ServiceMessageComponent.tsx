@@ -8,7 +8,7 @@ import { ServiceMessageReplyDefault } from './service/ServiceMessageReplyDefault
 import { ServiceMessageReplyJobApply } from './service/ServiceMessageReplyJobApply';
 import { ServiceMessageReplyJobRecommend } from './service/ServiceMessageReplyJobRecommend';
 import { ServiceMessageReplyStartupRecommend } from './service/ServiceMessageReplyStartupRecommend';
-import { MessageFull_serviceMetadata, MessageFull_alphaMentions } from 'openland-api/Types';
+import { MessageFull_serviceMetadata, MessageFull_alphaMentions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_ServiceMessage_spans } from 'openland-api/Types';
 
 type ServiceMessageType = 'JOIN' | 'POST' | 'KICK' | 'PHOTO_CHANGE' | 'TITLE_CHANGE';
 
@@ -107,7 +107,7 @@ const ServiceMessageComponentByTypes = React.memo(
         return (
             <ServiceMessageDefault
                 message={otherParams.message}
-                alphaMentions={otherParams.alphaMentions}
+                spans={[]}
             />
         );
     },
@@ -145,10 +145,10 @@ const resolveServiceMessageType = ({ serviceMetadata }: { serviceMetadata: any }
 
 export const ServiceMessageComponent = React.memo(
     (params: {
+        spans?: FullMessage_ServiceMessage_spans[];
         senderUser: { id: string; name: string };
-        serviceMetadata: MessageFull_serviceMetadata;
+        serviceMetadata: FullMessage_ServiceMessage_serviceMetadata;
         message: string;
-        alphaMentions: MessageFull_alphaMentions[];
         myUserId: string;
     }) => {
         const typesObject = resolveServiceMessageType({
@@ -159,7 +159,7 @@ export const ServiceMessageComponent = React.memo(
             return (
                 <ServiceMessageDefault
                     message={params.message}
-                    alphaMentions={params.alphaMentions}
+                    spans={params.spans}
                 />
             );
         }

@@ -233,6 +233,7 @@ export const MessageIntroComponent = XMemo<MessageIntroComponentProps>(props => 
                     {urlAugmentation.description && (
                         <XView marginTop={12} flexShrink={0}>
                             <MessageTextComponent
+                                spans={[]}
                                 message={urlAugmentation.description}
                                 isEdited={false}
                             />

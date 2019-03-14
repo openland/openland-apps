@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { MessageFull_reactions } from 'openland-api/Types';
+import { MessageFull_reactions, FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
@@ -84,82 +84,7 @@ interface ReactionsRenderProps {
     messageId: string;
     userId: string;
     meId: string;
-    reactions: MessageFull_reactions[];
+    reactions: FullMessage_GeneralMessage_reactions[];
 }
 
-export const ReactionsRender = XMemo<ReactionsRenderProps>(props => {
-    let { reactions } = props;
-
-    let respondUsers = reactions.filter(i => i.reaction === 'respondPost');
-    let otherReactions = reactions.filter(i => i.reaction !== 'respondPost');
-
-    let meSender = false;
-
-    if (props.userId === props.meId) {
-        meSender = true;
-    }
-
-    return (
-        <RactionsWrapper
-            justifyContent="flex-end"
-            flexGrow={1}
-            alignSelf="center"
-            alignItems="center"
-        >
-            {respondUsers.length > 0 && meSender && (
-                <XPopper
-                    placement="top"
-                    showOnHover={true}
-                    contentContainer={<XMenuVertical />}
-                    content={respondUsers.map((i, j) => (
-                        <RespondUserWrapper
-                            key={'post_respond' + j}
-                            style="gray"
-                            path={'/mail/u/' + i.user.id}
-                        >
-                            <RespondUserContent justifyContent="space-between" alignItems="center">
-                                <XHorizontal separator={6} alignItems="center">
-                                    <RespondUserAvatar
-                                        style="user"
-                                        cloudImageUuid={i.user.photo}
-                                        objectId={i.user.id}
-                                        objectName={i.user.name}
-                                        size="m-small"
-                                    />
-                                    <XHorizontal separator={5} alignItems="center">
-                                        <RespondUserName>{i.user.name}</RespondUserName>
-                                        {i.user.primaryOrganization && (
-                                            <RespondUserCompany>
-                                                {i.user.primaryOrganization.name}
-                                            </RespondUserCompany>
-                                        )}
-                                    </XHorizontal>
-                                </XHorizontal>
-                                {i.user.id !== props.meId && (
-                                    <XButton
-                                        style="primary"
-                                        text="Message"
-                                        size="tiny"
-                                        path={'/mail/' + i.user.id}
-                                    />
-                                )}
-                            </RespondUserContent>
-                        </RespondUserWrapper>
-                    ))}
-                >
-                    <RespondWrapper separator={2} alignItems="center">
-                        <ReplyIcon />
-                        <div>{respondUsers.length}</div>
-                    </RespondWrapper>
-                </XPopper>
-            )}
-            {otherReactions.length > 0 && (
-                <Reactions
-                    messageId={props.messageId}
-                    reactions={otherReactions}
-                    meId={props.meId}
-                />
-            )}
-        </RactionsWrapper>
-    );
-});
+export const ReactionsRender = XMemo<ReactionsRenderProps>(props => null);

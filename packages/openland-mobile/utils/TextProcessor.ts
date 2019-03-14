@@ -68,6 +68,7 @@ function preprocessMentions(text: string, mentions: MessageFull_alphaMentions[])
 }
 
 export function preprocessText(text: string, mentions?: MessageFull_alphaMentions[]): Span[] {
+    // TODO: process spans instead of mentions
     let res: Span[] = [];
     let offset = 0;
     let links = linkifyInstance.match(text);

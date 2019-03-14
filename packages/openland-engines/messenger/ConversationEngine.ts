@@ -3,7 +3,7 @@ import { RoomReadMutation, ChatHistoryQuery, RoomQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { UserShort as UserShortFragnemt, FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, MessageFull_mentions } from 'openland-api/Types';
+import { UserShort as UserShortFragnemt, FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, MessageFull_mentions, FullMessage_ServiceMessage_spans } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -82,6 +82,7 @@ export interface DataSourceMessageItem {
     reply?: FullMessage_GeneralMessage_quotedMessages[];
     reactions?: FullMessage_GeneralMessage_reactions[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
+    spans?: FullMessage_ServiceMessage_spans[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
@@ -121,7 +122,7 @@ export function convertMessage(src: FullMessage & { local?: boolean }, engine: M
         attachments: generalMessage && generalMessage.attachments,
         reply: generalMessage && generalMessage.quotedMessages,
         isEdited: generalMessage && generalMessage.edited,
-
+        spans: src.spans || [],
     };
 }
 

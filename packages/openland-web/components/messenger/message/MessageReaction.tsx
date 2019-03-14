@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { MessageFull_reactions } from 'openland-api/Types';
+import { MessageFull_reactions, FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { MutationFunc } from 'react-apollo';
 import { withSetReaction, withUnsetReaction } from '../../../api/withSetReaction';
@@ -55,25 +55,25 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 18 }) => {
             crop:
                 size === 25
                     ? {
-                          figureStyle: {
-                              width: 20,
-                              marginBottom: -4,
-                          },
-                          imgStyle: {
-                              marginLeft: -3,
-                              marginRight: -1,
-                          },
-                      }
+                        figureStyle: {
+                            width: 20,
+                            marginBottom: -4,
+                        },
+                        imgStyle: {
+                            marginLeft: -3,
+                            marginRight: -1,
+                        },
+                    }
                     : {
-                          figureStyle: {
-                              width: 14,
-                              marginBottom: -4,
-                          },
-                          imgStyle: {
-                              marginLeft: -2,
-                              marginRight: -2,
-                          },
-                      },
+                        figureStyle: {
+                            width: 14,
+                            marginBottom: -4,
+                        },
+                        imgStyle: {
+                            marginLeft: -2,
+                            marginRight: -2,
+                        },
+                    },
         });
     } else if (src === '😱') {
         return emoji({
@@ -82,14 +82,14 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 18 }) => {
             crop:
                 size === 25
                     ? {
-                          figureStyle: {
-                              width: 23,
-                              marginBottom: -2,
-                          },
-                          imgStyle: {
-                              marginLeft: -1,
-                          },
-                      }
+                        figureStyle: {
+                            width: 23,
+                            marginBottom: -2,
+                        },
+                        imgStyle: {
+                            marginLeft: -1,
+                        },
+                    }
                     : undefined,
         });
     }
@@ -302,7 +302,7 @@ const SingleReactionUnset = withUnsetReaction(props => {
 interface ReactionsInnerProps {
     messageId: string;
     meId: string;
-    reactions: MessageFull_reactions[];
+    reactions: FullMessage_GeneralMessage_reactions[];
 }
 
 const Label = XMemo(
@@ -378,9 +378,9 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                                 {i.user.id === meId
                                     ? 'You'
                                     : emoji({
-                                          src: i.user.name,
-                                          size: 13,
-                                      })}
+                                        src: i.user.name,
+                                        size: 13,
+                                    })}
                             </div>
                         );
                     })}
@@ -414,9 +414,9 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                                 {i.user.id === meId
                                     ? 'You'
                                     : emoji({
-                                          src: i.user.name,
-                                          size: 13,
-                                      })}
+                                        src: i.user.name,
+                                        size: 13,
+                                    })}
                             </div>
                         );
                     })}

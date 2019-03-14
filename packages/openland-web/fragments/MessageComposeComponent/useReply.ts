@@ -1,5 +1,5 @@
 import { MutationFunc } from 'react-apollo';
-import { ReplyMessageVariables, ReplyMessage, RoomMembers_members } from 'openland-api/Types';
+import { ReplyMessageVariables, ReplyMessage, RoomMembers_members, FullMessage } from 'openland-api/Types';
 import { MessageFull } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { QuoteStateT } from './useQuote';
@@ -52,31 +52,14 @@ export function useReply({
             const currentMessages = getMessages ? getMessages() : [];
 
             const messagesToReply = currentMessages.filter(
-                (item: MessageFull) => finalQuoteMessagesId.indexOf(item.id) !== -1,
-            );
-
-            const replyMentions = messagesToReply.reduce(
-                (accumulator: string[], currentValue: ModelMessage) => {
-                    if (!currentValue.mentions) {
-                        return accumulator;
-                    }
-
-                    currentValue.mentions.forEach(mention => {
-                        if (accumulator.indexOf(mention.id) === -1) {
-                            accumulator.push(mention.id);
-                        }
-                    });
-
-                    return accumulator;
-                },
-                mentions ? mentions.map(({ id }: any) => id) : [],
+                (item: FullMessage) => finalQuoteMessagesId.indexOf(item.id) !== -1,
             );
 
             replyMessage!!({
                 variables: {
                     roomId: conversationId,
                     message: inputValue,
-                    mentions: replyMentions,
+                    mentions: [],
                     replyMessages: finalQuoteMessagesId,
                 },
             });

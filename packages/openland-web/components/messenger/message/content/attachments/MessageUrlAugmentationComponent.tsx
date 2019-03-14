@@ -4,7 +4,7 @@ import { preprocessText } from '../../../../../utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XLink } from 'openland-x/XLink';
 import WebsiteIcon from 'openland-icons/website-2.svg';
-import { MessageFull_urlAugmentation } from 'openland-api/Types';
+import { MessageFull_urlAugmentation, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { layoutMediaReverse } from '../../../../../utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import DeleteIcon from 'openland-icons/ic-close.svg';
@@ -139,7 +139,7 @@ const ImageWrapper = Glamorous.div({
     },
 });
 
-interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentation {
+interface MessageUrlAugmentationComponentProps extends FullMessage_GeneralMessage_attachments_MessageRichAttachment {
     messageId: string;
     isMe: boolean;
 }
@@ -251,63 +251,24 @@ const MessageUrlAugmentationComponentInner = React.memo(
     (props: MessageUrlAugmentationComponentProps & { isMobile: boolean }) => {
         let {
             isMobile,
-            hostname,
+            subTitle,
             title,
-            photo,
-            imageInfo,
-            description,
-            iconRef,
+            image,
+            text,
+            icon,
             isMe,
             messageId,
-            extra,
         } = props;
 
-        let href: string | undefined = props.url;
+        let href: string | undefined = props.titleLink || undefined;
         let path: string | undefined = undefined;
 
-        if (isInternalLink(href)) {
-            path = makeInternalLinkRelative(href);
+        if (isInternalLink(href || '')) {
+            path = makeInternalLinkRelative(href || '');
             href = undefined;
         }
 
-        let organization;
-        if (extra !== null) {
-            if (extra.__typename === 'Organization') {
-                organization = extra.name;
-            } else if (extra.__typename === 'ChannelConversation') {
-                return (
-                    <InternalUrlCard
-                        href={href}
-                        path={path}
-                        isMe={isMe}
-                        messageId={messageId}
-                        description={description}
-                        id={extra.id}
-                        name={extra.title}
-                        photo={extra.photo}
-                        organization={extra.organization ? extra.organization!!.name : null}
-                    />
-                );
-            } else if (extra.__typename === 'User') {
-                return (
-                    <InternalUrlCard
-                        href={href}
-                        path={path}
-                        isMe={isMe}
-                        messageId={messageId}
-                        description={description}
-                        id={extra.id}
-                        name={extra.name}
-                        photo={extra.photo}
-                        organization={
-                            extra.primaryOrganization ? extra.primaryOrganization!!.name : null
-                        }
-                    />
-                );
-            }
-        }
-
-        const preprocessed = description ? preprocessText(description) : [];
+        const preprocessed = text ? preprocessText(text) : [];
 
         let parts = preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
@@ -335,8 +296,8 @@ const MessageUrlAugmentationComponentInner = React.memo(
         });
 
         let dimensions = undefined;
-        if (photo && imageInfo && imageInfo.imageWidth && imageInfo.imageHeight) {
-            dimensions = layoutMediaReverse(imageInfo.imageWidth, imageInfo.imageHeight, 94, 94);
+        if (image && image.metadata && image.metadata.imageWidth && image.metadata.imageHeight) {
+            dimensions = layoutMediaReverse(image.metadata.imageWidth, image.metadata.imageHeight, 94, 94);
         }
 
         return (
@@ -347,13 +308,13 @@ const MessageUrlAugmentationComponentInner = React.memo(
                 onClick={(e: any) => e.stopPropagation()}
             >
                 <ContentWrapper>
-                    {hostname && (
+                    {subTitle && (
                         <Hostname>
-                            {iconRef && (
-                                <Favicon src={'https://ucarecdn.com/' + iconRef.uuid + '/'} />
+                            {icon && (
+                                <Favicon src={icon.url} />
                             )}
-                            {!iconRef && <WebsiteIcon />}
-                            <span>{hostname}</span>
+                            {!icon && <WebsiteIcon />}
+                            <span>{subTitle}</span>
                         </Hostname>
                     )}
                     {title && (
@@ -365,12 +326,11 @@ const MessageUrlAugmentationComponentInner = React.memo(
                         </Title>
                     )}
                     {parts && <Description>{parts}</Description>}
-                    {organization && <Description>{organization}</Description>}
                 </ContentWrapper>
-                {photo && dimensions && (
+                {image && dimensions && (
                     <ImageWrapper>
                         <XCloudImage
-                            srcCloud={'https://ucarecdn.com/' + photo.uuid + '/'}
+                            srcCloud={image.url}
                             resize="fill"
                             width={dimensions.width}
                             height={dimensions.height}

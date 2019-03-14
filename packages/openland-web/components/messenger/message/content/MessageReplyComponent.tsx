@@ -2,10 +2,10 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import {
-    MessageFull_reply_sender,
-    MessageFull_reply_fileMetadata,
-    MessageFull_mentions,
-    MessageFull_alphaMentions,
+    FullMessage_GeneralMessage_spans,
+    FullMessage_GeneralMessage_sender,
+    FullMessage_GeneralMessage_attachments,
+    FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
 } from 'openland-api/Types';
 import { MessageTextComponent } from './MessageTextComponent';
 import { MessageAnimationComponent } from './MessageAnimationComponent';
@@ -16,14 +16,13 @@ import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 interface ReplyMessageProps {
-    sender: MessageFull_reply_sender;
-    mentions: MessageFull_alphaMentions[] | null;
+    sender: FullMessage_GeneralMessage_sender;
+    spans?: FullMessage_GeneralMessage_spans[];
     id: string;
     date: any;
     message: string | null;
     edited: boolean;
-    file: string | null;
-    fileMetadata: MessageFull_reply_fileMetadata | null;
+    attach?: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
     startSelected: boolean;
     compact?: boolean;
 }
@@ -35,18 +34,18 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
     if (props.message) {
         content.push(
             <MessageTextComponent
+                spans={props.spans}
                 message={props.message}
-                mentions={props.mentions}
                 key={'reply-text'}
                 isService={false}
                 isEdited={props.edited}
             />,
         );
     }
-    if (props.file) {
-        const { fileMetadata } = props;
-        const size = props.fileMetadata!!.size || undefined;
-        const name = props.fileMetadata!!.name || undefined;
+    if (props.attach) {
+        const fileMetadata = props.attach.fileMetadata;
+        const size = props.attach.fileMetadata.size || undefined;
+        const name = props.attach.fileMetadata.name || undefined;
 
         if (fileMetadata && fileMetadata.isImage) {
             let w = fileMetadata.imageWidth || undefined;
@@ -57,7 +56,7 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
                     content.push(
                         <MessageAnimationComponent
                             key={'file'}
-                            file={props.file}
+                            file={props.attach.fileId}
                             fileName={name}
                             width={w}
                             height={h}
@@ -67,7 +66,7 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
                     content.push(
                         <MessageImageComponent
                             key={'file'}
-                            file={props.file}
+                            file={props.attach.fileId}
                             fileName={name}
                             width={w}
                             height={h}
@@ -80,7 +79,7 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
             content.push(
                 <MessageFileComponent
                     key={'file'}
-                    file={props.file}
+                    file={props.attach.fileId}
                     fileName={name}
                     fileSize={size}
                     marginTop={0}

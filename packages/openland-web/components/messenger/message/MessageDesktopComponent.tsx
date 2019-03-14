@@ -15,7 +15,7 @@ import {
     DataSourceMessageItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
-import { UserShort, SharedRoomKind, MessageType } from 'openland-api/Types';
+import { UserShort, SharedRoomKind, MessageType, FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContextProps } from '../MessagesStateContext';
@@ -130,7 +130,7 @@ interface MessageComponentInnerProps extends MessageComponentProps {
 export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
-> {
+    > {
     static getDerivedStateFromProps = (props: MessageComponentInnerProps) => {
         if (!props.message.isSending) {
             if (props.messagesContext.editMessageId === props.message.id) {
@@ -178,7 +178,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             let file: File | null = null;
 
             (message.attachments || []).map(i => {
-                if (i.fileMetadata) {
+                if (i.__typename === 'MessageAttachmentFile') {
                     file = {
                         uuid: i.fileId,
                         name: i.fileMetadata.name,
@@ -211,9 +211,12 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             let singleReplyMessageId = new Set().add(message.id);
             let singleReplyMessageSender = new Set().add(message.sender.name);
 
-            if (message.file && !message.urlAugmentation) {
+            let fileAttach = (message.attachments || []).filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+            let reachAttach = (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment')[0];
+
+            if (fileAttach && !reachAttach) {
                 singleReplyMessageMessage = new Set().add('File');
-                if (message.file!!.isImage) {
+                if (fileAttach.fileMetadata.isImage) {
                     singleReplyMessageMessage = new Set().add('Photo');
                 }
             }
@@ -270,10 +273,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         let { message } = this.props;
         let out = message.isOut;
         if (!message.isSending) {
-            const isPost = message.text && message.title && message.messageType === 'POST';
-
-            const isNotIntro =
-                !message.urlAugmentation || message.urlAugmentation!.type !== 'intro';
 
             return (
                 <XHorizontal
@@ -286,15 +285,13 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     className="menu-wrapper"
                 >
                     <XHorizontal alignItems="center" separator={8}>
-                        {isNotIntro && <ReactionComponent messageId={message.id!} />}
-                        {!isPost && (
-                            <IconButton onClick={this.setReplyMessages}>
-                                <ReplyIcon />
-                            </IconButton>
-                        )}
+                        <ReactionComponent messageId={message.id!} />
+                        <IconButton onClick={this.setReplyMessages}>
+                            <ReplyIcon />
+                        </IconButton>
                         {out && message.text && (
                             <IconButton
-                                onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
+                                onClick={this.setEditMessage}
                             >
                                 <EditIcon />
                             </IconButton>
@@ -311,18 +308,11 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         let { message } = this.props;
 
         if (!message.isSending) {
-            if (
-                !message.urlAugmentation ||
-                (message.urlAugmentation && message.urlAugmentation!.type !== 'intro')
-            ) {
-                return (
-                    <Reactions
-                        messageId={message.id!}
-                        reactions={message.reactions || []}
-                        meId={(this.props.me && this.props.me.id) || ''}
-                    />
-                );
-            }
+            return <Reactions
+                messageId={message.id!}
+                reactions={message.reactions || []}
+                meId={(this.props.me && this.props.me.id) || ''}
+            />
         }
 
         return null;
@@ -334,9 +324,11 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         let date: any = null;
         let edited = message.isEdited;
 
+        let fileAttach = (message.attachments || []).filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+        let reachAttach = (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
+
         let isSelect = false;
         let hideMenu = false;
-        let isPost = false;
         let { forwardMessagesId } = this.props.messagesContext;
         if (forwardMessagesId) {
             isSelect = forwardMessagesId.has(message.id || 'none');
@@ -346,29 +338,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         }
 
         if (!message.isSending) {
-            if (message.text && message.title && message.messageType === MessageType.POST) {
-                isPost = true;
-                let meId = this.props.me ? this.props.me.id : '';
 
-                content.push(
-                    <MessagePostComponent
-                        key={'post_message' + message.id}
-                        messageId={message.id!}
-                        senderName={message.senderName}
-                        userId={message.senderId}
-                        message={message.text}
-                        alphaTitle={message.title}
-                        alphaButtons={message.buttons || []}
-                        alphaAttachments={message.attachments || []}
-                        reactions={message.reactions}
-                        edited={!!message.isEdited}
-                        meId={meId}
-                        privateConversation={this.props.conversationType === 'PRIVATE'}
-                    />,
-                );
-            }
-
-            if (this.state.isEditView && message.text && !isPost) {
+            if (this.state.isEditView && message.text) {
                 content.push(
                     <EditMessageInlineWrapper
                         message={message}
@@ -391,17 +362,18 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                             ? array[index - 1].sender.id === item.sender.id
                                             : false;
 
+                                    let qfileAttach = (item.__typename === 'GeneralMessage' ? ((item.attachments || []).filter(a => a.__typename === 'MessageAttachmentFile')[0]) : undefined) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+
                                     return (
                                         <MessageReplyComponent
-                                            mentions={message.mentions || []}
+                                            attach={qfileAttach}
+                                            spans={item.spans}
                                             sender={item.sender}
                                             date={item.date}
                                             message={item.message}
                                             id={item.id}
                                             key={'reply_message' + item.id + index}
-                                            edited={item.edited}
-                                            file={item.file}
-                                            fileMetadata={item.fileMetadata}
+                                            edited={item.__typename === 'GeneralMessage' && item.edited}
                                             startSelected={hideMenu}
                                             compact={isCompact || undefined}
                                         />
@@ -410,7 +382,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         </ReplyMessageWrapper>,
                     );
                 }
-                if (message.text && message.text.length > 0 && !isPost) {
+                if (message.text && message.text.length > 0) {
                     if (message.isService) {
                         content.push(
                             <ServiceMessageComponent
@@ -418,7 +390,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 myUserId={this.props.me ? this.props.me.id : ''}
                                 serviceMetadata={message.serviceMetaData!}
                                 message={message.text || ''}
-                                alphaMentions={message.mentions || []}
+                                spans={message.spans || []}
                                 key={'service_message'}
                             />,
                         );
@@ -426,7 +398,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         content.push(
                             <MessageTextComponent
                                 message={message.text || ''}
-                                mentions={message.mentions || []}
+                                spans={message.spans || []}
                                 key={'text'}
                                 isEdited={!!message.isEdited}
                             />,
@@ -434,61 +406,62 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     }
                 }
 
-                const { file } = message;
-                if (file && !message.urlAugmentation) {
-                    if (file.isImage && file.imageSize) {
-                        if (file.isGif) {
+                if (fileAttach && !reachAttach) {
+                    if (fileAttach.fileMetadata.isImage) {
+                        if (fileAttach.fileMetadata.imageFormat === 'gif') {
                             content.push(
                                 <MessageAnimationComponent
                                     key={'file'}
-                                    file={file.fileId!}
-                                    fileName={file.fileName}
-                                    {...file.imageSize}
+                                    file={fileAttach.fileId!}
+                                    fileName={fileAttach.fileMetadata.name}
+                                    width={fileAttach.fileMetadata.imageWidth || 0}
+                                    height={fileAttach.fileMetadata.imageHeight || 0}
                                 />,
                             );
                         } else {
                             content.push(
                                 <MessageImageComponent
                                     key={'file'}
-                                    file={file.fileId!}
-                                    fileName={file.fileName}
+                                    file={fileAttach.fileId!}
+                                    fileName={fileAttach.fileMetadata.name}
+                                    width={fileAttach.fileMetadata.imageWidth || 0}
+                                    height={fileAttach.fileMetadata.imageHeight || 0}
                                     startSelected={hideMenu}
-                                    {...file.imageSize}
                                 />,
                             );
                         }
-                    } else if (file.fileName.endsWith('.mp4') || file.fileName.endsWith('.mov')) {
+                    } else if (fileAttach.fileMetadata.name.endsWith('.mp4') || fileAttach.fileMetadata.name.endsWith('.mov')) {
                         content.push(
                             <MessageVideoComponent
                                 key={'file'}
-                                file={file.fileId}
-                                fileName={file.fileName}
+                                file={fileAttach.fileId}
+                                fileName={fileAttach.fileMetadata.name}
                             />,
                         );
                     } else {
                         content.push(
                             <MessageFileComponent
                                 key={'file'}
-                                file={file.fileId}
-                                fileName={file.fileName}
-                                fileSize={file.fileSize}
+                                file={fileAttach.fileId}
+                                fileName={fileAttach.fileMetadata.name}
+                                fileSize={fileAttach.fileMetadata.size}
                             />,
                         );
                     }
                 }
-                if (message.urlAugmentation && !isPost && !message.isService) {
+                if (reachAttach && reachAttach.titleLink && !message.isService) {
                     if (
-                        message.urlAugmentation.url.startsWith('https://app.openland.com/o') &&
-                        message.urlAugmentation.url.includes('listings#')
+                        reachAttach.titleLink.startsWith('https://app.openland.com/o') &&
+                        reachAttach.titleLink.includes('listings#')
                     ) {
                         content = [];
                     }
                     content.push(
                         <MessageUrlAugmentationComponent
                             key="urlAugmentation"
-                            {...message.urlAugmentation}
                             messageId={message.id!}
                             isMe={message.senderId === (this.props.me && this.props.me.id)}
+                            {...reachAttach}
                         />,
                     );
                 }
@@ -498,7 +471,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 content.push(
                     <MessageTextComponent
                         message={message.text}
-                        mentions={message.mentions}
+                        spans={message.spans}
                         key={'text'}
                         isService={false}
                         isEdited={!!message.isEdited}
@@ -536,7 +509,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             content.push(
                 <MessageTextComponent
                     message={''}
-                    mentions={null}
+                    spans={[]}
                     key={'text'}
                     isService={false}
                     isEdited={!!edited}
@@ -556,7 +529,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     selected={isSelect}
                 >
                     {content}
-                    {!isPost && this.reactionsRender()}
+                    {this.reactionsRender()}
                 </DesktopMessageContainer>
             );
         }

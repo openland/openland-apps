@@ -72,10 +72,10 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
 
                 {!props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument && <ASText fontSize={13} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{props.message.senderName}</ASText>}
                 {hasReply && <ReplyContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
-                {hasText && <TextContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
-                {hasUrlAug && <UrlAugmentationContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
+                {hasText && <TextContent attach={augmenationAttach} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
+                {hasUrlAug && <UrlAugmentationContent attach={augmenationAttach!} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
                 {(hasImage && layout) && <MediaContent layout={layout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />}
-                {hasDocument && <DocumentContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
+                {hasDocument && <DocumentContent attach={fileAttach!} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
 
                 <ASFlex
                     overlay={true}

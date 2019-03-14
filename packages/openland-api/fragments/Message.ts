@@ -110,9 +110,120 @@ export const FullMessage = gql`
                     }
                     filePreview
                 }
+
+                ...on MessageRichAttachment{
+                    id
+                    title
+                    subTitle
+                    titleLink
+                    text
+                    icon{
+                        url
+                        metadata{
+                            name
+                            mimeType
+                            size
+                            isImage
+                            imageWidth
+                            imageHeight
+                            imageFormat
+                        }
+                    }
+                    image{
+                        url
+                        metadata{
+                            name
+                            mimeType
+                            size
+                            isImage
+                            imageWidth
+                            imageHeight
+                            imageFormat
+                        }
+                    }
+                    fallback
+                }
             }
             quotedMessages{
                 id
+                date
+                message
+                sender {
+                    ...UserShort
+                }
+                message
+                fallback
+                spans{
+                    offset
+                    length
+                    ...on MessageSpanUserMention{
+                        user{
+                            ...UserTiny
+                        }
+                    }
+                    ...on MessageSpanRoomMention{
+                        room{
+                            ...RoomShort
+                        }
+                    }
+                    ...on MessageSpanLink{
+                        url
+                    }
+                }
+
+                ...on GeneralMessage{
+                    edited
+                    attachments{
+                        id
+                        fallback
+                        ...on MessageAttachmentFile{
+                            fileId
+                            fileMetadata{
+                                name
+                                mimeType
+                                size
+                                isImage
+                                imageWidth
+                                imageHeight
+                                imageFormat
+                            }
+                            filePreview
+                        }
+
+                        ...on MessageRichAttachment{
+                            id
+                            title
+                            subTitle
+                            titleLink
+                            text
+                            icon{
+                                url
+                                metadata{
+                                    name
+                                    mimeType
+                                    size
+                                    isImage
+                                    imageWidth
+                                    imageHeight
+                                    imageFormat
+                                }
+                            }
+                            image{
+                                url
+                                metadata{
+                                    name
+                                    mimeType
+                                    size
+                                    isImage
+                                    imageWidth
+                                    imageHeight
+                                    imageFormat
+                                }
+                            }
+                            fallback
+                        }
+                    }
+                }
             }
 
             reactions{

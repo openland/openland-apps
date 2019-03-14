@@ -9,11 +9,20 @@ import { DownloadManagerInstance } from '../../../openland-mobile/files/Download
 import { WatchSubscription } from '../../../openland-y-utils/Watcher';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { DownloadState } from '../../files/DownloadManagerInterface';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 
 const paddedText = '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
 
-export class AsyncReplyMessageDocumentView extends React.PureComponent<{ message: DataSourceMessageItem, parent: DataSourceMessageItem, onPress: (document: DataSourceMessageItem) => void }, { downloadState?: DownloadState }> {
+interface AsyncReplyMessageDocumentViewProps {
+    message: DataSourceMessageItem;
+    attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
+    parent: DataSourceMessageItem;
+    onPress: (document: DataSourceMessageItem) => void;
+
+}
+
+export class AsyncReplyMessageDocumentView extends React.PureComponent<AsyncReplyMessageDocumentViewProps, { downloadState?: DownloadState }> {
     private handlePress = () => {
         this.props.onPress(this.props.message);
     }
@@ -26,9 +35,9 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<{ message
     }
 
     componentWillMount() {
-        if (this.props.message.file && this.props.message.file.fileId) {
+        if (this.props.attach && this.props.attach.fileId) {
             this.downloadManagerWatch = DownloadManagerInstance.watch(
-                this.props.message.file!!.fileId!,
+                this.props.attach!!.fileId!,
                 null,
                 (state) => {
                     this.setState({ downloadState: state });
@@ -36,7 +45,7 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<{ message
                 false);
         }
 
-        if (this.props.message.file && this.props.message.file.uri) {
+        if (this.props.attach && this.props.attach.uri) {
             this.downloadManagerWatch = UploadManagerInstance.watch(this.props.message.key, s => this.setState({ downloadState: { progress: s.progress } }));
         }
 
@@ -96,7 +105,7 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<{ message
                         lineHeight={18}
                         numberOfLines={1}
                     >
-                        {this.props.message.file!!.fileName}{this.props.message.isOut ? paddedTextOut : paddedText}
+                        {this.props.attach!!.fileMetadata.name}{this.props.message.isOut ? paddedTextOut : paddedText}
                     </ASText>
                     <ASText
                         color={this.props.parent.isOut ? '#ffffff' : '#8a8a8f'}
@@ -107,7 +116,7 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<{ message
                         numberOfLines={1}
                         opacity={0.7}
                     >
-                        {formatBytes(this.props.message.file!!.fileSize)}
+                        {formatBytes(this.props.attach!!.fileMetadata.size)}
                     </ASText>
                 </ASFlex>
             </ASFlex>
