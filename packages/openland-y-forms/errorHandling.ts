@@ -19,6 +19,8 @@ export function formatError(error: any): string {
     } else if (error.userMessage) {
         // Return first message
         return error.userMessage;
+    } else if (typeof error === 'string' && error.startsWith('GraphQL error:')) {
+        return error.replace('GraphQL error: ', '');
     } else if (error instanceof SilentError) {
         return '';
     }

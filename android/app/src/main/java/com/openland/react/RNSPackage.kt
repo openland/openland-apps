@@ -20,7 +20,8 @@ import com.openland.react.window.RNSWindowManager
 class RNSPackage : ReactPackage {
 
     init {
-        ComponentsConfiguration.incrementalMountUsesLocalVisibleBounds = false
+        // ComponentsConfiguration.incrementalMountUsesLocalVisibleBounds = false
+        // ComponentsConfiguration.incrementalMountWhenNotVisible = false
         ComponentsConfiguration.prewarmImageTexture = true
     }
 

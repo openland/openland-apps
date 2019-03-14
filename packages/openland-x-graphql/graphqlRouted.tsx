@@ -4,6 +4,7 @@ import { GraphQLRoutedComponentProps } from './graphql';
 import { prepareParams } from './prepareParams';
 import { GraphqlTypedQuery } from 'openland-y-graphql/typed';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { throwGraphQLErrors } from './throwErrors';
 
 export function graphqlRouted<TResult, TVars>(
     query: GraphqlTypedQuery<TResult, TVars>,
@@ -53,17 +54,8 @@ export function graphqlRouted<TResult, TVars>(
                                         }
                                         if (results.error) {
                                             console.warn(preparedVariables);
-                                            console.warn(results.error);
 
-                                            // whitelist Access Denied error propagation
-                                            if (
-                                                results.error.graphQLErrors &&
-                                                results.error.graphQLErrors.length &&
-                                                results.error.graphQLErrors[0].message ===
-                                                    'Access Denied'
-                                            ) {
-                                                throw results.error;
-                                            }
+                                            throwGraphQLErrors(results.error);
                                         }
                                         return (
                                             <Component
