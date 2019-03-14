@@ -535,7 +535,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                 {title && (
                     <>
                         {!this.state.titleInside && (
-                            <Title format={size}>
+                            <Title format={size} className="input-placeholder">
                                 {title}
                                 {required && (
                                     <RequireElement className="required-star">*</RequireElement>

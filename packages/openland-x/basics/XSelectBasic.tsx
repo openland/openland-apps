@@ -115,14 +115,10 @@ const Styles = (props: {
     },
     '& .Select-control': {
         backgroundColor: '#fff',
-        borderTopLeftRadius:
-            props.attach === 'both' || props.attach === 'left' ? 0 : 10,
-        borderBottomLeftRadius:
-            props.attach === 'both' || props.attach === 'left' ? 0 : 10,
-        borderTopRightRadius:
-            props.attach === 'both' || props.attach === 'right' ? 0 : 10,
-        borderBottomRightRadius:
-            props.attach === 'both' || props.attach === 'right' ? 0 : 10,
+        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 10,
+        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 10,
+        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 10,
+        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 10,
         border: '1px solid rgba(220, 222, 228, 0.6)',
         color: '#333',
         cursor: 'default',
@@ -425,9 +421,7 @@ const Styles = (props: {
     },
 });
 
-const StyledAsync = Glamorous(Async)(Styles) as React.ComponentType<
-    ReactAsyncSelectProps
->;
+const StyledAsync = Glamorous(Async)(Styles) as React.ComponentType<ReactAsyncSelectProps>;
 const StyledSelect = Glamorous(Select)(Styles) as React.ComponentType<
     ReactSelectProps & {
         invalid?: boolean;
@@ -435,9 +429,7 @@ const StyledSelect = Glamorous(Select)(Styles) as React.ComponentType<
         withSubtitle?: boolean;
     }
 >;
-const StyledSelectCreatable = Glamorous(Creatable)(
-    Styles,
-) as React.ComponentType<
+const StyledSelectCreatable = Glamorous(Creatable)(Styles) as React.ComponentType<
     ReactCreatableSelectProps & { invalid?: boolean; noArrow?: boolean }
 >;
 
@@ -445,39 +437,41 @@ const SelectWrapper = Glamorous.div({
     position: 'relative',
 });
 
-const Title = Glamorous.div<{ inside?: boolean }>(props =>
-    props.inside
-        ? {
-              top: 1,
-              left: 17,
-              height: 38,
-              fontSize: 14,
-              lineHeight: '38px',
-              position: 'absolute',
-              paddingLeft: 0,
-              paddingRight: 0,
-              backgroundColor: 'white',
-              color: 'rgba(0, 0, 0, 0.4)',
-              zIndex: 2,
-              pointerEvents: 'none',
-          }
-        : {
-              top: -10,
-              left: 13,
-              height: 20,
-              fontSize: 12,
-              lineHeight: '20px',
-              position: 'absolute',
-              paddingLeft: 3,
-              paddingRight: 3,
-              backgroundColor: 'white',
-              color: 'rgba(0, 0, 0, 0.4)',
-              zIndex: 2,
-              pointerEvents: 'none',
-          },
+const Title = Glamorous.div<{ inside?: boolean }>(
+    props =>
+        props.inside
+            ? {
+                  top: 1,
+                  left: 17,
+                  height: 38,
+                  fontSize: 14,
+                  lineHeight: '38px',
+                  position: 'absolute',
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  backgroundColor: 'white',
+                  color: 'rgba(0, 0, 0, 0.4)',
+                  zIndex: 2,
+                  pointerEvents: 'none',
+              }
+            : {
+                  top: -10,
+                  left: 13,
+                  height: 20,
+                  fontSize: 12,
+                  lineHeight: '20px',
+                  position: 'absolute',
+                  paddingLeft: 3,
+                  paddingRight: 3,
+                  backgroundColor: 'white',
+                  color: 'rgba(0, 0, 0, 0.4)',
+                  zIndex: 2,
+                  pointerEvents: 'none',
+              },
 );
 
 export type XSelectBasicProps = ReactSelectProps & {
+    className?: string;
     invalid?: boolean;
     noArrow?: boolean;
     dataTestId?: string;
@@ -500,10 +494,7 @@ interface XSelectBasicState {
     isFocused?: boolean;
 }
 
-export class XSelectBasic extends React.PureComponent<
-    XSelectBasicProps,
-    XSelectBasicState
-> {
+export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelectBasicState> {
     constructor(props: XSelectBasicProps) {
         super(props);
 
@@ -615,11 +606,12 @@ export class XSelectBasic extends React.PureComponent<
             onBlur,
             noArrow,
             invalid,
+            className,
             ...other
         } = this.props;
 
         return (
-            <SelectWrapper data-test-id={this.props.dataTestId}>
+            <SelectWrapper data-test-id={this.props.dataTestId} className={className}>
                 {title && (
                     <Title
                         inside={
@@ -642,39 +634,39 @@ export class XSelectBasic extends React.PureComponent<
                         onFocus={this.handleFocus}
                         onBlur={this.handleBlur}
                         placeholder={title ? '' : placeholder}
-                        shouldKeyDownEventCreateNewOption={event =>
-                            event.keyCode === 13
-                        }
+                        shouldKeyDownEventCreateNewOption={event => event.keyCode === 13}
                         {...other}
                     />
                 )}
-                {!this.props.creatable && !this.props.withSubtitle && (
-                    <StyledSelect
-                        invalid={invalid}
-                        noArrow={noArrow}
-                        onInputChange={this.handleInputChange}
-                        onChange={this.handleChange}
-                        onFocus={this.handleFocus}
-                        onBlur={this.handleBlur}
-                        placeholder={title ? '' : placeholder}
-                        {...other}
-                    />
-                )}
-                {!this.props.creatable && this.props.withSubtitle && (
-                    <StyledSelect
-                        invalid={invalid}
-                        noArrow={noArrow}
-                        onInputChange={this.handleInputChange}
-                        onChange={this.handleChange}
-                        onFocus={this.handleFocus}
-                        onBlur={this.handleBlur}
-                        placeholder={title ? '' : placeholder}
-                        optionRenderer={this.optionWithSubtitleHelpRender}
-                        valueRenderer={this.valueWithSubtitleRender}
-                        withSubtitle={this.props.withSubtitle}
-                        {...other}
-                    />
-                )}
+                {!this.props.creatable &&
+                    !this.props.withSubtitle && (
+                        <StyledSelect
+                            invalid={invalid}
+                            noArrow={noArrow}
+                            onInputChange={this.handleInputChange}
+                            onChange={this.handleChange}
+                            onFocus={this.handleFocus}
+                            onBlur={this.handleBlur}
+                            placeholder={title ? '' : placeholder}
+                            {...other}
+                        />
+                    )}
+                {!this.props.creatable &&
+                    this.props.withSubtitle && (
+                        <StyledSelect
+                            invalid={invalid}
+                            noArrow={noArrow}
+                            onInputChange={this.handleInputChange}
+                            onChange={this.handleChange}
+                            onFocus={this.handleFocus}
+                            onBlur={this.handleBlur}
+                            placeholder={title ? '' : placeholder}
+                            optionRenderer={this.optionWithSubtitleHelpRender}
+                            valueRenderer={this.valueWithSubtitleRender}
+                            withSubtitle={this.props.withSubtitle}
+                            {...other}
+                        />
+                    )}
             </SelectWrapper>
         );
     }

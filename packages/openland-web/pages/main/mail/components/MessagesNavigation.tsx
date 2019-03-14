@@ -108,7 +108,7 @@ export const MessagesNavigation = XMemo(
                 tab={tab}
                 menuRightContent={
                     <PopperOptionsButton
-                        path="/mail/new"
+                        path="/mail/create"
                         icon={<PlusIcon />}
                         title={TextDirectory.create.title}
                     />
