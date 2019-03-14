@@ -105,7 +105,7 @@ if ("$System.env.CI" == "true") {
     buildDir = "./app/build/"
 }
 
-def appVersionCode = Integer.valueOf(System.env.BUILD_NUMBER ?: 0)
+def appVersionCode = Integer.valueOf(System.env.BUILD_NUMBER ?: 1)
 
 android {
     dexOptions {
@@ -115,7 +115,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.openland.app"
-        minSdkVersion 23
+        minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         ndk {
             abiFilters "armeabi-v7a", "x86"
