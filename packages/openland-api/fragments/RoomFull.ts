@@ -31,6 +31,9 @@ export const RoomFull = gql`
                 user {
                     ...UserShort
                 }
+                invitedBy {
+                    id
+                }
             }
             requests {
                 user {
