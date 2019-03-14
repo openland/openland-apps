@@ -56,13 +56,11 @@ const emojifyJoinEmojies = ({ src, size }: { src: string; size: 18 }) => {
             size,
             crop: {
                 figureStyle: {
-                    width: 15,
+                    width: 18,
                     marginBottom: -2,
                     marginRight: 2,
                 },
-                imgStyle: {
-                    marginLeft: -1,
-                },
+                imgStyle: {},
             },
         });
     } else if (src === '👏') {
@@ -125,12 +123,9 @@ const JoinOneServiceMessage = React.memo(
         firstUser: UserShort;
         myUserId: string;
     }) => {
-        const randomEmoji = React.useMemo(
-            () => {
-                return GetRandomJoinEmoji();
-            },
-            [myUserId],
-        );
+        const randomEmoji = React.useMemo(() => {
+            return GetRandomJoinEmoji();
+        }, [myUserId]);
 
         let [handEmoji] = React.useState(randomEmoji);
         return (
@@ -165,12 +160,9 @@ const JoinTwoServiceMessage = React.memo(
         secondUser: UserShort;
         myUserId: string;
     }) => {
-        const randomEmoji = React.useMemo(
-            () => {
-                return GetRandomJoinEmoji();
-            },
-            [myUserId],
-        );
+        const randomEmoji = React.useMemo(() => {
+            return GetRandomJoinEmoji();
+        }, [myUserId]);
 
         let [handEmoji] = React.useState(randomEmoji);
         return (
@@ -196,12 +188,9 @@ const JoinManyServiceMessage = React.memo(
         otherUsers: UserShort[];
         myUserId: string;
     }) => {
-        const randomEmoji = React.useMemo(
-            () => {
-                return GetRandomJoinEmoji();
-            },
-            [myUserId],
-        );
+        const randomEmoji = React.useMemo(() => {
+            return GetRandomJoinEmoji();
+        }, [myUserId]);
 
         let [handEmoji] = React.useState(randomEmoji);
         return (
