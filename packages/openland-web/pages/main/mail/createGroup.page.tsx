@@ -12,6 +12,7 @@ import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { withApp } from 'openland-web/components/withApp';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
+import { XModal, XModalBody, XModalFooter } from 'openland-x-modal/XModal';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMutation } from 'openland-x/XMutation';
 import { XInput } from 'openland-x/XInput';
@@ -89,20 +90,38 @@ const MainWrapper = (props: { back: boolean; onBackClick: () => void; children: 
                     <span>Back</span>
                 </XView>
             )}
-            <XView
-                as="a"
-                cursor="pointer"
-                alignItems="center"
-                justifyContent="center"
-                padding={8}
-                width={32}
-                height={32}
-                borderRadius={50}
-                hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
-                path="/mail/"
-            >
-                <CloseIcon />
-            </XView>
+            <XModal
+                title="Discard changes"
+                width={380}
+                body={
+                    <XModalBody>
+                        <XView paddingBottom={30}>
+                            If you leave now, this group won't be created.
+                        </XView>
+                    </XModalBody>
+                }
+                footer={
+                    <XModalFooter>
+                        <XButton text="Go back" style="primary" autoClose={true} />
+                        <XView width={12} flexShrink={0} />
+                        <XButton text="Discard" style="ghost" path="/mail" />
+                    </XModalFooter>
+                }
+                target={
+                    <XView
+                        cursor="pointer"
+                        alignItems="center"
+                        justifyContent="center"
+                        padding={8}
+                        width={32}
+                        height={32}
+                        borderRadius={50}
+                        hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                    >
+                        <CloseIcon />
+                    </XView>
+                }
+            />
         </XView>
         <XView
             flexDirection="row"
@@ -472,6 +491,7 @@ const SelectGroupTypeClassName = css`
     }
     & .Select-control {
         height: 52px !important;
+        opacity: 0;
     }
 `;
 

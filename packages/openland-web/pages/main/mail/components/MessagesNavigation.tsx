@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
+import NewChatIcon from 'openland-icons/ic-new-chat.svg';
 import { tabs, tabsT } from '../tabs';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
@@ -107,8 +107,7 @@ export const MessagesNavigation = XMemo(
                 tab={tab}
                 menuRightContent={
                     <PopperOptionsButton
-                        path="/mail/create"
-                        icon={<PlusIcon />}
+                        icon={<NewChatIcon />}
                         title={TextDirectory.create.title}
                     />
                 }
