@@ -23,9 +23,10 @@ import android.text.style.TypefaceSpan
 import com.facebook.litho.widget.Text
 import com.facebook.react.uimanager.PixelUtil
 
-
 @LayoutSpec
 object LithoTextSpec {
+
+    private val fontCache = mutableMapOf<String, Typeface>()
 
     private fun resolveText(spec: AsyncTextSpec, reactContext: ReactContext, context: ComponentContext): SpannableStringBuilder {
         val sb = SpannableStringBuilder()
@@ -34,9 +35,9 @@ object LithoTextSpec {
                 sb.append(s)
             } else if (s is AsyncTextSpec) {
                 val part = resolveText(s, reactContext, context)
-                if(s.touchableKey != null){
+                if (s.touchableKey != null) {
                     val span = object : ClickableSpan() {
-                        override fun onClick(view: View){
+                        override fun onClick(view: View) {
                             val map = WritableNativeMap()
                             map.putString("key", s.touchableKey)
                             val loc = IntArray(2)
@@ -52,39 +53,39 @@ object LithoTextSpec {
 
                         override fun updateDrawState(ds: TextPaint?) {
                             super.updateDrawState(ds)
-                            if(ds!=null){
+                            if (ds != null) {
                                 ds.isUnderlineText = s.underline
                                 ds.color = spec.color
                             }
 
                         }
                     }
-                    part.setSpan(span, 0, part.length ,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    part.setSpan(span, 0, part.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
 
                 }
-                if(s.fontSize !== null){
-                    part.setSpan(AbsoluteSizeSpan(s.fontSize!!.toInt(), true), 0, part.length ,  Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+                if (s.fontSize !== null) {
+                    part.setSpan(AbsoluteSizeSpan(s.fontSize!!.toInt(), true), 0, part.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
                 }
 
-                if(s.fontWeight !== null){
+                if (s.fontWeight !== null) {
 
                     val span = object : TypefaceSpan(s.fontWeight) {
 
                         override fun updateDrawState(ds: TextPaint?) {
                             super.updateDrawState(ds)
-                            if(ds!=null){
+                            if (ds != null) {
                                 ds.typeface = resolveFont(context, s.fontWeight, s.fontStyle)
                             }
 
                         }
                     }
 
-                    part.setSpan(span, 0, part.length ,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    part.setSpan(span, 0, part.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
 
-                if(s.color != Color.BLACK){
-                    part.setSpan(ForegroundColorSpan(s.color), 0, part.length ,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                if (s.color != Color.BLACK) {
+                    part.setSpan(ForegroundColorSpan(s.color), 0, part.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
 
                 sb.append(part)
@@ -103,7 +104,7 @@ object LithoTextSpec {
                 .typeface(resolveFont(context, spec.fontWeight, spec.fontStyle))
                 .textColor(spec.color)
                 .shouldIncludeFontPadding(false)
-        if(spec.touchableKey != null){
+        if (spec.touchableKey != null) {
             res.clickHandler(LithoText.onClick(context))
         }
 
@@ -145,23 +146,36 @@ object LithoTextSpec {
                 .emit("async_on_press", map)
     }
 
-    private fun resolveFont(context: ComponentContext, weight: String?, style: String?): Typeface?{
+    private fun resolveFont(context: ComponentContext, weight: String?, style: String?): Typeface? {
         val weightStyle = weight + (if (style == "italic") "-italic" else "")
 
         return when (weightStyle) {
-            "100" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Thin.ttf")
-            "300" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Light.ttf")
-            "400" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Regular.ttf")
-            "500" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Medium.ttf")
-            "700" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Bold.ttf")
-            "900" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Black.ttf")
-            "100-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-ThinItalic.ttf")
-            "300-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-LightItalic.ttf")
-            "400-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Italic.ttf")
-            "500-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-MediumItalic.ttf")
-            "700-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-BoldItalic.ttf")
-            "900-italic" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-BlackItalic.ttf")
+            "100" -> loadFromAsset(context, "fonts/Roboto-Thin.ttf")
+            "300" -> loadFromAsset(context, "fonts/Roboto-Light.ttf")
+            "400" -> loadFromAsset(context, "fonts/Roboto-Regular.ttf")
+            "500" -> loadFromAsset(context, "fonts/Roboto-Medium.ttf")
+            "700" -> loadFromAsset(context, "fonts/Roboto-Bold.ttf")
+            "900" -> loadFromAsset(context, "fonts/Roboto-Black.ttf")
+            "100-italic" -> loadFromAsset(context, "fonts/Roboto-ThinItalic.ttf")
+            "300-italic" -> loadFromAsset(context, "fonts/Roboto-LightItalic.ttf")
+            "400-italic" -> loadFromAsset(context, "fonts/Roboto-Italic.ttf")
+            "500-italic" -> loadFromAsset(context, "fonts/Roboto-MediumItalic.ttf")
+            "700-italic" -> loadFromAsset(context, "fonts/Roboto-BoldItalic.ttf")
+            "900-italic" -> loadFromAsset(context, "fonts/Roboto-BlackItalic.ttf")
             else -> null
         }
     }
+
+    private fun loadFromAsset(context: ComponentContext, path: String): Typeface {
+        synchronized(fontCache) {
+            val res = fontCache[path]
+            if (res != null) {
+                return res
+            }
+            val res2 = Typeface.createFromAsset(context.androidContext.assets, path)
+            fontCache[path] = res2
+            return res2
+        }
+    }
+
 }
