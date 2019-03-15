@@ -75,6 +75,7 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
         if (s.__typename === 'MessageSpanLink') {
             span = { type: 'link', link: s.url };
         } else if (s.__typename === 'MessageSpanUserMention') {
+            spanText = spanText.replace('@', '');
             span = { type: 'mention_user', name: s.user.name, id: s.user.id }
         } else if (s.__typename === 'MessageSpanRoomMention') {
             span = { type: 'mention_room', title: s.room.__typename === 'SharedRoom' ? s.room.title : s.room.user.name, id: s.room.id }

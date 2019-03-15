@@ -18,6 +18,7 @@ import { DialogItemViewAsync } from './components/DialogItemViewAsync';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
+import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -43,8 +44,7 @@ export class MobileMessenger {
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
                     if (item.serviceMetaData || item.isService) {
-                        // return (<ThemeProvider><AsyncServiceMessageView message={item} engine={eng} onUserPress={this.handleAvatarClick} onRoomPress={this.handleDialogClick} /></ThemeProvider>);
-                        return (<ThemeProvider><AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} /></ThemeProvider>);
+                        return (<ThemeProvider><ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} /></ThemeProvider>);
                     } else {
                         return (<ThemeProvider><AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} /></ThemeProvider>);
                     }
