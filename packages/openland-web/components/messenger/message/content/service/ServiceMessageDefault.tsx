@@ -68,12 +68,12 @@ export const SpansMessage = ({
 
         for (let span of sortedSpans) {
             if (lastOffset < span.offset) {
-                res.push(<SpansMessageText text={message.slice(lastOffset, span.offset)} />);
+                res.push(<SpansMessageText key={'text-' + i} text={message.slice(lastOffset, span.offset)} />);
             }
 
             if (span.__typename === 'MessageSpanMultiUserMention') {
                 res.push(
-                    <span>
+                    <span key={'users-' + i}>
                         <OthersPopper
                             show={true}
                             items={span.users.map(
@@ -93,6 +93,7 @@ export const SpansMessage = ({
             } else if (span.__typename === 'MessageSpanRoomMention') {
                 res.push(
                     <LinkToRoom
+                        key={'room-' + i} 
                         text={message.slice(span.offset + 1, span.offset + span.length)}
                         roomId={span.room.id}
                     />,
@@ -110,7 +111,7 @@ export const SpansMessage = ({
             } else if (span.__typename === 'MessageSpanUserMention') {
                 res.push(
                     <MentionedUser
-                        key={'text-' + i++}
+                        key={'user-' + i}
                         isYou={false}
                         text={message.slice(span.offset + 1, span.offset + span.length)}
                         user={{
@@ -132,10 +133,12 @@ export const SpansMessage = ({
                 );
                 lastOffset = span.offset + span.length;
             }
+
+            i++;
         }
 
         if (lastOffset < message.length) {
-            res.push(<SpansMessageText text={message.slice(lastOffset, message.length)} />);
+            res.push(<SpansMessageText key={'text-' + i} text={message.slice(lastOffset, message.length)} />);
         }
     } else {
         return <SpansMessageText text={message} />;
