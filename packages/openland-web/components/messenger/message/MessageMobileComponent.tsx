@@ -17,7 +17,6 @@ import { MessageUrlAugmentationComponent } from './content/attachments/MessageUr
 import { UserShort, SharedRoomKind, MessageType, FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import { MobileMessageContainer } from './MessageContainer';
-import { MessagePostComponent } from './content/attachments/postMessage/MessagePostComponent';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 
 const MessageWrapper = Glamorous(XHorizontal)<{

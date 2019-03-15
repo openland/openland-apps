@@ -25,7 +25,6 @@ import {
     PostMessageType,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
-import { PostIntroModal } from '../../components/messenger/message/content/attachments/introMessage/PostIntroModal';
 import { useKeydownHandler } from './useKeydownHandler';
 import { useDraft } from './useDraft';
 import { useHandleSend } from './useHandleSend';
@@ -163,10 +162,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
                     mentionsState={mentionsState}
                 />
             )}
-            <PostIntroModal
-                targetQuery="addItro"
-                conversationId={messageComposeProps.conversationId || ''}
-            />
         </>
     );
 };

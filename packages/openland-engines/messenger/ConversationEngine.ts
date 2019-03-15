@@ -37,13 +37,13 @@ const CHAT_SUBSCRIPTION = gql`
   fragment ChatUpdateFragment on ChatUpdate {
     ... on ChatMessageReceived {
         message {
-            ...FullMessageFragment
+            ...FullMessage
         }
         repeatKey
     }
     ... on ChatMessageUpdated {
         message {
-            ...FullMessageFragment
+            ...FullMessage
         }
     }
     ... on ChatMessageDeleted {
@@ -99,13 +99,13 @@ export interface DataSourceDateItem {
     year: number;
 }
 
-export function convertMessage(src: FullMessage & { local?: boolean }, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
+export function convertMessage(src: FullMessage & { repeatKey?: string }, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
     return {
         type: 'message',
         id: src.id,
-        key: src.id,
+        key: src.repeatKey || src.id,
         date: parseInt(src.date, 10),
         isOut: src.sender.id === engine.user.id,
         senderId: src.sender.id,
@@ -198,7 +198,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         console.info('Initial state for ' + this.conversationId);
-        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client.client, this.updateHandler, undefined, { conversationId: this.conversationId }, initialChat.state.state);
+        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
         this.onMessagesUpdated();
 
         // Update Data Source
@@ -498,14 +498,14 @@ export class ConversationEngine implements MessageSendHandler {
     private updateHandler = async (event: any) => {
         console.log('ConversationEngine', event);
 
-        if (event.__typename === 'ConversationMessageReceived') {
+        if (event.__typename === 'ChatMessageReceived') {
             // Handle message
             console.info('Received new message');
 
             // Write message to store
-            if (event.message.repeatKey) {
+            if (event.repeatKey) {
                 // Try to replace message inplace
-                let existing = this.messages.findIndex((v) => isPendingMessage(v) && v.key === event.message.repeatKey);
+                let existing = this.messages.findIndex((v) => isPendingMessage(v) && v.key === event.repeatKey);
                 if (existing >= 0) {
                     let msgs = [...this.messages];
                     msgs[existing] = {
@@ -514,10 +514,10 @@ export class ConversationEngine implements MessageSendHandler {
                         date: msgs[existing].date
                     };
                     this.messages = msgs;
-                    this.localMessagesMap.set(event.message.id, event.message.repeatKey);
+                    this.localMessagesMap.set(event.message.id, event.repeatKey);
                     event.message.local = true;
                 } else {
-                    this.messages = [...this.messages.filter((v) => isServerMessage(v) || v.key !== event.message.repeatKey), event.message];
+                    this.messages = [...this.messages.filter((v) => isServerMessage(v) || v.key !== event.repeatKey), event.message];
                 }
             } else {
                 this.messages = [...this.messages, event.message];
@@ -526,8 +526,8 @@ export class ConversationEngine implements MessageSendHandler {
             this.onMessagesUpdated();
 
             // Add to datasource
-            this.appendMessage(event.message);
-        } else if (event.__typename === 'ConversationMessageDeleted') {
+            this.appendMessage({ ...event.message, repeatKey: event.repeatKey });
+        } else if (event.__typename === 'ChatMessageDeleted') {
             // Handle message
             console.info('Received delete message');
             this.messages = this.messages.filter((m: any) => m.id !== event.message.id);
@@ -541,7 +541,7 @@ export class ConversationEngine implements MessageSendHandler {
                 this.dataSource.removeItem(id);
             }
 
-        } else if (event.__typename === 'ConversationMessageUpdated') {
+        } else if (event.__typename === 'ChatMessageUpdated') {
             // Handle message
             console.info('Received edit message');
 

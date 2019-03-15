@@ -24,9 +24,7 @@ import { File, EditPostProps } from '../../../fragments/MessengerRootComponent';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
 import { DesktopMessageContainer } from './MessageContainer';
-import { MessagePostComponent } from './content/attachments/postMessage/MessagePostComponent';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
-import { Conversation } from 'openland-mobile/pages/main/Conversation';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
     flexShrink: 0,
