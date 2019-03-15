@@ -57,10 +57,9 @@ const CHAT_SUBSCRIPTION = gql`
     ... on ConversationLostAccess {
        lostAccess
     }
-
+}
     ${MessageFull}
     ${UserShort}
-}
 `;
 
 export interface ConversationStateHandler {
