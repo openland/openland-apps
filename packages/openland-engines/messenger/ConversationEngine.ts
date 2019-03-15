@@ -130,7 +130,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, engine
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
-        reply: generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.reverse() : undefined,
+        reply: generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date) : undefined,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
     };
