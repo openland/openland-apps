@@ -1,7 +1,5 @@
 import linkify from 'linkify-it';
 import tlds from 'tlds';
-import { MessageFull_alphaMentions } from 'openland-api/Types';
-import { string } from 'prop-types';
 
 export interface Span {
     type: 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_room';
@@ -13,7 +11,7 @@ let linkifyInstance = linkify()
     .tlds(tlds)
     .tlds('onion', true);
 
-function preprocessRawText(text: string, mentions?: MessageFull_alphaMentions[]): Span[] {
+function preprocessRawText(text: string, mentions?: any[]): Span[] {
     let res: Span[] = [];
     for (let p of text.split('\n')) {
         if (res.length > 0) {
@@ -33,7 +31,7 @@ function preprocessRawText(text: string, mentions?: MessageFull_alphaMentions[])
     return res;
 }
 
-function preprocessMentions(text: string, mentions: MessageFull_alphaMentions[]): Span[] {
+function preprocessMentions(text: string, mentions: any[]): Span[] {
     let res: Span[] = [];
 
     for (let m of mentions) {
@@ -67,7 +65,7 @@ function preprocessMentions(text: string, mentions: MessageFull_alphaMentions[])
     return res;
 }
 
-export function preprocessText(text: string, mentions?: MessageFull_alphaMentions[]): Span[] {
+export function preprocessText(text: string, mentions?: any[]): Span[] {
     // TODO: process spans instead of mentions
     let res: Span[] = [];
     let offset = 0;

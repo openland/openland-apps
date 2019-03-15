@@ -1,9 +1,6 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
-import { RoomMessageFull, MessageFull } from '../fragments/MessageFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
-import { RoomMessageShort } from '../fragments/MessageShort';
-import { MessageLightShort } from '../fragments/MessageLightShort';
 import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
@@ -35,11 +32,9 @@ export const DialogsQuery = gql`
             unreadCount
         }
     }
-    ${MessageLightShort}
     ${UserTiny}
     ${TinyMessage}
     ${RoomShort}
-    ${RoomMessageShort}
 `;
 
 export const RoomQuery = gql`
@@ -159,19 +154,6 @@ export const GlobalCounterQuery = gql`
             unreadCount
         }
     }
-`;
-
-export const RoomHistoryQuery = gql`
-    query RoomHistory($roomId: ID!, $before: ID, $first: Int = 15) {
-        messages: roomMessages(roomId: $roomId, first: $first, before: $before) {
-            ...RoomMessageFull
-        }
-        state: conversationState(id: $roomId) {
-            state
-        }
-    }
-    ${RoomMessageFull}
-    ${UserShort}
 `;
 
 export const ChatHistoryQuery = gql`

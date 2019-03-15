@@ -15,7 +15,7 @@ import {
     DataSourceMessageItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
-import { UserShort, SharedRoomKind, MessageType, FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import { UserShort, SharedRoomKind, FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContextProps } from '../MessagesStateContext';

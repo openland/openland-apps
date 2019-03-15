@@ -1,9 +1,8 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, ChatHistoryQuery, RoomQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
-import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { UserShort as UserShortFragnemt, FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, MessageFull_mentions, FullMessage_ServiceMessage_spans } from 'openland-api/Types';
+import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_ServiceMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -12,6 +11,7 @@ import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatch
 import { FullMessage as FullMessageFragment } from 'openland-api/fragments/Message';
 import { UserTiny } from 'openland-api/fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
+import { UserShort as UserShortFragnemt } from 'openland-api/fragments/UserShort';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($chatId: ID!, $fromState: String) {
@@ -55,7 +55,7 @@ const CHAT_SUBSCRIPTION = gql`
   }
   ${FullMessageFragment}
   ${UserTiny}
-  ${UserShort}
+  ${UserShortFragnemt}
   ${RoomShort}
 `;
 
@@ -72,7 +72,7 @@ export interface DataSourceMessageItem {
     id?: string;
     date: number;
     isOut: boolean;
-    sender: UserShortFragnemt;
+    sender: UserShort;
     senderId: string;
     senderName: string;
     senderPhoto?: string;
@@ -291,7 +291,7 @@ export class ConversationEngine implements MessageSendHandler {
         }
     }
 
-    sendMessage = (text: string, mentions: MessageFull_mentions[] | null) => {
+    sendMessage = (text: string, mentions: UserShort[] | null) => {
         if (text.trim().length > 0) {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
@@ -676,7 +676,7 @@ export class ConversationEngine implements MessageSendHandler {
         //
         // Start a new sender group
         //
-        let prepareSenderIfNeeded = (sender: UserShortFragnemt, message: ModelMessage, date: number) => {
+        let prepareSenderIfNeeded = (sender: UserShort, message: ModelMessage, date: number) => {
             let day = prepareDateIfNeeded(date);
             let isService = isServerMessage(message) && message.__typename === 'ServiceMessage';
             if (prevMessageSender === sender.id && prevMessageDate !== undefined && isService === prevMessageIsService) {

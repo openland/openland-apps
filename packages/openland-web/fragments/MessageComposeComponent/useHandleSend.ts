@@ -9,12 +9,12 @@ import { QuoteStateT } from './useQuote';
 import { DraftStateT } from './useDraft';
 import { InputMethodsStateT } from './useInputMethods';
 import { MentionsStateT } from './useMentions';
-import { MessageFull_mentions } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 import { useReplyPropsT } from './useReply';
 import { UploadContext } from './FileUploading/UploadContext';
 
 export type useHandleSendT = {
-    onSend?: (text: string, mentions: MessageFull_mentions[] | null) => void;
+    onSend?: (text: string, mentions: UserShort[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     mentionsState?: MentionsStateT;
     inputMethodsState?: InputMethodsStateT;

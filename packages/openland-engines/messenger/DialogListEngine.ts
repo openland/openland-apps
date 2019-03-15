@@ -4,7 +4,6 @@ import {
     Dialogs_dialogs_items_topMessage,
     Room_room_SharedRoom,
     Room_room_PrivateRoom,
-    RoomMessageShort,
     RoomFull,
     Dialogs_dialogs_items_topMessage_GeneralMessage_attachments,
     TinyMessage,

@@ -5,7 +5,7 @@ import Editor from 'draft-js-plugins-editor';
 import createMentionPlugin, { MentionT, defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 import { XView } from 'react-mental';
 import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } from 'draft-js';
-import { MessageFull_mentions } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
@@ -115,7 +115,7 @@ const positionSuggestions = ({ state, props }: any) => {
 type MentionComponentInnerTextProps = {
     isYou: boolean;
     className?: string;
-    user?: MessageFull_mentions;
+    user?: UserShort;
     hasPopper?: boolean;
     inCompose?: boolean;
 };
@@ -125,12 +125,12 @@ export const MentionComponentInnerText = Glamorous.span(
     ({ isYou, inCompose }: MentionComponentInnerTextProps) => {
         const paddings = inCompose
             ? {
-                  paddingTop: 1,
-                  paddingBottom: 1,
-                  paddingLeft: 4,
-                  paddingRight: 4,
-                  borderRadius: 5,
-              }
+                paddingTop: 1,
+                paddingBottom: 1,
+                paddingLeft: 4,
+                paddingRight: 4,
+                borderRadius: 5,
+            }
             : {};
 
         if (isYou) {

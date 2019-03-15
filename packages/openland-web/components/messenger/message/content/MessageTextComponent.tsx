@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { preprocessText } from '../../../../utils/TextProcessor';
-import { MessageFull_alphaMentions, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
@@ -13,7 +13,6 @@ import { isEmoji } from 'openland-y-utils/isEmoji';
 
 export interface MessageTextComponentProps {
     spans?: FullMessage_GeneralMessage_spans[];
-    mentions?: MessageFull_alphaMentions[] | null;
     message: string;
     isEdited: boolean;
     isService?: boolean;
@@ -160,7 +159,7 @@ export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
                 </span>
             );
         } else {
-            let mentions = preprocessMentions(v.text!, null, props.mentions);
+            let mentions = preprocessMentions(v.text!, null, []);
             let smileSize: 38 | 16 = isBig ? 38 : 16;
 
             let res: any[] = [];

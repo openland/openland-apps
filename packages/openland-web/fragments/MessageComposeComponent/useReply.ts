@@ -1,6 +1,5 @@
 import { MutationFunc } from 'react-apollo';
 import { ReplyMessageVariables, ReplyMessage, RoomMembers_members, FullMessage } from 'openland-api/Types';
-import { MessageFull } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { QuoteStateT } from './useQuote';
 import { MentionsStateT } from './useMentions';

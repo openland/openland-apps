@@ -186,18 +186,6 @@ export class OpenlandClient {
     useWithoutLoaderGlobalCounter(): Types.GlobalCounter | null {
         return this.client.useWithoutLoaderQuery(Source.GlobalCounterQuery);
     }
-    async queryRoomHistory(variables: Types.RoomHistoryVariables): Promise<Types.RoomHistory> {
-        return this.client.query(Source.RoomHistoryQuery, variables);
-    }
-    async refetchRoomHistory(variables: Types.RoomHistoryVariables): Promise<Types.RoomHistory> {
-        return this.client.refetch(Source.RoomHistoryQuery, variables);
-    }
-    useRoomHistory(variables: Types.RoomHistoryVariables): Types.RoomHistory {
-        return this.client.useQuery(Source.RoomHistoryQuery, variables);
-    }
-    useWithoutLoaderRoomHistory(variables: Types.RoomHistoryVariables): Types.RoomHistory | null {
-        return this.client.useWithoutLoaderQuery(Source.RoomHistoryQuery, variables);
-    }
     async queryChatHistory(variables: Types.ChatHistoryVariables): Promise<Types.ChatHistory> {
         return this.client.query(Source.ChatHistoryQuery, variables);
     }

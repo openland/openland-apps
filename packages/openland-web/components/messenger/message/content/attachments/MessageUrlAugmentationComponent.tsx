@@ -4,7 +4,7 @@ import { preprocessText } from '../../../../../utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XLink } from 'openland-x/XLink';
 import WebsiteIcon from 'openland-icons/website-2.svg';
-import { MessageFull_urlAugmentation, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { layoutMediaReverse } from '../../../../../utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import DeleteIcon from 'openland-icons/ic-close.svg';

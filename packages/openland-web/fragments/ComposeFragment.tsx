@@ -17,7 +17,6 @@ import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { TextCompose } from 'openland-text/TextCompose';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { withExplorePeople } from '../api/withExplorePeople';
-import { MessageFull_mentions } from 'openland-api/Types';
 
 const HeadButton = css`
     & > a svg {
@@ -237,7 +236,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
         }
     };
 
-    handleSend = async (msg: string, mentions: MessageFull_mentions[] | null) => {
+    handleSend = async (msg: string, mentions: UserShort[] | null) => {
         if (this.state.values.length === 1) {
             let id = await this.props.messenger.global.resolvePrivateConversation(this.state
                 .values[0].value!! as string);

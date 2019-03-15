@@ -19,10 +19,10 @@ import {
     SaveDraftMessage,
     RoomEditMessageVariables,
     RoomEditMessage,
-    MessageFull_mentions,
     SharedRoomKind,
     RoomMembers_members,
     PostMessageType,
+    UserShort,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { useKeydownHandler } from './useKeydownHandler';
@@ -42,7 +42,7 @@ export interface MessageComposeComponentProps {
     conversationId?: string;
     conversation?: ConversationEngine;
     enabled?: boolean;
-    onSend?: (text: string, mentions: MessageFull_mentions[] | null) => void;
+    onSend?: (text: string, mentions: UserShort[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
     handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;

@@ -5,7 +5,6 @@ import { GlobalCounterQuery, ChatSearchGroupQuery } from 'openland-api';
 import { SettingsQuery } from 'openland-api';
 import { SettingsFull } from 'openland-api/fragments/SettingsFragment';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
-import { MessageShort } from 'openland-api/fragments/MessageShort';
 import { UserTiny } from 'openland-api/fragments/UserTiny';
 import { DialogsQuery } from 'openland-api';
 import { RoomQuery } from 'openland-api';
@@ -91,7 +90,6 @@ let GLOBAL_SUBSCRIPTION = gql`
         }
        
     }
-    ${MessageShort}
     ${UserTiny}
     ${TinyMessage}
     ${RoomShort}

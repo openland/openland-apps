@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { MessageFull_reactions, FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { MutationFunc } from 'react-apollo';
 import { withSetReaction, withUnsetReaction } from '../../../api/withSetReaction';

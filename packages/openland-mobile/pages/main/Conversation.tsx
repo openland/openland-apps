@@ -16,7 +16,7 @@ import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members_user, MessageFull_mentions } from 'openland-api/Types';
+import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members_user, UserShort } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
@@ -42,7 +42,7 @@ interface ConversationRootProps extends PageProps {
 interface ConversationRootState {
     text: string;
     theme: ConversationTheme;
-    mentionedUsers: MessageFull_mentions[];
+    mentionedUsers: UserShort[];
     inputFocused: boolean;
     selection: {
         start: number,
@@ -129,7 +129,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     handleSubmit = () => {
         let tx = this.state.text.trim();
         if (tx.length > 0) {
-            let mentions: MessageFull_mentions[] = [];
+            let mentions: UserShort[] = [];
 
             if (this.state.mentionedUsers.length > 0) {
                 this.state.mentionedUsers.map(user => {
