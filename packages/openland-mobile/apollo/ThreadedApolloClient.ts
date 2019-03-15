@@ -34,7 +34,6 @@ export class WorkerApolloClient implements GraphqlClient {
 
     private readonly thread: Thread;
     private handlers = new Map<string, { resolve: (src: any) => void, reject: (src: any) => void }>();
-    private queries = new Map<any, Map<string, any>>();
     private watches = new Map<any, Map<string, QueryWatch>>();
 
     constructor(token?: string) {

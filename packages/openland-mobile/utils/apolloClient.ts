@@ -4,6 +4,7 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { WorkerApolloClient } from 'openland-mobile/apollo/ThreadedApolloClient';
 import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
 import { Platform } from 'react-native';
+import { NativeApolloClient } from 'openland-mobile/apollo/NativeApolloClient';
 
 let cachedClient: OpenlandClient | null;
 
@@ -27,6 +28,10 @@ export function getClient(): OpenlandClient {
 }
 
 export function buildNativeClient(token: string) {
+
+    if (Platform.OS === 'android') {
+        return new OpenlandClient(new NativeApolloClient(token));
+    }
 
     if (__DEV__) {
         return new OpenlandClient(new ApolloGraphqlClient(buildClient({
