@@ -15,6 +15,20 @@ import java.math.BigDecimal
 import java.util.LinkedHashMap
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.isAccessible
+import com.apollographql.apollo.cache.normalized.sql.ApolloSqlHelper
+import com.apollographql.apollo.cache.normalized.sql.SqlNormalizedCacheFactory
+import com.apollographql.apollo.cache.normalized.NormalizedCacheFactory
+import com.apollographql.apollo.cache.normalized.CacheKey.NO_KEY
+import com.apollographql.apollo.api.Operation.Variables
+import com.apollographql.apollo.api.ResponseField
+import com.apollographql.apollo.cache.normalized.CacheKey
+import com.apollographql.apollo.cache.normalized.CacheKeyResolver
+
+
+
+
+
+
 
 class JSVariables(val data: ReadableMap?) : Operation.Variables() {
     private var valueMap: MutableMap<String, Any> = LinkedHashMap()
@@ -37,6 +51,7 @@ class JSVariables(val data: ReadableMap?) : Operation.Variables() {
 class JSData(val data: WritableMap) : Operation.Data {
     override fun marshaller(): ResponseFieldMarshaller {
         return ResponseFieldMarshaller {
+            it.writeBoolean(ResponseField.forBoolean(data.))
             // Unsupported?
         }
     }
@@ -62,7 +77,7 @@ class JSQuery(val query: String, vars: ReadableMap?) : Query<JSData, JSData, JSV
     }
 
     override fun operationId(): String {
-        return ""
+        return "jq"
     }
 
     override fun name(): OperationName {
@@ -186,6 +201,28 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     private val client: ApolloClient
 
     init {
+
+        val apolloSqlHelper = ApolloSqlHelper.create(context, "appcache")
+        val cacheFactory = SqlNormalizedCacheFactory(apolloSqlHelper)
+        val resolver = object : CacheKeyResolver() {
+            override fun fromFieldRecordSet(field: ResponseField,recordSet: Map<String, Any>): CacheKey {
+                return formatCacheKey(recordSet["id"] as String)
+            }
+
+            override fun fromFieldArguments(field: ResponseField, variables: Operation.Variables): CacheKey {
+                return formatCacheKey(field.resolveArgument("id", variables) as String?)
+            }
+
+            private fun formatCacheKey(id: String?): CacheKey {
+                return if (id == null || id.isEmpty()) {
+                    CacheKey.NO_KEY
+                } else {
+                    CacheKey.from(id)
+                }
+            }
+        }
+
+
         val httpBuilder = OkHttpClient.Builder()
         if (token != null) {
 
@@ -211,6 +248,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 .logger { priority, message, t, args ->
                     Log.d("APOLLO", String.format(message, *args))
                 }
+                .normalizedCache(cacheFactory, resolver)
                 .build()
     }
 
