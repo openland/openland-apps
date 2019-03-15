@@ -364,9 +364,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 if (message.reply && message.reply!.length > 0) {
                     content.push(
                         <ReplyMessageWrapper key={'reply_message' + message.id}>
-                            {message
-                                .reply!.sort((a, b) => a.date - b.date)
-                                .map((item, index, array) => {
+                            {message.reply!.map((item, index, array) => {
                                     let isCompact =
                                         index > 0
                                             ? array[index - 1].sender.id === item.sender.id
