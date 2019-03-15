@@ -3,14 +3,7 @@ import { Platform, Text, View, StyleSheet, TextStyle } from 'react-native';
 import { ZListItem } from './ZListItem';
 import { ZListItemBase } from './ZListItemBase';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-
-interface ZActionSheetItemProps {
-    name: string;
-    icon?: any;
-    appearance?: 'default' | 'danger' | 'cancel';
-    onPress: () => void;
-    separator?: boolean;
-}
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     text: {
@@ -26,7 +19,15 @@ const styles = StyleSheet.create({
     textCancel: {
         fontWeight: TextStyles.weight.medium
     } as TextStyle
-})
+});
+
+interface ZActionSheetItemProps {
+    name: string;
+    icon?: any;
+    appearance?: 'default' | 'danger' | 'cancel';
+    onPress: () => void;
+    separator?: boolean;
+}
 
 export const ZActionSheetItem = (props: ZActionSheetItemProps) => {
     if (Platform.OS === 'android') {
@@ -57,4 +58,15 @@ export const ZActionSheetItem = (props: ZActionSheetItemProps) => {
             </ZListItemBase>
         );
     }
+}
+
+export const ZActionSheetItemView = (props: { children?: any, separator?: boolean }) => {
+    const theme = React.useContext(ThemeContext);
+
+    return (
+        <>
+            {props.children}
+            {props.separator !== false && <View style={{ backgroundColor: theme.separatorColor, height: 1 }} />}
+        </>
+    );
 }

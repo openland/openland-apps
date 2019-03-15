@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { showSheetModal } from './showSheetModal';
-import { ZActionSheetItem } from './ZActionSheetItem';
+import { ZActionSheetItem, ZActionSheetItemView } from './ZActionSheetItem';
 import { ZModalController } from './ZModal';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface ActionSheetBuilderActionItem {
     __typename: "ActionItem";
@@ -60,16 +59,9 @@ export class ActionSheetBuilder {
                                 />
                             )}
                             {a.__typename === 'ViewItem' && (
-                                <>
+                                <ZActionSheetItemView separator={i !== this._items.length - 1}>
                                     {a.view(ctx)}
-                                    {(i !== this._items.length - 1) && (
-                                        <ThemeContext.Consumer>
-                                            {theme => (
-                                                <View style={{ backgroundColor: theme.separatorColor, height: 1 }} />
-                                            )}
-                                        </ThemeContext.Consumer>
-                                    )}
-                                </>
+                                </ZActionSheetItemView>
                             )}
                         </>
                     ))}
