@@ -100,6 +100,17 @@ const LinkText = css`
     }
 `;
 
+const SpansMessageText = ({ text }: { text: string }) => {
+    return (
+        <>
+            {emoji({
+                src: text,
+                size: 16,
+            })}
+        </>
+    );
+};
+
 export const SpansMessage = ({
     message,
     spans,
@@ -120,13 +131,7 @@ export const SpansMessage = ({
 
         for (let span of sortedSpans) {
             if (lastOffset < span.offset) {
-                prefixText = message.slice(lastOffset, span.offset);
-                res.push(
-                    emoji({
-                        src: prefixText,
-                        size: 16,
-                    }),
-                );
+                res.push(<SpansMessageText text={message.slice(lastOffset, span.offset)} />);
             }
 
             if (span.__typename === 'MessageSpanLink') {
@@ -168,13 +173,7 @@ export const SpansMessage = ({
         }
 
         if (lastOffset < message.length) {
-            prefixText = message.slice(lastOffset, message.length);
-            res.push(
-                emoji({
-                    src: prefixText,
-                    size: 16,
-                }),
-            );
+            res.push(<SpansMessageText text={message.slice(lastOffset, message.length)} />);
         }
     } else {
         return (
