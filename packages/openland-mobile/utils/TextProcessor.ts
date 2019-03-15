@@ -1,17 +1,41 @@
 import linkify from 'linkify-it';
 import tlds from 'tlds';
+import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans } from 'openland-api/Types';
 
-export interface Span {
-    type: 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_room';
+type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_room';
+
+export type Span = SpanUser | SpanRoom | SpanText | SpanLink;
+interface SpanAbs {
+    type: SpanType;
     text?: string;
     link?: string;
+}
+
+export interface SpanText extends SpanAbs {
+    type: 'text' | 'new_line';
+}
+export interface SpanLink extends SpanAbs {
+    type: 'link';
+    link: string;
+}
+
+export interface SpanUser extends SpanAbs {
+    type: 'mention_user';
+    name: string;
+    id: string;
+}
+
+export interface SpanRoom extends SpanAbs {
+    type: 'mention_room';
+    title: string;
+    id: string;
 }
 
 let linkifyInstance = linkify()
     .tlds(tlds)
     .tlds('onion', true);
 
-function preprocessRawText(text: string, mentions?: any[]): Span[] {
+function preprocessRawText(text: string, spans?: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
     let res: Span[] = [];
     for (let p of text.split('\n')) {
         if (res.length > 0) {
@@ -19,8 +43,8 @@ function preprocessRawText(text: string, mentions?: any[]): Span[] {
                 type: 'new_line'
             });
         }
-        if (mentions) {
-            res.push(...preprocessMentions(p, mentions!));
+        if (spans) {
+            res.push(...preprocessMentions(p, spans!));
         } else {
             res.push({
                 type: 'text',
@@ -31,60 +55,68 @@ function preprocessRawText(text: string, mentions?: any[]): Span[] {
     return res;
 }
 
-function preprocessMentions(text: string, mentions: any[]): Span[] {
+function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
     let res: Span[] = [];
+    spans = spans.sort((a, b) => a.offset - b.offset);
 
-    for (let m of mentions) {
-        let mention: undefined | { str: string, type: 'mention_user' | 'mention_room', id: string } = undefined;
-        if (m.__typename === 'UserMention') {
-            mention = { str: m.user.name, type: 'mention_user', id: m.user.id };
-        } else if (m.__typename === 'SharedRoomMention') {
-            mention = { str: m.sharedRoom.title, type: 'mention_room', id: m.sharedRoom.id };
+    let offset = 0;
+    console.warn('boom', text);
+    for (let s of spans) {
+        console.warn('boom', s);
+        let raw = text.substr(offset, s.offset - offset);
+        if (raw) {
+            res.push({
+                type: 'text',
+                text: raw
+            });
         }
+        let spanText = text.substr(s.offset, s.length);
+        let span: Span;
+        if (s.__typename === 'MessageSpanLink') {
+            span = { type: 'link', link: s.url };
+        } else if (s.__typename === 'MessageSpanUserMention') {
+            span = { type: 'mention_user', name: s.user.name, id: s.user.id }
+        } else if (s.__typename === 'MessageSpanRoomMention') {
+            span = { type: 'mention_room', title: s.room.__typename === 'SharedRoom' ? s.room.title : s.room.user.name, id: s.room.id }
+        } else {
+            span = { type: 'text' };
+        }
+        span.text = spanText;
+        res.push(span);
+        offset = s.offset + s.length;
 
-        if (mention && text.includes('@' + mention.str)) {
-            let split = text.split('@' + mention.str);
-            for (let s of split) {
-                res.push(...preprocessMentions(s, mentions));
-                res.push({
-                    type: mention.type,
-                    text: mention.str,
-                    link: mention.id
-                });
-            }
-            res.pop();
-            break;
-        }
     }
-    if (res.length === 0) {
+    let rawLast = text.substr(offset, text.length - offset);
+    if (rawLast) {
         res.push({
             type: 'text',
-            text: text
+            text: rawLast
         });
     }
+
     return res;
 }
 
-export function preprocessText(text: string, mentions?: any[]): Span[] {
+export function preprocessText(text: string, spans?: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
     // TODO: process spans instead of mentions
     let res: Span[] = [];
     let offset = 0;
-    let links = linkifyInstance.match(text);
-    if (links !== null) { // Typings are weird
-        for (let l of links) {
-            if (l.index > offset) {
-                res.push(...preprocessRawText(text.substring(offset, l.index), mentions));
-            }
-            res.push({
-                type: 'link',
-                text: l.text,
-                link: l.url
-            });
-            offset = l.lastIndex;
-        }
-    }
+    // let links = linkifyInstance.match(text);
+    // if (links !== null) { // Typings are weird
+    //     for (let l of links) {
+    //         if (l.index > offset) {
+    //             res.push(...preprocessRawText(text.substring(offset, l.index), spans));
+    //         }
+    //         res.push({
+    //             type: 'link',
+    //             text: l.text,
+    //             link: l.url
+    //         });
+    //         offset = l.lastIndex;
+    //     }
+    // }
     if (offset < text.length) {
-        res.push(...preprocessRawText(text.substring(offset, text.length), mentions));
+        res.push(...preprocessRawText(text.substring(offset, text.length), spans));
     }
 
     // Special case for empty string

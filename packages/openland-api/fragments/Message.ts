@@ -111,7 +111,6 @@ export const FullMessage = gql`
                 }
 
                 ...on MessageRichAttachment{
-                    id
                     title
                     subTitle
                     titleLink
@@ -189,7 +188,6 @@ export const FullMessage = gql`
                         }
 
                         ...on MessageRichAttachment{
-                            id
                             title
                             subTitle
                             titleLink

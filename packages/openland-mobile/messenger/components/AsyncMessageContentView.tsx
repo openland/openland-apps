@@ -38,7 +38,7 @@ export let renderPrprocessedText = (v: Span, i: number, message: DataSourceMessa
     } else if (v.type === 'link') {
         return <ASText key={'link-' + i} color={message.isOut ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn} onPress={resolveInternalLink(v.link!, async () => await Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
     } else if (v.type === 'mention_user') {
-        return <ASText key={'mention-' + i} color={message.isOut ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn} textDecorationLine={message.isOut ? 'underline' : 'none'} onPress={() => onUserPress(v.link!)}>{useNonBreakingSpaces(v.text)}</ASText>;
+        return <ASText key={'mention-' + i} color={message.isOut ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn} textDecorationLine={message.isOut ? 'underline' : 'none'} onPress={() => onUserPress(v.id)}>{useNonBreakingSpaces(v.text)}</ASText>;
     } else {
         return <ASText key={'text-' + i}>{v.text}</ASText>;
     }
