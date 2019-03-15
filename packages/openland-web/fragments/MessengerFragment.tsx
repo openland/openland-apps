@@ -16,6 +16,8 @@ import { withUserInfo } from '../components/UserInfo';
 import { withQueryLoader } from '../components/withQueryLoader';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
 import { ForwardPlaceholder } from './chat/ForwardPlaceholder';
+import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
+import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 
 export interface MessengerComponentProps {
     id: string;
@@ -32,10 +34,10 @@ interface MessengerComponentLoaderProps {
 }
 
 class MessagengerFragmentInner extends React.PureComponent<
-    MessengerComponentLoaderProps & { router: XRouter }
+    MessengerComponentLoaderProps & { router: XRouter; apollo: OpenApolloClient }
 > {
     onConversationLostAccess = () => {
-        this.props.router.replace(this.props.router.path);
+        this.props.apollo.client.reFetchObservableQueries();
     };
 
     render() {
@@ -110,10 +112,19 @@ const MessengerComponentLoader = withRoom(withQueryLoader(
     isActive: boolean;
     variables: { id: string };
     state: MessagesStateContextProps;
+    apollo: any;
 }>;
 
 export const MessengerFragment = ({ id, isActive }: MessengerComponentProps) => {
     const state: MessagesStateContextProps = React.useContext(MessagesStateContext);
+    const apollo = React.useContext(YApolloContext)!;
 
-    return <MessengerComponentLoader variables={{ id }} state={state} isActive={isActive} />;
+    return (
+        <MessengerComponentLoader
+            variables={{ id }}
+            state={state}
+            isActive={isActive}
+            apollo={apollo}
+        />
+    );
 };

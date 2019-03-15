@@ -166,6 +166,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
     onConversationLostAccess = () => {
         if (this.props.onConversationLostAccess) {
+            this.unsubscribe();
+            this.props.messenger.removeConversation(this.props.conversationId);
             this.props.onConversationLostAccess();
         }
     };
@@ -201,7 +203,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (props.isActive) {
             this.conversation = props.messenger.getConversation(props.conversationId);
             this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
-
+            
             this.unmounter2 = this.conversation.subscribe(this);
 
             if (!this.conversation) {

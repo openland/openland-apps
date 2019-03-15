@@ -442,9 +442,9 @@ export class ConversationEngine implements MessageSendHandler {
             throw Error('ConversationEngine not started!');
         }
         this.isStarted = false;
-        // if (this.watcher) {
-        //     this.watcher!!.destroy();
-        // }
+        if (this.watcher) {
+            this.watcher!!.destroy();
+        }
     }
 
     handleMuteUpdated = async (mute: boolean) => {
