@@ -95,7 +95,6 @@ export const FullMessage = gql`
         ... on GeneralMessage{
             edited
             attachments{
-                id
                 fallback
                 ...on MessageAttachmentFile{
                     fileId
@@ -174,7 +173,6 @@ export const FullMessage = gql`
                 ...on GeneralMessage{
                     edited
                     attachments{
-                        id
                         fallback
                         ...on MessageAttachmentFile{
                             fileId

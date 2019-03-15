@@ -1319,7 +1319,6 @@ export type ChatHistory_messages_GeneralMessage_spans = ChatHistory_messages_Gen
 
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
-  id: string;
   fallback: string;
 }
 
@@ -1336,7 +1335,6 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachme
 
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
-  id: string;
   fallback: string;
   fileId: string;
   fileMetadata: ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
@@ -1379,8 +1377,8 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
 
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
-  id: string;
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -1637,7 +1635,6 @@ export type ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_sp
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
-  id: string;
   fallback: string;
 }
 
@@ -1654,7 +1651,6 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
-  id: string;
   fallback: string;
   fileId: string;
   fileMetadata: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
@@ -1697,8 +1693,8 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
-  id: string;
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -6621,7 +6617,6 @@ export interface FullMessage_GeneralMessage_sender {
 
 export interface FullMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
-  id: string;
   fallback: string;
 }
 
@@ -6638,7 +6633,6 @@ export interface FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fi
 
 export interface FullMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
-  id: string;
   fallback: string;
   fileId: string;
   fileMetadata: FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
@@ -6681,8 +6675,8 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_im
 
 export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
-  id: string;
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
@@ -6939,7 +6933,6 @@ export type FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = Ful
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
-  id: string;
   fallback: string;
 }
 
@@ -6956,7 +6949,6 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attach
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
-  id: string;
   fallback: string;
   fileId: string;
   fileMetadata: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
@@ -6999,8 +6991,8 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attach
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
-  id: string;
   fallback: string;
+  id: string;
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
