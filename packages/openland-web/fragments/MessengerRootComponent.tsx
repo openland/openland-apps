@@ -164,6 +164,10 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         }
     };
 
+    onConversationLostAccess = () => {
+        window.location.reload(false);
+    };
+
     onMessageListScroll = (scrollPosition: number) => {
         this.setState({
             messageListScrollPosition: scrollPosition,
