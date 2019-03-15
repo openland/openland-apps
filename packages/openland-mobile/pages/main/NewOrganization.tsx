@@ -25,8 +25,9 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                 <ZForm
                     ref={this.ref}
                     action={async (src) => {
-                        if (!src.input.name) {
-                            Alert.builder().title('Name can\'t be empty').button('GOT IT!').show();
+                        if (!src.input || (src.input && !src.input.name)) {
+                            Alert.builder().title('Please enter a name for this ' + (isCommunity ? 'community' : 'organization')).button('GOT IT!').show();    
+
                             throw new SilentError();
                         }
 
