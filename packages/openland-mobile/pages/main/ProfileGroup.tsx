@@ -14,15 +14,10 @@ import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-mobile/utils/useClient';
-import { PromptBuilder, Prompt } from 'openland-mobile/components/Prompt';
-import ImagePicker, { Image as PickerImage } from 'react-native-image-crop-picker';
-import { UploadCareDirectUploading } from 'openland-mobile/utils/UploadCareDirectUploading';
-import { UploadStatus } from 'openland-engines/messenger/types';
-import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import { ActionSheet } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-// import { changeThemeModal } from './themes/ThemeChangeModal';
 
 let isMember = (a: RoomMembers_members) => {
     return a.role === 'MEMBER';
