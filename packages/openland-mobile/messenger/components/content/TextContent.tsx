@@ -34,7 +34,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
         if (textSticker) {
             message = { ...message, text: message.text!.slice(1, message.text!.length - 1) };
         }
-        let preprocessed = preprocessText(message.text || '', []);
+        let preprocessed = preprocessText(message.text || '', message.spans);
 
         let parts = preprocessed.map((p, i) => renderPrprocessedText(p, i, message, this.props.onUserPress));
         if (message.title) {

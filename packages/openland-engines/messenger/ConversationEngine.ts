@@ -199,7 +199,6 @@ export class ConversationEngine implements MessageSendHandler {
                 throw e;
             }
         });
-        console.warn('boom', initialChat.messages);
         if (!this.isStarted) {
             return;
         }
@@ -232,8 +231,6 @@ export class ConversationEngine implements MessageSendHandler {
             let d = new Date(parseInt(prevDate, 10));
             dsItems.push(createDateDataSourceItem(d));
         }
-
-        console.warn('boom', dsItems);
 
         this.dataSource.initialize(dsItems, this.historyFullyLoaded);
     }
