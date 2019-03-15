@@ -38,7 +38,6 @@ export function makeActionable<T>(
         }
 
         onClick: React.MouseEventHandler<any> = async e => {
-            console.log(this.props);
             if (this.isLoading) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -69,6 +68,7 @@ export function makeActionable<T>(
 
             try {
                 await this.props.action();
+
                 try {
                     if (this.props.onSuccess) {
                         this.props.onSuccess();
