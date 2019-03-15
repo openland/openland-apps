@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { preprocessText } from '../../../../utils/TextProcessor';
+import { preprocessText } from 'openland-web/utils/TextProcessor';
 import { FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 import { XView } from 'react-mental';
 import { css } from 'linaria';

@@ -55,25 +55,25 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 18 }) => {
             crop:
                 size === 25
                     ? {
-                        figureStyle: {
-                            width: 20,
-                            marginBottom: -4,
-                        },
-                        imgStyle: {
-                            marginLeft: -3,
-                            marginRight: -1,
-                        },
-                    }
+                          figureStyle: {
+                              width: 20,
+                              marginBottom: -4,
+                          },
+                          imgStyle: {
+                              marginLeft: -3,
+                              marginRight: -1,
+                          },
+                      }
                     : {
-                        figureStyle: {
-                            width: 14,
-                            marginBottom: -4,
-                        },
-                        imgStyle: {
-                            marginLeft: -2,
-                            marginRight: -2,
-                        },
-                    },
+                          figureStyle: {
+                              width: 14,
+                              marginBottom: -4,
+                          },
+                          imgStyle: {
+                              marginLeft: -2,
+                              marginRight: -2,
+                          },
+                      },
         });
     } else if (src === '😱') {
         return emoji({
@@ -82,14 +82,14 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 18 }) => {
             crop:
                 size === 25
                     ? {
-                        figureStyle: {
-                            width: 23,
-                            marginBottom: -2,
-                        },
-                        imgStyle: {
-                            marginLeft: -1,
-                        },
-                    }
+                          figureStyle: {
+                              width: 23,
+                              marginBottom: -2,
+                          },
+                          imgStyle: {
+                              marginLeft: -1,
+                          },
+                      }
                     : undefined,
         });
     }
@@ -240,15 +240,40 @@ class SingleReaction extends React.PureComponent<{
     reaction: string;
     isMy: boolean;
     mutation: MutationFunc<{}>;
+    unset: boolean;
 }> {
     handleChangeReaction = (e: any) => {
+        const { reaction, messageId } = this.props;
         e.stopPropagation();
-        this.props.mutation({
-            variables: {
-                messageId: this.props.messageId,
-                reaction: this.props.reaction,
-            },
-        });
+        if (this.props.unset) {
+            let r: string = reaction;
+            if (reaction === 'LIKE') {
+                r = '❤️';
+            } else if (reaction === 'THUMB_UP') {
+                r = '👍';
+            } else if (reaction === 'JOY') {
+                r = '😂';
+            } else if (reaction === 'SCREAM') {
+                r = '😱';
+            } else if (reaction === 'CRYING') {
+                r = '😢';
+            } else if (reaction === 'ANGRY') {
+                r = '🤬';
+            }
+            this.props.mutation({
+                variables: {
+                    messageId: messageId,
+                    reaction: r,
+                },
+            });
+        } else {
+            this.props.mutation({
+                variables: {
+                    messageId: messageId,
+                    reaction: reaction,
+                },
+            });
+        }
     };
     render() {
         return (
@@ -273,6 +298,7 @@ const SingleReactionSet = withSetReaction(props => {
             messageId={typedProps.messageId}
             reaction={typedProps.reaction}
             isMy={typedProps.isMy}
+            unset={false}
         >
             {typedProps.children}
         </SingleReaction>
@@ -293,6 +319,7 @@ const SingleReactionUnset = withUnsetReaction(props => {
             messageId={typedProps.messageId}
             reaction={typedProps.reaction}
             isMy={typedProps.isMy}
+            unset={true}
         >
             {typedProps.children}
         </SingleReaction>
@@ -351,12 +378,27 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
     let usersList: string[] = [];
 
     for (let i = 0; i < reactions.length; i++) {
-        let reaction = reactions[i];
+        let r = reactions[i];
+        let reaction: any = reactions[i];
 
-        if (!reactionsMap[reaction.reaction]) {
-            reactionsMap[reaction.reaction] = [];
+        if (r.reaction === 'LIKE') {
+            reaction.reaction = '❤️';
+        } else if (r.reaction === 'THUMB_UP') {
+            reaction.reaction = '👍';
+        } else if (r.reaction === 'JOY') {
+            reaction.reaction = '😂';
+        } else if (r.reaction === 'SCREAM') {
+            reaction.reaction = '😱';
+        } else if (r.reaction === 'CRYING') {
+            reaction.reaction = '😢';
+        } else if (r.reaction === 'ANGRY') {
+            reaction.reaction = '🤬';
         }
-        reactionsMap[reaction.reaction].push(reaction);
+
+        if (!reactionsMap[r.reaction]) {
+            reactionsMap[r.reaction] = [];
+        }
+        reactionsMap[r.reaction].push(reaction);
     }
 
     for (let k in reactionsMap) {
@@ -378,9 +420,9 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                                 {i.user.id === meId
                                     ? 'You'
                                     : emoji({
-                                        src: i.user.name,
-                                        size: 13,
-                                    })}
+                                          src: i.user.name,
+                                          size: 13,
+                                      })}
                             </div>
                         );
                     })}
@@ -414,9 +456,9 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                                 {i.user.id === meId
                                     ? 'You'
                                     : emoji({
-                                        src: i.user.name,
-                                        size: 13,
-                                    })}
+                                          src: i.user.name,
+                                          size: 13,
+                                      })}
                             </div>
                         );
                     })}
