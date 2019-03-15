@@ -768,11 +768,11 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                                         justifyContent="space-between"
                                         alignItems="center"
                                     >
-                                        <XView flexDirection="column">
+                                        <XView flexDirection="column" marginTop={-3}>
                                             <XView color="#1488f3" fontSize={12}>
                                                 Group type
                                             </XView>
-                                            <XView fontSize={14} color="#000">
+                                            <XView fontSize={14} color="#000" marginTop={-4}>
                                                 {type === SharedRoomKind.GROUP
                                                     ? 'Secret'
                                                     : 'Shared'}
