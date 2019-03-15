@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { showSheetModal } from './showSheetModal';
-import { ZActionSheetItem, ZActionSheetItemView } from './ZActionSheetItem';
+import { ZActionSheetItem, ZActionSheetViewItem } from './ZActionSheetItem';
 import { ZModalController } from './ZModal';
 
 interface ActionSheetBuilderActionItem {
@@ -59,9 +59,9 @@ export class ActionSheetBuilder {
                                 />
                             )}
                             {a.__typename === 'ViewItem' && (
-                                <ZActionSheetItemView separator={i !== this._items.length - 1}>
+                                <ZActionSheetViewItem separator={i !== this._items.length - 1}>
                                     {a.view(ctx)}
-                                </ZActionSheetItemView>
+                                </ZActionSheetViewItem>
                             )}
                         </>
                     ))}

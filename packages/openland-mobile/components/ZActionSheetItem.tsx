@@ -60,7 +60,7 @@ export const ZActionSheetItem = (props: ZActionSheetItemProps) => {
     }
 }
 
-export const ZActionSheetItemView = (props: { children?: any, separator?: boolean }) => {
+export const ZActionSheetViewItem = (props: { children?: any, separator?: boolean }) => {
     const theme = React.useContext(ThemeContext);
 
     return (
