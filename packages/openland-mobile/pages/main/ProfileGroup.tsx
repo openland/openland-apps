@@ -53,32 +53,29 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             .show();
     }, []);
 
-    const handleMemberLongPress = React.useCallback<{ (user: UserShort): void }>((user) => {
+    const handleKick = React.useCallback<{ (user: UserShort): void }>((user) => {
+        Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
+            .button('Cancel', 'cancel')
+            .action('Kick', 'destructive', async () => {
+                await client.mutateRoomKick({ userId: user.id, roomId: props.router.params.id });
+            })
+            .show();
+    }, []);
+
+    const handleMemberLongPress = React.useCallback<{ (user: UserShort, canKick: boolean): void }>((user, canKick) => {
+        let builder = ActionSheet.builder();
+
         if (user.id !== getMessenger().engine.user.id) {
-            let builder = ActionSheet.builder();
-            builder.action(
-                'Info',
-                () => {
-                    props.router.push('ProfileUser', { id: user.id });
-                });
-            builder.action(
-                'Kick',
-                () => {
-                    Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
-                        .button('Cancel', 'cancel')
-                        .action('Kick', 'destructive', async () => {
-                            await client.mutateRoomKick({ userId: user.id, roomId: props.router.params.id });
-                        })
-                        .show();
-                },
-                true
-            );
-            builder.show();
+            builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }));
+
+            if (canKick) {
+                builder.action('Kick', () => handleKick(user), true);
+            }
         } else {
-            let builder = ActionSheet.builder();
             builder.action('Leave', handleLeave, true);
-            builder.show();
         }
+
+        builder.show();
     }, []);
 
     const handleAddMember = React.useCallback(() => {
@@ -192,7 +189,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
                         isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
                         key={v.user.id}
                         user={v.user}
-                        onLongPress={() => handleMemberLongPress(v.user)}
+                        onLongPress={() => handleMemberLongPress(v.user, v.canKick)}
                         onPress={() => props.router.push('ProfileUser', { 'id': v.user.id })}
                     />
                 ))}
