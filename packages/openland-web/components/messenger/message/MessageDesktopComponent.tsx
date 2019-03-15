@@ -217,11 +217,11 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             let fileAttach = (message.attachments || []).filter(
                 a => a.__typename === 'MessageAttachmentFile',
             )[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
-            let reachAttach = (message.attachments || []).filter(
+            let richAttach = (message.attachments || []).filter(
                 a => a.__typename === 'MessageRichAttachment',
             )[0];
 
-            if (fileAttach && !reachAttach) {
+            if (fileAttach && !richAttach) {
                 singleReplyMessageMessage = new Set().add('File');
                 if (fileAttach.fileMetadata.isImage) {
                     singleReplyMessageMessage = new Set().add('Photo');
@@ -334,7 +334,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         let fileAttach = (message.attachments || []).filter(
             a => a.__typename === 'MessageAttachmentFile',
         )[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
-        let reachAttach = (message.attachments || []).filter(
+        let richAttach = (message.attachments || []).filter(
             a => a.__typename === 'MessageRichAttachment',
         )[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
 
@@ -422,7 +422,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     }
                 }
 
-                if (fileAttach && !reachAttach) {
+                if (fileAttach && !richAttach) {
                     if (fileAttach.fileMetadata.isImage) {
                         if (fileAttach.fileMetadata.imageFormat === 'gif') {
                             content.push(
@@ -468,10 +468,10 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         );
                     }
                 }
-                if (reachAttach && reachAttach.titleLink && !message.isService) {
+                if (richAttach && richAttach.titleLink && !message.isService) {
                     if (
-                        reachAttach.titleLink.startsWith('https://app.openland.com/o') &&
-                        reachAttach.titleLink.includes('listings#')
+                        richAttach.titleLink.startsWith('https://app.openland.com/o') &&
+                        richAttach.titleLink.includes('listings#')
                     ) {
                         content = [];
                     }
@@ -480,7 +480,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                             key="urlAugmentation"
                             messageId={message.id!}
                             isMe={message.senderId === (this.props.me && this.props.me.id)}
-                            {...reachAttach}
+                            {...richAttach}
                         />,
                     );
                 }

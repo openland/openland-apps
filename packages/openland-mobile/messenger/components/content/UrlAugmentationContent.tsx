@@ -6,7 +6,7 @@ import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/Conv
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform, Linking, PixelRatio, Image } from 'react-native';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
-import { renderPrprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
+import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
@@ -62,7 +62,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
             big = big || (this.props.message.text.length <= 302 && this.props.message.text.startsWith(':') && this.props.message.text.endsWith(':'));
         }
 
-        let parts = preprocessed.map((p, i) => renderPrprocessedText(p, i, this.props.message, this.props.onUserPress));
+        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, this.props.message, this.props.onUserPress));
         if (this.props.message.title) {
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{this.props.message.title}</ASText>);

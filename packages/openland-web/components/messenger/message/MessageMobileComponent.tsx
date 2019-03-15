@@ -97,7 +97,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
     let hideMenu = false;
 
     let fileAttach = (message.attachments || []).filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
-    let reachAttach = (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
+    let richAttach = (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
 
     if (!message.isSending) {
 
@@ -150,7 +150,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
             }
         }
 
-        if (fileAttach && !reachAttach) {
+        if (fileAttach && !richAttach) {
             if (fileAttach.fileMetadata.isImage && fileAttach.fileMetadata.imageWidth && fileAttach.fileMetadata.imageHeight) {
                 if (fileAttach.fileMetadata.imageFormat === 'gif') {
                     content.push(
@@ -193,18 +193,18 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                 );
             }
         }
-        if (reachAttach && !message.isService) {
-            if (reachAttach.titleLink &&
-                (reachAttach.titleLink.startsWith('https://app.openland.com/o') ||
-                    reachAttach.titleLink.startsWith('https://openland.com/o')) &&
-                reachAttach.titleLink.includes('listings#')
+        if (richAttach && !message.isService) {
+            if (richAttach.titleLink &&
+                (richAttach.titleLink.startsWith('https://app.openland.com/o') ||
+                    richAttach.titleLink.startsWith('https://openland.com/o')) &&
+                richAttach.titleLink.includes('listings#')
             ) {
                 content = [];
             }
             content.push(
                 <MessageUrlAugmentationComponent
                     key="urlAugmentation"
-                    {...reachAttach}
+                    {...richAttach}
                     messageId={message.id!}
                     isMe={message.senderId === (props.me && props.me.id)}
                 />,

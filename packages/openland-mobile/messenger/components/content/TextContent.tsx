@@ -6,7 +6,7 @@ import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/Conv
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform } from 'react-native';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
-import { renderPrprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
+import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 interface TextContentProps {
@@ -36,7 +36,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
         }
         let preprocessed = preprocessText(message.text || '', message.spans);
 
-        let parts = preprocessed.map((p, i) => renderPrprocessedText(p, i, message, this.props.onUserPress));
+        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, message, this.props.onUserPress));
         if (message.title) {
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{message.title}</ASText>);

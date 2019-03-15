@@ -18,8 +18,6 @@ import { UrlAugmentationContent } from './content/UrlAugmentationContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { file } from '@babel/types';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { OthersUsersWrapper } from './service/views/OthersUsersWrapper';
 
@@ -33,7 +31,7 @@ interface AsyncMessageTextViewProps {
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
-export let renderPrprocessedText = (v: Span, i: number, message: DataSourceMessageItem, onUserPress: (id: string) => void) => {
+export let renderPreprocessedText = (v: Span, i: number, message: DataSourceMessageItem, onUserPress: (id: string) => void) => {
     if (v.type === 'new_line') {
         return <ASText key={'br-' + i} >{'\n'}</ASText>;
     } else if (v.type === 'link') {
