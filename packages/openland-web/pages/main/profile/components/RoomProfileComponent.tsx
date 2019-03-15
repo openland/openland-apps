@@ -360,15 +360,11 @@ const MembersProvider = ({
                             <RequestCard key={i} member={req} meOwner={isOwner} roomId={chatId} />
                         ))}
                 </SectionContent>
-                {isOwner && (
-                    <>
-                        <RemoveMemberModal
-                            members={members}
-                            roomId={chatId}
-                            roomTitle={chatTitle}
-                        />
-                    </>
-                )}
+                <RemoveMemberModal
+                    members={members}
+                    roomId={chatId}
+                    roomTitle={chatTitle}
+                />
             </Section>
         );
     } else {
