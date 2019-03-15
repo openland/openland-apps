@@ -874,17 +874,12 @@ export interface Room_room_SharedRoom_members_user {
   primaryOrganization: Room_room_SharedRoom_members_user_primaryOrganization | null;
 }
 
-export interface Room_room_SharedRoom_members_invitedBy {
-  __typename: "User";
-  id: string;
-}
-
 export interface Room_room_SharedRoom_members {
   __typename: "RoomMember";
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: Room_room_SharedRoom_members_user;
-  invitedBy: Room_room_SharedRoom_members_invitedBy;
+  canKick: boolean;
 }
 
 export interface Room_room_SharedRoom_requests_user_primaryOrganization {
@@ -2016,17 +2011,12 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_members_user {
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_members_user_primaryOrganization | null;
 }
 
-export interface RoomAddMember_betaRoomInvite_SharedRoom_members_invitedBy {
-  __typename: "User";
-  id: string;
-}
-
 export interface RoomAddMember_betaRoomInvite_SharedRoom_members {
   __typename: "RoomMember";
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomAddMember_betaRoomInvite_SharedRoom_members_user;
-  invitedBy: RoomAddMember_betaRoomInvite_SharedRoom_members_invitedBy;
+  canKick: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_requests_user_primaryOrganization {
@@ -2174,17 +2164,12 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_mem
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_user_primaryOrganization | null;
 }
 
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_invitedBy {
-  __typename: "User";
-  id: string;
-}
-
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members {
   __typename: "RoomMember";
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_user;
-  invitedBy: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_invitedBy;
+  canKick: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests_user_primaryOrganization {
@@ -2329,17 +2314,12 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_members_user {
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_members_user_primaryOrganization | null;
 }
 
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_members_invitedBy {
-  __typename: "User";
-  id: string;
-}
-
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_members {
   __typename: "RoomMember";
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomAddMembers_betaRoomInvite_SharedRoom_members_user;
-  invitedBy: RoomAddMembers_betaRoomInvite_SharedRoom_members_invitedBy;
+  canKick: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_requests_user_primaryOrganization {
@@ -2487,17 +2467,12 @@ export interface RoomKick_betaRoomKick_SharedRoom_members_user {
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_members_user_primaryOrganization | null;
 }
 
-export interface RoomKick_betaRoomKick_SharedRoom_members_invitedBy {
-  __typename: "User";
-  id: string;
-}
-
 export interface RoomKick_betaRoomKick_SharedRoom_members {
   __typename: "RoomMember";
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomKick_betaRoomKick_SharedRoom_members_user;
-  invitedBy: RoomKick_betaRoomKick_SharedRoom_members_invitedBy;
+  canKick: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_requests_user_primaryOrganization {
@@ -2642,17 +2617,12 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_members_user {
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_members_user_primaryOrganization | null;
 }
 
-export interface RoomLeave_betaRoomLeave_SharedRoom_members_invitedBy {
-  __typename: "User";
-  id: string;
-}
-
 export interface RoomLeave_betaRoomLeave_SharedRoom_members {
   __typename: "RoomMember";
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomLeave_betaRoomLeave_SharedRoom_members_user;
-  invitedBy: RoomLeave_betaRoomLeave_SharedRoom_members_invitedBy;
+  canKick: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_requests_user_primaryOrganization {
@@ -2783,17 +2753,12 @@ export interface RoomSearch_items_edges_node_members_user {
   primaryOrganization: RoomSearch_items_edges_node_members_user_primaryOrganization | null;
 }
 
-export interface RoomSearch_items_edges_node_members_invitedBy {
-  __typename: "User";
-  id: string;
-}
-
 export interface RoomSearch_items_edges_node_members {
   __typename: "RoomMember";
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomSearch_items_edges_node_members_user;
-  invitedBy: RoomSearch_items_edges_node_members_invitedBy;
+  canKick: boolean;
 }
 
 export interface RoomSearch_items_edges_node_requests_user_primaryOrganization {
@@ -3104,17 +3069,12 @@ export interface RoomJoin_join_SharedRoom_members_user {
   primaryOrganization: RoomJoin_join_SharedRoom_members_user_primaryOrganization | null;
 }
 
-export interface RoomJoin_join_SharedRoom_members_invitedBy {
-  __typename: "User";
-  id: string;
-}
-
 export interface RoomJoin_join_SharedRoom_members {
   __typename: "RoomMember";
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomJoin_join_SharedRoom_members_user;
-  invitedBy: RoomJoin_join_SharedRoom_members_invitedBy;
+  canKick: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_requests_user_primaryOrganization {
@@ -3277,17 +3237,12 @@ export interface RoomJoinInviteLink_join_SharedRoom_members_user {
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_members_user_primaryOrganization | null;
 }
 
-export interface RoomJoinInviteLink_join_SharedRoom_members_invitedBy {
-  __typename: "User";
-  id: string;
-}
-
 export interface RoomJoinInviteLink_join_SharedRoom_members {
   __typename: "RoomMember";
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomJoinInviteLink_join_SharedRoom_members_user;
-  invitedBy: RoomJoinInviteLink_join_SharedRoom_members_invitedBy;
+  canKick: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_requests_user_primaryOrganization {
@@ -9636,17 +9591,12 @@ export interface RoomFull_SharedRoom_members_user {
   primaryOrganization: RoomFull_SharedRoom_members_user_primaryOrganization | null;
 }
 
-export interface RoomFull_SharedRoom_members_invitedBy {
-  __typename: "User";
-  id: string;
-}
-
 export interface RoomFull_SharedRoom_members {
   __typename: "RoomMember";
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomFull_SharedRoom_members_user;
-  invitedBy: RoomFull_SharedRoom_members_invitedBy;
+  canKick: boolean;
 }
 
 export interface RoomFull_SharedRoom_requests_user_primaryOrganization {

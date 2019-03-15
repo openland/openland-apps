@@ -34,7 +34,6 @@ import {
     Room_room_SharedRoom,
     RoomFull_SharedRoom_members,
     RoomFull_SharedRoom_requests,
-    SharedRoomKind,
 } from 'openland-api/Types';
 import { withRoom } from '../../../../api/withRoom';
 import { XSwitcher } from 'openland-x/XSwitcher';
@@ -231,29 +230,28 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
     );
 };
 
-const MemberCard = (props: {
-    member: RoomFull_SharedRoom_members;
-    meOwner: boolean;
-    isGroup: boolean;
-}) => {
-    let removeText = props.isGroup ? 'Remove from group' : 'Remove from room';
-
-    if (props.member.user.isYou) {
-        removeText = props.isGroup ? 'Leave group' : 'Leave room';
-    }
-
-    let overflowMenu = (
-        <XOverflow
-            placement="bottom-end"
-            flat={true}
-            content={
-                <XMenuItem style="danger" query={{ field: 'remove', value: props.member.user.id }}>
-                    {removeText}
-                </XMenuItem>
+const MemberCard = ({ member }: { member: RoomFull_SharedRoom_members }) => {
+    return (
+        <XUserCard
+            user={member.user}
+            customMenu={
+                member.canKick || member.user.isYou ? (
+                    <XOverflow
+                        placement="bottom-end"
+                        flat={true}
+                        content={
+                            <XMenuItem
+                                style="danger"
+                                query={{ field: 'remove', value: member.user.id }}
+                            >
+                                {member.user.isYou ? 'Leave group' : 'Remove from group'}
+                            </XMenuItem>
+                        }
+                    />
+                ) : null
             }
         />
     );
-    return <XUserCard user={props.member.user} customMenu={props.meOwner ? overflowMenu : null} />;
 };
 
 const RequestCard = withRoomMembersMgmt(
@@ -292,9 +290,8 @@ interface MembersProviderProps {
     members: RoomFull_SharedRoom_members[];
     requests?: RoomFull_SharedRoom_requests[] | null;
     chatId: string;
-    meOwner: boolean;
+    isOwner: boolean;
     chatTitle: string;
-    kind: SharedRoomKind;
     onDirectory?: boolean;
 }
 
@@ -302,10 +299,9 @@ const MembersProvider = ({
     members,
     router,
     requests,
-    meOwner,
+    isOwner,
     chatTitle,
     chatId,
-    kind,
     onDirectory,
 }: MembersProviderProps & XWithRouter) => {
     if (members && members.length > 0) {
@@ -315,7 +311,7 @@ const MembersProvider = ({
                 : tabs.members;
         return (
             <Section separator={0}>
-                {meOwner && (requests || []).length > 0 && (
+                {isOwner && (requests || []).length > 0 && (
                     <XSwitcher style="button">
                         <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
                             Members
@@ -328,7 +324,7 @@ const MembersProvider = ({
                         </XSwitcher.Item>
                     </XSwitcher>
                 )}
-                {((requests || []).length === 0 || !meOwner) && (
+                {((requests || []).length === 0 || !isOwner) && (
                     <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
                 )}
 
@@ -351,25 +347,20 @@ const MembersProvider = ({
                                 query={{ field: 'inviteMembers', value: 'true' }}
                             />
                             <InviteMembersModal roomId={chatId} />
-                            {members.map((member, i) => (
-                                <MemberCard
-                                    key={i}
-                                    member={member}
-                                    meOwner={meOwner}
-                                    isGroup={kind === 'GROUP'}
-                                />
-                            ))}
+                            {members.map((member, i) => {
+                                return <MemberCard key={i} member={member} />;
+                            })}
                         </>
                     )}
 
-                    {meOwner &&
+                    {isOwner &&
                         tab === tabs.requests &&
                         requests &&
                         requests.map((req, i) => (
-                            <RequestCard key={i} member={req} meOwner={meOwner} roomId={chatId} />
+                            <RequestCard key={i} member={req} meOwner={isOwner} roomId={chatId} />
                         ))}
                 </SectionContent>
-                {meOwner && (
+                {isOwner && (
                     <>
                         <RemoveMemberModal
                             members={members}
@@ -391,8 +382,12 @@ interface RoomGroupProfileInnerProps extends XWithRouter {
     conversationId: string;
 }
 
-const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
-    let chat = props.chat;
+const RoomGroupProfileInner = ({
+    chat,
+    onDirectory,
+    conversationId,
+    router,
+}: RoomGroupProfileInnerProps) => {
     return (
         <>
             <XDocumentHead title={chat.title} />
@@ -402,14 +397,13 @@ const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
                 <XScrollView2 flexGrow={1}>
                     <About chat={chat} />
                     <MembersProvider
-                        kind={chat.kind}
-                        router={props.router}
+                        router={router}
                         members={chat.members}
                         requests={chat.requests}
-                        chatId={props.conversationId}
-                        meOwner={chat.membership === 'MEMBER'}
+                        chatId={conversationId}
+                        isOwner={chat.role === 'OWNER'}
                         chatTitle={chat.title}
-                        onDirectory={props.onDirectory}
+                        onDirectory={onDirectory}
                     />
                 </XScrollView2>
             </XView>

@@ -11,7 +11,7 @@ export const RoomFull = gql`
                 id
                 mute
             }
-        } 
+        }
         ... on SharedRoom {
             id
             kind
@@ -31,9 +31,7 @@ export const RoomFull = gql`
                 user {
                     ...UserShort
                 }
-                invitedBy {
-                    id
-                }
+                canKick
             }
             requests {
                 user {
