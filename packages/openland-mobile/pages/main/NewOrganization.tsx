@@ -33,7 +33,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
 
                         let client = getClient();
 
-                        await client.mutateCreateOrganization({
+                        let res = await client.mutateCreateOrganization({
                             input: {
                                 name: '',
                                 personal: false,
@@ -44,9 +44,12 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
 
                         await client.refetchAccount();
                         await client.refetchAccountSettings();
-                    }}
-                    onSuccess={async () => {
-                        this.props.router.params.action ? await this.props.router.params.action(this.props.router) : this.props.router.back();
+
+                        if (this.props.router.params.action) {
+                            await this.props.router.params.action(this.props.router);
+                        } else {
+                            this.props.router.pushAndRemove('ProfileOrganization', { id: res.organization.id });
+                        }
                     }}
                 >
                     {!isCommunity && (

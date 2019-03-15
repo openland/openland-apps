@@ -105,14 +105,14 @@ export interface AccountSettings {
 // GraphQL mutation operation: CreateOrganization
 // ====================================================
 
-export interface CreateOrganization_createOrganization {
+export interface CreateOrganization_organization {
   __typename: "OrganizationProfile";
   id: string;
   name: string;
 }
 
 export interface CreateOrganization {
-  createOrganization: CreateOrganization_createOrganization;
+  organization: CreateOrganization_organization;
 }
 
 export interface CreateOrganizationVariables {

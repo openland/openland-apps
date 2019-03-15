@@ -35,7 +35,7 @@ export const AccountSettingsQuery = gql`
 
 export const CreateOrganizationMutation = gql`
     mutation CreateOrganization($input: CreateOrganizationInput!) {
-        createOrganization(input: $input) {
+        organization: createOrganization(input: $input) {
             id
             name
         }
