@@ -462,6 +462,12 @@ const InputStyledClassName = css`
     }
 `;
 
+const InputValueStyledClassName = css`
+    & .input-placeholder {
+        color: #1488f3 !important;
+    }
+`;
+
 const InputInvalidStyledClassName = css`
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
@@ -715,6 +721,7 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                                         className={cx(
                                             InputStyledClassName,
                                             titleError && InputInvalidStyledClassName,
+                                            title !== '' && InputValueStyledClassName,
                                         )}
                                     />
                                     {titleError && (
