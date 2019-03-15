@@ -176,14 +176,7 @@ export const SpansMessage = ({
             res.push(<SpansMessageText text={message.slice(lastOffset, message.length)} />);
         }
     } else {
-        return (
-            <span>
-                {emoji({
-                    src: message,
-                    size: 16,
-                })}
-            </span>
-        );
+        return <SpansMessageText text={message} />;
     }
 
     return <>{res}</>;
