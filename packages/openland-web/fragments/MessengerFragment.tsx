@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XRouter } from 'openland-x-routing/XRouter';
 import { MessengerRootComponent } from './MessengerRootComponent';
 import { RoomsInviteComponent } from './RoomsInviteComponent';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, Room, UserShort } from 'openland-api/Types';
@@ -30,7 +31,13 @@ interface MessengerComponentLoaderProps {
     data: Room;
 }
 
-class MessagengerFragmentInner extends React.PureComponent<MessengerComponentLoaderProps> {
+class MessagengerFragmentInner extends React.PureComponent<
+    MessengerComponentLoaderProps & { router: XRouter }
+> {
+    onConversationLostAccess = () => {
+        this.props.router.replace(this.props.router.path);
+    };
+
     render() {
         const { state, data, loading, isActive } = this.props;
         if (!data || !data.room || loading) {
@@ -71,6 +78,7 @@ class MessagengerFragmentInner extends React.PureComponent<MessengerComponentLoa
 
                     <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
                         <MessengerRootComponent
+                            onConversationLostAccess={this.onConversationLostAccess}
                             isActive={isActive}
                             objectName={title}
                             objectId={

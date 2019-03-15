@@ -41,6 +41,7 @@ export interface EditPostProps {
 }
 
 interface MessagesComponentProps {
+    onConversationLostAccess?: Function;
     isActive: boolean;
     organizationId: string | null;
     conversationId: string;
@@ -164,7 +165,9 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     };
 
     onConversationLostAccess = () => {
-        window.location.reload(false);
+        if (this.props.onConversationLostAccess) {
+            this.props.onConversationLostAccess();
+        }
     };
 
     onMessageListScroll = (scrollPosition: number) => {
@@ -365,6 +368,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 }
 
 interface MessengerRootComponentProps {
+    onConversationLostAccess?: Function;
     isActive: boolean;
     organizationId: string | null;
     conversationId: string;
@@ -378,6 +382,7 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
     return (
         <MessagesComponent
+            onConversationLostAccess={props.onConversationLostAccess}
             isActive={props.isActive}
             me={messenger.user}
             loading={false}
