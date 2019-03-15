@@ -17,7 +17,7 @@ export const RoomEditModal = withAlterChat(props => {
             scrollableContent={true}
             targetQuery="editChat"
             useTopCloser={true}
-            title="Room settings"
+            title="Group settings"
             defaultAction={data => {
                 let newTitle = data.input.title;
                 let newDescription = data.input.description;
@@ -64,7 +64,7 @@ export const RoomEditModal = withAlterChat(props => {
                         }}
                     />
                     <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
-                        <XInput title="Room name" field="input.title" size="large" />
+                        <XInput title="Group name" field="input.title" size="large" />
                         <XWithRole role="feature-chat-embedded-attach">
                             <XInput
                                 field="input.longDescription"

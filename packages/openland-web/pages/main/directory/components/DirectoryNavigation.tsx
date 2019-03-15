@@ -175,7 +175,7 @@ export const DirectoryNavigation = XMemo(
                 }
                 menuChildrenContent={
                     <>
-                        <MenuItem path="/directory" title="Rooms" icon={<RoomIcon />} />
+                        <MenuItem path="/directory" title="Groups" icon={<RoomIcon />} />
                         <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
                         <MenuItem
                             path="/directory/organizations"

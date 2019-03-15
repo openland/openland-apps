@@ -15,8 +15,8 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
-import { XOverflow } from '../../../../components/XOverflow';
-import { LeaveChatComponent } from '../../../../fragments/MessengerRootComponent';
+import { XOverflow } from 'openland-web/components/XOverflow';
+import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
 import { RemoveMemberModal } from '../../channel/components/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
@@ -35,7 +35,7 @@ import {
     RoomFull_SharedRoom_members,
     RoomFull_SharedRoom_requests,
 } from 'openland-api/Types';
-import { withRoom } from '../../../../api/withRoom';
+import { withRoom } from 'openland-web/api/withRoom';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRoomMembersMgmt } from 'openland-web/api/withRoomRequestsMgmt';
 import { XMutation } from 'openland-x/XMutation';
@@ -51,7 +51,7 @@ import {
 } from 'openland-web/pages/main/profile/components/RoomControls';
 import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
 import { tabs, tabsT } from '../tabs';
-import { RoomAddMemberModal } from '../../../../fragments/chat/RoomAddMemberModal';
+import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
@@ -63,18 +63,20 @@ const HeaderMembers = (props: { online?: boolean; children?: any }) => (
 export const AdminTools = withRoomAdminTools(
     withQueryLoader(props => (
         <>
-            {props.data && props.data.roomSuper && (
-                <RoomSetFeatured
-                    val={props.data.roomSuper!.featured}
-                    roomId={props.data.roomSuper.id}
-                />
-            )}
-            {props.data && props.data.roomSuper && (
-                <RoomSetHidden
-                    val={props.data.roomSuper!.listed}
-                    roomId={props.data.roomSuper.id}
-                />
-            )}
+            {props.data &&
+                props.data.roomSuper && (
+                    <RoomSetFeatured
+                        val={props.data.roomSuper!.featured}
+                        roomId={props.data.roomSuper.id}
+                    />
+                )}
+            {props.data &&
+                props.data.roomSuper && (
+                    <RoomSetHidden
+                        val={props.data.roomSuper!.listed}
+                        roomId={props.data.roomSuper.id}
+                    />
+                )}
         </>
     )),
 ) as React.ComponentType<{ id: string; variables: { id: string } }>;
@@ -82,7 +84,7 @@ export const AdminTools = withRoomAdminTools(
 const Header = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
     let meMember = chat.membership === 'MEMBER';
-    let leaveText = chat.kind === 'GROUP' ? 'Leave group' : 'Leave room';
+    let leaveText = 'Leave group';
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -214,18 +216,19 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                     <SectionContent>{chat.description}</SectionContent>
                 </Section>
             )}
-            {!chat.description && meAdmin && (
-                <Section separator={0}>
-                    <XSubHeader title="About" paddingBottom={0} />
-                    <SectionContent>
-                        <AboutPlaceholder
-                            roomId={chat.id}
-                            description={chat.description}
-                            target={<EditButton text="Add a short description" />}
-                        />
-                    </SectionContent>
-                </Section>
-            )}
+            {!chat.description &&
+                meAdmin && (
+                    <Section separator={0}>
+                        <XSubHeader title="About" paddingBottom={0} />
+                        <SectionContent>
+                            <AboutPlaceholder
+                                roomId={chat.id}
+                                description={chat.description}
+                                target={<EditButton text="Add a short description" />}
+                            />
+                        </SectionContent>
+                    </Section>
+                )}
         </>
     );
 };
@@ -311,19 +314,20 @@ const MembersProvider = ({
                 : tabs.members;
         return (
             <Section separator={0}>
-                {isOwner && (requests || []).length > 0 && (
-                    <XSwitcher style="button">
-                        <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
-                            Members
-                        </XSwitcher.Item>
-                        <XSwitcher.Item
-                            query={{ field: 'requests', value: '1' }}
-                            counter={requests!.length}
-                        >
-                            Requests
-                        </XSwitcher.Item>
-                    </XSwitcher>
-                )}
+                {isOwner &&
+                    (requests || []).length > 0 && (
+                        <XSwitcher style="button">
+                            <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
+                                Members
+                            </XSwitcher.Item>
+                            <XSwitcher.Item
+                                query={{ field: 'requests', value: '1' }}
+                                counter={requests!.length}
+                            >
+                                Requests
+                            </XSwitcher.Item>
+                        </XSwitcher>
+                    )}
                 {((requests || []).length === 0 || !isOwner) && (
                     <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
                 )}
@@ -360,11 +364,7 @@ const MembersProvider = ({
                             <RequestCard key={i} member={req} meOwner={isOwner} roomId={chatId} />
                         ))}
                 </SectionContent>
-                <RemoveMemberModal
-                    members={members}
-                    roomId={chatId}
-                    roomTitle={chatTitle}
-                />
+                <RemoveMemberModal members={members} roomId={chatId} roomTitle={chatTitle} />
             </Section>
         );
     } else {

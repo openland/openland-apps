@@ -32,7 +32,7 @@ export const HeaderMenu = (props: { room: Room_room_SharedRoom }) => (
                     }}
                     style="danger"
                 >
-                    Leave room
+                    Leave group
                 </XMenuItem>
                 <XWithRole role="super-admin">
                     <XMenuItemSeparator />

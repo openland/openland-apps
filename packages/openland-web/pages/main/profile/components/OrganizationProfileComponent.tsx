@@ -617,7 +617,7 @@ const Header = (props: { organization: Organization_organization }) => {
                                         {TextProfiles.Organization.superEdit}
                                     </XMenuItem>
                                 </XWithRole>
-                                {leaveOrganizationButton}
+                                {organization.isMine && leaveOrganizationButton}
                                 <XWithRole
                                     role={organization.isOwner ? 'admin' : 'owner'}
                                     orgPermission={organization.id}
@@ -1055,33 +1055,30 @@ const Rooms = (props: { organization: Organization_organization }) => {
 
     let groups = organization.rooms;
 
-    return (
-        <Section separator={0}>
-            <XSubHeader
-                title={TextProfiles.Organization.publicRooms}
-                counter={groups.length}
-                paddingBottom={0}
-            />
-            <SectionContent>
-                {organization.isMine && (
+    if (organization.isMine && groups.length > 0) {
+        return (
+            <Section separator={0}>
+                <XSubHeader
+                    title={TextProfiles.Organization.publicGroups}
+                    counter={groups.length}
+                    paddingBottom={0}
+                />
+                <SectionContent>
                     <XCreateCard
-                        query={{
-                            field: 'createRoom',
-                            value: organization.id,
-                        }}
-                        text={TextProfiles.Organization.createPublicRoom}
+                        path="/mail/create"
+                        text={TextProfiles.Organization.createPublicGroup}
                     />
-                )}
-                {groups.length > 0 && (
                     <XMoreCards>
                         {groups.map((c: any, i: any) => (
                             <XRoomCard key={i} room={c} />
                         ))}
                     </XMoreCards>
-                )}
-            </SectionContent>
-        </Section>
-    );
+                </SectionContent>
+            </Section>
+        );
+    }
+
+    return null;
 };
 
 interface OrganizationProfileInnerProps extends XWithRouter {
