@@ -50,6 +50,7 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                 <TextInput
                     {...others}
                     placeholderTextColor="#a0a0a0"
+                    keyboardAppearance={theme.keyboardAppearance}
                     style={{
                         color: theme.textColor,
                         flex: 1,

@@ -106,6 +106,7 @@ export const MyOrganizationsQuery = typedQuery<Types.MyOrganizations, {}>(Organi
 export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganization, Types.UpdateOrganizationVariables>(Organization.UpdateOrganizationMutation);
 export const SetOrgShortnameMutation = typedMutation<Types.SetOrgShortname, Types.SetOrgShortnameVariables>(Organization.SetOrgShortnameMutation);
 export const OrganizationQuery = typedQuery<Types.Organization, Types.OrganizationVariables>(Organization.OrganizationQuery);
+export const OrganizationMembersShortQuery = typedQuery<Types.OrganizationMembersShort, Types.OrganizationMembersShortVariables>(Organization.OrganizationMembersShortQuery);
 export const OrganizationProfileQuery = typedQuery<Types.OrganizationProfile, Types.OrganizationProfileVariables>(Organization.OrganizationProfileQuery);
 export const ExploreOrganizationsQuery = typedQuery<Types.ExploreOrganizations, Types.ExploreOrganizationsVariables>(Organization.ExploreOrganizationsQuery);
 export const ExploreComunityQuery = typedQuery<Types.ExploreComunity, Types.ExploreComunityVariables>(Organization.ExploreComunityQuery);

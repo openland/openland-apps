@@ -378,6 +378,18 @@ export class OpenlandClient {
     useWithoutLoaderOrganization(variables: Types.OrganizationVariables): Types.Organization | null {
         return this.client.useWithoutLoaderQuery(Source.OrganizationQuery, variables);
     }
+    async queryOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Promise<Types.OrganizationMembersShort> {
+        return this.client.query(Source.OrganizationMembersShortQuery, variables);
+    }
+    async refetchOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Promise<Types.OrganizationMembersShort> {
+        return this.client.refetch(Source.OrganizationMembersShortQuery, variables);
+    }
+    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Types.OrganizationMembersShort {
+        return this.client.useQuery(Source.OrganizationMembersShortQuery, variables);
+    }
+    useWithoutLoaderOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Types.OrganizationMembersShort | null {
+        return this.client.useWithoutLoaderQuery(Source.OrganizationMembersShortQuery, variables);
+    }
     async queryOrganizationProfile(variables: Types.OrganizationProfileVariables): Promise<Types.OrganizationProfile> {
         return this.client.query(Source.OrganizationProfileQuery, variables);
     }

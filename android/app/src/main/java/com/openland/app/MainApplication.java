@@ -1,23 +1,17 @@
 package com.openland.app;
 
 import android.app.Application;
-import android.content.Intent;
-import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
 import com.zxcpoiu.incallmanager.InCallManagerPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
-import com.facebook.react.bridge.JavaScriptExecutorFactory;
-import com.facebook.react.bridge.ProxyJavaScriptExecutor;
 import com.oney.WebRTCModule.WebRTCModulePackage;
 import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
 import com.auth0.react.A0Auth0Package;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.microsoft.appcenter.AppCenter;
-import com.microsoft.appcenter.analytics.Analytics;
-import com.microsoft.appcenter.crashes.Crashes;
 import com.microsoft.appcenter.distribute.Distribute;
 import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
@@ -26,15 +20,12 @@ import cl.json.RNSharePackage;
 import cl.json.ShareApplication;
 
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
-import com.openland.app.BuildConfig;
 import com.openland.react.RNSPackage;
 
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 
 import com.openland.react.threads.RNThreadPackage;
-import com.openland.react.v8.V8Executor;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.airbnb.android.react.lottie.LottiePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.cmcewen.blurview.BlurViewPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -51,8 +42,6 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 public class MainApplication extends Application implements ShareApplication, ReactApplication {
 
@@ -86,7 +75,6 @@ public class MainApplication extends Application implements ShareApplication, Re
                     new RNSharePackage(),
                     new RCTImageCapInsetPackage(),
                     new RNGestureHandlerPackage(),
-                    new LottiePackage(),
                     new LinearGradientPackage(),
                     new BlurViewPackage(),
                     new PickerPackage(),

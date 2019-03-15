@@ -131,49 +131,40 @@ function ProfileOrganizationContent(props: PageProps) {
 
             </ZListItemGroup>
 
-            {
-                organization.rooms.length > 0 && (
-                    <ZListItemGroup
-                        header="Groups"
-                        divider={false}
-                        actionRight={organization.rooms.length > 3 ? { title: 'See All', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name + ' groups' }) } : undefined}
-                    >
-                        {organization.isMine && (
-                            <ZListItem
-                                leftIcon={require('assets/ic-add-24.png')}
-                                text="Create group"
-                                path="CreateGroupAttrs"
-                                pathParams={{
-                                    organizationId: organization.id,
-                                }}
-                                navigationIcon={false}
-                            />)}
-                        {organization.rooms
-                            .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0))
-                            .filter((c, i) => i <= 2)
-                            .map(v => (
-                                <GroupView
-                                    key={v!!.id}
-                                    item={v!}
-                                    onPress={() =>
-                                        props.router.push(
-                                            'Conversation',
-                                            {
-                                                flexibleId: v!!.id,
-                                            },
-                                        )
-                                    }
-                                />
-                            ))}
-                    </ZListItemGroup>
-                )
-            }
+            <ZListItemGroup
+                header="Groups"
+                divider={false}
+                actionRight={organization.rooms.length > 3 ? { title: 'See All', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name + ' groups' }) } : undefined}
+            >
+                {organization.isMine && (
+                    <ZListItem
+                        leftIcon={require('assets/ic-add-24.png')}
+                        text="Create group"
+                        path="CreateGroupAttrs"
+                        pathParams={{
+                            organizationId: organization.id,
+                        }}
+                        navigationIcon={false}
+                    />
+                )}
+                {organization.rooms
+                    .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0))
+                    .filter((c, i) => i <= 2)
+                    .map(v => (
+                        <GroupView
+                            key={v!!.id}
+                            item={v!}
+                            onPress={() => props.router.push('Conversation', { flexibleId: v!!.id })}
+                        />
+                    ))
+                }
+            </ZListItemGroup>
 
             <ZListItemGroup header="Members" divider={false} >
                 {organization.isMine && (
                     <ZListItem
                         leftIcon={require('assets/ic-add-24.png')}
-                        text="Add Members"
+                        text="Add members"
                         onPress={handleAddMember}
                     />
                 )}

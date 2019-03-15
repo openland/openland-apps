@@ -78,7 +78,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
                             },
                         },
                     });
-                    switchOrganization(res.data.createOrganization.id, router.query.redirect);
+                    switchOrganization(res.data.organization.id, router.query.redirect);
                     await delayForewer();
                 }}
             />

@@ -7,6 +7,10 @@ import {
     Organization_organization,
     Organization_organization_members,
     Organization_organization_requests,
+    OrganizationAddMember,
+    OrganizationAddMemberVariables,
+    RoomMembersShort_members,
+    RoomMemberRole,
 } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -36,13 +40,18 @@ import { withUserProfileUpdate } from 'openland-web/api/withUserProfileUpdate';
 import { XInput } from 'openland-x/XInput';
 import { withOrganizationRemoveMember } from 'openland-web/api/withOrganizationRemoveMember';
 import { withOrganizationMemberChangeRole } from 'openland-web/api/withOrganizationMemberChangeRole';
+import { withOrganizationAddMembers } from 'openland-web/api/withOrganizationAddMembers';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XSelect } from 'openland-x/XSelect';
+import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
+import { XModalProps } from 'openland-x-modal/XModal';
 import { XText } from 'openland-x/XText';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import { XUserCard } from 'openland-x/cards/XUserCard';
+import LinkIcon from 'openland-icons/ic-link.svg';
 import { XSocialButton } from 'openland-x/XSocialButton';
 import { XMoreCards } from 'openland-x/cards/XMoreCards';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
@@ -51,6 +60,9 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
+import { withExplorePeople } from 'openland-web/api/withExplorePeople';
+import { MutationFunc } from 'react-apollo';
+import { withRoomAddMembers } from '../../../../api/withRoomAddMembers';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -674,9 +686,246 @@ const tabs: { [K in tabsT]: tabsT } = {
 interface MembersProps {
     organization: Organization_organization;
     router: XRouter;
+    onDirectory?: boolean;
 }
 
-const Members = ({ organization, router }: MembersProps) => {
+interface SearchBoxProps {
+    value: { label: string; value: string }[] | null;
+    onInputChange: (data: string) => string;
+    onChange: (data: { label: string; value: string }[] | null) => void;
+}
+
+const SearchBox = (props: SearchBoxProps) => (
+    <XSelect
+        multi={true}
+        render={
+            <XSelectCustomUsersRender
+                popper={false}
+                placeholder="Search"
+                rounded={true}
+                onInputChange={props.onInputChange}
+                onChange={data => props.onChange(data as any)}
+                options={props.value || []}
+                value={props.value || []}
+            />
+        }
+    />
+);
+
+interface ExplorePeopleProps {
+    variables: { query?: string };
+    searchQuery: string;
+    organizationId: string;
+    onPick: (label: string, value: string) => void;
+    selectedUsers: Map<string, string> | null;
+    organizationUsers: Organization_organization_members[];
+    linkInvitePath?: string;
+}
+
+const ExplorePeople = withExplorePeople(props => {
+    const typedProps = props as typeof props & ExplorePeopleProps;
+    if (!typedProps.data.items) {
+        return (
+            <XView flexGrow={1} flexShrink={0}>
+                <XLoader loading={true} />
+            </XView>
+        );
+    }
+
+    let linkInvitePath = `/mail/${typedProps.organizationId}?inviteToOrganizationByLink=true`;
+
+    if (typedProps.linkInvitePath !== undefined) {
+        linkInvitePath = typedProps.linkInvitePath;
+    }
+
+    return (
+        <XView flexGrow={1} flexShrink={0}>
+            <XScrollView2 flexGrow={1} flexShrink={0}>
+                <XView paddingHorizontal={16} flexDirection="column">
+                    {!typedProps.searchQuery &&
+                        (!typedProps.selectedUsers || typedProps.selectedUsers.size === 0) && (
+                            <XCreateCard
+                                text="Invite with a link"
+                                path={linkInvitePath}
+                                icon={<LinkIcon />}
+                            />
+                        )}
+                    {typedProps.data.items.edges.map(i => {
+                        if (
+                            (typedProps.selectedUsers && typedProps.selectedUsers.has(i.node.id)) ||
+                            (typedProps.organizationUsers &&
+                                typedProps.organizationUsers.find(
+                                    (j: Organization_organization_members) =>
+                                        j.user.id === i.node.id,
+                                ))
+                        ) {
+                            return null;
+                        }
+                        return (
+                            <XView
+                                key={i.node.id}
+                                onClick={() => typedProps.onPick(i.node.name, i.node.id)}
+                            >
+                                <XUserCard user={i.node} noPath={true} customButton={null} />
+                            </XView>
+                        );
+                    })}
+                </XView>
+            </XScrollView2>
+        </XView>
+    );
+}) as React.ComponentType<ExplorePeopleProps>;
+
+interface InviteModalProps extends XModalProps {
+    organizationId: string;
+    addMembers: MutationFunc<OrganizationAddMember, Partial<OrganizationAddMemberVariables>>;
+    members: Organization_organization_members[];
+    linkInvitePath?: string;
+}
+
+interface InviteModalState {
+    searchQuery: string;
+    selectedUsers: Map<string, string> | null;
+}
+
+class OrganizationAddMemberModalInner extends React.Component<
+    InviteModalProps & { isMobile: boolean },
+    InviteModalState
+> {
+    constructor(props: InviteModalProps & { isMobile: boolean }) {
+        super(props);
+
+        this.state = { searchQuery: '', selectedUsers: null };
+    }
+
+    private onInputChange = (data: string) => {
+        this.setState({
+            searchQuery: data,
+        });
+        return data;
+    };
+
+    private onChange = (data: { label: string; value: string }[]) => {
+        let newSelected = new Map();
+        data.map(i => {
+            newSelected.set(i.value, i.label);
+        });
+
+        this.setState({
+            selectedUsers: newSelected,
+        });
+    };
+
+    private selectMembers = (label: string, value: string) => {
+        let selected = this.state.selectedUsers || new Map();
+
+        selected.set(value, label);
+
+        this.setState({
+            selectedUsers: selected,
+        });
+    };
+
+    render() {
+        const { props } = this;
+        const { selectedUsers } = this.state;
+        let options: { label: string; value: string }[] = [];
+        const invitesUsers: string[] = [];
+        if (selectedUsers) {
+            selectedUsers.forEach((l, v) => {
+                options.push({
+                    label: l,
+                    value: v,
+                });
+            });
+
+            selectedUsers.forEach((l, v) => {
+                invitesUsers.push(v);
+            });
+        }
+        return (
+            <XModalForm
+                title="Add members"
+                target={props.target}
+                submitBtnText="Add"
+                width={props.isMobile ? undefined : 520}
+                flexGrow={props.isMobile ? 1 : undefined}
+                useTopCloser={true}
+                targetQuery="addMembersToOrganization"
+                defaultAction={async data => {
+                    await props.addMembers({
+                        variables: {
+                            organizationId: this.props.organizationId,
+                            userIds: invitesUsers,
+                        },
+                    });
+
+                    this.setState({
+                        selectedUsers: null,
+                    });
+                }}
+                onClosed={() =>
+                    this.setState({
+                        selectedUsers: null,
+                        searchQuery: '',
+                    })
+                }
+            >
+                <XView
+                    height="60vh"
+                    flexGrow={1}
+                    marginHorizontal={-24}
+                    marginTop={-6}
+                    marginBottom={-24}
+                >
+                    <XView paddingHorizontal={16}>
+                        <SearchBox
+                            onInputChange={this.onInputChange}
+                            value={options}
+                            onChange={this.onChange}
+                        />
+                    </XView>
+                    <ExplorePeople
+                        variables={{ query: this.state.searchQuery }}
+                        searchQuery={this.state.searchQuery}
+                        organizationId={props.organizationId}
+                        onPick={this.selectMembers}
+                        selectedUsers={selectedUsers}
+                        organizationUsers={props.members}
+                        linkInvitePath={props.linkInvitePath}
+                    />
+                </XView>
+            </XModalForm>
+        );
+    }
+}
+
+const OrganizationAddMemberModalRoot = (props: InviteModalProps) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    return <OrganizationAddMemberModalInner {...props} isMobile={isMobile} />;
+};
+
+type OrganizationAddMemberModalT = {
+    organizationId: string;
+    refetchVars: { orgId: string; organizationId: string };
+    linkInvitePath?: string;
+    members: Organization_organization_members[];
+};
+
+export const RoomAddMemberModal = withOrganizationAddMembers(props => {
+    const typedProps = props as typeof props & OrganizationAddMemberModalT;
+    return (
+        <OrganizationAddMemberModalRoot
+            {...typedProps}
+            organizationId={typedProps.organizationId}
+            addMembers={typedProps.addMembers}
+            members={typedProps.members}
+            linkInvitePath={typedProps.linkInvitePath}
+        />
+    );
+}) as React.ComponentType<OrganizationAddMemberModalT & XModalProps>;
+
+const Members = ({ organization, router, onDirectory }: MembersProps) => {
     let tab: tabsT = tabs.members;
 
     if (router.query.tab === tabs.requests) {
@@ -699,9 +948,33 @@ const Members = ({ organization, router }: MembersProps) => {
                 )}
                 <SectionContent>
                     {organization.isMine && (
-                        <InvitesToOrganizationModal
-                            target={<XCreateCard text={TextProfiles.Organization.addMembers} />}
-                        />
+                        <>
+                            <XCreateCard
+                                text={TextProfiles.Organization.addMembers}
+                                query={{
+                                    field: 'addMembersToOrganization',
+                                    value: organization.id,
+                                }}
+                            />
+                            <InvitesToOrganizationModal targetQuery="inviteToOrganizationByLink" />
+                            <RoomAddMemberModal
+                                refetchVars={{
+                                    orgId: organization.id,
+                                    organizationId: organization.id,
+                                }}
+                                members={organization.members}
+                                organizationId={organization.id}
+                                linkInvitePath={
+                                    onDirectory
+                                        ? `/directory/o/${
+                                              organization.id
+                                          }?inviteToOrganizationByLink=true`
+                                        : `/mail/o/${
+                                              organization.id
+                                          }?inviteToOrganizationByLink=true`
+                                }
+                            />
+                        </>
                     )}
                     <XMoreCards>
                         {joinedMembers.map((member, i) => (
@@ -828,7 +1101,11 @@ export const OrganizationProfileInner = (props: OrganizationProfileInnerProps) =
                 <Header organization={organization} />
                 <XScrollView2 flexGrow={1} height="100%">
                     <About organization={organization} />
-                    <Members organization={organization} router={props.router} />
+                    <Members
+                        organization={organization}
+                        router={props.router}
+                        onDirectory={props.onDirectory}
+                    />
                     <Rooms organization={organization} />
                 </XScrollView2>
             </XView>

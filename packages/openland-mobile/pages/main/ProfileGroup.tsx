@@ -8,21 +8,16 @@ import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { Room_room_SharedRoom, RoomMemberRole, UserShort, RoomMembers_members } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomMemberRole, UserShort, RoomMembers_members, SharedRoomKind } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-mobile/utils/useClient';
-import { PromptBuilder, Prompt } from 'openland-mobile/components/Prompt';
-import ImagePicker, { Image as PickerImage } from 'react-native-image-crop-picker';
-import { UploadCareDirectUploading } from 'openland-mobile/utils/UploadCareDirectUploading';
-import { UploadStatus } from 'openland-engines/messenger/types';
-import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import { ActionSheet } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-// import { changeThemeModal } from './themes/ThemeChangeModal';
 
 let isMember = (a: RoomMembers_members) => {
     return a.role === 'MEMBER';
@@ -43,72 +38,39 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
         props.router.pushAndReset('Conversation', { 'flexibleId': props.router.params.id });
     }, [props.router.params.id]);
 
-    const handlePhotoSet = React.useCallback<{ (src: PickerImage): void }>((img) => {
-        startLoader();
-        let uploading = new UploadCareDirectUploading('photo.jpg', img.path);
-        uploading.watch((v) => {
-            if (v.status === UploadStatus.COMPLETED) {
-                let completed = {
-                    uuid: v.uuid!!,
-                    crop: {
-                        x: 0,
-                        y: 0,
-                        w: img.width,
-                        h: img.height
-                    }
-                };
-                (async () => {
-                    try {
-                        await client.mutateRoomUpdate({
-                            input: { photoRef: completed },
-                            roomId: room.id
-                        });
-                    } finally {
-                        stopLoader();
-                    }
-                })();
-            } else if (v.status === UploadStatus.FAILED) {
-                stopLoader();
-            }
-        });
-    }, []);
-
     const handleLeave = React.useCallback(() => {
-        Alert.builder().title(`Are you sure you want to leave ${room.kind === 'GROUP' ? 'and delete' : ''} ${room.title}?`)
+        Alert.builder().title(`Are you sure you want to leave group? You may not be able to join it again.`)
             .button('Cancel', 'cancel')
-            .action('Leave', 'destructive', async () => {
+            .action('Leave and delete', 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId: props.router.params.id });
                 props.router.pushAndResetRoot('Home');
             })
             .show();
     }, []);
 
-    const handleMemberLongPress = React.useCallback<{ (user: UserShort): void }>((user) => {
+    const handleKick = React.useCallback<{ (user: UserShort): void }>((user) => {
+        Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
+            .button('Cancel', 'cancel')
+            .action('Kick', 'destructive', async () => {
+                await client.mutateRoomKick({ userId: user.id, roomId: props.router.params.id });
+            })
+            .show();
+    }, []);
+
+    const handleMemberLongPress = React.useCallback<{ (user: UserShort, canKick: boolean): void }>((user, canKick) => {
+        let builder = ActionSheet.builder();
+
         if (user.id !== getMessenger().engine.user.id) {
-            let builder = ActionSheet.builder();
-            builder.action(
-                'Info',
-                () => {
-                    props.router.push('ProfileUser', { id: user.id });
-                });
-            builder.action(
-                'Kick',
-                () => {
-                    Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
-                        .button('Cancel', 'cancel')
-                        .action('Kick', 'destructive', async () => {
-                            await client.mutateRoomKick({ userId: user.id, roomId: props.router.params.id });
-                        })
-                        .show();
-                },
-                true
-            );
-            builder.show();
+            builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }));
+
+            if (canKick) {
+                builder.action('Kick', () => handleKick(user), true);
+            }
         } else {
-            let builder = ActionSheet.builder();
             builder.action('Leave', handleLeave, true);
-            builder.show();
         }
+
+        builder.show();
     }, []);
 
     const handleAddMember = React.useCallback(() => {
@@ -135,6 +97,18 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
     //     changeThemeModal(room.id);
     // }, [room.id])
 
+    let canEditInfo = false;
+
+    if (room.kind === SharedRoomKind.GROUP) {
+        canEditInfo = true;
+    }
+
+    if (room.kind === SharedRoomKind.PUBLIC) {
+        if (room.role === RoomMemberRole.OWNER || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
+            canEditInfo = true;
+        }
+    }
+
     // Sort members by name (admins should go first)
     const sortedMembers = room.members
         .sort((a, b) => a.user.name.localeCompare(b.user.name))
@@ -144,7 +118,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
 
     return (
         <>
-            {(room.role === 'ADMIN' || room.role === 'OWNER' || (room.role === 'MEMBER' && room.kind === 'GROUP')) && (
+            {canEditInfo && (
                 <SHeaderButton
                     title="Edit"
                     onPress={() => props.router.push('EditGroup', { id: props.router.params.id })}
@@ -210,7 +184,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
                         isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
                         key={v.user.id}
                         user={v.user}
-                        onLongPress={() => handleMemberLongPress(v.user)}
+                        onLongPress={() => handleMemberLongPress(v.user, v.canKick)}
                         onPress={() => props.router.push('ProfileUser', { 'id': v.user.id })}
                     />
                 ))}
@@ -221,7 +195,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             <ZListItemGroup header={Platform.OS === 'ios' ? undefined : null} divider={false}>
                 <ZListItem
                     leftIcon={require('assets/ic-leave-24.png')}
-                    text={`Leave ${room.kind === 'PUBLIC' ? 'room' : 'and delete group'}`}
+                    text="Leave and delete"
                     appearance="danger"
                     onPress={handleLeave}
                 />

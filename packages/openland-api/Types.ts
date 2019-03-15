@@ -105,14 +105,14 @@ export interface AccountSettings {
 // GraphQL mutation operation: CreateOrganization
 // ====================================================
 
-export interface CreateOrganization_createOrganization {
+export interface CreateOrganization_organization {
   __typename: "OrganizationProfile";
   id: string;
   name: string;
 }
 
 export interface CreateOrganization {
-  createOrganization: CreateOrganization_createOrganization;
+  organization: CreateOrganization_organization;
 }
 
 export interface CreateOrganizationVariables {
@@ -844,6 +844,9 @@ export interface Room_room_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -876,6 +879,7 @@ export interface Room_room_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: Room_room_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface Room_room_SharedRoom_requests_user_primaryOrganization {
@@ -2198,6 +2202,9 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2230,6 +2237,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomAddMember_betaRoomInvite_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_requests_user_primaryOrganization {
@@ -2347,6 +2355,9 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_org
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2379,6 +2390,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_mem
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests_user_primaryOrganization {
@@ -2493,6 +2505,9 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2525,6 +2540,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomAddMembers_betaRoomInvite_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_requests_user_primaryOrganization {
@@ -2642,6 +2658,9 @@ export interface RoomKick_betaRoomKick_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2674,6 +2693,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomKick_betaRoomKick_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_requests_user_primaryOrganization {
@@ -2788,6 +2808,9 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2820,6 +2843,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomLeave_betaRoomLeave_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_requests_user_primaryOrganization {
@@ -2920,6 +2944,9 @@ export interface RoomSearch_items_edges_node_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2952,6 +2979,7 @@ export interface RoomSearch_items_edges_node_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomSearch_items_edges_node_members_user;
+  canKick: boolean;
 }
 
 export interface RoomSearch_items_edges_node_requests_user_primaryOrganization {
@@ -3232,6 +3260,9 @@ export interface RoomJoin_join_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -3264,6 +3295,7 @@ export interface RoomJoin_join_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomJoin_join_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_requests_user_primaryOrganization {
@@ -3396,6 +3428,9 @@ export interface RoomJoinInviteLink_join_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -3428,6 +3463,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomJoinInviteLink_join_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_requests_user_primaryOrganization {
@@ -4796,6 +4832,36 @@ export interface OrganizationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: OrganizationMembersShort
+// ====================================================
+
+export interface OrganizationMembersShort_organization_members_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface OrganizationMembersShort_organization_members {
+  __typename: "OrganizationJoinedMember";
+  user: OrganizationMembersShort_organization_members_user;
+}
+
+export interface OrganizationMembersShort_organization {
+  __typename: "Organization";
+  members: OrganizationMembersShort_organization_members[];
+}
+
+export interface OrganizationMembersShort {
+  organization: OrganizationMembersShort_organization;
+}
+
+export interface OrganizationMembersShortVariables {
+  organizationId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: OrganizationProfile
 // ====================================================
 
@@ -4855,12 +4921,6 @@ export interface ExploreOrganizations_items_edges_node_members {
   user: ExploreOrganizations_items_edges_node_members_user;
 }
 
-export interface ExploreOrganizations_items_edges_node_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  hidden: boolean;
-}
-
 export interface ExploreOrganizations_items_edges_node {
   __typename: "Organization";
   id: string;
@@ -4875,7 +4935,6 @@ export interface ExploreOrganizations_items_edges_node {
   status: string;
   featured: boolean;
   members: ExploreOrganizations_items_edges_node_members[];
-  channels: (ExploreOrganizations_items_edges_node_channels | null)[];
 }
 
 export interface ExploreOrganizations_items_edges {
@@ -4932,12 +4991,6 @@ export interface ExploreComunity_items_edges_node_members {
   user: ExploreComunity_items_edges_node_members_user;
 }
 
-export interface ExploreComunity_items_edges_node_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  hidden: boolean;
-}
-
 export interface ExploreComunity_items_edges_node {
   __typename: "Organization";
   id: string;
@@ -4952,7 +5005,6 @@ export interface ExploreComunity_items_edges_node {
   status: string;
   featured: boolean;
   members: ExploreComunity_items_edges_node_members[];
-  channels: (ExploreComunity_items_edges_node_channels | null)[];
 }
 
 export interface ExploreComunity_items_edges {
@@ -5283,12 +5335,6 @@ export interface OrganizationAlterPublished_alphaAlterPublished_members {
   user: OrganizationAlterPublished_alphaAlterPublished_members_user;
 }
 
-export interface OrganizationAlterPublished_alphaAlterPublished_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  hidden: boolean;
-}
-
 export interface OrganizationAlterPublished_alphaAlterPublished {
   __typename: "Organization";
   id: string;
@@ -5303,7 +5349,6 @@ export interface OrganizationAlterPublished_alphaAlterPublished {
   status: string;
   featured: boolean;
   members: OrganizationAlterPublished_alphaAlterPublished_members[];
-  channels: (OrganizationAlterPublished_alphaAlterPublished_channels | null)[];
 }
 
 export interface OrganizationAlterPublished {
@@ -5334,12 +5379,6 @@ export interface OrganizationByPrefix_organizationByPrefix_members {
   user: OrganizationByPrefix_organizationByPrefix_members_user;
 }
 
-export interface OrganizationByPrefix_organizationByPrefix_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  hidden: boolean;
-}
-
 export interface OrganizationByPrefix_organizationByPrefix {
   __typename: "Organization";
   id: string;
@@ -5354,7 +5393,6 @@ export interface OrganizationByPrefix_organizationByPrefix {
   status: string;
   featured: boolean;
   members: OrganizationByPrefix_organizationByPrefix_members[];
-  channels: (OrganizationByPrefix_organizationByPrefix_channels | null)[];
 }
 
 export interface OrganizationByPrefix {
@@ -7448,6 +7486,24 @@ export interface OrganizationFull {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: OrganizationMedium
+// ====================================================
+
+export interface OrganizationMedium {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
+  isCommunity: boolean;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: OrganizationProfileFull
 // ====================================================
 
@@ -7499,12 +7555,6 @@ export interface OrganizationSearch_members {
   user: OrganizationSearch_members_user;
 }
 
-export interface OrganizationSearch_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  hidden: boolean;
-}
-
 export interface OrganizationSearch {
   __typename: "Organization";
   id: string;
@@ -7519,7 +7569,6 @@ export interface OrganizationSearch {
   status: string;
   featured: boolean;
   members: OrganizationSearch_members[];
-  channels: (OrganizationSearch_channels | null)[];
 }
 
 /* tslint:disable */
@@ -7586,6 +7635,9 @@ export interface RoomFull_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -7618,6 +7670,7 @@ export interface RoomFull_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomFull_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomFull_SharedRoom_requests_user_primaryOrganization {

@@ -11,7 +11,7 @@ export const RoomFull = gql`
                 id
                 mute
             }
-        } 
+        }
         ... on SharedRoom {
             id
             kind
@@ -20,7 +20,7 @@ export const RoomFull = gql`
             socialImage
             description
             organization {
-                ...OrganizationShort
+                ...OrganizationMedium
             }
             membership
             role
@@ -31,6 +31,7 @@ export const RoomFull = gql`
                 user {
                     ...UserShort
                 }
+                canKick
             }
             requests {
                 user {

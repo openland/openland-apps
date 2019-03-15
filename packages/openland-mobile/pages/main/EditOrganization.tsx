@@ -86,7 +86,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     <ZTextInput
                         title="Linkedin"
                         field="input.linkedin"
-                        placeholder="Add Linkedin account"
+                        placeholder="Add LinkedIn account"
                     />
                 </View>
             </ZForm>

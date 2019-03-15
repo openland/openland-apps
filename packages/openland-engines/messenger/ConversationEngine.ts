@@ -51,6 +51,15 @@ const CHAT_SUBSCRIPTION = gql`
             id
         }
     }
+    ... on ConversationDialogUpdate {
+        dialog {
+            haveMention,
+            mute
+        }
+    }
+    ... on ConversationLostAccess {
+       lostAccess
+    }
    
   }
   ${FullMessageFragment}
@@ -62,6 +71,7 @@ const CHAT_SUBSCRIPTION = gql`
 export interface ConversationStateHandler {
     onConversationUpdated(state: ConversationState): void;
     onMessageSend(): void;
+    onConversationLostAccess(): void;
 }
 
 const CONVERSATION_PAGE_SIZE = 15;
@@ -474,6 +484,7 @@ export class ConversationEngine implements MessageSendHandler {
         }
         for (let l of this.listeners) {
             l.onConversationUpdated(this.state);
+
         }
     }
 
@@ -563,6 +574,10 @@ export class ConversationEngine implements MessageSendHandler {
             // this.dataSource.updateItem({
             //     haveMention: event.message,
             // });
+        } else if (event.__typename === 'ConversationLostAccess') {
+            for (let l of this.listeners) {
+                l.onConversationLostAccess();
+            }
         } else {
             console.warn('Received unknown message');
         }

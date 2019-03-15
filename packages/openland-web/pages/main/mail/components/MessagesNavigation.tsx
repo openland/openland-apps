@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
+import NewChatIcon from 'openland-icons/ic-new-chat.svg';
 import { tabs, tabsT } from '../tabs';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
@@ -9,6 +9,7 @@ import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/compo
 import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
 import { Navigation } from '../../../../components/Navigation';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { ErrorPage } from 'openland-web/pages/root/ErrorPage';
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {
@@ -20,6 +21,32 @@ const getId = (myPath: string, substring: string) => {
     }
     return result;
 };
+
+class ErrorBoundary extends React.Component<any, { error: any }> {
+    static getDerivedStateFromError(error: any) {
+        return { error };
+    }
+
+    constructor(props: any) {
+        super(props);
+        this.state = { error: null };
+    }
+
+    componentWillReceiveProps() {
+        this.setState({
+            error: null,
+        });
+    }
+
+    render() {
+        if (this.state.error) {
+            return <ErrorPage statusCode={null} message={this.state.error.message} />;
+        }
+
+        return this.props.children;
+    }
+}
+
 export const MessagesNavigation = XMemo(
     ({ path, cid, oid, uid }: { cid?: string; oid?: string; uid?: string; path?: any }) => {
         let tab: tabsT = tabs.empty;
@@ -80,13 +107,12 @@ export const MessagesNavigation = XMemo(
                 tab={tab}
                 menuRightContent={
                     <PopperOptionsButton
-                        path="/mail/new"
-                        icon={<PlusIcon />}
+                        icon={<NewChatIcon />}
                         title={TextDirectory.create.title}
                     />
                 }
                 secondFragmentHeader={
-                    <>
+                    <ErrorBoundary>
                         {chatId && (
                             <ChatHeaderViewLoader
                                 variables={{
@@ -95,13 +121,15 @@ export const MessagesNavigation = XMemo(
                             />
                         )}
                         <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
-                    </>
+                    </ErrorBoundary>
                 }
                 firstFragment={<DialogListFragment />}
                 secondFragment={
-                    <ConversationContainerWrapper
-                        {...{ tab, conversationId: cid, oid, uid, cid }}
-                    />
+                    <ErrorBoundary>
+                        <ConversationContainerWrapper
+                            {...{ tab, conversationId: cid, oid, uid, cid }}
+                        />
+                    </ErrorBoundary>
                 }
             />
         );

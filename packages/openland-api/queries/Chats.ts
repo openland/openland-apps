@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
 import { OrganizationShort } from '../fragments/OrganizationShort';
+import { OrganizationMedium } from '../fragments/OrganizationMedium';
 import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
@@ -45,7 +46,7 @@ export const RoomQuery = gql`
     }
     ${RoomFull}
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
 `;
 
 export const RoomTinyQuery = gql`
@@ -278,7 +279,7 @@ export const RoomAddMemberMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -289,7 +290,7 @@ export const RoomDeclineJoinReuestMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -300,7 +301,7 @@ export const RoomAddMembersMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -311,7 +312,7 @@ export const RoomKickMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -322,7 +323,7 @@ export const RoomLeaveMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -359,7 +360,7 @@ export const RoomSearchQuery = gql`
     }
     ${RoomFull}
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
 `;
 
 export const RoomAlterFeaturedMutation = gql`
@@ -421,7 +422,7 @@ export const RoomJoinMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -438,7 +439,7 @@ export const RoomJoinInviteLinkMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -499,9 +500,6 @@ export const RoomUpdateMutation = gql`
             }
         }
     }
-    ${RoomFull}
-    ${OrganizationShort}
-    ${UserShort}
 `;
 
 export const RoomDeleteMessageMutation = gql`

@@ -108,10 +108,10 @@ export const TextProfiles = {
         membersLabel: (count: number) => count + (count === 1 ? ' member' : ' members'),
         status: {
             MEMBER: 'Member',
-            NONE: 'Request invite',
+            NONE: 'Join group',
             REQUESTED: 'Pending',
-            LEFT: 'Request invite',
-            KICKED: 'Request invite',
+            LEFT: 'Join group',
+            KICKED: 'Join group',
         },
     },
 };

@@ -25,14 +25,15 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                 <ZForm
                     ref={this.ref}
                     action={async (src) => {
-                        if (!src.input.name) {
-                            Alert.builder().title('Name can\'t be empty').button('GOT IT!').show();
+                        if (!src.input || (src.input && !src.input.name)) {
+                            Alert.builder().title('Please enter a name for this ' + (isCommunity ? 'community' : 'organization')).button('GOT IT!').show();    
+
                             throw new SilentError();
                         }
 
                         let client = getClient();
 
-                        await client.mutateCreateOrganization({
+                        let res = await client.mutateCreateOrganization({
                             input: {
                                 name: '',
                                 personal: false,
@@ -43,9 +44,12 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
 
                         await client.refetchAccount();
                         await client.refetchAccountSettings();
-                    }}
-                    onSuccess={async () => {
-                        this.props.router.params.action ? await this.props.router.params.action(this.props.router) : this.props.router.back();
+
+                        if (this.props.router.params.action) {
+                            await this.props.router.params.action(this.props.router);
+                        } else {
+                            this.props.router.pushAndRemove('ProfileOrganization', { id: res.organization.id });
+                        }
                     }}
                 >
                     {!isCommunity && (

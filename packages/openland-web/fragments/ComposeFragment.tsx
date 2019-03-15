@@ -134,6 +134,10 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
         }
     };
 
+    onConversationLostAccess = () => {
+        console.log('onConversationLostAccess');
+     };
+
     onConversationUpdated = (state: ConversationState) => {
         this.setState({ loading: state.loading, messages: state.messages });
     };

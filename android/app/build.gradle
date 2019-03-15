@@ -105,18 +105,18 @@ if ("$System.env.CI" == "true") {
     buildDir = "./app/build/"
 }
 
-def appVersionCode = Integer.valueOf(System.env.BUILD_NUMBER ?: 0)
+def appVersionCode = Integer.valueOf(System.env.BUILD_NUMBER ?: 1)
 
 android {
     dexOptions {
         preDexLibraries = false
     }
-    compileSdkVersion 28
-    buildToolsVersion '27.0.3'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.openland.app"
-        minSdkVersion 23
-        targetSdkVersion 26
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -192,7 +192,6 @@ dependencies {
     compile project(':react-native-webrtc')
     compile project(':react-native-android-open-settings')
     compile project(':react-native-auth0')
-    compile project(':react-native-threads')
     compile project(':react-native-restart')
     def appCenterSdkVersion = '1.11.0'
     implementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
@@ -206,7 +205,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     compile project(':react-native-haptic-feedback')
     compile project(':react-native-gesture-handler')
-    compile project(':lottie-react-native')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-blur')
     compile project(':react-native-image-crop-picker')
@@ -217,18 +215,19 @@ dependencies {
     compile project(':react-native-push-notification')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
     compile 'com.facebook.react:react-native:+'
-    implementation 'com.facebook.litho:litho-core:0.18.0'
-    implementation 'com.facebook.litho:litho-widget:0.18.0'
-    implementation 'com.facebook.litho:litho-fresco:0.18.0'
-    compileOnly 'com.facebook.litho:litho-annotations:0.18.0'
-    kapt 'com.facebook.litho:litho-processor:0.18.0'
-    annotationProcessor 'com.facebook.litho:litho-processor:0.18.0'
-    implementation 'com.facebook.litho:litho-sections-core:0.18.0'
-    implementation 'com.facebook.litho:litho-sections-widget:0.18.0'
-    compileOnly 'com.facebook.litho:litho-sections-annotations:0.18.0'
-    kapt 'com.facebook.litho:litho-sections-processor:0.18.0'
-    annotationProcessor 'com.facebook.litho:litho-sections-processor:0.18.0'
+    implementation 'com.facebook.litho:litho-core:0.23.0'
+    implementation 'com.facebook.litho:litho-widget:0.23.0'
+    implementation 'com.facebook.litho:litho-fresco:0.23.0'
+    compileOnly 'com.facebook.litho:litho-annotations:0.23.0'
+    kapt 'com.facebook.litho:litho-processor:0.23.0'
+    annotationProcessor 'com.facebook.litho:litho-processor:0.23.0'
+    implementation 'com.facebook.litho:litho-sections-core:0.23.0'
+    implementation 'com.facebook.litho:litho-sections-widget:0.23.0'
+    compileOnly 'com.facebook.litho:litho-sections-annotations:0.23.0'
+    kapt 'com.facebook.litho:litho-sections-processor:0.23.0'
+    annotationProcessor 'com.facebook.litho:litho-sections-processor:0.23.0'
     implementation 'com.eclipsesource.j2v8:j2v8:4.8.2@aar'
 }
 
