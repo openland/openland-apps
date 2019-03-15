@@ -52,14 +52,10 @@ function preprocessRawText(text: string, spans?: (FullMessage_GeneralMessage_spa
                 type: 'new_line'
             });
         }
-        if (spans) {
-            res.push(...preprocessMentions(p, spans!));
-        } else {
-            res.push({
-                type: 'text',
-                text: p
-            });
-        }
+        res.push({
+            type: 'text',
+            text: p
+        });
     }
     return res;
 }
@@ -74,10 +70,8 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
     for (let s of spans) {
         let raw = text.substr(offset, s.offset - offset);
         if (raw) {
-            res.push({
-                type: 'text',
-                text: raw
-            });
+            res.push(...preprocessRawText(raw));
+
         }
         let spanText = text.substr(s.offset, s.length);
         let span: Span;
@@ -96,15 +90,10 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
         span.text = spanText;
         res.push(span);
         offset = s.offset + s.length;
+    }
 
-    }
     let rawLast = text.substr(offset, text.length - offset);
-    if (rawLast) {
-        res.push({
-            type: 'text',
-            text: rawLast
-        });
-    }
+    res.push(...preprocessRawText(rawLast));
 
     sw.next();
     return res;
@@ -129,7 +118,7 @@ export function preprocessText(text: string, spans?: (FullMessage_GeneralMessage
     //     }
     // }
     if (offset < text.length) {
-        res.push(...preprocessRawText(text.substring(offset, text.length), spans));
+        res.push(...preprocessMentions(text, spans || []));
     }
 
     // Special case for empty string

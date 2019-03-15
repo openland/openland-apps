@@ -40,6 +40,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
                     this.props.message.reply.map((m, i) => {
                         let generalMesage = m.__typename === 'GeneralMessage' ? m as FullMessage_GeneralMessage_quotedMessages_GeneralMessage : undefined;
+
                         if (generalMesage) {
                             let attachFile = generalMesage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
                             return (
@@ -69,7 +70,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         fontWeight={TextStyles.weight.regular}
                                     >
 
-                                        {preprocessText(generalMesage!.message!, []).map((p: Span, j: number) => renderPrprocessedText(p, j, this.props.message, this.props.onUserPress))}
+                                        {preprocessText(generalMesage!.message!, generalMesage.spans).map((p: Span, j: number) => renderPrprocessedText(p, j, this.props.message, this.props.onUserPress))}
                                         {(!this.props.message.text && (i + 1 === this.props.message.reply!!.length)) ? (this.props.message.isOut ? paddedTextOut : paddedText) : undefined}
                                     </ASText>}
                                     {attachFile && attachFile.fileMetadata.isImage ? <AsyncReplyMessageMediaView attach={attachFile} onPress={this.props.onMediaPress} message={convertMessage(m as any, getMessenger().engine)} /> : null}
