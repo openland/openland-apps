@@ -6,7 +6,8 @@ import { ActionSheetBuilder } from '../../../../components/ActionSheet';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 interface OthersUsersWrapperProps {
-    users: UserShort[];
+    text: string;
+    users: { id: string, name: string }[];
     onUserPress: (id: string) => void;
 }
 
@@ -29,14 +30,13 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
                 key={'service_text'}
                 // color={this.props.theme.linkColorIn}
                 color={DefaultConversationTheme.linkColorIn}
-                fontWeight={TextStyles.weight.medium}
                 fontSize={12}
                 lineHeight={17}
                 marginLeft={6}
                 marginRight={6}
                 onPress={() => this.handlePress()}
             >
-                {this.props.users.length} others
+                {this.props.text}
             </ASText>
         );
     }

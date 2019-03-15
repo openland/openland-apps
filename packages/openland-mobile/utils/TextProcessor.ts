@@ -1,10 +1,11 @@
 import linkify from 'linkify-it';
 import tlds from 'tlds';
 import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans } from 'openland-api/Types';
+import { Stopwatch } from 'openland-y-utils/stopwatch';
 
-type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_room';
+type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room';
 
-export type Span = SpanUser | SpanRoom | SpanText | SpanLink;
+export type Span = SpanUser | SpanRoom | SpanText | SpanLink | SpanUsers;
 interface SpanAbs {
     type: SpanType;
     text?: string;
@@ -23,6 +24,14 @@ export interface SpanUser extends SpanAbs {
     type: 'mention_user';
     name: string;
     id: string;
+}
+
+export interface SpanUsers extends SpanAbs {
+    type: 'mention_users';
+    users: {
+        name: string;
+        id: string;
+    }[];
 }
 
 export interface SpanRoom extends SpanAbs {
@@ -56,13 +65,13 @@ function preprocessRawText(text: string, spans?: (FullMessage_GeneralMessage_spa
 }
 
 function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
+    let sw = new Stopwatch('preprocessMentions');
+    sw.next('preprocessMentions');
     let res: Span[] = [];
     spans = spans.sort((a, b) => a.offset - b.offset);
 
     let offset = 0;
-    console.warn('boom', text);
     for (let s of spans) {
-        console.warn('boom', s);
         let raw = text.substr(offset, s.offset - offset);
         if (raw) {
             res.push({
@@ -79,6 +88,8 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
             span = { type: 'mention_user', name: s.user.name, id: s.user.id }
         } else if (s.__typename === 'MessageSpanRoomMention') {
             span = { type: 'mention_room', title: s.room.__typename === 'SharedRoom' ? s.room.title : s.room.user.name, id: s.room.id }
+        } else if (s.__typename === 'MessageSpanMultiUserMention') {
+            span = { type: 'mention_users', users: s.users.map(u => ({ name: u.name, id: u.id })) }
         } else {
             span = { type: 'text' };
         }
@@ -95,6 +106,7 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
         });
     }
 
+    sw.next();
     return res;
 }
 

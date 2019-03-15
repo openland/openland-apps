@@ -5,6 +5,7 @@ import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/Conv
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
 import { renderPrprocessedText } from '../AsyncMessageContentView';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 export interface ServiceMessageDefaultProps {
     message: DataSourceMessageItem;
@@ -24,6 +25,7 @@ export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
                 lineHeight={17}
                 height={20}
                 marginLeft={6}
+                fontWeight={TextStyles.weight.medium}
                 marginRight={6}
             >
                 {parts}

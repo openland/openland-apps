@@ -35,7 +35,6 @@ export const DialogsQuery = gql`
     }
     ${UserTiny}
     ${TinyMessage}
-    ${RoomShort}
 `;
 
 export const RoomQuery = gql`

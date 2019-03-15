@@ -6,9 +6,7 @@ import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 export interface UserWrapperProps {
-    user:
-    | UserShort
-    | {
+    user: {
         id: string;
         name: string;
     };
