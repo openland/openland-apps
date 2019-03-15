@@ -9,7 +9,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 let styles = StyleSheet.create({
     textInput: {
-        backgroundColor: '#f5f6f7',
+        backgroundColor: '#f3f5f7',
         borderRadius: 17.5,
         paddingLeft: 12,
         paddingRight: 12,
@@ -23,7 +23,7 @@ let styles = StyleSheet.create({
     } as ViewStyle
 });
 
-const iconAttach = require('assets/ic-attachment-11.png');
+const iconAttach = require('assets/ic-add-24.png');
 const icon = require('assets/ic-send.png');
 
 export interface MessageInputBarProps {
@@ -59,9 +59,9 @@ export const MessageInputBar = XMemo<MessageInputBarProps>(props => {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     {props.attachesEnabled !== false && (
                         <TouchableOpacity onPress={props.onAttachPress}>
-                            <View width={50} height={50} paddingRight={2} alignItems="center" justifyContent="center">
-                                <View width={24} height={24} borderRadius={12} backgroundColor={props.theme.mainColor} alignItems="center" justifyContent="center">
-                                    <Image source={iconAttach} style={{ width: 11, height: 11, tintColor: '#fff' }} />
+                            <View width={48} height={50} alignItems="center" justifyContent="center">
+                                <View width={30} height={30} borderRadius={24} backgroundColor={props.theme.mainColor} alignItems="center" justifyContent="center">
+                                    <Image source={iconAttach} style={{ width: 24, height: 24, tintColor: '#fff' }} />
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -72,8 +72,8 @@ export const MessageInputBar = XMemo<MessageInputBarProps>(props => {
                     <TextInput
                         flexGrow={1}
                         flexBasis={0}
-                        placeholder="Message"
-                        placeholderTextColor="#aaaaaa"
+                        placeholder="Message..."
+                        placeholderTextColor="#8a8a8f"
                         onChangeText={props.onChangeText}
                         onSelectionChange={props.onSelectionChange}
                         onFocus={props.onFocus}
