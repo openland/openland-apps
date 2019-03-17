@@ -31,7 +31,7 @@ export const prepareLegacyMentions = (message: string, intermediateMentions: Use
                 __typename: 'MessageSpanUserMention',
                 offset: index,
                 length: mentionText.length,
-                user: { ...mention, picture: null }
+                user: { __typename: 'User', name: mention.name, id: mention.id, firstName: mention.firstName, lastName: mention.lastName, shortname: mention.shortname, picture: mention.photo }
             });
         }
     }
