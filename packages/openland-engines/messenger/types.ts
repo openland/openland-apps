@@ -1,4 +1,4 @@
-import { UserShort, FullMessage } from 'openland-api/Types';
+import { UserShort, FullMessage, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 
 export interface PendingMessage {
     isService?: false,
@@ -6,7 +6,7 @@ export interface PendingMessage {
     key: string;
     progress: number;
     message: string | null;
-    mentions: UserShort[] | null;
+    spans: FullMessage_GeneralMessage_spans[];
     file: string | null;
     uri?: string;
     fileSize?: number;
