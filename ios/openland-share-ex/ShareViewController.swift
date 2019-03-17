@@ -67,6 +67,11 @@ class ShareViewController: UIViewController {
                 fileUrls.append(path)
               case is String:
                 fileUrls.append(data as! String)
+              case is UIImage:
+                let uiImage = data as! UIImage
+                let path = "\(self.docPath)/image.png"
+                try? uiImage.pngData()?.write(to: URL(fileURLWithPath: path))
+                fileUrls.append(path)
               default:
                 print("ok swift, here is your default executable statement")
               }
