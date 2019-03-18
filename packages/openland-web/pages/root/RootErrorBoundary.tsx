@@ -5,8 +5,11 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
 import { buildConfig } from 'openland-web/config';
 import * as Sentry from '@sentry/browser';
-
-export class RootErrorBoundary extends React.Component<{}, { isError: boolean; code?: number }> {
+import { WHITE_LISTED_ERROR_NAME } from 'openland-x-graphql/throwErrors';
+export class RootErrorBoundary extends React.Component<
+    {},
+    { isError: boolean; code?: number; message?: string }
+> {
     constructor(props: {}) {
         super(props);
         this.state = { isError: false };
@@ -14,7 +17,11 @@ export class RootErrorBoundary extends React.Component<{}, { isError: boolean; c
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
         trackError(error);
-        console.warn(JSON.stringify(error));
+
+        if (error.name === WHITE_LISTED_ERROR_NAME) {
+            this.setState({ isError: true, code: 500, message: error.message });
+        }
+
         let code: number | undefined;
         if ((error as any).graphQLErrors) {
             if ((error as any).graphQLErrors.length > 0) {
@@ -35,7 +42,7 @@ export class RootErrorBoundary extends React.Component<{}, { isError: boolean; c
 
     render() {
         if (this.state.isError) {
-            return <ErrorPage statusCode={this.state.code} />;
+            return <ErrorPage statusCode={this.state.code} message={this.state.message} />;
         }
         return <>{this.props.children}</>;
     }

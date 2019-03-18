@@ -6,7 +6,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { Platform, View } from 'react-native';
 import { SharedRoomKind, RoomMemberRole } from 'openland-api/Types';
-import { UserError } from 'openland-y-forms/errorHandling';
+import { UserError, SilentError } from 'openland-y-forms/errorHandling';
 import { Modals } from '../main/modals/Modals';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
@@ -48,7 +48,9 @@ const CreateGroupComponent = (props: PageProps) => {
                 ref={ref}
                 action={async (src) => {
                     if (!src.title) {
-                        throw new UserError('Group name can\'t be empty');
+                        Alert.builder().title('Please enter a name for this group').button('GOT IT!').show();
+
+                        throw new SilentError();
                     }
 
                     let orgId = orgIdFromRouter ? orgIdFromRouter : (selectedKind === SharedRoomKind.PUBLIC ? selectedOrg : undefined);
@@ -121,7 +123,7 @@ const CreateGroupComponent = (props: PageProps) => {
                                 text="Group type"
                                 description={selectedKind === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
                                 descriptionColor={selectedKind === SharedRoomKind.GROUP ? '#129f25' : undefined}
-                                descriptionIcon={selectedKind === SharedRoomKind.GROUP ? require('assets/ic-secret-14.png') : undefined}
+                                descriptionIcon={selectedKind === SharedRoomKind.GROUP ? require('assets/ic-secret-20.png') : undefined}
                                 navigationIcon={true}
                             />
                         </ZListItemGroup>

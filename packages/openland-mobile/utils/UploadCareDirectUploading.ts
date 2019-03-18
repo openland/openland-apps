@@ -26,19 +26,32 @@ export class UploadCareDirectUploading implements UploadingFile {
             }, {
                 name: 'file',
                 filename: this.name,
-                data: RNFetchBlob.wrap(this.uri)
+                data: RNFetchBlob.wrap(decodeURI(this.uri))
             }]);
 
         // Work-around for IOS
         setTimeout(
             () => {
-                req.uploadProgress({ interval: 100 }, (written: number, total: number) => {
-                    let p = written / total;
-                    this.state = { status: UploadStatus.UPLOADING, progress: p };
+                try {
+                    req.uploadProgress({ interval: 100 }, (written: number, total: number) => {
+                        let p = written / total;
+                        this.state = { status: UploadStatus.UPLOADING, progress: p };
+                        for (let w of this.watchers) {
+                            w(this.state);
+                        }
+                    }).catch((e: Error) => {
+                        this.state = { status: UploadStatus.FAILED };
+                        for (let w of this.watchers) {
+                            w(this.state);
+                        }
+                    });
+                } catch (e) {
+                    this.state = { status: UploadStatus.FAILED };
                     for (let w of this.watchers) {
                         w(this.state);
                     }
-                });
+                }
+
             },
             0);
 

@@ -1,19 +1,11 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
-import { XMenuVertical } from 'openland-x/XMenuItem';
+import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XMemo } from 'openland-y-utils/XMemo';
-
-const PopperOptionsButtonWrapper = Glamorous(XButton)({
-    '& svg > g > path': {
-        transition: 'all .2s',
-    },
-    '& svg > g > path:last-child': {
-        fill: '#1790ff',
-        opacity: 0.5,
-    },
-});
+import CreateRoomIcon from 'openland-icons/ic-create-room.svg';
+import CreateCommunityIcon from 'openland-icons/ic-create-community.svg';
 
 export const PopperOptionsButton = XMemo(
     ({ content, icon, title, path }: { content?: any; icon: any; title: any; path?: string }) => {
@@ -34,11 +26,43 @@ export const PopperOptionsButton = XMemo(
                 show={show}
                 marginTop={10}
                 marginRight={-5}
-                content={content}
                 arrow={null}
                 onClickOutside={closer}
+                content={
+                    content !== undefined ? (
+                        content
+                    ) : (
+                        <>
+                            <XMenuItem
+                                style="gray"
+                                path="/mail/create"
+                                icon={
+                                    <XView marginRight={14} marginTop={-4}>
+                                        <CreateRoomIcon />
+                                    </XView>
+                                }
+                            >
+                                New group
+                            </XMenuItem>
+                            <XMenuItem
+                                style="gray"
+                                icon={
+                                    <XView marginRight={14} marginTop={-4}>
+                                        <CreateCommunityIcon />
+                                    </XView>
+                                }
+                                query={{
+                                    field: 'createOrganization',
+                                    value: 'community',
+                                }}
+                            >
+                                New community
+                            </XMenuItem>
+                        </>
+                    )
+                }
             >
-                <PopperOptionsButtonWrapper
+                <XButton
                     onClick={toggle}
                     path={path}
                     style="light"

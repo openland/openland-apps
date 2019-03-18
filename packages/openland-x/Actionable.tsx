@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XModalContextValue, XModalContext } from 'openland-x-modal/XModalContext';
+import { throwGraphQLErrors } from 'openland-x-graphql/throwErrors';
 
 export interface ActionableChildProps {
     loading?: boolean;
@@ -11,19 +12,24 @@ interface ActionableProps {
     loading?: boolean;
     enabled?: boolean;
     successPath?: string;
-    successQuery?: { field: string, value?: string };
+    successQuery?: { field: string; value?: string };
     successClose?: boolean;
-    action?: (() => any);
+    action?: () => any;
     onSuccess?: () => void;
     onFailed?: () => void;
     onClick?: React.MouseEventHandler<any>;
 }
 
-export type ActionableParentProps<T> = Pick<T, Exclude<keyof T, keyof ActionableChildProps>> & ActionableProps;
+export type ActionableParentProps<T> = Pick<T, Exclude<keyof T, keyof ActionableChildProps>> &
+    ActionableProps;
 
-export function makeActionable<T>(Wrapped: React.ComponentType<T & ActionableChildProps>): React.ComponentType<ActionableParentProps<T>> {
-    let Actionable = class ActionableComponent extends React.Component<ActionableParentProps<T> & { __modal: XModalContextValue }, { loading: boolean }> {
-
+export function makeActionable<T>(
+    Wrapped: React.ComponentType<T & ActionableChildProps>,
+): React.ComponentType<ActionableParentProps<T>> {
+    let Actionable = class ActionableComponent extends React.Component<
+        ActionableParentProps<T> & { __modal: XModalContextValue },
+        { loading: boolean; error?: any }
+    > {
         private isLoading = false;
 
         constructor(props: ActionableParentProps<T> & { __modal: XModalContextValue }) {
@@ -31,8 +37,7 @@ export function makeActionable<T>(Wrapped: React.ComponentType<T & ActionableChi
             this.state = { loading: false };
         }
 
-        onClick: React.MouseEventHandler<any> = async (e) => {
-
+        onClick: React.MouseEventHandler<any> = async e => {
             if (this.isLoading) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -63,6 +68,7 @@ export function makeActionable<T>(Wrapped: React.ComponentType<T & ActionableChi
 
             try {
                 await this.props.action();
+
                 try {
                     if (this.props.onSuccess) {
                         this.props.onSuccess();
@@ -72,7 +78,11 @@ export function makeActionable<T>(Wrapped: React.ComponentType<T & ActionableChi
                     console.warn(e);
                 }
             } catch (e) {
-                console.warn(e);
+                try {
+                    throwGraphQLErrors(e);
+                } catch (error) {
+                    this.setState({ error });
+                }
                 if (this.props.onFailed) {
                     this.props.onFailed();
                 }
@@ -80,15 +90,28 @@ export function makeActionable<T>(Wrapped: React.ComponentType<T & ActionableChi
                 this.isLoading = false;
                 this.setState({ loading: false });
             }
-        }
+        };
 
         render() {
             let isLoading = this.state.loading || this.props.loading || false;
 
-            // Split 
+            // Split
             let {
-                loading, enabled, successPath, successQuery, successClose, action, onSuccess, onFailed, onClick, ...other
+                loading,
+                enabled,
+                successPath,
+                successQuery,
+                successClose,
+                action,
+                onSuccess,
+                onFailed,
+                onClick,
+                ...other
             } = this.props as any;
+
+            if (this.state.error) {
+                throw this.state.error;
+            }
 
             return (
                 <Wrapped
@@ -101,14 +124,13 @@ export function makeActionable<T>(Wrapped: React.ComponentType<T & ActionableChi
                 </Wrapped>
             );
         }
-
     };
     class ContextWrapper extends React.Component<ActionableParentProps<T>> {
         render() {
             let { children, ...other } = this.props as any;
             return (
                 <XModalContext.Consumer>
-                    {(modal) => (
+                    {modal => (
                         <Actionable {...other} __modal={modal!!}>
                             {children}
                         </Actionable>

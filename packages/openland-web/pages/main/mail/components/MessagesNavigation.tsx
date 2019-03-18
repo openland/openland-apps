@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
+import NewChatIcon from 'openland-icons/ic-new-chat.svg';
 import { tabs, tabsT } from '../tabs';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
@@ -22,26 +22,25 @@ const getId = (myPath: string, substring: string) => {
     return result;
 };
 
-class ErrorBoundary extends React.Component<any, any> {
+class ErrorBoundary extends React.Component<any, { error: any }> {
     static getDerivedStateFromError(error: any) {
-        return { hasError: true };
+        return { error };
     }
 
     constructor(props: any) {
         super(props);
-        this.state = { hasError: false };
+        this.state = { error: null };
     }
 
     componentWillReceiveProps() {
         this.setState({
-            hasError: false,
+            error: null,
         });
     }
 
     render() {
-        if (this.state.hasError) {
-            // You can render any custom fallback UI
-            return <ErrorPage statusCode={404} />;
+        if (this.state.error) {
+            return <ErrorPage statusCode={null} message={this.state.error.message} />;
         }
 
         return this.props.children;
@@ -108,8 +107,7 @@ export const MessagesNavigation = XMemo(
                 tab={tab}
                 menuRightContent={
                     <PopperOptionsButton
-                        path="/mail/new"
-                        icon={<PlusIcon />}
+                        icon={<NewChatIcon />}
                         title={TextDirectory.create.title}
                     />
                 }

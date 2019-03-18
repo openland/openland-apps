@@ -4,13 +4,12 @@ import {
     Dialogs_dialogs_items_topMessage,
     Room_room_SharedRoom,
     Room_room_PrivateRoom,
-    RoomMessageShort,
     RoomFull,
     Dialogs_dialogs_items_topMessage_GeneralMessage_attachments,
     TinyMessage,
 } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
-import { DialogsQuery, RoomQuery, RoomHistoryQuery } from 'openland-api';
+import { DialogsQuery, RoomQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
 
@@ -105,7 +104,6 @@ export const extractDialog = (
             : topMessage!!.sender.firstName
         : undefined;
     let isService = (topMessage && topMessage.__typename === 'ServiceMessage') || undefined;
-    console.warn('boom', topMessage, isService);
     return {
         online: undefined,
         haveMention,
@@ -431,7 +429,6 @@ export class DialogListEngine {
             let converted = res.dialogs.items.map((c: any) =>
                 extractDialog(c, this.engine.user.id),
             );
-            console.warn('boom', res.dialogs.items);
 
             this.dataSource.loadedMore(converted, !this.next);
 

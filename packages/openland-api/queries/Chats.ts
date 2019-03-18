@@ -1,13 +1,11 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
-import { RoomMessageFull } from '../fragments/MessageFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
-import { RoomMessageShort } from '../fragments/MessageShort';
-import { MessageLightShort } from '../fragments/MessageLightShort';
+import { OrganizationMedium } from '../fragments/OrganizationMedium';
 import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
-import { TinyMessage } from 'openland-api/fragments/Message';
+import { TinyMessage, FullMessage } from 'openland-api/fragments/Message';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -35,11 +33,8 @@ export const DialogsQuery = gql`
             unreadCount
         }
     }
-    ${MessageLightShort}
     ${UserTiny}
     ${TinyMessage}
-    ${RoomShort}
-    ${RoomMessageShort}
 `;
 
 export const RoomQuery = gql`
@@ -50,7 +45,7 @@ export const RoomQuery = gql`
     }
     ${RoomFull}
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
 `;
 
 export const RoomTinyQuery = gql`
@@ -161,17 +156,19 @@ export const GlobalCounterQuery = gql`
     }
 `;
 
-export const RoomHistoryQuery = gql`
-    query RoomHistory($roomId: ID!, $before: ID, $first: Int = 15) {
-        messages: roomMessages(roomId: $roomId, first: $first, before: $before) {
-            ...RoomMessageFull
+export const ChatHistoryQuery = gql`
+    query ChatHistory($chatId: ID!, $before: ID, $first: Int = 15) {
+        messages(chatId: $chatId, first: $first, before: $before) {
+            ...FullMessage
         }
-        state: conversationState(id: $roomId) {
+        state: conversationState(id: $chatId) {
             state
         }
     }
-    ${RoomMessageFull}
+    ${FullMessage}
     ${UserShort}
+    ${UserTiny}
+    ${RoomShort}
 `;
 
 export const SendMessageMutation = gql`
@@ -281,7 +278,7 @@ export const RoomAddMemberMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -292,7 +289,7 @@ export const RoomDeclineJoinReuestMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -303,7 +300,7 @@ export const RoomAddMembersMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -314,7 +311,7 @@ export const RoomKickMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -325,7 +322,7 @@ export const RoomLeaveMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -362,7 +359,7 @@ export const RoomSearchQuery = gql`
     }
     ${RoomFull}
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
 `;
 
 export const RoomAlterFeaturedMutation = gql`
@@ -424,7 +421,7 @@ export const RoomJoinMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -441,7 +438,7 @@ export const RoomJoinInviteLinkMutation = gql`
         }
     }
     ${UserShort}
-    ${OrganizationShort}
+    ${OrganizationMedium}
     ${RoomFull}
 `;
 
@@ -502,9 +499,6 @@ export const RoomUpdateMutation = gql`
             }
         }
     }
-    ${RoomFull}
-    ${OrganizationShort}
-    ${UserShort}
 `;
 
 export const RoomDeleteMessageMutation = gql`

@@ -105,14 +105,14 @@ export interface AccountSettings {
 // GraphQL mutation operation: CreateOrganization
 // ====================================================
 
-export interface CreateOrganization_createOrganization {
+export interface CreateOrganization_organization {
   __typename: "OrganizationProfile";
   id: string;
   name: string;
 }
 
 export interface CreateOrganization {
-  createOrganization: CreateOrganization_createOrganization;
+  organization: CreateOrganization_organization;
 }
 
 export interface CreateOrganizationVariables {
@@ -844,6 +844,9 @@ export interface Room_room_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -876,6 +879,7 @@ export interface Room_room_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: Room_room_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface Room_room_SharedRoom_requests_user_primaryOrganization {
@@ -928,6 +932,7 @@ export interface Room_room_SharedRoom {
   members: Room_room_SharedRoom_members[];
   requests: Room_room_SharedRoom_requests[] | null;
   settings: Room_room_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type Room_room = Room_room_PrivateRoom | Room_room_SharedRoom;
@@ -1196,37 +1201,10 @@ export interface GlobalCounter {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: RoomHistory
+// GraphQL query operation: ChatHistory
 // ====================================================
 
-export interface RoomHistory_messages_alphaButtons {
-  __typename: "MessageButton";
-  id: string;
-  title: string;
-  style: MessageButtonStyle;
-}
-
-export interface RoomHistory_messages_alphaAttachments_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface RoomHistory_messages_alphaAttachments {
-  __typename: "MessageAttachment";
-  fileId: string;
-  fileMetadata: RoomHistory_messages_alphaAttachments_fileMetadata | null;
-}
-
-export interface RoomHistory_messages_serviceMetadata_PhotoChangeServiceMetadata {
-  __typename: "PhotoChangeServiceMetadata";
-}
-
-export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+export interface ChatHistory_messages_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1234,7 +1212,7 @@ export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_user
   isCommunity: boolean;
 }
 
-export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_users {
+export interface ChatHistory_messages_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -1247,10 +1225,44 @@ export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_user
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: RoomHistory_messages_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+  primaryOrganization: ChatHistory_messages_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1258,7 +1270,7 @@ export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_invi
   isCommunity: boolean;
 }
 
-export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_invitedBy {
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -1271,138 +1283,16 @@ export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_invi
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: RoomHistory_messages_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
+  primaryOrganization: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata";
-  users: RoomHistory_messages_serviceMetadata_InviteServiceMetadata_users[] | null;
-  invitedBy: RoomHistory_messages_serviceMetadata_InviteServiceMetadata_invitedBy;
-}
-
-export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomHistory_messages_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
-}
-
-export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomHistory_messages_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
-}
-
-export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: RoomHistory_messages_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: RoomHistory_messages_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export interface RoomHistory_messages_serviceMetadata_TitleChangeServiceMetadata {
-  __typename: "TitleChangeServiceMetadata";
-  title: string;
-}
-
-export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_post_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization | null;
-}
-
-export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_post {
-  __typename: "RoomMessage";
-  id: string;
-  message: string | null;
-  postType: PostMessageType | null;
-  title: string | null;
-  sender: RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_post_sender;
-}
-
-export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization | null;
-}
-
-export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom {
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
+  user: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1410,7 +1300,7 @@ export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata
   isCommunity: boolean;
 }
 
-export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -1418,12 +1308,100 @@ export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
+  organization: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom = RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
+export type ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room = ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization {
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type ChatHistory_messages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanLink;
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  fileId: string;
+  fileMetadata: ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type ChatHistory_messages_GeneralMessage_attachments = ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentPost | ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile | ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1431,7 +1409,7 @@ export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata
   isCommunity: boolean;
 }
 
-export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_responder {
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -1444,316 +1422,604 @@ export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization | null;
+  primaryOrganization: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata {
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+  organization: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+}
+
+export type ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+  organization: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+}
+
+export type ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  fileId: string;
+  fileMetadata: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments = ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  edited: boolean;
+  attachments: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type ChatHistory_messages_GeneralMessage_quotedMessages = ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage;
+
+export interface ChatHistory_messages_GeneralMessage_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_reactions {
+  __typename: "ModernMessageReaction";
+  user: ChatHistory_messages_GeneralMessage_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface ChatHistory_messages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: ChatHistory_messages_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: ChatHistory_messages_GeneralMessage_spans[];
+  edited: boolean;
+  attachments: ChatHistory_messages_GeneralMessage_attachments[];
+  quotedMessages: ChatHistory_messages_GeneralMessage_quotedMessages[];
+  reactions: ChatHistory_messages_GeneralMessage_reactions[];
+}
+
+export interface ChatHistory_messages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ChatHistory_messages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+  organization: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+}
+
+export type ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room = ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type ChatHistory_messages_ServiceMessage_spans = ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanLink;
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata";
+  users: ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata";
+  photo: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
   __typename: "PostRespondServiceMetadata";
-  post: RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_post;
-  postRoom: RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom;
-  responder: RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_responder;
   respondType: string;
 }
 
-export type RoomHistory_messages_serviceMetadata = RoomHistory_messages_serviceMetadata_PhotoChangeServiceMetadata | RoomHistory_messages_serviceMetadata_InviteServiceMetadata | RoomHistory_messages_serviceMetadata_KickServiceMetadata | RoomHistory_messages_serviceMetadata_TitleChangeServiceMetadata | RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata;
+export type ChatHistory_messages_ServiceMessage_serviceMetadata = ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata | ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata | ChatHistory_messages_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | ChatHistory_messages_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | ChatHistory_messages_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
 
-export interface RoomHistory_messages_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface RoomHistory_messages_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomHistory_messages_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomHistory_messages_sender_primaryOrganization | null;
-}
-
-export interface RoomHistory_messages_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomHistory_messages_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomHistory_messages_reply_sender_primaryOrganization | null;
-}
-
-export interface RoomHistory_messages_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface RoomHistory_messages_reply {
-  __typename: "RoomMessage";
-  sender: RoomHistory_messages_reply_sender;
+export interface ChatHistory_messages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
   id: string;
   date: any;
+  sender: ChatHistory_messages_ServiceMessage_sender;
+  /**
+   * Content
+   */
   message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: RoomHistory_messages_reply_fileMetadata | null;
+  fallback: string;
+  spans: ChatHistory_messages_ServiceMessage_spans[];
+  serviceMetadata: ChatHistory_messages_ServiceMessage_serviceMetadata | null;
 }
 
-export interface RoomHistory_messages_reactions_user_primaryOrganization {
-  __typename: "Organization";
-  name: string;
-  id: string;
-}
+export type ChatHistory_messages = ChatHistory_messages_GeneralMessage | ChatHistory_messages_ServiceMessage;
 
-export interface RoomHistory_messages_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: RoomHistory_messages_reactions_user_primaryOrganization | null;
-}
-
-export interface RoomHistory_messages_reactions {
-  __typename: "MessageReaction";
-  user: RoomHistory_messages_reactions_user;
-  reaction: string;
-}
-
-export interface RoomHistory_messages_mentions_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomHistory_messages_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomHistory_messages_mentions_primaryOrganization | null;
-}
-
-export interface RoomHistory_messages_alphaMentions_UserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomHistory_messages_alphaMentions_UserMention_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomHistory_messages_alphaMentions_UserMention_user_primaryOrganization | null;
-}
-
-export interface RoomHistory_messages_alphaMentions_UserMention {
-  __typename: "UserMention";
-  user: RoomHistory_messages_alphaMentions_UserMention_user;
-}
-
-export interface RoomHistory_messages_alphaMentions_SharedRoomMention_sharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export interface RoomHistory_messages_alphaMentions_SharedRoomMention {
-  __typename: "SharedRoomMention";
-  sharedRoom: RoomHistory_messages_alphaMentions_SharedRoomMention_sharedRoom;
-}
-
-export type RoomHistory_messages_alphaMentions = RoomHistory_messages_alphaMentions_UserMention | RoomHistory_messages_alphaMentions_SharedRoomMention;
-
-export interface RoomHistory_messages_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface RoomHistory_messages_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface RoomHistory_messages_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: RoomHistory_messages_urlAugmentation_iconRef_crop | null;
-}
-
-export interface RoomHistory_messages_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface RoomHistory_messages_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface RoomHistory_messages_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: RoomHistory_messages_urlAugmentation_photo_crop | null;
-}
-
-export interface RoomHistory_messages_urlAugmentation_extra_Organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface RoomHistory_messages_urlAugmentation_extra_ChannelConversation_organization {
-  __typename: "Organization";
-  name: string;
-}
-
-export interface RoomHistory_messages_urlAugmentation_extra_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  photo: string | null;
-  organization: RoomHistory_messages_urlAugmentation_extra_ChannelConversation_organization | null;
-}
-
-export interface RoomHistory_messages_urlAugmentation_extra_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface RoomHistory_messages_urlAugmentation_extra_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: RoomHistory_messages_urlAugmentation_extra_User_primaryOrganization | null;
-}
-
-export type RoomHistory_messages_urlAugmentation_extra = RoomHistory_messages_urlAugmentation_extra_Organization | RoomHistory_messages_urlAugmentation_extra_ChannelConversation | RoomHistory_messages_urlAugmentation_extra_User;
-
-export interface RoomHistory_messages_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: RoomHistory_messages_urlAugmentation_imageInfo | null;
-  iconRef: RoomHistory_messages_urlAugmentation_iconRef | null;
-  iconInfo: RoomHistory_messages_urlAugmentation_iconInfo | null;
-  photo: RoomHistory_messages_urlAugmentation_photo | null;
-  extra: RoomHistory_messages_urlAugmentation_extra | null;
-}
-
-export interface RoomHistory_messages {
-  __typename: "RoomMessage";
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  alphaType: MessageType;
-  alphaTitle: string | null;
-  plainText: string | null;
-  alphaPostType: PostMessageType | null;
-  alphaButtons: (RoomHistory_messages_alphaButtons[] | null)[];
-  alphaAttachments: RoomHistory_messages_alphaAttachments[];
-  serviceMetadata: RoomHistory_messages_serviceMetadata | null;
-  fileMetadata: RoomHistory_messages_fileMetadata | null;
-  sender: RoomHistory_messages_sender;
-  reply: RoomHistory_messages_reply[] | null;
-  reactions: RoomHistory_messages_reactions[];
-  mentions: RoomHistory_messages_mentions[] | null;
-  alphaMentions: RoomHistory_messages_alphaMentions[] | null;
-  urlAugmentation: RoomHistory_messages_urlAugmentation | null;
-}
-
-export interface RoomHistory_state {
+export interface ChatHistory_state {
   __typename: "ConversationUpdateState";
   state: string | null;
 }
 
-export interface RoomHistory {
-  messages: RoomHistory_messages[];
-  state: RoomHistory_state;
+export interface ChatHistory {
+  messages: ChatHistory_messages[];
+  state: ChatHistory_state;
 }
 
-export interface RoomHistoryVariables {
-  roomId: string;
+export interface ChatHistoryVariables {
+  chatId: string;
   before?: string | null;
   first?: number | null;
 }
@@ -1977,6 +2243,9 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2009,6 +2278,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomAddMember_betaRoomInvite_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_requests_user_primaryOrganization {
@@ -2061,6 +2331,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom {
   members: RoomAddMember_betaRoomInvite_SharedRoom_members[];
   requests: RoomAddMember_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMember_betaRoomInvite_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomAddMember_betaRoomInvite = RoomAddMember_betaRoomInvite_PrivateRoom | RoomAddMember_betaRoomInvite_SharedRoom;
@@ -2126,6 +2397,9 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_org
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2158,6 +2432,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_mem
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests_user_primaryOrganization {
@@ -2210,6 +2485,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom {
   members: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members[];
   requests: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests[] | null;
   settings: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom;
@@ -2272,6 +2548,9 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2304,6 +2583,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomAddMembers_betaRoomInvite_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_requests_user_primaryOrganization {
@@ -2356,6 +2636,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom {
   members: RoomAddMembers_betaRoomInvite_SharedRoom_members[];
   requests: RoomAddMembers_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMembers_betaRoomInvite_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomAddMembers_betaRoomInvite = RoomAddMembers_betaRoomInvite_PrivateRoom | RoomAddMembers_betaRoomInvite_SharedRoom;
@@ -2421,6 +2702,9 @@ export interface RoomKick_betaRoomKick_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2453,6 +2737,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomKick_betaRoomKick_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_requests_user_primaryOrganization {
@@ -2505,6 +2790,7 @@ export interface RoomKick_betaRoomKick_SharedRoom {
   members: RoomKick_betaRoomKick_SharedRoom_members[];
   requests: RoomKick_betaRoomKick_SharedRoom_requests[] | null;
   settings: RoomKick_betaRoomKick_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomKick_betaRoomKick = RoomKick_betaRoomKick_PrivateRoom | RoomKick_betaRoomKick_SharedRoom;
@@ -2567,6 +2853,9 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2599,6 +2888,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomLeave_betaRoomLeave_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_requests_user_primaryOrganization {
@@ -2651,6 +2941,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom {
   members: RoomLeave_betaRoomLeave_SharedRoom_members[];
   requests: RoomLeave_betaRoomLeave_SharedRoom_requests[] | null;
   settings: RoomLeave_betaRoomLeave_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomLeave_betaRoomLeave = RoomLeave_betaRoomLeave_PrivateRoom | RoomLeave_betaRoomLeave_SharedRoom;
@@ -2699,6 +2990,9 @@ export interface RoomSearch_items_edges_node_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -2731,6 +3025,7 @@ export interface RoomSearch_items_edges_node_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomSearch_items_edges_node_members_user;
+  canKick: boolean;
 }
 
 export interface RoomSearch_items_edges_node_requests_user_primaryOrganization {
@@ -2783,6 +3078,7 @@ export interface RoomSearch_items_edges_node {
   members: RoomSearch_items_edges_node_members[];
   requests: RoomSearch_items_edges_node_requests[] | null;
   settings: RoomSearch_items_edges_node_settings;
+  canEdit: boolean;
 }
 
 export interface RoomSearch_items_edges {
@@ -3011,6 +3307,9 @@ export interface RoomJoin_join_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -3043,6 +3342,7 @@ export interface RoomJoin_join_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomJoin_join_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_requests_user_primaryOrganization {
@@ -3095,6 +3395,7 @@ export interface RoomJoin_join_SharedRoom {
   members: RoomJoin_join_SharedRoom_members[];
   requests: RoomJoin_join_SharedRoom_requests[] | null;
   settings: RoomJoin_join_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomJoin_join = RoomJoin_join_PrivateRoom | RoomJoin_join_SharedRoom;
@@ -3175,6 +3476,9 @@ export interface RoomJoinInviteLink_join_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -3207,6 +3511,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomJoinInviteLink_join_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_requests_user_primaryOrganization {
@@ -3259,6 +3564,7 @@ export interface RoomJoinInviteLink_join_SharedRoom {
   members: RoomJoinInviteLink_join_SharedRoom_members[];
   requests: RoomJoinInviteLink_join_SharedRoom_requests[] | null;
   settings: RoomJoinInviteLink_join_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomJoinInviteLink_join = RoomJoinInviteLink_join_PrivateRoom | RoomJoinInviteLink_join_SharedRoom;
@@ -4575,6 +4881,36 @@ export interface OrganizationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: OrganizationMembersShort
+// ====================================================
+
+export interface OrganizationMembersShort_organization_members_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface OrganizationMembersShort_organization_members {
+  __typename: "OrganizationJoinedMember";
+  user: OrganizationMembersShort_organization_members_user;
+}
+
+export interface OrganizationMembersShort_organization {
+  __typename: "Organization";
+  members: OrganizationMembersShort_organization_members[];
+}
+
+export interface OrganizationMembersShort {
+  organization: OrganizationMembersShort_organization;
+}
+
+export interface OrganizationMembersShortVariables {
+  organizationId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: OrganizationProfile
 // ====================================================
 
@@ -4634,12 +4970,6 @@ export interface ExploreOrganizations_items_edges_node_members {
   user: ExploreOrganizations_items_edges_node_members_user;
 }
 
-export interface ExploreOrganizations_items_edges_node_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  hidden: boolean;
-}
-
 export interface ExploreOrganizations_items_edges_node {
   __typename: "Organization";
   id: string;
@@ -4654,7 +4984,6 @@ export interface ExploreOrganizations_items_edges_node {
   status: string;
   featured: boolean;
   members: ExploreOrganizations_items_edges_node_members[];
-  channels: (ExploreOrganizations_items_edges_node_channels | null)[];
 }
 
 export interface ExploreOrganizations_items_edges {
@@ -4711,12 +5040,6 @@ export interface ExploreComunity_items_edges_node_members {
   user: ExploreComunity_items_edges_node_members_user;
 }
 
-export interface ExploreComunity_items_edges_node_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  hidden: boolean;
-}
-
 export interface ExploreComunity_items_edges_node {
   __typename: "Organization";
   id: string;
@@ -4731,7 +5054,6 @@ export interface ExploreComunity_items_edges_node {
   status: string;
   featured: boolean;
   members: ExploreComunity_items_edges_node_members[];
-  channels: (ExploreComunity_items_edges_node_channels | null)[];
 }
 
 export interface ExploreComunity_items_edges {
@@ -5062,12 +5384,6 @@ export interface OrganizationAlterPublished_alphaAlterPublished_members {
   user: OrganizationAlterPublished_alphaAlterPublished_members_user;
 }
 
-export interface OrganizationAlterPublished_alphaAlterPublished_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  hidden: boolean;
-}
-
 export interface OrganizationAlterPublished_alphaAlterPublished {
   __typename: "Organization";
   id: string;
@@ -5082,7 +5398,6 @@ export interface OrganizationAlterPublished_alphaAlterPublished {
   status: string;
   featured: boolean;
   members: OrganizationAlterPublished_alphaAlterPublished_members[];
-  channels: (OrganizationAlterPublished_alphaAlterPublished_channels | null)[];
 }
 
 export interface OrganizationAlterPublished {
@@ -5113,12 +5428,6 @@ export interface OrganizationByPrefix_organizationByPrefix_members {
   user: OrganizationByPrefix_organizationByPrefix_members_user;
 }
 
-export interface OrganizationByPrefix_organizationByPrefix_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  hidden: boolean;
-}
-
 export interface OrganizationByPrefix_organizationByPrefix {
   __typename: "Organization";
   id: string;
@@ -5133,7 +5442,6 @@ export interface OrganizationByPrefix_organizationByPrefix {
   status: string;
   featured: boolean;
   members: OrganizationByPrefix_organizationByPrefix_members[];
-  channels: (OrganizationByPrefix_organizationByPrefix_channels | null)[];
 }
 
 export interface OrganizationByPrefix {
@@ -6241,1727 +6549,6 @@ export interface ConferenceFull {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: ConversationShort
-// ====================================================
-
-export interface ConversationShort_AnonymousConversation_topMessage_alphaButtons {
-  __typename: "MessageButton";
-  id: string;
-  title: string;
-  style: MessageButtonStyle;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_alphaAttachments_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_alphaAttachments {
-  __typename: "MessageAttachment";
-  fileId: string;
-  fileMetadata: ConversationShort_AnonymousConversation_topMessage_alphaAttachments_fileMetadata | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata {
-  __typename: "PhotoChangeServiceMetadata";
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_users {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata";
-  users: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
-  invitedBy: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata {
-  __typename: "TitleChangeServiceMetadata";
-  title: string;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post {
-  __typename: "RoomMessage";
-  id: string;
-  message: string | null;
-  postType: PostMessageType | null;
-  title: string | null;
-  sender: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
-}
-
-export type ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom = ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata {
-  __typename: "PostRespondServiceMetadata";
-  post: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post;
-  postRoom: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom;
-  responder: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder;
-  respondType: string;
-}
-
-export type ConversationShort_AnonymousConversation_topMessage_serviceMetadata = ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata | ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata | ConversationShort_AnonymousConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata | ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata;
-
-export interface ConversationShort_AnonymousConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ConversationShort_AnonymousConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ConversationShort_AnonymousConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_reactions_user_primaryOrganization {
-  __typename: "Organization";
-  name: string;
-  id: string;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_reactions_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ConversationShort_AnonymousConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_mentions_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_mentions_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention {
-  __typename: "UserMention";
-  user: ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention_user;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_alphaMentions_SharedRoomMention {
-  __typename: "SharedRoomMention";
-  sharedRoom: ConversationShort_AnonymousConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom;
-}
-
-export type ConversationShort_AnonymousConversation_topMessage_alphaMentions = ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention | ConversationShort_AnonymousConversation_topMessage_alphaMentions_SharedRoomMention;
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_Organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization {
-  __typename: "Organization";
-  name: string;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  photo: string | null;
-  organization: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_User_primaryOrganization | null;
-}
-
-export type ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra = ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_Organization | ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_ChannelConversation | ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_User;
-
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo | null;
-  extra: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra | null;
-}
-
-export interface ConversationShort_AnonymousConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  alphaType: MessageType;
-  alphaTitle: string | null;
-  plainText: string | null;
-  alphaButtons: (ConversationShort_AnonymousConversation_topMessage_alphaButtons[] | null)[];
-  alphaAttachments: ConversationShort_AnonymousConversation_topMessage_alphaAttachments[];
-  serviceMetadata: ConversationShort_AnonymousConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ConversationShort_AnonymousConversation_topMessage_fileMetadata | null;
-  sender: ConversationShort_AnonymousConversation_topMessage_sender;
-  reply: ConversationShort_AnonymousConversation_topMessage_reply[] | null;
-  reactions: ConversationShort_AnonymousConversation_topMessage_reactions[];
-  mentions: ConversationShort_AnonymousConversation_topMessage_mentions[] | null;
-  alphaMentions: ConversationShort_AnonymousConversation_topMessage_alphaMentions[] | null;
-  urlAugmentation: ConversationShort_AnonymousConversation_topMessage_urlAugmentation | null;
-}
-
-export interface ConversationShort_AnonymousConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mute: boolean;
-}
-
-export interface ConversationShort_AnonymousConversation {
-  __typename: "AnonymousConversation" | "SharedConversation" | "PrivateConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ConversationShort_AnonymousConversation_topMessage | null;
-  settings: ConversationShort_AnonymousConversation_settings;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_alphaButtons {
-  __typename: "MessageButton";
-  id: string;
-  title: string;
-  style: MessageButtonStyle;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_alphaAttachments_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_alphaAttachments {
-  __typename: "MessageAttachment";
-  fileId: string;
-  fileMetadata: ConversationShort_GroupConversation_topMessage_alphaAttachments_fileMetadata | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata {
-  __typename: "PhotoChangeServiceMetadata";
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_users {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata";
-  users: ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
-  invitedBy: ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata {
-  __typename: "TitleChangeServiceMetadata";
-  title: string;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post {
-  __typename: "RoomMessage";
-  id: string;
-  message: string | null;
-  postType: PostMessageType | null;
-  title: string | null;
-  sender: ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
-}
-
-export type ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom = ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata {
-  __typename: "PostRespondServiceMetadata";
-  post: ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post;
-  postRoom: ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom;
-  responder: ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder;
-  respondType: string;
-}
-
-export type ConversationShort_GroupConversation_topMessage_serviceMetadata = ConversationShort_GroupConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata | ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata | ConversationShort_GroupConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata | ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata;
-
-export interface ConversationShort_GroupConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ConversationShort_GroupConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ConversationShort_GroupConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_reactions_user_primaryOrganization {
-  __typename: "Organization";
-  name: string;
-  id: string;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_reactions_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ConversationShort_GroupConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_mentions_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_mentions_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention {
-  __typename: "UserMention";
-  user: ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention_user;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_alphaMentions_SharedRoomMention {
-  __typename: "SharedRoomMention";
-  sharedRoom: ConversationShort_GroupConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom;
-}
-
-export type ConversationShort_GroupConversation_topMessage_alphaMentions = ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention | ConversationShort_GroupConversation_topMessage_alphaMentions_SharedRoomMention;
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ConversationShort_GroupConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ConversationShort_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_Organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization {
-  __typename: "Organization";
-  name: string;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  photo: string | null;
-  organization: ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_User_primaryOrganization | null;
-}
-
-export type ConversationShort_GroupConversation_topMessage_urlAugmentation_extra = ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_Organization | ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_ChannelConversation | ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_User;
-
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ConversationShort_GroupConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ConversationShort_GroupConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ConversationShort_GroupConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ConversationShort_GroupConversation_topMessage_urlAugmentation_photo | null;
-  extra: ConversationShort_GroupConversation_topMessage_urlAugmentation_extra | null;
-}
-
-export interface ConversationShort_GroupConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  alphaType: MessageType;
-  alphaTitle: string | null;
-  plainText: string | null;
-  alphaButtons: (ConversationShort_GroupConversation_topMessage_alphaButtons[] | null)[];
-  alphaAttachments: ConversationShort_GroupConversation_topMessage_alphaAttachments[];
-  serviceMetadata: ConversationShort_GroupConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ConversationShort_GroupConversation_topMessage_fileMetadata | null;
-  sender: ConversationShort_GroupConversation_topMessage_sender;
-  reply: ConversationShort_GroupConversation_topMessage_reply[] | null;
-  reactions: ConversationShort_GroupConversation_topMessage_reactions[];
-  mentions: ConversationShort_GroupConversation_topMessage_mentions[] | null;
-  alphaMentions: ConversationShort_GroupConversation_topMessage_alphaMentions[] | null;
-  urlAugmentation: ConversationShort_GroupConversation_topMessage_urlAugmentation | null;
-}
-
-export interface ConversationShort_GroupConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mute: boolean;
-}
-
-export interface ConversationShort_GroupConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ConversationShort_GroupConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ConversationShort_GroupConversation_photoRef_crop | null;
-}
-
-export interface ConversationShort_GroupConversation {
-  __typename: "GroupConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ConversationShort_GroupConversation_topMessage | null;
-  settings: ConversationShort_GroupConversation_settings;
-  photo: string | null;
-  photoRef: ConversationShort_GroupConversation_photoRef | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_alphaButtons {
-  __typename: "MessageButton";
-  id: string;
-  title: string;
-  style: MessageButtonStyle;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_alphaAttachments_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_alphaAttachments {
-  __typename: "MessageAttachment";
-  fileId: string;
-  fileMetadata: ConversationShort_ChannelConversation_topMessage_alphaAttachments_fileMetadata | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata {
-  __typename: "PhotoChangeServiceMetadata";
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_users {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata";
-  users: ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
-  invitedBy: ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata {
-  __typename: "TitleChangeServiceMetadata";
-  title: string;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post {
-  __typename: "RoomMessage";
-  id: string;
-  message: string | null;
-  postType: PostMessageType | null;
-  title: string | null;
-  sender: ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post_sender;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
-}
-
-export type ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom = ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata {
-  __typename: "PostRespondServiceMetadata";
-  post: ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_post;
-  postRoom: ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom;
-  responder: ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_responder;
-  respondType: string;
-}
-
-export type ConversationShort_ChannelConversation_topMessage_serviceMetadata = ConversationShort_ChannelConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata | ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata | ConversationShort_ChannelConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata | ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata;
-
-export interface ConversationShort_ChannelConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ConversationShort_ChannelConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ConversationShort_ChannelConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_reactions_user_primaryOrganization {
-  __typename: "Organization";
-  name: string;
-  id: string;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_reactions_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ConversationShort_ChannelConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_mentions_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_mentions_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention {
-  __typename: "UserMention";
-  user: ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention_user;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_alphaMentions_SharedRoomMention {
-  __typename: "SharedRoomMention";
-  sharedRoom: ConversationShort_ChannelConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom;
-}
-
-export type ConversationShort_ChannelConversation_topMessage_alphaMentions = ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention | ConversationShort_ChannelConversation_topMessage_alphaMentions_SharedRoomMention;
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ConversationShort_ChannelConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_Organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization {
-  __typename: "Organization";
-  name: string;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  photo: string | null;
-  organization: ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_User_primaryOrganization | null;
-}
-
-export type ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra = ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_Organization | ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_ChannelConversation | ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_User;
-
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ConversationShort_ChannelConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ConversationShort_ChannelConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ConversationShort_ChannelConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo | null;
-  extra: ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra | null;
-}
-
-export interface ConversationShort_ChannelConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  alphaType: MessageType;
-  alphaTitle: string | null;
-  plainText: string | null;
-  alphaButtons: (ConversationShort_ChannelConversation_topMessage_alphaButtons[] | null)[];
-  alphaAttachments: ConversationShort_ChannelConversation_topMessage_alphaAttachments[];
-  serviceMetadata: ConversationShort_ChannelConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ConversationShort_ChannelConversation_topMessage_fileMetadata | null;
-  sender: ConversationShort_ChannelConversation_topMessage_sender;
-  reply: ConversationShort_ChannelConversation_topMessage_reply[] | null;
-  reactions: ConversationShort_ChannelConversation_topMessage_reactions[];
-  mentions: ConversationShort_ChannelConversation_topMessage_mentions[] | null;
-  alphaMentions: ConversationShort_ChannelConversation_topMessage_alphaMentions[] | null;
-  urlAugmentation: ConversationShort_ChannelConversation_topMessage_urlAugmentation | null;
-}
-
-export interface ConversationShort_ChannelConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mute: boolean;
-}
-
-export interface ConversationShort_ChannelConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ConversationShort_ChannelConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ConversationShort_ChannelConversation_photoRef_crop | null;
-}
-
-export interface ConversationShort_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ConversationShort_ChannelConversation_topMessage | null;
-  settings: ConversationShort_ChannelConversation_settings;
-  featured: boolean;
-  hidden: boolean;
-  photo: string | null;
-  myStatus: ChannelMembershipStatus;
-  photoRef: ConversationShort_ChannelConversation_photoRef | null;
-}
-
-export type ConversationShort = ConversationShort_AnonymousConversation | ConversationShort_GroupConversation | ConversationShort_ChannelConversation;
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL fragment: TinyMessage
 // ====================================================
 
@@ -8054,19 +6641,42 @@ export type TinyMessage = TinyMessage_ServiceMessage | TinyMessage_GeneralMessag
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: MessageFull
+// GraphQL fragment: FullMessage
 // ====================================================
 
-export interface MessageFull_alphaButtons {
-  __typename: "MessageButton";
+export interface FullMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
   id: string;
-  title: string;
-  style: MessageButtonStyle;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
-export interface MessageFull_alphaAttachments_fileMetadata {
+export interface FullMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface FullMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   name: string;
+  mimeType: string | null;
   size: number;
   isImage: boolean;
   imageWidth: number | null;
@@ -8074,1089 +6684,87 @@ export interface MessageFull_alphaAttachments_fileMetadata {
   imageFormat: string | null;
 }
 
-export interface MessageFull_alphaAttachments {
-  __typename: "MessageAttachment";
+export interface FullMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
   fileId: string;
-  fileMetadata: MessageFull_alphaAttachments_fileMetadata | null;
+  fileMetadata: FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
 }
 
-export interface MessageFull_serviceMetadata_PhotoChangeServiceMetadata {
-  __typename: "PhotoChangeServiceMetadata";
-}
-
-export interface MessageFull_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_serviceMetadata_InviteServiceMetadata_users {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageFull_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
-}
-
-export interface MessageFull_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_serviceMetadata_InviteServiceMetadata_invitedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageFull_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
-}
-
-export interface MessageFull_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata";
-  users: MessageFull_serviceMetadata_InviteServiceMetadata_users[] | null;
-  invitedBy: MessageFull_serviceMetadata_InviteServiceMetadata_invitedBy;
-}
-
-export interface MessageFull_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageFull_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
-}
-
-export interface MessageFull_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageFull_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
-}
-
-export interface MessageFull_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: MessageFull_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: MessageFull_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export interface MessageFull_serviceMetadata_TitleChangeServiceMetadata {
-  __typename: "TitleChangeServiceMetadata";
-  title: string;
-}
-
-export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_post_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageFull_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization | null;
-}
-
-export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_post {
-  __typename: "RoomMessage";
-  id: string;
-  message: string | null;
-  postType: PostMessageType | null;
-  title: string | null;
-  sender: MessageFull_serviceMetadata_PostRespondServiceMetadata_post_sender;
-}
-
-export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization | null;
-}
-
-export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
-}
-
-export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
-}
-
-export type MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom = MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
-
-export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_responder {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageFull_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization | null;
-}
-
-export interface MessageFull_serviceMetadata_PostRespondServiceMetadata {
-  __typename: "PostRespondServiceMetadata";
-  post: MessageFull_serviceMetadata_PostRespondServiceMetadata_post;
-  postRoom: MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom;
-  responder: MessageFull_serviceMetadata_PostRespondServiceMetadata_responder;
-  respondType: string;
-}
-
-export type MessageFull_serviceMetadata = MessageFull_serviceMetadata_PhotoChangeServiceMetadata | MessageFull_serviceMetadata_InviteServiceMetadata | MessageFull_serviceMetadata_KickServiceMetadata | MessageFull_serviceMetadata_TitleChangeServiceMetadata | MessageFull_serviceMetadata_PostRespondServiceMetadata;
-
-export interface MessageFull_fileMetadata {
+export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
+  size: number;
   isImage: boolean;
   imageWidth: number | null;
   imageHeight: number | null;
   imageFormat: string | null;
-  size: number;
 }
 
-export interface MessageFull_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageFull_sender_primaryOrganization | null;
-}
-
-export interface MessageFull_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageFull_reply_sender_primaryOrganization | null;
-}
-
-export interface MessageFull_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface MessageFull_reply {
-  __typename: "ConversationMessage";
-  sender: MessageFull_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: MessageFull_reply_fileMetadata | null;
-}
-
-export interface MessageFull_reactions_user_primaryOrganization {
-  __typename: "Organization";
-  name: string;
-  id: string;
-}
-
-export interface MessageFull_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: MessageFull_reactions_user_primaryOrganization | null;
-}
-
-export interface MessageFull_reactions {
-  __typename: "MessageReaction";
-  user: MessageFull_reactions_user;
-  reaction: string;
-}
-
-export interface MessageFull_mentions_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageFull_mentions_primaryOrganization | null;
-}
-
-export interface MessageFull_alphaMentions_UserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface MessageFull_alphaMentions_UserMention_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: MessageFull_alphaMentions_UserMention_user_primaryOrganization | null;
-}
-
-export interface MessageFull_alphaMentions_UserMention {
-  __typename: "UserMention";
-  user: MessageFull_alphaMentions_UserMention_user;
-}
-
-export interface MessageFull_alphaMentions_SharedRoomMention_sharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export interface MessageFull_alphaMentions_SharedRoomMention {
-  __typename: "SharedRoomMention";
-  sharedRoom: MessageFull_alphaMentions_SharedRoomMention_sharedRoom;
-}
-
-export type MessageFull_alphaMentions = MessageFull_alphaMentions_UserMention | MessageFull_alphaMentions_SharedRoomMention;
-
-export interface MessageFull_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface MessageFull_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface MessageFull_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: MessageFull_urlAugmentation_iconRef_crop | null;
-}
-
-export interface MessageFull_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface MessageFull_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface MessageFull_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: MessageFull_urlAugmentation_photo_crop | null;
-}
-
-export interface MessageFull_urlAugmentation_extra_Organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface MessageFull_urlAugmentation_extra_ChannelConversation_organization {
-  __typename: "Organization";
-  name: string;
-}
-
-export interface MessageFull_urlAugmentation_extra_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  photo: string | null;
-  organization: MessageFull_urlAugmentation_extra_ChannelConversation_organization | null;
-}
-
-export interface MessageFull_urlAugmentation_extra_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface MessageFull_urlAugmentation_extra_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: MessageFull_urlAugmentation_extra_User_primaryOrganization | null;
-}
-
-export type MessageFull_urlAugmentation_extra = MessageFull_urlAugmentation_extra_Organization | MessageFull_urlAugmentation_extra_ChannelConversation | MessageFull_urlAugmentation_extra_User;
-
-export interface MessageFull_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
+export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
   url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: MessageFull_urlAugmentation_imageInfo | null;
-  iconRef: MessageFull_urlAugmentation_iconRef | null;
-  iconInfo: MessageFull_urlAugmentation_iconInfo | null;
-  photo: MessageFull_urlAugmentation_photo | null;
-  extra: MessageFull_urlAugmentation_extra | null;
+  metadata: FullMessage_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
 }
 
-export interface MessageFull {
-  __typename: "ConversationMessage";
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  alphaType: MessageType;
-  alphaTitle: string | null;
-  plainText: string | null;
-  alphaButtons: (MessageFull_alphaButtons[] | null)[];
-  alphaAttachments: MessageFull_alphaAttachments[];
-  serviceMetadata: MessageFull_serviceMetadata | null;
-  fileMetadata: MessageFull_fileMetadata | null;
-  sender: MessageFull_sender;
-  reply: MessageFull_reply[] | null;
-  reactions: MessageFull_reactions[];
-  mentions: MessageFull_mentions[] | null;
-  alphaMentions: MessageFull_alphaMentions[] | null;
-  urlAugmentation: MessageFull_urlAugmentation | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL fragment: RoomMessageFull
-// ====================================================
-
-export interface RoomMessageFull_alphaButtons {
-  __typename: "MessageButton";
-  id: string;
-  title: string;
-  style: MessageButtonStyle;
-}
-
-export interface RoomMessageFull_alphaAttachments_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  size: number;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-}
-
-export interface RoomMessageFull_alphaAttachments {
-  __typename: "MessageAttachment";
-  fileId: string;
-  fileMetadata: RoomMessageFull_alphaAttachments_fileMetadata | null;
-}
-
-export interface RoomMessageFull_serviceMetadata_PhotoChangeServiceMetadata {
-  __typename: "PhotoChangeServiceMetadata";
-}
-
-export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata_users {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomMessageFull_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata_invitedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomMessageFull_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata";
-  users: RoomMessageFull_serviceMetadata_InviteServiceMetadata_users[] | null;
-  invitedBy: RoomMessageFull_serviceMetadata_InviteServiceMetadata_invitedBy;
-}
-
-export interface RoomMessageFull_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomMessageFull_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomMessageFull_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: RoomMessageFull_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: RoomMessageFull_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export interface RoomMessageFull_serviceMetadata_TitleChangeServiceMetadata {
-  __typename: "TitleChangeServiceMetadata";
-  title: string;
-}
-
-export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_post_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_post_sender_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_post {
-  __typename: "RoomMessage";
-  id: string;
-  message: string | null;
-  postType: PostMessageType | null;
-  title: string | null;
-  sender: RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_post_sender;
-}
-
-export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
-}
-
-export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
-}
-
-export type RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom = RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
-
-export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_responder {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_responder_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata {
-  __typename: "PostRespondServiceMetadata";
-  post: RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_post;
-  postRoom: RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom;
-  responder: RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_responder;
-  respondType: string;
-}
-
-export type RoomMessageFull_serviceMetadata = RoomMessageFull_serviceMetadata_PhotoChangeServiceMetadata | RoomMessageFull_serviceMetadata_InviteServiceMetadata | RoomMessageFull_serviceMetadata_KickServiceMetadata | RoomMessageFull_serviceMetadata_TitleChangeServiceMetadata | RoomMessageFull_serviceMetadata_PostRespondServiceMetadata;
-
-export interface RoomMessageFull_fileMetadata {
+export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
+  size: number;
   isImage: boolean;
   imageWidth: number | null;
   imageHeight: number | null;
   imageFormat: string | null;
-  size: number;
 }
 
-export interface RoomMessageFull_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomMessageFull_sender_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomMessageFull_reply_sender_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface RoomMessageFull_reply {
-  __typename: "RoomMessage";
-  sender: RoomMessageFull_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: RoomMessageFull_reply_fileMetadata | null;
-}
-
-export interface RoomMessageFull_reactions_user_primaryOrganization {
-  __typename: "Organization";
-  name: string;
-  id: string;
-}
-
-export interface RoomMessageFull_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: RoomMessageFull_reactions_user_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_reactions {
-  __typename: "MessageReaction";
-  user: RoomMessageFull_reactions_user;
-  reaction: string;
-}
-
-export interface RoomMessageFull_mentions_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomMessageFull_mentions_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_alphaMentions_UserMention_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomMessageFull_alphaMentions_UserMention_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomMessageFull_alphaMentions_UserMention_user_primaryOrganization | null;
-}
-
-export interface RoomMessageFull_alphaMentions_UserMention {
-  __typename: "UserMention";
-  user: RoomMessageFull_alphaMentions_UserMention_user;
-}
-
-export interface RoomMessageFull_alphaMentions_SharedRoomMention_sharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  title: string;
-}
-
-export interface RoomMessageFull_alphaMentions_SharedRoomMention {
-  __typename: "SharedRoomMention";
-  sharedRoom: RoomMessageFull_alphaMentions_SharedRoomMention_sharedRoom;
-}
-
-export type RoomMessageFull_alphaMentions = RoomMessageFull_alphaMentions_UserMention | RoomMessageFull_alphaMentions_SharedRoomMention;
-
-export interface RoomMessageFull_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface RoomMessageFull_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface RoomMessageFull_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: RoomMessageFull_urlAugmentation_iconRef_crop | null;
-}
-
-export interface RoomMessageFull_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface RoomMessageFull_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface RoomMessageFull_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: RoomMessageFull_urlAugmentation_photo_crop | null;
-}
-
-export interface RoomMessageFull_urlAugmentation_extra_Organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface RoomMessageFull_urlAugmentation_extra_ChannelConversation_organization {
-  __typename: "Organization";
-  name: string;
-}
-
-export interface RoomMessageFull_urlAugmentation_extra_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  photo: string | null;
-  organization: RoomMessageFull_urlAugmentation_extra_ChannelConversation_organization | null;
-}
-
-export interface RoomMessageFull_urlAugmentation_extra_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface RoomMessageFull_urlAugmentation_extra_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: RoomMessageFull_urlAugmentation_extra_User_primaryOrganization | null;
-}
-
-export type RoomMessageFull_urlAugmentation_extra = RoomMessageFull_urlAugmentation_extra_Organization | RoomMessageFull_urlAugmentation_extra_ChannelConversation | RoomMessageFull_urlAugmentation_extra_User;
-
-export interface RoomMessageFull_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
+export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
   url: string;
+  metadata: FullMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
   title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: RoomMessageFull_urlAugmentation_imageInfo | null;
-  iconRef: RoomMessageFull_urlAugmentation_iconRef | null;
-  iconInfo: RoomMessageFull_urlAugmentation_iconInfo | null;
-  photo: RoomMessageFull_urlAugmentation_photo | null;
-  extra: RoomMessageFull_urlAugmentation_extra | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: FullMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: FullMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
 }
 
-export interface RoomMessageFull {
-  __typename: "RoomMessage";
+export type FullMessage_GeneralMessage_attachments = FullMessage_GeneralMessage_attachments_MessageAttachmentPost | FullMessage_GeneralMessage_attachments_MessageAttachmentFile | FullMessage_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
   id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  alphaType: MessageType;
-  alphaTitle: string | null;
-  plainText: string | null;
-  alphaPostType: PostMessageType | null;
-  alphaButtons: (RoomMessageFull_alphaButtons[] | null)[];
-  alphaAttachments: RoomMessageFull_alphaAttachments[];
-  serviceMetadata: RoomMessageFull_serviceMetadata | null;
-  fileMetadata: RoomMessageFull_fileMetadata | null;
-  sender: RoomMessageFull_sender;
-  reply: RoomMessageFull_reply[] | null;
-  reactions: RoomMessageFull_reactions[];
-  mentions: RoomMessageFull_mentions[] | null;
-  alphaMentions: RoomMessageFull_alphaMentions[] | null;
-  urlAugmentation: RoomMessageFull_urlAugmentation | null;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
 
-// ====================================================
-// GraphQL fragment: MessageLightShort
-// ====================================================
-
-export interface MessageLightShort_sender {
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -9166,32 +6774,331 @@ export interface MessageLightShort_sender {
   shortname: string | null;
 }
 
-export interface MessageLightShort {
-  __typename: "Message";
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+  organization: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+}
+
+export type FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
   id: string;
   date: any;
   /**
    * Content
    */
+  message: string | null;
+  sender: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+  organization: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+}
+
+export type FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  fileId: string;
+  fileMetadata: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
   text: string | null;
-  sender: MessageLightShort_sender;
+  icon: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
 }
 
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
+export type FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments = FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
 
-// ====================================================
-// GraphQL fragment: MessageShort
-// ====================================================
-
-export interface MessageShort_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  edited: boolean;
+  attachments: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
 
-export interface MessageShort_sender {
+export type FullMessage_GeneralMessage_quotedMessages = FullMessage_GeneralMessage_quotedMessages_ServiceMessage | FullMessage_GeneralMessage_quotedMessages_GeneralMessage;
+
+export interface FullMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
   name: string;
@@ -9201,32 +7108,13 @@ export interface MessageShort_sender {
   shortname: string | null;
 }
 
-export interface MessageShort {
-  __typename: "ConversationMessage";
-  id: string;
-  date: any;
-  message: string | null;
-  file: string | null;
-  isService: boolean;
-  fileMetadata: MessageShort_fileMetadata | null;
-  sender: MessageShort_sender;
+export interface FullMessage_GeneralMessage_reactions {
+  __typename: "ModernMessageReaction";
+  user: FullMessage_GeneralMessage_reactions_user;
+  reaction: MessageReactionType;
 }
 
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL fragment: RoomMessageShort
-// ====================================================
-
-export interface RoomMessageShort_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-}
-
-export interface RoomMessageShort_sender {
+export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -9236,16 +7124,329 @@ export interface RoomMessageShort_sender {
   shortname: string | null;
 }
 
-export interface RoomMessageShort {
-  __typename: "RoomMessage";
+export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+  organization: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+}
+
+export type FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room = FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type FullMessage_GeneralMessage_spans = FullMessage_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_spans_MessageSpanLink;
+
+export interface FullMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
   id: string;
   date: any;
+  sender: FullMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
   message: string | null;
-  file: string | null;
-  isService: boolean;
-  fileMetadata: RoomMessageShort_fileMetadata | null;
-  sender: RoomMessageShort_sender;
+  fallback: string;
+  edited: boolean;
+  attachments: FullMessage_GeneralMessage_attachments[];
+  quotedMessages: FullMessage_GeneralMessage_quotedMessages[];
+  reactions: FullMessage_GeneralMessage_reactions[];
+  spans: FullMessage_GeneralMessage_spans[];
 }
+
+export interface FullMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: FullMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+  organization: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+}
+
+export type FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room = FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type FullMessage_ServiceMessage_spans = FullMessage_ServiceMessage_spans_MessageSpanUserMention | FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_ServiceMessage_spans_MessageSpanLink;
+
+export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata";
+  users: FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata";
+  photo: string | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
+  __typename: "PostRespondServiceMetadata";
+  respondType: string;
+}
+
+export type FullMessage_ServiceMessage_serviceMetadata = FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata | FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata | FullMessage_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | FullMessage_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | FullMessage_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
+
+export interface FullMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: FullMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  spans: FullMessage_ServiceMessage_spans[];
+  serviceMetadata: FullMessage_ServiceMessage_serviceMetadata | null;
+}
+
+export type FullMessage = FullMessage_GeneralMessage | FullMessage_ServiceMessage;
 
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
@@ -9374,6 +7575,24 @@ export interface OrganizationFull {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: OrganizationMedium
+// ====================================================
+
+export interface OrganizationMedium {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
+  isCommunity: boolean;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: OrganizationProfileFull
 // ====================================================
 
@@ -9425,12 +7644,6 @@ export interface OrganizationSearch_members {
   user: OrganizationSearch_members_user;
 }
 
-export interface OrganizationSearch_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  hidden: boolean;
-}
-
 export interface OrganizationSearch {
   __typename: "Organization";
   id: string;
@@ -9445,7 +7658,6 @@ export interface OrganizationSearch {
   status: string;
   featured: boolean;
   members: OrganizationSearch_members[];
-  channels: (OrganizationSearch_channels | null)[];
 }
 
 /* tslint:disable */
@@ -9512,6 +7724,9 @@ export interface RoomFull_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
   isCommunity: boolean;
 }
 
@@ -9544,6 +7759,7 @@ export interface RoomFull_SharedRoom_members {
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
   user: RoomFull_SharedRoom_members_user;
+  canKick: boolean;
 }
 
 export interface RoomFull_SharedRoom_requests_user_primaryOrganization {
@@ -9596,6 +7812,7 @@ export interface RoomFull_SharedRoom {
   members: RoomFull_SharedRoom_members[];
   requests: RoomFull_SharedRoom_requests[] | null;
   settings: RoomFull_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomFull = RoomFull_PrivateRoom | RoomFull_SharedRoom;
@@ -9789,13 +8006,6 @@ export interface UserTiny {
 // START Enums and Input Objects
 //==============================================================
 
-export enum ChannelMembershipStatus {
-  invited = "invited",
-  member = "member",
-  none = "none",
-  requested = "requested",
-}
-
 /**
  * Deprecated
  */
@@ -9847,14 +8057,13 @@ export enum MediaStreamState {
   WAIT_OFFER = "WAIT_OFFER",
 }
 
-export enum MessageButtonStyle {
-  DEFAULT = "DEFAULT",
-  LIGHT = "LIGHT",
-}
-
-export enum MessageType {
-  MESSAGE = "MESSAGE",
-  POST = "POST",
+export enum MessageReactionType {
+  ANGRY = "ANGRY",
+  CRYING = "CRYING",
+  JOY = "JOY",
+  LIKE = "LIKE",
+  SCREAM = "SCREAM",
+  THUMB_UP = "THUMB_UP",
 }
 
 export enum NotificationMessages {

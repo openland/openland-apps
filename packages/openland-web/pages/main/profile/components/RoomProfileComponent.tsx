@@ -15,8 +15,8 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
-import { XOverflow } from '../../../../components/XOverflow';
-import { LeaveChatComponent } from '../../../../fragments/MessengerRootComponent';
+import { XOverflow } from 'openland-web/components/XOverflow';
+import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
 import { RemoveMemberModal } from '../../channel/components/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
@@ -34,9 +34,8 @@ import {
     Room_room_SharedRoom,
     RoomFull_SharedRoom_members,
     RoomFull_SharedRoom_requests,
-    SharedRoomKind,
 } from 'openland-api/Types';
-import { withRoom } from '../../../../api/withRoom';
+import { withRoom } from 'openland-web/api/withRoom';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRoomMembersMgmt } from 'openland-web/api/withRoomRequestsMgmt';
 import { XMutation } from 'openland-x/XMutation';
@@ -52,7 +51,7 @@ import {
 } from 'openland-web/pages/main/profile/components/RoomControls';
 import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
 import { tabs, tabsT } from '../tabs';
-import { RoomAddMemberModal } from '../../../../fragments/chat/RoomAddMemberModal';
+import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
@@ -83,7 +82,10 @@ export const AdminTools = withRoomAdminTools(
 const Header = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
     let meMember = chat.membership === 'MEMBER';
-    let leaveText = chat.kind === 'GROUP' ? 'Leave group' : 'Leave room';
+    let leaveText = 'Leave group';
+
+    const canEdit = chat.canEdit;
+
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -94,7 +96,6 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                     <HeaderTitle>{chat.title}</HeaderTitle>
                     <XHorizontal separator={3.5}>
                         <HeaderMembers>{chat.membersCount} members</HeaderMembers>
-                        {/* {chat.membersOnline > 0 && <HeaderMembers online={true}>{chat.membersOnline} online</HeaderMembers>} */}
                     </XHorizontal>
                 </HeaderInfo>
                 <HeaderTools separator={3}>
@@ -110,10 +111,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                 flat={true}
                                 content={
                                     <>
-                                        <XWithRole
-                                            role="super-admin"
-                                            or={chat.role === 'OWNER' || chat.role === 'ADMIN'}
-                                        >
+                                        <XWithRole role="super-admin" or={canEdit}>
                                             <XMenuItem
                                                 query={{
                                                     field: 'editChat',
@@ -205,8 +203,8 @@ const AboutPlaceholder = withAlterChat(props => {
 
 const About = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
-    let meMember = chat.membership === 'MEMBER';
-    let meAdmin = chat.role === 'ADMIN' || chat.role === 'OWNER';
+
+    const showAboutEdit = chat.canEdit;
     return (
         <>
             {chat.description && (
@@ -215,45 +213,45 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                     <SectionContent>{chat.description}</SectionContent>
                 </Section>
             )}
-            {!chat.description && meAdmin && (
-                <Section separator={0}>
-                    <XSubHeader title="About" paddingBottom={0} />
-                    <SectionContent>
-                        <AboutPlaceholder
-                            roomId={chat.id}
-                            description={chat.description}
-                            target={<EditButton text="Add a short description" />}
-                        />
-                    </SectionContent>
-                </Section>
-            )}
+            {showAboutEdit &&
+                (!chat.description && (
+                    <Section separator={0}>
+                        <XSubHeader title="About" paddingBottom={0} />
+                        <SectionContent>
+                            <AboutPlaceholder
+                                roomId={chat.id}
+                                description={chat.description}
+                                target={<EditButton text="Add a short description" />}
+                            />
+                        </SectionContent>
+                    </Section>
+                ))}
         </>
     );
 };
 
-const MemberCard = (props: {
-    member: RoomFull_SharedRoom_members;
-    meOwner: boolean;
-    isGroup: boolean;
-}) => {
-    let removeText = props.isGroup ? 'Remove from group' : 'Remove from room';
-
-    if (props.member.user.isYou) {
-        removeText = props.isGroup ? 'Leave group' : 'Leave room';
-    }
-
-    let overflowMenu = (
-        <XOverflow
-            placement="bottom-end"
-            flat={true}
-            content={
-                <XMenuItem style="danger" query={{ field: 'remove', value: props.member.user.id }}>
-                    {removeText}
-                </XMenuItem>
+const MemberCard = ({ member }: { member: RoomFull_SharedRoom_members }) => {
+    return (
+        <XUserCard
+            user={member.user}
+            customMenu={
+                member.canKick || member.user.isYou ? (
+                    <XOverflow
+                        placement="bottom-end"
+                        flat={true}
+                        content={
+                            <XMenuItem
+                                style="danger"
+                                query={{ field: 'remove', value: member.user.id }}
+                            >
+                                {member.user.isYou ? 'Leave group' : 'Remove from group'}
+                            </XMenuItem>
+                        }
+                    />
+                ) : null
             }
         />
     );
-    return <XUserCard user={props.member.user} customMenu={props.meOwner ? overflowMenu : null} />;
 };
 
 const RequestCard = withRoomMembersMgmt(
@@ -292,9 +290,8 @@ interface MembersProviderProps {
     members: RoomFull_SharedRoom_members[];
     requests?: RoomFull_SharedRoom_requests[] | null;
     chatId: string;
-    meOwner: boolean;
+    isOwner: boolean;
     chatTitle: string;
-    kind: SharedRoomKind;
     onDirectory?: boolean;
 }
 
@@ -302,10 +299,9 @@ const MembersProvider = ({
     members,
     router,
     requests,
-    meOwner,
+    isOwner,
     chatTitle,
     chatId,
-    kind,
     onDirectory,
 }: MembersProviderProps & XWithRouter) => {
     if (members && members.length > 0) {
@@ -315,7 +311,7 @@ const MembersProvider = ({
                 : tabs.members;
         return (
             <Section separator={0}>
-                {meOwner && (requests || []).length > 0 && (
+                {isOwner && (requests || []).length > 0 && (
                     <XSwitcher style="button">
                         <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
                             Members
@@ -328,7 +324,7 @@ const MembersProvider = ({
                         </XSwitcher.Item>
                     </XSwitcher>
                 )}
-                {((requests || []).length === 0 || !meOwner) && (
+                {((requests || []).length === 0 || !isOwner) && (
                     <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
                 )}
 
@@ -351,33 +347,20 @@ const MembersProvider = ({
                                 query={{ field: 'inviteMembers', value: 'true' }}
                             />
                             <InviteMembersModal roomId={chatId} />
-                            {members.map((member, i) => (
-                                <MemberCard
-                                    key={i}
-                                    member={member}
-                                    meOwner={meOwner}
-                                    isGroup={kind === 'GROUP'}
-                                />
-                            ))}
+                            {members.map((member, i) => {
+                                return <MemberCard key={i} member={member} />;
+                            })}
                         </>
                     )}
 
-                    {meOwner &&
+                    {isOwner &&
                         tab === tabs.requests &&
                         requests &&
                         requests.map((req, i) => (
-                            <RequestCard key={i} member={req} meOwner={meOwner} roomId={chatId} />
+                            <RequestCard key={i} member={req} meOwner={isOwner} roomId={chatId} />
                         ))}
                 </SectionContent>
-                {meOwner && (
-                    <>
-                        <RemoveMemberModal
-                            members={members}
-                            roomId={chatId}
-                            roomTitle={chatTitle}
-                        />
-                    </>
-                )}
+                <RemoveMemberModal members={members} roomId={chatId} roomTitle={chatTitle} />
             </Section>
         );
     } else {
@@ -391,8 +374,12 @@ interface RoomGroupProfileInnerProps extends XWithRouter {
     conversationId: string;
 }
 
-const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
-    let chat = props.chat;
+const RoomGroupProfileInner = ({
+    chat,
+    onDirectory,
+    conversationId,
+    router,
+}: RoomGroupProfileInnerProps) => {
     return (
         <>
             <XDocumentHead title={chat.title} />
@@ -402,14 +389,13 @@ const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
                 <XScrollView2 flexGrow={1}>
                     <About chat={chat} />
                     <MembersProvider
-                        kind={chat.kind}
-                        router={props.router}
+                        router={router}
                         members={chat.members}
                         requests={chat.requests}
-                        chatId={props.conversationId}
-                        meOwner={chat.membership === 'MEMBER'}
+                        chatId={conversationId}
+                        isOwner={chat.role === 'OWNER'}
                         chatTitle={chat.title}
-                        onDirectory={props.onDirectory}
+                        onDirectory={onDirectory}
                     />
                 </XScrollView2>
             </XView>

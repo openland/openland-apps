@@ -2,22 +2,23 @@ import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ASDataView } from 'react-native-async-view/ASDataView';
-import { ASFlex } from 'react-native-async-view/ASFlex';
 import { DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
 import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Platform } from 'react-native';
+import { Clipboard, Platform, View, Text, TouchableOpacity } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { Prompt } from '../components/Prompt';
-import { AsyncServiceMessageView } from './components/AsyncServiceMessageView';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { ZModalController } from 'openland-mobile/components/ZModal';
+import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -43,7 +44,7 @@ export class MobileMessenger {
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
                     if (item.serviceMetaData || item.isService) {
-                        return (<ThemeProvider><AsyncServiceMessageView message={item} engine={eng} onUserPress={this.handleAvatarClick} onRoomPress={this.handleDialogClick} /></ThemeProvider>);
+                        return (<ThemeProvider><ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} /></ThemeProvider>);
                     } else {
                         return (<ThemeProvider><AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} /></ThemeProvider>);
                     }
@@ -56,10 +57,11 @@ export class MobileMessenger {
     }
 
     private handleMediaClick = (document: DataSourceMessageItem, event: { path: string } & ASPressEvent) => {
+        let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         showPictureModal({
             url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
-            width: document.file!!.imageSize!!.width,
-            height: document.file!!.imageSize!!.height,
+            width: attach.fileMetadata.imageWidth!,
+            height: attach.fileMetadata.imageWidth!!,
             isGif: false,
             animate: {
                 x: event.x,
@@ -80,8 +82,9 @@ export class MobileMessenger {
     }
 
     private handleDocumentClick = (document: DataSourceMessageItem) => {
+        let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         // { config: { uuid, name, size }
-        this.history.navigationManager.push('FilePreview', { config: { uuid: document.file!!.fileId, name: document.file!!.fileName, size: document.file!!.fileSize } });
+        this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
     }
 
     private handleDialogClick = (id: string) => {
@@ -91,12 +94,42 @@ export class MobileMessenger {
         this.history.navigationManager.push('ProfileUser', { id });
     }
 
+    private handleReactionSetUnset = async (message: DataSourceMessageItem, r: string) => {
+        startLoader();
+        try {
+            let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
+            if (remove) {
+                this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
+            } else {
+                this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: r });
+            }
+        } catch (e) {
+            Alert.alert(e.message);
+        }
+        stopLoader();
+    }
+
     private handleMessageLongPress = (message: DataSourceMessageItem) => {
         let builder = new ActionSheetBuilder();
+
+        const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
+
+        builder.view((ctx: ZModalController) => (
+            <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={56} paddingHorizontal={10}>
+                {defaultReactions.map(r => (
+                    <TouchableOpacity
+                        onPress={() => {
+                            ctx.hide();
+                            this.handleReactionSetUnset(message, r);
+                        }}
+                    >
+                        <Text style={{ fontSize: 30 }}>{r}</Text>
+                    </TouchableOpacity>
+                ))}
+            </View>
+        ));
+
         if (message.text) {
-            builder.action('Copy', () => {
-                Clipboard.setString(message.text!!);
-            });
             if (message.senderId === this.engine.user.id) {
                 builder.action('Edit', () => {
                     Prompt.builder()
@@ -114,7 +147,12 @@ export class MobileMessenger {
                         .show();
                 });
             }
+
+            builder.action('Copy', () => {
+                Clipboard.setString(message.text!!);
+            });
         }
+
         if (message.senderId === this.engine.user.id) {
             builder.action('Delete', async () => {
                 try {
@@ -128,26 +166,7 @@ export class MobileMessenger {
                 } catch (e) {
                     Alert.alert(e.message);
                 }
-            });
-        }
-
-        if (message.id) {
-            (message.reactions || []).reduce((res: string[], r) => res.indexOf(r.reaction) > -1 ? res : [r.reaction, ...res], ['❤️']).filter(r => r !== 'respondPost').map(r => {
-                builder.action(r, async () => {
-                    startLoader();
-                    try {
-                        let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
-                        if (remove) {
-                            this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
-                        } else {
-                            this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: r });
-                        }
-                    } catch (e) {
-                        Alert.alert(e.message);
-                    }
-                    stopLoader();
-                });
-            });
+            }, true);
         }
 
         builder.show();

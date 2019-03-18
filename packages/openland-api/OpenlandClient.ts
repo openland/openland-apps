@@ -186,17 +186,17 @@ export class OpenlandClient {
     useWithoutLoaderGlobalCounter(): Types.GlobalCounter | null {
         return this.client.useWithoutLoaderQuery(Source.GlobalCounterQuery);
     }
-    async queryRoomHistory(variables: Types.RoomHistoryVariables): Promise<Types.RoomHistory> {
-        return this.client.query(Source.RoomHistoryQuery, variables);
+    async queryChatHistory(variables: Types.ChatHistoryVariables): Promise<Types.ChatHistory> {
+        return this.client.query(Source.ChatHistoryQuery, variables);
     }
-    async refetchRoomHistory(variables: Types.RoomHistoryVariables): Promise<Types.RoomHistory> {
-        return this.client.refetch(Source.RoomHistoryQuery, variables);
+    async refetchChatHistory(variables: Types.ChatHistoryVariables): Promise<Types.ChatHistory> {
+        return this.client.refetch(Source.ChatHistoryQuery, variables);
     }
-    useRoomHistory(variables: Types.RoomHistoryVariables): Types.RoomHistory {
-        return this.client.useQuery(Source.RoomHistoryQuery, variables);
+    useChatHistory(variables: Types.ChatHistoryVariables): Types.ChatHistory {
+        return this.client.useQuery(Source.ChatHistoryQuery, variables);
     }
-    useWithoutLoaderRoomHistory(variables: Types.RoomHistoryVariables): Types.RoomHistory | null {
-        return this.client.useWithoutLoaderQuery(Source.RoomHistoryQuery, variables);
+    useWithoutLoaderChatHistory(variables: Types.ChatHistoryVariables): Types.ChatHistory | null {
+        return this.client.useWithoutLoaderQuery(Source.ChatHistoryQuery, variables);
     }
     async queryChatSearchGroup(variables: Types.ChatSearchGroupVariables): Promise<Types.ChatSearchGroup> {
         return this.client.query(Source.ChatSearchGroupQuery, variables);
@@ -377,6 +377,18 @@ export class OpenlandClient {
     }
     useWithoutLoaderOrganization(variables: Types.OrganizationVariables): Types.Organization | null {
         return this.client.useWithoutLoaderQuery(Source.OrganizationQuery, variables);
+    }
+    async queryOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Promise<Types.OrganizationMembersShort> {
+        return this.client.query(Source.OrganizationMembersShortQuery, variables);
+    }
+    async refetchOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Promise<Types.OrganizationMembersShort> {
+        return this.client.refetch(Source.OrganizationMembersShortQuery, variables);
+    }
+    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Types.OrganizationMembersShort {
+        return this.client.useQuery(Source.OrganizationMembersShortQuery, variables);
+    }
+    useWithoutLoaderOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Types.OrganizationMembersShort | null {
+        return this.client.useWithoutLoaderQuery(Source.OrganizationMembersShortQuery, variables);
     }
     async queryOrganizationProfile(variables: Types.OrganizationProfileVariables): Promise<Types.OrganizationProfile> {
         return this.client.query(Source.OrganizationProfileQuery, variables);

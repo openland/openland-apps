@@ -14,10 +14,9 @@ import {
     DataSourceMessageItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
-import { UserShort, SharedRoomKind, MessageType } from 'openland-api/Types';
+import { UserShort, SharedRoomKind, FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import { MobileMessageContainer } from './MessageContainer';
-import { MessagePostComponent } from './content/attachments/postMessage/MessagePostComponent';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 
 const MessageWrapper = Glamorous(XHorizontal)<{
@@ -96,48 +95,29 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
 
     let content: any[] = [];
     let hideMenu = false;
-    let isPost = false;
+
+    let fileAttach = (message.attachments || []).filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+    let richAttach = (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
 
     if (!message.isSending) {
-        if (message.text && message.title && message.messageType === MessageType.POST) {
-            isPost = true;
-            let meId = props.me ? props.me.id : '';
 
-            content.push(
-                <MessagePostComponent
-                    key={'post_message' + message.id}
-                    messageId={message.id!}
-                    senderName={message.sender.firstName}
-                    userId={message.sender.id}
-                    message={message.text}
-                    alphaTitle={message.title}
-                    alphaButtons={message.buttons || []}
-                    alphaAttachments={message.attachments || []}
-                    reactions={message.reactions}
-                    edited={!!message.isEdited}
-                    meId={meId}
-                    privateConversation={props.conversationType === 'PRIVATE'}
-                />,
-            );
-        }
         if (message.reply && message.reply!.length > 0) {
             content.push(
                 <ReplyMessageWrapper key={'reply_message' + message.id}>
-                    {message.reply!.sort((a, b) => a.date - b.date).map((item, index, array) => {
+                    {message.reply!.map((item, index, array) => {
                         let isCompact =
                             index > 0 ? array[index - 1].sender.id === item.sender.id : false;
 
                         return (
                             <MessageReplyComponent
-                                mentions={message.mentions || []}
+                                spans={message.spans}
                                 sender={item.sender}
                                 date={item.date}
                                 message={item.message}
                                 id={item.id}
                                 key={'reply_message' + item.id + index}
-                                edited={item.edited}
-                                file={item.file}
-                                fileMetadata={item.fileMetadata}
+                                edited={!!(item.__typename === 'GeneralMessage' && message.isEdited)}
+                                attach={fileAttach}
                                 startSelected={hideMenu}
                                 compact={isCompact || undefined}
                             />
@@ -146,7 +126,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                 </ReplyMessageWrapper>,
             );
         }
-        if (message.text && message.text.length > 0 && !isPost) {
+        if (message.text && message.text.length > 0) {
             if (message.isService) {
                 content.push(
                     <ServiceMessageComponent
@@ -154,7 +134,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                         myUserId={props.me ? props.me.id : ''}
                         serviceMetadata={message.serviceMetaData!}
                         message={message.text || ''}
-                        alphaMentions={message.mentions || []}
+                        spans={message.spans}
                         key={'service_message'}
                     />,
                 );
@@ -162,7 +142,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                 content.push(
                     <MessageTextComponent
                         message={message.text || ''}
-                        mentions={message.mentions}
+                        spans={message.spans}
                         key={'text'}
                         isEdited={!!message.isEdited}
                     />,
@@ -170,60 +150,61 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
             }
         }
 
-        const { file } = message;
-        if (file && !message.urlAugmentation) {
-            if (file.isImage && file.imageSize) {
-                if (file.isGif) {
+        if (fileAttach && !richAttach) {
+            if (fileAttach.fileMetadata.isImage && fileAttach.fileMetadata.imageWidth && fileAttach.fileMetadata.imageHeight) {
+                if (fileAttach.fileMetadata.imageFormat === 'gif') {
                     content.push(
                         <MessageAnimationComponent
                             key={'file'}
-                            file={file.fileId!}
-                            fileName={file.fileName}
-                            {...file.imageSize}
+                            file={fileAttach.fileId!}
+                            fileName={fileAttach.fileMetadata.name}
+                            width={fileAttach.fileMetadata.imageWidth}
+                            height={fileAttach.fileMetadata.imageHeight}
                         />,
                     );
                 } else {
                     content.push(
                         <MessageImageComponent
                             key={'file'}
-                            file={file.fileId!}
-                            fileName={file.fileName}
+                            file={fileAttach.fileId!}
+                            fileName={fileAttach.fileMetadata.name}
                             startSelected={hideMenu}
-                            {...file.imageSize}
+                            width={fileAttach.fileMetadata.imageWidth}
+                            height={fileAttach.fileMetadata.imageHeight}
                         />,
                     );
                 }
-            } else if (file.fileName.endsWith('.mp4') || file.fileName.endsWith('.mov')) {
+            } else if (fileAttach.fileMetadata.name.endsWith('.mp4') || fileAttach.fileMetadata.name.endsWith('.mov')) {
                 content.push(
                     <MessageVideoComponent
                         key={'file'}
-                        file={file.fileId}
-                        fileName={file.fileName}
+                        file={fileAttach.fileId}
+                        fileName={fileAttach.fileMetadata.name}
                     />,
                 );
             } else {
                 content.push(
                     <MessageFileComponent
                         key={'file'}
-                        file={file.fileId}
-                        fileName={file.fileName}
-                        fileSize={file.fileSize}
+                        file={fileAttach.fileId}
+                        fileName={fileAttach.fileMetadata.name}
+                        fileSize={fileAttach.fileMetadata.size}
                     />,
                 );
             }
         }
-        if (message.urlAugmentation && !isPost && !message.isService) {
-            if (
-                (message.urlAugmentation.url.startsWith('https://app.openland.com/o') ||
-                    message.urlAugmentation.url.startsWith('https://openland.com/o')) &&
-                message.urlAugmentation.url.includes('listings#')
+        if (richAttach && !message.isService) {
+            if (richAttach.titleLink &&
+                (richAttach.titleLink.startsWith('https://app.openland.com/o') ||
+                    richAttach.titleLink.startsWith('https://openland.com/o')) &&
+                richAttach.titleLink.includes('listings#')
             ) {
                 content = [];
             }
             content.push(
                 <MessageUrlAugmentationComponent
                     key="urlAugmentation"
-                    {...message.urlAugmentation}
+                    {...richAttach}
                     messageId={message.id!}
                     isMe={message.senderId === (props.me && props.me.id)}
                 />,
@@ -234,7 +215,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
             content.push(
                 <MessageTextComponent
                     message={message.text}
-                    mentions={message.mentions}
+                    spans={message.spans}
                     key={'text'}
                     isService={false}
                     isEdited={!!message.isEdited}
@@ -267,7 +248,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                 message={
                     'Message is not supported on your version of Openland. Please refresh the page to view it.'
                 }
-                mentions={null}
+                spans={[]}
                 key={'text'}
                 isService={false}
                 isEdited={!!message.isEdited}

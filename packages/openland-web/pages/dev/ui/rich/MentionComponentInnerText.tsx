@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessageFull_mentions } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 import { css, cx } from 'linaria';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -7,7 +7,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 type MentionComponentInnerTextProps = {
     isYou: boolean;
     className?: string;
-    user?: MessageFull_mentions;
+    user?: UserShort;
     hasPopper?: boolean;
     inCompose?: boolean;
     children?: any;

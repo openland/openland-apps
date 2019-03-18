@@ -7,6 +7,7 @@ import { TextStyles, AppStyles } from 'openland-mobile/styles/AppStyles';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ScrollView } from 'react-native-gesture-handler';
 import { isAndroid } from 'openland-mobile/utils/isAndroid';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface RenderMentionsProps {
     activeWord: string;
@@ -15,6 +16,7 @@ interface RenderMentionsProps {
 }
 
 export const MentionsRender = (props: RenderMentionsProps) => {
+    let theme = React.useContext(ThemeContext);
     let members = getClient().useRoomMembers({ roomId: props.groupId }).members;
     let mentionsWrapper = null;
 
@@ -56,7 +58,7 @@ export const MentionsRender = (props: RenderMentionsProps) => {
                                                     fontSize: 14,
                                                     width: Dimensions.get('window').width - 63,
                                                     fontWeight: TextStyles.weight.medium,
-                                                    color: '#000000'
+                                                    color: theme.textColor
                                                 } as TextStyle}
                                                 numberOfLines={1}
                                                 ellipsizeMode="tail"

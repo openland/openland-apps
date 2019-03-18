@@ -39,6 +39,18 @@ export const OrganizationQuery = gql`
     ${OrganizationFull}
 `;
 
+export const OrganizationMembersShortQuery = gql`
+    query OrganizationMembersShort($organizationId: ID!) {
+        organization(id: $organizationId) {
+            members: alphaOrganizationMembers {
+                user {
+                    id
+                }
+            }
+        }
+    }
+`;
+
 export const OrganizationProfileQuery = gql`
     query OrganizationProfile($organizationId: ID!) {
         organizationProfile(id: $organizationId) {

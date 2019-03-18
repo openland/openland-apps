@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { View, Image, TouchableHighlight, Alert, Platform, TouchableNativeFeedback, TouchableWithoutFeedback } from 'react-native';
-import { AppStyles } from '../styles/AppStyles';
+import { View, Image, TouchableHighlight, Platform, TouchableNativeFeedback, TouchableWithoutFeedback } from 'react-native';
 import { isAndroid } from '../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';
 import { SRouterContext } from 'react-native-s/SRouterContext';
@@ -55,7 +54,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
                         <Image source={require('assets/ic-arrow-cell.png')} alignSelf="center" marginRight={15} style={{ tintColor: this.props.theme.arrowColor }} />
                     )}
                 </View>
-                {this.props.separator !== false && <View style={{ backgroundColor: AppStyles.separatorColor, height: 1, marginLeft: this.props.separatorPaddingStart }} />}
+                {this.props.separator !== false && <View style={{ backgroundColor: this.props.theme.separatorColor, height: 1, marginLeft: this.props.separatorPaddingStart }} />}
             </View>
         );
 

@@ -1,11 +1,27 @@
 import * as React from 'react';
-import { Platform, ActionSheetIOS, View } from 'react-native';
+import { View } from 'react-native';
 import { showSheetModal } from './showSheetModal';
-import { ZListItem } from './ZListItem';
+import { ZActionSheetItem, ZActionSheetViewItem } from './ZActionSheetItem';
+import { ZModalController } from './ZModal';
+
+interface ActionSheetBuilderActionItem {
+    __typename: "ActionItem";
+
+    name: string;
+    callback: () => void;
+    distructive?: boolean;
+    icon?: any;
+}
+
+interface ActionSheetBuilderViewItem {
+    __typename: "ViewItem";
+
+    view: (ctx: ZModalController) => void;
+}
 
 export class ActionSheetBuilder {
     private _title?: string;
-    private _actions: { name: string, callback: () => void, distructive?: boolean, icon?: any }[] = [];
+    private _items: (ActionSheetBuilderActionItem | ActionSheetBuilderViewItem)[] = [];
 
     title(title: string): ActionSheetBuilder {
         this._title = title;
@@ -13,49 +29,45 @@ export class ActionSheetBuilder {
     }
 
     action(name: string, callback: () => void, distructive?: boolean, icon?: any): ActionSheetBuilder {
-        this._actions.push({ name, callback, distructive, icon });
+        let item: ActionSheetBuilderActionItem = { __typename: "ActionItem", name, callback, distructive, icon };
+
+        this._items.push(item);
+        return this;
+    }
+
+    view(view: any): ActionSheetBuilder {
+        let item: ActionSheetBuilderViewItem = { __typename: "ViewItem", view };
+
+        this._items.push(item);
         return this;
     }
 
     show() {
-        if (Platform.OS === 'ios') {
-            ActionSheetIOS.showActionSheetWithOptions(
-                {
-                    title: this._title,
-                    options: [...this._actions.map((v) => v.name), 'Cancel'],
-                    destructiveButtonIndex: this._actions.findIndex(o => !!o.distructive),
-                    cancelButtonIndex: this._actions.length
-                },
-                (index: number) => {
-                    if (index >= 0 && index < this._actions.length) {
-                        this._actions[index].callback();
-                    }
-                });
-        } else if (Platform.OS === 'android') {
-            showSheetModal((ctx) => {
-                return (
-                    <View flexDirection="column" alignItems="stretch">
-                        {this._actions.map((a, i) => (
-                            <ZListItem
-                                key={i + '-ac'}
-                                leftIcon={a.icon}
-                                appearance={a.distructive ? 'danger' : 'default'}
-                                text={a.name}
-                                onPress={() => { ctx.hide(); a.callback(); }}
-                            />
-                        ))}
-                    </View>
-                )
-            });
-            // DialogAndroid.showPicker(null, null, {
-            //     positiveText: null,
-            //     items: this._actions.map((a, i) => ({ label: a.name, id: i + '' }))
-            // } as any).then(async args => {
-            //     if (args.selectedItem) {
-            //         await this._actions[Number.parseInt(args.selectedItem.id, 10)].callback();
-            //     }
-            // });
-        }
+        showSheetModal((ctx) => {
+            return (
+                <View flexDirection="column" alignItems="stretch">
+                    {this._items.map((a, i) => (
+                        <>
+                            {a.__typename === 'ActionItem' && (
+                                <ZActionSheetItem
+                                    key={i + '-ac'}
+                                    icon={a.icon}
+                                    appearance={a.distructive ? 'danger' : 'default'}
+                                    name={a.name}
+                                    onPress={() => { ctx.hide(); a.callback(); }}
+                                    separator={i !== this._items.length - 1}
+                                />
+                            )}
+                            {a.__typename === 'ViewItem' && (
+                                <ZActionSheetViewItem separator={i !== this._items.length - 1}>
+                                    {a.view(ctx)}
+                                </ZActionSheetViewItem>
+                            )}
+                        </>
+                    ))}
+                </View>
+            )
+        });
     }
 }
 

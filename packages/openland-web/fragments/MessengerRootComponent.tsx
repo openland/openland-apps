@@ -20,7 +20,6 @@ import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../api/withDeleteUrlAugmentation';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { MessageFull_mentions } from 'openland-api/Types';
 import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './post/CreatePostComponent';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -42,6 +41,7 @@ export interface EditPostProps {
 }
 
 interface MessagesComponentProps {
+    onConversationLostAccess?: Function;
     isActive: boolean;
     organizationId: string | null;
     conversationId: string;
@@ -164,6 +164,14 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         }
     };
 
+    onConversationLostAccess = () => {
+        if (this.props.onConversationLostAccess) {
+            this.unsubscribe();
+            this.props.messenger.removeConversation(this.props.conversationId);
+            this.props.onConversationLostAccess();
+        }
+    };
+
     onMessageListScroll = (scrollPosition: number) => {
         this.setState({
             messageListScrollPosition: scrollPosition,
@@ -195,7 +203,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (props.isActive) {
             this.conversation = props.messenger.getConversation(props.conversationId);
             this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
-
+            
             this.unmounter2 = this.conversation.subscribe(this);
 
             if (!this.conversation) {
@@ -250,7 +258,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.messageText = text;
     };
 
-    handleSend = (text: string, mentions: MessageFull_mentions[] | null) => {
+    handleSend = (text: string, mentions: UserShort[] | null) => {
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
@@ -363,6 +371,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 }
 
 interface MessengerRootComponentProps {
+    onConversationLostAccess?: Function;
     isActive: boolean;
     organizationId: string | null;
     conversationId: string;
@@ -377,6 +386,7 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     // console.log('MessengerRootComponent', props.isActive);
     return (
         <MessagesComponent
+            onConversationLostAccess={props.onConversationLostAccess}
             isActive={props.isActive}
             me={messenger.user}
             loading={false}

@@ -14,8 +14,8 @@ type XMenuItemStyle = 'default' | 'danger' | 'gray';
 
 interface XMenuItemProps extends XLinkProps {
     style?: XMenuItemStyle;
-    icon?: string;
-    iconRight?: string;
+    icon?: string | any;
+    iconRight?: string | any;
 }
 
 let XMenuItemColorStyles = styleResolver({
@@ -74,7 +74,7 @@ const XMenuItemStyled = Glamorous(XLink)<{ colorTheme?: XMenuItemStyle }>([
         display: 'flex',
         alignItems: 'center',
         '&:hover': {
-            textDecoration: 'none'
+            textDecoration: 'none',
         },
         '& .svg-icon-left': {
             marginRight: 10,
@@ -151,23 +151,29 @@ export class XMenuItem extends React.Component<XMenuItemProps> {
     }
 
     render() {
+        const { children, icon, iconRight } = this.props;
         return (
             <XMenuItemStyled {...this.props} colorTheme={this.props.style}>
-                {this.props.icon &&
-                    this.isCustomIcon(this.props.icon) &&
-                    this.getCustomIcon(this.props.icon, 'left')}
-                {this.props.icon && !this.isCustomIcon(this.props.icon) && (
-                    <XMenuItemIcon icon={this.props.icon} className="icon icon-left" />
-                )}
+                {icon && this.isCustomIcon(icon) && this.getCustomIcon(icon, 'left')}
+                {icon &&
+                    typeof icon === 'string' &&
+                    !this.isCustomIcon(icon) && (
+                        <XMenuItemIcon icon={icon} className="icon icon-left" />
+                    )}
+                {icon && typeof icon !== 'string' && !this.isCustomIcon(icon) && icon}
 
-                <XMenuItemText>{this.props.children}</XMenuItemText>
+                <XMenuItemText>{children}</XMenuItemText>
 
-                {this.props.iconRight &&
-                    this.isCustomIcon(this.props.iconRight) &&
-                    this.getCustomIcon(this.props.iconRight)}
-                {this.props.iconRight && !this.isCustomIcon(this.props.iconRight) && (
-                    <XMenuItemIcon icon={this.props.iconRight} className="icon icon-right" />
-                )}
+                {iconRight && this.isCustomIcon(iconRight) && this.getCustomIcon(iconRight)}
+                {iconRight &&
+                    typeof iconRight === 'string' &&
+                    !this.isCustomIcon(iconRight) && (
+                        <XMenuItemIcon icon={iconRight} className="icon icon-right" />
+                    )}
+                {iconRight &&
+                    typeof iconRight !== 'string' &&
+                    !this.isCustomIcon(iconRight) &&
+                    iconRight}
             </XMenuItemStyled>
         );
     }

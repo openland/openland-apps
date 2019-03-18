@@ -30,7 +30,7 @@ object LithoImageSpec {
     internal fun onCreateLayout(context: ComponentContext, @Prop spec: AsyncImageSpec, @Prop reactContext: ReactContext): Component {
         var uri = spec.url
         if (uri !== null && !(uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("file://"))) {
-            uri = helper.getResourceDrawableUri(context, spec.url).toString()
+            uri = helper.getResourceDrawableUri(context.androidContext, spec.url).toString()
         }
         val controller = Fresco.newDraweeControllerBuilder()
                 .setUri(uri)

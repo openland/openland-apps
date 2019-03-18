@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { MessageFull_reactions } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { MutationFunc } from 'react-apollo';
 import { withSetReaction, withUnsetReaction } from '../../../api/withSetReaction';
@@ -240,15 +240,40 @@ class SingleReaction extends React.PureComponent<{
     reaction: string;
     isMy: boolean;
     mutation: MutationFunc<{}>;
+    unset: boolean;
 }> {
     handleChangeReaction = (e: any) => {
+        const { reaction, messageId } = this.props;
         e.stopPropagation();
-        this.props.mutation({
-            variables: {
-                messageId: this.props.messageId,
-                reaction: this.props.reaction,
-            },
-        });
+        if (this.props.unset) {
+            let r: string = reaction;
+            if (reaction === 'LIKE') {
+                r = '❤️';
+            } else if (reaction === 'THUMB_UP') {
+                r = '👍';
+            } else if (reaction === 'JOY') {
+                r = '😂';
+            } else if (reaction === 'SCREAM') {
+                r = '😱';
+            } else if (reaction === 'CRYING') {
+                r = '😢';
+            } else if (reaction === 'ANGRY') {
+                r = '🤬';
+            }
+            this.props.mutation({
+                variables: {
+                    messageId: messageId,
+                    reaction: r,
+                },
+            });
+        } else {
+            this.props.mutation({
+                variables: {
+                    messageId: messageId,
+                    reaction: reaction,
+                },
+            });
+        }
     };
     render() {
         return (
@@ -274,6 +299,7 @@ const SingleReactionSet = withSetReaction(props => {
             messageId={typedProps.messageId}
             reaction={typedProps.reaction}
             isMy={typedProps.isMy}
+            unset={false}
         >
             {typedProps.children}
         </SingleReaction>
@@ -294,6 +320,7 @@ const SingleReactionUnset = withUnsetReaction(props => {
             messageId={typedProps.messageId}
             reaction={typedProps.reaction}
             isMy={typedProps.isMy}
+            unset={true}
         >
             {typedProps.children}
         </SingleReaction>
@@ -303,7 +330,7 @@ const SingleReactionUnset = withUnsetReaction(props => {
 interface ReactionsInnerProps {
     messageId: string;
     meId: string;
-    reactions: MessageFull_reactions[];
+    reactions: FullMessage_GeneralMessage_reactions[];
 }
 
 const Label = XMemo(
@@ -352,12 +379,27 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
     let usersList: string[] = [];
 
     for (let i = 0; i < reactions.length; i++) {
-        let reaction = reactions[i];
+        let r = reactions[i];
+        let reaction: any = reactions[i];
 
-        if (!reactionsMap[reaction.reaction]) {
-            reactionsMap[reaction.reaction] = [];
+        if (r.reaction === 'LIKE') {
+            reaction.reaction = '❤️';
+        } else if (r.reaction === 'THUMB_UP') {
+            reaction.reaction = '👍';
+        } else if (r.reaction === 'JOY') {
+            reaction.reaction = '😂';
+        } else if (r.reaction === 'SCREAM') {
+            reaction.reaction = '😱';
+        } else if (r.reaction === 'CRYING') {
+            reaction.reaction = '😢';
+        } else if (r.reaction === 'ANGRY') {
+            reaction.reaction = '🤬';
         }
-        reactionsMap[reaction.reaction].push(reaction);
+
+        if (!reactionsMap[r.reaction]) {
+            reactionsMap[r.reaction] = [];
+        }
+        reactionsMap[r.reaction].push(reaction);
     }
 
     for (let k in reactionsMap) {

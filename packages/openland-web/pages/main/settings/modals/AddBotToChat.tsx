@@ -65,9 +65,9 @@ export const AddBotToChat = withAppProfile(({ addAppToChat, apps, router: { quer
             <XView flexDirection="column">
                 <SearchCardsOrShowProfile
                     CardsComponent={RoomsWithAddToChatButton}
-                    searchPlaceholder={'Search rooms'}
-                    noQueryText={'Featured rooms'}
-                    hasQueryText={'Rooms'}
+                    searchPlaceholder={'Search groups'}
+                    noQueryText={'Featured groups'}
+                    hasQueryText={'Groups'}
                     sortOptions={{
                         label: 'Sort by',
                         values: [

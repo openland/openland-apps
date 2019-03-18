@@ -1,6 +1,6 @@
 import UUID from 'uuid/v4';
 import { UploadingFile, UploadStatus } from './types';
-import { MessageFull_mentions } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
@@ -13,7 +13,7 @@ type MessageBodyT = {
     message: string | null;
     file: string | null;
     replyMessages: string[] | null;
-    mentions: MessageFull_mentions[] | null;
+    mentions: UserShort[] | null;
 };
 
 export class MessageSender {
@@ -99,7 +99,7 @@ export class MessageSender {
     }: {
         conversationId: string;
         message: string;
-        mentions: MessageFull_mentions[] | null;
+        mentions: UserShort[] | null;
         callback: MessageSendHandler;
     }) {
         message = message.trim();
@@ -127,7 +127,7 @@ export class MessageSender {
     }: {
         conversationId: string;
         message: string;
-        mentions: MessageFull_mentions[] | null;
+        mentions: UserShort[] | null;
     }) {
         await new Promise<string>((resolve, reject) => {
             let handler: MessageSendHandler = {

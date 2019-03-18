@@ -206,7 +206,7 @@
     }, {
         "name": "ic-secret",
         "src": "ic-secret.svg",
-        "sizes": [14, 24]
+        "sizes": [20, 24]
     }, {
         "name": "ic-attachment",
         "src": "ic-attachment.svg",

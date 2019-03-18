@@ -13,7 +13,6 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { CallsEngine } from './CallsEngine';
 
 export class MessengerEngine {
-
     readonly client: OpenlandClient;
     readonly sender: MessageSender;
     readonly dialogList: DialogListEngine;
@@ -23,7 +22,7 @@ export class MessengerEngine {
     readonly notifications: NotificationsEngine;
     readonly calls: CallsEngine;
     private readonly activeConversations = new Map<string, ConversationEngine>();
-    private readonly mountedConversations = new Map<string, { count: number, unread: number }>();
+    private readonly mountedConversations = new Map<string, { count: number; unread: number }>();
     private readonly activeTypings = new Map<string, TypingEngine>();
     // private readonly activeOnlines = new Map<string, OnlineWatcher>();
 
@@ -34,7 +33,6 @@ export class MessengerEngine {
     private onlineWatcher: OnlineWatcher;
 
     constructor(client: OpenlandClient, user: UserShort, platform: string) {
-
         this.client = client;
         this.user = user;
         this.calls = new CallsEngine(this);
@@ -42,7 +40,7 @@ export class MessengerEngine {
         // Onlines
         this.onlineWatcher = new OnlineWatcher(this.client);
 
-        this.dialogList = new DialogListEngine(this, (data) => {
+        this.dialogList = new DialogListEngine(this, data => {
             this.onlineWatcher.onDialogListChange(data);
         });
 
@@ -69,12 +67,18 @@ export class MessengerEngine {
 
     private loadingSequence = async () => {
         await this.global.start();
-    }
+    };
 
-    handleTyping = (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null, userId: string }[] }) => {
+    handleTyping = (
+        conversationId: string,
+        data?: {
+            typing: string;
+            users: { userName: string; userPic: string | null; userId: string }[];
+        },
+    ) => {
         this.getTypings(conversationId).onTyping(data, conversationId);
         this.getTypings('global_typings').onTyping(data, conversationId);
-    }
+    };
 
     awaitLoading() {
         return this.loadingPromise;
@@ -84,6 +88,14 @@ export class MessengerEngine {
         this.global.destroy();
         this.onlineReporter.destroy();
         AppVisibility.unwatch(this.handleVisibleChanged);
+    }
+
+    removeConversation(conversationId: string) {
+        if (this.activeConversations.has(conversationId)) {
+            const conversationToDestroy = this.activeConversations.get(conversationId)!!;
+            conversationToDestroy.destroy();
+            this.activeConversations.delete(conversationId);
+        }
     }
 
     getConversation(conversationId: string) {
@@ -109,7 +121,6 @@ export class MessengerEngine {
             }
             return this.activeTypings.get('global_typings')!!;
         }
-
     }
 
     getOnlines() {
@@ -143,12 +154,12 @@ export class MessengerEngine {
     private handleConversationVisible = (conversationId: string) => {
         this.getConversation(conversationId).onOpen();
         this.global.onConversationVisible(conversationId);
-    }
+    };
 
     private handleConversationHidden = (conversationId: string) => {
         this.getConversation(conversationId).onClosed();
         this.global.onConversationHidden(conversationId);
-    }
+    };
 
     private handleVisibleChanged = (isVisible: boolean) => {
         if (this.isVisible === isVisible) {
@@ -173,7 +184,7 @@ export class MessengerEngine {
         if (this.onlineReporter) {
             this.onlineReporter.onVisible(isVisible);
         }
-    }
+    };
 }
 
 export const MessengerContext = React.createContext<MessengerEngine>(undefined as any);

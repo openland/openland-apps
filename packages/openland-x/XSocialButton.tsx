@@ -41,7 +41,7 @@ export const XSocialButton = (props: XSocialButtonProps) => {
         href = 'tel:' + props.value;
     }
 
-    if (props.style === 'website' && !href.startsWith('http://') && !href.startsWith('https://')) {
+    if (props.style !== 'phone' && !href.startsWith('http://') && !href.startsWith('https://')) {
         href = 'http://' + props.value;
     }
 

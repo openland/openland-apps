@@ -4,6 +4,7 @@
         { "name": "UpdateOrganizationMutation", "type": "mutation", "hasVariables": true },
         { "name": "SetOrgShortnameMutation", "type": "mutation", "hasVariables": true },
         { "name": "OrganizationQuery", "type": "query", "hasVariables": true },
+        { "name": "OrganizationMembersShortQuery", "type": "query", "hasVariables": true },
         { "name": "OrganizationProfileQuery", "type": "query", "hasVariables": true },
         { "name": "ExploreOrganizationsQuery", "type": "query", "hasVariables": true },
         { "name": "ExploreComunityQuery", "type": "query", "hasVariables": true },

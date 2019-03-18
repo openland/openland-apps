@@ -6,10 +6,11 @@ import { XModal } from 'openland-x-modal/XModal';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
+import { MobileSidebarContext } from '../../../Scaffold/MobileSidebarContext';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
-const modalBodyClassName = css`
+const ModalBody = css`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,29 +21,35 @@ const modalBodyClassName = css`
     }
 `;
 
-const modalImageClassName = css`
+const ModalImage = css`
     border-radius: 8px;
     object-fit: contain;
     max-height: 90vh;
 `;
 
-const imageWrapperClassName = css`
+const ImageWrapper = css`
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
-    overflow: hidden;
-    border-radius: 6px;
     & img {
         max-width: 100%;
         object-fit: contain;
     }
 `;
 
-const imageClassName = css`
+const ImageClassName = css`
     display: block;
-    border-radius: 6px;
     margin-left: -3px;
+`;
+
+const ImageWrapperRadius = css`
+    border-radius: 3px;
+`;
+
+const ImageRadiusShadowClassName = css`
+    border-radius: 3px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 `;
 
 interface MessageImageComponentProps {
@@ -53,19 +60,24 @@ interface MessageImageComponentProps {
     startSelected: boolean;
 }
 
-const ModalBody = React.memo(
-    ({
-        width,
-        height,
-        closeView,
-        file,
-    }: {
-        width: number;
-        height: number;
-        closeView: (event: React.MouseEvent<any, MouseEvent>) => void;
-        file: string;
-    }) => (
-        <div className={modalBodyClassName}>
+export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
+    let [isOpen, handleOpen] = React.useState(false);
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    const UserInfo = React.useContext(UserInfoContext);
+    const openView = (e: any) => {
+        if (props.startSelected) {
+            return;
+        }
+        e.stopPropagation();
+        handleOpen(true);
+    };
+
+    const closeView = () => {
+        handleOpen(false);
+    };
+
+    const modalBody = (width: number, height: number) => (
+        <div className={ModalBody}>
             <XView
                 onClick={closeView}
                 cursor="pointer"
@@ -84,11 +96,11 @@ const ModalBody = React.memo(
             <XView flexDirection="row" alignItems="center" justifyContent="center">
                 <XView backgroundColor="#000" borderRadius={8}>
                     <XCloudImage
-                        srcCloud={`https://ucarecdn.com/${file}`}
+                        srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                         resize={'fill'}
                         width={width}
                         height={height}
-                        className={modalImageClassName}
+                        className={ModalImage}
                     />
                     <XView
                         as="a"
@@ -102,7 +114,7 @@ const ModalBody = React.memo(
                         position="absolute"
                         top={20}
                         right={20}
-                        href={`https://ucarecdn.com/${file}/-/preview/-/inline/no/`}
+                        href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
                         hoverTextDecoration="none"
                     >
                         <DownloadButtonIcon />
@@ -110,26 +122,23 @@ const ModalBody = React.memo(
                 </XView>
             </XView>
         </div>
-    ),
-);
-
-export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
-    let [isOpen, handleOpen] = React.useState(false);
-    const isMobile = React.useContext(IsMobileContext);
-    const openView = (e: any) => {
-        if (props.startSelected) {
-            return;
-        }
-        e.stopPropagation();
-        handleOpen(true);
-    };
-
-    const closeView = () => {
-        handleOpen(false);
-    };
+    );
 
     let dimensions = layoutMedia(props.width, props.height);
     let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
+
+    let radiusForImages = false;
+    let localSettingsRadius = localStorage.getItem('image_view_alternative');
+    if (localSettingsRadius) {
+        if (localSettingsRadius === 'true') {
+            radiusForImages = true;
+        }
+    } else {
+        if ((UserInfo && UserInfo.user && UserInfo.user.id === 'LOaDEWDj9zsVv999DDpJiEj05K')) {
+            radiusForImages = true;
+        }
+    }
+
     return (
         <>
             {!isMobile && (
@@ -140,24 +149,17 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
                     transparent={true}
                     isOpen={isOpen}
                     onClosed={closeView}
-                    body={
-                        <ModalBody
-                            width={dimensions2.width}
-                            height={dimensions2.height}
-                            closeView={closeView}
-                            file={props.file}
-                        />
-                    }
+                    body={modalBody(dimensions2.width, dimensions2.height)}
                 />
             )}
             <XView onClick={openView} cursor="pointer" paddingBottom={5}>
-                <div className={imageWrapperClassName}>
+                <div className={ImageWrapper + (radiusForImages ? ' ' + ImageWrapperRadius : undefined)}>
                     <XCloudImage
-                        srcCloud={`https://ucarecdn.com/${props.file}/`}
+                        srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                         resize={'fill'}
                         width={dimensions.width}
                         height={dimensions.height}
-                        className={imageClassName}
+                        className={ImageClassName + (radiusForImages ? ' ' + ImageRadiusShadowClassName : undefined)}
                     />
                 </div>
             </XView>

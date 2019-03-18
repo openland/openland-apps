@@ -6,10 +6,12 @@ import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/Conv
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform } from 'react-native';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
-import { renderPrprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
+import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { isEmoji } from 'openland-y-utils/isEmoji';
+import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 interface TextContentProps {
     message: DataSourceMessageItem;
+    attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
     onUserPress: (id: string) => void;
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
@@ -32,9 +34,9 @@ export class TextContent extends React.PureComponent<TextContentProps> {
         if (textSticker) {
             message = { ...message, text: message.text!.slice(1, message.text!.length - 1) };
         }
-        let preprocessed = preprocessText(message.text || '', message.mentions);
+        let preprocessed = preprocessText(message.text || '', message.spans);
 
-        let parts = preprocessed.map((p, i) => renderPrprocessedText(p, i, message, this.props.onUserPress));
+        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, message, this.props.onUserPress));
         if (message.title) {
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{message.title}</ASText>);
@@ -52,7 +54,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                     fontStyle={this.props.fontStyle}
                 >
                     {parts}
-                    {this.props.padded !== false && !message.urlAugmentation ? (message.isOut ? paddedTextOut : paddedText) : undefined}
+                    {this.props.padded !== false && !this.props.attach ? (message.isOut ? paddedTextOut : paddedText) : undefined}
                 </ASText>}
             </>
         )

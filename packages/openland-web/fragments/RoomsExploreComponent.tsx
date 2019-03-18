@@ -77,9 +77,9 @@ export const RoomsExploreComponent = () => {
     return (
         <SearchCardsOrShowProfile
             CardsComponent={RoomsWithSort}
-            searchPlaceholder={'Search rooms'}
-            noQueryText={'Featured rooms'}
-            hasQueryText={'Rooms'}
+            searchPlaceholder={'Search groups'}
+            noQueryText={'Featured groups'}
+            hasQueryText={'Groups'}
             sortOptions={{
                 label: 'Sort by',
                 values: [
