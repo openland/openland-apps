@@ -218,7 +218,12 @@ export const SpansMessage = ({
             } else if (span.__typename === 'MessageSpanLink') {
                 res.push(
                     <span key={'link-' + i} className={LinkText}>
-                        <XView as="a" path={span.url} onClick={(e: any) => e.stopPropagation()}>
+                        <XView
+                            as="a"
+                            target="_blank"
+                            path={span.url}
+                            onClick={(e: any) => e.stopPropagation()}
+                        >
                             {span.url}
                         </XView>
                     </span>,
