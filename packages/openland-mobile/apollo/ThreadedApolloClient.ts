@@ -160,7 +160,7 @@ export class WorkerApolloClient implements GraphqlClient {
         return this.postCall({ type: 'mutate', body: mutation.document, variables: vars, id: this.nextId() });
     }
 
-    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription {
+    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
         let queue = new Queue();
 
         let key = this.nextId();
@@ -195,7 +195,7 @@ export class WorkerApolloClient implements GraphqlClient {
             destroy: () => {
                 this.thread.postMessage(JSON.stringify({ type: 'subscribe-destroy', id: key } as Request));
             }
-        } as GraphqlActiveSubscription;
+        } as GraphqlActiveSubscription<TSubscription, TVars>;
     }
 
     useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {

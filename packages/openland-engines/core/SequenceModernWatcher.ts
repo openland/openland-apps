@@ -11,7 +11,7 @@ export class SequenceModernWatcher<TSubscription, TVars> {
     private readonly sequenceHandler: SequenceHandler;
     private readonly variables?: any;
     private currentState: string | null;
-    private subscription: GraphqlActiveSubscription;
+    private subscription: GraphqlActiveSubscription<TSubscription, TVars>;
 
     constructor(name: string, query: GraphqlTypedSubscription<TSubscription, TVars>, client: GraphqlClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: TVars, state?: string | null) {
         this.name = name;

@@ -56,7 +56,7 @@ export class NativeApolloClient implements GraphqlClient {
         return await this.client.getOperation(id);
     }
 
-    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription {
+    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
         return {
             get: async () => {
                 while (true) {
@@ -69,7 +69,7 @@ export class NativeApolloClient implements GraphqlClient {
             destroy: () => {
                 // this.thread.postMessage(JSON.stringify({ type: 'subscribe-destroy', id: key } as Request));
             }
-        } as GraphqlActiveSubscription;
+        } as GraphqlActiveSubscription<TSubscription, TVars>;
     }
 
     useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
