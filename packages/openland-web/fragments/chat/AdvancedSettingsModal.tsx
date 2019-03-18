@@ -4,6 +4,10 @@ import { withAlterChat } from 'openland-web/api/withAlterChat';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { XView } from 'react-mental';
+import { XCheckbox } from 'openland-x/XCheckbox';
+import { XSelect } from 'openland-x/XSelect';
+import { XInput } from 'openland-x/XInput';
 
 type AdvancedSettingsModalT = {
     socialImage: string | null;
@@ -44,6 +48,21 @@ export const AdvancedSettingsModal = withAlterChat(props => {
             }}
         >
             <XVertical separator={12}>
+                <XView>Welcome message</XView>
+                <XView>
+                    Send an automatic message in 1:1 chat to every new member who joins this group
+                </XView>
+                <XCheckbox label="On" switcher={true} checked={true} />
+
+                <XView>
+                    Choose an image to display when sharing invite to this group on social networks
+                </XView>
+                <XSelect
+                    field="select3"
+                    options={[{ value: 'one', label: 'One' }, { value: 'two', label: 'Two' }]}
+                />
+                <XInput size="large" title={'title'} />
+                <XView>Social sharing image</XView>
                 <XAvatarUpload
                     cropParams="1:1, free"
                     field="input.socialImageRef"
