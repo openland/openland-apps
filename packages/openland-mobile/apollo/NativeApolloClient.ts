@@ -1,36 +1,40 @@
 import { NativeModules, DeviceEventEmitter } from 'react-native';
 import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { randomKey } from 'openland-mobile/utils/randomKey';
-import { print } from 'graphql/language/printer';
 import { delay } from 'openland-y-utils/timer';
+import { BridgedClient } from './BridgedClient';
 
 const NativeGraphQL = NativeModules.RNGraphQL as {
     createClient: (key: string, endpoint: string, token?: string) => void
     query: (key: string, id: string, query: string, vars?: any) => void;
+    refetch: (key: string, id: string, query: string, vars?: any) => void;
+    mutate: (key: string, id: string, query: string, vars?: any) => void;
     closeClient: (key: string) => void;
 }
 
 export class NativeApolloClient implements GraphqlClient {
 
     private key: string = randomKey();
-    private handlers = new Map<string, { resolve: (src: any) => void, reject: (src: any) => void }>();
+    private client = new BridgedClient({
+        postMutation: (id, mutation, vars) => {
+            NativeGraphQL.mutate(this.key, id, mutation.document.definitions[0].name.value, vars ? vars : {});
+        },
+        postQuery: (id, mutation, vars) => {
+            NativeGraphQL.query(this.key, id, mutation.document.definitions[0].name.value, vars ? vars : {});
+        },
+        postRefetchQuery: (id, query, vars) => {
+            NativeGraphQL.refetch(this.key, id, query.document.definitions[0].name.value, vars ? vars : {});
+        },
+    });
 
     constructor(token?: string) {
         DeviceEventEmitter.addListener('apollo_client', (src) => {
             if (src.key === this.key) {
                 console.log(src);
                 if (src.type === 'failure') {
-                    let h = this.handlers.get(src.id);
-                    if (h) {
-                        h.reject('Unknown error');
-                    }
+                    this.client.operationFailed(src.id);
                 } else if (src.type === 'response') {
-                    console.log('response');
-                    let h = this.handlers.get(src.id);
-                    if (h) {
-                        console.log('response:call');
-                        h.resolve(src.data);
-                    }
+                    this.client.operationUpdated(src.id, src.data);
                 }
             }
         });
@@ -38,25 +42,18 @@ export class NativeApolloClient implements GraphqlClient {
     }
 
     async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
-        let id = randomKey();
-        let p = new Promise<any>((resolve, reject) => {
-            this.handlers.set(id, { resolve, reject });
-            // this.thread.postMessage(JSON.stringify(request));
-        });
-        NativeGraphQL.query(this.key, id, query.document.definitions[0].name.value, vars ? vars : {});
-        return await p;
+        let id = this.client.registerQuery(query, vars);
+        return await this.client.getOperation(id);
     }
 
     async refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
-        while (true) {
-            await delay(10000);
-        }
+        let id = this.client.registerRefetch(query, vars);
+        return await this.client.getOperation(id);
     }
 
     async mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation> {
-        while (true) {
-            await delay(10000);
-        }
+        let id = this.client.registerMutation(mutation, vars);
+        return await this.client.getOperation(id);
     }
 
     subscribe(subscription: any, vars?: any): GraphqlActiveSubscription {
@@ -76,20 +73,25 @@ export class NativeApolloClient implements GraphqlClient {
     }
 
     useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
-        throw (async () => {
-            while (true) {
-                await delay(10000);
-            }
-        })()
+        let id = this.client.registerQuery(query, vars);
+        return this.client.useOperationSuspense(id);
     }
 
     useWithoutLoaderQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
-        // throw Error()
-        return null;
+        let id = this.client.registerQuery(query, vars);
+        return this.client.useOperation(id);
     }
 
     async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean> {
-        throw Error()
+        let r = await this.readQuery(query, vars);
+        if (r) {
+            let udpated = updater(r);
+            if (udpated) {
+                await this.writeQuery<TQuery, TVars>(r, query, vars);
+                return true;
+            }
+        }
+        return false;
     }
 
     async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {

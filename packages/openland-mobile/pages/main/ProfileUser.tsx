@@ -104,6 +104,7 @@ const ProfileUserContent = XMemo<PageProps>((props) => {
         </>
     );
 });
+ProfileUserContent.displayName = 'ProfileUserContent';
 
 class ProfileUserComponent extends React.Component<PageProps> {
     render() {
