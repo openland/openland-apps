@@ -43,7 +43,7 @@ export class NativeApolloClient implements GraphqlClient {
             this.handlers.set(id, { resolve, reject });
             // this.thread.postMessage(JSON.stringify(request));
         });
-        NativeGraphQL.query(this.key, id, print(query.document), vars ? vars : {});
+        NativeGraphQL.query(this.key, id, query.document.definitions[0].name.value, vars ? vars : {});
         return await p;
     }
 

@@ -1,5 +1,5 @@
 query ExploreOrganizations($after: String, $all: Boolean, $page: Int, $prefix: String, $query: String, $sort: String) {
-  items: alphaOrganizations(after: $after, all: $all, first: 0, page: $page, prefix: $prefix, query: $query, sort: $sort) {
+  items: alphaOrganizations(after: $after, all: $all, first: 25, page: $page, prefix: $prefix, query: $query, sort: $sort) {
     __typename
     edges {
       __typename

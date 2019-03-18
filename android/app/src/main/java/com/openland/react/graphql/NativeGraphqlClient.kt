@@ -9,7 +9,6 @@ import com.apollographql.apollo.internal.response.RealResponseReader
 import com.apollographql.apollo.subscription.WebSocketSubscriptionTransport
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import java.math.BigDecimal
 import java.util.LinkedHashMap
@@ -17,18 +16,162 @@ import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.isAccessible
 import com.apollographql.apollo.cache.normalized.sql.ApolloSqlHelper
 import com.apollographql.apollo.cache.normalized.sql.SqlNormalizedCacheFactory
-import com.apollographql.apollo.cache.normalized.NormalizedCacheFactory
-import com.apollographql.apollo.cache.normalized.CacheKey.NO_KEY
-import com.apollographql.apollo.api.Operation.Variables
 import com.apollographql.apollo.api.ResponseField
 import com.apollographql.apollo.cache.normalized.CacheKey
 import com.apollographql.apollo.cache.normalized.CacheKeyResolver
+import kotlin.reflect.KParameter
+import kotlin.reflect.full.functions
+import kotlin.reflect.full.staticFunctions
+import android.provider.Settings.System.DATE_FORMAT
+import com.apollographql.apollo.response.CustomTypeValue
+import com.apollographql.apollo.response.CustomTypeAdapter
+import com.openland.api.type.CustomType
 
 
+class JSResponseListWriter(val res: WritableArray) : ResponseWriter.ListItemWriter {
 
+    override fun writeLong(value: Any?) {
+        if (value != null) {
+            res.pushDouble((value as Number).toDouble())
+        } else {
+            res.pushNull()
+        }
+    }
 
+    override fun writeObject(marshaller: ResponseFieldMarshaller?) {
+        if (marshaller != null) {
+            val child: WritableMap = WritableNativeMap()
+            val writer = JSResponseWriter(child)
+            marshaller.marshal(writer)
+            res.pushMap(child)
+        } else {
+            res.pushNull()
+        }
+    }
 
+    override fun writeString(value: Any?) {
+        if (value != null) {
+            res.pushString((value as String))
+        } else {
+            res.pushNull()
+        }
+    }
 
+    override fun writeBoolean(value: Any?) {
+        if (value != null) {
+            res.pushBoolean((value as Boolean))
+        } else {
+            res.pushNull()
+        }
+    }
+
+    override fun writeDouble(value: Any?) {
+        if (value != null) {
+            res.pushDouble((value as Number).toDouble())
+        } else {
+            res.pushNull()
+        }
+    }
+
+    override fun writeInt(value: Any?) {
+        if (value != null) {
+            res.pushDouble((value as Number).toDouble())
+        } else {
+            res.pushNull()
+        }
+    }
+
+    override fun writeCustom(scalarType: ScalarType, value: Any?) {
+        if (scalarType.typeName() == "ID") {
+            if (value != null) {
+                res.pushString(value.toString())
+            } else {
+                res.pushNull()
+            }
+        } else {
+            throw Error("Not implemented")
+        }
+    }
+}
+
+class JSResponseWriter(val res: WritableMap) : ResponseWriter {
+
+    override fun writeLong(field: ResponseField, value: Long?) {
+        if (value != null) {
+            res.putDouble(field.responseName(), value.toDouble())
+        } else {
+            res.putNull(field.responseName())
+        }
+    }
+
+    override fun writeString(field: ResponseField, value: String?) {
+        if (value != null) {
+            res.putString(field.responseName(), value)
+        } else {
+            res.putNull(field.responseName())
+        }
+    }
+
+    override fun writeDouble(field: ResponseField, value: Double?) {
+        if (value != null) {
+            res.putDouble(field.responseName(), value)
+        } else {
+            res.putNull(field.responseName())
+        }
+    }
+
+    override fun writeList(field: ResponseField, values: MutableList<Any?>?, listWriter: ResponseWriter.ListWriter) {
+        if (values != null) {
+            val child: WritableArray = WritableNativeArray()
+            val writer = JSResponseListWriter(child)
+            for (v in values) {
+                listWriter.write(v, writer)
+            }
+            res.putArray(field.responseName(), child)
+        } else {
+            res.putNull(field.responseName())
+        }
+    }
+
+    override fun writeObject(field: ResponseField, marshaller: ResponseFieldMarshaller?) {
+        if (marshaller != null) {
+            val child: WritableMap = WritableNativeMap()
+            val writer = JSResponseWriter(child)
+            marshaller.marshal(writer)
+            res.putMap(field.responseName(), child)
+        } else {
+            res.putNull(field.responseName())
+        }
+    }
+
+    override fun writeBoolean(field: ResponseField, value: Boolean?) {
+        if (value != null) {
+            res.putBoolean(field.responseName(), value)
+        } else {
+            res.putNull(field.responseName())
+        }
+    }
+
+    override fun writeInt(field: ResponseField, value: Int?) {
+        if (value != null) {
+            res.putDouble(field.responseName(), value.toDouble())
+        } else {
+            res.putNull(field.responseName())
+        }
+    }
+
+    override fun writeCustom(field: ResponseField.CustomTypeField, value: Any?) {
+        if (field.scalarType().typeName() == "ID") {
+            if (value != null) {
+                res.putString(field.responseName(), value.toString())
+            } else {
+                res.putNull(field.responseName())
+            }
+        } else {
+            throw Error("Not implemented")
+        }
+    }
+}
 
 class JSVariables(val data: ReadableMap?) : Operation.Variables() {
     private var valueMap: MutableMap<String, Any> = LinkedHashMap()
@@ -51,8 +194,14 @@ class JSVariables(val data: ReadableMap?) : Operation.Variables() {
 class JSData(val data: WritableMap) : Operation.Data {
     override fun marshaller(): ResponseFieldMarshaller {
         return ResponseFieldMarshaller {
-            // it.writeBoolean(ResponseField.forBoolean(data))
-            // Unsupported?
+            //            val i = data.keySetIterator()
+//            while (i.hasNextKey()) {
+//                val k = i.nextKey()
+//                val v = data.getDynamic(k)
+//                if (v.isNull) {
+//                    it.writeBoolean(ResponseField.forBoolean(k, ar), null)
+//                }
+//            }
         }
     }
 }
@@ -202,11 +351,22 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
 
     init {
 
+        val dateCustomTypeAdapter = object : CustomTypeAdapter<String> {
+            override fun decode(value: CustomTypeValue<*>): String {
+                return value.value.toString()
+
+            }
+
+            override fun encode(value: String): CustomTypeValue<*> {
+                return CustomTypeValue.GraphQLString(value)
+            }
+        }
+
         val apolloSqlHelper = ApolloSqlHelper.create(context, "appcache")
         val cacheFactory = SqlNormalizedCacheFactory(apolloSqlHelper)
         val resolver = object : CacheKeyResolver() {
-            override fun fromFieldRecordSet(field: ResponseField,recordSet: Map<String, Any>): CacheKey {
-                return formatCacheKey(recordSet["id"] as String)
+            override fun fromFieldRecordSet(field: ResponseField, recordSet: Map<String, Any>): CacheKey {
+                return formatCacheKey(recordSet["id"] as String?)
             }
 
             override fun fromFieldArguments(field: ResponseField, variables: Operation.Variables): CacheKey {
@@ -249,12 +409,29 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                     Log.d("APOLLO", String.format(message, *args))
                 }
                 .normalizedCache(cacheFactory, resolver)
+                .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
                 .build()
     }
 
     fun query(id: String, query: String, arguments: ReadableMap?) {
-        this.client.query(JSQuery(query, arguments)).enqueue(object : ApolloCall.Callback<JSData>() {
+
+        val clazz = Class.forName("com.openland.api." + query + "Query").kotlin
+        val clazzBuilder = Class.forName("com.openland.api." + query + "Query\$Builder").kotlin
+        val builder = clazz.staticFunctions.find { it.name === "builder" }!!.call()
+        if (arguments != null) {
+            val i = arguments.keySetIterator()
+            while (i.hasNextKey()) {
+                val k = i.nextKey()
+                val bf = clazzBuilder.functions.find { it.name === k } ?: continue
+                val arg = bf.parameters.find { it.kind == KParameter.Kind.VALUE }!!
+            }
+        }
+        val res = clazzBuilder.functions.find { it.name == "build" }!!.call(builder) as Query<Operation.Data, Operation.Data, Operation.Variables>
+
+
+        this.client.query(res).enqueue(object : ApolloCall.Callback<Operation.Data>() {
             override fun onFailure(e: ApolloException) {
+                e.printStackTrace()
                 val map = WritableNativeMap()
                 map.putString("key", key)
                 map.putString("type", "failure")
@@ -263,12 +440,32 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                         .emit("apollo_client", map)
             }
 
-            override fun onResponse(response: Response<JSData>) {
+            override fun onResponse(response: Response<Operation.Data>) {
+
+                if (response.hasErrors()) {
+                    val map = WritableNativeMap()
+                    map.putString("key", key)
+                    map.putString("type", "failure")
+                    map.putString("id", id)
+                    context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                            .emit("apollo_client", map)
+                    return
+                }
+
                 val map = WritableNativeMap()
                 map.putString("key", key)
                 map.putString("type", "response")
                 map.putString("id", id)
-                map.putMap("data", response.data()!!.data)
+
+                val d = response.data()
+                if (d != null) {
+                    val dataMap = WritableNativeMap()
+                    d.marshaller().marshal(JSResponseWriter(dataMap))
+                    map.putMap("data", dataMap)
+                } else {
+                    map.putNull("data")
+                }
+
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                         .emit("apollo_client", map)
             }

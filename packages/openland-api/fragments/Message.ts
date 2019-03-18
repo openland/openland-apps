@@ -9,11 +9,11 @@ export const TinyMessage = gql`
         }
         message
         fallback
-        ... on GeneralMessage{
-            attachments{
+        ... on GeneralMessage {
+            attachments {
                 id
                 fallback
-                ...on MessageAttachmentFile{
+                ...on MessageAttachmentFile {
                     fileId
                     fileMetadata{
                         isImage
@@ -22,7 +22,7 @@ export const TinyMessage = gql`
                     filePreview
                 }
             }
-            quotedMessages{
+            quotedMessages {
                 id
             }
         }

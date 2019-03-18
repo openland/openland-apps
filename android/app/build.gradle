@@ -125,10 +125,10 @@ android {
         renderscriptTargetApi 23
         renderscriptSupportModeEnabled true
         versionCode appVersionCode
-        versionName "1.1."+appVersionCode
+        versionName "1.1." + appVersionCode
         println("##teamcity[buildNumber '1.1.$appVersionCode']")
     }
-    if(project.hasProperty("RELEASE_STORE_FILE")) {
+    if (project.hasProperty("RELEASE_STORE_FILE")) {
         signingConfigs {
             release {
                 storeFile file(RELEASE_STORE_FILE)
@@ -148,7 +148,7 @@ android {
     }
     buildTypes {
         release {
-            if(project.hasProperty("RELEASE_STORE_FILE")) {
+            if (project.hasProperty("RELEASE_STORE_FILE")) {
                 signingConfig signingConfigs.release
             }
             minifyEnabled enableProguardInReleaseBuilds
@@ -241,6 +241,12 @@ dependencies {
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
+}
+
+apollo {
+    customTypeMapping = [
+            "Date": "java.lang.String"
+    ]
 }
 
 //task bundleReleaseJsAndAssets(overwrite: true) {

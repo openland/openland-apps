@@ -4,7 +4,7 @@ query Dialogs($after: String) {
     id
     unreadCount
   }
-  dialogs(after: $after, first: 0) {
+  dialogs(after: $after, first: 20) {
     __typename
     cursor
     items {
