@@ -3,10 +3,14 @@ package com.openland.react.graphql
 import android.util.Log
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.ApolloSubscriptionCall
 import com.apollographql.apollo.api.*
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
+import com.apollographql.apollo.cache.normalized.ApolloStoreOperation
 import com.apollographql.apollo.cache.normalized.CacheKey
 import com.apollographql.apollo.cache.normalized.CacheKeyResolver
+import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
+import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
 import com.apollographql.apollo.cache.normalized.sql.ApolloSqlHelper
 import com.apollographql.apollo.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.apollographql.apollo.exception.ApolloException
@@ -16,6 +20,8 @@ import com.apollographql.apollo.response.CustomTypeValue
 import com.apollographql.apollo.subscription.WebSocketSubscriptionTransport
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
+import com.openland.api.ChatWatchSubscription
+import com.openland.api.DialogsQuery
 import com.openland.api.RegisterPushMutation
 import okhttp3.OkHttpClient
 import kotlin.reflect.KParameter
@@ -23,9 +29,79 @@ import kotlin.reflect.full.functions
 import kotlin.reflect.full.staticFunctions
 import com.openland.api.type.CustomType
 import com.openland.api.type.UpdateProfileInput
+import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.jvm.jvmErasure
 
+class JSResponseReader(val res: ReadableMap) : ResponseReader {
+
+    override fun readInt(field: ResponseField): Int? {
+        val name = field.responseName()
+        return if (res.hasKey(name)) {
+            res.getInt(name)
+        } else {
+            null
+        }
+    }
+
+    override fun <T : Any?> readCustomType(field: ResponseField.CustomTypeField): T? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun <T : Any?> readObject(field: ResponseField, objectReader: ResponseReader.ObjectReader<T>): T? {
+        val name = field.responseName()
+        if (res.hasKey(name)) {
+            val data = res.getMap(name)
+            return objectReader.read(JSResponseReader(data))
+        } else {
+            return null
+        }
+    }
+
+    override fun <T : Any?> readConditional(field: ResponseField, conditionalTypeReader: ResponseReader.ConditionalTypeReader<T>): T? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun readLong(field: ResponseField): Long? {
+        val name = field.responseName()
+        return if (res.hasKey(name)) {
+            res.getDouble(name).toLong()
+        } else {
+            null
+        }
+    }
+
+    override fun readDouble(field: ResponseField): Double? {
+        val name = field.responseName()
+        return if (res.hasKey(name)) {
+            res.getDouble(name)
+        } else {
+            null
+        }
+    }
+
+    override fun readString(field: ResponseField): String? {
+        val name = field.responseName()
+        return if (res.hasKey(name)) {
+            res.getString(name)
+        } else {
+            null
+        }
+    }
+
+    override fun <T : Any?> readList(field: ResponseField, listReader: ResponseReader.ListReader<T>?): MutableList<T> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun readBoolean(field: ResponseField): Boolean? {
+        val name = field.responseName()
+        return if (res.hasKey(name)) {
+            res.getBoolean(name)
+        } else {
+            null
+        }
+    }
+}
 
 class JSResponseListWriter(val res: WritableArray) : ResponseWriter.ListItemWriter {
 
@@ -210,6 +286,15 @@ fun parseInputArguments(name: String, arguments: ReadableMap?): Any {
                 bf.call(builder, arguments.getInt(k))
             } else if (arg == "kotlin.Boolean") {
                 bf.call(builder, arguments.getBoolean(k))
+            } else if (arg == "kotlin.collections.List") {
+                val list = arrayListOf<String>()
+                val arr = arguments.getArray(k)
+                if (arr != null) {
+                    for (i in 0 until arr.size()) {
+                        list.add(arr.getString(i))
+                    }
+                }
+                bf.call(builder, list)
             } else {
                 if (Class.forName(arg).isEnum) {
                     val arg2 = arguments.getString(k)
@@ -250,6 +335,107 @@ fun createMutation(query: String, arguments: ReadableMap?): Mutation<Operation.D
     return createOperation("Mutation", query, arguments) as Mutation<Operation.Data, Operation.Data, Operation.Variables>
 }
 
+fun createSubscription(query: String, arguments: ReadableMap?): Subscription<Operation.Data, Operation.Data, Operation.Variables> {
+    return createOperation("Subscription", query, arguments) as Subscription<Operation.Data, Operation.Data, Operation.Variables>
+}
+
+class JSStoreOperationCallback(val id: String, val key: String, val context: ReactApplicationContext) : ApolloStoreOperation.Callback<Operation.Data> {
+    override fun onSuccess(result: Operation.Data?) {
+        val map = WritableNativeMap()
+        map.putString("key", key)
+        map.putString("type", "response")
+        map.putString("id", id)
+
+        val d = result
+        if (d != null) {
+            val dataMap = WritableNativeMap()
+            d.marshaller().marshal(JSResponseWriter(dataMap))
+            map.putMap("data", dataMap)
+        } else {
+            map.putNull("data")
+        }
+
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                .emit("apollo_client", map)
+    }
+
+    override fun onFailure(t: Throwable?) {
+        t?.printStackTrace()
+        val map = WritableNativeMap()
+        map.putString("key", key)
+        map.putString("type", "failure")
+        map.putString("id", id)
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                .emit("apollo_client", map)
+    }
+}
+
+
+class JSStoreOperationCallback2(val id: String, val key: String, val context: ReactApplicationContext) : ApolloStoreOperation.Callback<Set<String>> {
+    override fun onSuccess(result: Set<String>) {
+        val map = WritableNativeMap()
+        map.putString("key", key)
+        map.putString("type", "response")
+        map.putString("id", id)
+
+        map.putNull("data")
+
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                .emit("apollo_client", map)
+    }
+
+    override fun onFailure(t: Throwable?) {
+        t?.printStackTrace()
+        val map = WritableNativeMap()
+        map.putString("key", key)
+        map.putString("type", "failure")
+        map.putString("id", id)
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                .emit("apollo_client", map)
+    }
+}
+
+class JSOperationCallback(val id: String, val key: String, val context: ReactApplicationContext) : ApolloCall.Callback<Operation.Data>() {
+    override fun onFailure(e: ApolloException) {
+        e.printStackTrace()
+        val map = WritableNativeMap()
+        map.putString("key", key)
+        map.putString("type", "failure")
+        map.putString("id", id)
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                .emit("apollo_client", map)
+    }
+
+    override fun onResponse(response: Response<Operation.Data>) {
+        if (response.hasErrors()) {
+            val map = WritableNativeMap()
+            map.putString("key", key)
+            map.putString("type", "failure")
+            map.putString("id", id)
+            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                    .emit("apollo_client", map)
+            return
+        }
+
+        val map = WritableNativeMap()
+        map.putString("key", key)
+        map.putString("type", "response")
+        map.putString("id", id)
+
+        val d = response.data()
+        if (d != null) {
+            val dataMap = WritableNativeMap()
+            d.marshaller().marshal(JSResponseWriter(dataMap))
+            map.putMap("data", dataMap)
+        } else {
+            map.putNull("data")
+        }
+
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                .emit("apollo_client", map)
+    }
+}
+
 class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?) {
 
     private val httpClient: OkHttpClient
@@ -268,8 +454,8 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
             }
         }
 
-        val apolloSqlHelper = ApolloSqlHelper.create(context, "appcache")
-        val cacheFactory = SqlNormalizedCacheFactory(apolloSqlHelper)
+//        val apolloSqlHelper = ApolloSqlHelper.create(context, "appcache")
+        val cacheFactory = LruNormalizedCacheFactory(EvictionPolicy.builder().maxSizeBytes(10 * 1024).build())
         val resolver = object : CacheKeyResolver() {
             override fun fromFieldRecordSet(field: ResponseField, recordSet: Map<String, Any>): CacheKey {
                 return formatCacheKey(recordSet["id"] as String?)
@@ -290,6 +476,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
 
 
         val httpBuilder = OkHttpClient.Builder()
+        val connParams = mutableMapOf<String, Any>()
         if (token != null) {
 
             httpBuilder.addInterceptor { chain ->
@@ -302,14 +489,16 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 val request = requestBuilder.build()
                 chain.proceed(request)
             }
+
+            connParams.put("x-openland-token", token)
         }
         this.httpClient = httpBuilder.build()
-
 
         this.client = ApolloClient.builder()
                 .serverUrl("https:$endpoint")
                 .okHttpClient(this.httpClient)
                 .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory("wss:$endpoint", this.httpClient))
+                .subscriptionConnectionParams(connParams)
                 .sendOperationIdentifiers(false)
                 .logger { priority, message, t, args ->
                     Log.d("APOLLO", String.format(message, *args))
@@ -322,143 +511,73 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     fun query(id: String, query: String, arguments: ReadableMap?) {
         this.client.query(createQuery(query, arguments))
                 .watcher()
-                .enqueueAndWatch(object : ApolloCall.Callback<Operation.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        e.printStackTrace()
-                        val map = WritableNativeMap()
-                        map.putString("key", key)
-                        map.putString("type", "failure")
-                        map.putString("id", id)
-                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                                .emit("apollo_client", map)
-                    }
-
-                    override fun onResponse(response: Response<Operation.Data>) {
-
-                        if (response.hasErrors()) {
-                            val map = WritableNativeMap()
-                            map.putString("key", key)
-                            map.putString("type", "failure")
-                            map.putString("id", id)
-                            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                                    .emit("apollo_client", map)
-                            return
-                        }
-
-                        val map = WritableNativeMap()
-                        map.putString("key", key)
-                        map.putString("type", "response")
-                        map.putString("id", id)
-
-                        val d = response.data()
-                        if (d != null) {
-                            val dataMap = WritableNativeMap()
-                            d.marshaller().marshal(JSResponseWriter(dataMap))
-                            map.putMap("data", dataMap)
-                        } else {
-                            map.putNull("data")
-                        }
-
-                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                                .emit("apollo_client", map)
-                    }
-                })
+                .enqueueAndWatch(JSOperationCallback(id, key, context))
     }
 
     fun refetch(id: String, query: String, arguments: ReadableMap?) {
         this.client.query(createQuery(query, arguments))
                 .httpCachePolicy(HttpCachePolicy.NETWORK_FIRST)
-                .enqueue(object : ApolloCall.Callback<Operation.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        e.printStackTrace()
-                        val map = WritableNativeMap()
-                        map.putString("key", key)
-                        map.putString("type", "failure")
-                        map.putString("id", id)
-                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                                .emit("apollo_client", map)
-                    }
-
-                    override fun onResponse(response: Response<Operation.Data>) {
-
-                        if (response.hasErrors()) {
-                            val map = WritableNativeMap()
-                            map.putString("key", key)
-                            map.putString("type", "failure")
-                            map.putString("id", id)
-                            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                                    .emit("apollo_client", map)
-                            return
-                        }
-
-                        val map = WritableNativeMap()
-                        map.putString("key", key)
-                        map.putString("type", "response")
-                        map.putString("id", id)
-
-                        val d = response.data()
-                        if (d != null) {
-                            val dataMap = WritableNativeMap()
-                            d.marshaller().marshal(JSResponseWriter(dataMap))
-                            map.putMap("data", dataMap)
-                        } else {
-                            map.putNull("data")
-                        }
-
-                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                                .emit("apollo_client", map)
-                    }
-                })
+                .enqueue(JSOperationCallback(id, key, context))
     }
 
     fun mutate(id: String, query: String, arguments: ReadableMap?) {
         this.client.mutate(createMutation(query, arguments))
-                .enqueue(object : ApolloCall.Callback<Operation.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        e.printStackTrace()
-                        val map = WritableNativeMap()
-                        map.putString("key", key)
-                        map.putString("type", "failure")
-                        map.putString("id", id)
-                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                                .emit("apollo_client", map)
-                    }
-
-                    override fun onResponse(response: Response<Operation.Data>) {
-
-                        if (response.hasErrors()) {
-                            val map = WritableNativeMap()
-                            map.putString("key", key)
-                            map.putString("type", "failure")
-                            map.putString("id", id)
-                            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                                    .emit("apollo_client", map)
-                            return
-                        }
-
-                        val map = WritableNativeMap()
-                        map.putString("key", key)
-                        map.putString("type", "response")
-                        map.putString("id", id)
-
-                        val d = response.data()
-                        if (d != null) {
-                            val dataMap = WritableNativeMap()
-                            d.marshaller().marshal(JSResponseWriter(dataMap))
-                            map.putMap("data", dataMap)
-                        } else {
-                            map.putNull("data")
-                        }
-
-                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                                .emit("apollo_client", map)
-                    }
-                })
+                .enqueue(JSOperationCallback(id, key, context))
     }
 
-    fun subscribe(id: String, query: String) {
-//         this.client.subscribe(JSSubscription(query))
-//                 .execute()
+    fun read(id: String, query: String, arguments: ReadableMap?) {
+        this.client.apolloStore().read(createQuery(query, arguments))
+                .enqueue(JSStoreOperationCallback(id, key, context))
+    }
+
+    fun write(id: String, data: ReadableMap, query: String, arguments: ReadableMap?) {
+        val mapper = Class.forName("$query\$Data\$Mapper").kotlin.createInstance() as ResponseFieldMapper<Operation.Data>
+        val mapped = mapper.map(JSResponseReader(data))
+        this.client.apolloStore().write(createQuery(query, arguments), mapped)
+                .enqueue(JSStoreOperationCallback2(id, key, context))
+    }
+
+    fun subscribe(id: String, query: String, arguments: ReadableMap?) {
+        val subs = this.client.subscribe(createSubscription(query, arguments))
+        subs.execute(object : ApolloSubscriptionCall.Callback<Operation.Data> {
+            override fun onFailure(e: ApolloException) {
+                e.printStackTrace()
+                val map = WritableNativeMap()
+                map.putString("key", key)
+                map.putString("type", "failure")
+                map.putString("id", id)
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                        .emit("apollo_client", map)
+            }
+
+            override fun onResponse(response: Response<Operation.Data>) {
+                val map = WritableNativeMap()
+                map.putString("key", key)
+                map.putString("type", "response")
+                map.putString("id", id)
+
+                val d = response.data()
+                if (d != null) {
+                    val dataMap = WritableNativeMap()
+                    d.marshaller().marshal(JSResponseWriter(dataMap))
+                    map.putMap("data", dataMap)
+                } else {
+                    map.putNull("data")
+                }
+
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                        .emit("apollo_client", map)
+            }
+
+            override fun onCompleted() {
+                val map = WritableNativeMap()
+                map.putString("key", key)
+                map.putString("type", "completed")
+                map.putString("id", id)
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                        .emit("apollo_client", map)
+            }
+        })
     }
 
     fun dispose() {

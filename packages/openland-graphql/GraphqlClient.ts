@@ -13,7 +13,7 @@ export type GraphqlMutation<M, V> = GraphqlTypedMutation<M, V>;
 export type GraphqlSubscription<M, V> = GraphqlTypedSubscription<M, V>;
 
 export interface GraphqlActiveSubscription<TSubs, TVars> {
-    get(): Promise<any>;
+    get(): Promise<TSubs>;
     updateVariables(src?: TVars): void;
     destroy(): void;
 };

@@ -105,10 +105,10 @@ export interface AccountSettings {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: Settings
+// GraphQL subscription operation: SettingsWatch
 // ====================================================
 
-export interface Settings_settings {
+export interface SettingsWatch_watchSettings {
   __typename: "Settings";
   id: string;
   primaryEmail: string;
@@ -119,8 +119,11 @@ export interface Settings_settings {
   mobileIncludeText: boolean;
 }
 
-export interface Settings {
-  settings: Settings_settings;
+export interface SettingsWatch {
+  /**
+   * Deprecated
+   */
+  watchSettings: SettingsWatch_watchSettings;
 }
 
 /* tslint:disable */
@@ -10474,6 +10477,29 @@ export interface ProfileCreate {
 
 export interface ProfileCreateVariables {
   input: CreateProfileInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: Settings
+// ====================================================
+
+export interface Settings_settings {
+  __typename: "Settings";
+  id: string;
+  primaryEmail: string;
+  emailFrequency: EmailFrequency;
+  desktopNotifications: NotificationMessages;
+  mobileNotifications: NotificationMessages;
+  mobileAlert: boolean;
+  mobileIncludeText: boolean;
+}
+
+export interface Settings {
+  settings: Settings_settings;
 }
 
 /* tslint:disable */

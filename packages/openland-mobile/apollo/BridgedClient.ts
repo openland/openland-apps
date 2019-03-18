@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { keyFromObject } from 'openland-graphql/utils/keyFromObject';
 import { randomKey } from 'openland-mobile/utils/randomKey';
+import { Queue } from 'openland-graphql/utils/Queue';
 
 class Watch {
 
@@ -45,8 +46,12 @@ class Watch {
 
 export interface BridgedClientConnector {
     postQuery(key: string, query: any, vars: any): void
+    postReadQuery(key: string, query: any, vars: any): void
+    postWriteQuery(key: string, data: any, query: any, vars: any): void
     postRefetchQuery(key: string, query: any, vars: any): void
     postMutation(key: string, query: any, vars: any): void
+    postSubscribe(key: string, query: any, vars: any): void
+    postUnsubscribe(key: string): void
 }
 
 export class BridgedClient {
@@ -83,6 +88,20 @@ export class BridgedClient {
         return key
     }
 
+    registerReadQuery(query: any, vars: any) {
+        let key = 'readQuery$' + randomKey()
+        this.dataWatches.set(key, new Watch())
+        this.connector.postReadQuery(key, query, vars)
+        return key
+    }
+
+    registerWriteQuery(data: any, query: any, vars: any) {
+        let key = 'writeQuery$' + randomKey()
+        this.dataWatches.set(key, new Watch())
+        this.connector.postWriteQuery(key, data, query, vars)
+        return key
+    }
+
     operationUpdated(key: string, data: any) {
         let watch = this.dataWatches.get(key)!!
         watch.value = data;
@@ -98,6 +117,40 @@ export class BridgedClient {
         watch.isErrored = true;
         watch.notify();
     }
+
+    subscribe(query: any, vars: any) {
+        let key = 'subscribe$' + randomKey()
+        let watch = new Watch();
+        let queue = new Queue();
+        this.dataWatches.set(key, watch);
+
+        let callback = () => {
+            if (!watch.isErrored) {
+                queue.post(watch.value)
+                watch.waitForUpdate(callback)
+            } else {
+                // TODO: Handle
+            }
+        }
+        watch.waitForUpdate(callback);
+        this.connector.postSubscribe(key, query, vars);
+
+        return {
+            get: queue.get,
+            updateVariables: (src?: any) => {
+                // this.connector.postSubscribe(key, query, src);
+                // this.thread.postMessage(JSON.stringify({ type: 'subscribe-update', variables: src, id: key } as Request));
+            },
+            destroy: () => {
+                // this.connector.postUnsubscribe(key)
+                // this.thread.postMessage(JSON.stringify({ type: 'subscribe-destroy', id: key } as Request));
+            }
+        }
+    }
+
+    // watchOperation(key: string, handler: { resolve: (src: any) => void, reject: (src: any) => void }) {
+    //     let watch = this.dataWatches.get(key)!!;
+    // }
 
     async getOperation(key: string) {
         let watch = this.dataWatches.get(key)!;

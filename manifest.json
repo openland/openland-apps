@@ -16,10 +16,10 @@
       }
     },
     {
-      "signature": "96bd7279dfdc2efbc0e767a7b0178f51e8ccd41e9b7ceb24c7f5be932922a224",
-      "document": "fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}",
+      "signature": "6addf28826f521ebb56ff7e75c076b7e1a88d25d364d7407a146d7b141cabc9a",
+      "document": "fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}",
       "metadata": {
-        "engineSignature": "fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}"
+        "engineSignature": "fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}"
       }
     },
     {
@@ -916,6 +916,13 @@
       "document": "mutation ProfileCreate($input:CreateProfileInput!){createProfile(input:$input){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}",
       "metadata": {
         "engineSignature": "mutation ProfileCreate($input:CreateProfileInput!){createProfile(input:$input){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
+      }
+    },
+    {
+      "signature": "96bd7279dfdc2efbc0e767a7b0178f51e8ccd41e9b7ceb24c7f5be932922a224",
+      "document": "fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}",
+      "metadata": {
+        "engineSignature": "fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}"
       }
     },
     {

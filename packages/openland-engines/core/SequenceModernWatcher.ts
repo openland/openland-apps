@@ -2,7 +2,7 @@ import { SequenceHandler } from './SequenceHandler';
 import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { GraphqlTypedSubscription } from 'openland-y-graphql/typed';
 
-export class SequenceModernWatcher<TSubscription, TVars> {
+export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> {
     readonly name: string;
     readonly client: GraphqlClient;
     private readonly handler: (src: any) => void;
@@ -43,7 +43,7 @@ export class SequenceModernWatcher<TSubscription, TVars> {
         })();
     }
 
-    private handleUpdate = (update: any) => {
+    private handleUpdate = (update: TSubscription) => {
         // if (update.errors && update.errors.length > 0) {
         //     throw update.errors;
         // }

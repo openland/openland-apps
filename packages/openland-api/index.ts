@@ -19,7 +19,7 @@ import * as User from './queries/User';
 
 export const AccountQuery = typedQuery<Types.Account, {}>(Account.AccountQuery);
 export const AccountSettingsQuery = typedQuery<Types.AccountSettings, {}>(Account.AccountSettingsQuery);
-export const SettingsSubscription = typedSubscription<Types.Settings, {}>(Account.SettingsSubscription);
+export const SettingsWatchSubscription = typedSubscription<Types.SettingsWatch, {}>(Account.SettingsWatchSubscription);
 export const CreateOrganizationMutation = typedMutation<Types.CreateOrganization, Types.CreateOrganizationVariables>(Account.CreateOrganizationMutation);
 export const AccountInviteInfoQuery = typedQuery<Types.AccountInviteInfo, Types.AccountInviteInfoVariables>(Account.AccountInviteInfoQuery);
 export const AccountAppInviteInfoQuery = typedQuery<Types.AccountAppInviteInfo, Types.AccountAppInviteInfoVariables>(Account.AccountAppInviteInfoQuery);
