@@ -11,7 +11,14 @@ import { OthersPopper } from './views/OthersPopper';
 import { LinkToRoom } from './views/LinkToRoom';
 import { isEmoji } from 'openland-y-utils/isEmoji';
 
-const styleEditLabel = css`
+const EmojiSpaceStyle = css`
+    & img {
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+`;
+
+const EditLabelStyle = css`
     display: inline-block;
     vertical-align: baseline;
     color: rgba(0, 0, 0, 0.4);
@@ -101,6 +108,7 @@ const SpansMessageTextPreprocess = ({ text, isEdited }: { text: string; isEdited
     return (
         <span
             className={cx(
+                EmojiSpaceStyle,
                 isBig && TextLargeStyle,
                 isInsane && TextInsaneStyle,
                 isRotating && TextRotatingStyle,
@@ -111,7 +119,7 @@ const SpansMessageTextPreprocess = ({ text, isEdited }: { text: string; isEdited
                 src: messageText,
                 size: smileSize,
             })}
-            {isEdited && <span className={styleEditLabel}>(Edited)</span>}
+            {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
         </span>
     );
 };
