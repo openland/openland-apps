@@ -52,12 +52,6 @@ const CHAT_SUBSCRIPTION = gql`
             id
         }
     }
-    ... on ConversationDialogUpdate {
-        dialog {
-            haveMention,
-            mute
-        }
-    }
     ... on ConversationLostAccess {
        lostAccess
     }
@@ -516,10 +510,12 @@ export class ConversationEngine implements MessageSendHandler {
             console.info('Received new message');
 
             // Write message to store
+            let local = false;
             if (event.repeatKey) {
                 // Try to replace message inplace
                 let existing = this.messages.findIndex((v) => isPendingMessage(v) && v.key === event.repeatKey);
                 if (existing >= 0) {
+                    local = true;
                     let msgs = [...this.messages];
                     msgs[existing] = {
                         ...event.message,
@@ -539,7 +535,7 @@ export class ConversationEngine implements MessageSendHandler {
             this.onMessagesUpdated();
 
             // Add to datasource
-            this.appendMessage({ ...event.message, repeatKey: event.repeatKey });
+            this.appendMessage({ ...event.message, repeatKey: local ? event.repeatKey : undefined });
         } else if (event.__typename === 'ChatMessageDeleted') {
             // Handle message
             console.info('Received delete message');
@@ -571,11 +567,6 @@ export class ConversationEngine implements MessageSendHandler {
             conv.attachTop = old ? (old as DataSourceMessageItem).attachTop : conv.attachTop;
             conv.attachBottom = old ? (old as DataSourceMessageItem).attachBottom : conv.attachBottom;
             this.dataSource.updateItem(conv);
-        } else if (event.__typename === 'ConversationDialogUpdate') {
-            console.log('ConversationDialogUpdate')
-            // this.dataSource.updateItem({
-            //     haveMention: event.message,
-            // });
         } else if (event.__typename === 'ConversationLostAccess') {
             for (let l of this.listeners) {
                 l.onConversationLostAccess();
