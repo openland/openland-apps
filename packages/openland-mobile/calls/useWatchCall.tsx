@@ -7,7 +7,7 @@ export function useWatchCall(id?: string | null) {
         if (!id) {
             return;
         }
-        let s = getClient().client.subscribe(ConferenceWatchSubscription.document, { id: id });
+        let s = getClient().client.subscribe(ConferenceWatchSubscription, { id: id });
         return () => s.destroy()
     }, [id])
 }

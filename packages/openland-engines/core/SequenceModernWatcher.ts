@@ -1,7 +1,8 @@
 import { SequenceHandler } from './SequenceHandler';
 import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import { GraphqlTypedSubscription } from 'openland-y-graphql/typed';
 
-export class SequenceModernWatcher {
+export class SequenceModernWatcher<TSubscription, TVars> {
     readonly name: string;
     readonly client: GraphqlClient;
     private readonly handler: (src: any) => void;
@@ -12,7 +13,7 @@ export class SequenceModernWatcher {
     private currentState: string | null;
     private subscription: GraphqlActiveSubscription;
 
-    constructor(name: string, query: any, client: GraphqlClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: any, state?: string | null) {
+    constructor(name: string, query: GraphqlTypedSubscription<TSubscription, TVars>, client: GraphqlClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: TVars, state?: string | null) {
         this.name = name;
         this.query = query;
         this.handler = handler;

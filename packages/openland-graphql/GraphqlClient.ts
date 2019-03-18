@@ -1,4 +1,4 @@
-import { GraphqlTypedQuery, GraphqlTypedMutation } from 'openland-y-graphql/typed';
+import { GraphqlTypedQuery, GraphqlTypedMutation, GraphqlTypedSubscription } from 'openland-y-graphql/typed';
 
 export class NetworkError {
 
@@ -10,6 +10,7 @@ export class GraphqlError {
 
 export type GraphqlQuery<Q, V> = GraphqlTypedQuery<Q, V>;
 export type GraphqlMutation<M, V> = GraphqlTypedMutation<M, V>;
+export type GraphqlSubscription<M, V> = GraphqlTypedSubscription<M, V>;
 
 export interface GraphqlActiveSubscription {
     get(): Promise<any>;
@@ -21,7 +22,7 @@ export interface GraphqlClient {
     query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery>;
     refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery>;
     mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation>;
-    subscribe(subscription: any, vars?: any): GraphqlActiveSubscription;
+    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription;
 
     useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery;
     useWithoutLoaderQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null;

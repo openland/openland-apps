@@ -1,5 +1,5 @@
 import { NativeModules, DeviceEventEmitter } from 'react-native';
-import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription } from 'openland-graphql/GraphqlClient';
 import { randomKey } from 'openland-mobile/utils/randomKey';
 import { delay } from 'openland-y-utils/timer';
 import { BridgedClient } from './BridgedClient';
@@ -56,7 +56,7 @@ export class NativeApolloClient implements GraphqlClient {
         return await this.client.getOperation(id);
     }
 
-    subscribe(subscription: any, vars?: any): GraphqlActiveSubscription {
+    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription {
         return {
             get: async () => {
                 while (true) {

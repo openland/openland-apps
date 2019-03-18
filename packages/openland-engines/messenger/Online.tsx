@@ -16,7 +16,7 @@ export class OnlineWatcher {
     onDialogListChange(conversations: string[]) {
         this.destroy();
 
-        let s = this.client.client.subscribe(OnlineSubscription.document, { conversations });
+        let s = this.client.client.subscribe(OnlineSubscription, { conversations });
         this.sub = s;
 
         (async () => {

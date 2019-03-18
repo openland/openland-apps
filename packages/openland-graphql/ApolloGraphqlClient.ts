@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription } from './GraphqlClient';
+import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription } from './GraphqlClient';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { Observable } from 'apollo-link';
 import { keyFromObject } from './utils/keyFromObject';
@@ -152,8 +152,8 @@ export class ApolloGraphqlClient implements GraphqlClient {
         return res.data as TMutation;
     }
 
-    subscribe(subscription: any, vars?: any): GraphqlActiveSubscription {
-        return new ApolloSubscription(this, subscription, vars);
+    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription {
+        return new ApolloSubscription(this, subscription.document, vars);
     }
 
     useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {

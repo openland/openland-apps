@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GraphqlClient, GraphqlActiveSubscription, GraphqlQuery, GraphqlMutation } from 'openland-graphql/GraphqlClient';
+import { GraphqlClient, GraphqlActiveSubscription, GraphqlQuery, GraphqlMutation, GraphqlSubscription } from 'openland-graphql/GraphqlClient';
 import { Thread } from 'react-native-threads';
 import { Request, Response } from './api/Request';
 import { randomKey } from 'openland-mobile/utils/randomKey';
@@ -160,7 +160,7 @@ export class WorkerApolloClient implements GraphqlClient {
         return this.postCall({ type: 'mutate', body: mutation.document, variables: vars, id: this.nextId() });
     }
 
-    subscribe(subscription: any, vars?: any): GraphqlActiveSubscription {
+    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription {
         let queue = new Queue();
 
         let key = this.nextId();
@@ -185,7 +185,7 @@ export class WorkerApolloClient implements GraphqlClient {
                 // watch.notify();
             }
         });
-        this.thread.postMessage(JSON.stringify({ type: 'subscribe', body: subscription, variables: vars, id: key } as Request));
+        this.thread.postMessage(JSON.stringify({ type: 'subscribe', body: subscription.document, variables: vars, id: key } as Request));
 
         return {
             get: queue.get,

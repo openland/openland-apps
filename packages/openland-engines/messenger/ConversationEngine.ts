@@ -8,6 +8,7 @@ import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
+import * as Types from 'openland-api/Types';
 
 export interface ConversationStateHandler {
     onConversationUpdated(state: ConversationState): void;
@@ -107,7 +108,7 @@ export class ConversationEngine implements MessageSendHandler {
     historyFullyLoaded?: boolean;
 
     private isStarted = false;
-    private watcher: SequenceModernWatcher | null = null;
+    private watcher: SequenceModernWatcher<Types.Chat, Types.ChatVariables> | null = null;
     private isOpen = false;
     private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
@@ -149,7 +150,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         console.info('Initial state for ' + this.conversationId);
-        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, ChatSubscription.document, this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
+        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, ChatSubscription, this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
         this.onMessagesUpdated();
 
         // Update Data Source

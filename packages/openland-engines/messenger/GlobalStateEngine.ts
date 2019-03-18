@@ -6,10 +6,11 @@ import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatch
 import { DialogsQuery } from 'openland-api';
 import { RoomQuery } from 'openland-api';
 import { MarkSequenceReadMutation } from 'openland-api';
+import * as Types from 'openland-api/Types';
 
 export class GlobalStateEngine {
     readonly engine: MessengerEngine;
-    private watcher: SequenceModernWatcher | null = null;
+    private watcher: SequenceModernWatcher<Types.Dialogs, Types.DialogsVariables> | null = null;
     private visibleConversations = new Set<string>();
     private isVisible = true;
     private maxSeq = 0;
@@ -39,10 +40,10 @@ export class GlobalStateEngine {
         this.engine.dialogList.handleInitialDialogs((res as any).dialogs.items, (res as any).dialogs.cursor);
 
         // Starting Sequence Watcher
-        this.watcher = new SequenceModernWatcher('global', DialogsSubscription.document, this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, (res as any).state.state);
+        this.watcher = new SequenceModernWatcher('global', DialogsSubscription, this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, (res as any).state.state);
 
         // Subscribe for settings update
-        let settingsSubscription = this.engine.client.client.subscribe(SettingsSubscription.document);
+        let settingsSubscription = this.engine.client.client.subscribe(SettingsSubscription);
         (async () => {
             while (true) {
                 await settingsSubscription.get();

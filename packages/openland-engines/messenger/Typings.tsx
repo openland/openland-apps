@@ -28,7 +28,7 @@ export class TypingsWatcher {
 
     constructor(client: OpenlandClient, onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void, currentuserId: string) {
         this.onChange = onChange;
-        this.subscription = client.client.subscribe(TypingsSubscription.document);
+        this.subscription = client.client.subscribe(TypingsSubscription);
 
         this.start(currentuserId);
     }
