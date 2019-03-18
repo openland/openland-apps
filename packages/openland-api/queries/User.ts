@@ -41,8 +41,8 @@ export const OnlineQuery = gql`
     }
 `;
 
-export const OnlineSubscription = gql`
-    subscription Online($conversations: [ID!]!) {
+export const OnlineWatchSubscription = gql`
+    subscription OnlineWatch($conversations: [ID!]!) {
         alphaSubscribeChatOnline(conversations: $conversations) {
             user: user {
                 id

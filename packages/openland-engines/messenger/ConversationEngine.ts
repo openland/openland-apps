@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatSubscription } from 'openland-api';
+import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatWatchSubscription } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
 import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_ServiceMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
@@ -108,7 +108,7 @@ export class ConversationEngine implements MessageSendHandler {
     historyFullyLoaded?: boolean;
 
     private isStarted = false;
-    private watcher: SequenceModernWatcher<Types.Chat, Types.ChatVariables> | null = null;
+    private watcher: SequenceModernWatcher<Types.ChatWatch, Types.ChatWatchVariables> | null = null;
     private isOpen = false;
     private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
@@ -150,7 +150,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         console.info('Initial state for ' + this.conversationId);
-        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, ChatSubscription, this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
+        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, ChatWatchSubscription, this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
         this.onMessagesUpdated();
 
         // Update Data Source

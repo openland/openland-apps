@@ -1,13 +1,8 @@
-subscription Online($conversations: [ID!]!) {
-  alphaSubscribeChatOnline(conversations: $conversations) {
+query Online($userId: ID!) {
+  user: user(id: $userId) {
     __typename
-    timeout
-    type
-    user: user {
-      __typename
-      id
-      lastSeen
-      online
-    }
+    id
+    lastSeen
+    online
   }
 }

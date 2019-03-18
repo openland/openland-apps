@@ -37,8 +37,8 @@ export const DialogsQuery = gql`
     ${TinyMessage}
 `;
 
-export const ChatSubscription = gql`
-  subscription Chat($chatId: ID!, $fromState: String) {
+export const ChatWatchSubscription = gql`
+  subscription ChatWatch($chatId: ID!, $fromState: String) {
     event: chatUpdates(chatId: $chatId, fromState: $fromState) {
         ... on ChatUpdateSingle {
             seq
@@ -85,8 +85,8 @@ export const ChatSubscription = gql`
   ${RoomShort}
 `;
 
-export const DialogsSubscription = gql`
-    subscription Dialogs($state: String) {
+export const DialogsWatchSubscription = gql`
+    subscription DialogsWatch($state: String) {
         event: dialogsUpdates(fromState: $state) {
             ... on DialogUpdateSingle {
                 seq
@@ -674,8 +674,8 @@ export const MarkSequenceReadMutation = gql`
     }
 `;
 
-export const TypingsSubscription = gql`
-    subscription Typings {
+export const TypingsWatchSubscription = gql`
+    subscription TypingsWatch {
         typings {
             conversation {
                 id

@@ -1,10 +1,11 @@
 import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { OnlineSubscription } from 'openland-api';
+import { OnlineWatchSubscription } from 'openland-api';
+import { OnlineWatch, OnlineWatchVariables } from 'openland-api/Types';
 
 export class OnlineWatcher {
     private onlinesData = new Map<string, boolean>();
-    private sub?: GraphqlActiveSubscription = undefined;
+    private sub?: GraphqlActiveSubscription<OnlineWatch, OnlineWatchVariables> = undefined;
 
     private listeners: ((data: {}) => void)[] = [];
     private singleChangeListeners: ((user: string, online: boolean) => void)[] = [];
@@ -16,7 +17,7 @@ export class OnlineWatcher {
     onDialogListChange(conversations: string[]) {
         this.destroy();
 
-        let s = this.client.client.subscribe(OnlineSubscription, { conversations });
+        let s = this.client.client.subscribe(OnlineWatchSubscription, { conversations });
         this.sub = s;
 
         (async () => {

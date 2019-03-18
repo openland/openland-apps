@@ -1,6 +1,7 @@
 import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { TypingsSubscription } from 'openland-api';
+import { TypingsWatchSubscription } from 'openland-api';
+import { TypingsWatch } from 'openland-api/Types';
 
 interface TypingsUser {
     userName: string;
@@ -23,12 +24,12 @@ export class TypingsWatcher {
             [userId: string]: number | undefined
         } | undefined
     } = {};
-    private subscription: GraphqlActiveSubscription;
+    private subscription: GraphqlActiveSubscription<TypingsWatch, {}>;
     private onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void;
 
     constructor(client: OpenlandClient, onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void, currentuserId: string) {
         this.onChange = onChange;
-        this.subscription = client.client.subscribe(TypingsSubscription);
+        this.subscription = client.client.subscribe(TypingsWatchSubscription);
 
         this.start(currentuserId);
     }

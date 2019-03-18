@@ -744,10 +744,10 @@ export interface AddAppToChatVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL subscription operation: Dialogs
+// GraphQL query operation: Dialogs
 // ====================================================
 
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender {
+export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -757,14 +757,14 @@ export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_m
   shortname: string | null;
 }
 
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage {
+export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
   __typename: "ServiceMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender;
+  sender: Dialogs_dialogs_items_topMessage_ServiceMessage_sender;
   /**
    * Content
    */
@@ -772,7 +772,7 @@ export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_m
   fallback: string;
 }
 
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender {
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -782,30 +782,30 @@ export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_m
   shortname: string | null;
 }
 
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost" | "MessageRichAttachment";
   id: string;
   fallback: string;
 }
 
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   isImage: boolean;
   imageFormat: string | null;
 }
 
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
   fallback: string;
   fileId: string;
-  fileMetadata: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export type Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile;
+export type Dialogs_dialogs_items_topMessage_GeneralMessage_attachments = Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
 
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_quotedMessages {
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_quotedMessages {
   __typename: "GeneralMessage" | "ServiceMessage";
   /**
    * State
@@ -813,767 +813,63 @@ export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_m
   id: string;
 }
 
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage {
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage {
   __typename: "GeneralMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender;
+  sender: Dialogs_dialogs_items_topMessage_GeneralMessage_sender;
   /**
    * Content
    */
   message: string | null;
   fallback: string;
-  attachments: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments[];
-  quotedMessages: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
+  attachments: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments[];
+  quotedMessages: Dialogs_dialogs_items_topMessage_GeneralMessage_quotedMessages[];
 }
 
-export type Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message = Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage | Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage;
+export type Dialogs_dialogs_items_topMessage = Dialogs_dialogs_items_topMessage_ServiceMessage | Dialogs_dialogs_items_topMessage_GeneralMessage;
 
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived {
-  __typename: "DialogMessageReceived";
+export interface Dialogs_dialogs_items {
+  __typename: "Dialog";
   cid: string;
-  unread: number;
-  globalUnread: number;
-  message: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage {
-  __typename: "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
-  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
-  id: string;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
-  __typename: "FileMetadata";
-  isImage: boolean;
-  imageFormat: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
-  __typename: "MessageAttachmentFile";
-  id: string;
-  fallback: string;
-  fileId: string;
-  fileMetadata: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
-}
-
-export type Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile;
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_quotedMessages {
-  __typename: "GeneralMessage" | "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage {
-  __typename: "GeneralMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-  attachments: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments[];
-  quotedMessages: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
-}
-
-export type Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message = Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage | Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage;
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated {
-  __typename: "DialogMessageUpdated";
-  cid: string;
-  message: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage {
-  __typename: "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
-  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
-  id: string;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
-  __typename: "FileMetadata";
-  isImage: boolean;
-  imageFormat: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile {
-  __typename: "MessageAttachmentFile";
-  id: string;
-  fallback: string;
-  fileId: string;
-  fileMetadata: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
-}
-
-export type Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile;
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_quotedMessages {
-  __typename: "GeneralMessage" | "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage {
-  __typename: "GeneralMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-  attachments: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments[];
-  quotedMessages: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
-}
-
-export type Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message = Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage | Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage;
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage {
-  __typename: "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
-  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
-  id: string;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
-  __typename: "FileMetadata";
-  isImage: boolean;
-  imageFormat: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile {
-  __typename: "MessageAttachmentFile";
-  id: string;
-  fallback: string;
-  fileId: string;
-  fileMetadata: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
-}
-
-export type Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments = Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile;
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages {
-  __typename: "GeneralMessage" | "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage {
-  __typename: "GeneralMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-  attachments: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
-  quotedMessages: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
-}
-
-export type Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage = Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage | Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage;
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted {
-  __typename: "DialogMessageDeleted";
-  cid: string;
-  message: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message;
-  prevMessage: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage | null;
-  unread: number;
-  globalUnread: number;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageRead {
-  __typename: "DialogMessageRead";
-  cid: string;
-  unread: number;
-  globalUnread: number;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogTitleUpdated {
-  __typename: "DialogTitleUpdated";
-  cid: string;
+  fid: string;
+  kind: DialogKind;
   title: string;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMuteChanged {
-  __typename: "DialogMuteChanged";
-  cid: string;
-  mute: boolean;
-}
-
-export interface Dialogs_event_DialogUpdateSingle_update_DialogMentionedChanged {
-  __typename: "DialogMentionedChanged";
-  cid: string;
+  photo: string;
+  unreadCount: number;
+  isMuted: boolean;
   haveMention: boolean;
+  topMessage: Dialogs_dialogs_items_topMessage | null;
 }
 
-export interface Dialogs_event_DialogUpdateSingle_update_DialogPhotoUpdated {
-  __typename: "DialogPhotoUpdated";
-  cid: string;
-  photo: string | null;
+export interface Dialogs_dialogs {
+  __typename: "DialogsConnection";
+  items: Dialogs_dialogs_items[];
+  cursor: string | null;
 }
 
-export interface Dialogs_event_DialogUpdateSingle_update_DialogDeleted {
-  __typename: "DialogDeleted";
-  cid: string;
-  globalUnread: number;
+export interface Dialogs_state {
+  __typename: "DialogUpdateState";
+  state: string | null;
 }
 
-export type Dialogs_event_DialogUpdateSingle_update = Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived | Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated | Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted | Dialogs_event_DialogUpdateSingle_update_DialogMessageRead | Dialogs_event_DialogUpdateSingle_update_DialogTitleUpdated | Dialogs_event_DialogUpdateSingle_update_DialogMuteChanged | Dialogs_event_DialogUpdateSingle_update_DialogMentionedChanged | Dialogs_event_DialogUpdateSingle_update_DialogPhotoUpdated | Dialogs_event_DialogUpdateSingle_update_DialogDeleted;
-
-export interface Dialogs_event_DialogUpdateSingle {
-  __typename: "DialogUpdateSingle";
-  seq: number;
-  state: string;
-  update: Dialogs_event_DialogUpdateSingle_update;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender {
-  __typename: "User";
+export interface Dialogs_counter {
+  __typename: "NotificationCounter";
   id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
+  unreadCount: number;
 }
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage {
-  __typename: "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
-  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
-  id: string;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
-  __typename: "FileMetadata";
-  isImage: boolean;
-  imageFormat: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
-  __typename: "MessageAttachmentFile";
-  id: string;
-  fallback: string;
-  fileId: string;
-  fileMetadata: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
-}
-
-export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile;
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_quotedMessages {
-  __typename: "GeneralMessage" | "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage {
-  __typename: "GeneralMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-  attachments: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments[];
-  quotedMessages: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
-}
-
-export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message = Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage | Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage;
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived {
-  __typename: "DialogMessageReceived";
-  cid: string;
-  unread: number;
-  globalUnread: number;
-  message: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage {
-  __typename: "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
-  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
-  id: string;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
-  __typename: "FileMetadata";
-  isImage: boolean;
-  imageFormat: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
-  __typename: "MessageAttachmentFile";
-  id: string;
-  fallback: string;
-  fileId: string;
-  fileMetadata: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
-}
-
-export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile;
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_quotedMessages {
-  __typename: "GeneralMessage" | "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage {
-  __typename: "GeneralMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-  attachments: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments[];
-  quotedMessages: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
-}
-
-export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message = Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage | Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage;
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated {
-  __typename: "DialogMessageUpdated";
-  cid: string;
-  message: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage {
-  __typename: "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
-  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
-  id: string;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
-  __typename: "FileMetadata";
-  isImage: boolean;
-  imageFormat: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile {
-  __typename: "MessageAttachmentFile";
-  id: string;
-  fallback: string;
-  fileId: string;
-  fileMetadata: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
-}
-
-export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile;
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_quotedMessages {
-  __typename: "GeneralMessage" | "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage {
-  __typename: "GeneralMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-  attachments: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments[];
-  quotedMessages: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
-}
-
-export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message = Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage | Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage;
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage {
-  __typename: "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-  shortname: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
-  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
-  id: string;
-  fallback: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
-  __typename: "FileMetadata";
-  isImage: boolean;
-  imageFormat: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile {
-  __typename: "MessageAttachmentFile";
-  id: string;
-  fallback: string;
-  fileId: string;
-  fileMetadata: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
-}
-
-export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments = Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile;
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages {
-  __typename: "GeneralMessage" | "ServiceMessage";
-  /**
-   * State
-   */
-  id: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage {
-  __typename: "GeneralMessage";
-  /**
-   * State
-   */
-  id: string;
-  date: any;
-  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender;
-  /**
-   * Content
-   */
-  message: string | null;
-  fallback: string;
-  attachments: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
-  quotedMessages: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
-}
-
-export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage = Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage | Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage;
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted {
-  __typename: "DialogMessageDeleted";
-  cid: string;
-  message: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message;
-  prevMessage: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage | null;
-  unread: number;
-  globalUnread: number;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageRead {
-  __typename: "DialogMessageRead";
-  cid: string;
-  unread: number;
-  globalUnread: number;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogTitleUpdated {
-  __typename: "DialogTitleUpdated";
-  cid: string;
-  title: string;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMuteChanged {
-  __typename: "DialogMuteChanged";
-  cid: string;
-  mute: boolean;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogMentionedChanged {
-  __typename: "DialogMentionedChanged";
-  cid: string;
-  haveMention: boolean;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogPhotoUpdated {
-  __typename: "DialogPhotoUpdated";
-  cid: string;
-  photo: string | null;
-}
-
-export interface Dialogs_event_DialogUpdateBatch_updates_DialogDeleted {
-  __typename: "DialogDeleted";
-  cid: string;
-  globalUnread: number;
-}
-
-export type Dialogs_event_DialogUpdateBatch_updates = Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived | Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated | Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted | Dialogs_event_DialogUpdateBatch_updates_DialogMessageRead | Dialogs_event_DialogUpdateBatch_updates_DialogTitleUpdated | Dialogs_event_DialogUpdateBatch_updates_DialogMuteChanged | Dialogs_event_DialogUpdateBatch_updates_DialogMentionedChanged | Dialogs_event_DialogUpdateBatch_updates_DialogPhotoUpdated | Dialogs_event_DialogUpdateBatch_updates_DialogDeleted;
-
-export interface Dialogs_event_DialogUpdateBatch {
-  __typename: "DialogUpdateBatch";
-  fromSeq: number;
-  seq: number;
-  state: string;
-  updates: Dialogs_event_DialogUpdateBatch_updates[];
-}
-
-export type Dialogs_event = Dialogs_event_DialogUpdateSingle | Dialogs_event_DialogUpdateBatch;
 
 export interface Dialogs {
-  event: Dialogs_event;
+  dialogs: Dialogs_dialogs;
+  state: Dialogs_state;
+  counter: Dialogs_counter;
 }
 
 export interface DialogsVariables {
-  state?: string | null;
+  after?: string | null;
 }
 
 /* tslint:disable */
@@ -1581,10 +877,14 @@ export interface DialogsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL subscription operation: Chat
+// GraphQL subscription operation: ChatWatch
 // ====================================================
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated {
+  __typename: "ChatUpdated" | "ChatLostAccess";
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1592,7 +892,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -1605,10 +905,10 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -1618,14 +918,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -1635,14 +935,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1650,7 +950,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -1663,16 +963,16 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1680,7 +980,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -1688,33 +988,33 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
   fallback: string;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -1725,15 +1025,15 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
   fileId: string;
-  fileMetadata: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -1744,13 +1044,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -1761,13 +1061,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   title: string | null;
@@ -1775,13 +1075,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  icon: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1789,7 +1089,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -1802,10 +1102,10 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -1815,14 +1115,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -1832,14 +1132,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1847,7 +1147,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -1860,16 +1160,16 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1877,7 +1177,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -1885,28 +1185,28 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
   /**
    * State
@@ -1917,12 +1217,12 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
    * Content
    */
   message: string | null;
-  sender: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender;
+  sender: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender;
   fallback: string;
-  spans: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1930,7 +1230,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -1943,10 +1243,10 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -1956,14 +1256,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -1973,14 +1273,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -1988,7 +1288,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2001,16 +1301,16 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2018,7 +1318,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -2026,33 +1326,33 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
   fallback: string;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -2063,15 +1363,15 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
   fileId: string;
-  fileMetadata: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -2082,13 +1382,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -2099,13 +1399,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   title: string | null;
@@ -2113,13 +1413,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  icon: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage {
   __typename: "GeneralMessage";
   /**
    * State
@@ -2130,16 +1430,16 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
    * Content
    */
   message: string | null;
-  sender: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
+  sender: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
-  spans: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
   edited: boolean;
-  attachments: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
+  attachments: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2149,33 +1449,33 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions {
   __typename: "ModernMessageReaction";
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions_user;
   reaction: MessageReactionType;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage {
   __typename: "GeneralMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender;
+  sender: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender;
   /**
    * Content
    */
   message: string | null;
   fallback: string;
-  spans: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans[];
   edited: boolean;
-  attachments: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments[];
-  quotedMessages: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages[];
-  reactions: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions[];
+  attachments: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments[];
+  quotedMessages: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages[];
+  reactions: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2183,7 +1483,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_sender {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -2196,10 +1496,10 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2209,14 +1509,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -2226,14 +1526,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2241,7 +1541,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2254,16 +1554,16 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2271,7 +1571,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -2279,28 +1579,28 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
   name: string;
@@ -2310,7 +1610,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
   name: string;
@@ -2320,13 +1620,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
-  users: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
-  invitedBy: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+  users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2336,7 +1636,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
   name: string;
@@ -2346,55 +1646,55 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
   __typename: "KickServiceMetadata";
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
   __typename: "TitleChangeServiceMetadata";
   title: string;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
   __typename: "PhotoChangeServiceMetadata";
   photo: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
   __typename: "PostRespondServiceMetadata";
   respondType: string;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage {
   __typename: "ServiceMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_sender;
+  sender: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_sender;
   /**
    * Content
    */
   message: string | null;
   fallback: string;
-  spans: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans[];
-  serviceMetadata: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata | null;
+  spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans[];
+  serviceMetadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message = Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage | Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageReceived {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived {
   __typename: "ChatMessageReceived";
-  message: Chat_event_ChatUpdateSingle_update_ChatMessageReceived_message;
+  message: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message;
   repeatKey: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2402,7 +1702,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_sender {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -2415,10 +1715,10 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2428,14 +1728,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -2445,14 +1745,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2460,7 +1760,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2473,16 +1773,16 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2490,7 +1790,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -2498,33 +1798,33 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
   fallback: string;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -2535,15 +1835,15 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
   fileId: string;
-  fileMetadata: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -2554,13 +1854,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -2571,13 +1871,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   title: string | null;
@@ -2585,13 +1885,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  icon: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2599,7 +1899,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -2612,10 +1912,10 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2625,14 +1925,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -2642,14 +1942,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2657,7 +1957,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2670,16 +1970,16 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2687,7 +1987,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -2695,28 +1995,28 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
   /**
    * State
@@ -2727,12 +2027,12 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
    * Content
    */
   message: string | null;
-  sender: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender;
+  sender: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender;
   fallback: string;
-  spans: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2740,7 +2040,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -2753,10 +2053,10 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2766,14 +2066,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -2783,14 +2083,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2798,7 +2098,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2811,16 +2111,16 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2828,7 +2128,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -2836,33 +2136,33 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
   fallback: string;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -2873,15 +2173,15 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
   fileId: string;
-  fileMetadata: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -2892,13 +2192,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -2909,13 +2209,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   title: string | null;
@@ -2923,13 +2223,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  icon: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage {
   __typename: "GeneralMessage";
   /**
    * State
@@ -2940,16 +2240,16 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
    * Content
    */
   message: string | null;
-  sender: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
+  sender: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
-  spans: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
   edited: boolean;
-  attachments: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
+  attachments: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
   name: string;
@@ -2959,33 +2259,33 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions {
   __typename: "ModernMessageReaction";
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions_user;
   reaction: MessageReactionType;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage {
   __typename: "GeneralMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_sender;
+  sender: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_sender;
   /**
    * Content
    */
   message: string | null;
   fallback: string;
-  spans: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans[];
   edited: boolean;
-  attachments: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments[];
-  quotedMessages: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages[];
-  reactions: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions[];
+  attachments: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments[];
+  quotedMessages: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages[];
+  reactions: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -2993,7 +2293,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_sender {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -3006,10 +2306,10 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3019,14 +2319,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -3036,14 +2336,14 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3051,7 +2351,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3064,16 +2364,16 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3081,7 +2381,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -3089,28 +2389,28 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
   name: string;
@@ -3120,7 +2420,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
   name: string;
@@ -3130,13 +2430,13 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
-  users: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
-  invitedBy: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+  users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3146,7 +2446,7 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
   name: string;
@@ -3156,54 +2456,54 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
   __typename: "KickServiceMetadata";
-  user: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+  user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
   __typename: "TitleChangeServiceMetadata";
   title: string;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
   __typename: "PhotoChangeServiceMetadata";
   photo: string | null;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
   __typename: "PostRespondServiceMetadata";
   respondType: string;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage {
   __typename: "ServiceMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_sender;
+  sender: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_sender;
   /**
    * Content
    */
   message: string | null;
   fallback: string;
-  spans: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans[];
-  serviceMetadata: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata | null;
+  spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans[];
+  serviceMetadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata | null;
 }
 
-export type Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message = Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage;
+export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage;
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageUpdated {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated {
   __typename: "ChatMessageUpdated";
-  message: Chat_event_ChatUpdateSingle_update_ChatMessageUpdated_message;
+  message: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageDeleted_message {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageDeleted_message {
   __typename: "GeneralMessage" | "ServiceMessage";
   /**
    * State
@@ -3211,21 +2511,25 @@ export interface Chat_event_ChatUpdateSingle_update_ChatMessageDeleted_message {
   id: string;
 }
 
-export interface Chat_event_ChatUpdateSingle_update_ChatMessageDeleted {
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageDeleted {
   __typename: "ChatMessageDeleted";
-  message: Chat_event_ChatUpdateSingle_update_ChatMessageDeleted_message;
+  message: ChatWatch_event_ChatUpdateSingle_update_ChatMessageDeleted_message;
 }
 
-export type Chat_event_ChatUpdateSingle_update = Chat_event_ChatUpdateSingle_update_ChatMessageReceived | Chat_event_ChatUpdateSingle_update_ChatMessageUpdated | Chat_event_ChatUpdateSingle_update_ChatMessageDeleted;
+export type ChatWatch_event_ChatUpdateSingle_update = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated | ChatWatch_event_ChatUpdateSingle_update_ChatMessageDeleted;
 
-export interface Chat_event_ChatUpdateSingle {
+export interface ChatWatch_event_ChatUpdateSingle {
   __typename: "ChatUpdateSingle";
   seq: number;
   state: string;
-  update: Chat_event_ChatUpdateSingle_update;
+  update: ChatWatch_event_ChatUpdateSingle_update;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated {
+  __typename: "ChatUpdated" | "ChatLostAccess";
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3233,7 +2537,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -3246,10 +2550,10 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3259,14 +2563,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -3276,14 +2580,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3291,7 +2595,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3304,16 +2608,16 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3321,7 +2625,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -3329,33 +2633,33 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
   fallback: string;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -3366,15 +2670,15 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
   fileId: string;
-  fileMetadata: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -3385,13 +2689,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -3402,13 +2706,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   title: string | null;
@@ -3416,13 +2720,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  icon: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3430,7 +2734,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -3443,10 +2747,10 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3456,14 +2760,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -3473,14 +2777,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3488,7 +2792,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3501,16 +2805,16 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3518,7 +2822,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -3526,28 +2830,28 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
   /**
    * State
@@ -3558,12 +2862,12 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
    * Content
    */
   message: string | null;
-  sender: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender;
+  sender: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_sender;
   fallback: string;
-  spans: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3571,7 +2875,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -3584,10 +2888,10 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3597,14 +2901,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -3614,14 +2918,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3629,7 +2933,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3642,16 +2946,16 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3659,7 +2963,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -3667,33 +2971,33 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
   fallback: string;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -3704,15 +3008,15 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
   fileId: string;
-  fileMetadata: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -3723,13 +3027,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -3740,13 +3044,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   title: string | null;
@@ -3754,13 +3058,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  icon: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage {
   __typename: "GeneralMessage";
   /**
    * State
@@ -3771,16 +3075,16 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
    * Content
    */
   message: string | null;
-  sender: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
+  sender: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
-  spans: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
   edited: boolean;
-  attachments: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
+  attachments: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3790,33 +3094,33 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions {
   __typename: "ModernMessageReaction";
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions_user;
   reaction: MessageReactionType;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage {
   __typename: "GeneralMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender;
+  sender: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender;
   /**
    * Content
    */
   message: string | null;
   fallback: string;
-  spans: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans[];
   edited: boolean;
-  attachments: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments[];
-  quotedMessages: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages[];
-  reactions: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions[];
+  attachments: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments[];
+  quotedMessages: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages[];
+  reactions: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3824,7 +3128,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_sender {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -3837,10 +3141,10 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3850,14 +3154,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -3867,14 +3171,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3882,7 +3186,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3895,16 +3199,16 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -3912,7 +3216,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -3920,28 +3224,28 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
   name: string;
@@ -3951,7 +3255,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
   name: string;
@@ -3961,13 +3265,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
-  users: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
-  invitedBy: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+  users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3977,7 +3281,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
   name: string;
@@ -3987,55 +3291,55 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
   __typename: "KickServiceMetadata";
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
   __typename: "TitleChangeServiceMetadata";
   title: string;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
   __typename: "PhotoChangeServiceMetadata";
   photo: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
   __typename: "PostRespondServiceMetadata";
   respondType: string;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage {
   __typename: "ServiceMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_sender;
+  sender: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_sender;
   /**
    * Content
    */
   message: string | null;
   fallback: string;
-  spans: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans[];
-  serviceMetadata: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata | null;
+  spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans[];
+  serviceMetadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage | Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageReceived {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived {
   __typename: "ChatMessageReceived";
-  message: Chat_event_ChatUpdateBatch_updates_ChatMessageReceived_message;
+  message: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message;
   repeatKey: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4043,7 +3347,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_sender {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -4056,10 +3360,10 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -4069,14 +3373,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -4086,14 +3390,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4101,7 +3405,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -4114,16 +3418,16 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4131,7 +3435,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -4139,33 +3443,33 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
   fallback: string;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -4176,15 +3480,15 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
   fileId: string;
-  fileMetadata: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -4195,13 +3499,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -4212,13 +3516,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   title: string | null;
@@ -4226,13 +3530,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  icon: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4240,7 +3544,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -4253,10 +3557,10 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -4266,14 +3570,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -4283,14 +3587,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4298,7 +3602,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -4311,16 +3615,16 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4328,7 +3632,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -4336,28 +3640,28 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
   /**
    * State
@@ -4368,12 +3672,12 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
    * Content
    */
   message: string | null;
-  sender: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender;
+  sender: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_sender;
   fallback: string;
-  spans: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4381,7 +3685,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -4394,10 +3698,10 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -4407,14 +3711,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -4424,14 +3728,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4439,7 +3743,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -4452,16 +3756,16 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4469,7 +3773,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -4477,33 +3781,33 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
   fallback: string;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -4514,15 +3818,15 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
   fileId: string;
-  fileMetadata: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -4533,13 +3837,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -4550,13 +3854,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   imageFormat: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
   __typename: "Image";
   url: string;
-  metadata: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+  metadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   title: string | null;
@@ -4564,13 +3868,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  icon: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage {
   __typename: "GeneralMessage";
   /**
    * State
@@ -4581,16 +3885,16 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
    * Content
    */
   message: string | null;
-  sender: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
+  sender: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
-  spans: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
   edited: boolean;
-  attachments: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
+  attachments: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
   name: string;
@@ -4600,33 +3904,33 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions {
   __typename: "ModernMessageReaction";
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions_user;
   reaction: MessageReactionType;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage {
   __typename: "GeneralMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_sender;
+  sender: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_sender;
   /**
    * Content
    */
   message: string | null;
   fallback: string;
-  spans: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans[];
+  spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans[];
   edited: boolean;
-  attachments: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments[];
-  quotedMessages: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages[];
-  reactions: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions[];
+  attachments: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments[];
+  quotedMessages: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages[];
+  reactions: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4634,7 +3938,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_sender {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -4647,10 +3951,10 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
   name: string;
@@ -4660,14 +3964,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention {
   __typename: "MessageSpanUserMention";
   offset: number;
   length: number;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
   name: string;
@@ -4677,14 +3981,14 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention {
   __typename: "MessageSpanMultiUserMention";
   offset: number;
   length: number;
-  users: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+  users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4692,7 +3996,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -4705,16 +4009,16 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   isYou: boolean;
   isBot: boolean;
   shortname: string | null;
-  primaryOrganization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
   name: string;
@@ -4722,7 +4026,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   isCommunity: boolean;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
@@ -4730,28 +4034,28 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  organization: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
+  organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention {
   __typename: "MessageSpanRoomMention";
   offset: number;
   length: number;
-  room: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room;
+  room: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink {
   __typename: "MessageSpanLink";
   offset: number;
   length: number;
   url: string;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
   name: string;
@@ -4761,7 +4065,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
   name: string;
@@ -4771,13 +4075,13 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
-  users: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
-  invitedBy: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+  users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
   name: string;
@@ -4787,7 +4091,7 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
   name: string;
@@ -4797,54 +4101,54 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
   shortname: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
   __typename: "KickServiceMetadata";
-  user: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
+  user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata {
   __typename: "TitleChangeServiceMetadata";
   title: string;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata {
   __typename: "PhotoChangeServiceMetadata";
   photo: string | null;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata {
   __typename: "PostRespondServiceMetadata";
   respondType: string;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage {
   __typename: "ServiceMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_sender;
+  sender: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_sender;
   /**
    * Content
    */
   message: string | null;
   fallback: string;
-  spans: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans[];
-  serviceMetadata: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata | null;
+  spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans[];
+  serviceMetadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata | null;
 }
 
-export type Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message = Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage;
+export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage;
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated {
   __typename: "ChatMessageUpdated";
-  message: Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated_message;
+  message: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageDeleted_message {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageDeleted_message {
   __typename: "GeneralMessage" | "ServiceMessage";
   /**
    * State
@@ -4852,30 +4156,867 @@ export interface Chat_event_ChatUpdateBatch_updates_ChatMessageDeleted_message {
   id: string;
 }
 
-export interface Chat_event_ChatUpdateBatch_updates_ChatMessageDeleted {
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageDeleted {
   __typename: "ChatMessageDeleted";
-  message: Chat_event_ChatUpdateBatch_updates_ChatMessageDeleted_message;
+  message: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageDeleted_message;
 }
 
-export type Chat_event_ChatUpdateBatch_updates = Chat_event_ChatUpdateBatch_updates_ChatMessageReceived | Chat_event_ChatUpdateBatch_updates_ChatMessageUpdated | Chat_event_ChatUpdateBatch_updates_ChatMessageDeleted;
+export type ChatWatch_event_ChatUpdateBatch_updates = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageDeleted;
 
-export interface Chat_event_ChatUpdateBatch {
+export interface ChatWatch_event_ChatUpdateBatch {
   __typename: "ChatUpdateBatch";
   fromSeq: number;
   seq: number;
   state: string;
-  updates: Chat_event_ChatUpdateBatch_updates[];
+  updates: ChatWatch_event_ChatUpdateBatch_updates[];
 }
 
-export type Chat_event = Chat_event_ChatUpdateSingle | Chat_event_ChatUpdateBatch;
+export type ChatWatch_event = ChatWatch_event_ChatUpdateSingle | ChatWatch_event_ChatUpdateBatch;
 
-export interface Chat {
-  event: Chat_event;
+export interface ChatWatch {
+  event: ChatWatch_event;
 }
 
-export interface ChatVariables {
+export interface ChatWatchVariables {
   chatId: string;
   fromState?: string | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL subscription operation: DialogsWatch
+// ====================================================
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived {
+  __typename: "DialogMessageReceived";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+  message: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated {
+  __typename: "DialogMessageUpdated";
+  cid: string;
+  message: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted {
+  __typename: "DialogMessageDeleted";
+  cid: string;
+  message: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message;
+  prevMessage: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage | null;
+  unread: number;
+  globalUnread: number;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead {
+  __typename: "DialogMessageRead";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated {
+  __typename: "DialogTitleUpdated";
+  cid: string;
+  title: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged {
+  __typename: "DialogMuteChanged";
+  cid: string;
+  mute: boolean;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged {
+  __typename: "DialogMentionedChanged";
+  cid: string;
+  haveMention: boolean;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogPhotoUpdated {
+  __typename: "DialogPhotoUpdated";
+  cid: string;
+  photo: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted {
+  __typename: "DialogDeleted";
+  cid: string;
+  globalUnread: number;
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead | DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted;
+
+export interface DialogsWatch_event_DialogUpdateSingle {
+  __typename: "DialogUpdateSingle";
+  seq: number;
+  state: string;
+  update: DialogsWatch_event_DialogUpdateSingle_update;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived {
+  __typename: "DialogMessageReceived";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+  message: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated {
+  __typename: "DialogMessageUpdated";
+  cid: string;
+  message: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted {
+  __typename: "DialogMessageDeleted";
+  cid: string;
+  message: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message;
+  prevMessage: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage | null;
+  unread: number;
+  globalUnread: number;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead {
+  __typename: "DialogMessageRead";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated {
+  __typename: "DialogTitleUpdated";
+  cid: string;
+  title: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged {
+  __typename: "DialogMuteChanged";
+  cid: string;
+  mute: boolean;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged {
+  __typename: "DialogMentionedChanged";
+  cid: string;
+  haveMention: boolean;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogPhotoUpdated {
+  __typename: "DialogPhotoUpdated";
+  cid: string;
+  photo: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted {
+  __typename: "DialogDeleted";
+  cid: string;
+  globalUnread: number;
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead | DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted;
+
+export interface DialogsWatch_event_DialogUpdateBatch {
+  __typename: "DialogUpdateBatch";
+  fromSeq: number;
+  seq: number;
+  state: string;
+  updates: DialogsWatch_event_DialogUpdateBatch_updates[];
+}
+
+export type DialogsWatch_event = DialogsWatch_event_DialogUpdateSingle | DialogsWatch_event_DialogUpdateBatch;
+
+export interface DialogsWatch {
+  event: DialogsWatch_event;
+}
+
+export interface DialogsWatchVariables {
+  state?: string | null;
 }
 
 /* tslint:disable */
@@ -7924,30 +8065,30 @@ export interface MarkSequenceReadVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL subscription operation: Typings
+// GraphQL subscription operation: TypingsWatch
 // ====================================================
 
-export interface Typings_typings_conversation {
+export interface TypingsWatch_typings_conversation {
   __typename: "ChannelConversation" | "AnonymousConversation" | "GroupConversation" | "PrivateConversation" | "SharedConversation";
   id: string;
 }
 
-export interface Typings_typings_user {
+export interface TypingsWatch_typings_user {
   __typename: "User";
   id: string;
   name: string;
   picture: string | null;
 }
 
-export interface Typings_typings {
+export interface TypingsWatch_typings {
   __typename: "TypingEvent";
-  conversation: Typings_typings_conversation;
-  user: Typings_typings_user;
+  conversation: TypingsWatch_typings_conversation;
+  user: TypingsWatch_typings_user;
   cancel: boolean;
 }
 
-export interface Typings {
-  typings: Typings_typings;
+export interface TypingsWatch {
+  typings: TypingsWatch_typings;
 }
 
 /* tslint:disable */
@@ -10478,28 +10619,51 @@ export interface UserVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL subscription operation: Online
+// GraphQL query operation: Online
 // ====================================================
 
-export interface Online_alphaSubscribeChatOnline_user {
+export interface Online_user {
   __typename: "User";
   id: string;
   online: boolean;
   lastSeen: string | null;
 }
 
-export interface Online_alphaSubscribeChatOnline {
+export interface Online {
+  user: Online_user;
+}
+
+export interface OnlineVariables {
+  userId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL subscription operation: OnlineWatch
+// ====================================================
+
+export interface OnlineWatch_alphaSubscribeChatOnline_user {
+  __typename: "User";
+  id: string;
+  online: boolean;
+  lastSeen: string | null;
+}
+
+export interface OnlineWatch_alphaSubscribeChatOnline {
   __typename: "OnlineEvent";
-  user: Online_alphaSubscribeChatOnline_user;
+  user: OnlineWatch_alphaSubscribeChatOnline_user;
   type: string;
   timeout: number;
 }
 
-export interface Online {
-  alphaSubscribeChatOnline: Online_alphaSubscribeChatOnline;
+export interface OnlineWatch {
+  alphaSubscribeChatOnline: OnlineWatch_alphaSubscribeChatOnline;
 }
 
-export interface OnlineVariables {
+export interface OnlineWatchVariables {
   conversations: string[];
 }
 
@@ -12331,6 +12495,10 @@ export interface UserTiny {
 // GraphQL fragment: ChatUpdateFragment
 // ====================================================
 
+export interface ChatUpdateFragment_ChatUpdated {
+  __typename: "ChatUpdated" | "ChatLostAccess";
+}
+
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
@@ -13963,7 +14131,7 @@ export interface ChatUpdateFragment_ChatMessageDeleted {
   message: ChatUpdateFragment_ChatMessageDeleted_message;
 }
 
-export type ChatUpdateFragment = ChatUpdateFragment_ChatMessageReceived | ChatUpdateFragment_ChatMessageUpdated | ChatUpdateFragment_ChatMessageDeleted;
+export type ChatUpdateFragment = ChatUpdateFragment_ChatUpdated | ChatUpdateFragment_ChatMessageReceived | ChatUpdateFragment_ChatMessageUpdated | ChatUpdateFragment_ChatMessageDeleted;
 
 /* tslint:disable */
 /* eslint-disable */

@@ -1,4 +1,4 @@
-subscription Typings {
+subscription TypingsWatch {
   typings {
     __typename
     cancel
