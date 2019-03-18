@@ -31,7 +31,7 @@ export const RoomFull = gql`
                 user {
                     ...UserShort
                 }
-                canKick
+                canKick,
             }
             requests {
                 user {
@@ -42,6 +42,7 @@ export const RoomFull = gql`
                 id
                 mute
             }
+            canEdit
         }
     }
 `;
