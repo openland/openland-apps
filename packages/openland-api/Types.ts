@@ -1392,6 +1392,7 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
+  titleLinkHostname: string | null;
   text: string | null;
   icon: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_image | null;
@@ -1729,6 +1730,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
+  titleLinkHostname: string | null;
   text: string | null;
   icon: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
@@ -6721,6 +6723,7 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment {
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
+  titleLinkHostname: string | null;
   text: string | null;
   icon: FullMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: FullMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
@@ -7058,6 +7061,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attach
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
+  titleLinkHostname: string | null;
   text: string | null;
   icon: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;

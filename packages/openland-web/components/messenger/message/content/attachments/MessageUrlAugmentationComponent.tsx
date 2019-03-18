@@ -252,6 +252,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
         let {
             isMobile,
             subTitle,
+            titleLinkHostname,
             title,
             image,
             text,
@@ -308,13 +309,13 @@ const MessageUrlAugmentationComponentInner = React.memo(
                 onClick={(e: any) => e.stopPropagation()}
             >
                 <ContentWrapper>
-                    {subTitle && (
+                    {titleLinkHostname && (
                         <Hostname>
                             {icon && (
                                 <Favicon src={icon.url} />
                             )}
                             {!icon && <WebsiteIcon />}
-                            <span>{subTitle}</span>
+                            <span>{titleLinkHostname}</span>
                         </Hostname>
                     )}
                     {title && (
