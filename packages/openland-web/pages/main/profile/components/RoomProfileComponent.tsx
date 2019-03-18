@@ -54,6 +54,12 @@ import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 
+const getCanEdit = ({ chat }: { chat: Room_room_SharedRoom }) => {
+    const isSecretGroup = chat.kind === 'GROUP';
+
+    return isSecretGroup || chat.role === 'ADMIN' || chat.role === 'OWNER';
+};
+
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
         {props.children}
@@ -63,20 +69,18 @@ const HeaderMembers = (props: { online?: boolean; children?: any }) => (
 export const AdminTools = withRoomAdminTools(
     withQueryLoader(props => (
         <>
-            {props.data &&
-                props.data.roomSuper && (
-                    <RoomSetFeatured
-                        val={props.data.roomSuper!.featured}
-                        roomId={props.data.roomSuper.id}
-                    />
-                )}
-            {props.data &&
-                props.data.roomSuper && (
-                    <RoomSetHidden
-                        val={props.data.roomSuper!.listed}
-                        roomId={props.data.roomSuper.id}
-                    />
-                )}
+            {props.data && props.data.roomSuper && (
+                <RoomSetFeatured
+                    val={props.data.roomSuper!.featured}
+                    roomId={props.data.roomSuper.id}
+                />
+            )}
+            {props.data && props.data.roomSuper && (
+                <RoomSetHidden
+                    val={props.data.roomSuper!.listed}
+                    roomId={props.data.roomSuper.id}
+                />
+            )}
         </>
     )),
 ) as React.ComponentType<{ id: string; variables: { id: string } }>;
@@ -85,6 +89,9 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
     let meMember = chat.membership === 'MEMBER';
     let leaveText = 'Leave group';
+
+    const canEdit = getCanEdit({ chat });
+
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -95,7 +102,6 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                     <HeaderTitle>{chat.title}</HeaderTitle>
                     <XHorizontal separator={3.5}>
                         <HeaderMembers>{chat.membersCount} members</HeaderMembers>
-                        {/* {chat.membersOnline > 0 && <HeaderMembers online={true}>{chat.membersOnline} online</HeaderMembers>} */}
                     </XHorizontal>
                 </HeaderInfo>
                 <HeaderTools separator={3}>
@@ -111,10 +117,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                 flat={true}
                                 content={
                                     <>
-                                        <XWithRole
-                                            role="super-admin"
-                                            or={chat.role === 'OWNER' || chat.role === 'ADMIN'}
-                                        >
+                                        <XWithRole role="super-admin" or={canEdit}>
                                             <XMenuItem
                                                 query={{
                                                     field: 'editChat',
@@ -206,8 +209,8 @@ const AboutPlaceholder = withAlterChat(props => {
 
 const About = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
-    let meMember = chat.membership === 'MEMBER';
-    let meAdmin = chat.role === 'ADMIN' || chat.role === 'OWNER';
+
+    const showAboutEdit = getCanEdit({ chat });
     return (
         <>
             {chat.description && (
@@ -216,8 +219,8 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                     <SectionContent>{chat.description}</SectionContent>
                 </Section>
             )}
-            {!chat.description &&
-                meAdmin && (
+            {showAboutEdit &&
+                (!chat.description && (
                     <Section separator={0}>
                         <XSubHeader title="About" paddingBottom={0} />
                         <SectionContent>
@@ -228,7 +231,7 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                             />
                         </SectionContent>
                     </Section>
-                )}
+                ))}
         </>
     );
 };
@@ -314,20 +317,19 @@ const MembersProvider = ({
                 : tabs.members;
         return (
             <Section separator={0}>
-                {isOwner &&
-                    (requests || []).length > 0 && (
-                        <XSwitcher style="button">
-                            <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
-                                Members
-                            </XSwitcher.Item>
-                            <XSwitcher.Item
-                                query={{ field: 'requests', value: '1' }}
-                                counter={requests!.length}
-                            >
-                                Requests
-                            </XSwitcher.Item>
-                        </XSwitcher>
-                    )}
+                {isOwner && (requests || []).length > 0 && (
+                    <XSwitcher style="button">
+                        <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
+                            Members
+                        </XSwitcher.Item>
+                        <XSwitcher.Item
+                            query={{ field: 'requests', value: '1' }}
+                            counter={requests!.length}
+                        >
+                            Requests
+                        </XSwitcher.Item>
+                    </XSwitcher>
+                )}
                 {((requests || []).length === 0 || !isOwner) && (
                     <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
                 )}
