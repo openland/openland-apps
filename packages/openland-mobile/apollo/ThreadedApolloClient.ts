@@ -166,7 +166,7 @@ export class WorkerApolloClient implements GraphqlClient {
         let key = this.nextId();
         this.handlers.set(key, {
             resolve: (v) => {
-                queue.post(v);
+                queue.post(v.data);
                 // if (!watch.isCompleted) {
                 //     resolve(v);
                 // }

@@ -23,10 +23,10 @@ export class OnlineWatcher {
         (async () => {
             while (true) {
                 let event = await s.get();
-                if (!event || !event.data) {
+                if (!event) {
                     continue;
                 }
-                let evData = event.data.alphaSubscribeChatOnline;
+                let evData = event.alphaSubscribeChatOnline;
                 let userId = evData.user.id;
 
                 this.onlinesData.set(userId, evData.user.online);

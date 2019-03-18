@@ -44,11 +44,11 @@ export class SequenceModernWatcher<TSubscription, TVars> {
     }
 
     private handleUpdate = (update: any) => {
-        if (update.errors && update.errors.length > 0) {
-            throw update.errors;
-        }
+        // if (update.errors && update.errors.length > 0) {
+        //     throw update.errors;
+        // }
 
-        let event = update.data.event;
+        let event = update.event;
         if (event.fromSeq) {
             // Do batch updates
             this.currentState = event.state;

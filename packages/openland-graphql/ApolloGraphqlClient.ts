@@ -77,14 +77,14 @@ class ApolloSubscription<TSubscription, TVars> implements GraphqlActiveSubscript
     private handleNext = (src: any) => {
         if (this.pending) {
             if (this.queue.length > 0) {
-                this.queue.push(src);
+                this.queue.push(src.data);
             } else {
                 let p = this.pending;
                 this.pending = undefined;
-                p(src);
+                p(src.data);
             }
         } else {
-            this.queue.push(src);
+            this.queue.push(src.data);
         }
     }
 
