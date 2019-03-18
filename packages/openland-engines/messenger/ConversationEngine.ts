@@ -119,8 +119,8 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, engine
         sender: src.sender,
         text: src.message || undefined,
         isSending: false,
-        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && ((next.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
-        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && ((prev.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
+        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && (src.date - next.date < 10000) && ((next.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
+        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && (prev.date - src.date < 10000) && ((prev.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
         reactions: generalMessage && generalMessage.reactions,
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
         isService: !!serviceMessage,
@@ -632,8 +632,14 @@ export class ConversationEngine implements MessageSendHandler {
             this.dataSource.updateItem(converted);
         } else {
             if (prev && prev.type === 'message' && prev.senderId === conv.senderId && (!!prev.serviceMetaData === !!conv.serviceMetaData)) {
-                if (prev.date && !isSameIntDate(prev.date, conv.date)) {
+                // same sender and prev not service
+                let dateChanged = prev.date && !isSameIntDate(prev.date, conv.date);
+                let prevMessageTooOld = prev.date && (conv.date - prev.date > 10000);
+
+                if (dateChanged) {
                     this.dataSource.addItem(createDateDataSourceItem(new Date(conv.date)), 0);
+                }
+                if (dateChanged || prevMessageTooOld) {
                     conv.attachTop = false;
                 } else {
                     this.dataSource.updateItem({
@@ -642,6 +648,7 @@ export class ConversationEngine implements MessageSendHandler {
                     });
                 }
             } else {
+                // sander changed or sevice
                 const dateToAdd = createDateDataSourceItem(new Date(conv.date))
                 if (!this.dataSource.hasItem(dateToAdd.key) && (!prev || prev.date && !isSameIntDate(prev.date, conv.date))) {
                     this.dataSource.addItem(dateToAdd, 0);
@@ -689,7 +696,7 @@ export class ConversationEngine implements MessageSendHandler {
             let isService = isServerMessage(message) && message.__typename === 'ServiceMessage';
             if (prevMessageSender === sender.id && prevMessageDate !== undefined && isService === prevMessageIsService) {
                 // 10 sec
-                if (prevMessageDate - date < 10000 && currentCollapsed < 10) {
+                if ((date - prevMessageDate < 10000) && currentCollapsed < 10) {
                     prevMessageDate = date;
                     currentCollapsed++;
                     return currentGroup!!;
