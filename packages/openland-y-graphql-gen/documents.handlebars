@@ -1,3 +1,3 @@
 {{#each operations }}
-export const {{ name }}{{ toPascalCase operationType }} = {{#ifEq operationType 'mutation' }}typedMutation{{else}}typedQuery{{/ifEq}}<Types.{{ name }}, {{#if hasVariables}}Types.{{ name }}Variables{{else}}{}{{/if}}>(!!IMPORTS!!.{{ name }}{{ toPascalCase operationType }});
+export const {{ name }}{{ toPascalCase operationType }} = {{#ifEq operationType 'mutation' }}typedMutation{{else}}{{#ifEq operationType 'query' }}typedQuery{{else}}typedSubscription{{/ifEq}}{{/ifEq}}<Types.{{ name }}, {{#if hasVariables}}Types.{{ name }}Variables{{else}}{}{{/if}}>(!!IMPORTS!!.{{ name }}{{ toPascalCase operationType }});
 {{/each}}

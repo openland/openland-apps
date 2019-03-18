@@ -37,6 +37,54 @@ export const DialogsQuery = gql`
     ${TinyMessage}
 `;
 
+export const ChatSubscription = gql`
+  subscription Chat($chatId: ID!, $fromState: String) {
+    event: chatUpdates(chatId: $chatId, fromState: $fromState) {
+        ... on ChatUpdateSingle {
+            seq
+            state
+            update {
+                ...ChatUpdateFragment
+            }
+        }
+        ... on ChatUpdateBatch {
+            fromSeq
+            seq
+            state
+            updates {
+                ...ChatUpdateFragment
+            }
+        }
+       
+    }
+  }
+  fragment ChatUpdateFragment on ChatUpdate {
+    ... on ChatMessageReceived {
+        message {
+            ...FullMessage
+        }
+        repeatKey
+    }
+    ... on ChatMessageUpdated {
+        message {
+            ...FullMessage
+        }
+    }
+    ... on ChatMessageDeleted {
+        message {
+            id
+        }
+    }
+    # ... on ConversationLostAccess {
+    #    lostAccess
+    # }
+  }
+  ${FullMessage}
+  ${UserTiny}
+  ${UserShort}
+  ${RoomShort}
+`;
+
 export const RoomQuery = gql`
     query Room($id: ID!) {
         room(id: $id) {

@@ -2,6 +2,7 @@
 
 import { typedQuery } from 'openland-y-graphql/typed';
 import { typedMutation } from 'openland-y-graphql/typed';
+import { typedSubscription } from 'openland-y-graphql/typed';
 import * as Types from './Types';
 import * as Account from './queries/Account';
 import * as App from './queries/App';
@@ -37,6 +38,7 @@ export const UpdateAppMutation = typedMutation<Types.UpdateApp, Types.UpdateAppV
 export const RefreshAppTokenMutation = typedMutation<Types.RefreshAppToken, Types.RefreshAppTokenVariables>(App.RefreshAppTokenMutation);
 export const AddAppToChatMutation = typedMutation<Types.AddAppToChat, Types.AddAppToChatVariables>(App.AddAppToChatMutation);
 export const DialogsQuery = typedQuery<Types.Dialogs, Types.DialogsVariables>(Chats.DialogsQuery);
+export const ChatSubscription = typedSubscription<Types.Chat, Types.ChatVariables>(Chats.ChatSubscription);
 export const RoomQuery = typedQuery<Types.Room, Types.RoomVariables>(Chats.RoomQuery);
 export const RoomTinyQuery = typedQuery<Types.RoomTiny, Types.RoomTinyVariables>(Chats.RoomTinyQuery);
 export const RoomSuperQuery = typedQuery<Types.RoomSuper, Types.RoomSuperVariables>(Chats.RoomSuperQuery);

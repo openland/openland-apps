@@ -1,6 +1,7 @@
 {
     "operations": [
         { "name": "DialogsQuery", "type": "query", "hasVariables": true },
+        { "name": "ChatSubscription", "type": "subscription", "hasVariables": true },
         { "name": "RoomQuery", "type": "query", "hasVariables": true },
         { "name": "RoomTinyQuery", "type": "query", "hasVariables": true },
         { "name": "RoomSuperQuery", "type": "query", "hasVariables": true },
