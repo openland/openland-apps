@@ -6,14 +6,14 @@ const roomLinkClassName = css`
     color: #1790ff;
 `;
 
-export const LinkToRoom = ({ children, roomId }: { children: any; roomId: string }) => {
+export const LinkToRoom = ({ text, roomId }: { text: string; roomId: string }) => {
     return (
         <XLink
             className={roomLinkClassName}
             path={`/mail/${roomId}`}
             onClick={(e: any) => e.stopPropagation()}
         >
-            {children}
+            {text}
         </XLink>
     );
 };

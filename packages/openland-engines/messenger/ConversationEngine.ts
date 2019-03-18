@@ -12,6 +12,7 @@ import { FullMessage as FullMessageFragment } from 'openland-api/fragments/Messa
 import { UserTiny } from 'openland-api/fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { UserShort as UserShortFragnemt } from 'openland-api/fragments/UserShort';
+import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($chatId: ID!, $fromState: String) {
@@ -130,7 +131,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, engine
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
-        reply: generalMessage && generalMessage.quotedMessages,
+        reply: generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date) : undefined,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
     };
@@ -311,7 +312,8 @@ export class ConversationEngine implements MessageSendHandler {
                 mentions,
                 callback: this
             });
-            let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false, mentions } as PendingMessage;
+            let spans = prepareLegacyMentions(message, mentions || []);
+            let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false, spans } as PendingMessage;
             this.messages = [...this.messages, msgs];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
@@ -442,9 +444,9 @@ export class ConversationEngine implements MessageSendHandler {
             throw Error('ConversationEngine not started!');
         }
         this.isStarted = false;
-        // if (this.watcher) {
-        //     this.watcher!!.destroy();
-        // }
+        if (this.watcher) {
+            this.watcher!!.destroy();
+        }
     }
 
     handleMuteUpdated = async (mute: boolean) => {
@@ -608,10 +610,10 @@ export class ConversationEngine implements MessageSendHandler {
                 isSending: true,
                 text: src.message ? src.message : undefined,
                 attachBottom: false,
+                spans: src.spans,
                 attachments: p.uri ? [{
                     __typename: "MessageAttachmentFile",
                     uri: p.uri,
-                    id: '',
                     fileId: '',
                     fallback: 'Document',
                     filePreview: '',

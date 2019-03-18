@@ -15,8 +15,8 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
-import { XOverflow } from '../../../../components/XOverflow';
-import { LeaveChatComponent } from '../../../../fragments/MessengerRootComponent';
+import { XOverflow } from 'openland-web/components/XOverflow';
+import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
 import { RemoveMemberModal } from '../../channel/components/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
@@ -35,7 +35,7 @@ import {
     RoomFull_SharedRoom_members,
     RoomFull_SharedRoom_requests,
 } from 'openland-api/Types';
-import { withRoom } from '../../../../api/withRoom';
+import { withRoom } from 'openland-web/api/withRoom';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRoomMembersMgmt } from 'openland-web/api/withRoomRequestsMgmt';
 import { XMutation } from 'openland-x/XMutation';
@@ -51,8 +51,14 @@ import {
 } from 'openland-web/pages/main/profile/components/RoomControls';
 import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
 import { tabs, tabsT } from '../tabs';
-import { RoomAddMemberModal } from '../../../../fragments/chat/RoomAddMemberModal';
+import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
+
+const getCanEdit = ({ chat }: { chat: Room_room_SharedRoom }) => {
+    const isSecretGroup = chat.kind === 'GROUP';
+
+    return isSecretGroup || chat.role === 'ADMIN' || chat.role === 'OWNER';
+};
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -82,7 +88,10 @@ export const AdminTools = withRoomAdminTools(
 const Header = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
     let meMember = chat.membership === 'MEMBER';
-    let leaveText = chat.kind === 'GROUP' ? 'Leave group' : 'Leave room';
+    let leaveText = 'Leave group';
+
+    const canEdit = getCanEdit({ chat });
+
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -93,7 +102,6 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                     <HeaderTitle>{chat.title}</HeaderTitle>
                     <XHorizontal separator={3.5}>
                         <HeaderMembers>{chat.membersCount} members</HeaderMembers>
-                        {/* {chat.membersOnline > 0 && <HeaderMembers online={true}>{chat.membersOnline} online</HeaderMembers>} */}
                     </XHorizontal>
                 </HeaderInfo>
                 <HeaderTools separator={3}>
@@ -109,10 +117,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                 flat={true}
                                 content={
                                     <>
-                                        <XWithRole
-                                            role="super-admin"
-                                            or={chat.role === 'OWNER' || chat.role === 'ADMIN'}
-                                        >
+                                        <XWithRole role="super-admin" or={canEdit}>
                                             <XMenuItem
                                                 query={{
                                                     field: 'editChat',
@@ -204,8 +209,8 @@ const AboutPlaceholder = withAlterChat(props => {
 
 const About = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
-    let meMember = chat.membership === 'MEMBER';
-    let meAdmin = chat.role === 'ADMIN' || chat.role === 'OWNER';
+
+    const showAboutEdit = getCanEdit({ chat });
     return (
         <>
             {chat.description && (
@@ -214,18 +219,19 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                     <SectionContent>{chat.description}</SectionContent>
                 </Section>
             )}
-            {!chat.description && meAdmin && (
-                <Section separator={0}>
-                    <XSubHeader title="About" paddingBottom={0} />
-                    <SectionContent>
-                        <AboutPlaceholder
-                            roomId={chat.id}
-                            description={chat.description}
-                            target={<EditButton text="Add a short description" />}
-                        />
-                    </SectionContent>
-                </Section>
-            )}
+            {showAboutEdit &&
+                (!chat.description && (
+                    <Section separator={0}>
+                        <XSubHeader title="About" paddingBottom={0} />
+                        <SectionContent>
+                            <AboutPlaceholder
+                                roomId={chat.id}
+                                description={chat.description}
+                                target={<EditButton text="Add a short description" />}
+                            />
+                        </SectionContent>
+                    </Section>
+                ))}
         </>
     );
 };
@@ -360,11 +366,7 @@ const MembersProvider = ({
                             <RequestCard key={i} member={req} meOwner={isOwner} roomId={chatId} />
                         ))}
                 </SectionContent>
-                <RemoveMemberModal
-                    members={members}
-                    roomId={chatId}
-                    roomTitle={chatTitle}
-                />
+                <RemoveMemberModal members={members} roomId={chatId} roomTitle={chatTitle} />
             </Section>
         );
     } else {

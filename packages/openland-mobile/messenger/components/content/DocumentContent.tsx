@@ -5,7 +5,7 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
 import { Platform } from 'react-native';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
-import { renderPrprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
+import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
@@ -67,7 +67,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
             big = big || (this.props.message.text.length <= 302 && this.props.message.text.startsWith(':') && this.props.message.text.endsWith(':'));
         }
 
-        let parts = preprocessed.map((p, i) => renderPrprocessedText(p, i, this.props.message, this.props.onUserPress));
+        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, this.props.message, this.props.onUserPress));
         if (this.props.message.title) {
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{this.props.message.title}</ASText>);

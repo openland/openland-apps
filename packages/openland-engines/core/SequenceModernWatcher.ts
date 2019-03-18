@@ -29,6 +29,10 @@ export class SequenceModernWatcher {
         this.start();
     }
 
+    public destroy() {
+        this.subscription.destroy();
+    }
+
     private start() {
         (async () => {
             while (true) {

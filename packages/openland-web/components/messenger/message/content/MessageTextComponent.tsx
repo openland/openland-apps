@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { preprocessText } from '../../../../utils/TextProcessor';
+import { preprocessText } from 'openland-web/utils/TextProcessor';
 import { FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
-import { emoji } from 'openland-y-utils/emoji';
-import { preprocessMentions } from './utils/preprocessMentions';
-import { MentionComponentInner } from 'openland-x/XRichTextInput';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { isEmoji } from 'openland-y-utils/isEmoji';
+import { SpansMessage } from './service/ServiceMessageDefault';
 
 export interface MessageTextComponentProps {
     spans?: FullMessage_GeneralMessage_spans[];
@@ -60,6 +58,18 @@ const styleEditLabel = css`
     font-weight: 400;
     line-height: 22px;
     padding-left: 6px;
+`;
+
+const styleSpansMessageContainer = css`
+    display: inline;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.8);
 `;
 
 const styleInsane = css`
@@ -121,6 +131,12 @@ export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
         messageText = messageText.slice(1, messageText.length - 1);
     }
 
+    return (
+        <div className={styleSpansMessageContainer}>
+            <SpansMessage message={props.message} spans={props.spans} />
+        </div>
+    );
+
     const preprocessed = React.useMemo(() => preprocessText(messageText), [messageText]);
 
     // Rendering
@@ -159,46 +175,54 @@ export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
                 </span>
             );
         } else {
-            let mentions = preprocessMentions(v.text!, null, []);
-            let smileSize: 38 | 16 = isBig ? 38 : 16;
+            console.log();
+            return (
+                <SpansMessage
+                    message={props.message}
+                    spans={props.spans}
+                    key={'spans-message-' + i}
+                />
+            );
+            // let mentions = preprocessMentions(v.text!, null, []);
+            // let smileSize: 38 | 16 = isBig ? 38 : 16;
 
-            let res: any[] = [];
-            let i2 = 0;
-            for (let m of mentions) {
-                if (m.type === 'text') {
-                    res.push(
-                        <span
-                            className={
-                                isRotating ? styleRotating : isInsane ? styleInsane : undefined
-                            }
-                            key={'text-' + i + '-' + i2}
-                        >
-                            {emoji({
-                                src: m.text,
-                                size: smileSize,
-                            })}
-                        </span>,
-                    );
-                } else {
-                    res.push(
-                        <MentionComponentInner
-                            key={'text-' + i + '-' + i2}
-                            isYou={m.user.isYou}
-                            user={m.user}
-                            hasPopper={true}
-                        >
-                            {emoji({
-                                src: m.text,
-                                size: smileSize,
-                            })}
-                        </MentionComponentInner>,
-                    );
-                }
+            // let res: any[] = [];
+            // let i2 = 0;
+            // for (let m of mentions) {
+            //     if (m.type === 'text') {
+            //         res.push(
+            //             <span
+            //                 className={
+            //                     isRotating ? styleRotating : isInsane ? styleInsane : undefined
+            //                 }
+            //                 key={'text-' + i + '-' + i2}
+            //             >
+            //                 {emoji({
+            //                     src: m.text,
+            //                     size: smileSize,
+            //                 })}
+            //             </span>,
+            //         );
+            //     } else {
+            //         res.push(
+            //             <MentionComponentInner
+            //                 key={'text-' + i + '-' + i2}
+            //                 isYou={m.user.isYou}
+            //                 user={m.user}
+            //                 hasPopper={true}
+            //             >
+            //                 {emoji({
+            //                     src: m.text,
+            //                     size: smileSize,
+            //                 })}
+            //             </MentionComponentInner>,
+            //         );
+            //     }
 
-                i2++;
-            }
+            //     i2++;
+            // }
 
-            return res;
+            // return res;
         }
     });
 

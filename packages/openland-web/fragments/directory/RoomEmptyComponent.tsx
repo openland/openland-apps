@@ -18,7 +18,7 @@ export const EmptyComponent = XMemo(() => (
                 height={329}
             />
             <XView fontSize={16} fontWeight="600" lineHeight={1.5} color="#99a2b0" marginTop={44}>
-                No room matches your search
+                No groups matches your search
             </XView>
         </XView>
     </XView>

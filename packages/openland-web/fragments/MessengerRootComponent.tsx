@@ -41,6 +41,7 @@ export interface EditPostProps {
 }
 
 interface MessagesComponentProps {
+    onConversationLostAccess?: Function;
     isActive: boolean;
     organizationId: string | null;
     conversationId: string;
@@ -164,7 +165,11 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     };
 
     onConversationLostAccess = () => {
-        window.location.reload(false);
+        if (this.props.onConversationLostAccess) {
+            this.unsubscribe();
+            this.props.messenger.removeConversation(this.props.conversationId);
+            this.props.onConversationLostAccess();
+        }
     };
 
     onMessageListScroll = (scrollPosition: number) => {
@@ -198,7 +203,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (props.isActive) {
             this.conversation = props.messenger.getConversation(props.conversationId);
             this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
-
+            
             this.unmounter2 = this.conversation.subscribe(this);
 
             if (!this.conversation) {
@@ -365,6 +370,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 }
 
 interface MessengerRootComponentProps {
+    onConversationLostAccess?: Function;
     isActive: boolean;
     organizationId: string | null;
     conversationId: string;
@@ -378,6 +384,7 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
     return (
         <MessagesComponent
+            onConversationLostAccess={props.onConversationLostAccess}
             isActive={props.isActive}
             me={messenger.user}
             loading={false}

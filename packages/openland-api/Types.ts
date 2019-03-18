@@ -1261,12 +1261,6 @@ export interface ChatHistory_messages_GeneralMessage_sender {
   primaryOrganization: ChatHistory_messages_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-}
-
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -1282,6 +1276,23 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMentio
   offset: number;
   length: number;
   user: ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
@@ -1349,11 +1360,10 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export type ChatHistory_messages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanLink;
+export type ChatHistory_messages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanLink;
 
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
-  id: string;
   fallback: string;
 }
 
@@ -1370,7 +1380,6 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachme
 
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
-  id: string;
   fallback: string;
   fileId: string;
   fileMetadata: ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
@@ -1413,7 +1422,6 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
 
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
-  id: string;
   fallback: string;
   title: string | null;
   subTitle: string | null;
@@ -1449,12 +1457,6 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   primaryOrganization: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-}
-
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -1470,6 +1472,23 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   offset: number;
   length: number;
   user: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
@@ -1537,7 +1556,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   url: string;
 }
 
-export type ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export type ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans = ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -1579,12 +1598,6 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   primaryOrganization: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-}
-
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -1600,6 +1613,23 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   offset: number;
   length: number;
   user: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
@@ -1667,11 +1697,10 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   url: string;
 }
 
-export type ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export type ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
-  id: string;
   fallback: string;
 }
 
@@ -1688,7 +1717,6 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
-  id: string;
   fallback: string;
   fileId: string;
   fileMetadata: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
@@ -1731,7 +1759,6 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
-  id: string;
   fallback: string;
   title: string | null;
   subTitle: string | null;
@@ -1823,12 +1850,6 @@ export interface ChatHistory_messages_ServiceMessage_sender {
   primaryOrganization: ChatHistory_messages_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-}
-
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -1844,6 +1865,23 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMentio
   offset: number;
   length: number;
   user: ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
@@ -1911,7 +1949,7 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export type ChatHistory_messages_ServiceMessage_spans = ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanLink;
+export type ChatHistory_messages_ServiceMessage_spans = ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanLink;
 
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
@@ -6757,7 +6795,6 @@ export interface FullMessage_GeneralMessage_sender {
 
 export interface FullMessage_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
-  id: string;
   fallback: string;
 }
 
@@ -6774,7 +6811,6 @@ export interface FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fi
 
 export interface FullMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
-  id: string;
   fallback: string;
   fileId: string;
   fileMetadata: FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
@@ -6817,7 +6853,6 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_im
 
 export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
-  id: string;
   fallback: string;
   title: string | null;
   subTitle: string | null;
@@ -6853,12 +6888,6 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_sender
   primaryOrganization: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-}
-
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -6874,6 +6903,23 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
   offset: number;
   length: number;
   user: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
@@ -6941,7 +6987,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
   url: string;
 }
 
-export type FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+export type FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans = FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanLink;
 
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage {
   __typename: "ServiceMessage";
@@ -6983,12 +7029,6 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender
   primaryOrganization: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
 }
 
-export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-}
-
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -7004,6 +7044,23 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
   offset: number;
   length: number;
   user: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
@@ -7071,11 +7128,10 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
   url: string;
 }
 
-export type FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+export type FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans = FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanLink;
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost";
-  id: string;
   fallback: string;
 }
 
@@ -7092,7 +7148,6 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attach
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
-  id: string;
   fallback: string;
   fileId: string;
   fileMetadata: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
@@ -7135,7 +7190,6 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attach
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
-  id: string;
   fallback: string;
   title: string | null;
   subTitle: string | null;
@@ -7183,12 +7237,6 @@ export interface FullMessage_GeneralMessage_reactions {
   reaction: MessageReactionType;
 }
 
-export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-}
-
 export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -7204,6 +7252,23 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention {
   offset: number;
   length: number;
   user: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
 export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
@@ -7271,7 +7336,7 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export type FullMessage_GeneralMessage_spans = FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_spans_MessageSpanLink;
+export type FullMessage_GeneralMessage_spans = FullMessage_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_spans_MessageSpanLink;
 
 export interface FullMessage_GeneralMessage {
   __typename: "GeneralMessage";
@@ -7317,12 +7382,6 @@ export interface FullMessage_ServiceMessage_sender {
   primaryOrganization: FullMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
-export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
-  __typename: "MessageSpanMultiUserMention";
-  offset: number;
-  length: number;
-}
-
 export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -7338,6 +7397,23 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention {
   offset: number;
   length: number;
   user: FullMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
 }
 
 export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user_primaryOrganization {
@@ -7405,7 +7481,7 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanLink {
   url: string;
 }
 
-export type FullMessage_ServiceMessage_spans = FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_ServiceMessage_spans_MessageSpanUserMention | FullMessage_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_ServiceMessage_spans_MessageSpanLink;
+export type FullMessage_ServiceMessage_spans = FullMessage_ServiceMessage_spans_MessageSpanUserMention | FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_ServiceMessage_spans_MessageSpanLink;
 
 export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";

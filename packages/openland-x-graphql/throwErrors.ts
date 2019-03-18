@@ -1,19 +1,22 @@
-//
+export const WHITE_LISTED_ERROR_NAME = 'WHITE_LISTED_ERROR_NAME';
 
 export const throwGraphQLErrors = (error: any) => {
     console.warn(error);
+    console.log(error.graphQLErrors);
     const graphQLErrors = error.graphQLErrors;
     if (graphQLErrors && graphQLErrors.length) {
-        const errorMessages = graphQLErrors.map(({ message }: { message: string }) => message);
+        graphQLErrors.forEach(
+            ({ message, error_code }: { message: string; error_code: string }) => {
+                if (error_code === 'CANT_JOIN_GROUP' || 'CANT_JOIN_ORG') {
+                    const e = Error(message);
+                    e.name = WHITE_LISTED_ERROR_NAME;
+                    throw e;
+                }
 
-        if (errorMessages.indexOf('You was kicked from this group') !== -1) {
-            throw Error(
-                'Unfortunately, you cannot join this group. Someone kicked you from this group, and now you can only join it if a group member adds you.',
-            );
-        }
-
-        if (errorMessages.indexOf('Access Denied') !== -1) {
-            throw error;
-        }
+                if (message === 'Access Denied') {
+                    throw error;
+                }
+            },
+        );
     }
 };

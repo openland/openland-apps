@@ -1,57 +1,162 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { Container } from './views/Container';
-import { preprocessMentions } from '../utils/preprocessMentions';
-import { MentionedUser } from './views/MentionedUser';
-import { emoji } from 'openland-y-utils/emoji';
 import { FullMessage_ServiceMessage_spans } from 'openland-api/Types';
+import { MentionComponentInnerText } from 'openland-x/XRichTextInput';
+import { UserPopper } from 'openland-web/components/UserPopper';
+import { UserShort } from 'openland-api/Types';
+import { emoji } from 'openland-y-utils/emoji';
+import { css } from 'linaria';
+import { OthersPopper } from './views/OthersPopper';
+import { LinkToRoom } from './views/LinkToRoom';
 
-export interface ServiceMessageDefaultProps {
+const MentionedUser = React.memo(
+    ({ user, text, isYou }: { user: UserShort; text: string; isYou: boolean }) => {
+        const userNameEmojified = React.useMemo(() => {
+            return emoji({
+                src: text,
+                size: 16,
+            });
+        }, [text]);
+
+        return (
+            <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
+                <MentionComponentInnerText isYou={isYou}>
+                    {userNameEmojified}
+                </MentionComponentInnerText>
+            </UserPopper>
+        );
+    },
+);
+
+const LinkText = css`
+    display: inline;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    & > a {
+        display: inline;
+    }
+`;
+
+const SpansMessageText = ({ text }: { text: string }) => {
+    return (
+        <>
+            {emoji({
+                src: text,
+                size: 16,
+            })}
+        </>
+    );
+};
+
+export const SpansMessage = ({
+    message,
+    spans,
+}: {
     message: string;
     spans?: FullMessage_ServiceMessage_spans[];
-}
+}) => {
+    let res: any[] = [];
 
-const EmojifiedText = React.memo(({ text }: { text: string }) => {
-    let refactorText = text;
-    let createGroupText = text.match('created the group');
-    if (createGroupText) {
-        refactorText = text.split('reated the group')[1];
-    }
-    return (
-        <span>
-            {createGroupText && <> created the group</>}
-            {refactorText ? (
-                <strong>
-                    {emoji({
-                        src: refactorText,
-                        size: 16,
-                    })}
-                </strong>
-            ) : (
-                    <>
-                        {emoji({
-                            src: refactorText,
-                            size: 16,
-                        })}
-                    </>
-                )}
-        </span>
-    );
-});
+    let lastOffset = 0;
+    let i = 0;
 
-export const ServiceMessageDefault = React.memo(
-    ({ message, spans }: ServiceMessageDefaultProps) => {
-        let mentions = preprocessMentions(message, null, []);
-        let res: any[] = [];
-        let i = 0;
-        for (let m of mentions) {
-            if (m.type === 'text') {
-                res.push(<EmojifiedText key={'text-' + i} text={m.text} />);
-            } else {
-                res.push(<MentionedUser key={'text-' + i} isYou={m.user.isYou} user={m.user} />);
+    if (spans && spans.length) {
+        const sortedSpans = spans.sort((span1: any, span2: any) => {
+            return span1.offset - span2.offset;
+        });
+
+        for (let span of sortedSpans) {
+            if (lastOffset < span.offset) {
+                res.push(<SpansMessageText key={'text-' + i} text={message.slice(lastOffset, span.offset)} />);
+            }
+
+            if (span.__typename === 'MessageSpanMultiUserMention') {
+                res.push(
+                    <span key={'users-' + i}>
+                        <OthersPopper
+                            show={true}
+                            items={span.users.map(
+                                ({ id, name, photo, primaryOrganization }: any) => ({
+                                    title: name,
+                                    subtitle: primaryOrganization ? primaryOrganization.name : '',
+                                    photo,
+                                    id,
+                                }),
+                            )}
+                        >
+                            {message.slice(span.offset, span.offset + span.length)}
+                        </OthersPopper>
+                    </span>,
+                );
+                lastOffset = span.offset + span.length;
+            } else if (span.__typename === 'MessageSpanRoomMention') {
+                res.push(
+                    <LinkToRoom
+                        key={'room-' + i} 
+                        text={message.slice(span.offset + 1, span.offset + span.length)}
+                        roomId={span.room.id}
+                    />,
+                );
+                lastOffset = span.offset + span.length;
+            } else if (span.__typename === 'MessageSpanLink') {
+                res.push(
+                    <span key={'link-' + i} className={LinkText}>
+                        <XView as="a" path={span.url} onClick={(e: any) => e.stopPropagation()}>
+                            {span.url}
+                        </XView>
+                    </span>,
+                );
+                lastOffset = span.offset + span.length;
+            } else if (span.__typename === 'MessageSpanUserMention') {
+                res.push(
+                    <MentionedUser
+                        key={'user-' + i}
+                        isYou={false}
+                        text={message.slice(span.offset + 1, span.offset + span.length)}
+                        user={{
+                            __typename: 'User',
+                            id: span.user.id,
+                            name: span.user.name,
+                            firstName: span.user.name,
+                            lastName: null,
+                            photo: null,
+                            email: null,
+                            online: false,
+                            lastSeen: null,
+                            isYou: false,
+                            isBot: false,
+                            shortname: null,
+                            primaryOrganization: null,
+                        }}
+                    />,
+                );
+                lastOffset = span.offset + span.length;
             }
 
             i++;
         }
-        return <Container>{res}</Container>;
-    },
-);
+
+        if (lastOffset < message.length) {
+            res.push(<SpansMessageText key={'text-' + i} text={message.slice(lastOffset, message.length)} />);
+        }
+    } else {
+        return <SpansMessageText text={message} />;
+    }
+
+    return <>{res}</>;
+};
+
+export const ServiceMessageDefault = ({
+    message,
+    spans,
+}: {
+    message: string;
+    spans?: FullMessage_ServiceMessage_spans[];
+}) => {
+    return (
+        <Container>
+            <SpansMessage message={message} spans={spans} />
+        </Container>
+    );
+};

@@ -18,7 +18,6 @@ export const RoomsCards = withAvailableRooms(
         if (!props.data) {
             return null;
         }
-        console.log(props);
 
         let noData =
             props.error ||
@@ -48,7 +47,7 @@ export const RoomsCards = withAvailableRooms(
                         /> */}
                     </XContentWrapper>
                 )}
-                {noData && <EmptySearchBlock text="No rooms matches your search" />}
+                {noData && <EmptySearchBlock text="No groups matches your search" />}
             </>
         );
     }),
@@ -60,9 +59,9 @@ export default withApp('Explore', 'viewer', () => {
         <DirectoryNavigation
             title={'Explore'}
             CardsComponent={CardsComponent}
-            searchPlaceholder={'Search rooms'}
-            noQueryText={'All rooms'}
-            hasQueryText={'Rooms'}
+            searchPlaceholder={'Search groups'}
+            noQueryText={'All groups'}
+            hasQueryText={'Groups'}
         />
     );
 });

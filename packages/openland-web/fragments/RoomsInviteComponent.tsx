@@ -248,7 +248,7 @@ const JoinLinkButton = withChannelJoinInviteLink(props => {
                 if (isMobileUserAgent) {
                     window.location.href = 'openland://deep/joinroom/' + (props as any).invite;
                 }
-                props.join({ variables: { invite: (props as any).invite } });
+                await props.join({ variables: { invite: (props as any).invite } });
                 await delayForewer();
             }}
         />

@@ -26,59 +26,6 @@ export const TinyMessage = gql`
                 id
             }
         }
-        # spans{
-        #     offset
-        #     length
-        #     ...on MessageSpanUserMention{
-        #         user{
-        #             ...UserTiny
-        #         }
-        #     }
-        #     ...on MessageSpanRoomMention{
-        #         room{
-        #             ...RoomShort
-        #         }
-        #     }
-        #     ...on MessageSpanLink{
-        #         url
-        #     }
-        # }
-
-        # ... on ServiceMessage{
-        #     serviceMetadata{
-        #         ...on InviteServiceMetadata {
-        #             users{
-        #                 ...UserTiny
-        #             }
-        #             invitedBy{
-        #                 ...UserTiny
-        #             }
-        #         }
-
-        #         ...on KickServiceMetadata {
-        #             user{
-        #                 ...UserTiny
-        #             }
-        #             kickedBy{
-        #                 ...UserTiny
-        #             }
-        #         }
-
-        #         ...on TitleChangeServiceMetadata {
-        #             title
-        #         }
-
-        #         ...on PhotoChangeServiceMetadata {
-        #             photo
-        #         }
-
-        #         ...on PostRespondServiceMetadata {
-        #             respondType
-        #         }
-
-
-        #     }
-        # }
     }
 `;
 
@@ -95,7 +42,6 @@ export const FullMessage = gql`
         ... on GeneralMessage{
             edited
             attachments{
-                id
                 fallback
                 ...on MessageAttachmentFile{
                     fileId
@@ -112,7 +58,6 @@ export const FullMessage = gql`
                 }
 
                 ...on MessageRichAttachment{
-                    id
                     title
                     subTitle
                     titleLink
@@ -161,6 +106,11 @@ export const FullMessage = gql`
                             ...UserTiny
                         }
                     }
+                    ...on MessageSpanMultiUserMention{
+                        users{
+                            ...UserTiny
+                        }
+                    }
                     ...on MessageSpanRoomMention{
                         room{
                             ...RoomShort
@@ -174,7 +124,6 @@ export const FullMessage = gql`
                 ...on GeneralMessage{
                     edited
                     attachments{
-                        id
                         fallback
                         ...on MessageAttachmentFile{
                             fileId
@@ -191,7 +140,6 @@ export const FullMessage = gql`
                         }
 
                         ...on MessageRichAttachment{
-                            id
                             title
                             subTitle
                             titleLink
@@ -241,6 +189,11 @@ export const FullMessage = gql`
             length
             ...on MessageSpanUserMention{
                 user{
+                    ...UserTiny
+                }
+            }
+            ...on MessageSpanMultiUserMention{
+                users{
                     ...UserTiny
                 }
             }

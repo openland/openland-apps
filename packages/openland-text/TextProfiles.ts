@@ -36,11 +36,11 @@ export const TextProfiles = {
     },
 
     Organization: {
-        publicRooms: 'Rooms',
-        privateRooms: 'Private rooms',
+        publicGroups: 'Groups',
+        privateGroups: 'Private groups',
 
-        createPublicRoom: 'Create room',
-        createPrivateRoom: 'Create private room',
+        createPublicGroup: 'Create group',
+        createPrivateGroup: 'Create private group',
 
         addSocialLinks: 'Add social links',
         addAbout: 'Add a short description',

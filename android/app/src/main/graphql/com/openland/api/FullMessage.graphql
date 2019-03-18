@@ -18,6 +18,12 @@ fragment FullMessage on ModernMessage {
         ...UserTiny
       }
     }
+    ... on MessageSpanMultiUserMention {
+      users {
+        __typename
+        ...UserTiny
+      }
+    }
     ... on MessageSpanRoomMention {
       room {
         __typename
@@ -32,7 +38,6 @@ fragment FullMessage on ModernMessage {
     attachments {
       __typename
       fallback
-      id
       ... on MessageAttachmentFile {
         fileId
         fileMetadata {
@@ -63,7 +68,6 @@ fragment FullMessage on ModernMessage {
           }
           url
         }
-        id
         image {
           __typename
           metadata {
@@ -106,6 +110,12 @@ fragment FullMessage on ModernMessage {
             ...UserTiny
           }
         }
+        ... on MessageSpanMultiUserMention {
+          users {
+            __typename
+            ...UserTiny
+          }
+        }
         ... on MessageSpanRoomMention {
           room {
             __typename
@@ -120,7 +130,6 @@ fragment FullMessage on ModernMessage {
         attachments {
           __typename
           fallback
-          id
           ... on MessageAttachmentFile {
             fileId
             fileMetadata {
@@ -151,7 +160,6 @@ fragment FullMessage on ModernMessage {
               }
               url
             }
-            id
             image {
               __typename
               metadata {

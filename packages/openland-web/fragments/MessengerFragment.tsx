@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XRouter } from 'openland-x-routing/XRouter';
 import { MessengerRootComponent } from './MessengerRootComponent';
 import { RoomsInviteComponent } from './RoomsInviteComponent';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, Room, UserShort } from 'openland-api/Types';
@@ -15,6 +16,8 @@ import { withUserInfo } from '../components/UserInfo';
 import { withQueryLoader } from '../components/withQueryLoader';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
 import { ForwardPlaceholder } from './chat/ForwardPlaceholder';
+import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
+import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 
 export interface MessengerComponentProps {
     id: string;
@@ -30,7 +33,13 @@ interface MessengerComponentLoaderProps {
     data: Room;
 }
 
-class MessagengerFragmentInner extends React.PureComponent<MessengerComponentLoaderProps> {
+class MessagengerFragmentInner extends React.PureComponent<
+    MessengerComponentLoaderProps & { router: XRouter; apollo: OpenApolloClient }
+> {
+    onConversationLostAccess = () => {
+        this.props.apollo.client.reFetchObservableQueries();
+    };
+
     render() {
         const { state, data, loading, isActive } = this.props;
         if (!data || !data.room || loading) {
@@ -71,6 +80,7 @@ class MessagengerFragmentInner extends React.PureComponent<MessengerComponentLoa
 
                     <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
                         <MessengerRootComponent
+                            onConversationLostAccess={this.onConversationLostAccess}
                             isActive={isActive}
                             objectName={title}
                             objectId={
@@ -102,10 +112,19 @@ const MessengerComponentLoader = withRoom(withQueryLoader(
     isActive: boolean;
     variables: { id: string };
     state: MessagesStateContextProps;
+    apollo: any;
 }>;
 
 export const MessengerFragment = ({ id, isActive }: MessengerComponentProps) => {
     const state: MessagesStateContextProps = React.useContext(MessagesStateContext);
+    const apollo = React.useContext(YApolloContext)!;
 
-    return <MessengerComponentLoader variables={{ id }} state={state} isActive={isActive} />;
+    return (
+        <MessengerComponentLoader
+            variables={{ id }}
+            state={state}
+            isActive={isActive}
+            apollo={apollo}
+        />
+    );
 };

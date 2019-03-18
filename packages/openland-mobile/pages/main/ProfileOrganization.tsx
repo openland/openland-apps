@@ -49,6 +49,51 @@ function ProfileOrganizationContent(props: PageProps) {
             { path: 'OrganizationInviteLinkModal', pathParams: { id: organization.id } });
     }, [organization.id]);
 
+    let canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id);
+
+    let handleManageClick = React.useCallback(() => {
+        let builder = new ActionSheetBuilder();
+
+        if (organization.isOwner || organization.isAdmin) {
+            builder.action('Edit', () => props.router.push('EditOrganization', { id: props.router.params.id }));
+        }
+
+        if (canMakePrimary) {
+            builder.action('Make primary', async () => {
+                startLoader();
+                try {
+                    await getClient().mutateProfileUpdate({
+                        input: {
+                            alphaPrimaryOrganizationId: organization.id,
+                        },
+                    });
+                    await getClient().refetchAccountSettings();
+
+                    props.router.back();
+                } finally {
+                    stopLoader();
+                }
+            });
+        }
+
+        if (organization.isOwner || organization.isAdmin) {
+            builder.action('Delete organization', () => {
+                Alert.builder()
+                    .title(`Delete ${organization.name}`)
+                    .message(`Are you sure you want to delete ${organization.name}? This cannot be undone.`)
+                    .button('Cancel', 'cancel')
+                    .action('Delete', 'destructive', async () => {
+                        await getClient().mutateDeleteOrganization({ organizationId: organization.id });
+                        await getClient().refetchAccountSettings();
+
+                        props.router.back();
+                    }).show();
+            }, true);
+        }
+
+        builder.show();
+    }, []);
+
     // Sort members by name (admins should go first)
     let sortedMembers = organization.members
         .sort((a, b) => (a.user.name.localeCompare(b.user.name)))
@@ -56,7 +101,7 @@ function ProfileOrganizationContent(props: PageProps) {
 
     return (
         <>
-            {(organization.isOwner || organization.isAdmin) && <SHeaderButton title="Edit" onPress={() => props.router.push('EditOrganization', { id: props.router.params.id })} />}
+            {(organization.isOwner || organization.isAdmin || canMakePrimary) && <SHeaderButton title="Manage" icon={require('assets/ic-more-24.png')} onPress={handleManageClick} />}
 
             <ZListItemHeader
                 photo={organization.photo}
@@ -64,47 +109,6 @@ function ProfileOrganizationContent(props: PageProps) {
                 title={organization.name}
                 subtitle={organization.isCommunity ? 'Community' : 'Organization'}
             />
-
-            <ZListItemGroup header="Manage" divider={false}>
-                {organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id) && (
-                    <ZListItem
-                        text="Make primary"
-                        appearance="action"
-                        onPress={async () => {
-                            startLoader();
-                            try {
-                                await getClient().mutateProfileUpdate({
-                                    input: {
-                                        alphaPrimaryOrganizationId: organization.id,
-                                    },
-                                });
-                                await getClient().refetchAccountSettings();
-                            } finally {
-                                stopLoader();
-                            }
-                        }}
-                    />
-                )}
-
-                {organization.isAdmin && (
-                    <ZListItem
-                        text="Delete organization"
-                        appearance="danger"
-                        onPress={() => {
-                            Alert.builder()
-                                .title(`Delete ${organization.name}`)
-                                .message(`Are you sure you want to delete ${organization.name}? This cannot be undone.`)
-                                .button('Cancel', 'cancel')
-                                .action('Delete', 'destructive', async () => {
-                                    await getClient().mutateDeleteOrganization({ organizationId: organization.id });
-                                    await getClient().refetchAccountSettings();
-
-                                    props.router.back();
-                                }).show();
-                        }}
-                    />
-                )}
-            </ZListItemGroup>
 
             <ZListItemGroup header="About" divider={false}>
                 {organization.about && (

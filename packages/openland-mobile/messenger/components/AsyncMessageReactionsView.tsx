@@ -9,6 +9,15 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Stopwatch } from 'openland-y-utils/stopwatch';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
+let reactionMap = {
+    'LIKE': '❤️',
+    'THUMB_UP': '👍',
+    'JOY': '😂',
+    'SCREAM': '😱',
+    'CRYING': '😢',
+    'ANGRY': '🤬',
+}
+
 export const AsyncMessageReactionsView = React.memo<{ message: DataSourceMessageItem }>((props) => {
     let theme = React.useContext(ThemeContext);
     let sw = new Stopwatch('reactions');
@@ -16,16 +25,20 @@ export const AsyncMessageReactionsView = React.memo<{ message: DataSourceMessage
     if (!props.message.reactions || props.message.reactions!.length === 0) {
         return null;
     }
-    let reactionsMap = props.message.reactions!.reduce(
-        (res, r) => {
-            let data = res.get(r.reaction) || { reaction: r.reaction, count: 0, my: false };
-            data.count++;
-            data.my = data.my || r.user.id === getMessenger().engine.user.id;
-            res.set(r.reaction, data);
-            return res;
-        },
-        new Map<string, { count: number, my: boolean, reaction: string }>()
-    );
+    let reactionsMap = props.message.reactions!.map(r => {
+        r.reaction = reactionMap[r.reaction] as any || r.reaction;
+        return r;
+    })
+        .reduce(
+            (res, r) => {
+                let data = res.get(r.reaction) || { reaction: r.reaction, count: 0, my: false };
+                data.count++;
+                data.my = data.my || r.user.id === getMessenger().engine.user.id;
+                res.set(r.reaction, data);
+                return res;
+            },
+            new Map<string, { count: number, my: boolean, reaction: string }>()
+        );
     let reactions = [...reactionsMap.values()].sort((a, b) => a.count - b.count);
     let users = props.message.reactions!
         .reduce(
