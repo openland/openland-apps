@@ -281,6 +281,7 @@
     },
     "resolutions": {
         "**/@types/react-native": "0.56.4",
+        "**/apollo-utilities": "1.2.1",
         "**/@babel/core": "7.0.0"
     },
     "scripts": {
