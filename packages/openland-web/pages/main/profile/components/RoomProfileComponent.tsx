@@ -50,6 +50,7 @@ import {
     RoomSetHidden,
 } from 'openland-web/pages/main/profile/components/RoomControls';
 import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
+import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
@@ -131,14 +132,26 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                         >
                                             {leaveText}
                                         </XMenuItem>
+                                        <XMenuItemSeparator />
+                                        <XMenuItem
+                                            query={{
+                                                field: 'advancedSettings',
+                                                value: 'true',
+                                            }}
+                                        >
+                                            Advanced settings
+                                        </XMenuItem>
                                         <XWithRole role="super-admin">
-                                            <XMenuItemSeparator />
                                             <AdminTools id={chat.id} variables={{ id: chat.id }} />
                                         </XWithRole>
                                     </>
                                 }
                             />
                             <LeaveChatComponent />
+                            <AdvancedSettingsModal
+                                roomId={chat.id}
+                                socialImage={chat.socialImage}
+                            />
                             <RoomEditModal
                                 roomId={chat.id}
                                 title={chat.title}

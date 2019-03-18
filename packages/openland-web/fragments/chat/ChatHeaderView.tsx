@@ -6,6 +6,7 @@ import { XButton } from 'openland-x/XButton';
 import { Room, Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { RoomEditModal } from './RoomEditModal';
+import { AdvancedSettingsModal } from './AdvancedSettingsModal';
 import { RoomAddMemberModal } from './RoomAddMemberModal';
 import { ChatForwardHeaderView } from './ChatForwardHeaderView';
 import { HeaderTitle } from './components/HeaderTitle';
@@ -106,7 +107,7 @@ const ChatHeaderViewAbstract = XMemo(
 
 const CallButton = ({ room }: { room: Room_room_SharedRoom | Room_room_PrivateRoom }) => {
     let calls = React.useContext(MessengerContext).calls;
-    let callsState =  calls.useState();
+    let callsState = calls.useState();
     // const ctx = React.useContext(TalkContext);
 
     return callsState.conversationId !== room.id ? (
@@ -190,13 +191,19 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
             );
         }
         modals = (
-            <RoomEditModal
-                title={sharedRoom.title}
-                description={sharedRoom.description}
-                photo={sharedRoom.photo}
-                socialImage={sharedRoom.socialImage}
-                roomId={sharedRoom.id}
-            />
+            <>
+                <AdvancedSettingsModal
+                    roomId={sharedRoom.id}
+                    socialImage={sharedRoom.socialImage}
+                />
+                <RoomEditModal
+                    title={sharedRoom.title}
+                    description={sharedRoom.description}
+                    photo={sharedRoom.photo}
+                    socialImage={sharedRoom.socialImage}
+                    roomId={sharedRoom.id}
+                />
+            </>
         );
     }
 
