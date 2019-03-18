@@ -1,0 +1,6 @@
+mutation UpdateApp($appId: ID!, $input: AppProfileInput!) {
+  updateAppProfile(appId: $appId, input: $input) {
+    __typename
+    ...AppFull
+  }
+}

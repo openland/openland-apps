@@ -1,0 +1,221 @@
+fragment FullMessage on ModernMessage {
+  __typename
+  date
+  fallback
+  id
+  message
+  sender {
+    __typename
+    ...UserShort
+  }
+  spans {
+    __typename
+    length
+    offset
+    ... on MessageSpanUserMention {
+      user {
+        __typename
+        ...UserTiny
+      }
+    }
+    ... on MessageSpanRoomMention {
+      room {
+        __typename
+        ...RoomShort
+      }
+    }
+    ... on MessageSpanLink {
+      url
+    }
+  }
+  ... on GeneralMessage {
+    attachments {
+      __typename
+      fallback
+      id
+      ... on MessageAttachmentFile {
+        fileId
+        fileMetadata {
+          __typename
+          imageFormat
+          imageHeight
+          imageWidth
+          isImage
+          mimeType
+          name
+          size
+        }
+        filePreview
+      }
+      ... on MessageRichAttachment {
+        fallback
+        icon {
+          __typename
+          metadata {
+            __typename
+            imageFormat
+            imageHeight
+            imageWidth
+            isImage
+            mimeType
+            name
+            size
+          }
+          url
+        }
+        id
+        image {
+          __typename
+          metadata {
+            __typename
+            imageFormat
+            imageHeight
+            imageWidth
+            isImage
+            mimeType
+            name
+            size
+          }
+          url
+        }
+        subTitle
+        text
+        title
+        titleLink
+      }
+    }
+    edited
+    quotedMessages {
+      __typename
+      date
+      fallback
+      id
+      message
+      message
+      sender {
+        __typename
+        ...UserShort
+      }
+      spans {
+        __typename
+        length
+        offset
+        ... on MessageSpanUserMention {
+          user {
+            __typename
+            ...UserTiny
+          }
+        }
+        ... on MessageSpanRoomMention {
+          room {
+            __typename
+            ...RoomShort
+          }
+        }
+        ... on MessageSpanLink {
+          url
+        }
+      }
+      ... on GeneralMessage {
+        attachments {
+          __typename
+          fallback
+          id
+          ... on MessageAttachmentFile {
+            fileId
+            fileMetadata {
+              __typename
+              imageFormat
+              imageHeight
+              imageWidth
+              isImage
+              mimeType
+              name
+              size
+            }
+            filePreview
+          }
+          ... on MessageRichAttachment {
+            fallback
+            icon {
+              __typename
+              metadata {
+                __typename
+                imageFormat
+                imageHeight
+                imageWidth
+                isImage
+                mimeType
+                name
+                size
+              }
+              url
+            }
+            id
+            image {
+              __typename
+              metadata {
+                __typename
+                imageFormat
+                imageHeight
+                imageWidth
+                isImage
+                mimeType
+                name
+                size
+              }
+              url
+            }
+            subTitle
+            text
+            title
+            titleLink
+          }
+        }
+        edited
+      }
+    }
+    reactions {
+      __typename
+      reaction
+      user {
+        __typename
+        ...UserTiny
+      }
+    }
+  }
+  ... on ServiceMessage {
+    serviceMetadata {
+      __typename
+      ... on InviteServiceMetadata {
+        invitedBy {
+          __typename
+          ...UserTiny
+        }
+        users {
+          __typename
+          ...UserTiny
+        }
+      }
+      ... on KickServiceMetadata {
+        kickedBy {
+          __typename
+          ...UserTiny
+        }
+        user {
+          __typename
+          ...UserTiny
+        }
+      }
+      ... on TitleChangeServiceMetadata {
+        title
+      }
+      ... on PhotoChangeServiceMetadata {
+        photo
+      }
+      ... on PostRespondServiceMetadata {
+        respondType
+      }
+    }
+  }
+}

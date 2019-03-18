@@ -1,0 +1,6 @@
+mutation ConferenceOffer($id: ID!, $offer: String!, $ownPeerId: ID!, $peerId: ID!) {
+  peerConnectionOffer(id: $id, offer: $offer, ownPeerId: $ownPeerId, peerId: $peerId) {
+    __typename
+    ...ConferenceFull
+  }
+}

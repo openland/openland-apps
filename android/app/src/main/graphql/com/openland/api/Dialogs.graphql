@@ -1,0 +1,30 @@
+query Dialogs($after: String) {
+  counter: alphaNotificationCounter {
+    __typename
+    id
+    unreadCount
+  }
+  dialogs(after: $after, first: 0) {
+    __typename
+    cursor
+    items {
+      __typename
+      topMessage: alphaTopMessage {
+        __typename
+        ...TinyMessage
+      }
+      cid
+      fid
+      haveMention
+      isMuted
+      kind
+      photo
+      title
+      unreadCount
+    }
+  }
+  state: dialogsState {
+    __typename
+    state
+  }
+}

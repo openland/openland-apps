@@ -1,0 +1,10 @@
+fragment OrganizationMedium on Organization {
+  __typename
+  isCommunity: alphaIsCommunity
+  isAdmin: betaIsAdmin
+  isOwner: betaIsOwner
+  id
+  isMine
+  name
+  photo
+}

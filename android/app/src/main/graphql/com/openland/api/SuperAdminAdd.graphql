@@ -1,0 +1,3 @@
+mutation SuperAdminAdd($role: SuperAdminRole!, $userId: ID!) {
+  superAdminAdd(role: $role, userId: $userId)
+}

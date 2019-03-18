@@ -1,0 +1,10 @@
+fragment SettingsFull on Settings {
+  __typename
+  desktopNotifications
+  emailFrequency
+  id
+  mobileAlert
+  mobileIncludeText
+  mobileNotifications
+  primaryEmail
+}

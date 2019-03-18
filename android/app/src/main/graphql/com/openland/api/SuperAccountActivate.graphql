@@ -1,0 +1,7 @@
+mutation SuperAccountActivate($accountId: ID!) {
+  superAccountActivate(id: $accountId) {
+    __typename
+    id
+    state
+  }
+}

@@ -1,0 +1,10 @@
+query AccountSettings {
+  me: me {
+    __typename
+    ...UserShort
+  }
+  organizations: myOrganizations {
+    __typename
+    ...OrganizationShort
+  }
+}

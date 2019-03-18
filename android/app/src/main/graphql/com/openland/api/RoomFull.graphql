@@ -1,0 +1,52 @@
+fragment RoomFull on Room {
+  __typename
+  ... on PrivateRoom {
+    id
+    settings {
+      __typename
+      id
+      mute
+    }
+    user {
+      __typename
+      ...UserShort
+    }
+  }
+  ... on SharedRoom {
+    description
+    id
+    kind
+    members {
+      __typename
+      canKick
+      membership
+      role
+      user {
+        __typename
+        ...UserShort
+      }
+    }
+    membersCount
+    membership
+    organization {
+      __typename
+      ...OrganizationMedium
+    }
+    photo
+    requests {
+      __typename
+      user {
+        __typename
+        ...UserShort
+      }
+    }
+    role
+    settings {
+      __typename
+      id
+      mute
+    }
+    socialImage
+    title
+  }
+}

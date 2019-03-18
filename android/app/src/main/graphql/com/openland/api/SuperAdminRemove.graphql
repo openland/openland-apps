@@ -1,0 +1,3 @@
+mutation SuperAdminRemove($userId: ID!) {
+  superAdminRemove(userId: $userId)
+}

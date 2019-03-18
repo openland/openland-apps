@@ -1,6 +1,8 @@
 apply plugin: 'kotlin-kapt'
 apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
+apply plugin: 'com.apollographql.android'
+apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
 
@@ -244,5 +246,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
 //task bundleReleaseJsAndAssets(overwrite: true) {
 //
 //}
-
-apply plugin: 'com.google.gms.google-services'

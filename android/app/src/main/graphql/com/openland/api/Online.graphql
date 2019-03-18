@@ -1,0 +1,8 @@
+query Online($userId: ID!) {
+  user: user(id: $userId) {
+    __typename
+    id
+    lastSeen
+    online
+  }
+}

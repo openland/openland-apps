@@ -1,0 +1,3 @@
+mutation RoomRenewInviteLink($roomId: ID!) {
+  link: betaRoomInviteLinkRenew(roomId: $roomId)
+}

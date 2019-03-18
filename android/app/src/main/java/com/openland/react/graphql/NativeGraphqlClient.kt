@@ -51,7 +51,7 @@ class JSVariables(val data: ReadableMap?) : Operation.Variables() {
 class JSData(val data: WritableMap) : Operation.Data {
     override fun marshaller(): ResponseFieldMarshaller {
         return ResponseFieldMarshaller {
-            it.writeBoolean(ResponseField.forBoolean(data.))
+            // it.writeBoolean(ResponseField.forBoolean(data))
             // Unsupported?
         }
     }

@@ -1,0 +1,6 @@
+mutation RoomJoinInviteLink($invite: String!) {
+  join: betaRoomInviteLinkJoin(invite: $invite) {
+    __typename
+    ...RoomFull
+  }
+}

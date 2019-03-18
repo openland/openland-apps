@@ -1,0 +1,6 @@
+mutation ConferenceCandidate($candidate: String!, $id: ID!, $ownPeerId: ID!, $peerId: ID!) {
+  peerConnectionCandidate(candidate: $candidate, id: $id, ownPeerId: $ownPeerId, peerId: $peerId) {
+    __typename
+    ...ConferenceFull
+  }
+}

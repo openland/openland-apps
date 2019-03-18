@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -55,6 +56,7 @@ export interface Account {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -99,6 +101,7 @@ export interface AccountSettings {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -120,6 +123,7 @@ export interface CreateOrganizationVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -172,6 +176,7 @@ export interface AccountInviteInfoVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -246,6 +251,7 @@ export interface AccountAppInviteInfoVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -257,6 +263,7 @@ export interface AccountAppInvite {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -272,6 +279,7 @@ export interface AccountInviteJoinVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -289,6 +297,7 @@ export interface AccountInvites {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -314,6 +323,7 @@ export interface AccountInvitesHistory {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -331,6 +341,7 @@ export interface AccountCreateInvite {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -346,6 +357,7 @@ export interface AccountDestroyInviteVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -364,6 +376,7 @@ export interface ProfilePrefill {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -422,6 +435,7 @@ export interface CreateUserProfileAndOrganizationVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -438,6 +452,7 @@ export interface ReportOnlineVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -454,6 +469,7 @@ export interface RegisterPushVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -494,6 +510,7 @@ export interface MyApps {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -541,6 +558,7 @@ export interface CreateAppVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -586,6 +604,7 @@ export interface UpdateAppVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -630,6 +649,7 @@ export interface RefreshAppTokenVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -664,6 +684,7 @@ export interface AddAppToChatVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -705,8 +726,8 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   shortname: string | null;
 }
 
-export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageRichAttachment {
-  __typename: "MessageRichAttachment" | "MessageAttachmentPost";
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
   id: string;
   fallback: string;
 }
@@ -726,10 +747,10 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_Mes
   filePreview: string | null;
 }
 
-export type Dialogs_dialogs_items_topMessage_GeneralMessage_attachments = Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageRichAttachment | Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
+export type Dialogs_dialogs_items_topMessage_GeneralMessage_attachments = Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
 
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage_quotedMessages {
-  __typename: "ServiceMessage" | "GeneralMessage";
+  __typename: "GeneralMessage" | "ServiceMessage";
   /**
    * State
    */
@@ -796,6 +817,7 @@ export interface DialogsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -945,6 +967,7 @@ export interface RoomVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1011,6 +1034,7 @@ export interface RoomTinyVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1033,6 +1057,7 @@ export interface RoomSuperVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1049,6 +1074,7 @@ export interface MessageSetReactionVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1067,6 +1093,7 @@ export interface SwitchReactionVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1083,6 +1110,7 @@ export interface MessageUnsetReactionVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1107,6 +1135,7 @@ export interface SendPostMessageVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1131,6 +1160,7 @@ export interface EditPostMessageVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1149,6 +1179,7 @@ export interface RespondPostMessageVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1165,6 +1196,7 @@ export interface SaveDraftMessageVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1180,6 +1212,7 @@ export interface GetDraftMessageVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1197,6 +1230,7 @@ export interface GlobalCounter {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1984,6 +2018,7 @@ export interface ChatHistoryVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2004,6 +2039,7 @@ export interface SendMessageVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2022,6 +2058,7 @@ export interface ReplyMessageVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2038,6 +2075,7 @@ export interface RoomReadVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2045,7 +2083,7 @@ export interface RoomReadVariables {
 // ====================================================
 
 export interface ChatSearchGroup_group {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
+  __typename: "ChannelConversation" | "AnonymousConversation" | "GroupConversation" | "PrivateConversation" | "SharedConversation";
   id: string;
   flexibleId: string;
 }
@@ -2059,6 +2097,7 @@ export interface ChatSearchGroupVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2088,6 +2127,7 @@ export interface RoomCreateVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2106,6 +2146,7 @@ export interface RoomCreateIntroVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2124,6 +2165,7 @@ export interface RoomEditIntroVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2139,6 +2181,7 @@ export interface SetTypingVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2154,6 +2197,7 @@ export interface CancelTypingVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2307,6 +2351,7 @@ export interface RoomAddMemberVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2457,6 +2502,7 @@ export interface RoomDeclineJoinReuestVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2610,6 +2656,7 @@ export interface RoomAddMembersVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2760,6 +2807,7 @@ export interface RoomKickVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2909,6 +2957,7 @@ export interface RoomLeaveVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2933,6 +2982,7 @@ export interface RoomSearchTextVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3067,6 +3117,7 @@ export interface RoomSearchVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3093,6 +3144,7 @@ export interface RoomAlterFeaturedVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3116,6 +3168,7 @@ export interface RoomAlterHiddenVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3141,6 +3194,7 @@ export interface RoomMembersShortVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3187,6 +3241,7 @@ export interface RoomMembersVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3212,6 +3267,7 @@ export interface RoomSettingsUpdateVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3361,6 +3417,7 @@ export interface RoomJoinVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3380,6 +3437,7 @@ export interface RoomSendEmailInviteVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3529,6 +3587,7 @@ export interface RoomJoinInviteLinkVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3544,6 +3603,7 @@ export interface RoomRenewInviteLinkVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3559,6 +3619,7 @@ export interface RoomInviteLinkVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3632,6 +3693,7 @@ export interface RoomInviteInfoVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3663,6 +3725,7 @@ export interface RoomUpdateVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3678,6 +3741,7 @@ export interface RoomDeleteMessageVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3693,6 +3757,7 @@ export interface RoomDeleteMessagesVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3708,6 +3773,7 @@ export interface RoomDeleteUrlAugmentationVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3727,6 +3793,7 @@ export interface RoomEditMessageVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3742,6 +3809,7 @@ export interface MarkSequenceReadVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3809,6 +3877,7 @@ export interface ConferenceVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3847,6 +3916,7 @@ export interface ConferenceMediaVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3920,6 +3990,7 @@ export interface ConferenceJoinVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3988,6 +4059,7 @@ export interface ConferenceLeaveVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4056,6 +4128,7 @@ export interface ConferenceKeepAliveVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4126,6 +4199,7 @@ export interface ConferenceOfferVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4196,6 +4270,7 @@ export interface ConferenceAnswerVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4266,6 +4341,7 @@ export interface ConferenceCandidateVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4297,6 +4373,7 @@ export interface MediaOfferVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4328,6 +4405,7 @@ export interface MediaAnswerVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4359,6 +4437,7 @@ export interface MediaCandidateVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4388,6 +4467,7 @@ export interface AvailableRooms {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4455,6 +4535,7 @@ export interface GlobalSearchVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4473,6 +4554,7 @@ export interface FeatureFlags {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4496,6 +4578,7 @@ export interface FeatureFlagAddVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4525,6 +4608,7 @@ export interface FeatureFlagEnableVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4554,6 +4638,7 @@ export interface FeatureFlagDisableVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4597,6 +4682,7 @@ export interface FeedHome {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4617,6 +4703,7 @@ export interface FeedPostVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4637,6 +4724,7 @@ export interface MyOrganizations {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4682,6 +4770,7 @@ export interface UpdateOrganizationVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4698,6 +4787,7 @@ export interface SetOrgShortnameVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4829,6 +4919,7 @@ export interface OrganizationVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4859,6 +4950,7 @@ export interface OrganizationMembersShortVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4903,6 +4995,7 @@ export interface OrganizationProfileVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -4973,6 +5066,7 @@ export interface ExploreOrganizationsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5040,6 +5134,7 @@ export interface ExploreComunityVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5057,6 +5152,7 @@ export interface OrganizationChangeMemberRoleVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5189,6 +5285,7 @@ export interface OrganizationAddMemberVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5205,6 +5302,7 @@ export interface OrganizationRemoveMemberVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5221,6 +5319,7 @@ export interface OrganizationInviteMembersVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5243,6 +5342,7 @@ export interface OrganizationPublicInviteVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5266,6 +5366,7 @@ export interface OrganizationCreatePublicInviteVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5281,6 +5382,7 @@ export interface DeleteOrganizationVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5302,6 +5404,7 @@ export interface OrganizationMemberRemoveVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5317,6 +5420,7 @@ export interface OrganizationActivateByInviteVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5361,6 +5465,7 @@ export interface OrganizationAlterPublishedVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5404,6 +5509,7 @@ export interface OrganizationByPrefixVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5420,6 +5526,7 @@ export interface Permissions {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5435,6 +5542,7 @@ export interface DebugMailsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5477,6 +5585,7 @@ export interface SuperAdmins {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5496,6 +5605,7 @@ export interface SuperAccounts {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5561,6 +5671,7 @@ export interface SuperAccountVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5583,6 +5694,7 @@ export interface SuperAccountRenameVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5604,6 +5716,7 @@ export interface SuperAccountActivateVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5625,6 +5738,7 @@ export interface SuperAccountSuspendVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5646,6 +5760,7 @@ export interface SuperAccountPendVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5666,6 +5781,7 @@ export interface SuperAccountAddVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5712,6 +5828,7 @@ export interface SuperAccountMemberAddVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5758,6 +5875,7 @@ export interface SuperAccountMemberRemoveVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5774,6 +5892,7 @@ export interface SuperAdminAddVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5789,6 +5908,7 @@ export interface SuperAdminRemoveVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5853,6 +5973,7 @@ export interface Profile {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5912,6 +6033,7 @@ export interface ProfileUpdateVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5927,6 +6049,7 @@ export interface SetUserShortnameVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5972,6 +6095,7 @@ export interface ProfileCreateVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -5994,6 +6118,7 @@ export interface Settings {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -6023,6 +6148,7 @@ export interface SettingsUpdateVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -6039,6 +6165,7 @@ export interface PersistEventsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -6064,6 +6191,7 @@ export interface UsersVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -6128,6 +6256,7 @@ export interface UserVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -6150,6 +6279,7 @@ export interface OnlineVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -6214,6 +6344,7 @@ export interface ExplorePeopleVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -6377,6 +6508,7 @@ export interface ResolveShortNameVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -6402,6 +6534,7 @@ export interface AppChat {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -6438,6 +6571,7 @@ export interface AppFull {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -6497,6 +6631,7 @@ export interface ConferenceFull {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -6538,8 +6673,8 @@ export interface TinyMessage_GeneralMessage_sender {
   shortname: string | null;
 }
 
-export interface TinyMessage_GeneralMessage_attachments_MessageRichAttachment {
-  __typename: "MessageRichAttachment" | "MessageAttachmentPost";
+export interface TinyMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
   id: string;
   fallback: string;
 }
@@ -6559,10 +6694,10 @@ export interface TinyMessage_GeneralMessage_attachments_MessageAttachmentFile {
   filePreview: string | null;
 }
 
-export type TinyMessage_GeneralMessage_attachments = TinyMessage_GeneralMessage_attachments_MessageRichAttachment | TinyMessage_GeneralMessage_attachments_MessageAttachmentFile;
+export type TinyMessage_GeneralMessage_attachments = TinyMessage_GeneralMessage_attachments_MessageAttachmentPost | TinyMessage_GeneralMessage_attachments_MessageAttachmentFile;
 
 export interface TinyMessage_GeneralMessage_quotedMessages {
-  __typename: "ServiceMessage" | "GeneralMessage";
+  __typename: "GeneralMessage" | "ServiceMessage";
   /**
    * State
    */
@@ -6589,6 +6724,7 @@ export interface TinyMessage_GeneralMessage {
 export type TinyMessage = TinyMessage_ServiceMessage | TinyMessage_GeneralMessage;
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7360,6 +7496,7 @@ export interface FullMessage_ServiceMessage {
 export type FullMessage = FullMessage_GeneralMessage | FullMessage_ServiceMessage;
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7483,6 +7620,7 @@ export interface OrganizationFull {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7501,6 +7639,7 @@ export interface OrganizationMedium {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7537,6 +7676,7 @@ export interface OrganizationProfileFull {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7572,6 +7712,7 @@ export interface OrganizationSearch {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7587,6 +7728,7 @@ export interface OrganizationShort {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7728,6 +7870,7 @@ export interface RoomFull_SharedRoom {
 export type RoomFull = RoomFull_PrivateRoom | RoomFull_SharedRoom;
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7786,6 +7929,7 @@ export interface RoomShort_SharedRoom {
 export type RoomShort = RoomShort_PrivateRoom | RoomShort_SharedRoom;
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7807,6 +7951,7 @@ export interface SessionStateFull {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7825,6 +7970,7 @@ export interface SettingsFull {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7862,6 +8008,7 @@ export interface UserFull {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7893,6 +8040,7 @@ export interface UserShort {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -7910,6 +8058,7 @@ export interface UserTiny {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 //==============================================================

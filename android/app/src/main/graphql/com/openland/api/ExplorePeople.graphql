@@ -1,0 +1,23 @@
+query ExplorePeople($after: String, $page: Int, $query: String, $sort: String) {
+  items: userSearch(after: $after, first: 0, page: $page, query: $query, sort: $sort) {
+    __typename
+    edges {
+      __typename
+      cursor
+      node {
+        __typename
+        isYou
+        ...UserShort
+      }
+    }
+    pageInfo {
+      __typename
+      currentPage
+      hasNextPage
+      hasPreviousPage
+      itemsCount
+      openEnded
+      pagesCount
+    }
+  }
+}
