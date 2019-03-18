@@ -221,7 +221,7 @@ export const SpansMessage = ({
                         <XView
                             as="a"
                             target="_blank"
-                            path={span.url}
+                            href={span.url}
                             onClick={(e: any) => e.stopPropagation()}
                         >
                             {span.url}
