@@ -954,6 +954,7 @@ export interface Room_room_SharedRoom {
   members: Room_room_SharedRoom_members[];
   requests: Room_room_SharedRoom_requests[] | null;
   settings: Room_room_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type Room_room = Room_room_PrivateRoom | Room_room_SharedRoom;
@@ -1426,6 +1427,7 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
+  titleLinkHostname: string | null;
   text: string | null;
   icon: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_image | null;
@@ -1763,6 +1765,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
+  titleLinkHostname: string | null;
   text: string | null;
   icon: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
@@ -2372,6 +2375,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom {
   members: RoomAddMember_betaRoomInvite_SharedRoom_members[];
   requests: RoomAddMember_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMember_betaRoomInvite_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomAddMember_betaRoomInvite = RoomAddMember_betaRoomInvite_PrivateRoom | RoomAddMember_betaRoomInvite_SharedRoom;
@@ -2526,6 +2530,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom {
   members: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members[];
   requests: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests[] | null;
   settings: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom;
@@ -2677,6 +2682,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom {
   members: RoomAddMembers_betaRoomInvite_SharedRoom_members[];
   requests: RoomAddMembers_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMembers_betaRoomInvite_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomAddMembers_betaRoomInvite = RoomAddMembers_betaRoomInvite_PrivateRoom | RoomAddMembers_betaRoomInvite_SharedRoom;
@@ -2831,6 +2837,7 @@ export interface RoomKick_betaRoomKick_SharedRoom {
   members: RoomKick_betaRoomKick_SharedRoom_members[];
   requests: RoomKick_betaRoomKick_SharedRoom_requests[] | null;
   settings: RoomKick_betaRoomKick_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomKick_betaRoomKick = RoomKick_betaRoomKick_PrivateRoom | RoomKick_betaRoomKick_SharedRoom;
@@ -2982,6 +2989,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom {
   members: RoomLeave_betaRoomLeave_SharedRoom_members[];
   requests: RoomLeave_betaRoomLeave_SharedRoom_requests[] | null;
   settings: RoomLeave_betaRoomLeave_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomLeave_betaRoomLeave = RoomLeave_betaRoomLeave_PrivateRoom | RoomLeave_betaRoomLeave_SharedRoom;
@@ -3120,6 +3128,7 @@ export interface RoomSearch_items_edges_node {
   members: RoomSearch_items_edges_node_members[];
   requests: RoomSearch_items_edges_node_requests[] | null;
   settings: RoomSearch_items_edges_node_settings;
+  canEdit: boolean;
 }
 
 export interface RoomSearch_items_edges {
@@ -3442,6 +3451,7 @@ export interface RoomJoin_join_SharedRoom {
   members: RoomJoin_join_SharedRoom_members[];
   requests: RoomJoin_join_SharedRoom_requests[] | null;
   settings: RoomJoin_join_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomJoin_join = RoomJoin_join_PrivateRoom | RoomJoin_join_SharedRoom;
@@ -3612,6 +3622,7 @@ export interface RoomJoinInviteLink_join_SharedRoom {
   members: RoomJoinInviteLink_join_SharedRoom_members[];
   requests: RoomJoinInviteLink_join_SharedRoom_requests[] | null;
   settings: RoomJoinInviteLink_join_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomJoinInviteLink_join = RoomJoinInviteLink_join_PrivateRoom | RoomJoinInviteLink_join_SharedRoom;
@@ -6857,6 +6868,7 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment {
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
+  titleLinkHostname: string | null;
   text: string | null;
   icon: FullMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: FullMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
@@ -7194,6 +7206,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attach
   title: string | null;
   subTitle: string | null;
   titleLink: string | null;
+  titleLinkHostname: string | null;
   text: string | null;
   icon: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
@@ -7941,6 +7954,7 @@ export interface RoomFull_SharedRoom {
   members: RoomFull_SharedRoom_members[];
   requests: RoomFull_SharedRoom_requests[] | null;
   settings: RoomFull_SharedRoom_settings;
+  canEdit: boolean;
 }
 
 export type RoomFull = RoomFull_PrivateRoom | RoomFull_SharedRoom;

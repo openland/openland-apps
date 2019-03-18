@@ -67,7 +67,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                         <XButton
                                             style="success"
                                             text={callState.mute ? 'Unmute' : 'Mute'}
-                                            onClick={() => calls.setMute(callState.mute)}
+                                            onClick={() => calls.setMute(!callState.mute)}
                                         />
                                         <XView width={8} />
                                         <XButton

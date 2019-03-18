@@ -6,18 +6,135 @@ import { MentionComponentInnerText } from 'openland-x/XRichTextInput';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { UserShort } from 'openland-api/Types';
 import { emoji } from 'openland-y-utils/emoji';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { OthersPopper } from './views/OthersPopper';
 import { LinkToRoom } from './views/LinkToRoom';
+import { isEmoji } from 'openland-y-utils/isEmoji';
+
+const EmojiSpaceStyle = css`
+    & img {
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+`;
+
+const EditLabelStyle = css`
+    display: inline-block;
+    vertical-align: baseline;
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 22px;
+    padding-left: 6px;
+    letter-spacing: 0;
+`;
+
+const TextOnlyEmojiStyle = css`
+    letter-spacing: 3px;
+    & img {
+        margin-right: 4px;
+    }
+`;
+
+const TextLargeStyle = css`
+    display: inline;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    font-size: 36px;
+    min-height: 44px;
+    line-height: 40px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.8);
+`;
+
+const TextInsaneStyle = css`
+    background: url(https://cdn.openland.com/shared/web/insane.gif);
+    background-clip: text, border;
+    -webkit-background-clip: text;
+    color: transparent;
+`;
+
+const TextRotatingStyle = css`
+    animation: rotate 1s linear infinite;
+    display: inline-block;
+
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+`;
+
+function emojiChecker(messageText: string) {
+    if (isEmoji(messageText)) {
+        return true;
+    }
+    const messageArray = Array.from(messageText);
+    const pattern = /^([a-zа-яё\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]+|\d+)$/i;
+    for (let i = 0; i < messageArray.length; i++) {
+        if (messageArray[i].match(pattern) && messageArray[i] !== '‍' && messageArray[i] !== '️') {
+            return false;
+        }
+    }
+    return true;
+}
+
+const SpansMessageTextPreprocess = ({ text, isEdited }: { text: string; isEdited?: boolean }) => {
+    let messageText = text;
+    const isOnlyEmoji = emojiChecker(messageText);
+    const isRotating = messageText.startsWith('🔄') && messageText.endsWith('🔄');
+    const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
+    const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
+    const isBig =
+        isOnlyEmoji ||
+        isInsane ||
+        isRotating ||
+        isMouthpiece ||
+        (messageText.length <= 302 && messageText.startsWith(':') && messageText.endsWith(':'));
+    const isTextSticker = !isOnlyEmoji && isBig;
+    if (isInsane || isMouthpiece || isRotating) {
+        messageText = messageText
+            .replace(/🌈/g, '')
+            .replace(/📣/g, '')
+            .replace(/🔄/g, '');
+    } else if (isTextSticker) {
+        messageText = messageText.slice(1, messageText.length - 1);
+    }
+    let smileSize: 38 | 16 = isBig ? 38 : 16;
+    return (
+        <span
+            className={cx(
+                EmojiSpaceStyle,
+                isBig && TextLargeStyle,
+                isInsane && TextInsaneStyle,
+                isRotating && TextRotatingStyle,
+                isOnlyEmoji && TextOnlyEmojiStyle,
+            )}
+        >
+            {emoji({
+                src: messageText,
+                size: smileSize,
+            })}
+            {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
+        </span>
+    );
+};
 
 const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserShort; text: string; isYou: boolean }) => {
-        const userNameEmojified = React.useMemo(() => {
-            return emoji({
-                src: text,
-                size: 16,
-            });
-        }, [text]);
+        const userNameEmojified = React.useMemo(
+            () => {
+                return emoji({
+                    src: text,
+                    size: 16,
+                });
+            },
+            [text],
+        );
 
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
@@ -52,9 +169,11 @@ const SpansMessageText = ({ text }: { text: string }) => {
 export const SpansMessage = ({
     message,
     spans,
+    isEdited,
 }: {
     message: string;
     spans?: FullMessage_ServiceMessage_spans[];
+    isEdited?: boolean;
 }) => {
     let res: any[] = [];
 
@@ -68,7 +187,12 @@ export const SpansMessage = ({
 
         for (let span of sortedSpans) {
             if (lastOffset < span.offset) {
-                res.push(<SpansMessageText key={'text-' + i} text={message.slice(lastOffset, span.offset)} />);
+                res.push(
+                    <SpansMessageText
+                        key={'text-' + i}
+                        text={message.slice(lastOffset, span.offset)}
+                    />,
+                );
             }
 
             if (span.__typename === 'MessageSpanMultiUserMention') {
@@ -93,7 +217,7 @@ export const SpansMessage = ({
             } else if (span.__typename === 'MessageSpanRoomMention') {
                 res.push(
                     <LinkToRoom
-                        key={'room-' + i} 
+                        key={'room-' + i}
                         text={message.slice(span.offset + 1, span.offset + span.length)}
                         roomId={span.room.id}
                     />,
@@ -102,7 +226,12 @@ export const SpansMessage = ({
             } else if (span.__typename === 'MessageSpanLink') {
                 res.push(
                     <span key={'link-' + i} className={LinkText}>
-                        <XView as="a" path={span.url} onClick={(e: any) => e.stopPropagation()}>
+                        <XView
+                            as="a"
+                            target="_blank"
+                            href={span.url}
+                            onClick={(e: any) => e.stopPropagation()}
+                        >
                             {span.url}
                         </XView>
                     </span>,
@@ -138,10 +267,15 @@ export const SpansMessage = ({
         }
 
         if (lastOffset < message.length) {
-            res.push(<SpansMessageText key={'text-' + i} text={message.slice(lastOffset, message.length)} />);
+            res.push(
+                <SpansMessageText
+                    key={'text-' + i}
+                    text={message.slice(lastOffset, message.length)}
+                />,
+            );
         }
     } else {
-        return <SpansMessageText text={message} />;
+        return <SpansMessageTextPreprocess text={message} isEdited={isEdited} />;
     }
 
     return <>{res}</>;

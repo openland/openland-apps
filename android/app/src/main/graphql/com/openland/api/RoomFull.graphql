@@ -13,6 +13,7 @@ fragment RoomFull on Room {
     }
   }
   ... on SharedRoom {
+    canEdit
     description
     id
     kind

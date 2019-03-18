@@ -119,7 +119,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                             {!this.props.attach.subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)}
                         </ASText>
                         }
-                        {!!this.props.attach.subTitle && <ASText
+                        {!!this.props.attach.text && <ASText
                             marginLeft={10}
                             color={mainTextColor}
                             lineHeight={20}
@@ -127,7 +127,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                             fontSize={16}
                             fontWeight={TextStyles.weight.regular}
                         >
-                            {this.props.attach.subTitle}
+                            {this.props.attach.text}
                             {this.props.message.isOut ? paddedTextOut : paddedText}
                         </ASText>}
 

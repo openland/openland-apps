@@ -61,6 +61,7 @@ export const FullMessage = gql`
                     title
                     subTitle
                     titleLink
+                    titleLinkHostname
                     text
                     icon{
                         url
@@ -143,6 +144,7 @@ export const FullMessage = gql`
                             title
                             subTitle
                             titleLink
+                            titleLinkHostname
                             text
                             icon{
                                 url

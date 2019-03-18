@@ -1,4 +1,4 @@
 #!/bin/sh
 set -e
 
-yarn apollo schema:download --endpoint=http://localhost:9000/api
+yarn apollo schema:download --config=apollo.local.config.js
