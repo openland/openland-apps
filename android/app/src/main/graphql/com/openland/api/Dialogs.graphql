@@ -1,30 +1,22 @@
-query Dialogs($after: String) {
-  counter: alphaNotificationCounter {
+subscription Dialogs($state: String) {
+  event: dialogsUpdates(fromState: $state) {
     __typename
-    id
-    unreadCount
-  }
-  dialogs(after: $after, first: 20) {
-    __typename
-    cursor
-    items {
-      __typename
-      topMessage: alphaTopMessage {
+    ... on DialogUpdateSingle {
+      seq
+      state
+      update {
         __typename
-        ...TinyMessage
+        ...DialogUpdateFragment
       }
-      cid
-      fid
-      haveMention
-      isMuted
-      kind
-      photo
-      title
-      unreadCount
     }
-  }
-  state: dialogsState {
-    __typename
-    state
+    ... on DialogUpdateBatch {
+      fromSeq
+      seq
+      state
+      updates {
+        __typename
+        ...DialogUpdateFragment
+      }
+    }
   }
 }

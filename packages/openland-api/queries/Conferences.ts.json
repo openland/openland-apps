@@ -10,6 +10,12 @@
         { "name": "ConferenceCandidateMutation", "type": "mutation", "hasVariables": true },
         { "name": "MediaOfferMutation", "type": "mutation", "hasVariables": true },
         { "name": "MediaAnswerMutation", "type": "mutation", "hasVariables": true },
-        { "name": "MediaCandidateMutation", "type": "mutation", "hasVariables": true }
+        { "name": "MediaCandidateMutation", "type": "mutation", "hasVariables": true },
+        {
+            "name": "ConferenceMediaWatchSubscription",
+            "type": "subscription",
+            "hasVariables": true
+        },
+        { "name": "ConferenceWatchSubscription", "type": "subscription", "hasVariables": true }
     ]
 }

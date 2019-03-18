@@ -102,6 +102,18 @@ export class OpenlandClient {
     useWithoutLoaderProfilePrefill(): Types.ProfilePrefill | null {
         return this.client.useWithoutLoaderQuery(Source.ProfilePrefillQuery);
     }
+    async queryFetchPushSettings(): Promise<Types.FetchPushSettings> {
+        return this.client.query(Source.FetchPushSettingsQuery);
+    }
+    async refetchFetchPushSettings(): Promise<Types.FetchPushSettings> {
+        return this.client.refetch(Source.FetchPushSettingsQuery);
+    }
+    useFetchPushSettings(): Types.FetchPushSettings {
+        return this.client.useQuery(Source.FetchPushSettingsQuery);
+    }
+    useWithoutLoaderFetchPushSettings(): Types.FetchPushSettings | null {
+        return this.client.useWithoutLoaderQuery(Source.FetchPushSettingsQuery);
+    }
     async queryMyApps(): Promise<Types.MyApps> {
         return this.client.query(Source.MyAppsQuery);
     }
@@ -602,6 +614,9 @@ export class OpenlandClient {
     }
     async mutateRegisterPush(variables: Types.RegisterPushVariables): Promise<Types.RegisterPush> {
         return this.client.mutate(Source.RegisterPushMutation, variables);
+    }
+    async mutateRegisterWebPush(variables: Types.RegisterWebPushVariables): Promise<Types.RegisterWebPush> {
+        return this.client.mutate(Source.RegisterWebPushMutation, variables);
     }
     async mutateCreateApp(variables: Types.CreateAppVariables): Promise<Types.CreateApp> {
         return this.client.mutate(Source.CreateAppMutation, variables);

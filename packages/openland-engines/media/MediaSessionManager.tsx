@@ -1,23 +1,9 @@
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { backoff, delay } from 'openland-y-utils/timer';
-import gql from 'graphql-tag';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-
-const ConferenceMediaWatchSubscription = gql`
-    subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
-        media: alphaConferenceMediaWatch(id: $id, peerId: $peerId) {
-            id
-            streams {
-                id
-                state
-                sdp
-                ice
-            }
-        }
-    }
-`;
+import { ConferenceMediaWatchSubscription } from 'openland-api';
 
 export class MediaSessionManager {
     readonly conversationId: string;
@@ -144,8 +130,8 @@ export class MediaSessionManager {
             });
 
         // Load media streams
-        let subscription = this.client.client.subscribe(
-            ConferenceMediaWatchSubscription, { peerId: this.peerId, id: this.conferenceId });
+        let subscription = this.client.client.subscribe(ConferenceMediaWatchSubscription.document, 
+            { peerId: this.peerId, id: this.conferenceId });
 
         (async () => {
             while (!this.destroyed) {

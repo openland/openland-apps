@@ -1,27 +1,6 @@
-import gql from 'graphql-tag';
 import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-
-const SUBSCRIBE_ONLINES = gql`
-    subscription SubscribeOnlines($conversations: [ID!]!) {
-        alphaSubscribeChatOnline(conversations: $conversations) {
-            user: user {
-                id
-                online
-                lastSeen
-            }
-            type
-            timeout
-        }
-    }
-`;
-
-const USER_ONLINE = gql`
-    fragment UserOnline on User{
-        id
-        online
-    }
-`;
+import { OnlineSubscription } from 'openland-api';
 
 export class OnlineWatcher {
     private onlinesData = new Map<string, boolean>();
@@ -37,7 +16,7 @@ export class OnlineWatcher {
     onDialogListChange(conversations: string[]) {
         this.destroy();
 
-        let s = this.client.client.subscribe(SUBSCRIBE_ONLINES, { conversations });
+        let s = this.client.client.subscribe(OnlineSubscription.document, { conversations });
         this.sub = s;
 
         (async () => {

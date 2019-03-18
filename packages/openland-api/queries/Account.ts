@@ -3,6 +3,7 @@ import { UserShort } from '../fragments/UserShort';
 import { SessionStateFull } from '../fragments/SessionStateFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { UserFull } from 'openland-api/fragments/UserFull';
+import { SettingsFull } from 'openland-api/fragments/SettingsFragment';
 
 export const AccountQuery = gql`
     query Account {
@@ -31,6 +32,15 @@ export const AccountSettingsQuery = gql`
     }
     ${UserShort}
     ${OrganizationShort}
+`;
+
+export const SettingsSubscription = gql`
+    subscription Settings {
+        watchSettings {
+            ...SettingsFull
+        }
+    }
+    ${SettingsFull}
 `;
 
 export const CreateOrganizationMutation = gql`
@@ -161,5 +171,19 @@ export const ReportOnlineMutation = gql`
 export const RegisterPushMutation = gql`
     mutation RegisterPush($endpoint: String!, $type: PushType!) {
         registerPush(endpoint: $endpoint, type: $type)
+    }
+`;
+
+export const FetchPushSettingsQuery = gql`
+    query FetchPushSettings {
+        pushSettings {
+            webPushKey
+        }
+    }
+`;
+
+export const RegisterWebPushMutation = gql`
+    mutation RegisterWebPush($endpoint: String!) {
+        registerWebPush(endpoint: $endpoint)
     }
 `;

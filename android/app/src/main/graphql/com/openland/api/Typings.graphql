@@ -1,0 +1,16 @@
+subscription Typings {
+  typings {
+    __typename
+    cancel
+    conversation {
+      __typename
+      id
+    }
+    user {
+      __typename
+      id
+      name
+      picture
+    }
+  }
+}

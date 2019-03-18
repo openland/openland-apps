@@ -105,6 +105,29 @@ export interface AccountSettings {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: Settings
+// ====================================================
+
+export interface Settings_settings {
+  __typename: "Settings";
+  id: string;
+  primaryEmail: string;
+  emailFrequency: EmailFrequency;
+  desktopNotifications: NotificationMessages;
+  mobileNotifications: NotificationMessages;
+  mobileAlert: boolean;
+  mobileIncludeText: boolean;
+}
+
+export interface Settings {
+  settings: Settings_settings;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: CreateOrganization
 // ====================================================
 
@@ -473,6 +496,39 @@ export interface RegisterPushVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FetchPushSettings
+// ====================================================
+
+export interface FetchPushSettings_pushSettings {
+  __typename: "PushSettings";
+  webPushKey: string | null;
+}
+
+export interface FetchPushSettings {
+  pushSettings: FetchPushSettings_pushSettings;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RegisterWebPush
+// ====================================================
+
+export interface RegisterWebPush {
+  registerWebPush: string;
+}
+
+export interface RegisterWebPushVariables {
+  endpoint: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: MyApps
 // ====================================================
 
@@ -688,10 +744,10 @@ export interface AddAppToChatVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: Dialogs
+// GraphQL subscription operation: Dialogs
 // ====================================================
 
-export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -701,14 +757,14 @@ export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
   shortname: string | null;
 }
 
-export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage {
   __typename: "ServiceMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Dialogs_dialogs_items_topMessage_ServiceMessage_sender;
+  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender;
   /**
    * Content
    */
@@ -716,7 +772,7 @@ export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
   fallback: string;
 }
 
-export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -726,30 +782,30 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   shortname: string | null;
 }
 
-export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
   __typename: "MessageAttachmentPost" | "MessageRichAttachment";
   id: string;
   fallback: string;
 }
 
-export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
   __typename: "FileMetadata";
   isImage: boolean;
   imageFormat: string | null;
 }
 
-export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile {
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
   fallback: string;
   fileId: string;
-  fileMetadata: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  fileMetadata: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
 }
 
-export type Dialogs_dialogs_items_topMessage_GeneralMessage_attachments = Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
+export type Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile;
 
-export interface Dialogs_dialogs_items_topMessage_GeneralMessage_quotedMessages {
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_quotedMessages {
   __typename: "GeneralMessage" | "ServiceMessage";
   /**
    * State
@@ -757,63 +813,767 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage_quotedMessages 
   id: string;
 }
 
-export interface Dialogs_dialogs_items_topMessage_GeneralMessage {
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage {
   __typename: "GeneralMessage";
   /**
    * State
    */
   id: string;
   date: any;
-  sender: Dialogs_dialogs_items_topMessage_GeneralMessage_sender;
+  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender;
   /**
    * Content
    */
   message: string | null;
   fallback: string;
-  attachments: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments[];
-  quotedMessages: Dialogs_dialogs_items_topMessage_GeneralMessage_quotedMessages[];
+  attachments: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments[];
+  quotedMessages: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
 }
 
-export type Dialogs_dialogs_items_topMessage = Dialogs_dialogs_items_topMessage_ServiceMessage | Dialogs_dialogs_items_topMessage_GeneralMessage;
+export type Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message = Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage | Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage;
 
-export interface Dialogs_dialogs_items {
-  __typename: "Dialog";
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived {
+  __typename: "DialogMessageReceived";
   cid: string;
-  fid: string;
-  kind: DialogKind;
-  title: string;
-  photo: string;
-  unreadCount: number;
-  isMuted: boolean;
-  haveMention: boolean;
-  topMessage: Dialogs_dialogs_items_topMessage | null;
+  unread: number;
+  globalUnread: number;
+  message: Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived_message;
 }
 
-export interface Dialogs_dialogs {
-  __typename: "DialogsConnection";
-  items: Dialogs_dialogs_items[];
-  cursor: string | null;
-}
-
-export interface Dialogs_state {
-  __typename: "DialogUpdateState";
-  state: string | null;
-}
-
-export interface Dialogs_counter {
-  __typename: "NotificationCounter";
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender {
+  __typename: "User";
   id: string;
-  unreadCount: number;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
 }
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments[];
+  quotedMessages: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
+}
+
+export type Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message = Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage | Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage;
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated {
+  __typename: "DialogMessageUpdated";
+  cid: string;
+  message: Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated_message;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments[];
+  quotedMessages: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
+}
+
+export type Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message = Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage | Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage;
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments = Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
+  quotedMessages: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
+}
+
+export type Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage = Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage | Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage;
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted {
+  __typename: "DialogMessageDeleted";
+  cid: string;
+  message: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_message;
+  prevMessage: Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage | null;
+  unread: number;
+  globalUnread: number;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMessageRead {
+  __typename: "DialogMessageRead";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogTitleUpdated {
+  __typename: "DialogTitleUpdated";
+  cid: string;
+  title: string;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMuteChanged {
+  __typename: "DialogMuteChanged";
+  cid: string;
+  mute: boolean;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogMentionedChanged {
+  __typename: "DialogMentionedChanged";
+  cid: string;
+  haveMention: boolean;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogPhotoUpdated {
+  __typename: "DialogPhotoUpdated";
+  cid: string;
+  photo: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateSingle_update_DialogDeleted {
+  __typename: "DialogDeleted";
+  cid: string;
+  globalUnread: number;
+}
+
+export type Dialogs_event_DialogUpdateSingle_update = Dialogs_event_DialogUpdateSingle_update_DialogMessageReceived | Dialogs_event_DialogUpdateSingle_update_DialogMessageUpdated | Dialogs_event_DialogUpdateSingle_update_DialogMessageDeleted | Dialogs_event_DialogUpdateSingle_update_DialogMessageRead | Dialogs_event_DialogUpdateSingle_update_DialogTitleUpdated | Dialogs_event_DialogUpdateSingle_update_DialogMuteChanged | Dialogs_event_DialogUpdateSingle_update_DialogMentionedChanged | Dialogs_event_DialogUpdateSingle_update_DialogPhotoUpdated | Dialogs_event_DialogUpdateSingle_update_DialogDeleted;
+
+export interface Dialogs_event_DialogUpdateSingle {
+  __typename: "DialogUpdateSingle";
+  seq: number;
+  state: string;
+  update: Dialogs_event_DialogUpdateSingle_update;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments[];
+  quotedMessages: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
+}
+
+export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message = Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage | Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage;
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived {
+  __typename: "DialogMessageReceived";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+  message: Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived_message;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments[];
+  quotedMessages: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
+}
+
+export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message = Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage | Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage;
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated {
+  __typename: "DialogMessageUpdated";
+  cid: string;
+  message: Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated_message;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments = Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments[];
+  quotedMessages: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
+}
+
+export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message = Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage | Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage;
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments = Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
+  quotedMessages: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
+}
+
+export type Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage = Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage | Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage;
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted {
+  __typename: "DialogMessageDeleted";
+  cid: string;
+  message: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_message;
+  prevMessage: Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage | null;
+  unread: number;
+  globalUnread: number;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMessageRead {
+  __typename: "DialogMessageRead";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogTitleUpdated {
+  __typename: "DialogTitleUpdated";
+  cid: string;
+  title: string;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMuteChanged {
+  __typename: "DialogMuteChanged";
+  cid: string;
+  mute: boolean;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogMentionedChanged {
+  __typename: "DialogMentionedChanged";
+  cid: string;
+  haveMention: boolean;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogPhotoUpdated {
+  __typename: "DialogPhotoUpdated";
+  cid: string;
+  photo: string | null;
+}
+
+export interface Dialogs_event_DialogUpdateBatch_updates_DialogDeleted {
+  __typename: "DialogDeleted";
+  cid: string;
+  globalUnread: number;
+}
+
+export type Dialogs_event_DialogUpdateBatch_updates = Dialogs_event_DialogUpdateBatch_updates_DialogMessageReceived | Dialogs_event_DialogUpdateBatch_updates_DialogMessageUpdated | Dialogs_event_DialogUpdateBatch_updates_DialogMessageDeleted | Dialogs_event_DialogUpdateBatch_updates_DialogMessageRead | Dialogs_event_DialogUpdateBatch_updates_DialogTitleUpdated | Dialogs_event_DialogUpdateBatch_updates_DialogMuteChanged | Dialogs_event_DialogUpdateBatch_updates_DialogMentionedChanged | Dialogs_event_DialogUpdateBatch_updates_DialogPhotoUpdated | Dialogs_event_DialogUpdateBatch_updates_DialogDeleted;
+
+export interface Dialogs_event_DialogUpdateBatch {
+  __typename: "DialogUpdateBatch";
+  fromSeq: number;
+  seq: number;
+  state: string;
+  updates: Dialogs_event_DialogUpdateBatch_updates[];
+}
+
+export type Dialogs_event = Dialogs_event_DialogUpdateSingle | Dialogs_event_DialogUpdateBatch;
 
 export interface Dialogs {
-  dialogs: Dialogs_dialogs;
-  state: Dialogs_state;
-  counter: Dialogs_counter;
+  event: Dialogs_event;
 }
 
 export interface DialogsVariables {
-  after?: string | null;
+  state?: string | null;
 }
 
 /* tslint:disable */
@@ -7164,6 +7924,37 @@ export interface MarkSequenceReadVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL subscription operation: Typings
+// ====================================================
+
+export interface Typings_typings_conversation {
+  __typename: "ChannelConversation" | "AnonymousConversation" | "GroupConversation" | "PrivateConversation" | "SharedConversation";
+  id: string;
+}
+
+export interface Typings_typings_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  picture: string | null;
+}
+
+export interface Typings_typings {
+  __typename: "TypingEvent";
+  conversation: Typings_typings_conversation;
+  user: Typings_typings_user;
+  cancel: boolean;
+}
+
+export interface Typings {
+  typings: Typings_typings;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: Conference
 // ====================================================
 
@@ -7785,6 +8576,105 @@ export interface MediaCandidateVariables {
   id: string;
   peerId: string;
   candidate: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL subscription operation: ConferenceMediaWatch
+// ====================================================
+
+export interface ConferenceMediaWatch_media_streams {
+  __typename: "MediaStream";
+  id: string;
+  state: MediaStreamState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface ConferenceMediaWatch_media {
+  __typename: "ConferenceMedia";
+  id: string;
+  streams: ConferenceMediaWatch_media_streams[];
+}
+
+export interface ConferenceMediaWatch {
+  media: ConferenceMediaWatch_media;
+}
+
+export interface ConferenceMediaWatchVariables {
+  id: string;
+  peerId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL subscription operation: ConferenceWatch
+// ====================================================
+
+export interface ConferenceWatch_alphaConferenceWatch_peers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ConferenceWatch_alphaConferenceWatch_peers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ConferenceWatch_alphaConferenceWatch_peers_user_primaryOrganization | null;
+}
+
+export interface ConferenceWatch_alphaConferenceWatch_peers_connection {
+  __typename: "ConferencePeerConnection";
+  state: ConferencePeerConnectionState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface ConferenceWatch_alphaConferenceWatch_peers {
+  __typename: "ConferencePeer";
+  id: string;
+  user: ConferenceWatch_alphaConferenceWatch_peers_user;
+  connection: ConferenceWatch_alphaConferenceWatch_peers_connection | null;
+}
+
+export interface ConferenceWatch_alphaConferenceWatch_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
+export interface ConferenceWatch_alphaConferenceWatch {
+  __typename: "Conference";
+  id: string;
+  peers: ConferenceWatch_alphaConferenceWatch_peers[];
+  iceServers: ConferenceWatch_alphaConferenceWatch_iceServers[];
+}
+
+export interface ConferenceWatch {
+  alphaConferenceWatch: ConferenceWatch_alphaConferenceWatch;
+}
+
+export interface ConferenceWatchVariables {
+  id: string;
 }
 
 /* tslint:disable */
@@ -9450,29 +10340,6 @@ export interface ProfileCreateVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: Settings
-// ====================================================
-
-export interface Settings_settings {
-  __typename: "Settings";
-  id: string;
-  primaryEmail: string;
-  emailFrequency: EmailFrequency;
-  desktopNotifications: NotificationMessages;
-  mobileNotifications: NotificationMessages;
-  mobileAlert: boolean;
-  mobileIncludeText: boolean;
-}
-
-export interface Settings {
-  settings: Settings_settings;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: SettingsUpdate
 // ====================================================
 
@@ -9611,22 +10478,29 @@ export interface UserVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: Online
+// GraphQL subscription operation: Online
 // ====================================================
 
-export interface Online_user {
+export interface Online_alphaSubscribeChatOnline_user {
   __typename: "User";
   id: string;
   online: boolean;
   lastSeen: string | null;
 }
 
+export interface Online_alphaSubscribeChatOnline {
+  __typename: "OnlineEvent";
+  user: Online_alphaSubscribeChatOnline_user;
+  type: string;
+  timeout: number;
+}
+
 export interface Online {
-  user: Online_user;
+  alphaSubscribeChatOnline: Online_alphaSubscribeChatOnline;
 }
 
 export interface OnlineVariables {
-  userId: string;
+  conversations: string[];
 }
 
 /* tslint:disable */
@@ -13090,6 +13964,416 @@ export interface ChatUpdateFragment_ChatMessageDeleted {
 }
 
 export type ChatUpdateFragment = ChatUpdateFragment_ChatMessageReceived | ChatUpdateFragment_ChatMessageUpdated | ChatUpdateFragment_ChatMessageDeleted;
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: DialogUpdateFragment
+// ====================================================
+
+export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments = DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments[];
+  quotedMessages: DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
+}
+
+export type DialogUpdateFragment_DialogMessageReceived_message = DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage | DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage;
+
+export interface DialogUpdateFragment_DialogMessageReceived {
+  __typename: "DialogMessageReceived";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+  message: DialogUpdateFragment_DialogMessageReceived_message;
+}
+
+export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments = DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments[];
+  quotedMessages: DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
+}
+
+export type DialogUpdateFragment_DialogMessageUpdated_message = DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage | DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage;
+
+export interface DialogUpdateFragment_DialogMessageUpdated {
+  __typename: "DialogMessageUpdated";
+  cid: string;
+  message: DialogUpdateFragment_DialogMessageUpdated_message;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments = DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost | DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments[];
+  quotedMessages: DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
+}
+
+export type DialogUpdateFragment_DialogMessageDeleted_message = DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage | DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage;
+
+export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments = DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost | DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
+  quotedMessages: DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
+}
+
+export type DialogUpdateFragment_DialogMessageDeleted_prevMessage = DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMessage | DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage;
+
+export interface DialogUpdateFragment_DialogMessageDeleted {
+  __typename: "DialogMessageDeleted";
+  cid: string;
+  message: DialogUpdateFragment_DialogMessageDeleted_message;
+  prevMessage: DialogUpdateFragment_DialogMessageDeleted_prevMessage | null;
+  unread: number;
+  globalUnread: number;
+}
+
+export interface DialogUpdateFragment_DialogMessageRead {
+  __typename: "DialogMessageRead";
+  cid: string;
+  unread: number;
+  globalUnread: number;
+}
+
+export interface DialogUpdateFragment_DialogTitleUpdated {
+  __typename: "DialogTitleUpdated";
+  cid: string;
+  title: string;
+}
+
+export interface DialogUpdateFragment_DialogMuteChanged {
+  __typename: "DialogMuteChanged";
+  cid: string;
+  mute: boolean;
+}
+
+export interface DialogUpdateFragment_DialogMentionedChanged {
+  __typename: "DialogMentionedChanged";
+  cid: string;
+  haveMention: boolean;
+}
+
+export interface DialogUpdateFragment_DialogPhotoUpdated {
+  __typename: "DialogPhotoUpdated";
+  cid: string;
+  photo: string | null;
+}
+
+export interface DialogUpdateFragment_DialogDeleted {
+  __typename: "DialogDeleted";
+  cid: string;
+  globalUnread: number;
+}
+
+export type DialogUpdateFragment = DialogUpdateFragment_DialogMessageReceived | DialogUpdateFragment_DialogMessageUpdated | DialogUpdateFragment_DialogMessageDeleted | DialogUpdateFragment_DialogMessageRead | DialogUpdateFragment_DialogTitleUpdated | DialogUpdateFragment_DialogMuteChanged | DialogUpdateFragment_DialogMentionedChanged | DialogUpdateFragment_DialogPhotoUpdated | DialogUpdateFragment_DialogDeleted;
 
 /* tslint:disable */
 /* eslint-disable */

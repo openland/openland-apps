@@ -1,108 +1,11 @@
 import { MessengerEngine } from '../MessengerEngine';
-import gql from 'graphql-tag';
 import { backoff } from 'openland-y-utils/timer';
-import { GlobalCounterQuery, ChatSearchGroupQuery } from 'openland-api';
+import { GlobalCounterQuery, ChatSearchGroupQuery, DialogsSubscription, SettingsSubscription } from 'openland-api';
 import { SettingsQuery } from 'openland-api';
-import { SettingsFull } from 'openland-api/fragments/SettingsFragment';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
-import { UserTiny } from 'openland-api/fragments/UserTiny';
 import { DialogsQuery } from 'openland-api';
 import { RoomQuery } from 'openland-api';
 import { MarkSequenceReadMutation } from 'openland-api';
-import { TinyMessage } from 'openland-api/fragments/Message';
-import { RoomShort } from 'openland-api/fragments/RoomShort';
-
-let GLOBAL_SUBSCRIPTION = gql`
-    subscription GlobalSubscription($state: String) {
-        event: dialogsUpdates(fromState: $state) {
-            ... on DialogUpdateSingle {
-                seq
-                state
-                update {
-                    ...DialogUpdateFragment
-                }
-            }
-            ... on DialogUpdateBatch {
-                fromSeq
-                seq
-                state
-                updates {
-                    ...DialogUpdateFragment
-                }
-            }
-        }
-    }
-    fragment DialogUpdateFragment on DialogUpdate {
-        ... on DialogMessageReceived {
-            cid
-            unread
-            globalUnread
-            message:alphaMessage {
-                    ...TinyMessage
-            }
-        }
-        ... on DialogMessageUpdated {
-            cid
-            message:alphaMessage {
-                    ...TinyMessage
-                }
-        }
-        ... on DialogMessageDeleted {
-            cid
-            message: alphaMessage {
-                    ...TinyMessage
-            }
-            prevMessage: alphaPrevMessage {
-                ...TinyMessage
-            }
-            unread
-            globalUnread
-        }
-        ... on DialogMessageRead {
-            cid
-            unread
-            globalUnread
-        }
-        ... on DialogMessageRead {
-            cid
-            unread
-            globalUnread
-        }
-        ... on DialogTitleUpdated {
-            cid
-            title
-        }
-        ... on DialogMuteChanged {
-            cid
-            mute
-        }
-        ... on DialogMentionedChanged {
-            cid
-            haveMention
-        }
-        ... on DialogPhotoUpdated {
-            cid
-            photo
-        }
-        ... on DialogDeleted {
-            cid
-            globalUnread
-        }
-       
-    }
-    ${UserTiny}
-    ${TinyMessage}
-    ${RoomShort}
-`;
-
-const SUBSCRIBE_SETTINGS = gql`
-    subscription SubscribeSettings {
-        watchSettings {
-            ...SettingsFull
-        }
-    }
-    ${SettingsFull}
-`;
 
 export class GlobalStateEngine {
     readonly engine: MessengerEngine;
@@ -136,10 +39,10 @@ export class GlobalStateEngine {
         this.engine.dialogList.handleInitialDialogs((res as any).dialogs.items, (res as any).dialogs.cursor);
 
         // Starting Sequence Watcher
-        this.watcher = new SequenceModernWatcher('global', GLOBAL_SUBSCRIPTION, this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, (res as any).state.state);
+        this.watcher = new SequenceModernWatcher('global', DialogsSubscription.document, this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, (res as any).state.state);
 
         // Subscribe for settings update
-        let settingsSubscription = this.engine.client.client.subscribe(SUBSCRIBE_SETTINGS);
+        let settingsSubscription = this.engine.client.client.subscribe(SettingsSubscription.document);
         (async () => {
             while (true) {
                 await settingsSubscription.get();

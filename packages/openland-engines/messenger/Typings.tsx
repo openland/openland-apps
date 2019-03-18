@@ -1,22 +1,6 @@
-import gql from 'graphql-tag';
 import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-
-const SUBSCRIBE_TYPINGS = gql`
-    subscription SubscribeTypings {
-        typings {
-            conversation {
-                id
-            }
-            user {
-                id
-                name
-                picture
-            }
-            cancel
-        }
-    }
-`;
+import { TypingsSubscription } from 'openland-api';
 
 interface TypingsUser {
     userName: string;
@@ -44,7 +28,7 @@ export class TypingsWatcher {
 
     constructor(client: OpenlandClient, onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void, currentuserId: string) {
         this.onChange = onChange;
-        this.subscription = client.client.subscribe(SUBSCRIBE_TYPINGS);
+        this.subscription = client.client.subscribe(TypingsSubscription.document);
 
         this.start(currentuserId);
     }

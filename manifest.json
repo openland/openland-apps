@@ -16,6 +16,13 @@
       }
     },
     {
+      "signature": "96bd7279dfdc2efbc0e767a7b0178f51e8ccd41e9b7ceb24c7f5be932922a224",
+      "document": "fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}",
+      "metadata": {
+        "engineSignature": "fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}"
+      }
+    },
+    {
       "signature": "40484475dcb773c435219a204134d00b6f3f37b3f5ffc3ec39254b4a360d3502",
       "document": "mutation CreateOrganization($input:CreateOrganizationInput!){organization:createOrganization(input:$input){__typename id name}}",
       "metadata": {
@@ -107,6 +114,20 @@
       }
     },
     {
+      "signature": "45ae5c019a83e2aeae48c228e0d469a1d77fcb323e787fd8c95a62800622a72e",
+      "document": "query FetchPushSettings{pushSettings{__typename webPushKey}}",
+      "metadata": {
+        "engineSignature": "query FetchPushSettings{pushSettings{__typename webPushKey}}"
+      }
+    },
+    {
+      "signature": "b217120700b18c76f379491f2abdb9fde766214d72c7140b5ceae7cdf165b5b8",
+      "document": "mutation RegisterWebPush($endpoint:String!){registerWebPush(endpoint:$endpoint)}",
+      "metadata": {
+        "engineSignature": "mutation RegisterWebPush($endpoint:String!){registerWebPush(endpoint:$endpoint)}"
+      }
+    },
+    {
       "signature": "471171afd3b56e5a3a908e03e66c42744978cabe8f689df31724a59bd34db49f",
       "document": "fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}query MyApps{apps:myApps{__typename...AppFull}}",
       "metadata": {
@@ -142,10 +163,10 @@
       }
     },
     {
-      "signature": "6570512f13d8a8ec09399db49c1ec85c90db4c4974680f7b85a8cce83baa6f14",
-      "document": "fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename...UserTiny}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview}}quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id lastName name picture shortname}query Dialogs($after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename...TinyMessage}cid fid haveMention isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}",
+      "signature": "d3a16ccfd9ce03f4ad9a6926d76efb56ca247bd9d178e37eab8a12f0958304e8",
+      "document": "fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename...UserTiny}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview}}quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id lastName name picture shortname}fragment DialogUpdateFragment on DialogUpdate{__typename...on DialogMessageReceived{message:alphaMessage{__typename...TinyMessage}cid globalUnread unread}...on DialogMessageUpdated{message:alphaMessage{__typename...TinyMessage}cid}...on DialogMessageDeleted{message:alphaMessage{__typename...TinyMessage}prevMessage:alphaPrevMessage{__typename...TinyMessage}cid globalUnread unread}...on DialogMessageRead{cid globalUnread unread}...on DialogMessageRead{cid globalUnread unread}...on DialogTitleUpdated{cid title}...on DialogMuteChanged{cid mute}...on DialogMentionedChanged{cid haveMention}...on DialogPhotoUpdated{cid photo}...on DialogDeleted{cid globalUnread}}subscription Dialogs($state:String){event:dialogsUpdates(fromState:$state){__typename...on DialogUpdateSingle{seq state update{__typename...DialogUpdateFragment}}...on DialogUpdateBatch{fromSeq seq state updates{__typename...DialogUpdateFragment}}}}",
       "metadata": {
-        "engineSignature": "fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename...UserTiny}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview}}quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id lastName name picture shortname}query Dialogs($after:String){alphaNotificationCounter{__typename id unreadCount}dialogs(after:$after,first:0){__typename cursor items{__typename alphaTopMessage{__typename...TinyMessage}cid fid haveMention isMuted kind photo title unreadCount}}dialogsState{__typename state}}"
+        "engineSignature": "fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename...UserTiny}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview}}quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id lastName name picture shortname}fragment DialogUpdateFragment on DialogUpdate{__typename...on DialogMessageReceived{alphaMessage{__typename...TinyMessage}cid globalUnread unread}...on DialogMessageUpdated{alphaMessage{__typename...TinyMessage}cid}...on DialogMessageDeleted{alphaMessage{__typename...TinyMessage}alphaPrevMessage{__typename...TinyMessage}cid globalUnread unread}...on DialogMessageRead{cid globalUnread unread}...on DialogMessageRead{cid globalUnread unread}...on DialogTitleUpdated{cid title}...on DialogMuteChanged{cid mute}...on DialogMentionedChanged{cid haveMention}...on DialogPhotoUpdated{cid photo}...on DialogDeleted{cid globalUnread}}subscription Dialogs($state:String){dialogsUpdates(fromState:$state){__typename...on DialogUpdateSingle{seq state update{__typename...DialogUpdateFragment}}...on DialogUpdateBatch{fromSeq seq state updates{__typename...DialogUpdateFragment}}}}"
       }
     },
     {
@@ -478,6 +499,13 @@
       }
     },
     {
+      "signature": "a3d2fdce5c1089e8a7cd0f739654610cb9338fed794f5b8c320d1c74fcd0c962",
+      "document": "subscription Typings{typings{__typename cancel conversation{__typename id}user{__typename id name picture}}}",
+      "metadata": {
+        "engineSignature": "subscription Typings{typings{__typename cancel conversation{__typename id}user{__typename id name picture}}}"
+      }
+    },
+    {
       "signature": "ad7f59e79f9942782c404cc778f63b561ffbe6b2868c897d188353633d8fd3d8",
       "document": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query Conference($id:ID!){conference(id:$id){__typename...ConferenceFull}}",
       "metadata": {
@@ -552,6 +580,20 @@
       "document": "mutation MediaCandidate($candidate:String!,$id:ID!,$peerId:ID!){mediaStreamCandidate(candidate:$candidate,id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
       "metadata": {
         "engineSignature": "mutation MediaCandidate($candidate:String!,$id:ID!,$peerId:ID!){mediaStreamCandidate(candidate:$candidate,id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}"
+      }
+    },
+    {
+      "signature": "a0626ebb50e90fb147011ddc2443fb30adbd46ba838a4a7da75491a5c576f80b",
+      "document": "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+      "metadata": {
+        "engineSignature": "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}"
+      }
+    },
+    {
+      "signature": "f9e177267da0a9832efc7c14ffe463f7703a62a5191ec703fe1c3fa0a54c3d2c",
+      "document": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename...ConferenceFull}}",
+      "metadata": {
+        "engineSignature": "fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename...UserShort}}}fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename...ConferenceFull}}"
       }
     },
     {
@@ -870,13 +912,6 @@
       }
     },
     {
-      "signature": "96bd7279dfdc2efbc0e767a7b0178f51e8ccd41e9b7ceb24c7f5be932922a224",
-      "document": "fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}",
-      "metadata": {
-        "engineSignature": "fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}"
-      }
-    },
-    {
       "signature": "bb23116730f04fe48e2cd3088ad2ca5005480eccb7c867658b97c1a5e2a5499b",
       "document": "fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}",
       "metadata": {
@@ -905,10 +940,10 @@
       }
     },
     {
-      "signature": "684747e7e08c12cc3cd7b8d4d31ba51b4221c657763dd090c83de537be5d4b66",
-      "document": "query Online($userId:ID!){user:user(id:$userId){__typename id lastSeen online}}",
+      "signature": "34cb11a94bbe201fdfe052e2ae5df92e0e71c58a78f74170710bd87d4301b76b",
+      "document": "subscription Online($conversations:[ID!]!){alphaSubscribeChatOnline(conversations:$conversations){__typename timeout type user:user{__typename id lastSeen online}}}",
       "metadata": {
-        "engineSignature": "query Online($userId:ID!){user(id:$userId){__typename id lastSeen online}}"
+        "engineSignature": "subscription Online($conversations:[ID!]!){alphaSubscribeChatOnline(conversations:$conversations){__typename timeout type user{__typename id lastSeen online}}}"
       }
     },
     {

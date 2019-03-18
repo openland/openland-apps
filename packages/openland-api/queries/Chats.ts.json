@@ -2,6 +2,7 @@
     "operations": [
         { "name": "DialogsQuery", "type": "query", "hasVariables": true },
         { "name": "ChatSubscription", "type": "subscription", "hasVariables": true },
+        { "name": "DialogsSubscription", "type": "subscription", "hasVariables": true },
         { "name": "RoomQuery", "type": "query", "hasVariables": true },
         { "name": "RoomTinyQuery", "type": "query", "hasVariables": true },
         { "name": "RoomSuperQuery", "type": "query", "hasVariables": true },
@@ -47,6 +48,7 @@
         { "name": "RoomDeleteMessagesMutation", "type": "mutation", "hasVariables": true },
         { "name": "RoomDeleteUrlAugmentationMutation", "type": "mutation", "hasVariables": true },
         { "name": "RoomEditMessageMutation", "type": "mutation", "hasVariables": true },
-        { "name": "MarkSequenceReadMutation", "type": "mutation", "hasVariables": true }
+        { "name": "MarkSequenceReadMutation", "type": "mutation", "hasVariables": true },
+        { "name": "TypingsSubscription", "type": "subscription", "hasVariables": false }
     ]
 }

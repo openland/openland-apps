@@ -2,6 +2,7 @@
     "operations": [
         { "name": "AccountQuery", "type": "query", "hasVariables": false },
         { "name": "AccountSettingsQuery", "type": "query", "hasVariables": false },
+        { "name": "SettingsSubscription", "type": "subscription", "hasVariables": false },
         { "name": "CreateOrganizationMutation", "type": "mutation", "hasVariables": true },
         { "name": "AccountInviteInfoQuery", "type": "query", "hasVariables": true },
         { "name": "AccountAppInviteInfoQuery", "type": "query", "hasVariables": true },
@@ -18,6 +19,8 @@
             "hasVariables": true
         },
         { "name": "ReportOnlineMutation", "type": "mutation", "hasVariables": true },
-        { "name": "RegisterPushMutation", "type": "mutation", "hasVariables": true }
+        { "name": "RegisterPushMutation", "type": "mutation", "hasVariables": true },
+        { "name": "FetchPushSettingsQuery", "type": "query", "hasVariables": false },
+        { "name": "RegisterWebPushMutation", "type": "mutation", "hasVariables": true }
     ]
 }
