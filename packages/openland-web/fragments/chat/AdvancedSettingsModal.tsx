@@ -8,12 +8,16 @@ import { XView } from 'react-mental';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XSelect } from 'openland-x/XSelect';
 import { XInput } from 'openland-x/XInput';
-import { Room_room_SharedRoom_members_user } from 'openland-api/Types';
+import {
+    Room_room_SharedRoom_members_user,
+    Room_room_SharedRoom_welcomeMessage,
+} from 'openland-api/Types';
 
 type AdvancedSettingsModalT = {
     socialImage: string | null;
     roomId: string;
     canChangeAdvancedSettingsMembersUsers: Room_room_SharedRoom_members_user[];
+    welcomeMessage: Room_room_SharedRoom_welcomeMessage;
 };
 
 export const AdvancedSettingsModal = withAlterChat(props => {
@@ -51,6 +55,11 @@ export const AdvancedSettingsModal = withAlterChat(props => {
             }}
             defaultData={{
                 input: {
+                    isWelcomeMessageOn: typedProps.welcomeMessage.isOn ? 'true' : 'false',
+                    welcomeMessageText: typedProps.welcomeMessage.message,
+                    welcomeMessageSenderId: typedProps.welcomeMessage.sender
+                        ? typedProps.welcomeMessage.sender.user.id
+                        : null,
                     socialImageRef: typedProps.socialImage
                         ? { uuid: typedProps.socialImage }
                         : undefined,
@@ -62,13 +71,12 @@ export const AdvancedSettingsModal = withAlterChat(props => {
                 <XView>
                     Send an automatic message in 1:1 chat to every new member who joins this group
                 </XView>
-                <XCheckbox label="On" switcher={true} checked={true} />
-
+                <XCheckbox label="On" field="input.isWelcomeMessageOn" switcher={true} />
                 <XView>
                     Choose an image to display when sharing invite to this group on social networks
                 </XView>
-                <XSelect field="select3" options={selectOptions} />
-                <XInput size="large" title={'title'} />
+                <XSelect options={selectOptions} field="input.welcomeMessageSenderId" />
+                <XInput size="large" field="input.welcomeMessageText" />
                 <XView>Social sharing image</XView>
                 <XAvatarUpload
                     cropParams="1:1, free"

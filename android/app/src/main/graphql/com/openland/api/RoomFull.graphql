@@ -76,5 +76,17 @@ fragment RoomFull on Room {
     }
     socialImage
     title
+    welcomeMessage {
+      __typename
+      isOn
+      message
+      sender {
+        __typename
+        user {
+          __typename
+          id
+        }
+      }
+    }
   }
 }

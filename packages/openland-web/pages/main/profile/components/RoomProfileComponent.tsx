@@ -116,8 +116,6 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
 
     const canEdit = chat.canEdit;
 
-    console.log(chat.organization);
-
     const canChangeAdvancedSettingsMembersUsers = getCanChangeAdvancedSettingsMembersUsers({
         chat,
     });
@@ -189,6 +187,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                 canChangeAdvancedSettingsMembersUsers={
                                     canChangeAdvancedSettingsMembersUsers
                                 }
+                                welcomeMessage={chat.welcomeMessage!!}
                             />
                             <RoomEditModal
                                 roomId={chat.id}

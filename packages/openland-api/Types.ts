@@ -5252,6 +5252,23 @@ export interface Room_room_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface Room_room_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface Room_room_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: Room_room_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface Room_room_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: Room_room_SharedRoom_welcomeMessage_sender;
+  message: string;
+}
+
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
@@ -5316,6 +5333,7 @@ export interface Room_room_SharedRoom {
   requests: Room_room_SharedRoom_requests[] | null;
   settings: Room_room_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: Room_room_SharedRoom_welcomeMessage | null;
   pinnedMessage: Room_room_SharedRoom_pinnedMessage | null;
 }
 
@@ -6772,6 +6790,23 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender;
+  message: string;
+}
+
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
@@ -6836,6 +6871,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom {
   requests: RoomAddMember_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMember_betaRoomInvite_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage | null;
 }
 
@@ -7013,6 +7049,23 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_set
   mute: boolean | null;
 }
 
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender;
+  message: string;
+}
+
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
@@ -7077,6 +7130,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom {
   requests: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests[] | null;
   settings: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage | null;
 }
 
@@ -7251,6 +7305,23 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender;
+  message: string;
+}
+
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
@@ -7315,6 +7386,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom {
   requests: RoomAddMembers_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMembers_betaRoomInvite_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage | null;
 }
 
@@ -7492,6 +7564,23 @@ export interface RoomKick_betaRoomKick_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender;
+  message: string;
+}
+
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
@@ -7556,6 +7645,7 @@ export interface RoomKick_betaRoomKick_SharedRoom {
   requests: RoomKick_betaRoomKick_SharedRoom_requests[] | null;
   settings: RoomKick_betaRoomKick_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomKick_betaRoomKick_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomKick_betaRoomKick_SharedRoom_pinnedMessage | null;
 }
 
@@ -7730,6 +7820,23 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender;
+  message: string;
+}
+
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
@@ -7794,6 +7901,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom {
   requests: RoomLeave_betaRoomLeave_SharedRoom_requests[] | null;
   settings: RoomLeave_betaRoomLeave_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage | null;
 }
 
@@ -7955,6 +8063,23 @@ export interface RoomSearch_items_edges_node_settings {
   mute: boolean | null;
 }
 
+export interface RoomSearch_items_edges_node_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomSearch_items_edges_node_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomSearch_items_edges_node_welcomeMessage_sender_user;
+}
+
+export interface RoomSearch_items_edges_node_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomSearch_items_edges_node_welcomeMessage_sender;
+  message: string;
+}
+
 export interface RoomSearch_items_edges_node_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
@@ -8019,6 +8144,7 @@ export interface RoomSearch_items_edges_node {
   requests: RoomSearch_items_edges_node_requests[] | null;
   settings: RoomSearch_items_edges_node_settings;
   canEdit: boolean;
+  welcomeMessage: RoomSearch_items_edges_node_welcomeMessage | null;
   pinnedMessage: RoomSearch_items_edges_node_pinnedMessage | null;
 }
 
@@ -8364,6 +8490,23 @@ export interface RoomJoin_join_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomJoin_join_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomJoin_join_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomJoin_join_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomJoin_join_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomJoin_join_SharedRoom_welcomeMessage_sender;
+  message: string;
+}
+
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
@@ -8428,6 +8571,7 @@ export interface RoomJoin_join_SharedRoom {
   requests: RoomJoin_join_SharedRoom_requests[] | null;
   settings: RoomJoin_join_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomJoin_join_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomJoin_join_SharedRoom_pinnedMessage | null;
 }
 
@@ -8621,6 +8765,23 @@ export interface RoomJoinInviteLink_join_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender;
+  message: string;
+}
+
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
@@ -8685,6 +8846,7 @@ export interface RoomJoinInviteLink_join_SharedRoom {
   requests: RoomJoinInviteLink_join_SharedRoom_requests[] | null;
   settings: RoomJoinInviteLink_join_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomJoinInviteLink_join_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomJoinInviteLink_join_SharedRoom_pinnedMessage | null;
 }
 
@@ -13251,6 +13413,23 @@ export interface RoomFull_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomFull_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomFull_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomFull_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomFull_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomFull_SharedRoom_welcomeMessage_sender;
+  message: string;
+}
+
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
@@ -13315,6 +13494,7 @@ export interface RoomFull_SharedRoom {
   requests: RoomFull_SharedRoom_requests[] | null;
   settings: RoomFull_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomFull_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomFull_SharedRoom_pinnedMessage | null;
 }
 

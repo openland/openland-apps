@@ -142,8 +142,6 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     const state = React.useContext(MessagesStateContext);
 
-    console.log(room);
-
     if (state.useForwardHeader) {
         return <ChatForwardHeaderView roomId={room.id} me={me} />;
     }
@@ -197,12 +195,15 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
             chat: sharedRoom,
         });
 
+        console.log(sharedRoom)
+        
         modals = (
             <>
                 <AdvancedSettingsModal
                     roomId={sharedRoom.id}
                     socialImage={sharedRoom.socialImage}
                     canChangeAdvancedSettingsMembersUsers={canChangeAdvancedSettingsMembersUsers}
+                    welcomeMessage={sharedRoom.welcomeMessage}
                 />
                 <RoomEditModal
                     title={sharedRoom.title}
