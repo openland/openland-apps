@@ -34,8 +34,8 @@ export const AccountSettingsQuery = gql`
     ${OrganizationShort}
 `;
 
-export const SettingsSubscription = gql`
-    subscription Settings {
+export const SettingsWatchSubscription = gql`
+    subscription SettingsWatch {
         watchSettings {
             ...SettingsFull
         }

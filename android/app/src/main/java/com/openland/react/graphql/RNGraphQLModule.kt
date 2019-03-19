@@ -40,6 +40,30 @@ class RNGraphQL(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
     }
 
     @ReactMethod
+    fun read(key: String, id: String, query: String, arguments: ReadableMap?) {
+        if (!this.clients.containsKey(key)) {
+            throw Error("Client with key $key does not exists")
+        }
+        this.clients[key]!!.read(id, query, arguments)
+    }
+
+    @ReactMethod
+    fun subscribe(key: String, id: String, query: String, arguments: ReadableMap?) {
+        if (!this.clients.containsKey(key)) {
+            throw Error("Client with key $key does not exists")
+        }
+        this.clients[key]!!.subscribe(id, query, arguments)
+    }
+
+    @ReactMethod
+    fun write(key: String, id: String, data: ReadableMap, query: String, arguments: ReadableMap?) {
+        if (!this.clients.containsKey(key)) {
+            throw Error("Client with key $key does not exists")
+        }
+        this.clients[key]!!.write(id, data, query, arguments)
+    }
+
+    @ReactMethod
     fun mutate(key: String, id: String, query: String, arguments: ReadableMap?) {
         if (!this.clients.containsKey(key)) {
             throw Error("Client with key $key does not exists")

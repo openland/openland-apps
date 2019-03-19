@@ -4,7 +4,7 @@ import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { Observable } from 'apollo-link';
 import { keyFromObject } from './utils/keyFromObject';
 
-class ApolloSubscription implements GraphqlActiveSubscription {
+class ApolloSubscription<TSubscription, TVars> implements GraphqlActiveSubscription<TSubscription, TVars> {
     private readonly client: ApolloGraphqlClient;
     private source?: Observable<any>;
     private sourceSubscription?: ZenObservable.Subscription;
@@ -77,14 +77,14 @@ class ApolloSubscription implements GraphqlActiveSubscription {
     private handleNext = (src: any) => {
         if (this.pending) {
             if (this.queue.length > 0) {
-                this.queue.push(src);
+                this.queue.push(src.data);
             } else {
                 let p = this.pending;
                 this.pending = undefined;
-                p(src);
+                p(src.data);
             }
         } else {
-            this.queue.push(src);
+            this.queue.push(src.data);
         }
     }
 
@@ -152,7 +152,7 @@ export class ApolloGraphqlClient implements GraphqlClient {
         return res.data as TMutation;
     }
 
-    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription {
+    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
         return new ApolloSubscription(this, subscription.document, vars);
     }
 

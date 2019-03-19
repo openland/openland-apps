@@ -1,0 +1,6 @@
+subscription SettingsWatch {
+  watchSettings {
+    __typename
+    ...SettingsFull
+  }
+}

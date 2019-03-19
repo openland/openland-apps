@@ -4,13 +4,14 @@ import { MediaStreamManager } from './MediaStreamManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { ConferenceMediaWatchSubscription } from 'openland-api';
+import { ConferenceMediaWatch_media_streams } from 'openland-api/Types';
 
 export class MediaSessionManager {
     readonly conversationId: string;
     private readonly client: OpenlandClient;
     private readonly onReady: () => void;
     private mediaStream!: AppMediaStream;
-    private streamConfigs!: any[];
+    private streamConfigs!: ConferenceMediaWatch_media_streams[];
     private iceServers!: any[];
     private conferenceId!: string;
     private peerId!: string;
@@ -135,8 +136,8 @@ export class MediaSessionManager {
 
         (async () => {
             while (!this.destroyed) {
-                let state = (await subscription.get()).data.media;
-                let streams = state.streams as any[];
+                let state = (await subscription.get()).media;
+                let streams = state.streams;
                 this.streamConfigs = streams;
                 this.handleState();
             }

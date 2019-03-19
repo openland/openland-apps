@@ -8,6 +8,10 @@ const NativeGraphQL = NativeModules.RNGraphQL as {
     createClient: (key: string, endpoint: string, token?: string) => void
     query: (key: string, id: string, query: string, vars?: any) => void;
     refetch: (key: string, id: string, query: string, vars?: any) => void;
+    read: (key: string, id: string, query: string, vars?: any) => void;
+    subscribe: (key: string, id: string, query: string, vars?: any) => void;
+    unsubscribe: (key: string, id: string) => void;
+    write: (key: string, id: string, data: any, query: string, vars?: any) => void;
     mutate: (key: string, id: string, query: string, vars?: any) => void;
     closeClient: (key: string) => void;
 }
@@ -22,9 +26,21 @@ export class NativeApolloClient implements GraphqlClient {
         postQuery: (id, mutation, vars) => {
             NativeGraphQL.query(this.key, id, mutation.document.definitions[0].name.value, vars ? vars : {});
         },
+        postSubscribe: (id, mutation, vars) => {
+            NativeGraphQL.subscribe(this.key, id, mutation.document.definitions[0].name.value, vars ? vars : {});
+        },
+        postUnsubscribe: (id) => {
+            NativeGraphQL.unsubscribe(this.key, id);
+        },
         postRefetchQuery: (id, query, vars) => {
             NativeGraphQL.refetch(this.key, id, query.document.definitions[0].name.value, vars ? vars : {});
         },
+        postReadQuery: (id, query, vars) => {
+            NativeGraphQL.read(this.key, id, query.document.definitions[0].name.value, vars ? vars : {});
+        },
+        postWriteQuery: (id, data, query, vars) => {
+            NativeGraphQL.write(this.key, id, data, query.document.definitions[0].name.value, vars ? vars : {});
+        }
     });
 
     constructor(token?: string) {
@@ -56,20 +72,8 @@ export class NativeApolloClient implements GraphqlClient {
         return await this.client.getOperation(id);
     }
 
-    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription {
-        return {
-            get: async () => {
-                while (true) {
-                    await delay(10000);
-                }
-            },
-            updateVariables: (src?: any) => {
-                // this.thread.postMessage(JSON.stringify({ type: 'subscribe-update', variables: src, id: key } as Request));
-            },
-            destroy: () => {
-                // this.thread.postMessage(JSON.stringify({ type: 'subscribe-destroy', id: key } as Request));
-            }
-        } as GraphqlActiveSubscription;
+    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
+        return this.client.subscribe(subscription, vars);
     }
 
     useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
@@ -95,10 +99,12 @@ export class NativeApolloClient implements GraphqlClient {
     }
 
     async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
-        throw Error()
+        let id = this.client.registerReadQuery(query, vars);
+        return this.client.useOperation(id);
     }
 
     async writeQuery<TQuery, TVars>(data: any, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
-        throw Error()
+        let id = this.client.registerWriteQuery(data, query, vars);
+        return this.client.useOperation(id);
     }
 }
