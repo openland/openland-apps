@@ -15,7 +15,7 @@ import { bubbleMaxWidth, bubbleMaxWidthIncoming, AsyncBubbleView, contentInsetsH
 import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
-import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageRichAttachment, ModernMessageButtonStyle } from 'openland-api/Types';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
@@ -76,9 +76,28 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
 
         let link = this.props.attach!.titleLink || '';
 
-        let { text, subTitle } = this.props.attach;
+        let { text, subTitle, keyboard } = this.props.attach;
 
-        let maxWidth = (this.augLayout && !this.imageCompact) ? (this.augLayout.width - contentInsetsHorizontal * 2) : this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming - 80
+        // keyboard = {
+        //     __typename: 'MessageKeyboard',
+        //     buttons: [
+        //         [
+        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: '', id: '1', title: '1', },
+        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: '', id: '2', title: '2', },
+        //         ],
+        //         [
+        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: '', id: '3', title: '3', },
+        //             // { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: '', id: '4', title: '4', },
+        //         ],
+        //         [
+        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: '', id: '5', title: '5', },
+        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: 'https://wopwop.app/', id: '6', title: '6', },
+        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: 'https://wopwop.app/', id: '7', title: '7', },
+        //         ]
+        //     ]
+        // }
+
+        let maxWidth = (this.augLayout && !this.imageCompact) ? (this.augLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming);
         console.warn('boom', this.props.attach.subTitle);
         return (
 
@@ -161,7 +180,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
 
                     <ASFlex
                         flexDirection="column"
-                        maxWidth={maxWidth}
+                        maxWidth={maxWidth - (this.imageCompact ? 90 : 0)}
                     >
 
                         {!!this.props.attach.title && <ASText
@@ -203,6 +222,38 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                     {text}
                     {/* {this.props.message.isOut ? paddedTextOut : paddedText} */}
                 </ASText>}
+
+                {!!keyboard && keyboard.buttons.map((line, i) =>
+                    <ASFlex key={i + ''} flexDirection="row" width={maxWidth} marginTop={9} marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
+                        {!!line && line.map((button, j) =>
+                            <ASFlex
+                                key={button.id}
+                                backgroundColor='#fff'
+                                borderRadius={8}
+                                // flexShrink={1}
+                                // flexGrow={1}
+                                marginLeft={j > 0 ? 4 : 0}
+                                marginRight={j < line.length - 1 ? 4 : 0}
+                                alignItems="center"
+                                justifyContent="center"
+                                height={30}
+                                width={(maxWidth - (line.length - 1) * 8) / line.length}
+                                onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}
+
+                            >
+                                <ASText
+                                    textAlign='center'
+                                    color={'#0084fe'}
+                                    fontSize={14}
+                                    fontWeight={TextStyles.weight.medium}
+                                >
+                                    {button.title}
+                                </ASText>
+
+                            </ASFlex>
+                        )}
+                    </ASFlex>
+                )}
 
             </ASFlex>
 

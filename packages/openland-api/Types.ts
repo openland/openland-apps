@@ -1386,6 +1386,19 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
   metadata: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -1396,6 +1409,7 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
   text: string | null;
   icon: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type ChatHistory_messages_GeneralMessage_attachments = ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentPost | ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile | ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment;
@@ -6717,6 +6731,19 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_im
   metadata: FullMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
 export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -6727,6 +6754,7 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment {
   text: string | null;
   icon: FullMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: FullMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type FullMessage_GeneralMessage_attachments = FullMessage_GeneralMessage_attachments_MessageAttachmentPost | FullMessage_GeneralMessage_attachments_MessageAttachmentFile | FullMessage_GeneralMessage_attachments_MessageRichAttachment;
@@ -8054,6 +8082,11 @@ export enum MessageReactionType {
   LIKE = "LIKE",
   SCREAM = "SCREAM",
   THUMB_UP = "THUMB_UP",
+}
+
+export enum ModernMessageButtonStyle {
+  DEFAULT = "DEFAULT",
+  LIGHT = "LIGHT",
 }
 
 export enum NotificationMessages {

@@ -87,6 +87,14 @@ export const FullMessage = gql`
                             imageFormat
                         }
                     }
+                    keyboard{
+                        buttons{
+                            id
+                            title
+                            style
+                            url
+                        }
+                    }
                     fallback
                 }
             }
