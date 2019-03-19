@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AsyncStorage, View, Linking } from 'react-native';
 import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/apolloClient';
-import { AccountQuery } from 'openland-api';
+import { AccountQuery, SettingsQuery } from 'openland-api';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
 import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
@@ -100,6 +100,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         let client = buildNativeClient(userToken);
                         saveClient(client);
                         res = await cachedQuery(client.client, AccountQuery, {}, 'account');
+                        await cachedQuery(client.client, SettingsQuery, {}, 'settings')
 
                         let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState) : undefined;
                         this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
