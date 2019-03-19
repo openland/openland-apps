@@ -31,6 +31,7 @@ import {
     EditButton,
 } from './OrganizationProfileComponent';
 import {
+    Room_room_SharedRoom_members,
     Room_room_SharedRoom,
     RoomFull_SharedRoom_members,
     RoomFull_SharedRoom_requests,
@@ -54,6 +55,18 @@ import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSetti
 import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
+
+export const getCanChangeAdvancedSettingsMembers = ({
+    chat,
+    organization,
+}: {
+    chat: Room_room_SharedRoom;
+    organization?: null;
+}) =>
+    chat.members.filter(
+        (member: Room_room_SharedRoom_members) =>
+            member.role === 'ADMIN' || member.role === 'OWNER',
+    );
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -86,6 +99,10 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
     let leaveText = 'Leave group';
 
     const canEdit = chat.canEdit;
+
+    console.log(chat.organization);
+
+    const canChangeAdvancedSettingsMembers = getCanChangeAdvancedSettingsMembers({ chat });
 
     return (
         <HeaderWrapper>
@@ -151,6 +168,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                             <AdvancedSettingsModal
                                 roomId={chat.id}
                                 socialImage={chat.socialImage}
+                                canChangeAdvancedSettingsMembers={canChangeAdvancedSettingsMembers}
                             />
                             <RoomEditModal
                                 roomId={chat.id}

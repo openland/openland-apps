@@ -26,6 +26,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { getCanChangeAdvancedSettingsMembers } from 'openland-web/pages/main/profile/components/RoomProfileComponent';
 
 const inviteButtonClass = css`
     & svg > g > path {
@@ -190,11 +191,16 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                 </>
             );
         }
+        const canChangeAdvancedSettingsMembers = getCanChangeAdvancedSettingsMembers({
+            chat: sharedRoom,
+        });
+
         modals = (
             <>
                 <AdvancedSettingsModal
                     roomId={sharedRoom.id}
                     socialImage={sharedRoom.socialImage}
+                    canChangeAdvancedSettingsMembers={canChangeAdvancedSettingsMembers}
                 />
                 <RoomEditModal
                     title={sharedRoom.title}

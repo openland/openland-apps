@@ -8,15 +8,25 @@ import { XView } from 'react-mental';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XSelect } from 'openland-x/XSelect';
 import { XInput } from 'openland-x/XInput';
+import { Room_room_SharedRoom_members } from 'openland-api/Types';
 
 type AdvancedSettingsModalT = {
     socialImage: string | null;
     roomId: string;
+    canChangeAdvancedSettingsMembers: Room_room_SharedRoom_members[];
 };
 
 export const AdvancedSettingsModal = withAlterChat(props => {
     const typedProps = props as typeof props & AdvancedSettingsModalT;
     let editSocialImageRef = typedProps.socialImage;
+
+    // console.log(typedProps.canChangeAdvancedSettingsMembers);
+
+    const selectOptions = typedProps.canChangeAdvancedSettingsMembers.map(
+        (member: Room_room_SharedRoom_members) => {
+            return { value: member.user.id, label: member.user.name };
+        },
+    );
     return (
         <XModalForm
             scrollableContent={true}
@@ -57,10 +67,7 @@ export const AdvancedSettingsModal = withAlterChat(props => {
                 <XView>
                     Choose an image to display when sharing invite to this group on social networks
                 </XView>
-                <XSelect
-                    field="select3"
-                    options={[{ value: 'one', label: 'One' }, { value: 'two', label: 'Two' }]}
-                />
+                <XSelect field="select3" options={selectOptions} />
                 <XInput size="large" title={'title'} />
                 <XView>Social sharing image</XView>
                 <XAvatarUpload

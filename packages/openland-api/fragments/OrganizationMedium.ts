@@ -10,5 +10,12 @@ export const OrganizationMedium = gql`
         isOwner: betaIsOwner
         isAdmin: betaIsAdmin
         isCommunity: alphaIsCommunity
+        adminMembers: alphaOrganizationAdminMembers {
+            role
+            user {
+                ...UserFull
+            }
+        }
+
     }
 `;
