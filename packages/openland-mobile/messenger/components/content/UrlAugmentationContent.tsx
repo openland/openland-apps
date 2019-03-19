@@ -57,52 +57,32 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
     }
 
     render() {
-        let mainTextColor = this.props.message.isOut ? DefaultConversationTheme.textColorOut : DefaultConversationTheme.textColorIn;
-
-        let preprocessed = preprocessText(this.props.message.text || '', []);
-        let big = false;
-        if (this.props.message.text) {
-            big = this.props.message.text.length <= 3 && this.props.message.text.search(/(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g) !== -1;
-            big = big || (this.props.message.text.length <= 302 && this.props.message.text.startsWith(':') && this.props.message.text.endsWith(':'));
-        }
-
-        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, this.props.message, this.props.onUserPress));
-        if (this.props.message.title) {
-            parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
-            parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{this.props.message.title}</ASText>);
-        }
-
         let out = this.props.message.isOut;
-
         let link = this.props.attach!.titleLink || '';
-
         let { text, subTitle, keyboard } = this.props.attach;
 
-        // keyboard = {
-        //     __typename: 'MessageKeyboard',
-        //     buttons: [
-        //         [
-        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: '', id: '1', title: '1', },
-        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: '', id: '2', title: '2', },
-        //         ],
-        //         [
-        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: '', id: '3', title: '3', },
-        //             // { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: '', id: '4', title: '4', },
-        //         ],
-        //         [
-        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: '', id: '5', title: '5', },
-        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: 'https://wopwop.app/', id: '6', title: '6', },
-        //             { __typename: 'ModernMessageButton', style: ModernMessageButtonStyle.DEFAULT, url: 'https://wopwop.app/', id: '7', title: '7', },
-        //         ]
-        //     ]
-        // }
+        let mainTextColor = this.props.message.isOut ? DefaultConversationTheme.textColorOut : DefaultConversationTheme.textColorIn;
 
-        let maxWidth = (this.augLayout && !this.imageCompact) ? (this.augLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming);
-        console.warn('boom', this.props.attach.subTitle);
+        // prepare image
+        let imgCompact = this.imageCompact;
+        let imgLayout = this.augLayout;
+        let imageSource = { uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined };
+
+        // invite link image placeholder
+        if (this.props.attach.titleLink &&
+            (this.props.attach.titleLink.includes('openland.com/invite') || this.props.attach.titleLink.includes('openland.com/joinChannel')) &&
+            !this.props.attach.image
+        ) {
+            imgCompact = true;
+            imgLayout = { width: 36, height: 36 };
+            imageSource = this.props.message.isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
+        }
+
+        let maxWidth = (imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming);
         return (
 
             <ASFlex onPress={resolveInternalLink(link, async () => await Linking.openURL(link))} flexDirection={'column'} >
-                {!!this.props.attach.titleLinkHostname && this.imageCompact && <ASText
+                {!!this.props.attach.titleLinkHostname && imgCompact && <ASText
                     maxWidth={maxWidth}
                     color={out ? '#fff' : '#000'}
                     opacity={out ? 0.7 : 0.6}
@@ -113,22 +93,22 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                     {this.props.attach.titleLinkHostname}
                 </ASText>}
 
-                {!this.imageCompact && this.props.attach.image && this.augLayout && (
+                {!imgCompact && this.props.attach.image && imgLayout && (
                     <ASFlex>
                         <ASImage
                             marginTop={-5}
                             marginLeft={-contentInsetsHorizontal}
                             marginRight={-contentInsetsHorizontal}
-                            source={{ uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
-                            width={this.augLayout!.width}
-                            height={this.augLayout!.height}
+                            source={imageSource}
+                            width={imgLayout!.width}
+                            height={imgLayout!.height}
                             borderRadius={8}
                         />
                         {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
                             <ASFlex
                                 overlay={true}
-                                width={this.augLayout.width}
-                                height={this.augLayout.height}
+                                width={imgLayout.width}
+                                height={imgLayout.height}
                                 justifyContent="center"
                                 alignItems="center"
                             >
@@ -140,7 +120,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                     </ASFlex>
                 )}
 
-                {!!this.props.attach.titleLinkHostname && !this.imageCompact && <ASText
+                {!!this.props.attach.titleLinkHostname && !imgCompact && <ASText
                     marginTop={5}
                     maxWidth={maxWidth}
                     color={out ? '#fff' : '#000'}
@@ -153,20 +133,20 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                 </ASText>}
 
                 <ASFlex flexDirection="row" marginTop={5}>
-                    {this.imageCompact && this.props.attach.image && this.augLayout && (
+                    {imgCompact && (this.props.attach.image) && imgLayout && (
                         <ASFlex>
                             <ASImage
-                                source={{ uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
-                                width={this.augLayout!.width}
-                                height={this.augLayout!.height}
+                                source={imageSource}
+                                width={imgLayout!.width}
+                                height={imgLayout!.height}
                                 borderRadius={10}
                                 marginRight={10}
                             />
                             {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
                                 <ASFlex
                                     overlay={true}
-                                    width={this.augLayout.width}
-                                    height={this.augLayout.height}
+                                    width={imgLayout.width}
+                                    height={imgLayout.height}
                                     justifyContent="center"
                                     alignItems="center"
                                 >
@@ -180,7 +160,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
 
                     <ASFlex
                         flexDirection="column"
-                        maxWidth={maxWidth - (this.imageCompact ? 90 : 0)}
+                        maxWidth={maxWidth - (imgCompact ? 90 : 0)}
                     >
 
                         {!!this.props.attach.title && <ASText
@@ -190,19 +170,20 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                             letterSpacing={-0.3}
                             fontSize={14}
                             marginTop={-3}
-                            numberOfLines={subTitle && this.imageCompact ? 1 : 2}
+                            numberOfLines={subTitle && imgCompact ? 1 : 2}
+                            marginBottom={4}
                             fontWeight={TextStyles.weight.medium}
                         >
                             {this.props.attach.title}
                             {/* {!this.props.attach.subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)} */}
                         </ASText>}
                         {!!subTitle && <ASText
-                            marginTop={4}
                             maxWidth={maxWidth - 36}
                             color={out ? '#fff' : '#000'}
                             opacity={out ? 0.7 : 0.6}
                             fontSize={14}
                             numberOfLines={1}
+                            marginBottom={4}
                             fontWeight={TextStyles.weight.regular}
                         >
                             {subTitle}
@@ -213,10 +194,11 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                 </ASFlex>
 
                 {!!text && <ASText
-                    marginTop={8}
+                    marginTop={4}
                     maxWidth={maxWidth}
                     color={out ? '#fff' : '#000'}
                     fontSize={14}
+                    marginBottom={4}
                     fontWeight={TextStyles.weight.regular}
                 >
                     {text}
@@ -224,14 +206,13 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                 </ASText>}
 
                 {!!keyboard && keyboard.buttons.map((line, i) =>
-                    <ASFlex key={i + ''} flexDirection="row" width={maxWidth} marginTop={9} marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
+                    <ASFlex key={i + ''} flexDirection="row" width={maxWidth} marginTop={4} marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
                         {!!line && line.map((button, j) =>
                             <ASFlex
+                                marginTop={i !== 0 ? 4 : 0}
                                 key={button.id}
                                 backgroundColor='#fff'
                                 borderRadius={8}
-                                // flexShrink={1}
-                                // flexGrow={1}
                                 marginLeft={j > 0 ? 4 : 0}
                                 marginRight={j < line.length - 1 ? 4 : 0}
                                 alignItems="center"
