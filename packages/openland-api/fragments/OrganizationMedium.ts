@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { UserFull } from './UserFull';
 
 export const OrganizationMedium = gql`
     fragment OrganizationMedium on Organization {
@@ -16,6 +17,6 @@ export const OrganizationMedium = gql`
                 ...UserFull
             }
         }
-
     }
+    ${UserFull}
 `;

@@ -26,7 +26,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { getCanChangeAdvancedSettingsMembers } from 'openland-web/pages/main/profile/components/RoomProfileComponent';
+import { getCanChangeAdvancedSettingsMembersUsers } from 'openland-web/pages/main/profile/components/RoomProfileComponent';
 
 const inviteButtonClass = css`
     & svg > g > path {
@@ -142,6 +142,8 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     const state = React.useContext(MessagesStateContext);
 
+    console.log(room);
+
     if (state.useForwardHeader) {
         return <ChatForwardHeaderView roomId={room.id} me={me} />;
     }
@@ -191,7 +193,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                 </>
             );
         }
-        const canChangeAdvancedSettingsMembers = getCanChangeAdvancedSettingsMembers({
+        const canChangeAdvancedSettingsMembersUsers = getCanChangeAdvancedSettingsMembersUsers({
             chat: sharedRoom,
         });
 
@@ -200,7 +202,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                 <AdvancedSettingsModal
                     roomId={sharedRoom.id}
                     socialImage={sharedRoom.socialImage}
-                    canChangeAdvancedSettingsMembers={canChangeAdvancedSettingsMembers}
+                    canChangeAdvancedSettingsMembersUsers={canChangeAdvancedSettingsMembersUsers}
                 />
                 <RoomEditModal
                     title={sharedRoom.title}

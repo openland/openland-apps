@@ -32,6 +32,7 @@ import {
 } from './OrganizationProfileComponent';
 import {
     Room_room_SharedRoom_members,
+    Room_room_SharedRoom_organization_adminMembers,
     Room_room_SharedRoom,
     RoomFull_SharedRoom_members,
     RoomFull_SharedRoom_requests,
@@ -56,17 +57,32 @@ import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 
-export const getCanChangeAdvancedSettingsMembers = ({
+export const getCanChangeAdvancedSettingsMembersUsers = ({
     chat,
-    organization,
 }: {
     chat: Room_room_SharedRoom;
-    organization?: null;
-}) =>
-    chat.members.filter(
-        (member: Room_room_SharedRoom_members) =>
-            member.role === 'ADMIN' || member.role === 'OWNER',
+}) => {
+    const res: any[] = [];
+    const addedIds: string[] = [];
+
+    chat.organization!!.adminMembers.forEach(
+        (item: Room_room_SharedRoom_organization_adminMembers) => {
+            if (addedIds.indexOf(item.user.id) === -1) {
+                res.push(item.user);
+                addedIds.push(item.user.id);
+            }
+        },
     );
+
+    chat.members.forEach((item: Room_room_SharedRoom_members) => {
+        if (addedIds.indexOf(item.user.id) === -1) {
+            res.push(item.user);
+            addedIds.push(item.user.id);
+        }
+    });
+
+    return res;
+};
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -102,7 +118,9 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
 
     console.log(chat.organization);
 
-    const canChangeAdvancedSettingsMembers = getCanChangeAdvancedSettingsMembers({ chat });
+    const canChangeAdvancedSettingsMembersUsers = getCanChangeAdvancedSettingsMembersUsers({
+        chat,
+    });
 
     return (
         <HeaderWrapper>
@@ -168,7 +186,9 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                             <AdvancedSettingsModal
                                 roomId={chat.id}
                                 socialImage={chat.socialImage}
-                                canChangeAdvancedSettingsMembers={canChangeAdvancedSettingsMembers}
+                                canChangeAdvancedSettingsMembersUsers={
+                                    canChangeAdvancedSettingsMembersUsers
+                                }
                             />
                             <RoomEditModal
                                 roomId={chat.id}

@@ -8,25 +8,25 @@ import { XView } from 'react-mental';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XSelect } from 'openland-x/XSelect';
 import { XInput } from 'openland-x/XInput';
-import { Room_room_SharedRoom_members } from 'openland-api/Types';
+import { Room_room_SharedRoom_members_user } from 'openland-api/Types';
 
 type AdvancedSettingsModalT = {
     socialImage: string | null;
     roomId: string;
-    canChangeAdvancedSettingsMembers: Room_room_SharedRoom_members[];
+    canChangeAdvancedSettingsMembersUsers: Room_room_SharedRoom_members_user[];
 };
 
 export const AdvancedSettingsModal = withAlterChat(props => {
     const typedProps = props as typeof props & AdvancedSettingsModalT;
+
     let editSocialImageRef = typedProps.socialImage;
 
-    // console.log(typedProps.canChangeAdvancedSettingsMembers);
-
-    const selectOptions = typedProps.canChangeAdvancedSettingsMembers.map(
-        (member: Room_room_SharedRoom_members) => {
-            return { value: member.user.id, label: member.user.name };
+    const selectOptions = typedProps.canChangeAdvancedSettingsMembersUsers.map(
+        (user: Room_room_SharedRoom_members_user) => {
+            return { value: user.id, label: user.name };
         },
     );
+
     return (
         <XModalForm
             scrollableContent={true}
