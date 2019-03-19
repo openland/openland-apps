@@ -3,6 +3,8 @@ import { keyFromObject } from 'openland-graphql/utils/keyFromObject';
 import { randomKey } from 'openland-mobile/utils/randomKey';
 import { Queue } from 'openland-graphql/utils/Queue';
 
+const LOG = false;
+
 class Watch {
 
     value: any;
@@ -20,6 +22,9 @@ class Watch {
     }
 
     notify() {
+        if (LOG) {
+            console.log('notify');
+        }
         if (this.resolve) {
             this.resolve();
             this.resolve = undefined;
@@ -30,6 +35,9 @@ class Watch {
     }
 
     waitForUpdate(handler: () => void): () => void {
+        if (LOG) {
+            console.log('waitForUpdate');
+        }
         let k = randomKey();
         this.handlers.set(k, handler);
         return () => {
@@ -38,8 +46,14 @@ class Watch {
     }
 
     async awaitForUpdate() {
+        if (LOG) {
+            console.log('awaitForUpdate');
+        }
         await new Promise((resolve) => {
-            this.waitForUpdate(resolve);
+            let unsubscribe = this.waitForUpdate(() => {
+                resolve();
+                unsubscribe();
+            });
         })
     }
 }
@@ -51,6 +65,7 @@ export interface BridgedClientConnector {
     postRefetchQuery(key: string, query: any, vars: any): void
     postMutation(key: string, query: any, vars: any): void
     postSubscribe(key: string, query: any, vars: any): void
+    postSubscribeUpdate(key: string, vars: any): void
     postUnsubscribe(key: string): void
 }
 
@@ -64,6 +79,9 @@ export class BridgedClient {
     }
 
     registerQuery(query: any, vars: any) {
+        if (LOG) {
+            console.log('registerQuery');
+        }
         var key = vars ? keyFromObject(vars) : '';
         var name = query.document.definitions[0].name.value
         key = 'query$' + name + '$' + key
@@ -75,6 +93,9 @@ export class BridgedClient {
     }
 
     registerMutation(mutation: any, vars: any) {
+        if (LOG) {
+            console.log('registerMutation');
+        }
         let key = 'mutation$' + randomKey()
         this.dataWatches.set(key, new Watch())
         this.connector.postMutation(key, mutation, vars)
@@ -82,6 +103,9 @@ export class BridgedClient {
     }
 
     registerRefetch(mutation: any, vars: any) {
+        if (LOG) {
+            console.log('registerRefetch');
+        }
         let key = 'refetch$' + randomKey()
         this.dataWatches.set(key, new Watch())
         this.connector.postRefetchQuery(key, mutation, vars)
@@ -96,6 +120,9 @@ export class BridgedClient {
     }
 
     registerWriteQuery(data: any, query: any, vars: any) {
+        if (LOG) {
+            console.log('registerWriteQuery');
+        }
         let key = 'writeQuery$' + randomKey()
         this.dataWatches.set(key, new Watch())
         this.connector.postWriteQuery(key, data, query, vars)
@@ -103,6 +130,9 @@ export class BridgedClient {
     }
 
     operationUpdated(key: string, data: any) {
+        if (LOG) {
+            console.log('operationUpdated');
+        }
         let watch = this.dataWatches.get(key)!!
         watch.value = data;
         watch.isCompleted = true;
@@ -110,15 +140,21 @@ export class BridgedClient {
         watch.notify();
     }
 
-    operationFailed(key: string) {
+    operationFailed(key: string, data: any) {
+        if (LOG) {
+            console.log('operationFailed');
+        }
         let watch = this.dataWatches.get(key)!!
-        watch.value = {};
+        watch.value = data;
         watch.isCompleted = true;
         watch.isErrored = true;
         watch.notify();
     }
 
     subscribe(query: any, vars: any) {
+        if (LOG) {
+            console.log('subscribe');
+        }
         let key = 'subscribe$' + randomKey()
         let watch = new Watch();
         let queue = new Queue();
@@ -127,23 +163,21 @@ export class BridgedClient {
         let callback = () => {
             if (!watch.isErrored) {
                 queue.post(watch.value)
-                watch.waitForUpdate(callback)
             } else {
                 // TODO: Handle
             }
         }
-        watch.waitForUpdate(callback);
+        let subs = watch.waitForUpdate(callback);
         this.connector.postSubscribe(key, query, vars);
 
         return {
             get: queue.get,
             updateVariables: (src?: any) => {
-                // this.connector.postSubscribe(key, query, src);
-                // this.thread.postMessage(JSON.stringify({ type: 'subscribe-update', variables: src, id: key } as Request));
+                this.connector.postSubscribeUpdate(key, src);
             },
             destroy: () => {
-                // this.connector.postUnsubscribe(key)
-                // this.thread.postMessage(JSON.stringify({ type: 'subscribe-destroy', id: key } as Request));
+                this.connector.postUnsubscribe(key)
+                subs();
             }
         }
     }
@@ -153,6 +187,9 @@ export class BridgedClient {
     // }
 
     async getOperation(key: string) {
+        if (LOG) {
+            console.log('getOperation');
+        }
         let watch = this.dataWatches.get(key)!;
         if (!watch.isCompleted) {
             await watch.awaitForUpdate();
@@ -162,16 +199,22 @@ export class BridgedClient {
         }
 
         if (watch.isErrored) {
-            throw Error('Unknown error');
+            throw watch.value
         } else {
             return watch.value
         }
     }
 
     useOperationSuspense(key: string) {
+        if (LOG) {
+            console.log('useOperationSuspense');
+        }
         const watch = this.dataWatches.get(key)!!;
         const [responseId, setResponseId] = React.useState(0);
         React.useEffect(() => {
+            if (LOG) {
+                console.log('useEffectSuspense');
+            }
             return watch.waitForUpdate(() => {
                 setResponseId((x) => x + 1);
             });
@@ -181,16 +224,22 @@ export class BridgedClient {
             throw watch.promise;
         }
         if (watch.isErrored) {
-            throw Error('query error: ' + JSON.stringify(watch.value));
+            throw watch.value
         }
 
         return watch.value;
     }
 
     useOperation(key: string) {
+        if (LOG) {
+            console.log('useOperation');
+        }
         const watch = this.dataWatches.get(key)!!;
         const [responseId, setResponseId] = React.useState(0);
         React.useEffect(() => {
+            if (LOG) {
+                console.log('useEffect');
+            }
             return watch.waitForUpdate(() => {
                 setResponseId((x) => x + 1);
             });
@@ -198,7 +247,7 @@ export class BridgedClient {
 
         if (watch.isCompleted) {
             if (watch.isErrored) {
-                throw Error('query error: ' + JSON.stringify(watch.value));
+                throw watch.value
             } else {
                 return watch.value;
             }

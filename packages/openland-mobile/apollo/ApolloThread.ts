@@ -76,7 +76,7 @@ class ApolloSubscription {
     }
 
     private handleNext = (src: any) => {
-        postMessage({ type: 'result', id: this.id, data: src });
+        postMessage({ type: 'result', id: this.id, data: src.data });
     }
 
     private handleError = () => {
@@ -150,11 +150,9 @@ self.onmessage = (message: string) => {
         let r = client.client.watchQuery({ query: msg.body, variables: msg.variables })
         r.subscribe({
             next: (v) => {
-                // console.log('next: ' + JSON.stringify(v.data));
                 postMessage({ id: msg.id, type: 'result', data: v.data });
             },
             error: (v) => {
-                // console.log('error');
                 postMessage({ id: msg.id, type: 'error', data: v });
             },
             complete: () => {

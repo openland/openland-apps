@@ -18,8 +18,14 @@ export interface GraphqlActiveSubscription<TSubs, TVars> {
     destroy(): void;
 };
 
+export interface GraphqlQueryWatch<TQuery> {
+    get(): Promise<TQuery>;
+    destroy(): void;
+};
+
 export interface GraphqlClient {
     query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery>;
+    queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): GraphqlQueryWatch<TQuery>;
     refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery>;
     mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation>;
     subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars>;
