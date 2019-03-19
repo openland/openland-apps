@@ -198,6 +198,18 @@ export const RoomSuperQuery = gql`
     }
 `;
 
+export const PinMessageMutation = gql`
+    mutation PinMessage($chatId: ID!, $messageId: ID!) {
+        pinMessage(chatId: $chatId, messageId: $messageId)
+    }
+`;
+
+export const UnpinMessageMutation = gql`
+    mutation UnpinMessage($chatId: ID!) {
+        unpinMessage(chatId: $chatId)
+    }
+`;
+
 export const MessageSetReactionMutation = gql`
     mutation MessageSetReaction($messageId: ID!, $reaction: String!) {
         betaReactionSet(mid: $messageId, reaction: $reaction)

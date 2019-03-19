@@ -5387,6 +5387,44 @@ export interface RoomSuperVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: PinMessage
+// ====================================================
+
+export interface PinMessage {
+  /**
+   * modernSendMessage(room: ID!, message: String, repeatKey: String,
+   * forwardMessages: [ID!], spans: [MessageSpanInput!], attachments:
+   * [MessageAttachmentInput!]): Boolean!
+   */
+  pinMessage: boolean;
+}
+
+export interface PinMessageVariables {
+  chatId: string;
+  messageId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: UnpinMessage
+// ====================================================
+
+export interface UnpinMessage {
+  unpinMessage: boolean;
+}
+
+export interface UnpinMessageVariables {
+  chatId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: MessageSetReaction
 // ====================================================
 

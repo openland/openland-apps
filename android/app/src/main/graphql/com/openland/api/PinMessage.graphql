@@ -1,0 +1,3 @@
+mutation PinMessage($chatId: ID!, $messageId: ID!) {
+  pinMessage(chatId: $chatId, messageId: $messageId)
+}

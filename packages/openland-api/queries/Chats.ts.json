@@ -6,6 +6,8 @@
         { "name": "RoomQuery", "type": "query", "hasVariables": true },
         { "name": "RoomTinyQuery", "type": "query", "hasVariables": true },
         { "name": "RoomSuperQuery", "type": "query", "hasVariables": true },
+        { "name": "PinMessageMutation", "type": "mutation", "hasVariables": true },
+        { "name": "UnpinMessageMutation", "type": "mutation", "hasVariables": true },
         { "name": "MessageSetReactionMutation", "type": "mutation", "hasVariables": true },
         { "name": "SwitchReactionMutation", "type": "mutation", "hasVariables": true },
         { "name": "MessageUnsetReactionMutation", "type": "mutation", "hasVariables": true },

@@ -630,6 +630,12 @@ export class OpenlandClient {
     async mutateAddAppToChat(variables: Types.AddAppToChatVariables): Promise<Types.AddAppToChat> {
         return this.client.mutate(Source.AddAppToChatMutation, variables);
     }
+    async mutatePinMessage(variables: Types.PinMessageVariables): Promise<Types.PinMessage> {
+        return this.client.mutate(Source.PinMessageMutation, variables);
+    }
+    async mutateUnpinMessage(variables: Types.UnpinMessageVariables): Promise<Types.UnpinMessage> {
+        return this.client.mutate(Source.UnpinMessageMutation, variables);
+    }
     async mutateMessageSetReaction(variables: Types.MessageSetReactionVariables): Promise<Types.MessageSetReaction> {
         return this.client.mutate(Source.MessageSetReactionMutation, variables);
     }

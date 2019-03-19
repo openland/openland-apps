@@ -205,6 +205,20 @@
       }
     },
     {
+      "signature": "6fff5212a170521dd9fe1ff7414dacba1bafb698ac4151e3cfbefe5339097c36",
+      "document": "mutation PinMessage($chatId:ID!,$messageId:ID!){pinMessage(chatId:$chatId,messageId:$messageId)}",
+      "metadata": {
+        "engineSignature": "mutation PinMessage($chatId:ID!,$messageId:ID!){pinMessage(chatId:$chatId,messageId:$messageId)}"
+      }
+    },
+    {
+      "signature": "285d0aeec6bf20057be524e7dd8476acab6dc5a38b428399487b11ca36c662d2",
+      "document": "mutation UnpinMessage($chatId:ID!){unpinMessage(chatId:$chatId)}",
+      "metadata": {
+        "engineSignature": "mutation UnpinMessage($chatId:ID!){unpinMessage(chatId:$chatId)}"
+      }
+    },
+    {
       "signature": "2dd99d7be82cc0cfe3bd34f19a05ad4554eed91bfc955fd4e58e58bbc2bc09f3",
       "document": "mutation MessageSetReaction($messageId:ID!,$reaction:String!){betaReactionSet(mid:$messageId,reaction:$reaction)}",
       "metadata": {
