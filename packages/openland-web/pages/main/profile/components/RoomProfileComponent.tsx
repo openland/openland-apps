@@ -65,17 +65,17 @@ export const getCanChangeAdvancedSettingsMembersUsers = ({
     const res: any[] = [];
     const addedIds: string[] = [];
 
-    chat.organization!!.adminMembers.forEach(
-        (item: Room_room_SharedRoom_organization_adminMembers) => {
-            if (addedIds.indexOf(item.user.id) === -1) {
-                res.push(item.user);
-                addedIds.push(item.user.id);
-            }
-        },
-    );
+    const adminMembers = chat.organization ? chat.organization!!.adminMembers : [];
+
+    adminMembers.forEach((item: Room_room_SharedRoom_organization_adminMembers) => {
+        if (addedIds.indexOf(item.user.id) === -1) {
+            res.push(item.user);
+            addedIds.push(item.user.id);
+        }
+    });
 
     chat.members.forEach((item: Room_room_SharedRoom_members) => {
-        if (addedIds.indexOf(item.user.id) === -1) {
+        if (item.role === 'OWNER' && addedIds.indexOf(item.user.id) === -1) {
             res.push(item.user);
             addedIds.push(item.user.id);
         }
