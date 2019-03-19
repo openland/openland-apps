@@ -14,7 +14,12 @@ import {
     DataSourceMessageItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
-import { UserShort, SharedRoomKind, FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import {
+    UserShort,
+    SharedRoomKind,
+    FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
+    FullMessage_GeneralMessage_attachments_MessageRichAttachment,
+} from 'openland-api/Types';
 import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import { MobileMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
@@ -96,11 +101,14 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
     let content: any[] = [];
     let hideMenu = false;
 
-    let fileAttach = (message.attachments || []).filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
-    let richAttach = (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
+    let fileAttach = (message.attachments || []).filter(
+        a => a.__typename === 'MessageAttachmentFile',
+    )[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+    let richAttach = (message.attachments || []).filter(
+        a => a.__typename === 'MessageRichAttachment',
+    )[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
 
     if (!message.isSending) {
-
         if (message.reply && message.reply!.length > 0) {
             content.push(
                 <ReplyMessageWrapper key={'reply_message' + message.id}>
@@ -116,7 +124,9 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                                 message={item.message}
                                 id={item.id}
                                 key={'reply_message' + item.id + index}
-                                edited={!!(item.__typename === 'GeneralMessage' && message.isEdited)}
+                                edited={
+                                    !!(item.__typename === 'GeneralMessage' && message.isEdited)
+                                }
                                 attach={fileAttach}
                                 startSelected={hideMenu}
                                 compact={isCompact || undefined}
@@ -151,7 +161,11 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
         }
 
         if (fileAttach && !richAttach) {
-            if (fileAttach.fileMetadata.isImage && fileAttach.fileMetadata.imageWidth && fileAttach.fileMetadata.imageHeight) {
+            if (
+                fileAttach.fileMetadata.isImage &&
+                fileAttach.fileMetadata.imageWidth &&
+                fileAttach.fileMetadata.imageHeight
+            ) {
                 if (fileAttach.fileMetadata.imageFormat === 'gif') {
                     content.push(
                         <MessageAnimationComponent
@@ -174,7 +188,10 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                         />,
                     );
                 }
-            } else if (fileAttach.fileMetadata.name.endsWith('.mp4') || fileAttach.fileMetadata.name.endsWith('.mov')) {
+            } else if (
+                fileAttach.fileMetadata.name.endsWith('.mp4') ||
+                fileAttach.fileMetadata.name.endsWith('.mov')
+            ) {
                 content.push(
                     <MessageVideoComponent
                         key={'file'}
@@ -194,7 +211,8 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
             }
         }
         if (richAttach && !message.isService) {
-            if (richAttach.titleLink &&
+            if (
+                richAttach.titleLink &&
                 (richAttach.titleLink.startsWith('https://app.openland.com/o') ||
                     richAttach.titleLink.startsWith('https://openland.com/o')) &&
                 richAttach.titleLink.includes('listings#')

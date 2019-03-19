@@ -19,7 +19,11 @@ const Messenger = (props: { currentUser: UserShort; children?: any }) => {
                     if (!cachedMessenger) {
                         let platform = 'web ' + location.hostname;
 
-                        cachedMessenger = new MessengerEngine(new OpenlandClient(new ApolloGraphqlClient(apollo)), props.currentUser, platform);
+                        cachedMessenger = new MessengerEngine(
+                            new OpenlandClient(new ApolloGraphqlClient(apollo)),
+                            props.currentUser,
+                            platform,
+                        );
                     }
                     return (
                         <MessengerContext.Provider value={cachedMessenger!}>

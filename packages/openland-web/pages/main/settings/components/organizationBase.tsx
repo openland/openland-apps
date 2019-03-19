@@ -144,7 +144,10 @@ const AdminTools = withSuperAccountActions(props => {
     );
 }) as React.ComponentType<AdminToolsT>;
 
-const GeneralForm = ({ data: { organizationProfile }, updateOrganizaton }: OrganizationSettingsT) => {
+const GeneralForm = ({
+    data: { organizationProfile },
+    updateOrganizaton,
+}: OrganizationSettingsT) => {
     return (
         <XForm
             defaultData={{

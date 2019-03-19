@@ -93,8 +93,8 @@ export class PostButton extends React.PureComponent<PostButtonProps> {
             props.enabled === false
                 ? undefined
                 : props.handleHideChat
-                    ? props.handleHideChat
-                    : undefined;
+                ? props.handleHideChat
+                : undefined;
 
         let enableProps = {
             enabled: props.enabled === false,

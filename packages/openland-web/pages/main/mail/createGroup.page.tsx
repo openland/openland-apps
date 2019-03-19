@@ -335,14 +335,16 @@ const OrganizationsList = (props: {
                 Share with
             </XView>
             <div className={SelectOrganizationWrapperClassName}>
-                {props.organizations.sort((a, b) => a.name.localeCompare(b.name)).map(i => (
-                    <OrganizationItem
-                        organization={i}
-                        key={'org_' + i.id}
-                        onSelect={props.onSelect}
-                        isSelected={props.selectedOrg ? props.selectedOrg === i.id : false}
-                    />
-                ))}
+                {props.organizations
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map(i => (
+                        <OrganizationItem
+                            organization={i}
+                            key={'org_' + i.id}
+                            onSelect={props.onSelect}
+                            isSelected={props.selectedOrg ? props.selectedOrg === i.id : false}
+                        />
+                    ))}
             </div>
         </XView>
     );

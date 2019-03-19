@@ -106,10 +106,9 @@ class ScaffoldContent extends React.Component<{
 
 const NotificationCounter = withNotificationCounter(props => (
     <>
-        {props.data.counter &&
-            props.data.counter.unreadCount > 0 && (
-                <CounterWrapper count={props.data.counter.unreadCount} />
-            )}
+        {props.data.counter && props.data.counter.unreadCount > 0 && (
+            <CounterWrapper count={props.data.counter.unreadCount} />
+        )}
     </>
 ));
 

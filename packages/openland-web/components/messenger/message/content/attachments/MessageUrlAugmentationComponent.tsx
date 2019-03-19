@@ -139,7 +139,8 @@ const ImageWrapper = Glamorous.div({
     },
 });
 
-interface MessageUrlAugmentationComponentProps extends FullMessage_GeneralMessage_attachments_MessageRichAttachment {
+interface MessageUrlAugmentationComponentProps
+    extends FullMessage_GeneralMessage_attachments_MessageRichAttachment {
     messageId: string;
     isMe: boolean;
 }
@@ -298,7 +299,12 @@ const MessageUrlAugmentationComponentInner = React.memo(
 
         let dimensions = undefined;
         if (image && image.metadata && image.metadata.imageWidth && image.metadata.imageHeight) {
-            dimensions = layoutMediaReverse(image.metadata.imageWidth, image.metadata.imageHeight, 94, 94);
+            dimensions = layoutMediaReverse(
+                image.metadata.imageWidth,
+                image.metadata.imageHeight,
+                94,
+                94,
+            );
         }
 
         return (
@@ -311,9 +317,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                 <ContentWrapper>
                     {titleLinkHostname && (
                         <Hostname>
-                            {icon && (
-                                <Favicon src={icon.url} />
-                            )}
+                            {icon && <Favicon src={icon.url} />}
                             {!icon && <WebsiteIcon />}
                             <span>{titleLinkHostname}</span>
                         </Hostname>
