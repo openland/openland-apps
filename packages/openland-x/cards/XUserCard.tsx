@@ -145,25 +145,26 @@ export const XUserCard = ({
             customMenu
         );
 
-    const organizationElem = !hideOrganization &&
-        user.primaryOrganization && (
-            <XView
-                fontSize={12}
-                lineHeight="22px"
-                fontWeight="600"
-                color="rgba(0, 0, 0, 0.4)"
-                marginTop={1}
-                marginBottom={-1}
-            >
-                {user.primaryOrganization.name}
-            </XView>
-        );
+    const organizationElem = !hideOrganization && user.primaryOrganization && (
+        <XView
+            fontSize={12}
+            lineHeight="22px"
+            fontWeight="600"
+            color="rgba(0, 0, 0, 0.4)"
+            marginTop={1}
+            marginBottom={-1}
+        >
+            {user.primaryOrganization.name}
+        </XView>
+    );
 
     let cardPath: string | undefined = path || '/directory/u/' + user.id;
 
     if (noPath === true) {
         cardPath = undefined;
     }
+
+    console.log(isAdmin);
 
     return (
         <XView
@@ -219,10 +220,9 @@ export const XUserCard = ({
                             </XView>
                             {!isMobile && organizationElem}
                         </XView>
-                        {!isMobile &&
-                            user.id && (
-                                <UserStatus variables={{ userId: user.id }} isBot={!!user.isBot} />
-                            )}
+                        {!isMobile && user.id && (
+                            <UserStatus variables={{ userId: user.id }} isBot={!!user.isBot} />
+                        )}
                         {isMobile && organizationElem}
                     </XView>
                     <XView flexShrink={0} flexDirection="row" alignItems="center">

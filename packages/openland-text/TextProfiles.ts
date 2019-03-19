@@ -73,9 +73,9 @@ export const TextProfiles = {
                     'Change role of ' + userName + ' in ' + orgName,
 
                 hints: {
-                    OWNER:
-                        'Has full control over the organization account, can edit the profile, invite and confirm new members, assign and change roles.',
-                    MEMBER: "Members can participate in the organization's internal chats.",
+                    ADMIN:
+                        'Admins can add and kick members, change organization info, and manage organization groups.',
+                    MEMBER: "Members can add new members to organization, view, join, and create organization groups.",
                 },
             },
 
