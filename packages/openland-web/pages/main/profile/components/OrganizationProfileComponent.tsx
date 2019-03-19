@@ -1055,7 +1055,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
 
     let groups = organization.rooms;
 
-    if (organization.isMine && groups.length > 0) {
+    if (organization.isMine) {
         return (
             <Section separator={0}>
                 <XSubHeader
