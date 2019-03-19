@@ -23,17 +23,15 @@ interface MediaContentProps {
     layout: { width: number, height: number }
 }
 
-export let layoutImage = (message: DataSourceMessageItem) => {
+export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeight: number | null }) => {
     let maxSize = Platform.select({
         default: 400,
         ios: Math.min(Dimensions.get('window').width - 120, 400),
         android: Math.min(Dimensions.get('window').width - 120, 400)
     });
-    let attaches = (message.attachments || []);
-    let fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
 
-    if (fileAttach && fileAttach.fileMetadata.imageHeight && fileAttach.fileMetadata.imageWidth) {
-        return layoutMedia(fileAttach.fileMetadata.imageWidth, fileAttach.fileMetadata.imageHeight, maxSize, maxSize);
+    if (fileMetadata && fileMetadata.imageHeight && fileMetadata.imageWidth) {
+        return layoutMedia(fileMetadata.imageWidth, fileMetadata.imageHeight, maxSize, maxSize);
     }
     return undefined;
 }
