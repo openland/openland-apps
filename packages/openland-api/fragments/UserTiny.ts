@@ -8,5 +8,6 @@ export const UserTiny = gql`
         lastName
         picture
         shortname
+        isYou
     }
 `;

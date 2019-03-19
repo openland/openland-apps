@@ -43,6 +43,29 @@ export const RoomFull = gql`
                 mute
             }
             canEdit
+            pinnedMessage {
+                ... on GeneralMessage {
+                    id
+                    message
+                    sender {
+                        id
+                        name
+                        photo
+                    }
+                    attachments {
+                        ...on MessageAttachmentFile {
+                            id
+                            fileMetadata {
+                                name
+                                size
+                                isImage
+                                imageWidth
+                                imageHeight
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 `;

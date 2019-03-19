@@ -38,51 +38,50 @@ export const DialogsQuery = gql`
 `;
 
 export const ChatWatchSubscription = gql`
-  subscription ChatWatch($chatId: ID!, $fromState: String) {
-    event: chatUpdates(chatId: $chatId, fromState: $fromState) {
-        ... on ChatUpdateSingle {
-            seq
-            state
-            update {
-                ...ChatUpdateFragment
+    subscription ChatWatch($chatId: ID!, $fromState: String) {
+        event: chatUpdates(chatId: $chatId, fromState: $fromState) {
+            ... on ChatUpdateSingle {
+                seq
+                state
+                update {
+                    ...ChatUpdateFragment
+                }
+            }
+            ... on ChatUpdateBatch {
+                fromSeq
+                seq
+                state
+                updates {
+                    ...ChatUpdateFragment
+                }
             }
         }
-        ... on ChatUpdateBatch {
-            fromSeq
-            seq
-            state
-            updates {
-                ...ChatUpdateFragment
+    }
+    fragment ChatUpdateFragment on ChatUpdate {
+        ... on ChatMessageReceived {
+            message {
+                ...FullMessage
+            }
+            repeatKey
+        }
+        ... on ChatMessageUpdated {
+            message {
+                ...FullMessage
             }
         }
-       
-    }
-  }
-  fragment ChatUpdateFragment on ChatUpdate {
-    ... on ChatMessageReceived {
-        message {
-            ...FullMessage
+        ... on ChatMessageDeleted {
+            message {
+                id
+            }
         }
-        repeatKey
+        # ... on ConversationLostAccess {
+        #    lostAccess
+        # }
     }
-    ... on ChatMessageUpdated {
-        message {
-            ...FullMessage
-        }
-    }
-    ... on ChatMessageDeleted {
-        message {
-            id
-        }
-    }
-    # ... on ConversationLostAccess {
-    #    lostAccess
-    # }
-  }
-  ${FullMessage}
-  ${UserTiny}
-  ${UserShort}
-  ${RoomShort}
+    ${FullMessage}
+    ${UserTiny}
+    ${UserShort}
+    ${RoomShort}
 `;
 
 export const DialogsWatchSubscription = gql`
@@ -110,20 +109,20 @@ export const DialogsWatchSubscription = gql`
             cid
             unread
             globalUnread
-            message:alphaMessage {
-                    ...TinyMessage
+            message: alphaMessage {
+                ...TinyMessage
             }
         }
         ... on DialogMessageUpdated {
             cid
-            message:alphaMessage {
-                    ...TinyMessage
-                }
+            message: alphaMessage {
+                ...TinyMessage
+            }
         }
         ... on DialogMessageDeleted {
             cid
             message: alphaMessage {
-                    ...TinyMessage
+                ...TinyMessage
             }
             prevMessage: alphaPrevMessage {
                 ...TinyMessage
@@ -161,7 +160,6 @@ export const DialogsWatchSubscription = gql`
             cid
             globalUnread
         }
-       
     }
     ${UserTiny}
     ${TinyMessage}
