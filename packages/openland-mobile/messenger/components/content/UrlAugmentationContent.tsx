@@ -11,11 +11,12 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
-import { bubbleMaxWidth } from '../AsyncBubbleView';
+import { bubbleMaxWidth, bubbleMaxWidthIncoming, AsyncBubbleView } from '../AsyncBubbleView';
 import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 interface UrlAugmentationContentProps {
     message: DataSourceMessageItem;
@@ -27,12 +28,17 @@ interface UrlAugmentationContentProps {
 export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationContentProps, { downloadState?: DownloadState }> {
     private augLayout?: { width: number, height: number };
     private downloadManagerWatch?: WatchSubscription;
+    private imageCompact = false;
 
     componentWillMount() {
         if (this.props.attach && this.props.attach.image) {
             let maxSize = (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidth) - 90
             let width = this.props.attach.image && this.props.attach.image.metadata!.imageWidth || maxSize;
             let height = this.props.attach.image && this.props.attach.image.metadata!.imageHeight || maxSize;
+            if (width === height) {
+                maxSize = 36;
+                this.imageCompact = true;
+            }
             this.augLayout = layoutMedia(width!, height!, maxSize, maxSize);
 
             let imageSize = {
@@ -77,49 +83,87 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
 
         let link = this.props.attach!.titleLink || '';
 
+        let rightText = this.props.attach.text ? this.props.attach.subTitle : undefined;
+        let bottomText = this.props.attach.text || this.props.attach.subTitle;
+
+        console.warn('boom', this.props.attach.subTitle);
         return (
-            <>
-                {this.props.attach && (
-                    <ASFlex onPress={resolveInternalLink(link, async () => await Linking.openURL(link))} flexDirection="column" marginTop={12} marginBottom={5} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? 'rgba(255,255,255, 0.5)' : DefaultConversationTheme.linkColorIn}>
-                        {this.props.attach.image && this.augLayout && (
-                            <ASFlex marginBottom={8}>
-                                <ASImage
-                                    marginLeft={10}
-                                    source={{ uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
-                                    width={this.augLayout!.width}
-                                    height={this.augLayout!.height}
-                                    borderRadius={10}
-                                />
-                                {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
-                                    <ASFlex
-                                        overlay={true}
-                                        width={this.augLayout.width}
-                                        height={this.augLayout.height}
-                                        justifyContent="center"
-                                        alignItems="center"
-                                    >
-                                        <ASFlex backgroundColor="#0008" borderRadius={20}>
-                                            <ASText color="#fff" opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
-                                        </ASFlex>
+            <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachTop} backgroundColor={'white'} colorIn={undefined as any}>
+
+                <ASFlex onPress={resolveInternalLink(link, async () => await Linking.openURL(link))} flexDirection={'column'} marginTop={12} marginBottom={5} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? 'rgba(255,255,255, 0.5)' : DefaultConversationTheme.linkColorIn}>
+                    {!!this.props.attach.titleLinkHostname && this.imageCompact && <ASText
+                        maxWidth={this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming - 80}
+                        marginLeft={10}
+                        color={mainTextColor}
+                        lineHeight={20}
+                        letterSpacing={-0.3}
+                        fontSize={12}
+                        marginTop={-3}
+                        numberOfLines={bottomText ? 1 : 2}
+                        fontWeight={TextStyles.weight.medium}
+                    >
+                        {this.props.attach.titleLinkHostname}
+                    </ASText>}
+
+                    {this.props.attach.image && this.augLayout && (
+                        <ASFlex marginBottom={8}>
+                            <ASImage
+                                marginLeft={10}
+                                source={{ uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
+                                width={this.augLayout!.width}
+                                height={this.augLayout!.height}
+                                borderRadius={10}
+                            />
+                            {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
+                                <ASFlex
+                                    overlay={true}
+                                    width={this.augLayout.width}
+                                    height={this.augLayout.height}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <ASFlex backgroundColor="#0008" borderRadius={20}>
+                                        <ASText color="#fff" opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
                                     </ASFlex>
-                                }
-                            </ASFlex>
-                        )}
+                                </ASFlex>
+                            }
+                        </ASFlex>
+                    )}
+
+                    {!!this.props.attach.titleLinkHostname && !this.imageCompact && <ASText
+                        maxWidth={this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming - 80}
+                        marginLeft={10}
+                        color={mainTextColor}
+                        lineHeight={20}
+                        letterSpacing={-0.3}
+                        fontSize={12}
+                        marginTop={-3}
+                        numberOfLines={bottomText ? 1 : 2}
+                        fontWeight={TextStyles.weight.medium}
+                    >
+                        {this.props.attach.titleLinkHostname}
+                    </ASText>}
+
+                    <ASFlex
+                        flexDirection="column"
+                        maxWidth={this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming - 80}
+                    >
 
                         {!!this.props.attach.title && <ASText
+                            maxWidth={this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming - 80}
                             marginLeft={10}
                             color={mainTextColor}
                             lineHeight={20}
                             letterSpacing={-0.3}
                             fontSize={16}
                             marginTop={-3}
+                            numberOfLines={bottomText ? 1 : 2}
                             fontWeight={TextStyles.weight.medium}
                         >
                             {this.props.attach.title}
                             {!this.props.attach.subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)}
-                        </ASText>
-                        }
-                        {!!this.props.attach.text && <ASText
+                        </ASText>}
+                        {!!bottomText && <ASText
                             marginLeft={10}
                             color={mainTextColor}
                             lineHeight={20}
@@ -127,13 +171,14 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                             fontSize={16}
                             fontWeight={TextStyles.weight.regular}
                         >
-                            {this.props.attach.text}
+                            {bottomText}
                             {this.props.message.isOut ? paddedTextOut : paddedText}
                         </ASText>}
-
                     </ASFlex>
-                )}
-            </>
+
+                </ASFlex>
+            </AsyncBubbleView>
+
         )
     }
 }
