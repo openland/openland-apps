@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { Image, Platform, Dimensions } from 'react-native';
+import { ASText } from 'react-native-async-view/ASText';
 
 export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 50 - 10, 400);
 export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 50 - 45, 400);
@@ -8,12 +9,28 @@ export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 
 export let contentInsetsHorizontal = 13;
 export let contentInsetsTop = 8;
 export let contentInsetsBottom = 9;
-export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compact: boolean, appearance?: 'media' | 'text', colorIn: string, backgroundColor: string, width?: number }> {
+
+export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compact: boolean, appearance?: 'media' | 'text', colorIn: string, backgroundColor: string, width?: number, pair?: 'top' | 'bottom' }> {
     render() {
-        const compact = this.props.compact;
-        const image = compact
-            ? (this.props.isOut ? require('assets/bubble-outgoing.png') : require('assets/bubble-incoming.png'))
-            : (this.props.isOut ? require('assets/bubble-outgoing-tail.png') : require('assets/bubble-incoming-tail.png'));
+
+        let bubbleRes = this.props.isOut ? 'outgoing' : 'incoming';
+        bubbleRes += !this.props.compact && this.props.pair !== 'top' ? '-tail' : '';
+        bubbleRes += this.props.pair === 'bottom' ? '-bottom' : this.props.pair === 'top' ? '-top' : '';
+
+        const image =
+            bubbleRes === 'incoming' ? require('assets/bubble-incoming.png') :
+                bubbleRes === 'incoming-bottom' ? require('assets/bubble-incoming-mid.png') :
+                    bubbleRes === 'incoming-top' ? require('assets/bubble-incoming-pair.png') :
+                        bubbleRes === 'incoming-tail' ? require('assets/bubble-incoming-tail.png') :
+                            bubbleRes === 'incoming-tail-bottom' ? require('assets/bubble-incoming-tail-pair.png') :
+
+                                bubbleRes === 'outgoing' ? require('assets/bubble-outgoing.png') :
+                                    bubbleRes === 'outgoing-bottom' ? require('assets/bubble-outgoing-mid.png') :
+                                        bubbleRes === 'outgoing-top' ? require('assets/bubble-outgoing-pair.png') :
+                                            bubbleRes === 'outgoing-tail' ? require('assets/bubble-outgoing-tail.png') :
+                                                bubbleRes === 'outgoing-tail-bottom' ? require('assets/bubble-outgoing-tail-pair.png') :
+
+                                                    require('assets/bubble-incoming.png');
 
         let capInsets: { left: number, right: number, top: number, bottom: number };
         if (Platform.OS === 'ios') {
@@ -31,10 +48,12 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
         }
         let contentInsets: { left: number, right: number, top: number, bottom: number };
 
+        let insetsTop = this.props.pair === 'bottom' ? 5 : 8;
+        let insetsBottom = 9;
         if (this.props.isOut) {
-            contentInsets = { left: 6 + contentInsetsHorizontal, right: 6 + contentInsetsHorizontal, top: contentInsetsTop, bottom: contentInsetsBottom };
+            contentInsets = { left: 6 + contentInsetsHorizontal, right: 6 + contentInsetsHorizontal, top: insetsTop, bottom: insetsBottom };
         } else {
-            contentInsets = { left: 5 + contentInsetsHorizontal, right: contentInsetsHorizontal, top: contentInsetsTop, bottom: contentInsetsBottom };
+            contentInsets = { left: 5 + contentInsetsHorizontal, right: contentInsetsHorizontal, top: insetsTop, bottom: insetsBottom };
         }
 
         let resolved = Image.resolveAssetSource(image);

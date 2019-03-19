@@ -182,9 +182,31 @@ export class BridgedClient {
         }
     }
 
-    // watchOperation(key: string, handler: { resolve: (src: any) => void, reject: (src: any) => void }) {
-    //     let watch = this.dataWatches.get(key)!!;
-    // }
+    watchQuery(key: string) {
+        let watch = this.dataWatches.get(key)!!;
+        let queue = new Queue();
+        let callback = () => {
+            if (!watch.isErrored) {
+                queue.post({ value: watch.value });
+            } else {
+                queue.post({ errors: watch.value });
+            }
+        }
+        let subs = watch.waitForUpdate(callback);
+        return {
+            get: async () => {
+                let q = await queue.get()
+                if (q.value) {
+                    return q.value;
+                } else {
+                    throw q.errors;
+                }
+            },
+            destroy: () => {
+                subs();
+            }
+        }
+    }
 
     async getOperation(key: string) {
         if (LOG) {

@@ -1074,6 +1074,19 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   metadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -1084,6 +1097,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   text: string | null;
   icon: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment;
@@ -1897,6 +1911,19 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   metadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -1907,6 +1934,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   text: string | null;
   icon: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment;
@@ -2745,6 +2773,19 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   metadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -2755,6 +2796,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   text: string | null;
   icon: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment;
@@ -3568,6 +3610,19 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   metadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -3578,6 +3633,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   text: string | null;
   icon: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment;
@@ -4236,7 +4292,7 @@ export interface ChatWatch {
 
 export interface ChatWatchVariables {
   chatId: string;
-  fromState?: string | null;
+  state?: string | null;
 }
 
 /* tslint:disable */
@@ -5786,6 +5842,19 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
   metadata: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -5796,6 +5865,7 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
   text: string | null;
   icon: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type ChatHistory_messages_GeneralMessage_attachments = ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentPost | ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile | ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment;
@@ -11792,6 +11862,19 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_im
   metadata: FullMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
 export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -11802,6 +11885,7 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment {
   text: string | null;
   icon: FullMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: FullMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type FullMessage_GeneralMessage_attachments = FullMessage_GeneralMessage_attachments_MessageAttachmentPost | FullMessage_GeneralMessage_attachments_MessageAttachmentFile | FullMessage_GeneralMessage_attachments_MessageRichAttachment;
@@ -13337,6 +13421,19 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_a
   metadata: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -13347,6 +13444,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_a
   text: string | null;
   icon: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments = ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment;
@@ -14160,6 +14258,19 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_at
   metadata: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  id: string;
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -14170,6 +14281,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_at
   text: string | null;
   icon: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  keyboard: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments = ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment;
@@ -15296,6 +15408,11 @@ export enum MessageReactionType {
   LIKE = "LIKE",
   SCREAM = "SCREAM",
   THUMB_UP = "THUMB_UP",
+}
+
+export enum ModernMessageButtonStyle {
+  DEFAULT = "DEFAULT",
+  LIGHT = "LIGHT",
 }
 
 export enum NotificationMessages {

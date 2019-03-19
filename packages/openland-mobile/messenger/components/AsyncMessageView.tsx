@@ -3,7 +3,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { AsyncAvatar } from './AsyncAvatar';
 import { ConversationEngine, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
-import { AsyncMessageContentView } from './AsyncMessageContentView';
+import { AsyncMessageContentView as AsyncMessageTopContentView } from './AsyncMessageContentView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { AsyncBubbleView } from './AsyncBubbleView';
@@ -34,14 +34,13 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
     let theme = React.useContext(ThemeContext);
 
-    let res = [];
+    let res;
     if ((props.message.text || props.message.reply || (props.message.attachments && props.message.attachments.length))) {
-        res.push(
-            <AsyncMessageContentView key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onAvatarPress} />
-        );
+        res =
+            <AsyncMessageTopContentView key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onAvatarPress} />;
     }
-    if (res.length === 0) {
-        res.push(
+    if (!res) {
+        res =
             <AsyncBubbleView key={'message-unsupported'} isOut={props.message.isOut} compact={props.message.attachBottom} appearance="text" colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
                 <ASFlex overlay={true} flexGrow={1} alignItems="center">
                     <ASText marginLeft={Platform.OS === 'android' ? undefined : 20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
@@ -56,8 +55,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                         onMediaPress={props.onMediaPress}
                     />
                 </ASFlex>
-            </AsyncBubbleView >
-        );
+            </AsyncBubbleView >;
     }
 
     return (
@@ -83,9 +81,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-left-2" backgroundColor={theme.backgroundColor} width={(props.message.isOut ? 10 : 0)} />
 
                     {props.message.isOut && <ASFlex backgroundColor={theme.backgroundColor} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
-                    <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
-                        {res}
-                    </ASFlex>
+                    {res}
                     <ASFlex key="margin-right" backgroundColor={theme.backgroundColor} width={4} />
 
                 </ASFlex>
