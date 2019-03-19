@@ -260,17 +260,16 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
 };
 
 const UserProvider = withUser(
-    withRouter(
-        props =>
-            props.data.user ? (
-                <UserProfileInner
-                    user={props.data.user}
-                    router={props.router}
-                    onDirectory={(props as any).onDirectory}
-                />
-            ) : (
-                <XLoader loading={true} />
-            ),
+    withRouter(props =>
+        props.data.user ? (
+            <UserProfileInner
+                user={props.data.user}
+                router={props.router}
+                onDirectory={(props as any).onDirectory}
+            />
+        ) : (
+            <XLoader loading={true} />
+        ),
     ),
 ) as React.ComponentType<{
     variables: { userId: string };

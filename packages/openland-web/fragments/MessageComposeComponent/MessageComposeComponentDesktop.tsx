@@ -135,14 +135,19 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         }
     });
 
-    React.useEffect(() => {
-        const newInputValue = hasReply() ? draftState.getNextDraft() : { text: '', mentions: [] };
-        messagesContext.changeForwardConverstion();
-        setInputValue(newInputValue.text);
-        draftState.setBeDrafted(hasReply());
-        inputMethodsState.setInputValue(newInputValue);
-        inputMethodsState.focusIfNeeded();
-    }, [currentConversation]);
+    React.useEffect(
+        () => {
+            const newInputValue = hasReply()
+                ? draftState.getNextDraft()
+                : { text: '', mentions: [] };
+            messagesContext.changeForwardConverstion();
+            setInputValue(newInputValue.text);
+            draftState.setBeDrafted(hasReply());
+            inputMethodsState.setInputValue(newInputValue);
+            inputMethodsState.focusIfNeeded();
+        },
+        [currentConversation],
+    );
 
     return (
         <>

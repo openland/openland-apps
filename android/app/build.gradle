@@ -1,6 +1,8 @@
 apply plugin: 'kotlin-kapt'
 apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
+apply plugin: 'com.apollographql.android'
+apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
 
@@ -123,10 +125,10 @@ android {
         renderscriptTargetApi 23
         renderscriptSupportModeEnabled true
         versionCode appVersionCode
-        versionName "1.1."+appVersionCode
+        versionName "1.1." + appVersionCode
         println("##teamcity[buildNumber '1.1.$appVersionCode']")
     }
-    if(project.hasProperty("RELEASE_STORE_FILE")) {
+    if (project.hasProperty("RELEASE_STORE_FILE")) {
         signingConfigs {
             release {
                 storeFile file(RELEASE_STORE_FILE)
@@ -146,7 +148,7 @@ android {
     }
     buildTypes {
         release {
-            if(project.hasProperty("RELEASE_STORE_FILE")) {
+            if (project.hasProperty("RELEASE_STORE_FILE")) {
                 signingConfig signingConfigs.release
             }
             minifyEnabled enableProguardInReleaseBuilds
@@ -229,6 +231,9 @@ dependencies {
     kapt 'com.facebook.litho:litho-sections-processor:0.23.0'
     annotationProcessor 'com.facebook.litho:litho-sections-processor:0.23.0'
     implementation 'com.eclipsesource.j2v8:j2v8:4.8.2@aar'
+
+    implementation 'com.apollographql.apollo:apollo-runtime:1.0.0-alpha3'
+    implementation 'com.apollographql.apollo:apollo-android-support:1.0.0-alpha3'
 }
 
 // Run this once to be able to run the application with BUCK
@@ -238,8 +243,12 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
+apollo {
+    customTypeMapping = [
+            "Date": "java.lang.String"
+    ]
+}
+
 //task bundleReleaseJsAndAssets(overwrite: true) {
 //
 //}
-
-apply plugin: 'com.google.gms.google-services'

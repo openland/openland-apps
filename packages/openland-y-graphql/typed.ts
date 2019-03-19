@@ -8,6 +8,15 @@ export class GraphqlTypedQuery<QUERY, VARIABLES> {
     }
 }
 
+export class GraphqlTypedSubscription<SUBSCRIPTION, VARIABLES> {
+    document: any;
+    ____vars?: VARIABLES;
+    ____query?: SUBSCRIPTION;
+    constructor(document: SUBSCRIPTION) {
+        this.document = document;
+    }
+}
+
 export class GraphqlTypedMutation<QUERY, VARIABLES> {
     document: any;
     ____vars?: VARIABLES;
@@ -33,6 +42,10 @@ export function typedQuery<QUERY, VARIABLES>(query: any) {
 
 export function typedMutation<MUTATION, VARIABLES>(mutation: MUTATION) {
     return new GraphqlTypedMutation<MUTATION, VARIABLES>(mutation);
+}
+
+export function typedSubscription<SUBSCRIPTION, VARIABLES>(subscription: SUBSCRIPTION) {
+    return new GraphqlTypedSubscription<SUBSCRIPTION, VARIABLES>(subscription);
 }
 
 export function typedTask<MUTATION, VARIABLES, RESULT>(mutation: MUTATION) {

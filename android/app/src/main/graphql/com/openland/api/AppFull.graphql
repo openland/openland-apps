@@ -1,0 +1,22 @@
+fragment AppFull on AppProfile {
+  __typename
+  about
+  id
+  name
+  photoRef {
+    __typename
+    crop {
+      __typename
+      h
+      w
+      x
+      y
+    }
+    uuid
+  }
+  shortname
+  token {
+    __typename
+    salt
+  }
+}

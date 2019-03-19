@@ -1,22 +1,7 @@
-import gql from 'graphql-tag';
 import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-
-const SUBSCRIBE_TYPINGS = gql`
-    subscription SubscribeTypings {
-        typings {
-            conversation {
-                id
-            }
-            user {
-                id
-                name
-                picture
-            }
-            cancel
-        }
-    }
-`;
+import { TypingsWatchSubscription } from 'openland-api';
+import { TypingsWatch } from 'openland-api/Types';
 
 interface TypingsUser {
     userName: string;
@@ -39,12 +24,12 @@ export class TypingsWatcher {
             [userId: string]: number | undefined
         } | undefined
     } = {};
-    private subscription: GraphqlActiveSubscription;
+    private subscription: GraphqlActiveSubscription<TypingsWatch, {}>;
     private onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void;
 
     constructor(client: OpenlandClient, onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void, currentuserId: string) {
         this.onChange = onChange;
-        this.subscription = client.client.subscribe(SUBSCRIBE_TYPINGS);
+        this.subscription = client.subscribeTypingsWatch();
 
         this.start(currentuserId);
     }
@@ -53,21 +38,21 @@ export class TypingsWatcher {
         (async () => {
             while (true) {
                 let event = await this.subscription.get();
-                if (event.data) {
-                    if (event.data.typings.user.id === currentuserId) {
+                if (event) {
+                    if (event.typings.user.id === currentuserId) {
                         return;
                     }
-                    let cId: string = event.data.typings.conversation.id;
-                    let type: string = event.data.typings.conversation.__typename;
+                    let cId: string = event.typings.conversation.id;
+                    let type: string = event.typings.conversation.__typename;
 
                     // add new typings
                     let existing = this.typings[cId] || {};
 
-                    if (!event.data.typings.cancel) {
-                        existing[event.data.typings.user.id] = {
-                            userName: event.data.typings.user.name,
-                            userPic: event.data.typings.user.picture,
-                            userId: event.data.typings.user.id
+                    if (!event.typings.cancel) {
+                        existing[event.typings.user.id] = {
+                            userName: event.typings.user.name,
+                            userPic: event.typings.user.picture,
+                            userId: event.typings.user.id
                         };
                         this.typings[cId] = existing;
 
@@ -76,14 +61,14 @@ export class TypingsWatcher {
 
                     // clear scehduled typing clear
                     let existingTimeouts = this.timeouts[cId] || {};
-                    clearTimeout(existingTimeouts[event.data.typings.user.id]);
+                    clearTimeout(existingTimeouts[event.typings.user.id]);
                     // schedule typing clear
-                    existingTimeouts[event.data.typings.user.id] = window.setTimeout(
+                    existingTimeouts[event.typings.user.id] = window.setTimeout(
                         () => {
-                            existing[event.data.typings.user.id] = undefined;
+                            existing[event.typings.user.id] = undefined;
                             this.onChange(cId, this.renderTypings(cId));
                         },
-                        event.data.typings.cancel ? 0 : 4000);
+                        event.typings.cancel ? 0 : 4000);
                     this.timeouts[cId] = existingTimeouts;
                 }
             }

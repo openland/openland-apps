@@ -1,67 +1,14 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, ChatHistoryQuery, RoomQuery } from 'openland-api';
+import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatWatchSubscription } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
-import gql from 'graphql-tag';
 import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_ServiceMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
-import { FullMessage as FullMessageFragment } from 'openland-api/fragments/Message';
-import { UserTiny } from 'openland-api/fragments/UserTiny';
-import { RoomShort } from 'openland-api/fragments/RoomShort';
-import { UserShort as UserShortFragnemt } from 'openland-api/fragments/UserShort';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
-
-const CHAT_SUBSCRIPTION = gql`
-  subscription ChatSubscription($chatId: ID!, $fromState: String) {
-    event: chatUpdates(chatId: $chatId, fromState: $fromState) {
-        ... on ChatUpdateSingle {
-            seq
-            state
-            update {
-                ...ChatUpdateFragment
-            }
-        }
-        ... on ChatUpdateBatch {
-            fromSeq
-            seq
-            state
-            updates {
-                ...ChatUpdateFragment
-            }
-        }
-       
-    }
-  }
-  fragment ChatUpdateFragment on ChatUpdate {
-    ... on ChatMessageReceived {
-        message {
-            ...FullMessage
-        }
-        repeatKey
-    }
-    ... on ChatMessageUpdated {
-        message {
-            ...FullMessage
-        }
-    }
-    ... on ChatMessageDeleted {
-        message {
-            id
-        }
-    }
-    ... on ConversationLostAccess {
-       lostAccess
-    }
-   
-  }
-  ${FullMessageFragment}
-  ${UserTiny}
-  ${UserShortFragnemt}
-  ${RoomShort}
-`;
+import * as Types from 'openland-api/Types';
 
 export interface ConversationStateHandler {
     onConversationUpdated(state: ConversationState): void;
@@ -161,7 +108,7 @@ export class ConversationEngine implements MessageSendHandler {
     historyFullyLoaded?: boolean;
 
     private isStarted = false;
-    private watcher: SequenceModernWatcher | null = null;
+    private watcher: SequenceModernWatcher<Types.ChatWatch, Types.ChatWatchVariables> | null = null;
     private isOpen = false;
     private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
@@ -203,7 +150,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         console.info('Initial state for ' + this.conversationId);
-        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
+        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: initialChat.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
         this.onMessagesUpdated();
 
         // Update Data Source

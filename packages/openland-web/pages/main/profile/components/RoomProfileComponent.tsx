@@ -54,12 +54,6 @@ import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 
-const getCanEdit = ({ chat }: { chat: Room_room_SharedRoom }) => {
-    const isSecretGroup = chat.kind === 'GROUP';
-
-    return isSecretGroup || chat.role === 'ADMIN' || chat.role === 'OWNER';
-};
-
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
         {props.children}
@@ -90,7 +84,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
     let meMember = chat.membership === 'MEMBER';
     let leaveText = 'Leave group';
 
-    const canEdit = getCanEdit({ chat });
+    const canEdit = chat.canEdit;
 
     return (
         <HeaderWrapper>
@@ -210,7 +204,7 @@ const AboutPlaceholder = withAlterChat(props => {
 const About = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
 
-    const showAboutEdit = getCanEdit({ chat });
+    const showAboutEdit = chat.canEdit;
     return (
         <>
             {chat.description && (

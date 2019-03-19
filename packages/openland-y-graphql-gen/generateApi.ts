@@ -10,7 +10,7 @@ export function generateApi() {
     let output = '';
     output += 'import * as Source from \'./index\';\n';
     output += 'import * as Types from \'./Types\'\n';
-    output += 'import { GraphqlClient } from \'openland-graphql/GraphqlClient\'\n';
+    output += 'import { GraphqlClient, GraphqlActiveSubscription } from \'openland-graphql/GraphqlClient\'\n';
     output += 'export class OpenlandClient {\n';
     output += '    readonly client: GraphqlClient;\n';
     output += '    constructor(client: GraphqlClient) {\n';
@@ -71,6 +71,27 @@ export function generateApi() {
                 } else {
                     output += '    async mutate' + name + '(): Promise<Types.' + name + '> {\n';
                     output += '        return this.client.mutate(Source.' + op.name + ');\n';
+                    output += '    }\n';
+                }
+            }
+        }
+    }
+
+    for (let f of files) {
+        for (let op of f.operations) {
+            if (op.type === 'subscription') {
+                let name = op.name as string;
+                if (name.endsWith('Subscription')) {
+                    name = name.substring(0, name.length - 'Subscription'.length);
+                }
+
+                if (op.hasVariables) {
+                    output += '    subscribe' + name + '(variables: Types.' + name + 'Variables): GraphqlActiveSubscription<Types.' + name + ', Types.' + name + 'Variables> {\n';
+                    output += '        return this.client.subscribe(Source.' + op.name + ', variables);\n';
+                    output += '    }\n';
+                } else {
+                    output += '    subscribe' + name + '(): GraphqlActiveSubscription<Types.' + name + ', {}> {\n';
+                    output += '        return this.client.subscribe(Source.' + op.name + ');\n';
                     output += '    }\n';
                 }
             }

@@ -1,0 +1,19 @@
+query ConferenceMedia($id: ID!, $peerId: ID!) {
+  conferenceMedia(id: $id, peerId: $peerId) {
+    __typename
+    iceServers {
+      __typename
+      credential
+      urls
+      username
+    }
+    id
+    streams {
+      __typename
+      ice
+      id
+      sdp
+      state
+    }
+  }
+}

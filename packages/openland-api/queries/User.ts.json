@@ -3,6 +3,7 @@
         { "name": "UsersQuery", "type": "query", "hasVariables": true },
         { "name": "UserQuery", "type": "query", "hasVariables": true },
         { "name": "OnlineQuery", "type": "query", "hasVariables": true },
+        { "name": "OnlineWatchSubscription", "type": "subscription", "hasVariables": true },
         { "name": "ExplorePeopleQuery", "type": "query", "hasVariables": true },
         { "name": "ResolveShortNameQuery", "type": "query", "hasVariables": true }
     ]

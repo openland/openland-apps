@@ -1,0 +1,16 @@
+query AccountAppInviteInfo($inviteKey: String!) {
+  invite: alphaInviteInfo(key: $inviteKey) {
+    __typename
+    creator {
+      __typename
+      ...UserShort
+    }
+  }
+  appInvite: appInviteInfo(key: $inviteKey) {
+    __typename
+    inviter {
+      __typename
+      ...UserShort
+    }
+  }
+}

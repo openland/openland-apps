@@ -134,7 +134,7 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
             radiusForImages = true;
         }
     } else {
-        if ((UserInfo && UserInfo.user && UserInfo.user.id === 'LOaDEWDj9zsVv999DDpJiEj05K')) {
+        if (UserInfo && UserInfo.user && UserInfo.user.id === 'LOaDEWDj9zsVv999DDpJiEj05K') {
             radiusForImages = true;
         }
     }
@@ -153,13 +153,20 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
                 />
             )}
             <XView onClick={openView} cursor="pointer" paddingBottom={5}>
-                <div className={ImageWrapper + (radiusForImages ? ' ' + ImageWrapperRadius : undefined)}>
+                <div
+                    className={
+                        ImageWrapper + (radiusForImages ? ' ' + ImageWrapperRadius : undefined)
+                    }
+                >
                     <XCloudImage
                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                         resize={'fill'}
                         width={dimensions.width}
                         height={dimensions.height}
-                        className={ImageClassName + (radiusForImages ? ' ' + ImageRadiusShadowClassName : undefined)}
+                        className={
+                            ImageClassName +
+                            (radiusForImages ? ' ' + ImageRadiusShadowClassName : undefined)
+                        }
                     />
                 </div>
             </XView>

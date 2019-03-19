@@ -1,0 +1,3 @@
+mutation AccountDestroyInvite($id: ID!) {
+  alphaDeleteInvite(id: $id)
+}

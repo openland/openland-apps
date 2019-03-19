@@ -1,0 +1,12 @@
+query OrganizationMembersShort($organizationId: ID!) {
+  organization(id: $organizationId) {
+    __typename
+    members: alphaOrganizationMembers {
+      __typename
+      user {
+        __typename
+        id
+      }
+    }
+  }
+}

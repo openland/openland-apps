@@ -140,11 +140,7 @@ export const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
                     <XView />
                 </XView>
             </XView>
-            <XView
-                height={1}
-                width="100%"
-                backgroundColor="#ececec"
-            />
+            <XView height={1} width="100%" backgroundColor="#ececec" />
 
             {finalChildren && (
                 <MenuItems onBackgroundClick={close}>

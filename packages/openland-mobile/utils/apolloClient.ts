@@ -3,7 +3,6 @@ import { Track } from 'openland-engines/Tracking';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { WorkerApolloClient } from 'openland-mobile/apollo/ThreadedApolloClient';
 import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
-import { Platform } from 'react-native';
 
 let cachedClient: OpenlandClient | null;
 

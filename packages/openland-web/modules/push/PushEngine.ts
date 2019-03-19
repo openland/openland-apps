@@ -1,10 +1,10 @@
 import { trackError } from 'openland-x-analytics';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
-import gql from 'graphql-tag';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { backoff } from 'openland-y-utils/timer';
 import { logger } from 'openland-y-utils/logger';
+import { FetchPushSettingsQuery, RegisterWebPushMutation } from 'openland-api';
 
 const log = logger('push');
 
@@ -14,20 +14,6 @@ function urlBase64ToUint8Array(base64String: string) {
     const rawData = window.atob(base64);
     return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
 }
-
-const FetchPushSettings = gql`
-    query FetchPushSettings {
-        pushSettings {
-            webPushKey
-        }
-    }
-`;
-
-const RegisterPush = gql`
-    mutation RegisterPush($endpoint: String!) {
-        registerWebPush(endpoint: $endpoint)
-    }
-`;
 
 export class PushEngine {
     private readonly serviceWorkerSupported = 'serviceWorker' in navigator;
@@ -116,7 +102,7 @@ export class PushEngine {
                     let settings = await backoff(
                         async () =>
                             await this.client.client.query({
-                                query: FetchPushSettings,
+                                query: FetchPushSettingsQuery.document,
                             }),
                     );
                     let key = (settings.data as any).pushSettings.webPushKey as string | null;
@@ -211,7 +197,7 @@ export class PushEngine {
         await backoff(
             async () =>
                 await this.client.client.mutate({
-                    mutation: RegisterPush,
+                    mutation: RegisterWebPushMutation.document,
                     variables: {
                         endpoint: JSON.stringify(subscription),
                     },

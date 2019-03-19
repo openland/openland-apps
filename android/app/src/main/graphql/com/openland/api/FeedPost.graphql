@@ -1,0 +1,6 @@
+mutation FeedPost($message: String!) {
+  alphaCreateFeedPost(message: $message) {
+    __typename
+    id
+  }
+}

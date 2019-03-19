@@ -61,7 +61,7 @@ export class MobileMessenger {
         showPictureModal({
             url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
             width: attach.fileMetadata.imageWidth!,
-            height: attach.fileMetadata.imageWidth!!,
+            height: attach.fileMetadata.imageHeight!,
             isGif: false,
             animate: {
                 x: event.x,

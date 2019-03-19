@@ -1,0 +1,13 @@
+query AccountInvitesHistory {
+  invites: alphaInvitesHistory {
+    __typename
+    acceptedBy {
+      __typename
+      id
+      name
+      picture
+    }
+    forEmail
+    isGlobal
+  }
+}

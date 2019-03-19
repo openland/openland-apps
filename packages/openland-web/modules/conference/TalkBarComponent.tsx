@@ -67,19 +67,21 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                         <XButton
                                             style="success"
                                             text={callState.mute ? 'Unmute' : 'Mute'}
-                                            onClick={() => calls.setMute(callState.mute)}
+                                            onClick={() => calls.setMute(!callState.mute)}
                                         />
                                         <XView width={8} />
                                         <XButton
                                             style="success"
                                             text={
-                                                callState.status === 'connecting' ? 'Connecting' : 'Leave'
+                                                callState.status === 'connecting'
+                                                    ? 'Connecting'
+                                                    : 'Leave'
                                             }
                                             onClick={() => calls.leaveCall()}
                                         />
                                     </>
                                 )}
-                                {(callState.conversationId !== props.conversationId) && (
+                                {callState.conversationId !== props.conversationId && (
                                     <XButton
                                         style="success"
                                         text={callState.conversationId ? 'Leave' : 'Join'}

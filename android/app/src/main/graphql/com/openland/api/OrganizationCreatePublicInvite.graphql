@@ -1,0 +1,8 @@
+mutation OrganizationCreatePublicInvite($expirationDays: Int, $organizationId: ID) {
+  alphaOrganizationRefreshInviteLink(expirationDays: $expirationDays, organizationId: $organizationId) {
+    __typename
+    id
+    key
+    ttl
+  }
+}

@@ -1,0 +1,10 @@
+mutation SuperAccountMemberAdd($accountId: ID!, $userId: ID!) {
+  superAccountMemberAdd(id: $accountId, userId: $userId) {
+    __typename
+    id
+    members {
+      __typename
+      ...UserShort
+    }
+  }
+}

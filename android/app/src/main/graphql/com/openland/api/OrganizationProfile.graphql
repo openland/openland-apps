@@ -1,0 +1,6 @@
+query OrganizationProfile($organizationId: ID!) {
+  organizationProfile(id: $organizationId) {
+    __typename
+    ...OrganizationProfileFull
+  }
+}

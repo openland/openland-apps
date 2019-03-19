@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription } from './GraphqlClient';
+import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription, GraphqlQueryWatch } from './GraphqlClient';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { Observable } from 'apollo-link';
 import { keyFromObject } from './utils/keyFromObject';
+import { Queue } from './utils/Queue';
 
-class ApolloSubscription implements GraphqlActiveSubscription {
+class ApolloSubscription<TSubscription, TVars> implements GraphqlActiveSubscription<TSubscription, TVars> {
     private readonly client: ApolloGraphqlClient;
     private source?: Observable<any>;
     private sourceSubscription?: ZenObservable.Subscription;
@@ -77,14 +78,14 @@ class ApolloSubscription implements GraphqlActiveSubscription {
     private handleNext = (src: any) => {
         if (this.pending) {
             if (this.queue.length > 0) {
-                this.queue.push(src);
+                this.queue.push(src.data);
             } else {
                 let p = this.pending;
                 this.pending = undefined;
-                p(src);
+                p(src.data);
             }
         } else {
-            this.queue.push(src);
+            this.queue.push(src.data);
         }
     }
 
@@ -131,15 +132,46 @@ export class ApolloGraphqlClient implements GraphqlClient {
     async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
         let res = await this.client.client.query<TQuery, TVars>({ query: query.document, variables: vars });
         if (res.errors && res.errors.length > 0) {
-            throw Error();
+            throw res.errors;
         }
         return res.data
+    }
+
+    queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): GraphqlQueryWatch<TQuery> {
+        let source = this.client.client.watchQuery<TQuery, TVars>({ query: query.document, variables: vars })
+        let queue = new Queue()
+        let subscription = source.subscribe({
+            next: (v) => {
+                queue.post({ value: v })
+            },
+            error: (e) => {
+                throw Error('Fatal error: Query Watch can\'t throw error')
+            },
+            complete: () => {
+                throw Error('Fatal error: Query Watch can\'t be completed')
+            }
+        });
+        return {
+            get: async () => {
+                let d = (await queue.get()).value;
+                if (d.errors && d.errors.length > 0) {
+                    throw d.errors;
+                } else {
+                    return d.data
+                }
+            },
+            destroy: () => {
+                if (!subscription.closed) {
+                    subscription.unsubscribe();
+                }
+            }
+        }
     }
 
     async refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
         let res = await this.client.client.query<TQuery, TVars>({ query: query.document, variables: vars, fetchPolicy: 'network-only' });
         if (res.errors && res.errors.length > 0) {
-            throw Error();
+            throw res.errors;
         }
         return res.data
     }
@@ -147,13 +179,13 @@ export class ApolloGraphqlClient implements GraphqlClient {
     async mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation> {
         let res = await this.client.client.mutate<TMutation, TVars>({ mutation: mutation.document, variables: vars });
         if (res.errors && res.errors.length > 0) {
-            throw Error();
+            throw res.errors;
         }
         return res.data as TMutation;
     }
 
-    subscribe(subscription: any, vars?: any): GraphqlActiveSubscription {
-        return new ApolloSubscription(this, subscription, vars);
+    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
+        return new ApolloSubscription(this, subscription.document, vars);
     }
 
     useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
@@ -178,7 +210,7 @@ export class ApolloGraphqlClient implements GraphqlClient {
         }, [observableQuery]);
 
         if (currentResult.errors && currentResult.errors.length > 0) {
-            throw Error();
+            throw currentResult.errors;
         }
 
         if (currentResult.loading || currentResult.partial) {
@@ -210,7 +242,7 @@ export class ApolloGraphqlClient implements GraphqlClient {
         }, [observableQuery]);
 
         if (currentResult.errors && currentResult.errors.length > 0) {
-            throw Error();
+            throw currentResult.errors;
         }
 
         if (currentResult.loading || currentResult.partial) {
@@ -237,6 +269,10 @@ export class ApolloGraphqlClient implements GraphqlClient {
             }
         }
         return false;
+    }
+
+    async writeQuery<TQuery, TVars>(data: TQuery, query: GraphqlQuery<TQuery, TVars>, vars?: TVars) {
+        this.client.client.writeQuery<TQuery>({ query: query.document, variables: vars, data: data });
     }
 
     async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {

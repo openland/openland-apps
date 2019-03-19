@@ -1,20 +1,19 @@
 import { SequenceHandler } from './SequenceHandler';
 import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import { GraphqlTypedSubscription } from 'openland-y-graphql/typed';
 
-export class SequenceModernWatcher {
+export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> {
     readonly name: string;
     readonly client: GraphqlClient;
     private readonly handler: (src: any) => void;
     private readonly seqHandler?: (seq: number) => void;
-    private readonly query: any;
     private readonly sequenceHandler: SequenceHandler;
     private readonly variables?: any;
     private currentState: string | null;
-    private subscription: GraphqlActiveSubscription;
+    private subscription: GraphqlActiveSubscription<TSubscription, TVars>;
 
-    constructor(name: string, query: any, client: GraphqlClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: any, state?: string | null) {
+    constructor(name: string, subscription: GraphqlActiveSubscription<TSubscription, TVars>, client: GraphqlClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: TVars, state?: string | null) {
         this.name = name;
-        this.query = query;
         this.handler = handler;
         this.seqHandler = seqHandler;
         this.client = client;
@@ -25,7 +24,7 @@ export class SequenceModernWatcher {
         if (state) {
             this.currentState = state;
         }
-        this.subscription = this.client.subscribe(this.query, { ...this.variables, state: this.currentState });
+        this.subscription = subscription;
         this.start();
     }
 
@@ -42,12 +41,12 @@ export class SequenceModernWatcher {
         })();
     }
 
-    private handleUpdate = (update: any) => {
-        if (update.errors && update.errors.length > 0) {
-            throw update.errors;
-        }
+    private handleUpdate = (update: TSubscription) => {
+        // if (update.errors && update.errors.length > 0) {
+        //     throw update.errors;
+        // }
 
-        let event = update.data.event;
+        let event = update.event;
         if (event.fromSeq) {
             // Do batch updates
             this.currentState = event.state;

@@ -1,6 +1,6 @@
 import * as Source from './index';
 import * as Types from './Types'
-import { GraphqlClient } from 'openland-graphql/GraphqlClient'
+import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient'
 export class OpenlandClient {
     readonly client: GraphqlClient;
     constructor(client: GraphqlClient) {
@@ -101,6 +101,18 @@ export class OpenlandClient {
     }
     useWithoutLoaderProfilePrefill(): Types.ProfilePrefill | null {
         return this.client.useWithoutLoaderQuery(Source.ProfilePrefillQuery);
+    }
+    async queryFetchPushSettings(): Promise<Types.FetchPushSettings> {
+        return this.client.query(Source.FetchPushSettingsQuery);
+    }
+    async refetchFetchPushSettings(): Promise<Types.FetchPushSettings> {
+        return this.client.refetch(Source.FetchPushSettingsQuery);
+    }
+    useFetchPushSettings(): Types.FetchPushSettings {
+        return this.client.useQuery(Source.FetchPushSettingsQuery);
+    }
+    useWithoutLoaderFetchPushSettings(): Types.FetchPushSettings | null {
+        return this.client.useWithoutLoaderQuery(Source.FetchPushSettingsQuery);
     }
     async queryMyApps(): Promise<Types.MyApps> {
         return this.client.query(Source.MyAppsQuery);
@@ -603,6 +615,9 @@ export class OpenlandClient {
     async mutateRegisterPush(variables: Types.RegisterPushVariables): Promise<Types.RegisterPush> {
         return this.client.mutate(Source.RegisterPushMutation, variables);
     }
+    async mutateRegisterWebPush(variables: Types.RegisterWebPushVariables): Promise<Types.RegisterWebPush> {
+        return this.client.mutate(Source.RegisterWebPushMutation, variables);
+    }
     async mutateCreateApp(variables: Types.CreateAppVariables): Promise<Types.CreateApp> {
         return this.client.mutate(Source.CreateAppMutation, variables);
     }
@@ -830,5 +845,26 @@ export class OpenlandClient {
     }
     async mutatePersistEvents(variables: Types.PersistEventsVariables): Promise<Types.PersistEvents> {
         return this.client.mutate(Source.PersistEventsMutation, variables);
+    }
+    subscribeSettingsWatch(): GraphqlActiveSubscription<Types.SettingsWatch, {}> {
+        return this.client.subscribe(Source.SettingsWatchSubscription);
+    }
+    subscribeChatWatch(variables: Types.ChatWatchVariables): GraphqlActiveSubscription<Types.ChatWatch, Types.ChatWatchVariables> {
+        return this.client.subscribe(Source.ChatWatchSubscription, variables);
+    }
+    subscribeDialogsWatch(variables: Types.DialogsWatchVariables): GraphqlActiveSubscription<Types.DialogsWatch, Types.DialogsWatchVariables> {
+        return this.client.subscribe(Source.DialogsWatchSubscription, variables);
+    }
+    subscribeTypingsWatch(): GraphqlActiveSubscription<Types.TypingsWatch, {}> {
+        return this.client.subscribe(Source.TypingsWatchSubscription);
+    }
+    subscribeConferenceMediaWatch(variables: Types.ConferenceMediaWatchVariables): GraphqlActiveSubscription<Types.ConferenceMediaWatch, Types.ConferenceMediaWatchVariables> {
+        return this.client.subscribe(Source.ConferenceMediaWatchSubscription, variables);
+    }
+    subscribeConferenceWatch(variables: Types.ConferenceWatchVariables): GraphqlActiveSubscription<Types.ConferenceWatch, Types.ConferenceWatchVariables> {
+        return this.client.subscribe(Source.ConferenceWatchSubscription, variables);
+    }
+    subscribeOnlineWatch(variables: Types.OnlineWatchVariables): GraphqlActiveSubscription<Types.OnlineWatch, Types.OnlineWatchVariables> {
+        return this.client.subscribe(Source.OnlineWatchSubscription, variables);
     }
 }

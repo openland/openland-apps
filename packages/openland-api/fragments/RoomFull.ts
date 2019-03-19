@@ -31,7 +31,7 @@ export const RoomFull = gql`
                 user {
                     ...UserShort
                 }
-                canKick
+                canKick,
             }
             requests {
                 user {
@@ -41,6 +41,30 @@ export const RoomFull = gql`
             settings {
                 id
                 mute
+            }
+            canEdit
+            pinnedMessage {
+                ... on GeneralMessage {
+                    id
+                    message
+                    sender {
+                        id
+                        name
+                        photo
+                    }
+                    attachments {
+                        ...on MessageAttachmentFile {
+                            id
+                            fileMetadata {
+                                name
+                                size
+                                isImage
+                                imageWidth
+                                imageHeight
+                            }
+                        }
+                    }
+                }
             }
         }
     }

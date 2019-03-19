@@ -1,0 +1,13 @@
+diff --git a/node_modules/apollo/lib/commands/client/extract.js b/node_modules/apollo/lib/commands/client/extract.js
+index 31732ae..b2d2013 100644
+--- a/node_modules/apollo/lib/commands/client/extract.js
++++ b/node_modules/apollo/lib/commands/client/extract.js
+@@ -18,7 +18,7 @@ class ClientExtract extends Command_1.ClientCommand {
+                 title: "Extracting operations from project",
+                 task: async (ctx) => {
+                     const operations = Object.values(this.project.mergedOperationsAndFragmentsForService).map(operationAST => {
+-                        const printed = apollo_engine_reporting_1.printWithReducedWhitespace(apollo_engine_reporting_1.sortAST(push_1.hideCertainLiterals(operationAST)));
++                        const printed = apollo_engine_reporting_1.printWithReducedWhitespace(apollo_engine_reporting_1.sortAST(operationAST));
+                         return {
+                             signature: manifestOperationHash(printed),
+                             document: printed,

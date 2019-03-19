@@ -1,0 +1,3 @@
+mutation AccountInviteJoin($inviteKey: String!) {
+  alphaJoinInvite(key: $inviteKey)
+}

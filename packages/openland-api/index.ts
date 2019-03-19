@@ -2,6 +2,7 @@
 
 import { typedQuery } from 'openland-y-graphql/typed';
 import { typedMutation } from 'openland-y-graphql/typed';
+import { typedSubscription } from 'openland-y-graphql/typed';
 import * as Types from './Types';
 import * as Account from './queries/Account';
 import * as App from './queries/App';
@@ -18,6 +19,7 @@ import * as User from './queries/User';
 
 export const AccountQuery = typedQuery<Types.Account, {}>(Account.AccountQuery);
 export const AccountSettingsQuery = typedQuery<Types.AccountSettings, {}>(Account.AccountSettingsQuery);
+export const SettingsWatchSubscription = typedSubscription<Types.SettingsWatch, {}>(Account.SettingsWatchSubscription);
 export const CreateOrganizationMutation = typedMutation<Types.CreateOrganization, Types.CreateOrganizationVariables>(Account.CreateOrganizationMutation);
 export const AccountInviteInfoQuery = typedQuery<Types.AccountInviteInfo, Types.AccountInviteInfoVariables>(Account.AccountInviteInfoQuery);
 export const AccountAppInviteInfoQuery = typedQuery<Types.AccountAppInviteInfo, Types.AccountAppInviteInfoVariables>(Account.AccountAppInviteInfoQuery);
@@ -31,12 +33,16 @@ export const ProfilePrefillQuery = typedQuery<Types.ProfilePrefill, {}>(Account.
 export const CreateUserProfileAndOrganizationMutation = typedMutation<Types.CreateUserProfileAndOrganization, Types.CreateUserProfileAndOrganizationVariables>(Account.CreateUserProfileAndOrganizationMutation);
 export const ReportOnlineMutation = typedMutation<Types.ReportOnline, Types.ReportOnlineVariables>(Account.ReportOnlineMutation);
 export const RegisterPushMutation = typedMutation<Types.RegisterPush, Types.RegisterPushVariables>(Account.RegisterPushMutation);
+export const FetchPushSettingsQuery = typedQuery<Types.FetchPushSettings, {}>(Account.FetchPushSettingsQuery);
+export const RegisterWebPushMutation = typedMutation<Types.RegisterWebPush, Types.RegisterWebPushVariables>(Account.RegisterWebPushMutation);
 export const MyAppsQuery = typedQuery<Types.MyApps, {}>(App.MyAppsQuery);
 export const CreateAppMutation = typedMutation<Types.CreateApp, Types.CreateAppVariables>(App.CreateAppMutation);
 export const UpdateAppMutation = typedMutation<Types.UpdateApp, Types.UpdateAppVariables>(App.UpdateAppMutation);
 export const RefreshAppTokenMutation = typedMutation<Types.RefreshAppToken, Types.RefreshAppTokenVariables>(App.RefreshAppTokenMutation);
 export const AddAppToChatMutation = typedMutation<Types.AddAppToChat, Types.AddAppToChatVariables>(App.AddAppToChatMutation);
 export const DialogsQuery = typedQuery<Types.Dialogs, Types.DialogsVariables>(Chats.DialogsQuery);
+export const ChatWatchSubscription = typedSubscription<Types.ChatWatch, Types.ChatWatchVariables>(Chats.ChatWatchSubscription);
+export const DialogsWatchSubscription = typedSubscription<Types.DialogsWatch, Types.DialogsWatchVariables>(Chats.DialogsWatchSubscription);
 export const RoomQuery = typedQuery<Types.Room, Types.RoomVariables>(Chats.RoomQuery);
 export const RoomTinyQuery = typedQuery<Types.RoomTiny, Types.RoomTinyVariables>(Chats.RoomTinyQuery);
 export const RoomSuperQuery = typedQuery<Types.RoomSuper, Types.RoomSuperVariables>(Chats.RoomSuperQuery);
@@ -83,6 +89,7 @@ export const RoomDeleteMessagesMutation = typedMutation<Types.RoomDeleteMessages
 export const RoomDeleteUrlAugmentationMutation = typedMutation<Types.RoomDeleteUrlAugmentation, Types.RoomDeleteUrlAugmentationVariables>(Chats.RoomDeleteUrlAugmentationMutation);
 export const RoomEditMessageMutation = typedMutation<Types.RoomEditMessage, Types.RoomEditMessageVariables>(Chats.RoomEditMessageMutation);
 export const MarkSequenceReadMutation = typedMutation<Types.MarkSequenceRead, Types.MarkSequenceReadVariables>(Chats.MarkSequenceReadMutation);
+export const TypingsWatchSubscription = typedSubscription<Types.TypingsWatch, {}>(Chats.TypingsWatchSubscription);
 export const ConferenceQuery = typedQuery<Types.Conference, Types.ConferenceVariables>(Conferences.ConferenceQuery);
 export const ConferenceMediaQuery = typedQuery<Types.ConferenceMedia, Types.ConferenceMediaVariables>(Conferences.ConferenceMediaQuery);
 export const ConferenceJoinMutation = typedMutation<Types.ConferenceJoin, Types.ConferenceJoinVariables>(Conferences.ConferenceJoinMutation);
@@ -94,6 +101,8 @@ export const ConferenceCandidateMutation = typedMutation<Types.ConferenceCandida
 export const MediaOfferMutation = typedMutation<Types.MediaOffer, Types.MediaOfferVariables>(Conferences.MediaOfferMutation);
 export const MediaAnswerMutation = typedMutation<Types.MediaAnswer, Types.MediaAnswerVariables>(Conferences.MediaAnswerMutation);
 export const MediaCandidateMutation = typedMutation<Types.MediaCandidate, Types.MediaCandidateVariables>(Conferences.MediaCandidateMutation);
+export const ConferenceMediaWatchSubscription = typedSubscription<Types.ConferenceMediaWatch, Types.ConferenceMediaWatchVariables>(Conferences.ConferenceMediaWatchSubscription);
+export const ConferenceWatchSubscription = typedSubscription<Types.ConferenceWatch, Types.ConferenceWatchVariables>(Conferences.ConferenceWatchSubscription);
 export const AvailableRoomsQuery = typedQuery<Types.AvailableRooms, {}>(Explore.AvailableRoomsQuery);
 export const GlobalSearchQuery = typedQuery<Types.GlobalSearch, Types.GlobalSearchVariables>(Explore.GlobalSearchQuery);
 export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.FeatureFlagsQuery);
@@ -145,5 +154,6 @@ export const PersistEventsMutation = typedMutation<Types.PersistEvents, Types.Pe
 export const UsersQuery = typedQuery<Types.Users, Types.UsersVariables>(User.UsersQuery);
 export const UserQuery = typedQuery<Types.User, Types.UserVariables>(User.UserQuery);
 export const OnlineQuery = typedQuery<Types.Online, Types.OnlineVariables>(User.OnlineQuery);
+export const OnlineWatchSubscription = typedSubscription<Types.OnlineWatch, Types.OnlineWatchVariables>(User.OnlineWatchSubscription);
 export const ExplorePeopleQuery = typedQuery<Types.ExplorePeople, Types.ExplorePeopleVariables>(User.ExplorePeopleQuery);
 export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.ResolveShortNameVariables>(User.ResolveShortNameQuery);

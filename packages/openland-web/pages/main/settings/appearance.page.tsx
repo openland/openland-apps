@@ -175,7 +175,9 @@ class ImagesView extends React.PureComponent<
                         onChange={this.handleOff}
                     />
                     <XRadioItem
-                        label={'"We made the buttons on the screen look so good you\'ll want to lick them." © Steve Jobs'}
+                        label={
+                            '"We made the buttons on the screen look so good you\'ll want to lick them." © Steve Jobs'
+                        }
                         checked={images}
                         onChange={this.handleOn}
                     />
@@ -202,7 +204,7 @@ export default withApp('Appearance', 'viewer', () => (
                 <XVertical separator={24}>
                     <HighlightSecretGroups />
                     <UserInfoContext.Consumer>
-                        {(c) => <ImagesView userId={(c && c.user) ? c.user.id : undefined} />}
+                        {c => <ImagesView userId={c && c.user ? c.user.id : undefined} />}
                     </UserInfoContext.Consumer>
                 </XVertical>
             </XVertical>

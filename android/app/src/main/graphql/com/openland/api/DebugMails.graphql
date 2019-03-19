@@ -1,0 +1,3 @@
+mutation DebugMails($type: DebugEmailType!) {
+  debugSendEmail(type: $type)
+}

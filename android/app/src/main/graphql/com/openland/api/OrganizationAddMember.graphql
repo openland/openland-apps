@@ -1,0 +1,6 @@
+mutation OrganizationAddMember($organizationId: ID!, $userIds: [ID!]) {
+  betaOrganizationMemberAdd(organizationId: $organizationId, userIds: $userIds) {
+    __typename
+    ...OrganizationFull
+  }
+}

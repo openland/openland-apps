@@ -1,0 +1,3 @@
+mutation OrganizationChangeMemberRole($memberId: ID!, $newRole: OrganizationMemberRole!, $organizationId: ID!) {
+  alphaOrganizationChangeMemberRole(memberId: $memberId, newRole: $newRole, organizationId: $organizationId)
+}

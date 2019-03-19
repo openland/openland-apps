@@ -11,7 +11,14 @@ import { OthersPopper } from './views/OthersPopper';
 import { LinkToRoom } from './views/LinkToRoom';
 import { isEmoji } from 'openland-y-utils/isEmoji';
 
-const styleEditLabel = css`
+const EmojiSpaceStyle = css`
+    & img {
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+`;
+
+const EditLabelStyle = css`
     display: inline-block;
     vertical-align: baseline;
     color: rgba(0, 0, 0, 0.4);
@@ -101,6 +108,7 @@ const SpansMessageTextPreprocess = ({ text, isEdited }: { text: string; isEdited
     return (
         <span
             className={cx(
+                EmojiSpaceStyle,
                 isBig && TextLargeStyle,
                 isInsane && TextInsaneStyle,
                 isRotating && TextRotatingStyle,
@@ -111,7 +119,7 @@ const SpansMessageTextPreprocess = ({ text, isEdited }: { text: string; isEdited
                 src: messageText,
                 size: smileSize,
             })}
-            {isEdited && <span className={styleEditLabel}>(Edited)</span>}
+            {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
         </span>
     );
 };
@@ -193,10 +201,10 @@ export const SpansMessage = ({
                         <OthersPopper
                             show={true}
                             items={span.users.map(
-                                ({ id, name, photo, primaryOrganization }: any) => ({
+                                ({ id, name, picture, primaryOrganization }: any) => ({
                                     title: name,
                                     subtitle: primaryOrganization ? primaryOrganization.name : '',
-                                    photo,
+                                    picture,
                                     id,
                                 }),
                             )}
@@ -218,29 +226,40 @@ export const SpansMessage = ({
             } else if (span.__typename === 'MessageSpanLink') {
                 res.push(
                     <span key={'link-' + i} className={LinkText}>
-                        <XView as="a" path={span.url} onClick={(e: any) => e.stopPropagation()}>
+                        <XView
+                            as="a"
+                            target="_blank"
+                            href={span.url}
+                            onClick={(e: any) => e.stopPropagation()}
+                        >
                             {span.url}
                         </XView>
                     </span>,
                 );
                 lastOffset = span.offset + span.length;
             } else if (span.__typename === 'MessageSpanUserMention') {
+                let finalMessage = message.slice(span.offset, span.offset + span.length);
+
+                if (finalMessage.startsWith('@')) {
+                    finalMessage = finalMessage.slice(1);
+                }
+
                 res.push(
                     <MentionedUser
                         key={'user-' + i}
-                        isYou={false}
-                        text={message.slice(span.offset + 1, span.offset + span.length)}
+                        isYou={span.user.isYou}
+                        text={finalMessage}
                         user={{
                             __typename: 'User',
                             id: span.user.id,
                             name: span.user.name,
                             firstName: span.user.name,
                             lastName: null,
-                            photo: null,
+                            photo: span.user.picture,
                             email: null,
                             online: false,
                             lastSeen: null,
-                            isYou: false,
+                            isYou: span.user.isYou,
                             isBot: false,
                             shortname: null,
                             primaryOrganization: null,

@@ -1,0 +1,17 @@
+query User($userId: ID!) {
+  conversation: room(id: $userId) {
+    __typename
+    ... on PrivateRoom {
+      id
+      settings {
+        __typename
+        id
+        mute
+      }
+    }
+  }
+  user: user(id: $userId) {
+    __typename
+    ...UserFull
+  }
+}

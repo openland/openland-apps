@@ -1,0 +1,3 @@
+mutation RoomEditMessage($file: String, $mentions: [ID!], $message: String, $messageId: ID!, $replyMessages: [ID!]) {
+  betaMessageEdit(file: $file, mentions: $mentions, message: $message, mid: $messageId, replyMessages: $replyMessages)
+}

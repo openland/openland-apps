@@ -1,18 +1,8 @@
 import * as React from 'react';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-import gql from 'graphql-tag';
 import { ConferenceFull } from 'openland-api/fragments/ConferenceFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
-
-const ConferenceWatchSubscription = gql`
-    subscription ConferenceWatch($id: ID!) {
-        alphaConferenceWatch(id: $id) {
-            ...ConferenceFull
-        }
-    }
-    ${ConferenceFull}
-    ${UserShort}
-`;
+import { ConferenceWatchSubscription } from 'openland-api';
 
 export class TalkWatchComponent extends React.Component<{
     apollo: OpenApolloClient;
@@ -23,7 +13,7 @@ export class TalkWatchComponent extends React.Component<{
     componentDidMount() {
         this.subs = this.props.apollo.client
             .subscribe({
-                query: ConferenceWatchSubscription,
+                query: ConferenceWatchSubscription.document,
                 variables: { id: this.props.id },
             })
             .subscribe({});

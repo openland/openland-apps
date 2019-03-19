@@ -1,0 +1,3 @@
+mutation SaveDraftMessage($conversationId: ID!, $message: String!) {
+  conversationDraftUpdate(conversationId: $conversationId, message: $message)
+}
