@@ -9,8 +9,8 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { XButton } from 'openland-x/XButton';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
-import { EmptyBlock } from '../../../fragments/ChatEmptyComponent';
-import { EditPostProps } from '../../../fragments/MessengerRootComponent';
+import { EmptyBlock } from 'openland-web/fragments/ChatEmptyComponent';
+import { EditPostProps } from 'openland-web/fragments/MessengerRootComponent';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';

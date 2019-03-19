@@ -87,7 +87,7 @@ export class UserPopper extends React.PureComponent<
     {
         showPopper: boolean;
     }
-    > {
+> {
     xPopperRef = React.createRef<XPopper>();
 
     showPopper = () => {

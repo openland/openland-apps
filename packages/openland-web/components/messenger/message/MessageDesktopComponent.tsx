@@ -295,12 +295,11 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         <IconButton onClick={this.setReplyMessages}>
                             <ReplyIcon />
                         </IconButton>
-                        {out &&
-                            message.text && (
-                                <IconButton onClick={this.setEditMessage}>
-                                    <EditIcon />
-                                </IconButton>
-                            )}
+                        {out && message.text && (
+                            <IconButton onClick={this.setEditMessage}>
+                                <EditIcon />
+                            </IconButton>
+                        )}
                     </XHorizontal>
                 </XHorizontal>
             );
@@ -365,36 +364,34 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     content.push(
                         <ReplyMessageWrapper key={'reply_message' + message.id}>
                             {message.reply!.map((item, index, array) => {
-                                    let isCompact =
-                                        index > 0
-                                            ? array[index - 1].sender.id === item.sender.id
-                                            : false;
+                                let isCompact =
+                                    index > 0
+                                        ? array[index - 1].sender.id === item.sender.id
+                                        : false;
 
-                                    let qfileAttach = (item.__typename === 'GeneralMessage'
-                                        ? (item.attachments || []).filter(
-                                              a => a.__typename === 'MessageAttachmentFile',
-                                          )[0]
-                                        : undefined) as
-                                        | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
-                                        | undefined;
+                                let qfileAttach = (item.__typename === 'GeneralMessage'
+                                    ? (item.attachments || []).filter(
+                                          a => a.__typename === 'MessageAttachmentFile',
+                                      )[0]
+                                    : undefined) as
+                                    | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
+                                    | undefined;
 
-                                    return (
-                                        <MessageReplyComponent
-                                            attach={qfileAttach}
-                                            spans={item.spans}
-                                            sender={item.sender}
-                                            date={item.date}
-                                            message={item.message}
-                                            id={item.id}
-                                            key={'reply_message' + item.id + index}
-                                            edited={
-                                                item.__typename === 'GeneralMessage' && item.edited
-                                            }
-                                            startSelected={hideMenu}
-                                            compact={isCompact || undefined}
-                                        />
-                                    );
-                                })}
+                                return (
+                                    <MessageReplyComponent
+                                        attach={qfileAttach}
+                                        spans={item.spans}
+                                        sender={item.sender}
+                                        date={item.date}
+                                        message={item.message}
+                                        id={item.id}
+                                        key={'reply_message' + item.id + index}
+                                        edited={item.__typename === 'GeneralMessage' && item.edited}
+                                        startSelected={hideMenu}
+                                        compact={isCompact || undefined}
+                                    />
+                                );
+                            })}
                         </ReplyMessageWrapper>,
                     );
                 }

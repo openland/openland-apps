@@ -39,16 +39,22 @@ export function useQuote({
         setQuoteMessageSender(getQuoteMessageSender(messagesContext));
     };
 
-    React.useEffect(() => {
-        updateQuote();
-        if (!messagesContext.editMessage) {
-            inputMethodsState.focusIfNeeded();
-        }
-    }, [messagesContext.replyMessages]);
+    React.useEffect(
+        () => {
+            updateQuote();
+            if (!messagesContext.editMessage) {
+                inputMethodsState.focusIfNeeded();
+            }
+        },
+        [messagesContext.replyMessages],
+    );
 
-    React.useEffect(() => {
-        updateQuote();
-    }, [conversationId]);
+    React.useEffect(
+        () => {
+            updateQuote();
+        },
+        [conversationId],
+    );
 
     return {
         quoteMessagesId,

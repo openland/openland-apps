@@ -34,6 +34,33 @@ fragment RoomFull on Room {
       ...OrganizationMedium
     }
     photo
+    pinnedMessage {
+      __typename
+      ... on GeneralMessage {
+        attachments {
+          __typename
+          ... on MessageAttachmentFile {
+            fileMetadata {
+              __typename
+              imageHeight
+              imageWidth
+              isImage
+              name
+              size
+            }
+            id
+          }
+        }
+        id
+        message
+        sender {
+          __typename
+          id
+          name
+          photo
+        }
+      }
+    }
     requests {
       __typename
       user {

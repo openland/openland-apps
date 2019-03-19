@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from "linaria";
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { XMemo } from 'openland-y-utils/XMemo';

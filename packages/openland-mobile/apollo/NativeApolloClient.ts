@@ -1,5 +1,5 @@
 import { NativeModules, DeviceEventEmitter } from 'react-native';
-import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription } from 'openland-graphql/GraphqlClient';
+import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription, GraphqlQueryWatch } from 'openland-graphql/GraphqlClient';
 import { randomKey } from 'openland-mobile/utils/randomKey';
 import { delay } from 'openland-y-utils/timer';
 import { BridgedClient } from './BridgedClient';
@@ -29,6 +29,9 @@ export class NativeApolloClient implements GraphqlClient {
         postSubscribe: (id, mutation, vars) => {
             NativeGraphQL.subscribe(this.key, id, mutation.document.definitions[0].name.value, vars ? vars : {});
         },
+        postSubscribeUpdate: () => {
+            //
+        },
         postUnsubscribe: (id) => {
             NativeGraphQL.unsubscribe(this.key, id);
         },
@@ -48,7 +51,7 @@ export class NativeApolloClient implements GraphqlClient {
             if (src.key === this.key) {
                 console.log(src);
                 if (src.type === 'failure') {
-                    this.client.operationFailed(src.id);
+                    this.client.operationFailed(src.id, src.data);
                 } else if (src.type === 'response') {
                     this.client.operationUpdated(src.id, src.data);
                 }
@@ -60,6 +63,10 @@ export class NativeApolloClient implements GraphqlClient {
     async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
         let id = this.client.registerQuery(query, vars);
         return await this.client.getOperation(id);
+    }
+
+    queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): GraphqlQueryWatch<TQuery> {
+        throw Error()
     }
 
     async refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
@@ -100,11 +107,11 @@ export class NativeApolloClient implements GraphqlClient {
 
     async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
         let id = this.client.registerReadQuery(query, vars);
-        return this.client.useOperation(id);
+        return this.client.getOperation(id);
     }
 
     async writeQuery<TQuery, TVars>(data: any, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
         let id = this.client.registerWriteQuery(data, query, vars);
-        return this.client.useOperation(id);
+        return this.client.getOperation(id);
     }
 }

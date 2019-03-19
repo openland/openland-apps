@@ -753,6 +753,7 @@ export interface AddAppToChatVariables {
 export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -778,6 +779,7 @@ export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -914,6 +916,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -931,6 +934,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1111,6 +1115,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1128,6 +1133,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1252,6 +1258,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1269,6 +1276,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1445,6 +1453,7 @@ export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1505,6 +1514,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1522,6 +1532,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1606,6 +1617,7 @@ export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1616,6 +1628,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1632,6 +1645,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1642,6 +1656,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1724,6 +1739,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1741,6 +1757,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1921,6 +1938,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1938,6 +1956,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2062,6 +2081,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2079,6 +2099,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2255,6 +2276,7 @@ export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2315,6 +2337,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2332,6 +2355,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2416,6 +2440,7 @@ export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2426,6 +2451,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2442,6 +2468,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2452,6 +2479,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2559,6 +2587,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2576,6 +2605,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2756,6 +2786,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2773,6 +2804,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2897,6 +2929,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2914,6 +2947,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3090,6 +3124,7 @@ export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3150,6 +3185,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3167,6 +3203,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3251,6 +3288,7 @@ export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3261,6 +3299,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3277,6 +3316,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3287,6 +3327,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3369,6 +3410,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3386,6 +3428,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3566,6 +3609,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3583,6 +3627,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3707,6 +3752,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3724,6 +3770,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3900,6 +3947,7 @@ export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3960,6 +4008,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3977,6 +4026,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4061,6 +4111,7 @@ export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4071,6 +4122,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4087,6 +4139,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4097,6 +4150,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4196,6 +4250,7 @@ export interface ChatWatchVariables {
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4221,6 +4276,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4289,6 +4345,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4314,6 +4371,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4380,6 +4438,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4405,6 +4464,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4465,6 +4525,7 @@ export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_me
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4490,6 +4551,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4605,6 +4667,7 @@ export interface DialogsWatch_event_DialogUpdateSingle {
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4630,6 +4693,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4698,6 +4762,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4723,6 +4788,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4789,6 +4855,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4814,6 +4881,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4874,6 +4942,7 @@ export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_me
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4899,6 +4968,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5182,6 +5252,54 @@ export interface Room_room_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+}
+
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+}
+
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fileMetadata: Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments = Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender;
+  attachments: Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
+}
+
+export type Room_room_SharedRoom_pinnedMessage = Room_room_SharedRoom_pinnedMessage_ServiceMessage | Room_room_SharedRoom_pinnedMessage_GeneralMessage;
+
 export interface Room_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -5198,6 +5316,7 @@ export interface Room_room_SharedRoom {
   requests: Room_room_SharedRoom_requests[] | null;
   settings: Room_room_SharedRoom_settings;
   canEdit: boolean;
+  pinnedMessage: Room_room_SharedRoom_pinnedMessage | null;
 }
 
 export type Room_room = Room_room_PrivateRoom | Room_room_SharedRoom;
@@ -5508,6 +5627,7 @@ export interface ChatHistory_messages_GeneralMessage_sender {
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5525,6 +5645,7 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMentio
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5705,6 +5826,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5722,6 +5844,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5846,6 +5969,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5863,6 +5987,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6039,6 +6164,7 @@ export type ChatHistory_messages_GeneralMessage_quotedMessages = ChatHistory_mes
 export interface ChatHistory_messages_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6099,6 +6225,7 @@ export interface ChatHistory_messages_ServiceMessage_sender {
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6116,6 +6243,7 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMentio
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6200,6 +6328,7 @@ export type ChatHistory_messages_ServiceMessage_spans = ChatHistory_messages_Ser
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6210,6 +6339,7 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServi
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6226,6 +6356,7 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServi
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6236,6 +6367,7 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickService
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6640,6 +6772,54 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fileMetadata: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender;
+  attachments: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
+}
+
+export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage;
+
 export interface RoomAddMember_betaRoomInvite_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -6656,6 +6836,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom {
   requests: RoomAddMember_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMember_betaRoomInvite_SharedRoom_settings;
   canEdit: boolean;
+  pinnedMessage: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage | null;
 }
 
 export type RoomAddMember_betaRoomInvite = RoomAddMember_betaRoomInvite_PrivateRoom | RoomAddMember_betaRoomInvite_SharedRoom;
@@ -6832,6 +7013,54 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_set
   mute: boolean | null;
 }
 
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fileMetadata: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_sender;
+  attachments: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
+}
+
+export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage;
+
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -6848,6 +7077,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom {
   requests: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests[] | null;
   settings: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_settings;
   canEdit: boolean;
+  pinnedMessage: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage | null;
 }
 
 export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom;
@@ -7021,6 +7251,54 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fileMetadata: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender;
+  attachments: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
+}
+
+export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage;
+
 export interface RoomAddMembers_betaRoomInvite_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -7037,6 +7315,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom {
   requests: RoomAddMembers_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMembers_betaRoomInvite_SharedRoom_settings;
   canEdit: boolean;
+  pinnedMessage: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage | null;
 }
 
 export type RoomAddMembers_betaRoomInvite = RoomAddMembers_betaRoomInvite_PrivateRoom | RoomAddMembers_betaRoomInvite_SharedRoom;
@@ -7213,6 +7492,54 @@ export interface RoomKick_betaRoomKick_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fileMetadata: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_sender;
+  attachments: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
+}
+
+export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage;
+
 export interface RoomKick_betaRoomKick_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -7229,6 +7556,7 @@ export interface RoomKick_betaRoomKick_SharedRoom {
   requests: RoomKick_betaRoomKick_SharedRoom_requests[] | null;
   settings: RoomKick_betaRoomKick_SharedRoom_settings;
   canEdit: boolean;
+  pinnedMessage: RoomKick_betaRoomKick_SharedRoom_pinnedMessage | null;
 }
 
 export type RoomKick_betaRoomKick = RoomKick_betaRoomKick_PrivateRoom | RoomKick_betaRoomKick_SharedRoom;
@@ -7402,6 +7730,54 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fileMetadata: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_sender;
+  attachments: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
+}
+
+export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage;
+
 export interface RoomLeave_betaRoomLeave_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -7418,6 +7794,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom {
   requests: RoomLeave_betaRoomLeave_SharedRoom_requests[] | null;
   settings: RoomLeave_betaRoomLeave_SharedRoom_settings;
   canEdit: boolean;
+  pinnedMessage: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage | null;
 }
 
 export type RoomLeave_betaRoomLeave = RoomLeave_betaRoomLeave_PrivateRoom | RoomLeave_betaRoomLeave_SharedRoom;
@@ -7578,6 +7955,54 @@ export interface RoomSearch_items_edges_node_settings {
   mute: boolean | null;
 }
 
+export interface RoomSearch_items_edges_node_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+}
+
+export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+}
+
+export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fileMetadata: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments = RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_sender;
+  attachments: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments[];
+}
+
+export type RoomSearch_items_edges_node_pinnedMessage = RoomSearch_items_edges_node_pinnedMessage_ServiceMessage | RoomSearch_items_edges_node_pinnedMessage_GeneralMessage;
+
 export interface RoomSearch_items_edges_node {
   __typename: "SharedRoom";
   id: string;
@@ -7594,6 +8019,7 @@ export interface RoomSearch_items_edges_node {
   requests: RoomSearch_items_edges_node_requests[] | null;
   settings: RoomSearch_items_edges_node_settings;
   canEdit: boolean;
+  pinnedMessage: RoomSearch_items_edges_node_pinnedMessage | null;
 }
 
 export interface RoomSearch_items_edges {
@@ -7938,6 +8364,54 @@ export interface RoomJoin_join_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+}
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+}
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fileMetadata: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments = RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender;
+  attachments: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
+}
+
+export type RoomJoin_join_SharedRoom_pinnedMessage = RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage;
+
 export interface RoomJoin_join_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -7954,6 +8428,7 @@ export interface RoomJoin_join_SharedRoom {
   requests: RoomJoin_join_SharedRoom_requests[] | null;
   settings: RoomJoin_join_SharedRoom_settings;
   canEdit: boolean;
+  pinnedMessage: RoomJoin_join_SharedRoom_pinnedMessage | null;
 }
 
 export type RoomJoin_join = RoomJoin_join_PrivateRoom | RoomJoin_join_SharedRoom;
@@ -8146,6 +8621,54 @@ export interface RoomJoinInviteLink_join_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fileMetadata: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_sender;
+  attachments: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
+}
+
+export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage;
+
 export interface RoomJoinInviteLink_join_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -8162,6 +8685,7 @@ export interface RoomJoinInviteLink_join_SharedRoom {
   requests: RoomJoinInviteLink_join_SharedRoom_requests[] | null;
   settings: RoomJoinInviteLink_join_SharedRoom_settings;
   canEdit: boolean;
+  pinnedMessage: RoomJoinInviteLink_join_SharedRoom_pinnedMessage | null;
 }
 
 export type RoomJoinInviteLink_join = RoomJoinInviteLink_join_PrivateRoom | RoomJoinInviteLink_join_SharedRoom;
@@ -11389,6 +11913,7 @@ export interface ConferenceFull {
 export interface TinyMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11414,6 +11939,7 @@ export interface TinyMessage_ServiceMessage {
 export interface TinyMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11602,6 +12128,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_sender
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11619,6 +12146,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11743,6 +12271,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11760,6 +12289,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11936,6 +12466,7 @@ export type FullMessage_GeneralMessage_quotedMessages = FullMessage_GeneralMessa
 export interface FullMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11952,6 +12483,7 @@ export interface FullMessage_GeneralMessage_reactions {
 export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11969,6 +12501,7 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention {
 export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12097,6 +12630,7 @@ export interface FullMessage_ServiceMessage_sender {
 export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12114,6 +12648,7 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention {
 export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12198,6 +12733,7 @@ export type FullMessage_ServiceMessage_spans = FullMessage_ServiceMessage_spans_
 export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12208,6 +12744,7 @@ export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadat
 export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12224,6 +12761,7 @@ export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadat
 export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12234,6 +12772,7 @@ export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_
 export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12712,6 +13251,54 @@ export interface RoomFull_SharedRoom_settings {
   mute: boolean | null;
 }
 
+export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+}
+
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+}
+
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fileMetadata: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments = RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender;
+  attachments: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
+}
+
+export type RoomFull_SharedRoom_pinnedMessage = RoomFull_SharedRoom_pinnedMessage_ServiceMessage | RoomFull_SharedRoom_pinnedMessage_GeneralMessage;
+
 export interface RoomFull_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -12728,6 +13315,7 @@ export interface RoomFull_SharedRoom {
   requests: RoomFull_SharedRoom_requests[] | null;
   settings: RoomFull_SharedRoom_settings;
   canEdit: boolean;
+  pinnedMessage: RoomFull_SharedRoom_pinnedMessage | null;
 }
 
 export type RoomFull = RoomFull_PrivateRoom | RoomFull_SharedRoom;
@@ -12913,6 +13501,7 @@ export interface UserShort {
 export interface UserTiny {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12959,6 +13548,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12976,6 +13566,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13156,6 +13747,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13173,6 +13765,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13297,6 +13890,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13314,6 +13908,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13490,6 +14085,7 @@ export type ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quoted
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13550,6 +14146,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13567,6 +14164,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13651,6 +14249,7 @@ export type ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13661,6 +14260,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13677,6 +14277,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13687,6 +14288,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13769,6 +14371,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_se
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13786,6 +14389,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13966,6 +14570,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13983,6 +14588,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14107,6 +14713,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14124,6 +14731,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14300,6 +14908,7 @@ export type ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedM
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14360,6 +14969,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14377,6 +14987,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14461,6 +15072,7 @@ export type ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans =
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14471,6 +15083,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14487,6 +15100,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14497,6 +15111,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14577,6 +15192,7 @@ export type ChatUpdateFragment = ChatUpdateFragment_ChatUpdated | ChatUpdateFrag
 export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14602,6 +15218,7 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessa
 export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14670,6 +15287,7 @@ export interface DialogUpdateFragment_DialogMessageReceived {
 export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14695,6 +15313,7 @@ export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessag
 export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14761,6 +15380,7 @@ export interface DialogUpdateFragment_DialogMessageUpdated {
 export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14786,6 +15406,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessag
 export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14846,6 +15467,7 @@ export type DialogUpdateFragment_DialogMessageDeleted_message = DialogUpdateFrag
 export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14871,6 +15493,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMe
 export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;

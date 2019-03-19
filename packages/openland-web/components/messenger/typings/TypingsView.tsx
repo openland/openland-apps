@@ -24,15 +24,18 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
     let messeger = React.useContext(MessengerContext);
     let [typing, setTyping] = React.useState<string | null>(null);
 
-    React.useEffect(() => {
-        return messeger.getTypings(props.conversationId).subcribe(typings => {
-            if (typings) {
-                setTyping(typings);
-            } else {
-                setTyping(null);
-            }
-        });
-    }, [props.conversationId]);
+    React.useEffect(
+        () => {
+            return messeger.getTypings(props.conversationId).subcribe(typings => {
+                if (typings) {
+                    setTyping(typings);
+                } else {
+                    setTyping(null);
+                }
+            });
+        },
+        [props.conversationId],
+    );
 
     if (typing) {
         return (
