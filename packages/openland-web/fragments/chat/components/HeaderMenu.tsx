@@ -12,10 +12,7 @@ export const HeaderMenu = (props: { room: Room_room_SharedRoom }) => (
         placement="bottom-end"
         content={
             <>
-                <XWithRole
-                    role="super-admin"
-                    or={props.room.role === 'OWNER' || props.room.role === 'ADMIN'}
-                >
+                <XWithRole role="super-admin" or={props.room.canEdit}>
                     <XMenuItem
                         query={{
                             field: 'editChat',
@@ -25,6 +22,7 @@ export const HeaderMenu = (props: { room: Room_room_SharedRoom }) => (
                         Settings
                     </XMenuItem>
                 </XWithRole>
+
                 <XMenuItem
                     query={{
                         field: 'leaveFromChat',
