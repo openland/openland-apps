@@ -153,7 +153,9 @@ class DesktopPostTitle extends React.PureComponent<TextInputProps, TextInputStat
                         ref={this.editorRef}
                         plugins={[emojiPlugin]}
                     />
-                    <div className={`${emojiWrapperClassName} ${emojiPositionClassName} emoji-wrapper`}>
+                    <div
+                        className={`${emojiWrapperClassName} ${emojiPositionClassName} emoji-wrapper`}
+                    >
                         <EmojiSelect />
                     </div>
                 </div>

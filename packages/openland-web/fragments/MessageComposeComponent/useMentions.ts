@@ -40,9 +40,12 @@ export function useMentions({ members }: useMentionsT) {
     const [listOfMembersNames, setListOfMembersNames] = React.useState(getMembers(members));
     const [currentMentions, setCurrentMentions] = React.useState<MentionDataT[]>([]);
 
-    React.useEffect(() => {
-        setListOfMembersNames(getMembers(members));
-    }, [members]);
+    React.useEffect(
+        () => {
+            setListOfMembersNames(getMembers(members));
+        },
+        [members],
+    );
 
     const mentionsData = convertChannelMembersDataToMentionsData(members);
 

@@ -64,8 +64,8 @@ export const DialogView = XMemo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{emojifyMessage(dialog.sender)}: </>
     ) : (
-                    ''
-                );
+        ''
+    );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
     if (dialog.typing) {
@@ -102,7 +102,9 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                                 {active => (
                                     <FileIcon
                                         className={
-                                            (active ? iconActiveClass : iconClass) + ' ' + documentIcon
+                                            (active ? iconActiveClass : iconClass) +
+                                            ' ' +
+                                            documentIcon
                                         }
                                     />
                                 )}
@@ -194,12 +196,11 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
                     >
-                        {highlightSecretChat &&
-                            dialog.kind === 'GROUP' && (
-                                <XView>
-                                    <GroupIcon className={GroupIconClass} />
-                                </XView>
-                            )}
+                        {highlightSecretChat && dialog.kind === 'GROUP' && (
+                            <XView>
+                                <GroupIcon className={GroupIconClass} />
+                            </XView>
+                        )}
                         <span>
                             {emoji({
                                 src: dialog.title,

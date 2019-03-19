@@ -203,7 +203,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (props.isActive) {
             this.conversation = props.messenger.getConversation(props.conversationId);
             this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
-            
+
             this.unmounter2 = this.conversation.subscribe(this);
 
             if (!this.conversation) {
