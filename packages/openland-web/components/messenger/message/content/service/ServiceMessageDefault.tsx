@@ -10,7 +10,6 @@ import { css, cx } from 'linaria';
 import { OthersPopper } from './views/OthersPopper';
 import { LinkToRoom } from './views/LinkToRoom';
 import { isEmoji } from 'openland-y-utils/isEmoji';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const EmojiSpaceStyle = css`
     & img {
@@ -176,8 +175,6 @@ export const SpansMessage = ({
     spans?: FullMessage_ServiceMessage_spans[];
     isEdited?: boolean;
 }) => {
-    let ctx = React.useContext(UserInfoContext);
-    let youId = (ctx && ctx.user) ? ctx.user.id : '';
     let res: any[] = [];
 
     let lastOffset = 0;
@@ -242,13 +239,15 @@ export const SpansMessage = ({
                 lastOffset = span.offset + span.length;
             } else if (span.__typename === 'MessageSpanUserMention') {
                 let finalMessage = message.slice(span.offset, span.offset + span.length);
-                if (message.startsWith('@')) {
-                    finalMessage = message.slice(span.offset + 1, span.offset + span.length);
+
+                if (finalMessage.startsWith('@')) {
+                    finalMessage = finalMessage.slice(1);
                 }
+
                 res.push(
                     <MentionedUser
                         key={'user-' + i}
-                        isYou={false}
+                        isYou={span.user.isYou}
                         text={finalMessage}
                         user={{
                             __typename: 'User',
@@ -260,7 +259,7 @@ export const SpansMessage = ({
                             email: null,
                             online: false,
                             lastSeen: null,
-                            isYou: youId === span.user.id,
+                            isYou: span.user.isYou,
                             isBot: false,
                             shortname: null,
                             primaryOrganization: null,

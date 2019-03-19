@@ -753,6 +753,7 @@ export interface AddAppToChatVariables {
 export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -778,6 +779,7 @@ export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -914,6 +916,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -931,6 +934,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1111,6 +1115,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1128,6 +1133,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1252,6 +1258,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1269,6 +1276,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1445,6 +1453,7 @@ export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1505,6 +1514,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1522,6 +1532,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1606,6 +1617,7 @@ export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1616,6 +1628,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1632,6 +1645,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1642,6 +1656,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1724,6 +1739,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1741,6 +1757,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1921,6 +1938,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -1938,6 +1956,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2062,6 +2081,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2079,6 +2099,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2255,6 +2276,7 @@ export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_G
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2315,6 +2337,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2332,6 +2355,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2416,6 +2440,7 @@ export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_S
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2426,6 +2451,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2442,6 +2468,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2452,6 +2479,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2559,6 +2587,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2576,6 +2605,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2756,6 +2786,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2773,6 +2804,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2897,6 +2929,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -2914,6 +2947,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3090,6 +3124,7 @@ export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3150,6 +3185,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3167,6 +3203,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3251,6 +3288,7 @@ export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3261,6 +3299,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3277,6 +3316,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3287,6 +3327,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3369,6 +3410,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3386,6 +3428,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3566,6 +3609,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3583,6 +3627,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3707,6 +3752,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3724,6 +3770,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3900,6 +3947,7 @@ export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_G
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3960,6 +4008,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -3977,6 +4026,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4061,6 +4111,7 @@ export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_S
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4071,6 +4122,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4087,6 +4139,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4097,6 +4150,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4196,6 +4250,7 @@ export interface ChatWatchVariables {
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4221,6 +4276,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4289,6 +4345,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4314,6 +4371,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4380,6 +4438,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4405,6 +4464,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4465,6 +4525,7 @@ export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_me
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4490,6 +4551,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4605,6 +4667,7 @@ export interface DialogsWatch_event_DialogUpdateSingle {
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4630,6 +4693,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4698,6 +4762,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4723,6 +4788,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4789,6 +4855,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4814,6 +4881,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4874,6 +4942,7 @@ export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_me
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -4899,6 +4968,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5520,6 +5590,7 @@ export interface ChatHistory_messages_GeneralMessage_sender {
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5537,6 +5608,7 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMentio
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5717,6 +5789,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5734,6 +5807,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5858,6 +5932,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -5875,6 +5950,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6051,6 +6127,7 @@ export type ChatHistory_messages_GeneralMessage_quotedMessages = ChatHistory_mes
 export interface ChatHistory_messages_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6111,6 +6188,7 @@ export interface ChatHistory_messages_ServiceMessage_sender {
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6128,6 +6206,7 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMentio
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6212,6 +6291,7 @@ export type ChatHistory_messages_ServiceMessage_spans = ChatHistory_messages_Ser
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6222,6 +6302,7 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServi
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6238,6 +6319,7 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServi
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -6248,6 +6330,7 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickService
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11497,6 +11580,7 @@ export interface ConferenceFull {
 export interface TinyMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11522,6 +11606,7 @@ export interface TinyMessage_ServiceMessage {
 export interface TinyMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11710,6 +11795,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_sender
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11727,6 +11813,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11851,6 +11938,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -11868,6 +11956,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12044,6 +12133,7 @@ export type FullMessage_GeneralMessage_quotedMessages = FullMessage_GeneralMessa
 export interface FullMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12060,6 +12150,7 @@ export interface FullMessage_GeneralMessage_reactions {
 export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12077,6 +12168,7 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention {
 export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12205,6 +12297,7 @@ export interface FullMessage_ServiceMessage_sender {
 export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12222,6 +12315,7 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention {
 export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12306,6 +12400,7 @@ export type FullMessage_ServiceMessage_spans = FullMessage_ServiceMessage_spans_
 export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12316,6 +12411,7 @@ export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadat
 export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12332,6 +12428,7 @@ export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadat
 export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12342,6 +12439,7 @@ export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_
 export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -12996,6 +13094,7 @@ export interface UserShort {
 export interface UserTiny {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13042,6 +13141,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13059,6 +13159,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13239,6 +13340,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13256,6 +13358,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13380,6 +13483,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13397,6 +13501,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13573,6 +13678,7 @@ export type ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quoted
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13633,6 +13739,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13650,6 +13757,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13734,6 +13842,7 @@ export type ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13744,6 +13853,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13760,6 +13870,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13770,6 +13881,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13852,6 +13964,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_se
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -13869,6 +13982,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14049,6 +14163,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14066,6 +14181,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14190,6 +14306,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14207,6 +14324,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14383,6 +14501,7 @@ export type ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedM
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14443,6 +14562,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14460,6 +14580,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14544,6 +14665,7 @@ export type ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans =
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14554,6 +14676,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14570,6 +14693,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14580,6 +14704,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14660,6 +14785,7 @@ export type ChatUpdateFragment = ChatUpdateFragment_ChatUpdated | ChatUpdateFrag
 export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14685,6 +14811,7 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessa
 export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14753,6 +14880,7 @@ export interface DialogUpdateFragment_DialogMessageReceived {
 export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14778,6 +14906,7 @@ export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessag
 export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14844,6 +14973,7 @@ export interface DialogUpdateFragment_DialogMessageUpdated {
 export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14869,6 +14999,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessag
 export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14929,6 +15060,7 @@ export type DialogUpdateFragment_DialogMessageDeleted_message = DialogUpdateFrag
 export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
@@ -14954,6 +15086,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMe
 export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
+  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
