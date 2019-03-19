@@ -758,7 +758,6 @@ export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
@@ -784,7 +783,6 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -921,7 +919,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -939,7 +936,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -1120,7 +1116,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
@@ -1138,7 +1133,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -1263,7 +1257,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
@@ -1281,7 +1274,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -1458,7 +1450,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions {
@@ -1519,7 +1510,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -1537,7 +1527,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -1622,7 +1611,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -1633,7 +1621,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
@@ -1650,7 +1637,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -1661,7 +1647,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -1744,7 +1729,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -1762,7 +1746,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -1943,7 +1926,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
@@ -1961,7 +1943,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -2086,7 +2067,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
@@ -2104,7 +2084,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -2281,7 +2260,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions {
@@ -2342,7 +2320,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -2360,7 +2337,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -2445,7 +2421,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -2456,7 +2431,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
@@ -2473,7 +2447,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -2484,7 +2457,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -2592,7 +2564,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -2610,7 +2581,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -2791,7 +2761,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
@@ -2809,7 +2778,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -2934,7 +2902,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
@@ -2952,7 +2919,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -3129,7 +3095,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions {
@@ -3190,7 +3155,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -3208,7 +3172,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -3293,7 +3256,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -3304,7 +3266,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
@@ -3321,7 +3282,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -3332,7 +3292,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -3415,7 +3374,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -3433,7 +3391,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -3614,7 +3571,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
@@ -3632,7 +3588,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -3757,7 +3712,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
@@ -3775,7 +3729,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -3952,7 +3905,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions {
@@ -4013,7 +3965,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -4031,7 +3982,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -4116,7 +4066,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -4127,7 +4076,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
@@ -4144,7 +4092,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -4155,7 +4102,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -4255,7 +4201,6 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage {
@@ -4281,7 +4226,6 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -4350,7 +4294,6 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage {
@@ -4376,7 +4319,6 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -4443,7 +4385,6 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage {
@@ -4469,7 +4410,6 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -4530,7 +4470,6 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage {
@@ -4556,7 +4495,6 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -4672,7 +4610,6 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage {
@@ -4698,7 +4635,6 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -4767,7 +4703,6 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage {
@@ -4793,7 +4728,6 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -4860,7 +4794,6 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage {
@@ -4886,7 +4819,6 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -4947,7 +4879,6 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage {
@@ -4973,7 +4904,6 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -5595,7 +5525,6 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMentio
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention {
@@ -5613,7 +5542,6 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserM
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -5794,7 +5722,6 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
@@ -5812,7 +5739,6 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -5937,7 +5863,6 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
@@ -5955,7 +5880,6 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -6132,7 +6056,6 @@ export interface ChatHistory_messages_GeneralMessage_reactions_user {
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_GeneralMessage_reactions {
@@ -6193,7 +6116,6 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMentio
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention {
@@ -6211,7 +6133,6 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserM
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -6296,7 +6217,6 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServi
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -6307,7 +6227,6 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServi
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata {
@@ -6324,7 +6243,6 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickService
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -6335,7 +6253,6 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickService
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -11585,7 +11502,6 @@ export interface TinyMessage_ServiceMessage_sender {
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface TinyMessage_ServiceMessage {
@@ -11611,7 +11527,6 @@ export interface TinyMessage_GeneralMessage_sender {
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface TinyMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -11800,7 +11715,6 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
@@ -11818,7 +11732,6 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -11943,7 +11856,6 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
@@ -11961,7 +11873,6 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -12138,7 +12049,6 @@ export interface FullMessage_GeneralMessage_reactions_user {
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_GeneralMessage_reactions {
@@ -12155,7 +12065,6 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -12173,7 +12082,6 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_us
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -12302,7 +12210,6 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -12320,7 +12227,6 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_us
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -12405,7 +12311,6 @@ export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadat
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -12416,7 +12321,6 @@ export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadat
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
@@ -12433,7 +12337,6 @@ export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -12444,7 +12347,6 @@ export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -13099,7 +13001,6 @@ export interface UserTiny {
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 /* tslint:disable */
@@ -13146,7 +13047,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -13164,7 +13064,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -13345,7 +13244,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
@@ -13363,7 +13261,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -13488,7 +13385,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
@@ -13506,7 +13402,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -13683,7 +13578,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_r
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_reactions {
@@ -13744,7 +13638,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -13762,7 +13655,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -13847,7 +13739,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -13858,7 +13749,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
@@ -13875,7 +13765,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -13886,7 +13775,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -13969,7 +13857,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -13987,7 +13874,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -14168,7 +14054,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
@@ -14186,7 +14071,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -14311,7 +14195,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
@@ -14329,7 +14212,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -14506,7 +14388,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_re
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_reactions {
@@ -14567,7 +14448,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -14585,7 +14465,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -14670,7 +14549,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -14681,7 +14559,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
@@ -14698,7 +14575,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -14709,7 +14585,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -14790,7 +14665,6 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessa
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage {
@@ -14816,7 +14690,6 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessa
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -14885,7 +14758,6 @@ export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessag
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage {
@@ -14911,7 +14783,6 @@ export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessag
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -14978,7 +14849,6 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessag
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage {
@@ -15004,7 +14874,6 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessag
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -15065,7 +14934,6 @@ export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMe
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMessage {
@@ -15091,7 +14959,6 @@ export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMe
   lastName: string | null;
   picture: string | null;
   shortname: string | null;
-  isYou: boolean;
 }
 
 export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {

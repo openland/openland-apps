@@ -10,6 +10,7 @@ import { css, cx } from 'linaria';
 import { OthersPopper } from './views/OthersPopper';
 import { LinkToRoom } from './views/LinkToRoom';
 import { isEmoji } from 'openland-y-utils/isEmoji';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const EmojiSpaceStyle = css`
     & img {
@@ -175,6 +176,8 @@ export const SpansMessage = ({
     spans?: FullMessage_ServiceMessage_spans[];
     isEdited?: boolean;
 }) => {
+    let ctx = React.useContext(UserInfoContext);
+    let youId = (ctx && ctx.user) ? ctx.user.id : '';
     let res: any[] = [];
 
     let lastOffset = 0;
@@ -257,7 +260,7 @@ export const SpansMessage = ({
                             email: null,
                             online: false,
                             lastSeen: null,
-                            isYou: span.user.isYou,
+                            isYou: youId === span.user.id,
                             isBot: false,
                             shortname: null,
                             primaryOrganization: null,
