@@ -64,7 +64,7 @@ export class WorkerApolloClient implements GraphqlClient {
 
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): GraphqlQueryWatch<TQuery> {
         let id = this.client.registerQuery(query, vars);
-        throw Error()
+        return this.client.watchQuery(id);
     }
 
     refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {

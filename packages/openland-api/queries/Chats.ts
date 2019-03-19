@@ -38,8 +38,8 @@ export const DialogsQuery = gql`
 `;
 
 export const ChatWatchSubscription = gql`
-    subscription ChatWatch($chatId: ID!, $fromState: String) {
-        event: chatUpdates(chatId: $chatId, fromState: $fromState) {
+    subscription ChatWatch($chatId: ID!, $state: String) {
+        event: chatUpdates(chatId: $chatId, fromState: $state) {
             ... on ChatUpdateSingle {
                 seq
                 state

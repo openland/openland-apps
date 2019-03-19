@@ -4236,7 +4236,7 @@ export interface ChatWatch {
 
 export interface ChatWatchVariables {
   chatId: string;
-  fromState?: string | null;
+  state?: string | null;
 }
 
 /* tslint:disable */
