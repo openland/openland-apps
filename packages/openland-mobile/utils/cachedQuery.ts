@@ -8,27 +8,24 @@ export async function cachedQuery<T, V>(client: GraphqlClient, query: GraphqlTyp
         console.log('cache HIT for ' + key);
         await client.writeQuery(JSON.parse(rec), query, variables);
     }
-    let watch = client.queryWatch(query, variables);
-    client.refetch(query, variables);
+    let watch = client.queryWatch(query, variables, { fetchPolicy: 'cache-and-network' });
+
     return await new Promise<T>((resolve, reject) => {
         let first = true;
-        (async () => {
-            while (true) {
-                try {
-                    let d = await watch.get();
-                    await AsyncStorage.setItem('cache-' + key, JSON.stringify(d));
-                    if (first) {
-                        first = false;
-                        resolve(d);
-                    }
-                } catch (e) {
-                    console.warn(e);
-                    if (first) {
-                        first = false;
-                        reject(e);
-                    }
+        watch.subscribe(({ data, error }) => {
+            if (error) {
+                console.warn(error);
+                if (first) {
+                    first = false;
+                    reject(error);
+                }
+            } else {
+                AsyncStorage.setItem('cache-' + key, JSON.stringify(data));
+                if (first) {
+                    first = false;
+                    resolve(data);
                 }
             }
-        })();
+        });
     });
 }

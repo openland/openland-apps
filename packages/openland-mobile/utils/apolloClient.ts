@@ -1,8 +1,7 @@
 import { buildClient } from 'openland-y-graphql/apolloClient';
 import { Track } from 'openland-engines/Tracking';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { WorkerApolloClient } from 'openland-mobile/apollo/ThreadedApolloClient';
-import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
+import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 
 let cachedClient: OpenlandClient | null;
 
@@ -27,6 +26,12 @@ export function getClient(): OpenlandClient {
 
 export function buildNativeClient(token: string) {
 
+    return new OpenlandClient(new DirectApollolClient(buildClient({
+        token: token,
+        endpoint: 'https://api.openland.com/api',
+        wsEndpoint: 'wss://api.openland.com/api'
+    })));
+
     // if (__DEV__) {
     //     return new OpenlandClient(new ApolloGraphqlClient(buildClient({
     //         token: token,
@@ -34,7 +39,7 @@ export function buildNativeClient(token: string) {
     //         wsEndpoint: 'wss://api.openland.com/api'
     //     })));
     // }
-    return new OpenlandClient(new WorkerApolloClient(token));
+    // return new OpenlandClient(new WorkerApolloClient(token));
 
     // if (Platform.OS !== 'android') {
     //     return new OpenlandClient(new WorkerApolloClient(token));

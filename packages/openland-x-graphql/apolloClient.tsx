@@ -3,7 +3,7 @@ import { loadConfig } from 'openland-x-config';
 import { OpenApolloClient, buildClient } from 'openland-y-graphql/apolloClient';
 import { Track } from 'openland-engines/Tracking';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
+import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 
 let cachedClient: OpenApolloClient | undefined = undefined;
 
@@ -23,7 +23,7 @@ export const apolloClient = (initialState?: any, token?: string) => {
     if (canUseDOM) {
         if (!cachedClient) {
             cachedClient = buildWebClient(initialState, token);
-            Track.setClient(new OpenlandClient(new ApolloGraphqlClient(cachedClient!)));
+            Track.setClient(new OpenlandClient(new DirectApollolClient(cachedClient!)));
         }
         return cachedClient!!;
     } else {

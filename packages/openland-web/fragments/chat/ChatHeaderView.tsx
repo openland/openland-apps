@@ -6,6 +6,7 @@ import { XButton } from 'openland-x/XButton';
 import { Room, Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { RoomEditModal } from './RoomEditModal';
+import { AdvancedSettingsModal } from './AdvancedSettingsModal';
 import { RoomAddMemberModal } from './RoomAddMemberModal';
 import { ChatForwardHeaderView } from './ChatForwardHeaderView';
 import { HeaderTitle } from './components/HeaderTitle';
@@ -25,6 +26,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { getCanChangeAdvancedSettingsMembersUsers } from 'openland-web/pages/main/profile/components/RoomProfileComponent';
 
 const inviteButtonClass = css`
     & svg > g > path {
@@ -189,14 +191,26 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                 </>
             );
         }
+        const canChangeAdvancedSettingsMembersUsers = getCanChangeAdvancedSettingsMembersUsers({
+            chat: sharedRoom,
+        });
+
         modals = (
-            <RoomEditModal
-                title={sharedRoom.title}
-                description={sharedRoom.description}
-                photo={sharedRoom.photo}
-                socialImage={sharedRoom.socialImage}
-                roomId={sharedRoom.id}
-            />
+            <>
+                <AdvancedSettingsModal
+                    roomId={sharedRoom.id}
+                    socialImage={sharedRoom.socialImage}
+                    canChangeAdvancedSettingsMembersUsers={canChangeAdvancedSettingsMembersUsers}
+                    welcomeMessage={sharedRoom.welcomeMessage!!}
+                />
+                <RoomEditModal
+                    title={sharedRoom.title}
+                    description={sharedRoom.description}
+                    photo={sharedRoom.photo}
+                    socialImage={sharedRoom.socialImage}
+                    roomId={sharedRoom.id}
+                />
+            </>
         );
     }
 

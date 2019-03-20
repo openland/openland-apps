@@ -120,6 +120,7 @@ class AsyncTextSpec(key: String, val children: List<Any>) : AsyncViewSpec(key) {
     var style: AsyncViewStyle = AsyncViewStyle()
 
     var fontSize: Float? = null
+    var opacity: Float? = null
     var lineHeight: Float? = null
     var fontWeight: String? = null
     var color: Int = Color.BLACK
@@ -288,6 +289,7 @@ fun resolveSpec(src: JSONObject, context: ReactContext): AsyncViewSpec {
         props.nullableFloat("fontSize")?.let { res.fontSize = it }
         props.nullableString("fontWeight")?.let { res.fontWeight = it }
         props.nullableInt("color")?.let { res.color = it }
+        props.nullableFloat("opacity")?.let { res.opacity = it }
         props.nullableString("textDecorationLine")?.let { res.underline = it == "underline" }
         props.nullableString("textAlign")?.let { res.textAlign = it }
         props.nullableString("fontStyle")?.let { res.fontStyle = it }

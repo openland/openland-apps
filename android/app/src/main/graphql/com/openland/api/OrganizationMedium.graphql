@@ -1,6 +1,14 @@
 fragment OrganizationMedium on Organization {
   __typename
   isCommunity: alphaIsCommunity
+  adminMembers: alphaOrganizationAdminMembers {
+    __typename
+    role
+    user {
+      __typename
+      ...UserFull
+    }
+  }
   isAdmin: betaIsAdmin
   isOwner: betaIsOwner
   id

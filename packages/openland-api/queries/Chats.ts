@@ -598,6 +598,7 @@ export const RoomInviteLinkQuery = gql`
 export const RoomInviteInfoQuery = gql`
     query RoomInviteInfo($invite: String!) {
         invite: betaRoomInviteInfo(invite: $invite) {
+            id
             room {
                 ... on SharedRoom {
                     id
@@ -697,5 +698,21 @@ export const TypingsWatchSubscription = gql`
             }
             cancel
         }
+    }
+`;
+
+export const UpdateWelcomeMessageMutation = gql`
+    mutation UpdateWelcomeMessage(
+        $roomId: ID!
+        $welcomeMessageIsOn: Boolean!
+        $welcomeMessageSender: ID
+        $welcomeMessageText: String
+    ) {
+        updateWelcomeMessage(
+            roomId: $roomId
+            welcomeMessageIsOn: $welcomeMessageIsOn
+            welcomeMessageSender: $welcomeMessageSender
+            welcomeMessageText: $welcomeMessageText
+        ) 
     }
 `;

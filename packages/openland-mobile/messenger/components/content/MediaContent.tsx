@@ -18,7 +18,7 @@ interface MediaContentProps {
     message: DataSourceMessageItem;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
     onUserPress: (id: string) => void;
-    onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     layout: { width: number, height: number }
 }
@@ -47,8 +47,11 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     private handlePress = (event: ASPressEvent) => {
         // Ignore clicks for not-downloaded files
         let path = (this.state.downloadState && this.state.downloadState.path) || (this.props.attach && this.props.attach.uri);
-        if (path) {
-            this.props.onMediaPress(this.props.message, { path, ...event });
+        if (path && this.props.attach.fileMetadata.imageHeight && this.props.attach.fileMetadata.imageWidth) {
+            let w = this.props.attach.fileMetadata.imageWidth;
+            let h = this.props.attach.fileMetadata.imageHeight;
+
+            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { path, ...event });
         }
     }
 

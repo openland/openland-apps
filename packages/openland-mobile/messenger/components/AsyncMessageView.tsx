@@ -3,7 +3,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { AsyncAvatar } from './AsyncAvatar';
 import { ConversationEngine, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
-import { AsyncMessageContentView as AsyncMessageTopContentView } from './AsyncMessageContentView';
+import { AsyncMessageContentView } from './AsyncMessageContentView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { AsyncBubbleView } from './AsyncBubbleView';
@@ -20,7 +20,7 @@ export interface AsyncMessageViewProps {
     onMessageLongPress: (message: DataSourceMessageItem) => void;
     onAvatarPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     navigationManager: NavigationManager;
 }
 
@@ -37,7 +37,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     let res;
     if ((props.message.text || props.message.reply || (props.message.attachments && props.message.attachments.length))) {
         res =
-            <AsyncMessageTopContentView key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onAvatarPress} />;
+            <AsyncMessageContentView key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onAvatarPress} />;
     }
     if (!res) {
         res =

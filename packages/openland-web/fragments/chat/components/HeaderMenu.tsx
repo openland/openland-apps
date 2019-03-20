@@ -32,8 +32,16 @@ export const HeaderMenu = (props: { room: Room_room_SharedRoom }) => (
                 >
                     Leave group
                 </XMenuItem>
+                <XMenuItemSeparator />
+                <XMenuItem
+                    query={{
+                        field: 'advancedSettings',
+                        value: 'true',
+                    }}
+                >
+                    Advanced settings
+                </XMenuItem>
                 <XWithRole role="super-admin">
-                    <XMenuItemSeparator />
                     <AdminTools id={props.room.id} variables={{ id: props.room.id }} />
                 </XWithRole>
             </>

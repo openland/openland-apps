@@ -9,9 +9,18 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XInput } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
 
+type RoomEditModalT = {
+    title: string;
+    photo: string;
+    socialImage: string | null;
+    description: string | null;
+    roomId: string;
+}
+
 export const RoomEditModal = withAlterChat(props => {
-    let editPhotoRef = (props as any).photo;
-    let editSocialImageRef = (props as any).socialImage;
+    const typedProps = props as typeof props & RoomEditModalT;
+    let editPhotoRef = typedProps.photo;
+    let editSocialImageRef = typedProps.socialImage;
     return (
         <XModalForm
             scrollableContent={true}
@@ -26,7 +35,7 @@ export const RoomEditModal = withAlterChat(props => {
                 console.warn(newPhoto, newSocialImage);
                 props.alter({
                     variables: {
-                        roomId: (props as any).roomId,
+                        roomId: typedProps.roomId,
                         input: {
                             ...{ title: newTitle },
                             ...{ description: newDescription },
@@ -44,11 +53,11 @@ export const RoomEditModal = withAlterChat(props => {
             }}
             defaultData={{
                 input: {
-                    title: (props as any).title || '',
-                    description: (props as any).description || '',
-                    photoRef: { uuid: (props as any).photo },
-                    socialImageRef: (props as any).socialImage
-                        ? { uuid: (props as any).socialImage }
+                    title: typedProps.title || '',
+                    description: typedProps.description || '',
+                    photoRef: { uuid: typedProps.photo },
+                    socialImageRef: typedProps.socialImage
+                        ? { uuid: typedProps.socialImage }
                         : undefined,
                 },
             }}
@@ -91,10 +100,4 @@ export const RoomEditModal = withAlterChat(props => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{
-    title: string;
-    photo: string;
-    socialImage: string | null;
-    description: string | null;
-    roomId: string;
-}>;
+}) as React.ComponentType<RoomEditModalT>;

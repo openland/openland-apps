@@ -32,8 +32,11 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
                 try {
                     let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: match.invite });
                     if (info && info.invite) {
-                        let roomId = info.invite.room.id;
-                        getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId, invite: match.invite });
+                        if (info.invite.room.membership === 'MEMBER') {
+                            getMessenger().history.navigationManager.pushAndReset('Conversation', { id: info.invite.room.id });
+                        } else {
+                            getMessenger().history.navigationManager.pushAndReset('GroupInvite', { invite: info.invite, inviteId: match.invite });
+                        }
                     } else {
                         Alert.alert('Invite not found');
                     }

@@ -51,6 +51,7 @@
         { "name": "RoomDeleteUrlAugmentationMutation", "type": "mutation", "hasVariables": true },
         { "name": "RoomEditMessageMutation", "type": "mutation", "hasVariables": true },
         { "name": "MarkSequenceReadMutation", "type": "mutation", "hasVariables": true },
-        { "name": "TypingsWatchSubscription", "type": "subscription", "hasVariables": false }
+        { "name": "TypingsWatchSubscription", "type": "subscription", "hasVariables": false },
+        { "name": "UpdateWelcomeMessageMutation", "type": "mutation", "hasVariables": true }
     ]
 }

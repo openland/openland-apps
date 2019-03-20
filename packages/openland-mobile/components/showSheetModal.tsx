@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZModalController, showModal, ZModal } from './ZModal';
-import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform } from 'react-native';
+import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform, ScrollView, Dimensions } from 'react-native';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
@@ -142,29 +142,33 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                             paddingBottom={this.props.safe.bottom + 8}
                             onLayout={this.onLayout}
                         >
-                            {this.contents}
+                            <ScrollView maxHeight={Dimensions.get('screen').height - this.props.safe.top - this.props.safe.bottom - 100}>
+                                {this.contents}
+                            </ScrollView>
                         </View>
                     )}
                     {Platform.OS === 'ios' && (
                         <View onLayout={this.onLayout}>
                             <ZBlurredView
                                 intensity="high"
-                                borderRadius={12}
+                                borderRadius={14}
                                 marginHorizontal={10}
                                 overflow="hidden"
                             >
-                                {this.contents}
+                                <ScrollView maxHeight={Dimensions.get('screen').height - this.props.safe.top - this.props.safe.bottom - 100}>
+                                    {this.contents}
+                                </ScrollView>
                             </ZBlurredView>
-                            <ZBlurredView
-                                intensity="high"
-                                borderRadius={12}
+                            <View
+                                borderRadius={14}
+                                backgroundColor="#ffffff"
                                 marginBottom={this.props.safe.bottom}
                                 marginTop={10}
                                 marginHorizontal={10}
                                 overflow="hidden"
                             >
                                 <ZActionSheetItem name="Cancel" onPress={this.hide} appearance="cancel" separator={false} />
-                            </ZBlurredView>
+                            </View>
                         </View>
                     )}
                 </SAnimated.View>

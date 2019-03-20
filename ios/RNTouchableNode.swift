@@ -23,6 +23,7 @@ class RNTouchableNode: ASControlNode, UIGestureRecognizerDelegate {
     self.backgroundColor = UIColor.clear
     self.isLayerBacked = false
     self.isUserInteractionEnabled = true
+    self.style.flexGrow = child.style.flexGrow
   }
   
   override func didLoad() {

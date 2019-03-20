@@ -86,7 +86,6 @@ fragment FullMessage on ModernMessage {
           __typename
           buttons {
             __typename
-            id
             style
             title
             url

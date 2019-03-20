@@ -994,6 +994,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -1076,7 +1077,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -1207,6 +1207,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -1350,6 +1351,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -1606,6 +1608,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -1831,6 +1834,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -1913,7 +1917,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -2044,6 +2047,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -2187,6 +2191,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -2443,6 +2448,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -2693,6 +2699,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -2775,7 +2782,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -2906,6 +2912,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -3049,6 +3056,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -3305,6 +3313,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -3530,6 +3539,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -3612,7 +3622,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -3743,6 +3752,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -3886,6 +3896,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -4142,6 +4153,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -5193,6 +5205,42 @@ export interface Room_room_PrivateRoom {
   settings: Room_room_PrivateRoom_settings;
 }
 
+export interface Room_room_SharedRoom_organization_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface Room_room_SharedRoom_organization_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: Room_room_SharedRoom_organization_adminMembers_user_primaryOrganization | null;
+}
+
+export interface Room_room_SharedRoom_organization_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: Room_room_SharedRoom_organization_adminMembers_user;
+}
+
 export interface Room_room_SharedRoom_organization {
   __typename: "Organization";
   id: string;
@@ -5202,6 +5250,7 @@ export interface Room_room_SharedRoom_organization {
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
+  adminMembers: Room_room_SharedRoom_organization_adminMembers[];
 }
 
 export interface Room_room_SharedRoom_members_user_primaryOrganization {
@@ -5269,6 +5318,23 @@ export interface Room_room_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
   mute: boolean | null;
+}
+
+export interface Room_room_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface Room_room_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: Room_room_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface Room_room_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: Room_room_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage {
@@ -5362,6 +5428,7 @@ export interface Room_room_SharedRoom {
   requests: Room_room_SharedRoom_requests[] | null;
   settings: Room_room_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: Room_room_SharedRoom_welcomeMessage | null;
   pinnedMessage: Room_room_SharedRoom_pinnedMessage | null;
 }
 
@@ -5428,6 +5495,7 @@ export interface RoomTiny_room_SharedRoom {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: RoomTiny_room_SharedRoom_organization | null;
 }
@@ -5789,6 +5857,7 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMentio
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -5871,7 +5940,6 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
 
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -6002,6 +6070,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -6145,6 +6214,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -6401,6 +6471,7 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMentio
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -6755,6 +6826,42 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom {
   settings: RoomAddMember_betaRoomInvite_PrivateRoom_settings;
 }
 
+export interface RoomAddMember_betaRoomInvite_SharedRoom_organization_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_organization_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_organization_adminMembers_user_primaryOrganization | null;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_organization_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: RoomAddMember_betaRoomInvite_SharedRoom_organization_adminMembers_user;
+}
+
 export interface RoomAddMember_betaRoomInvite_SharedRoom_organization {
   __typename: "Organization";
   id: string;
@@ -6764,6 +6871,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_organization {
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
+  adminMembers: RoomAddMember_betaRoomInvite_SharedRoom_organization_adminMembers[];
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_members_user_primaryOrganization {
@@ -6831,6 +6939,23 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
   mute: boolean | null;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage {
@@ -6924,6 +7049,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom {
   requests: RoomAddMember_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMember_betaRoomInvite_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage | null;
 }
 
@@ -6986,6 +7112,42 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom {
   settings: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_settings;
 }
 
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_adminMembers_user_primaryOrganization | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_adminMembers_user;
+}
+
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization {
   __typename: "Organization";
   id: string;
@@ -6995,6 +7157,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_org
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
+  adminMembers: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization_adminMembers[];
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_user_primaryOrganization {
@@ -7062,6 +7225,23 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_set
   __typename: "RoomUserNotificaionSettings";
   id: string;
   mute: boolean | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage {
@@ -7155,6 +7335,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom {
   requests: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests[] | null;
   settings: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage | null;
 }
 
@@ -7214,6 +7395,42 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom {
   settings: RoomAddMembers_betaRoomInvite_PrivateRoom_settings;
 }
 
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_organization_adminMembers_user_primaryOrganization | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: RoomAddMembers_betaRoomInvite_SharedRoom_organization_adminMembers_user;
+}
+
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization {
   __typename: "Organization";
   id: string;
@@ -7223,6 +7440,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization {
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
+  adminMembers: RoomAddMembers_betaRoomInvite_SharedRoom_organization_adminMembers[];
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_members_user_primaryOrganization {
@@ -7290,6 +7508,23 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
   mute: boolean | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage {
@@ -7383,6 +7618,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom {
   requests: RoomAddMembers_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMembers_betaRoomInvite_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage | null;
 }
 
@@ -7445,6 +7681,42 @@ export interface RoomKick_betaRoomKick_PrivateRoom {
   settings: RoomKick_betaRoomKick_PrivateRoom_settings;
 }
 
+export interface RoomKick_betaRoomKick_SharedRoom_organization_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_organization_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_organization_adminMembers_user_primaryOrganization | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_organization_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: RoomKick_betaRoomKick_SharedRoom_organization_adminMembers_user;
+}
+
 export interface RoomKick_betaRoomKick_SharedRoom_organization {
   __typename: "Organization";
   id: string;
@@ -7454,6 +7726,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_organization {
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
+  adminMembers: RoomKick_betaRoomKick_SharedRoom_organization_adminMembers[];
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_members_user_primaryOrganization {
@@ -7521,6 +7794,23 @@ export interface RoomKick_betaRoomKick_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
   mute: boolean | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage {
@@ -7614,6 +7904,7 @@ export interface RoomKick_betaRoomKick_SharedRoom {
   requests: RoomKick_betaRoomKick_SharedRoom_requests[] | null;
   settings: RoomKick_betaRoomKick_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomKick_betaRoomKick_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomKick_betaRoomKick_SharedRoom_pinnedMessage | null;
 }
 
@@ -7673,6 +7964,42 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom {
   settings: RoomLeave_betaRoomLeave_PrivateRoom_settings;
 }
 
+export interface RoomLeave_betaRoomLeave_SharedRoom_organization_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_organization_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_organization_adminMembers_user_primaryOrganization | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_organization_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: RoomLeave_betaRoomLeave_SharedRoom_organization_adminMembers_user;
+}
+
 export interface RoomLeave_betaRoomLeave_SharedRoom_organization {
   __typename: "Organization";
   id: string;
@@ -7682,6 +8009,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_organization {
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
+  adminMembers: RoomLeave_betaRoomLeave_SharedRoom_organization_adminMembers[];
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_members_user_primaryOrganization {
@@ -7749,6 +8077,23 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
   mute: boolean | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage {
@@ -7842,6 +8187,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom {
   requests: RoomLeave_betaRoomLeave_SharedRoom_requests[] | null;
   settings: RoomLeave_betaRoomLeave_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage | null;
 }
 
@@ -7888,6 +8234,42 @@ export interface RoomSearchTextVariables {
 // GraphQL query operation: RoomSearch
 // ====================================================
 
+export interface RoomSearch_items_edges_node_organization_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomSearch_items_edges_node_organization_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: RoomSearch_items_edges_node_organization_adminMembers_user_primaryOrganization | null;
+}
+
+export interface RoomSearch_items_edges_node_organization_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: RoomSearch_items_edges_node_organization_adminMembers_user;
+}
+
 export interface RoomSearch_items_edges_node_organization {
   __typename: "Organization";
   id: string;
@@ -7897,6 +8279,7 @@ export interface RoomSearch_items_edges_node_organization {
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
+  adminMembers: RoomSearch_items_edges_node_organization_adminMembers[];
 }
 
 export interface RoomSearch_items_edges_node_members_user_primaryOrganization {
@@ -7964,6 +8347,23 @@ export interface RoomSearch_items_edges_node_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
   mute: boolean | null;
+}
+
+export interface RoomSearch_items_edges_node_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomSearch_items_edges_node_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomSearch_items_edges_node_welcomeMessage_sender_user;
+}
+
+export interface RoomSearch_items_edges_node_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomSearch_items_edges_node_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomSearch_items_edges_node_pinnedMessage_ServiceMessage {
@@ -8057,6 +8457,7 @@ export interface RoomSearch_items_edges_node {
   requests: RoomSearch_items_edges_node_requests[] | null;
   settings: RoomSearch_items_edges_node_settings;
   canEdit: boolean;
+  welcomeMessage: RoomSearch_items_edges_node_welcomeMessage | null;
   pinnedMessage: RoomSearch_items_edges_node_pinnedMessage | null;
 }
 
@@ -8287,6 +8688,42 @@ export interface RoomJoin_join_PrivateRoom {
   settings: RoomJoin_join_PrivateRoom_settings;
 }
 
+export interface RoomJoin_join_SharedRoom_organization_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomJoin_join_SharedRoom_organization_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: RoomJoin_join_SharedRoom_organization_adminMembers_user_primaryOrganization | null;
+}
+
+export interface RoomJoin_join_SharedRoom_organization_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: RoomJoin_join_SharedRoom_organization_adminMembers_user;
+}
+
 export interface RoomJoin_join_SharedRoom_organization {
   __typename: "Organization";
   id: string;
@@ -8296,6 +8733,7 @@ export interface RoomJoin_join_SharedRoom_organization {
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
+  adminMembers: RoomJoin_join_SharedRoom_organization_adminMembers[];
 }
 
 export interface RoomJoin_join_SharedRoom_members_user_primaryOrganization {
@@ -8363,6 +8801,23 @@ export interface RoomJoin_join_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
   mute: boolean | null;
+}
+
+export interface RoomJoin_join_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomJoin_join_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomJoin_join_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomJoin_join_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomJoin_join_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage {
@@ -8456,6 +8911,7 @@ export interface RoomJoin_join_SharedRoom {
   requests: RoomJoin_join_SharedRoom_requests[] | null;
   settings: RoomJoin_join_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomJoin_join_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomJoin_join_SharedRoom_pinnedMessage | null;
 }
 
@@ -8534,6 +8990,42 @@ export interface RoomJoinInviteLink_join_PrivateRoom {
   settings: RoomJoinInviteLink_join_PrivateRoom_settings;
 }
 
+export interface RoomJoinInviteLink_join_SharedRoom_organization_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_organization_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_organization_adminMembers_user_primaryOrganization | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_organization_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: RoomJoinInviteLink_join_SharedRoom_organization_adminMembers_user;
+}
+
 export interface RoomJoinInviteLink_join_SharedRoom_organization {
   __typename: "Organization";
   id: string;
@@ -8543,6 +9035,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_organization {
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
+  adminMembers: RoomJoinInviteLink_join_SharedRoom_organization_adminMembers[];
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_members_user_primaryOrganization {
@@ -8610,6 +9103,23 @@ export interface RoomJoinInviteLink_join_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
   mute: boolean | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage {
@@ -8703,6 +9213,7 @@ export interface RoomJoinInviteLink_join_SharedRoom {
   requests: RoomJoinInviteLink_join_SharedRoom_requests[] | null;
   settings: RoomJoinInviteLink_join_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomJoinInviteLink_join_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomJoinInviteLink_join_SharedRoom_pinnedMessage | null;
 }
 
@@ -8810,6 +9321,7 @@ export interface RoomInviteInfo_invite_invitedByUser {
 
 export interface RoomInviteInfo_invite {
   __typename: "RoomInvite";
+  id: string;
   room: RoomInviteInfo_invite_room;
   invitedByUser: RoomInviteInfo_invite_invitedByUser;
 }
@@ -8967,6 +9479,25 @@ export interface TypingsWatch_typings {
 
 export interface TypingsWatch {
   typings: TypingsWatch_typings;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: UpdateWelcomeMessage
+// ====================================================
+
+export interface UpdateWelcomeMessage {
+  updateWelcomeMessage: boolean;
+}
+
+export interface UpdateWelcomeMessageVariables {
+  roomId: string;
+  welcomeMessageIsOn: boolean;
+  welcomeMessageSender?: string | null;
+  welcomeMessageText?: string | null;
 }
 
 /* tslint:disable */
@@ -10141,6 +10672,7 @@ export interface Organization_organization_rooms {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: Organization_organization_rooms_organization | null;
 }
@@ -10506,6 +11038,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_organization | null;
 }
@@ -11758,6 +12291,7 @@ export interface ResolveShortName_item_Organization_rooms {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ResolveShortName_item_Organization_rooms_organization | null;
 }
@@ -12107,7 +12641,6 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_im
 
 export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -12238,6 +12771,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -12381,6 +12915,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -12593,6 +13128,7 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_Sh
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -12740,6 +13276,7 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_Sh
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -12949,6 +13486,7 @@ export interface OrganizationFull_rooms {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: OrganizationFull_rooms_organization | null;
 }
@@ -12986,6 +13524,42 @@ export interface OrganizationFull {
 // GraphQL fragment: OrganizationMedium
 // ====================================================
 
+export interface OrganizationMedium_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface OrganizationMedium_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: OrganizationMedium_adminMembers_user_primaryOrganization | null;
+}
+
+export interface OrganizationMedium_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: OrganizationMedium_adminMembers_user;
+}
+
 export interface OrganizationMedium {
   __typename: "Organization";
   id: string;
@@ -12995,6 +13569,7 @@ export interface OrganizationMedium {
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
+  adminMembers: OrganizationMedium_adminMembers[];
 }
 
 /* tslint:disable */
@@ -13131,6 +13706,42 @@ export interface RoomFull_PrivateRoom {
   settings: RoomFull_PrivateRoom_settings;
 }
 
+export interface RoomFull_SharedRoom_organization_adminMembers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomFull_SharedRoom_organization_adminMembers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: RoomFull_SharedRoom_organization_adminMembers_user_primaryOrganization | null;
+}
+
+export interface RoomFull_SharedRoom_organization_adminMembers {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: RoomFull_SharedRoom_organization_adminMembers_user;
+}
+
 export interface RoomFull_SharedRoom_organization {
   __typename: "Organization";
   id: string;
@@ -13140,6 +13751,7 @@ export interface RoomFull_SharedRoom_organization {
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
+  adminMembers: RoomFull_SharedRoom_organization_adminMembers[];
 }
 
 export interface RoomFull_SharedRoom_members_user_primaryOrganization {
@@ -13207,6 +13819,23 @@ export interface RoomFull_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
   mute: boolean | null;
+}
+
+export interface RoomFull_SharedRoom_welcomeMessage_sender_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomFull_SharedRoom_welcomeMessage_sender {
+  __typename: "RoomMember";
+  user: RoomFull_SharedRoom_welcomeMessage_sender_user;
+}
+
+export interface RoomFull_SharedRoom_welcomeMessage {
+  __typename: "WelcomeMessage";
+  isOn: boolean;
+  sender: RoomFull_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage {
@@ -13300,6 +13929,7 @@ export interface RoomFull_SharedRoom {
   requests: RoomFull_SharedRoom_requests[] | null;
   settings: RoomFull_SharedRoom_settings;
   canEdit: boolean;
+  welcomeMessage: RoomFull_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomFull_SharedRoom_pinnedMessage | null;
 }
 
@@ -13358,6 +13988,7 @@ export interface RoomShort_SharedRoom {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: RoomShort_SharedRoom_organization | null;
 }
@@ -13611,6 +14242,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -13693,7 +14325,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_a
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -13824,6 +14455,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -13967,6 +14599,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -14223,6 +14856,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -14448,6 +15082,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -14530,7 +15165,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_at
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -14661,6 +15295,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -14804,6 +15439,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -15060,6 +15696,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }

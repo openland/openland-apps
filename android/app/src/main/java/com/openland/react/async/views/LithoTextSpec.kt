@@ -98,11 +98,13 @@ object LithoTextSpec {
     @OnCreateLayout
     internal fun onCreateLayout(context: ComponentContext, @Prop spec: AsyncTextSpec, @Prop reactContext: ReactContext): Component {
         val fontSize = if (spec.fontSize !== null) spec.fontSize!! else 12f
+        val opacity = if (spec.opacity !== null) spec.opacity!! else 1f
         val res = Text.create(context)
                 .key(spec.key)
                 .textSizeDip(fontSize)
                 .typeface(resolveFont(context, spec.fontWeight, spec.fontStyle))
                 .textColor(spec.color)
+                .alpha(opacity)
                 .shouldIncludeFontPadding(false)
         if (spec.touchableKey != null) {
             res.clickHandler(LithoText.onClick(context))

@@ -1,6 +1,7 @@
 query RoomInviteInfo($invite: String!) {
   invite: betaRoomInviteInfo(invite: $invite) {
     __typename
+    id
     invitedByUser {
       __typename
       ...UserShort
