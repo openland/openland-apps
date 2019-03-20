@@ -40,7 +40,9 @@ import { SettingsAppearance } from './pages/main/SettingsAppearance';
 import { HomeDialogs } from './pages/main/HomeDialogs';
 import { SetOrgShortname } from './pages/main/SetOrgShortname';
 import { EditGroup } from './pages/main/EditGroup';
+import { EditGroupAdvanced } from './pages/main/EditGroupAdvanced';
 import { GroupInvite } from './pages/main/GroupInvite';
+import { UserPicker } from './pages/main/modals/UserPicker';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -49,6 +51,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('ProfileOrganization', ProfileOrganization)
   .addRoute('ProfileGroup', ProfileGroup)
   .addRoute('EditGroup', EditGroup)
+  .addRoute('EditGroupAdvanced', EditGroupAdvanced)
   .addRoute('SettingsProfile', SettingsProfile)
   .addRoute('SettingsNotifications', SettingsNotifications)
   .addRoute('SettingsOrganizations', SettingsOrganizations)
@@ -63,6 +66,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('CreateChannel', CreateChannel)
   .addRoute('OrganizationInviteLinkModal', ProfileOrganizationLink)
   .addRoute('UserMultiplePicker', UserMultiplePicker)
+  .addRoute('UserPicker', UserPicker)
   .addRoute('ProfileGroupLink', ProfileGroupLink)
   .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)
   .addRoute('ExploreOrganizations', ExploreOrganizations)

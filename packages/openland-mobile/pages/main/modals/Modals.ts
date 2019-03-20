@@ -25,6 +25,21 @@ export const Modals = {
             router.push('UserMultiplePicker', { action, title, disableUsers, inviteLinkButton });
         }
     },
+    showUserPicker(
+        router: SRouter,
+        action: (user: UserShort) => any,
+        users: UserShort[],
+        title?: string,
+        selectedUser?: string,
+        disableUsers?: string[],
+        pushAndReset?: boolean
+    ) {
+        if (pushAndReset) {
+            router.pushAndReset('UserPicker', { action, title, users, selectedUser, disableUsers });
+        } else {
+            router.push('UserPicker', { action, title, users, selectedUser, disableUsers });
+        }
+    },
     showCountryPicker(router: SRouter, action: (value: string) => any) {
         router.push('CountryPicker', { 'action': action });
     },

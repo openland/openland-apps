@@ -57,6 +57,7 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                         minHeight: realBorder ? 43 : 44,
                         fontSize: 17,
                         padding: 0,
+                        paddingTop: props.multiline ? 12 : 0,
                         margin: 0,
                         borderWidth: 0,
                         marginRight: 17,

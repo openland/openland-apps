@@ -48,45 +48,51 @@ export const RoomFull = gql`
                 sender {
                     user {
                         id
+                        name
                     }
                 }
                 message
             }
             pinnedMessage {
-                ... on GeneralMessage {
+                id
+                date
+                sender {
                     id
-                    date
-                    message
-                    sender {
-                        id
-                        name
-                        photo
-                        photoRef {
-                            uuid
-                            crop {
-                                x
-                                y
-                                w
-                                h
-                            }
-                        }
-                        primaryOrganization {
-                            id
-                            name
+                    name
+                    photo
+                    photoRef {
+                        uuid
+                        crop {
+                            x
+                            y
+                            w
+                            h
                         }
                     }
+                    primaryOrganization {
+                        id
+                        name
+                    }
+                }
+                message
+                fallback
+                ... on GeneralMessage {
                     attachments {
-                        ... on MessageAttachmentFile {
-                            id
+                        id
+                        fallback
+                        ...on MessageAttachmentFile {
                             fileId
-                            fileMetadata {
+                            fileMetadata{
+                                isImage
+                                imageFormat
                                 name
                                 size
-                                isImage
-                                imageWidth
-                                imageHeight
                             }
+                            filePreview
                         }
+                    }
+                    quotedMessages {
+                        id
                     }
                 }
             }
