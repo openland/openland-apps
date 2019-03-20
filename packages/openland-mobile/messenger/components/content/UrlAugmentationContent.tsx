@@ -143,7 +143,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                 </ASText>}
 
                 <ASFlex flexDirection="row" marginTop={5}>
-                    {imgCompact && (this.props.attach.image) && imgLayout && (
+                    {imgCompact && imgLayout && (
                         <ASFlex>
                             <ASImage
                                 onPress={this.onMediaPress}
