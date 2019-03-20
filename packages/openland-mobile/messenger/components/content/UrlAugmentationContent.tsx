@@ -208,7 +208,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                         {!!line && line.map((button, j) =>
                             <ASFlex
                                 marginTop={i !== 0 ? 4 : 0}
-                                key={'button-' + i + ' - ' + j}
+                                key={'button-' + i + '-' + j}
                                 backgroundColor='#fff'
                                 borderRadius={8}
                                 marginLeft={j > 0 ? 4 : 0}
