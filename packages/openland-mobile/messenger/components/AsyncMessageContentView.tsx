@@ -141,7 +141,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                 </ASFlex>
 
             </AsyncBubbleView >
-            {!!bottomContent.length && <ASFlex height={3} backgroundColor='white' width={width || props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming} />}
+            {!!bottomContent.length && <ASFlex height={3} backgroundColor='white' />}
             {!!bottomContent.length && <AsyncBubbleView pair={'bottom'} width={width} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
                 {bottomContent}
             </AsyncBubbleView >}
