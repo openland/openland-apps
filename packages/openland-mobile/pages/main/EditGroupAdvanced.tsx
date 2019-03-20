@@ -59,13 +59,13 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                     action={async src => {
                         if (welcomeMessageEnabled) {
                             if (!welcomeMessageSender) {
-                                Alert.builder().title('Please select a welcome message sender').button('GOT IT!').show();
+                                Alert.builder().title('Please choose who will send the Welcome message').button('GOT IT!').show();
         
                                 throw new SilentError();
                             }
 
                             if (typeof src.input.welcomeMessageText !== 'string' || src.input.welcomeMessageText === '') {
-                                Alert.builder().title('Please enter a welcome message').button('GOT IT!').show();
+                                Alert.builder().title('Please enter the Welcome message text').button('GOT IT!').show();
         
                                 throw new SilentError();
                             }
