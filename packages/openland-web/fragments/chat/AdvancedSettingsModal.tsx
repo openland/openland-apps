@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { withAlterChat } from 'openland-web/api/withAlterChat';
+import { withUpdateWelcomeMessage } from 'openland-web/api/withUpdateWelcomeMessage';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
@@ -20,8 +21,10 @@ type AdvancedSettingsModalT = {
     welcomeMessage: Room_room_SharedRoom_welcomeMessage;
 };
 
-export const AdvancedSettingsModal = withAlterChat(props => {
+export const AdvancedSettingsModal = withUpdateWelcomeMessage(withAlterChat(props => {
     const typedProps = props as typeof props & AdvancedSettingsModalT;
+    const alter = typedProps.alter;
+    const updateWelcomeMessage = (typedProps as any).updateWelcomeMessage;
 
     let editSocialImageRef = typedProps.socialImage;
 
@@ -37,10 +40,10 @@ export const AdvancedSettingsModal = withAlterChat(props => {
             targetQuery="advancedSettings"
             useTopCloser={true}
             title="Advanced settings"
-            defaultAction={data => {
+            defaultAction={async data => {
                 let newSocialImage = data.input.socialImageRef;
 
-                props.alter({
+                await alter({
                     variables: {
                         roomId: typedProps.roomId,
                         input: {
@@ -52,12 +55,21 @@ export const AdvancedSettingsModal = withAlterChat(props => {
                         },
                     },
                 });
+
+                await updateWelcomeMessage({
+                    variables: {
+                        roomId: typedProps.roomId,
+                        welcomeMessageIsOn: data.input.welcomeMessageIsOn === 'true',
+                        welcomeMessageSender: data.input.welcomeMessageSender,
+                        welcomeMessageText: data.input.welcomeMessageText,
+                    },
+                });
             }}
             defaultData={{
                 input: {
-                    isWelcomeMessageOn: typedProps.welcomeMessage.isOn ? 'true' : 'false',
+                    welcomeMessageIsOn: typedProps.welcomeMessage.isOn ? 'true' : 'false',
                     welcomeMessageText: typedProps.welcomeMessage.message,
-                    welcomeMessageSenderId: typedProps.welcomeMessage.sender
+                    welcomeMessageSender: typedProps.welcomeMessage.sender
                         ? typedProps.welcomeMessage.sender.user.id
                         : null,
                     socialImageRef: typedProps.socialImage
@@ -71,11 +83,11 @@ export const AdvancedSettingsModal = withAlterChat(props => {
                 <XView>
                     Send an automatic message in 1:1 chat to every new member who joins this group
                 </XView>
-                <XCheckbox label="On" field="input.isWelcomeMessageOn" switcher={true} />
+                <XCheckbox label="On" field="input.welcomeMessageIsOn" switcher={true} />
                 <XView>
                     Choose an image to display when sharing invite to this group on social networks
                 </XView>
-                <XSelect options={selectOptions} field="input.welcomeMessageSenderId" />
+                <XSelect options={selectOptions} field="input.welcomeMessageSender" />
                 <XInput size="large" field="input.welcomeMessageText" />
                 <XView>Social sharing image</XView>
                 <XAvatarUpload
@@ -89,4 +101,4 @@ export const AdvancedSettingsModal = withAlterChat(props => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<AdvancedSettingsModalT>;
+}) as any) as React.ComponentType<AdvancedSettingsModalT>;

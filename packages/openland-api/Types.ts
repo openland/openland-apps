@@ -5265,8 +5265,8 @@ export interface Room_room_SharedRoom_welcomeMessage_sender {
 export interface Room_room_SharedRoom_welcomeMessage {
   __typename: "WelcomeMessage";
   isOn: boolean;
-  sender: Room_room_SharedRoom_welcomeMessage_sender;
-  message: string;
+  sender: Room_room_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage {
@@ -6803,8 +6803,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender {
 export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage {
   __typename: "WelcomeMessage";
   isOn: boolean;
-  sender: RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender;
-  message: string;
+  sender: RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage {
@@ -7062,8 +7062,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_wel
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage {
   __typename: "WelcomeMessage";
   isOn: boolean;
-  sender: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender;
-  message: string;
+  sender: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage {
@@ -7318,8 +7318,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage {
   __typename: "WelcomeMessage";
   isOn: boolean;
-  sender: RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender;
-  message: string;
+  sender: RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage {
@@ -7577,8 +7577,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender {
 export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage {
   __typename: "WelcomeMessage";
   isOn: boolean;
-  sender: RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender;
-  message: string;
+  sender: RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage {
@@ -7833,8 +7833,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender {
 export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage {
   __typename: "WelcomeMessage";
   isOn: boolean;
-  sender: RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender;
-  message: string;
+  sender: RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage {
@@ -8076,8 +8076,8 @@ export interface RoomSearch_items_edges_node_welcomeMessage_sender {
 export interface RoomSearch_items_edges_node_welcomeMessage {
   __typename: "WelcomeMessage";
   isOn: boolean;
-  sender: RoomSearch_items_edges_node_welcomeMessage_sender;
-  message: string;
+  sender: RoomSearch_items_edges_node_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomSearch_items_edges_node_pinnedMessage_ServiceMessage {
@@ -8503,8 +8503,8 @@ export interface RoomJoin_join_SharedRoom_welcomeMessage_sender {
 export interface RoomJoin_join_SharedRoom_welcomeMessage {
   __typename: "WelcomeMessage";
   isOn: boolean;
-  sender: RoomJoin_join_SharedRoom_welcomeMessage_sender;
-  message: string;
+  sender: RoomJoin_join_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage {
@@ -8778,8 +8778,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender {
 export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage {
   __typename: "WelcomeMessage";
   isOn: boolean;
-  sender: RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender;
-  message: string;
+  sender: RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage {
@@ -9111,6 +9111,25 @@ export interface TypingsWatch_typings {
 
 export interface TypingsWatch {
   typings: TypingsWatch_typings;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: UpdateWelcomeMessage
+// ====================================================
+
+export interface UpdateWelcomeMessage {
+  updateWelcomeMessage: boolean;
+}
+
+export interface UpdateWelcomeMessageVariables {
+  roomId: string;
+  welcomeMessageIsOn: boolean;
+  welcomeMessageSender?: string | null;
+  welcomeMessageText?: string | null;
 }
 
 /* tslint:disable */
@@ -13426,8 +13445,8 @@ export interface RoomFull_SharedRoom_welcomeMessage_sender {
 export interface RoomFull_SharedRoom_welcomeMessage {
   __typename: "WelcomeMessage";
   isOn: boolean;
-  sender: RoomFull_SharedRoom_welcomeMessage_sender;
-  message: string;
+  sender: RoomFull_SharedRoom_welcomeMessage_sender | null;
+  message: string | null;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage {

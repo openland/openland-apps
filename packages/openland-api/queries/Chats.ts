@@ -687,3 +687,19 @@ export const TypingsWatchSubscription = gql`
         }
     }
 `;
+
+export const UpdateWelcomeMessageMutation = gql`
+    mutation UpdateWelcomeMessage(
+        $roomId: ID!
+        $welcomeMessageIsOn: Boolean!
+        $welcomeMessageSender: ID
+        $welcomeMessageText: String
+    ) {
+        updateWelcomeMessage(
+            roomId: $roomId
+            welcomeMessageIsOn: $welcomeMessageIsOn
+            welcomeMessageSender: $welcomeMessageSender
+            welcomeMessageText: $welcomeMessageText
+        ) 
+    }
+`;

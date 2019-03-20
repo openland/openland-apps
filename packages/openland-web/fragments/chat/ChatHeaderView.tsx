@@ -195,15 +195,13 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
             chat: sharedRoom,
         });
 
-        console.log(sharedRoom)
-        
         modals = (
             <>
                 <AdvancedSettingsModal
                     roomId={sharedRoom.id}
                     socialImage={sharedRoom.socialImage}
                     canChangeAdvancedSettingsMembersUsers={canChangeAdvancedSettingsMembersUsers}
-                    welcomeMessage={sharedRoom.welcomeMessage}
+                    welcomeMessage={sharedRoom.welcomeMessage!!}
                 />
                 <RoomEditModal
                     title={sharedRoom.title}

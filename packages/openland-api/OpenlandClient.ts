@@ -729,6 +729,9 @@ export class OpenlandClient {
     async mutateMarkSequenceRead(variables: Types.MarkSequenceReadVariables): Promise<Types.MarkSequenceRead> {
         return this.client.mutate(Source.MarkSequenceReadMutation, variables);
     }
+    async mutateUpdateWelcomeMessage(variables: Types.UpdateWelcomeMessageVariables): Promise<Types.UpdateWelcomeMessage> {
+        return this.client.mutate(Source.UpdateWelcomeMessageMutation, variables);
+    }
     async mutateConferenceJoin(variables: Types.ConferenceJoinVariables): Promise<Types.ConferenceJoin> {
         return this.client.mutate(Source.ConferenceJoinMutation, variables);
     }
