@@ -24,7 +24,7 @@ interface UrlAugmentationContentProps {
     attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
     imageLayout?: { width: number, height: number };
     onUserPress: (id: string) => void;
-    onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
 export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationContentProps, { downloadState?: DownloadState }> {
@@ -56,6 +56,15 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
         }
     }
 
+    onMediaPress = (event: ASPressEvent) => {
+        if (this.state && this.state.downloadState && this.state.downloadState.path && this.props.attach.image && this.props.attach.image.metadata && this.props.attach.image.metadata.imageHeight && this.props.attach.image.metadata.imageWidth) {
+            let w = this.props.attach.image.metadata.imageWidth;
+            let h = this.props.attach.image.metadata.imageHeight;
+
+            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { ...event, path: this.state.downloadState.path });
+        }
+    }
+
     render() {
         let out = this.props.message.isOut;
         let link = this.props.attach!.titleLink || '';
@@ -81,7 +90,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
         let maxWidth = (imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming);
         return (
 
-            <ASFlex onPress={resolveInternalLink(link, async () => await Linking.openURL(link))} flexDirection={'column'} >
+            <ASFlex flexDirection={'column'} >
                 {!!this.props.attach.titleLinkHostname && imgCompact && <ASText
                     maxWidth={maxWidth}
                     color={out ? '#fff' : '#000'}
@@ -96,6 +105,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                 {!imgCompact && this.props.attach.image && imgLayout && (
                     <ASFlex>
                         <ASImage
+                            onPress={this.onMediaPress}
                             marginTop={-5}
                             marginLeft={-contentInsetsHorizontal}
                             marginRight={-contentInsetsHorizontal}
@@ -136,25 +146,13 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                     {imgCompact && (this.props.attach.image) && imgLayout && (
                         <ASFlex>
                             <ASImage
+                                onPress={this.onMediaPress}
                                 source={imageSource}
                                 width={imgLayout!.width}
                                 height={imgLayout!.height}
                                 borderRadius={10}
-                                marginRight={10}
+                                marginRight={9}
                             />
-                            {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
-                                <ASFlex
-                                    overlay={true}
-                                    width={imgLayout.width}
-                                    height={imgLayout.height}
-                                    justifyContent="center"
-                                    alignItems="center"
-                                >
-                                    <ASFlex backgroundColor="#0008" borderRadius={20}>
-                                        <ASText color="#fff" opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
-                                    </ASFlex>
-                                </ASFlex>
-                            }
                         </ASFlex>
                     )}
 
@@ -218,7 +216,8 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                                 alignItems="center"
                                 justifyContent="center"
                                 height={30}
-                                width={(maxWidth - (line.length - 1) * 8) / line.length}
+                                flexBasis={1}
+                                flexGrow={1}
                                 onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}
 
                             >

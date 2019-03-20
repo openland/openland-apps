@@ -19,7 +19,7 @@ interface DocumentContentProps {
     message: DataSourceMessageItem;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
     onUserPress: (id: string) => void;
-    onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     padded?: boolean;
 }

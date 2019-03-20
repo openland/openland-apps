@@ -12,7 +12,7 @@ import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'op
 interface TextContentProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
-    onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     padded?: boolean;
     fontStyle?: 'italic' | 'normal';

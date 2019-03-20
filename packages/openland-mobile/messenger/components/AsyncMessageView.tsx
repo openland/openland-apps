@@ -20,7 +20,7 @@ export interface AsyncMessageViewProps {
     onMessageLongPress: (message: DataSourceMessageItem) => void;
     onAvatarPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     navigationManager: NavigationManager;
 }
 

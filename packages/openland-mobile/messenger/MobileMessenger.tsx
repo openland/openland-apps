@@ -56,12 +56,11 @@ export class MobileMessenger {
         return this.conversations.get(id)!!;
     }
 
-    private handleMediaClick = (document: DataSourceMessageItem, event: { path: string } & ASPressEvent) => {
-        let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+    private handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => {
         showPictureModal({
             url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
-            width: attach.fileMetadata.imageWidth!,
-            height: attach.fileMetadata.imageHeight!,
+            width: fileMeta.imageWidth,
+            height: fileMeta.imageHeight,
             isGif: false,
             animate: {
                 x: event.x,
