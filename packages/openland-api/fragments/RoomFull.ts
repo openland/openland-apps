@@ -48,6 +48,7 @@ export const RoomFull = gql`
                 sender {
                     user {
                         id
+                        name
                     }
                 }
                 message

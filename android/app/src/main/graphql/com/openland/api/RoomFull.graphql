@@ -103,6 +103,7 @@ fragment RoomFull on Room {
         user {
           __typename
           id
+          name
         }
       }
     }

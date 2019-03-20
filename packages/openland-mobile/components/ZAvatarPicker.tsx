@@ -14,6 +14,13 @@ interface AvatarImageRef {
     crop?: { x: number, y: number, w: number, h: number } | null;
 }
 
+export interface ZAvatarPickerRenderProps {
+    url?: string;
+    file?: string;
+    loading: boolean;
+    showPicker: () => void;
+}
+
 export interface ZAvatarPickerProps {
     size?: number;
     initialUrl?: string
@@ -21,7 +28,7 @@ export interface ZAvatarPickerProps {
     valueStoreKey?: string;
     value?: AvatarImageRef | null;
     onChanged?: (value: AvatarImageRef | null) => void;
-    render?: React.ComponentType<{ url?: string, file?: string, loading: boolean, showPicker: () => void }>;
+    render?: React.ComponentType<ZAvatarPickerRenderProps>;
 }
 
 class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { store?: XStoreState }, { loading: boolean, localPath?: string }> {
@@ -139,7 +146,7 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
 
         valueUrl = this.props.initialUrl;
 
-        if (value) {
+        if (value && typeof value.uuid === 'string') {
             if (value.uuid.startsWith('https://ucarecdn.com/')) {
                 valueUrl = value.uuid;
             } else {

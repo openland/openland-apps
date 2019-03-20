@@ -14,7 +14,7 @@ import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-mobile/utils/useClient';
-import { ActionSheet } from 'openland-mobile/components/ActionSheet';
+import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -93,21 +93,19 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
         );
     }, [room.members]);
 
-    // const editTheme = React.useCallback(() => {
-    //     changeThemeModal(room.id);
-    // }, [room.id])
+    let handleManageClick = React.useCallback(() => {
+        let builder = new ActionSheetBuilder();
 
-    let canEditInfo = false;
-
-    if (room.kind === SharedRoomKind.GROUP) {
-        canEditInfo = true;
-    }
-
-    if (room.kind === SharedRoomKind.PUBLIC) {
-        if (room.role === RoomMemberRole.OWNER || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
-            canEditInfo = true;
+        if (room.canEdit) {
+            builder.action('Edit', () => props.router.push('EditGroup', { id: room.id }));
         }
-    }
+
+        if (room.role === 'OWNER' || room.role === 'ADMIN') {
+            builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }));
+        }
+
+        builder.show();
+    }, []);
 
     // Sort members by name (admins should go first)
     const sortedMembers = room.members
@@ -118,12 +116,8 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
 
     return (
         <>
-            {canEditInfo && (
-                <SHeaderButton
-                    title="Edit"
-                    onPress={() => props.router.push('EditGroup', { id: props.router.params.id })}
-                />
-            )}
+            {room.canEdit && <SHeaderButton title="Manage" icon={require('assets/ic-more-24.png')} onPress={handleManageClick} />}
+
             <ZListItemHeader
                 titleIcon={room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
                 titleColor={room.kind === 'GROUP' ? '#129f25' : undefined}

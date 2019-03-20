@@ -5323,6 +5323,7 @@ export interface Room_room_SharedRoom_settings {
 export interface Room_room_SharedRoom_welcomeMessage_sender_user {
   __typename: "User";
   id: string;
+  name: string;
 }
 
 export interface Room_room_SharedRoom_welcomeMessage_sender {
@@ -6944,6 +6945,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_settings {
 export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender_user {
   __typename: "User";
   id: string;
+  name: string;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender {
@@ -7230,6 +7232,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_set
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender_user {
   __typename: "User";
   id: string;
+  name: string;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender {
@@ -7513,6 +7516,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_settings {
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender_user {
   __typename: "User";
   id: string;
+  name: string;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender {
@@ -7799,6 +7803,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_settings {
 export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender_user {
   __typename: "User";
   id: string;
+  name: string;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender {
@@ -8082,6 +8087,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_settings {
 export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender_user {
   __typename: "User";
   id: string;
+  name: string;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender {
@@ -8352,6 +8358,7 @@ export interface RoomSearch_items_edges_node_settings {
 export interface RoomSearch_items_edges_node_welcomeMessage_sender_user {
   __typename: "User";
   id: string;
+  name: string;
 }
 
 export interface RoomSearch_items_edges_node_welcomeMessage_sender {
@@ -8806,6 +8813,7 @@ export interface RoomJoin_join_SharedRoom_settings {
 export interface RoomJoin_join_SharedRoom_welcomeMessage_sender_user {
   __typename: "User";
   id: string;
+  name: string;
 }
 
 export interface RoomJoin_join_SharedRoom_welcomeMessage_sender {
@@ -9108,6 +9116,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_settings {
 export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender_user {
   __typename: "User";
   id: string;
+  name: string;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender {
@@ -13824,6 +13833,7 @@ export interface RoomFull_SharedRoom_settings {
 export interface RoomFull_SharedRoom_welcomeMessage_sender_user {
   __typename: "User";
   id: string;
+  name: string;
 }
 
 export interface RoomFull_SharedRoom_welcomeMessage_sender {

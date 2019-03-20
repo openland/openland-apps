@@ -22,7 +22,7 @@ interface UserMultiplePickerComponentState {
     searchHeight: number;
 }
 
-class CheckListBoxWraper extends React.PureComponent<{ checked?: boolean }> {
+export class CheckListBoxWraper extends React.PureComponent<{ checked?: boolean }> {
     render() {
         return (
             <View flexDirection="row">
