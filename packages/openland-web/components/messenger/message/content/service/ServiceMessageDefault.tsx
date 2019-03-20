@@ -152,6 +152,16 @@ const LinkText = css`
     }
 `;
 
+const SpansMessageText = ({ text }: { text: string }) => {
+    return (
+        <>
+            {emoji({
+                src: text,
+                size: 16,
+            })}
+        </>
+    );
+};
 export const SpansMessage = ({
     message,
     spans,
@@ -174,7 +184,7 @@ export const SpansMessage = ({
         for (let span of sortedSpans) {
             if (lastOffset < span.offset) {
                 res.push(
-                    <SpansMessageTextPreprocess
+                    <SpansMessageText
                         key={'text-' + i}
                         text={message.slice(lastOffset, span.offset)}
                     />,
@@ -260,7 +270,7 @@ export const SpansMessage = ({
 
         if (lastOffset < message.length) {
             res.push(
-                <SpansMessageTextPreprocess
+                <SpansMessageText
                     key={'text-' + i}
                     text={message.slice(lastOffset, message.length)}
                 />,
