@@ -45,7 +45,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
     let group = getClient().useRoom({ id: props.router.params.id }).room;
 
     const [ welcomeMessageEnabled, setWelcomeMessageEnabled ] = React.useState((group && group.__typename === 'SharedRoom' && group.welcomeMessage) ? group.welcomeMessage.isOn : false);
-    const [ welcomeMessageSender, setWelcomeMessageSender ] = React.useState((group && group.__typename === 'SharedRoom' && group.welcomeMessage && group.welcomeMessage.sender) ? group.welcomeMessage.sender.user : undefined);
+    const [ welcomeMessageSender, setWelcomeMessageSender ] = React.useState((group && group.__typename === 'SharedRoom' && group.welcomeMessage && group.welcomeMessage.sender) ? group.welcomeMessage.sender : undefined);
 
     if (group && group.__typename === 'SharedRoom') {
         let currentSocialImage = group.socialImage;

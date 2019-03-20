@@ -70,7 +70,7 @@ export const AdvancedSettingsModal = withUpdateWelcomeMessage(withAlterChat(prop
                     welcomeMessageIsOn: typedProps.welcomeMessage.isOn ? 'true' : 'false',
                     welcomeMessageText: typedProps.welcomeMessage.message,
                     welcomeMessageSender: typedProps.welcomeMessage.sender
-                        ? typedProps.welcomeMessage.sender.user.id
+                        ? typedProps.welcomeMessage.sender.id
                         : null,
                     socialImageRef: typedProps.socialImage
                         ? { uuid: typedProps.socialImage }

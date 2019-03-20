@@ -106,11 +106,8 @@ fragment RoomFull on Room {
       message
       sender {
         __typename
-        user {
-          __typename
-          id
-          name
-        }
+        id
+        name
       }
     }
   }

@@ -7826,15 +7826,10 @@ export interface Room_room_SharedRoom_settings {
   mute: boolean | null;
 }
 
-export interface Room_room_SharedRoom_welcomeMessage_sender_user {
+export interface Room_room_SharedRoom_welcomeMessage_sender {
   __typename: "User";
   id: string;
   name: string;
-}
-
-export interface Room_room_SharedRoom_welcomeMessage_sender {
-  __typename: "RoomMember";
-  user: Room_room_SharedRoom_welcomeMessage_sender_user;
 }
 
 export interface Room_room_SharedRoom_welcomeMessage {
@@ -10168,15 +10163,10 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_settings {
   mute: boolean | null;
 }
 
-export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender_user {
+export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender {
   __typename: "User";
   id: string;
   name: string;
-}
-
-export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender {
-  __typename: "RoomMember";
-  user: RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage_sender_user;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage {
@@ -10511,15 +10501,10 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_set
   mute: boolean | null;
 }
 
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender_user {
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender {
   __typename: "User";
   id: string;
   name: string;
-}
-
-export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender {
-  __typename: "RoomMember";
-  user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage_sender_user;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage {
@@ -10851,15 +10836,10 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_settings {
   mute: boolean | null;
 }
 
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender_user {
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender {
   __typename: "User";
   id: string;
   name: string;
-}
-
-export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender {
-  __typename: "RoomMember";
-  user: RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage_sender_user;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage {
@@ -11194,15 +11174,10 @@ export interface RoomKick_betaRoomKick_SharedRoom_settings {
   mute: boolean | null;
 }
 
-export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender_user {
+export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender {
   __typename: "User";
   id: string;
   name: string;
-}
-
-export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender {
-  __typename: "RoomMember";
-  user: RoomKick_betaRoomKick_SharedRoom_welcomeMessage_sender_user;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_welcomeMessage {
@@ -11534,15 +11509,10 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_settings {
   mute: boolean | null;
 }
 
-export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender_user {
+export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender {
   __typename: "User";
   id: string;
   name: string;
-}
-
-export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender {
-  __typename: "RoomMember";
-  user: RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage_sender_user;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage {
@@ -11861,15 +11831,10 @@ export interface RoomSearch_items_edges_node_settings {
   mute: boolean | null;
 }
 
-export interface RoomSearch_items_edges_node_welcomeMessage_sender_user {
+export interface RoomSearch_items_edges_node_welcomeMessage_sender {
   __typename: "User";
   id: string;
   name: string;
-}
-
-export interface RoomSearch_items_edges_node_welcomeMessage_sender {
-  __typename: "RoomMember";
-  user: RoomSearch_items_edges_node_welcomeMessage_sender_user;
 }
 
 export interface RoomSearch_items_edges_node_welcomeMessage {
@@ -12372,15 +12337,10 @@ export interface RoomJoin_join_SharedRoom_settings {
   mute: boolean | null;
 }
 
-export interface RoomJoin_join_SharedRoom_welcomeMessage_sender_user {
+export interface RoomJoin_join_SharedRoom_welcomeMessage_sender {
   __typename: "User";
   id: string;
   name: string;
-}
-
-export interface RoomJoin_join_SharedRoom_welcomeMessage_sender {
-  __typename: "RoomMember";
-  user: RoomJoin_join_SharedRoom_welcomeMessage_sender_user;
 }
 
 export interface RoomJoin_join_SharedRoom_welcomeMessage {
@@ -12731,15 +12691,10 @@ export interface RoomJoinInviteLink_join_SharedRoom_settings {
   mute: boolean | null;
 }
 
-export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender_user {
+export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender {
   __typename: "User";
   id: string;
   name: string;
-}
-
-export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender {
-  __typename: "RoomMember";
-  user: RoomJoinInviteLink_join_SharedRoom_welcomeMessage_sender_user;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_welcomeMessage {
@@ -18564,15 +18519,10 @@ export interface RoomFull_SharedRoom_settings {
   mute: boolean | null;
 }
 
-export interface RoomFull_SharedRoom_welcomeMessage_sender_user {
+export interface RoomFull_SharedRoom_welcomeMessage_sender {
   __typename: "User";
   id: string;
   name: string;
-}
-
-export interface RoomFull_SharedRoom_welcomeMessage_sender {
-  __typename: "RoomMember";
-  user: RoomFull_SharedRoom_welcomeMessage_sender_user;
 }
 
 export interface RoomFull_SharedRoom_welcomeMessage {
