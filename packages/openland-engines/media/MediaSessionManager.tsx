@@ -131,8 +131,7 @@ export class MediaSessionManager {
             });
 
         // Load media streams
-        let subscription = this.client.client.subscribe(ConferenceMediaWatchSubscription, 
-            { peerId: this.peerId, id: this.conferenceId });
+        let subscription = this.client.subscribeConferenceMediaWatch({ peerId: this.peerId, id: this.conferenceId });
 
         (async () => {
             while (!this.destroyed) {

@@ -38,8 +38,8 @@ export const DialogsQuery = gql`
 `;
 
 export const ChatWatchSubscription = gql`
-    subscription ChatWatch($chatId: ID!, $fromState: String) {
-        event: chatUpdates(chatId: $chatId, fromState: $fromState) {
+    subscription ChatWatch($chatId: ID!, $state: String) {
+        event: chatUpdates(chatId: $chatId, fromState: $state) {
             ... on ChatUpdateSingle {
                 seq
                 state
@@ -195,6 +195,18 @@ export const RoomSuperQuery = gql`
             featured
             listed
         }
+    }
+`;
+
+export const PinMessageMutation = gql`
+    mutation PinMessage($chatId: ID!, $messageId: ID!) {
+        pinMessage(chatId: $chatId, messageId: $messageId)
+    }
+`;
+
+export const UnpinMessageMutation = gql`
+    mutation UnpinMessage($chatId: ID!) {
+        unpinMessage(chatId: $chatId)
     }
 `;
 

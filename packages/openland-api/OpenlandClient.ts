@@ -1,6 +1,6 @@
 import * as Source from './index';
 import * as Types from './Types'
-import { GraphqlClient } from 'openland-graphql/GraphqlClient'
+import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient'
 export class OpenlandClient {
     readonly client: GraphqlClient;
     constructor(client: GraphqlClient) {
@@ -630,6 +630,12 @@ export class OpenlandClient {
     async mutateAddAppToChat(variables: Types.AddAppToChatVariables): Promise<Types.AddAppToChat> {
         return this.client.mutate(Source.AddAppToChatMutation, variables);
     }
+    async mutatePinMessage(variables: Types.PinMessageVariables): Promise<Types.PinMessage> {
+        return this.client.mutate(Source.PinMessageMutation, variables);
+    }
+    async mutateUnpinMessage(variables: Types.UnpinMessageVariables): Promise<Types.UnpinMessage> {
+        return this.client.mutate(Source.UnpinMessageMutation, variables);
+    }
     async mutateMessageSetReaction(variables: Types.MessageSetReactionVariables): Promise<Types.MessageSetReaction> {
         return this.client.mutate(Source.MessageSetReactionMutation, variables);
     }
@@ -848,5 +854,26 @@ export class OpenlandClient {
     }
     async mutatePersistEvents(variables: Types.PersistEventsVariables): Promise<Types.PersistEvents> {
         return this.client.mutate(Source.PersistEventsMutation, variables);
+    }
+    subscribeSettingsWatch(): GraphqlActiveSubscription<Types.SettingsWatch, {}> {
+        return this.client.subscribe(Source.SettingsWatchSubscription);
+    }
+    subscribeChatWatch(variables: Types.ChatWatchVariables): GraphqlActiveSubscription<Types.ChatWatch, Types.ChatWatchVariables> {
+        return this.client.subscribe(Source.ChatWatchSubscription, variables);
+    }
+    subscribeDialogsWatch(variables: Types.DialogsWatchVariables): GraphqlActiveSubscription<Types.DialogsWatch, Types.DialogsWatchVariables> {
+        return this.client.subscribe(Source.DialogsWatchSubscription, variables);
+    }
+    subscribeTypingsWatch(): GraphqlActiveSubscription<Types.TypingsWatch, {}> {
+        return this.client.subscribe(Source.TypingsWatchSubscription);
+    }
+    subscribeConferenceMediaWatch(variables: Types.ConferenceMediaWatchVariables): GraphqlActiveSubscription<Types.ConferenceMediaWatch, Types.ConferenceMediaWatchVariables> {
+        return this.client.subscribe(Source.ConferenceMediaWatchSubscription, variables);
+    }
+    subscribeConferenceWatch(variables: Types.ConferenceWatchVariables): GraphqlActiveSubscription<Types.ConferenceWatch, Types.ConferenceWatchVariables> {
+        return this.client.subscribe(Source.ConferenceWatchSubscription, variables);
+    }
+    subscribeOnlineWatch(variables: Types.OnlineWatchVariables): GraphqlActiveSubscription<Types.OnlineWatch, Types.OnlineWatchVariables> {
+        return this.client.subscribe(Source.OnlineWatchSubscription, variables);
     }
 }

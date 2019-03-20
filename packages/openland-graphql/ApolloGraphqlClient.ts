@@ -153,7 +153,7 @@ export class ApolloGraphqlClient implements GraphqlClient {
         });
         return {
             get: async () => {
-                let d = await queue.get();
+                let d = (await queue.get()).value;
                 if (d.errors && d.errors.length > 0) {
                     throw d.errors;
                 } else {
@@ -269,6 +269,10 @@ export class ApolloGraphqlClient implements GraphqlClient {
             }
         }
         return false;
+    }
+
+    async writeQuery<TQuery, TVars>(data: TQuery, query: GraphqlQuery<TQuery, TVars>, vars?: TVars) {
+        this.client.client.writeQuery<TQuery>({ query: query.document, variables: vars, data: data });
     }
 
     async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {

@@ -40,10 +40,10 @@ export class GlobalStateEngine {
         this.engine.dialogList.handleInitialDialogs((res as any).dialogs.items, (res as any).dialogs.cursor);
 
         // Starting Sequence Watcher
-        this.watcher = new SequenceModernWatcher('global', DialogsWatchSubscription, this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, (res as any).state.state);
+        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state: (res as any).state.state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, (res as any).state.state);
 
         // Subscribe for settings update
-        let settingsSubscription = this.engine.client.client.subscribe(SettingsWatchSubscription);
+        let settingsSubscription = this.engine.client.subscribeSettingsWatch();
         (async () => {
             while (true) {
                 await settingsSubscription.get();

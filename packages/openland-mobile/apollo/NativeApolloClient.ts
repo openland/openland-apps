@@ -110,7 +110,7 @@ export class NativeApolloClient implements GraphqlClient {
         return this.client.getOperation(id);
     }
 
-    async writeQuery<TQuery, TVars>(data: any, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
+    async writeQuery<TQuery, TVars>(data: any, query: GraphqlQuery<TQuery, TVars>, vars?: TVars) {
         let id = this.client.registerWriteQuery(data, query, vars);
         return this.client.getOperation(id);
     }

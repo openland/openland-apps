@@ -1,0 +1,3 @@
+mutation UnpinMessage($chatId: ID!) {
+  unpinMessage(chatId: $chatId)
+}

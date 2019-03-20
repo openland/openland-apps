@@ -1,5 +1,5 @@
-subscription ChatWatch($chatId: ID!, $fromState: String) {
-  event: chatUpdates(chatId: $chatId, fromState: $fromState) {
+subscription ChatWatch($chatId: ID!, $state: String) {
+  event: chatUpdates(chatId: $chatId, fromState: $state) {
     __typename
     ... on ChatUpdateSingle {
       seq

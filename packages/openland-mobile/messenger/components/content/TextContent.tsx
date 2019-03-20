@@ -11,7 +11,6 @@ import { isEmoji } from 'openland-y-utils/isEmoji';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 interface TextContentProps {
     message: DataSourceMessageItem;
-    attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
     onUserPress: (id: string) => void;
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
@@ -54,7 +53,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                     fontStyle={this.props.fontStyle}
                 >
                     {parts}
-                    {this.props.padded !== false && !this.props.attach ? (message.isOut ? paddedTextOut : paddedText) : undefined}
+                    {this.props.padded !== false ? (message.isOut ? paddedTextOut : paddedText) : undefined}
                 </ASText>}
             </>
         )
