@@ -250,7 +250,7 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                 flexDirection="row"
                 justifyContent="space-between"
             >
-                <XView alignItems="center" flexDirection="row" maxWidth="100%">
+                <XView alignItems="center" flexDirection="row" maxWidth="100%" flexGrow={1}>
                     <XView
                         backgroundColor="#E4F0FB"
                         width={36}
