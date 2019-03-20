@@ -143,7 +143,13 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const state = React.useContext(MessagesStateContext);
 
     if (state.useForwardHeader) {
-        return <ChatForwardHeaderView roomId={room.id} me={me} />;
+        return (
+            <ChatForwardHeaderView
+                roomId={room.id}
+                me={me}
+                privateRoom={room.__typename === 'PrivateRoom'}
+            />
+        );
     }
 
     let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;

@@ -60,7 +60,11 @@ const DeleteMessagesFrom = withDeleteMessages(props => (
     onDelete: () => void;
 }>;
 
-export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) => {
+export const ChatForwardHeaderView = (props: {
+    me: UserShort;
+    roomId: string;
+    privateRoom: boolean;
+}) => {
     const state = React.useContext(MessagesStateContext);
     const { forwardMessagesId, resetAll } = state;
     if (forwardMessagesId && forwardMessagesId.size) {
@@ -103,7 +107,8 @@ export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) 
                             />
                         )}
                     </XWithRole>
-                    {state.selectedMessages.size === 1 &&
+                    {!props.privateRoom &&
+                        state.selectedMessages.size === 1 &&
                         !Array.from(state.selectedMessages)[0].isService && (
                             <PinMessageButton
                                 variables={{
