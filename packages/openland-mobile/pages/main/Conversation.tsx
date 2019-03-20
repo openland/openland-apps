@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text, AsyncStorage, Platform, TouchableOpacity, Image, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
+import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -11,16 +11,12 @@ import { SHeaderView } from 'react-native-s/SHeaderView';
 import { ChatHeader } from './components/ChatHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
-import { ZRoundedButton } from '../../components/ZRoundedButton';
-import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members_user, UserShort } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -30,9 +26,9 @@ import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { showCallModal } from './Call';
 import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -273,17 +269,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 </View>
             </TouchableOpacity>
         );
-        // if (Platform.OS === 'ios') {
-        //     header = <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />;
-        // }
-        // let button = null;
-        // if (Platform.OS === 'ios') {
-        //     button = (
-        //         <SHeaderButton>
-        //             <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
-        //         </SHeaderButton>
-        //     );
-        // }
 
         let mentions = null;
         let activeWord = findActiveWord(this.state.text, this.state.selection);
@@ -307,7 +292,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     icon={require('assets/ic-call-20.png')}
                     onPress={async () => { showCallModal(this.props.chat.id); }}
                 />
-                {/* {button} */}
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
@@ -332,96 +316,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 }
 
 const ConversationComponent = XMemo<PageProps>((props) => {
-    let theme = React.useContext(ThemeContext);
     let messenger = getMessenger();
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id });
     let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as Room_room_PrivateRoom : null;
-    let invite = props.router.params.invite;
-
-    if (sharedRoom && sharedRoom.membership !== 'MEMBER' && sharedRoom.kind !== 'INTERNAL') {
-        // not a member - show preview with join/request access button
-        if (sharedRoom.kind === 'PUBLIC' || invite) {
-            return (
-                <View flexDirection={'column'} height="100%" width="100%">
-                    <SHeaderView>
-                        <ChatHeader conversationId={sharedRoom.id} router={props.router} />
-                    </SHeaderView>
-                    {/* <ASView
-                        style={{ position: 'absolute', zIndex: -1, left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-                    >
-                        <ASFlex
-                            width={Dimensions.get('window').width}
-                            height={Dimensions.get('window').height}
-                        >
-                            <ASImage
-                                source={require('assets/img-chat-3.jpg')}
-                                width={Dimensions.get('window').width}
-                                height={Dimensions.get('window').height}
-                            />
-                        </ASFlex>
-                    </ASView> */}
-                    <ASSafeAreaView width="100%" height="100%" justifyContent="center" >
-
-                        <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
-                            <ZAvatar
-                                src={sharedRoom.photo}
-                                size={100}
-                                placeholderKey={sharedRoom.id}
-                                placeholderTitle={sharedRoom.title}
-
-                            />
-                            <View flexDirection="column" zIndex={- 1}>
-                                {/* <Image source={require('assets/back.png')} resizeMode="stretch" style={{ position: 'absolute', width: '250%', height: '300%', top: '-75%', left: '-75%' }} /> */}
-                                <Text style={{ fontSize: 20, fontWeight: '500', color: theme.textColor, textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
-                                <Text style={{ fontSize: 15, color: theme.textLabelColor, textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
-                                <Text style={{ fontSize: 14, color: theme.textLabelColor, textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{sharedRoom.membersCount + ' members'}</Text>
-                            </View>
-                        </View>
-                        <View alignSelf="center" marginBottom={46}>
-                            {!invite &&
-                                <ZRoundedButton
-                                    size="big"
-                                    uppercase={false}
-                                    title={sharedRoom!.membership === 'REQUESTED' ? 'Join requested' : 'Join'}
-                                    onPress={async () => {
-                                        startLoader();
-                                        try {
-                                            await getClient().mutateRoomJoin({ roomId: sharedRoom!.id });
-                                        } catch (e) {
-                                            Alert.alert(e.message);
-                                        }
-                                        stopLoader();
-
-                                    }}
-                                />}
-                            {invite &&
-                                <ZRoundedButton
-                                    size="big"
-                                    uppercase={false}
-                                    title={'Accept invitation'}
-                                    onPress={async () => {
-                                        startLoader();
-                                        try {
-                                            let client = getClient();
-                                            await client.mutateRoomJoinInviteLink({ invite });
-                                        } catch (e) {
-                                            Alert.alert(e.message);
-                                        }
-                                        stopLoader();
-
-                                    }}
-                                />
-                            }
-                        </View>
-
-                    </ASSafeAreaView>
-                </View>
-            );
-        } else {
-            return null;
-        }
-    }
 
     return (
         <View flexDirection={'column'} height="100%" width="100%">

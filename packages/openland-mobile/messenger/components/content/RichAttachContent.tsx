@@ -27,7 +27,7 @@ interface UrlAugmentationContentProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
-export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationContentProps, { downloadState?: DownloadState }> {
+export class RichAttachContent extends React.PureComponent<UrlAugmentationContentProps, { downloadState?: DownloadState }> {
     private augLayout?: { width: number, height: number };
     private downloadManagerWatch?: WatchSubscription;
     private imageCompact = false;
@@ -90,7 +90,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
         let maxWidth = (imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming);
         return (
 
-            <ASFlex flexDirection={'column'} >
+            <ASFlex flexDirection="column" alignItems="stretch" alignSelf={'stretch'}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && <ASText
                     maxWidth={maxWidth}
                     color={out ? '#fff' : '#000'}
@@ -143,7 +143,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                 </ASText>}
 
                 <ASFlex flexDirection="row" marginTop={5}>
-                    {imgCompact && (this.props.attach.image) && imgLayout && (
+                    {imgCompact && imgLayout && (
                         <ASFlex>
                             <ASImage
                                 onPress={this.onMediaPress}
@@ -164,10 +164,9 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                         {!!this.props.attach.title && <ASText
                             maxWidth={maxWidth}
                             color={mainTextColor}
-                            lineHeight={20}
                             letterSpacing={-0.3}
                             fontSize={14}
-                            marginTop={-3}
+                            marginTop={Platform.OS === 'android' ? -4 : undefined}
                             numberOfLines={subTitle && imgCompact ? 1 : 2}
                             marginBottom={4}
                             fontWeight={TextStyles.weight.medium}
@@ -176,6 +175,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                             {/* {!this.props.attach.subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)} */}
                         </ASText>}
                         {!!subTitle && <ASText
+                            marginTop={Platform.OS === 'android' ? -4 : undefined}
                             maxWidth={maxWidth - 36}
                             color={out ? '#fff' : '#000'}
                             opacity={out ? 0.7 : 0.6}
@@ -192,7 +192,6 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                 </ASFlex>
 
                 {!!text && <ASText
-                    marginTop={4}
                     maxWidth={maxWidth}
                     color={out ? '#fff' : '#000'}
                     fontSize={14}
@@ -204,11 +203,11 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                 </ASText>}
 
                 {!!keyboard && keyboard.buttons.map((line, i) =>
-                    <ASFlex key={i + ''} flexDirection="row" width={maxWidth} marginTop={4} marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
+                    <ASFlex key={i + ''} flexDirection="row" marginTop={4} alignSelf="stretch" width={Platform.OS === 'ios' ? maxWidth : undefined} marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
                         {!!line && line.map((button, j) =>
                             <ASFlex
                                 marginTop={i !== 0 ? 4 : 0}
-                                key={button.id}
+                                key={'button-' + i + '-' + j}
                                 backgroundColor='#fff'
                                 borderRadius={8}
                                 marginLeft={j > 0 ? 4 : 0}
@@ -216,7 +215,7 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
                                 alignItems="center"
                                 justifyContent="center"
                                 height={30}
-                                flexBasis={1}
+                                // flexBasis={1}
                                 flexGrow={1}
                                 onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}
 

@@ -994,6 +994,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -1076,7 +1077,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -1207,6 +1207,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -1350,6 +1351,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -1606,6 +1608,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -1831,6 +1834,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -1913,7 +1917,6 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -2044,6 +2047,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -2187,6 +2191,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -2443,6 +2448,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -2693,6 +2699,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -2775,7 +2782,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -2906,6 +2912,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -3049,6 +3056,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -3305,6 +3313,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -3530,6 +3539,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -3612,7 +3622,6 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -3743,6 +3752,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -3886,6 +3896,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -4142,6 +4153,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -5456,6 +5468,7 @@ export interface RoomTiny_room_SharedRoom {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: RoomTiny_room_SharedRoom_organization | null;
 }
@@ -5817,6 +5830,7 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMentio
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -5899,7 +5913,6 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAtta
 
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -6030,6 +6043,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -6173,6 +6187,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -6429,6 +6444,7 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMentio
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -9062,6 +9078,7 @@ export interface RoomInviteInfo_invite_invitedByUser {
 
 export interface RoomInviteInfo_invite {
   __typename: "RoomInvite";
+  id: string;
   room: RoomInviteInfo_invite_room;
   invitedByUser: RoomInviteInfo_invite_invitedByUser;
 }
@@ -10412,6 +10429,7 @@ export interface Organization_organization_rooms {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: Organization_organization_rooms_organization | null;
 }
@@ -10777,6 +10795,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_organization | null;
 }
@@ -12029,6 +12048,7 @@ export interface ResolveShortName_item_Organization_rooms {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ResolveShortName_item_Organization_rooms_organization | null;
 }
@@ -12378,7 +12398,6 @@ export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_im
 
 export interface FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -12509,6 +12528,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -12652,6 +12672,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -12864,6 +12885,7 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_Sh
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -13011,6 +13033,7 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_Sh
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -13220,6 +13243,7 @@ export interface OrganizationFull_rooms {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: OrganizationFull_rooms_organization | null;
 }
@@ -13694,6 +13718,7 @@ export interface RoomShort_SharedRoom {
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: RoomShort_SharedRoom_organization | null;
 }
@@ -13947,6 +13972,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -14029,7 +14055,6 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_a
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -14160,6 +14185,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -14303,6 +14329,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -14559,6 +14586,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -14784,6 +14812,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -14866,7 +14895,6 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_at
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
-  id: string;
   title: string;
   style: ModernMessageButtonStyle;
   url: string | null;
@@ -14997,6 +15025,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -15140,6 +15169,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }
@@ -15396,6 +15426,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
   membersCount: number | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
 }

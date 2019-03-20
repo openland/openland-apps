@@ -211,5 +211,9 @@
         "name": "ic-attachment",
         "src": "ic-attachment.svg",
         "sizes": [11]
+    }, {
+        "name": "ic-members",
+        "src": "ic-members.svg",
+        "sizes": [16]
     }]
 }

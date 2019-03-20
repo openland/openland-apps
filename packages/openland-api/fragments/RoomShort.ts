@@ -14,6 +14,7 @@ export const RoomShort = gql`
             title
             photo
             membership
+            role
             membersCount
             organization{
                 ...OrganizationShort

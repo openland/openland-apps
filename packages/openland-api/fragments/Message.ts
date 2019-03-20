@@ -89,7 +89,6 @@ export const FullMessage = gql`
                     }
                     keyboard{
                         buttons{
-                            id
                             title
                             style
                             url

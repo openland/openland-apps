@@ -16,7 +16,7 @@ import { Prompt } from '../components/Prompt';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, SharedRoomMembershipStatus, RoomMemberRole } from 'openland-api/Types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
 
@@ -150,6 +150,15 @@ export class MobileMessenger {
             builder.action('Copy', () => {
                 Clipboard.setString(message.text!!);
             });
+        }
+
+        let role = this.engine.getConversation(message.chatId).role;
+        if (role === RoomMemberRole.ADMIN || role === RoomMemberRole.OWNER) {
+            builder.action('Pin', async () => {
+                startLoader();
+                await this.engine.client.mutatePinMessage({ chatId: message.chatId, messageId: message.id! })
+                stopLoader();
+            })
         }
 
         if (message.senderId === this.engine.user.id) {

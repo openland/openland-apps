@@ -17,6 +17,7 @@ fragment RoomShort on Room {
       ...OrganizationShort
     }
     photo
+    role
     title
   }
 }
