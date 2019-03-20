@@ -44,6 +44,7 @@ export const FullMessage = gql`
             attachments{
                 fallback
                 ...on MessageAttachmentFile{
+                    id
                     fileId
                     fileMetadata{
                         name
@@ -126,6 +127,7 @@ export const FullMessage = gql`
                     }
                     ...on MessageSpanLink{
                         url
+                        text
                     }
                 }
 
@@ -213,6 +215,7 @@ export const FullMessage = gql`
             }
             ...on MessageSpanLink{
                 url
+                text
             }
         }
 

@@ -46,32 +46,51 @@ export const RoomFull = gql`
             welcomeMessage {
                 isOn
                 sender {
-                    user {
-                        id
-                    }
+                    id
+                    name
                 }
                 message
             }
             pinnedMessage {
-                ... on GeneralMessage {
+                id
+                date
+                sender {
                     id
-                    message
-                    sender {
+                    name
+                    photo
+                    photoRef {
+                        uuid
+                        crop {
+                            x
+                            y
+                            w
+                            h
+                        }
+                    }
+                    primaryOrganization {
                         id
                         name
-                        photo
                     }
+                }
+                message
+                fallback
+                ... on GeneralMessage {
                     attachments {
-                        ... on MessageAttachmentFile {
-                            id
-                            fileMetadata {
+                        id
+                        fallback
+                        ...on MessageAttachmentFile {
+                            fileId
+                            fileMetadata{
+                                isImage
+                                imageFormat
                                 name
                                 size
-                                isImage
-                                imageWidth
-                                imageHeight
                             }
+                            filePreview
                         }
+                    }
+                    quotedMessages {
+                        id
                     }
                 }
             }

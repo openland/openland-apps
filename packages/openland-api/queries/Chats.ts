@@ -74,6 +74,11 @@ export const ChatWatchSubscription = gql`
                 id
             }
         }
+        ... on ChatUpdated {
+            chat {
+                ...RoomShort
+            }
+        }
         # ... on ConversationLostAccess {
         #    lostAccess
         # }

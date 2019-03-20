@@ -31,8 +31,6 @@ import {
     EditButton,
 } from './OrganizationProfileComponent';
 import {
-    Room_room_SharedRoom_members,
-    Room_room_SharedRoom_organization_adminMembers,
     Room_room_SharedRoom,
     RoomFull_SharedRoom_members,
     RoomFull_SharedRoom_requests,
@@ -56,33 +54,7 @@ import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSetti
 import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
-
-export const getCanChangeAdvancedSettingsMembersUsers = ({
-    chat,
-}: {
-    chat: Room_room_SharedRoom;
-}) => {
-    const res: any[] = [];
-    const addedIds: string[] = [];
-
-    const adminMembers = chat.organization ? chat.organization!!.adminMembers : [];
-
-    adminMembers.forEach((item: Room_room_SharedRoom_organization_adminMembers) => {
-        if (addedIds.indexOf(item.user.id) === -1) {
-            res.push(item.user);
-            addedIds.push(item.user.id);
-        }
-    });
-
-    chat.members.forEach((item: Room_room_SharedRoom_members) => {
-        if (item.role === 'OWNER' && addedIds.indexOf(item.user.id) === -1) {
-            res.push(item.user);
-            addedIds.push(item.user.id);
-        }
-    });
-
-    return res;
-};
+import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -116,7 +88,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
 
     const canEdit = chat.canEdit;
 
-    const canChangeAdvancedSettingsMembersUsers = getCanChangeAdvancedSettingsMembersUsers({
+    const canChangeAdvancedSettingsMembersUsers = getWelcomeMessageSenders({
         chat,
     });
 

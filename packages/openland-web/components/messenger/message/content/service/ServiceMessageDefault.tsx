@@ -126,15 +126,12 @@ const SpansMessageTextPreprocess = ({ text, isEdited }: { text: string; isEdited
 
 const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserShort; text: string; isYou: boolean }) => {
-        const userNameEmojified = React.useMemo(
-            () => {
-                return emoji({
-                    src: text,
-                    size: 16,
-                });
-            },
-            [text],
-        );
+        const userNameEmojified = React.useMemo(() => {
+            return emoji({
+                src: text,
+                size: 16,
+            });
+        }, [text]);
 
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
@@ -165,7 +162,6 @@ const SpansMessageText = ({ text }: { text: string }) => {
         </>
     );
 };
-
 export const SpansMessage = ({
     message,
     spans,
@@ -232,7 +228,7 @@ export const SpansMessage = ({
                             href={span.url}
                             onClick={(e: any) => e.stopPropagation()}
                         >
-                            {span.url}
+                            {span.text ? span.text : span.url}
                         </XView>
                     </span>,
                 );

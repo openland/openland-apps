@@ -36,28 +36,52 @@ fragment RoomFull on Room {
     photo
     pinnedMessage {
       __typename
+      date
+      fallback
+      id
+      message
+      sender {
+        __typename
+        id
+        name
+        photo
+        photoRef {
+          __typename
+          crop {
+            __typename
+            h
+            w
+            x
+            y
+          }
+          uuid
+        }
+        primaryOrganization {
+          __typename
+          id
+          name
+        }
+      }
       ... on GeneralMessage {
         attachments {
           __typename
+          fallback
+          id
           ... on MessageAttachmentFile {
+            fileId
             fileMetadata {
               __typename
-              imageHeight
-              imageWidth
+              imageFormat
               isImage
               name
               size
             }
-            id
+            filePreview
           }
         }
-        id
-        message
-        sender {
+        quotedMessages {
           __typename
           id
-          name
-          photo
         }
       }
     }
@@ -82,10 +106,8 @@ fragment RoomFull on Room {
       message
       sender {
         __typename
-        user {
-          __typename
-          id
-        }
+        id
+        name
       }
     }
   }

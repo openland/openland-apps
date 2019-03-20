@@ -2,7 +2,13 @@ import * as React from 'react';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { MessengerRootComponent } from './MessengerRootComponent';
 import { RoomsInviteComponent } from './RoomsInviteComponent';
-import { Room_room_SharedRoom, Room_room_PrivateRoom, Room, UserShort } from 'openland-api/Types';
+import {
+    Room_room_SharedRoom,
+    Room_room_PrivateRoom,
+    Room,
+    UserShort,
+    Room_room_SharedRoom_pinnedMessage_GeneralMessage,
+} from 'openland-api/Types';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import {
     MessagesStateContext,
@@ -53,6 +59,12 @@ class MessagengerFragmentInner extends React.PureComponent<
             data.room.__typename === 'SharedRoom' ? data.room : null;
         let privateRoom: Room_room_PrivateRoom | null =
             data.room.__typename === 'PrivateRoom' ? data.room : null;
+        let pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null =
+            sharedRoom &&
+            sharedRoom.pinnedMessage &&
+            sharedRoom.pinnedMessage.__typename === 'GeneralMessage'
+                ? sharedRoom.pinnedMessage
+                : null;
 
         if (sharedRoom && sharedRoom.kind !== 'INTERNAL' && sharedRoom.membership !== 'MEMBER') {
             if (sharedRoom.kind === 'PUBLIC') {
@@ -77,7 +89,6 @@ class MessagengerFragmentInner extends React.PureComponent<
                 >
                     {state.useForwardPlaceholder && <ForwardPlaceholder state={state} />}
                     <TalkBarComponent conversationId={data.room.id} />
-
                     <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
                         <MessengerRootComponent
                             onConversationLostAccess={this.onConversationLostAccess}
@@ -96,6 +107,7 @@ class MessagengerFragmentInner extends React.PureComponent<
                                     ? sharedRoom.organization.id
                                     : null
                             }
+                            pinMessage={pinMessage}
                             conversationId={data.room!.id}
                             conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
                         />
@@ -112,7 +124,7 @@ const MessengerComponentLoader = withRoom(withQueryLoader(
     isActive: boolean;
     variables: { id: string };
     state: MessagesStateContextProps;
-    apollo: any;
+    apollo: OpenApolloClient;
 }>;
 
 export const MessengerFragment = ({ id, isActive }: MessengerComponentProps) => {
