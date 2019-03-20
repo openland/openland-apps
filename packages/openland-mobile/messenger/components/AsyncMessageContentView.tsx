@@ -45,9 +45,7 @@ export let renderPreprocessedText = (v: Span, i: number, message: DataSourceMess
     }
 }
 
-export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((props) => {
-    let theme = React.useContext(ThemeContext);
-
+export let extractContent = (props: AsyncMessageTextViewProps) => {
     // todo: handle multiple attaches
     let attaches = (props.message.attachments || []);
     let fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
@@ -95,6 +93,35 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         topContnet = bottomContent;
         bottomContent = [];
     }
+
+    return {
+        hasDocument,
+        hasImage,
+        hasReply,
+        hasText,
+        hasUrlAug,
+        topContnet,
+        bottomContent,
+        imageLayout,
+        imageOnly,
+        richAttachImageLayout
+    }
+}
+
+export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((props) => {
+    let theme = React.useContext(ThemeContext);
+
+    let { hasDocument,
+        hasImage,
+        hasReply,
+        hasText,
+        hasUrlAug,
+        imageOnly,
+        topContnet,
+        imageLayout,
+        richAttachImageLayout,
+        bottomContent
+    } = extractContent(props);
     let width = imageLayout ? imageLayout.width : richAttachImageLayout ? richAttachImageLayout.width : undefined;
     return (
         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>

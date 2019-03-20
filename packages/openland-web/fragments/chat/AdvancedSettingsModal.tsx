@@ -77,7 +77,7 @@ class AdvancedSettingsInner extends React.Component<AdvancedSettingsInnerProps> 
                         welcomeMessageIsOn: props.welcomeMessage.isOn ? 'true' : 'false',
                         welcomeMessageText: props.welcomeMessage.message,
                         welcomeMessageSender: props.welcomeMessage.sender
-                            ? props.welcomeMessage.sender.user.id
+                            ? props.welcomeMessage.sender.id
                             : null,
                         socialImageRef: props.socialImage ? { uuid: props.socialImage } : undefined,
                     },

@@ -5359,7 +5359,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "RoomMember",
+              "name": "User",
               "ofType": null
             },
             "isDeprecated": false,

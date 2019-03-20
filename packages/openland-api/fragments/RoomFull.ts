@@ -46,10 +46,8 @@ export const RoomFull = gql`
             welcomeMessage {
                 isOn
                 sender {
-                    user {
-                        id
-                        name
-                    }
+                    id
+                    name
                 }
                 message
             }
