@@ -15,7 +15,6 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 
 const RoomsList = () => {
-    return null;
     let rooms = getClient().useAvailableRooms().rooms as AvailableRooms_rooms[];
     let featureds = getClient()
         .useRoomSearch({

@@ -303,22 +303,27 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             {sharedRoom && sharedRoom.pinnedMessage && (
                                 <ASSafeAreaContext.Consumer>
                                     {area => (
-                                        <View backgroundColor="#f3f5f7" width="100%" height={56} flexDirection="column" position="absolute" zIndex={1} marginTop={area.top}>
-                                            <View flexDirection="row" marginTop={9} marginLeft={12}>
-                                                <View flexGrow={1} flexDirection="row">
-                                                    <Image style={{ width: 15, height: 15, tintColor: '#1790ff', marginRight: 6 }} source={require('assets/ic-pinned.png')} />
-                                                    <Text numberOfLines={1} style={{ fontSize: 13, color: '#000', marginRight: 8, fontWeight: TextStyles.weight.medium as any }}>{sharedRoom!.pinnedMessage!.sender.name}</Text>
-                                                    {sharedRoom!.pinnedMessage!.sender.primaryOrganization &&
-                                                        <Text numberOfLines={1} style={{ fontSize: 13, color: '#99a2b0', fontWeight: TextStyles.weight.medium as any }}>{sharedRoom!.pinnedMessage!.sender.primaryOrganization!.name}</Text>
-                                                    }
-                                                </View>
-                                                <Image style={{ width: 14, height: 14, marginRight: 10, opacity: 0.25 }} source={require('assets/ic-expand.png')} />
+                                        <View width="100%" height={56} flexDirection="column" zIndex={1} marginTop={area.top}>
+                                            <TouchableOpacity onPress={() => this.props.router.push('PinnedMessage', { id: this.props.chat.id })}>
+                                                <View backgroundColor="#f3f5f7" width="100%" height={56} flexDirection="column" zIndex={1} >
+                                                    <View flexDirection="row" marginTop={9} marginLeft={12}>
+                                                        <View flexGrow={1} flexDirection="row">
+                                                            <Image style={{ width: 15, height: 15, tintColor: '#1790ff', marginRight: 6 }} source={require('assets/ic-pinned.png')} />
+                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: '#000', marginRight: 8, fontWeight: TextStyles.weight.medium as any }}>{sharedRoom!.pinnedMessage!.sender.name}</Text>
+                                                            {sharedRoom!.pinnedMessage!.sender.primaryOrganization &&
+                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: '#99a2b0', fontWeight: TextStyles.weight.medium as any }}>{sharedRoom!.pinnedMessage!.sender.primaryOrganization!.name}</Text>
+                                                            }
+                                                        </View>
+                                                        <Image style={{ width: 14, height: 14, marginRight: 10, opacity: 0.25 }} source={require('assets/ic-expand.png')} />
 
-                                            </View>
-                                            <Text numberOfLines={1} style={{ fontSize: 14, marginRight: 9, fontWeight: TextStyles.weight.regular as any, marginLeft: 12, marginTop: 6 }}>
-                                                {formatMessage(sharedRoom!.pinnedMessage as any)}
-                                            </Text>
+                                                    </View>
+                                                    <Text numberOfLines={1} style={{ fontSize: 14, marginRight: 9, fontWeight: TextStyles.weight.regular as any, marginLeft: 12, marginTop: 6 }}>
+                                                        {formatMessage(sharedRoom!.pinnedMessage as any)}
+                                                    </Text>
+                                                </View>
+                                            </TouchableOpacity>
                                         </View>
+
                                     )}
                                 </ASSafeAreaContext.Consumer>
 

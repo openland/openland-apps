@@ -56,7 +56,7 @@ export class MobileMessenger {
         return this.conversations.get(id)!!;
     }
 
-    private handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => {
+    handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => {
         showPictureModal({
             url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
             width: fileMeta.imageWidth,
@@ -80,16 +80,16 @@ export class MobileMessenger {
         });
     }
 
-    private handleDocumentClick = (document: DataSourceMessageItem) => {
+    handleDocumentClick = (document: DataSourceMessageItem) => {
         let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         // { config: { uuid, name, size }
         this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
     }
 
-    private handleDialogClick = (id: string) => {
+    handleDialogClick = (id: string) => {
         this.history.navigationManager.push('Conversation', { id });
     }
-    private handleAvatarClick = (id: string) => {
+    handleAvatarClick = (id: string) => {
         this.history.navigationManager.push('ProfileUser', { id });
     }
 
