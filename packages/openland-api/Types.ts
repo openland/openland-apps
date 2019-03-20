@@ -1013,6 +1013,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink;
@@ -1627,6 +1628,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink;
@@ -1853,6 +1855,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink;
@@ -2467,6 +2470,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink;
@@ -2718,6 +2722,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink;
@@ -3332,6 +3337,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink;
@@ -3558,6 +3564,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink;
@@ -4172,6 +4179,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink;
@@ -5876,6 +5884,7 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanLink {
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatHistory_messages_GeneralMessage_spans = ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention | ChatHistory_messages_GeneralMessage_spans_MessageSpanLink;
@@ -6490,6 +6499,7 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanLink {
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatHistory_messages_ServiceMessage_spans = ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanLink;
@@ -13147,6 +13157,7 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanLink {
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type FullMessage_GeneralMessage_spans = FullMessage_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention | FullMessage_GeneralMessage_spans_MessageSpanRoomMention | FullMessage_GeneralMessage_spans_MessageSpanLink;
@@ -13295,6 +13306,7 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanLink {
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type FullMessage_ServiceMessage_spans = FullMessage_ServiceMessage_spans_MessageSpanUserMention | FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_ServiceMessage_spans_MessageSpanLink;
@@ -14261,6 +14273,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans = ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanLink;
@@ -14875,6 +14888,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans = ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink;
@@ -15101,6 +15115,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans = ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanLink;
@@ -15715,6 +15730,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   offset: number;
   length: number;
   url: string;
+  text: string | null;
 }
 
 export type ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans = ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink;

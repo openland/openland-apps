@@ -126,15 +126,12 @@ const SpansMessageTextPreprocess = ({ text, isEdited }: { text: string; isEdited
 
 const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserShort; text: string; isYou: boolean }) => {
-        const userNameEmojified = React.useMemo(
-            () => {
-                return emoji({
-                    src: text,
-                    size: 16,
-                });
-            },
-            [text],
-        );
+        const userNameEmojified = React.useMemo(() => {
+            return emoji({
+                src: text,
+                size: 16,
+            });
+        }, [text]);
 
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
@@ -154,17 +151,6 @@ const LinkText = css`
         display: inline;
     }
 `;
-
-const SpansMessageText = ({ text }: { text: string }) => {
-    return (
-        <>
-            {emoji({
-                src: text,
-                size: 16,
-            })}
-        </>
-    );
-};
 
 export const SpansMessage = ({
     message,
@@ -188,7 +174,7 @@ export const SpansMessage = ({
         for (let span of sortedSpans) {
             if (lastOffset < span.offset) {
                 res.push(
-                    <SpansMessageText
+                    <SpansMessageTextPreprocess
                         key={'text-' + i}
                         text={message.slice(lastOffset, span.offset)}
                     />,
@@ -232,7 +218,7 @@ export const SpansMessage = ({
                             href={span.url}
                             onClick={(e: any) => e.stopPropagation()}
                         >
-                            {span.url}
+                            {span.text ? span.text : span.url}
                         </XView>
                     </span>,
                 );
@@ -274,7 +260,7 @@ export const SpansMessage = ({
 
         if (lastOffset < message.length) {
             res.push(
-                <SpansMessageText
+                <SpansMessageTextPreprocess
                     key={'text-' + i}
                     text={message.slice(lastOffset, message.length)}
                 />,
