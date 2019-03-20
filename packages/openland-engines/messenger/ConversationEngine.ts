@@ -18,6 +18,8 @@ export interface ConversationStateHandler {
 
 const CONVERSATION_PAGE_SIZE = 15;
 
+const timeGroup = 1000 * 60 * 60;
+
 export interface DataSourceMessageItem {
     chatId: string;
     type: 'message';
@@ -68,8 +70,8 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         sender: src.sender,
         text: src.message || undefined,
         isSending: false,
-        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && (src.date - next.date < 10000) && ((next.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
-        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && (prev.date - src.date < 10000) && ((prev.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
+        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && (src.date - next.date < timeGroup) && ((next.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
+        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && (prev.date - src.date < timeGroup) && ((prev.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
         reactions: generalMessage && generalMessage.reactions,
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
         isService: !!serviceMessage,
@@ -590,7 +592,7 @@ export class ConversationEngine implements MessageSendHandler {
             if (prev && prev.type === 'message' && prev.senderId === conv.senderId && (!!prev.serviceMetaData === !!conv.serviceMetaData)) {
                 // same sender and prev not service
                 let dateChanged = prev.date && !isSameIntDate(prev.date, conv.date);
-                let prevMessageTooOld = prev.date && (conv.date - prev.date > 10000);
+                let prevMessageTooOld = prev.date && (conv.date - prev.date > timeGroup);
 
                 if (dateChanged) {
                     this.dataSource.addItem(createDateDataSourceItem(new Date(conv.date)), 0);
@@ -652,7 +654,7 @@ export class ConversationEngine implements MessageSendHandler {
             let isService = isServerMessage(message) && message.__typename === 'ServiceMessage';
             if (prevMessageSender === sender.id && prevMessageDate !== undefined && isService === prevMessageIsService) {
                 // 10 sec
-                if ((date - prevMessageDate < 10000) && currentCollapsed < 10) {
+                if ((date - prevMessageDate < timeGroup) && currentCollapsed < 10) {
                     prevMessageDate = date;
                     currentCollapsed++;
                     return currentGroup!!;
