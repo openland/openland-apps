@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform, Linking, Image, PixelRatio } from 'react-native';
 import { DataSourceMessageItem, ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ASText } from 'react-native-async-view/ASText';
-import { AsyncBubbleView, bubbleMaxWidth } from './AsyncBubbleView';
+import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { formatTime } from '../../utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
@@ -14,7 +14,7 @@ import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { ReplyContent } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
 import { Span } from 'openland-mobile/utils/TextProcessor';
-import { UrlAugmentationContent } from './content/UrlAugmentationContent';
+import { RichAttachContent } from './content/RichAttachContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -88,7 +88,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
 
     let bottomContent: any[] = [];
     if (hasUrlAug) {
-        bottomContent.push(<UrlAugmentationContent attach={augmenationAttach!} imageLayout={richAttachImageLayout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        bottomContent.push(<RichAttachContent attach={augmenationAttach!} imageLayout={richAttachImageLayout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
 
     if (!topContnet.length && bottomContent.length) {
@@ -141,13 +141,9 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                 </ASFlex>
 
             </AsyncBubbleView >
-            {!!bottomContent.length && <ASFlex height={3} backgroundColor='white' width={width || bubbleMaxWidth} />}
+            {!!bottomContent.length && <ASFlex height={3} backgroundColor='white' width={width || props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming} />}
             {!!bottomContent.length && <AsyncBubbleView pair={'bottom'} width={width} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
-                <ASFlex
-                    flexDirection="column"
-                >
-                    {bottomContent}
-                </ASFlex>
+                {bottomContent}
             </AsyncBubbleView >}
         </ASFlex>
 
