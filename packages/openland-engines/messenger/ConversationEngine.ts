@@ -562,6 +562,7 @@ export class ConversationEngine implements MessageSendHandler {
                 spans: src.spans,
                 attachments: p.uri ? [{
                     __typename: "MessageAttachmentFile",
+                    id: 'pending_message_attach_file_id',
                     uri: p.uri,
                     fileId: '',
                     fallback: 'Document',
