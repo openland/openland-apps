@@ -16,17 +16,22 @@ export const RoomShort = gql`
             membership
             role
             membersCount
-            pinnedMessage{
+            pinnedMessage {
                 id
                 date
                 sender {
                     id
-                    isYou
                     name
-                    firstName
-                    lastName
-                    picture
-                    shortname
+                    photo
+                    photoRef {
+                        uuid
+                        crop {
+                            x
+                            y
+                            w
+                            h
+                        }
+                    }
                     primaryOrganization {
                         id
                         name
@@ -43,6 +48,8 @@ export const RoomShort = gql`
                             fileMetadata{
                                 isImage
                                 imageFormat
+                                name
+                                size
                             }
                             filePreview
                         }
@@ -52,6 +59,7 @@ export const RoomShort = gql`
                     }
                 }
             }
+
             organization{
                 ...OrganizationShort
             }
