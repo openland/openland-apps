@@ -598,6 +598,7 @@ export const RoomInviteLinkQuery = gql`
 export const RoomInviteInfoQuery = gql`
     query RoomInviteInfo($invite: String!) {
         invite: betaRoomInviteInfo(invite: $invite) {
+            id
             room {
                 ... on SharedRoom {
                     id
