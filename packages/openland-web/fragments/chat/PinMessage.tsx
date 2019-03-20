@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import { emoji } from 'openland-y-utils/emoji';
@@ -14,11 +15,40 @@ import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
 import AttachIcon from 'openland-icons/ic-attach-doc-blue.svg';
 import { MessageTextComponent } from 'openland-web/components/messenger/message/content/MessageTextComponent';
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
+import { withUnpinMessage } from 'openland-web/api/withPinMessage';
+import { XMutation } from 'openland-x/XMutation';
+
+interface UnpinButtonProps {
+    variables: {
+        chatId: string;
+    };
+}
+
+const ImageClassName = css`
+    max-height: 40vh;
+    max-width: 100%;
+    object-fit: contain;
+`;
+
+const UnpinButton = withUnpinMessage(props => (
+    <XMutation mutation={props.unpinMessage}>
+        <XView
+            marginRight={10}
+            color="rgba(0, 0, 0, 0.5)"
+            fontSize={13}
+            marginTop={-4}
+            cursor="pointer"
+        >
+            Unpin
+        </XView>
+    </XMutation>
+)) as React.ComponentType<UnpinButtonProps>;
 
 type attachmentType = Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
 
 export interface PinMessageComponentProps {
     pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage;
+    chatId: string;
 }
 
 const PinMessageModal = (props: PinMessageComponentProps) => {
@@ -97,14 +127,7 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
                                 )}
                             </XView>
                             <XView flexDirection="row" alignItems="center">
-                                <XView
-                                    marginRight={10}
-                                    color="rgba(0, 0, 0, 0.5)"
-                                    fontSize={13}
-                                    marginTop={-4}
-                                >
-                                    Unpin
-                                </XView>
+                                <UnpinButton variables={{ chatId: props.chatId }} />
                                 <XModalCloser autoClose={true} />
                             </XView>
                         </XView>
@@ -132,7 +155,13 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
             </XView>
             <XView marginTop={12}>
                 {message && <MessageTextComponent message={message} isEdited={false} />}
-                {attachment && attachment.fileMetadata.isImage && <XView />}
+                {attachment &&
+                    attachment.fileMetadata.isImage && (
+                        <img
+                            src={'https://ucarecdn.com/' + attachment.fileId + '/'}
+                            className={ImageClassName}
+                        />
+                    )}
                 {attachment &&
                     !attachment.fileMetadata.isImage && (
                         <XView flexDirection="column">
@@ -273,7 +302,7 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                         </XView>
                     </XView>
                 </XView>
-                <PinMessageModal pinMessage={props.pinMessage} />
+                <PinMessageModal pinMessage={props.pinMessage} chatId={props.chatId} />
             </XView>
             <XView height={1} width="100%" flexShrink={0} backgroundColor="#ececec" />
         </XView>

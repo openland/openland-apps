@@ -331,7 +331,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 {!this.state.hideChat && (
                     <>
                         {this.props.pinMessage && (
-                            <PinMessageComponent pinMessage={this.props.pinMessage} />
+                            <PinMessageComponent pinMessage={this.props.pinMessage} chatId={this.props.conversationId} />
                         )}
                         <ConversationMessagesComponent
                             isActive={this.props.isActive}
