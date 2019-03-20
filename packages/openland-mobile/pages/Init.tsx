@@ -20,7 +20,7 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
-import { cachedQuery } from 'openland-mobile/utils/cachedQuery';
+// import { cachedQuery } from 'openland-mobile/utils/cachedQuery';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -99,8 +99,9 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         this.setState({ state: 'loading' });
                         let client = buildNativeClient(userToken);
                         saveClient(client);
-                        res = await cachedQuery(client.client, AccountQuery, {}, 'account');
-                        await cachedQuery(client.client, SettingsQuery, {}, 'settings')
+                        res = await client.queryAccount();
+                        // res = await cachedQuery(client.client, AccountQuery, {}, 'account');
+                        // await cachedQuery(client.client, SettingsQuery, {}, 'settings')
 
                         let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState) : undefined;
                         this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });

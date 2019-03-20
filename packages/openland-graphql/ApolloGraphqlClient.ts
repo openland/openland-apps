@@ -1,9 +1,27 @@
-import * as React from 'react';
-import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription, GraphqlQueryWatch } from './GraphqlClient';
+import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription, GraphqlQueryWatch, OperationParameters, ApiError, InvalidField } from './GraphqlClient';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { Observable } from 'apollo-link';
-import { keyFromObject } from './utils/keyFromObject';
-import { Queue } from './utils/Queue';
+import { FetchPolicy } from 'apollo-client';
+import { throwFatalError } from 'openland-y-utils/throwFatalError';
+import { GraphQLError } from 'graphql';
+
+function convertError(errors: GraphQLError[]) {
+    let message = errors[0].message;
+    let invalidFields: InvalidField[] = [];
+    for (let e of errors) {
+        if ((e as any).invalidFields) {
+            for (let i of (e as any).invalidFields) {
+                let ex = invalidFields.find((v) => v.key === i.key);
+                if (ex) {
+                    ex.messages.push(i.message);
+                } else {
+                    invalidFields.push({ key: i.key, messages: [i.message] });
+                }
+            }
+        }
+    }
+    return new ApiError(message, invalidFields);
+}
 
 class ApolloSubscription<TSubscription, TVars> implements GraphqlActiveSubscription<TSubscription, TVars> {
     private readonly client: ApolloGraphqlClient;
@@ -129,35 +147,63 @@ export class ApolloGraphqlClient implements GraphqlClient {
         this.client = client;
     }
 
-    async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
-        let res = await this.client.client.query<TQuery, TVars>({ query: query.document, variables: vars });
+    async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): Promise<TQuery> {
+        let fetchPolicy: FetchPolicy = 'cache-first';
+        if (params && params.fetchPolicy) {
+            fetchPolicy = params.fetchPolicy
+        }
+        let res = await this.client.client.query<TQuery, TVars>({ query: query.document, variables: vars, fetchPolicy: fetchPolicy });
         if (res.errors && res.errors.length > 0) {
-            throw res.errors;
+            throw convertError([...res.errors]);
         }
         return res.data
     }
 
-    queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): GraphqlQueryWatch<TQuery> {
-        let source = this.client.client.watchQuery<TQuery, TVars>({ query: query.document, variables: vars })
-        let queue = new Queue()
+    queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
+        let fetchPolicy: FetchPolicy = 'cache-first';
+        if (params && params.fetchPolicy) {
+            fetchPolicy = params.fetchPolicy
+        }
+        let source = this.client.client.watchQuery<TQuery, TVars>({ query: query.document, variables: vars, fetchPolicy: fetchPolicy })
+        let callback: ((args: { data?: TQuery, error?: Error }) => void) | undefined = undefined;
         let subscription = source.subscribe({
             next: (v) => {
-                queue.post({ value: v })
+                if (callback) {
+                    if (v.errors) {
+                        callback({ error: convertError([...v.errors]) })
+                    } else {
+                        callback({ data: v.data });
+                    }
+                }
             },
             error: (e) => {
-                throw Error('Fatal error: Query Watch can\'t throw error')
+                throwFatalError('Fatal error: Query Watch can\'t throw error')
             },
             complete: () => {
-                throw Error('Fatal error: Query Watch can\'t be completed')
+                throwFatalError('Fatal error: Query Watch can\'t be completed')
             }
         });
         return {
-            get: async () => {
-                let d = (await queue.get()).value;
-                if (d.errors && d.errors.length > 0) {
-                    throw d.errors;
+            subscribe: (handler: ((args: { data?: TQuery, error?: Error }) => void)) => {
+                callback = handler
+            },
+            currentResult: () => {
+                let res = source.currentResult();
+                if (res.errors && res.errors.length > 0) {
+                    return ({ error: convertError([...res.errors]) })
                 } else {
-                    return d.data
+                    if (!res.loading && !res.partial) {
+                        return ({ data: res.data as TQuery })
+                    }
+                }
+                return undefined;
+            },
+            result: async () => {
+                let res = await source.result();
+                if (res.errors && res.errors.length > 0) {
+                    return ({ error: convertError([...res.errors]) })
+                } else {
+                    return ({ data: res.data as TQuery })
                 }
             },
             destroy: () => {
@@ -168,18 +214,10 @@ export class ApolloGraphqlClient implements GraphqlClient {
         }
     }
 
-    async refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
-        let res = await this.client.client.query<TQuery, TVars>({ query: query.document, variables: vars, fetchPolicy: 'network-only' });
-        if (res.errors && res.errors.length > 0) {
-            throw res.errors;
-        }
-        return res.data
-    }
-
     async mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation> {
-        let res = await this.client.client.mutate<TMutation, TVars>({ mutation: mutation.document, variables: vars });
+        let res = await this.client.client.mutate<TMutation, TVars>({ mutation: mutation.document, variables: vars, errorPolicy: 'all' });
         if (res.errors && res.errors.length > 0) {
-            throw res.errors;
+            throw convertError([...res.errors]);
         }
         return res.data as TMutation;
     }
@@ -188,70 +226,70 @@ export class ApolloGraphqlClient implements GraphqlClient {
         return new ApolloSubscription(this, subscription.document, vars);
     }
 
-    useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
+    // useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
 
-        // Build and wait for initial data
-        const observableQuery = React.useMemo(
-            () => this.client.client.watchQuery({ query: query.document, variables: vars }),
-            [query.document, keyFromObject(vars)]
-        );
+    //     // Build and wait for initial data
+    //     const observableQuery = React.useMemo(
+    //         () => this.client.client.watchQuery({ query: query.document, variables: vars }),
+    //         [query.document, keyFromObject(vars)]
+    //     );
 
-        // Subsctibe for latest values
-        const [responseId, setResponseId] = React.useState(0);
-        const currentResult = React.useMemo(() => {
-            return observableQuery.currentResult();
-        }, [responseId, observableQuery]);
-        React.useEffect(() => {
-            const invalidateCurrentResult = () => setResponseId(x => x + 1);
-            let subs = observableQuery.subscribe(invalidateCurrentResult, invalidateCurrentResult);
-            return () => {
-                subs.unsubscribe();
-            }
-        }, [observableQuery]);
+    //     // Subsctibe for latest values
+    //     const [responseId, setResponseId] = React.useState(0);
+    //     const currentResult = React.useMemo(() => {
+    //         return observableQuery.currentResult();
+    //     }, [responseId, observableQuery]);
+    //     React.useEffect(() => {
+    //         const invalidateCurrentResult = () => setResponseId(x => x + 1);
+    //         let subs = observableQuery.subscribe(invalidateCurrentResult, invalidateCurrentResult);
+    //         return () => {
+    //             subs.unsubscribe();
+    //         }
+    //     }, [observableQuery]);
 
-        if (currentResult.errors && currentResult.errors.length > 0) {
-            throw currentResult.errors;
-        }
+    //     if (currentResult.errors && currentResult.errors.length > 0) {
+    //         throw currentResult.errors;
+    //     }
 
-        if (currentResult.loading || currentResult.partial) {
-            throw observableQuery.result();
-        }
+    //     if (currentResult.loading || currentResult.partial) {
+    //         throw observableQuery.result();
+    //     }
 
-        return currentResult.data as TQuery
-    }
+    //     return currentResult.data as TQuery
+    // }
 
-    useWithoutLoaderQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
+    // useWithoutLoaderQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
 
-        // Build and wait for initial data
-        const observableQuery = React.useMemo(
-            () => this.client.client.watchQuery({ query: query.document, variables: vars }),
-            [query.document, keyFromObject(vars)]
-        );
+    //     // Build and wait for initial data
+    //     const observableQuery = React.useMemo(
+    //         () => this.client.client.watchQuery({ query: query.document, variables: vars }),
+    //         [query.document, keyFromObject(vars)]
+    //     );
 
-        // Subsctibe for latest values
-        const [responseId, setResponseId] = React.useState(0);
-        const currentResult = React.useMemo(() => {
-            return observableQuery.currentResult();
-        }, [responseId, observableQuery]);
-        React.useEffect(() => {
-            const invalidateCurrentResult = () => setResponseId(x => x + 1);
-            let subs = observableQuery.subscribe(invalidateCurrentResult, invalidateCurrentResult);
-            return () => {
-                subs.unsubscribe();
-            }
-        }, [observableQuery]);
+    //     // Subsctibe for latest values
+    //     const [responseId, setResponseId] = React.useState(0);
+    //     const currentResult = React.useMemo(() => {
+    //         return observableQuery.currentResult();
+    //     }, [responseId, observableQuery]);
+    //     React.useEffect(() => {
+    //         const invalidateCurrentResult = () => setResponseId(x => x + 1);
+    //         let subs = observableQuery.subscribe(invalidateCurrentResult, invalidateCurrentResult);
+    //         return () => {
+    //             subs.unsubscribe();
+    //         }
+    //     }, [observableQuery]);
 
-        if (currentResult.errors && currentResult.errors.length > 0) {
-            throw currentResult.errors;
-        }
+    //     if (currentResult.errors && currentResult.errors.length > 0) {
+    //         throw currentResult.errors;
+    //     }
 
-        if (currentResult.loading || currentResult.partial) {
-            // throw observableQuery.result();
-            return null;
-        }
+    //     if (currentResult.loading || currentResult.partial) {
+    //         // throw observableQuery.result();
+    //         return null;
+    //     }
 
-        return currentResult.data as TQuery
-    }
+    //     return currentResult.data as TQuery
+    // }
 
     async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean> {
         let r = undefined;
