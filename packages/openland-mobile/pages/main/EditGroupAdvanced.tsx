@@ -126,7 +126,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                         divider={false}
                     >
                         <View paddingHorizontal={16}>
-                            <ZAvatarPicker field="input.socialImageRef" render={SocialPicker} />
+                            <ZAvatarPicker field="input.socialImageRef" render={SocialPicker} pickSize={{ width: 1200, height: 630 }} />
                         </View>
                     </ZListItemGroup>
                 </ZForm>
