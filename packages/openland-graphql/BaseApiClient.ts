@@ -4,6 +4,7 @@ import { keyFromObject } from './utils/keyFromObject';
 
 export class BaseApiClient {
     readonly client: GraphqlClient;
+    private queries = new Map<String, GraphqlQueryWatch<{}>>();
 
     constructor(client: GraphqlClient) {
         this.client = client;
@@ -35,10 +36,19 @@ export class BaseApiClient {
         }
     }
 
+    private getQueryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): GraphqlQueryWatch<TQuery> {
+        let key = query.document.definitions[0].name.value + '$' + keyFromObject(vars);
+        if (this.queries.has(key)) {
+            return this.queries.get(key)!! as GraphqlQueryWatch<TQuery>
+        } else {
+            let res = this.client.queryWatch(query, vars);
+            this.queries.set(key, res);
+            return res;
+        }
+    }
+
     private useObservableQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): [GraphqlQueryWatch<TQuery>, GraphqlQueryResult<TQuery> | undefined] {
-        const observableQuery = React.useMemo(() => {
-            return this.client.queryWatch(query, vars);
-        }, [query.document, keyFromObject(vars)]);
+        const observableQuery = this.getQueryWatch(query, vars);
 
         // Value Holder
         const [responseId, setResponseId] = React.useState(0);

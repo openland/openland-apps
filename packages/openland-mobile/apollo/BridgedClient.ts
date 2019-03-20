@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { keyFromObject } from 'openland-graphql/utils/keyFromObject';
-import { randomKey } from 'openland-mobile/utils/randomKey';
 import { Queue } from 'openland-graphql/utils/Queue';
+import { randomKey } from '../../openland-graphql/utils/randomKey';
 
 const LOG = false;
 

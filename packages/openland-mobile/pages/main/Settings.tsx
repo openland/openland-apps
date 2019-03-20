@@ -123,3 +123,4 @@ class SettingsComponent extends React.Component<PageProps> {
 }
 
 export const Settings = withApp(SettingsComponent, { navigationAppearance: 'small-hidden' });
+Settings.displayName = 'Settings';

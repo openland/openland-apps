@@ -80,4 +80,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
     );
 });
 
+DialogsComponent.displayName = 'Home';
+
 export const HomeDialogs = withApp(DialogsComponent, { navigationAppearance: Platform.OS === 'android' ? 'small-hidden' : undefined });
+HomeDialogs.displayName = 'HomeDialogs';

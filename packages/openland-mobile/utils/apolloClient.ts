@@ -2,6 +2,8 @@ import { buildClient } from 'openland-y-graphql/apolloClient';
 import { Track } from 'openland-engines/Tracking';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
+import { createWorkerClient } from 'openland-mobile/apollo/createWorkerClient';
+import { createDumbBridgeClient } from 'openland-graphql/proxy/DumbBridgeClient';
 
 let cachedClient: OpenlandClient | null;
 
@@ -26,11 +28,25 @@ export function getClient(): OpenlandClient {
 
 export function buildNativeClient(token: string) {
 
-    return new OpenlandClient(new DirectApollolClient(buildClient({
-        token: token,
-        endpoint: 'https://api.openland.com/api',
-        wsEndpoint: 'wss://api.openland.com/api'
-    })));
+    if (__DEV__) {
+        return new OpenlandClient(createDumbBridgeClient(new DirectApollolClient(buildClient({
+            token: token,
+            endpoint: 'https://api.openland.com/api',
+            wsEndpoint: 'wss://api.openland.com/api'
+        }))));
+    } else {
+        return new OpenlandClient(createWorkerClient(token));
+    }
+
+    // return new OpenlandClient(createWorkerClient(token));
+
+    // return new OpenlandClient(new DirectApollolClient(buildClient({
+    //     token: token,
+    //     endpoint: 'https://api.openland.com/api',
+    //     wsEndpoint: 'wss://api.openland.com/api'
+    // })));
+
+    // return new OpenlandClient(createWorkerClient(token));
 
     // if (__DEV__) {
     //     return new OpenlandClient(new ApolloGraphqlClient(buildClient({
