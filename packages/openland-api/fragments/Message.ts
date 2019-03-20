@@ -44,6 +44,7 @@ export const FullMessage = gql`
             attachments{
                 fallback
                 ...on MessageAttachmentFile{
+                    id
                     fileId
                     fileMetadata{
                         name

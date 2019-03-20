@@ -52,6 +52,7 @@ fragment FullMessage on ModernMessage {
           size
         }
         filePreview
+        id
       }
       ... on MessageRichAttachment {
         fallback

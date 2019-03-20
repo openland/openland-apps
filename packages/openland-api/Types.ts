@@ -1169,6 +1169,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -2541,6 +2542,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -4127,6 +4129,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -5499,6 +5502,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -8722,6 +8726,7 @@ export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachme
 export interface ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatHistory_messages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -16634,6 +16639,7 @@ export interface FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fi
 export interface FullMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -19299,6 +19305,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_a
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
@@ -20671,6 +20678,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_at
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   fallback: string;
+  id: string;
   fileId: string;
   fileMetadata: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
   filePreview: string | null;
