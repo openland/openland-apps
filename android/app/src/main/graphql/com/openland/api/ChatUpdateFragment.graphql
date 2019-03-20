@@ -19,4 +19,10 @@ fragment ChatUpdateFragment on ChatUpdate {
       id
     }
   }
+  ... on ChatUpdated {
+    chat {
+      __typename
+      ...RoomShort
+    }
+  }
 }

@@ -16,6 +16,42 @@ export const RoomShort = gql`
             membership
             role
             membersCount
+            pinnedMessage{
+                id
+                date
+                sender {
+                    id
+                    isYou
+                    name
+                    firstName
+                    lastName
+                    picture
+                    shortname
+                    primaryOrganization {
+                        id
+                        name
+                    }
+                }
+                message
+                fallback
+                ... on GeneralMessage {
+                    attachments {
+                        id
+                        fallback
+                        ...on MessageAttachmentFile {
+                            fileId
+                            fileMetadata{
+                                isImage
+                                imageFormat
+                            }
+                            filePreview
+                        }
+                    }
+                    quotedMessages {
+                        id
+                    }
+                }
+            }
             organization{
                 ...OrganizationShort
             }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
+import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -13,7 +13,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members_user, UserShort } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { getClient } from 'openland-mobile/utils/apolloClient';
@@ -29,6 +29,8 @@ import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { showCallModal } from './Call';
 import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { formatMessage } from 'openland-engines/messenger/DialogListEngine';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -282,6 +284,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             );
         }
 
+        let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
+
         return (
             <>
                 <SHeaderView>
@@ -295,6 +299,30 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
+
+                            {sharedRoom && sharedRoom.pinnedMessage && (
+                                <ASSafeAreaContext.Consumer>
+                                    {area => (
+                                        <View backgroundColor="#f3f5f7" width="100%" height={56} flexDirection="column" position="absolute" zIndex={1} marginTop={area.top}>
+                                            <View flexDirection="row" marginTop={9} marginLeft={12}>
+                                                <View flexGrow={1} flexDirection="row">
+                                                    <Image style={{ width: 15, height: 15, tintColor: '#1790ff', marginRight: 6 }} source={require('assets/ic-pinned.png')} />
+                                                    <Text numberOfLines={1} style={{ fontSize: 13, color: '#000', marginRight: 8, fontWeight: TextStyles.weight.medium as any }}>{sharedRoom!.pinnedMessage!.sender.name}</Text>
+                                                    {sharedRoom!.pinnedMessage!.sender.primaryOrganization &&
+                                                        <Text numberOfLines={1} style={{ fontSize: 13, color: '#99a2b0', fontWeight: TextStyles.weight.medium as any }}>{sharedRoom!.pinnedMessage!.sender.primaryOrganization.name}</Text>
+                                                    }
+                                                </View>
+                                                <Image style={{ width: 14, height: 14, marginRight: 10, opacity: 0.25 }} source={require('assets/ic-expand.png')} />
+
+                                            </View>
+                                            <Text numberOfLines={1} style={{ fontSize: 14, marginRight: 9, fontWeight: TextStyles.weight.regular as any, marginLeft: 12, marginTop: 6 }}>
+                                                {formatMessage(sharedRoom!.pinnedMessage as any)}
+                                            </Text>
+                                        </View>
+                                    )}
+                                </ASSafeAreaContext.Consumer>
+
+                            )}
                             <ConversationView engine={this.engine} theme={this.state.theme} />
                             <MessageInputBar
                                 onAttachPress={this.handleAttach}
