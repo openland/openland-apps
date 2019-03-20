@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css, cx } from 'linaria';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { withAlterChat } from 'openland-web/api/withAlterChat';
 import { withUpdateWelcomeMessage } from 'openland-web/api/withUpdateWelcomeMessage';
@@ -8,7 +9,7 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XView } from 'react-mental';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XSelect } from 'openland-x/XSelect';
-import { XInput } from 'openland-x/XInput';
+import { XTextArea } from 'openland-x/XTextArea';
 import {
     RoomUpdate,
     RoomUpdateVariables,
@@ -16,6 +17,7 @@ import {
     Room_room_SharedRoom_welcomeMessage,
     UpdateWelcomeMessage,
     UpdateWelcomeMessageVariables,
+    Room_room_SharedRoom_welcomeMessage_sender,
 } from 'openland-api/Types';
 import { MutationFn } from 'react-apollo';
 
@@ -23,18 +25,82 @@ interface AdvancedSettingsInnerProps {
     socialImage: string | null;
     roomId: string;
     canChangeAdvancedSettingsMembersUsers: Room_room_SharedRoom_members_user[];
-    welcomeMessage: Room_room_SharedRoom_welcomeMessage;
+    welcomeMessageIsOn: boolean;
+    welcomeMessageText: string | null;
+    welcomeMessageSender: Room_room_SharedRoom_welcomeMessage_sender | null;
     alter: MutationFn<RoomUpdate, Partial<RoomUpdateVariables>>;
     updateWelcomeMessage: MutationFn<UpdateWelcomeMessage, Partial<UpdateWelcomeMessageVariables>>;
 }
 
 interface AdvancedSettingsInnerState {
-    showWelcomMessage: boolean;
-    welcomMessage: string;
+    isOpen: boolean;
+    welcomeMessageIsOn: boolean;
+    welcomeMessageText: string | null;
+    welcomeMessageSender: Room_room_SharedRoom_welcomeMessage_sender | null;
+    welcomeMessageError: boolean;
 }
 
-class AdvancedSettingsInner extends React.Component<AdvancedSettingsInnerProps> {
+class AdvancedSettingsInner extends React.Component<
+    AdvancedSettingsInnerProps,
+    AdvancedSettingsInnerState
+> {
+    constructor(props: AdvancedSettingsInnerProps) {
+        super(props);
+
+        this.state = {
+            isOpen: true,
+            welcomeMessageIsOn: props.welcomeMessageIsOn,
+            welcomeMessageText: props.welcomeMessageText,
+            welcomeMessageSender: props.welcomeMessageSender,
+            welcomeMessageError: false,
+        };
+    }
+
+    handleSwitchWelcomeMsg = () => {
+        this.setState({
+            welcomeMessageIsOn: !this.state.welcomeMessageIsOn,
+        });
+    };
+
+    welcomeMsgOnChange = (data: string) => {
+        this.setState({
+            welcomeMessageText: data === '' ? null : data,
+            welcomeMessageError: false,
+        });
+    };
+
+    welcomMsgSenderOnChange = (data: any) => {
+        let sender: Room_room_SharedRoom_welcomeMessage_sender | null = null;
+        if (data) {
+            sender = {
+                id: data.id,
+                name: data.label,
+                __typename: 'User',
+            };
+        }
+        this.setState({
+            welcomeMessageSender: sender,
+        });
+    };
+
     render() {
+        const {
+            isOpen,
+            welcomeMessageIsOn,
+            welcomeMessageText,
+            welcomeMessageSender,
+            welcomeMessageError,
+        } = this.state;
+
+        let msgSender: any = welcomeMessageSender;
+
+        if (welcomeMessageSender) {
+            msgSender = {
+                value: welcomeMessageSender.id,
+                label: welcomeMessageSender.name,
+            };
+        }
+
         const { props } = this;
         const selectOptions = props.canChangeAdvancedSettingsMembersUsers.map(
             (user: Room_room_SharedRoom_members_user) => {
@@ -43,12 +109,15 @@ class AdvancedSettingsInner extends React.Component<AdvancedSettingsInnerProps> 
         );
         return (
             <XModalForm
+                isOpen={isOpen}
                 scrollableContent={true}
+                alsoUseBottomCloser={true}
                 targetQuery="advancedSettings"
                 useTopCloser={true}
+                autoClose={false}
                 title="Advanced settings"
                 defaultAction={async data => {
-                    let newSocialImage = data.input.socialImageRef;
+                    const newSocialImage = data.input.socialImageRef;
 
                     await props.alter({
                         variables: {
@@ -66,19 +135,19 @@ class AdvancedSettingsInner extends React.Component<AdvancedSettingsInnerProps> 
                     await props.updateWelcomeMessage({
                         variables: {
                             roomId: props.roomId,
-                            welcomeMessageIsOn: data.input.welcomeMessageIsOn === 'true',
-                            welcomeMessageSender: data.input.welcomeMessageSender,
-                            welcomeMessageText: data.input.welcomeMessageText,
+                            welcomeMessageIsOn: welcomeMessageIsOn,
+                            welcomeMessageSender: welcomeMessageSender
+                                ? welcomeMessageSender!!.id
+                                : null,
+                            welcomeMessageText: welcomeMessageText,
                         },
                     });
                 }}
                 defaultData={{
                     input: {
-                        welcomeMessageIsOn: props.welcomeMessage.isOn ? 'true' : 'false',
-                        welcomeMessageText: props.welcomeMessage.message,
-                        welcomeMessageSender: props.welcomeMessage.sender
-                            ? props.welcomeMessage.sender.id
-                            : null,
+                        welcomeMessageIsOn: welcomeMessageIsOn ? 'true' : 'false',
+                        welcomeMessageText: welcomeMessageText,
+                        welcomeMessageSender: welcomeMessageSender,
                         socialImageRef: props.socialImage ? { uuid: props.socialImage } : undefined,
                     },
                 }}
@@ -89,14 +158,27 @@ class AdvancedSettingsInner extends React.Component<AdvancedSettingsInnerProps> 
                         Send an automatic message in 1:1 chat to every new member who joins this
                         group
                     </XView>
-                    <XCheckbox label="On" field="input.welcomeMessageIsOn" switcher={true} />
+                    <XCheckbox
+                        label={welcomeMessageIsOn ? 'on' : 'off'}
+                        checked={welcomeMessageIsOn}
+                        onChange={this.handleSwitchWelcomeMsg}
+                        switcher={true}
+                    />
+                    <XSelect
+                        options={selectOptions}
+                        value={msgSender}
+                        onChange={this.welcomMsgSenderOnChange}
+                    />
+                    <XTextArea
+                        placeholder="Text message"
+                        onChange={this.welcomeMsgOnChange}
+                        value={welcomeMessageText || ''}
+                    />
+                    <XView>Social sharing image</XView>
                     <XView>
                         Choose an image to display when sharing invite to this group on social
                         networks
                     </XView>
-                    <XSelect options={selectOptions} field="input.welcomeMessageSender" />
-                    <XInput size="large" field="input.welcomeMessageText" />
-                    <XView>Social sharing image</XView>
                     <XAvatarUpload
                         cropParams="1:1, free"
                         field="input.socialImageRef"
@@ -126,7 +208,9 @@ export const AdvancedSettingsModal = withUpdateWelcomeMessage(withAlterChat(prop
             alter={typedProps.alter}
             roomId={typedProps.roomId}
             canChangeAdvancedSettingsMembersUsers={typedProps.canChangeAdvancedSettingsMembersUsers}
-            welcomeMessage={typedProps.welcomeMessage}
+            welcomeMessageText={typedProps.welcomeMessage.message}
+            welcomeMessageIsOn={typedProps.welcomeMessage.isOn}
+            welcomeMessageSender={typedProps.welcomeMessage.sender}
             socialImage={typedProps.socialImage}
             updateWelcomeMessage={(typedProps as any).updateWelcomeMessage}
         />
