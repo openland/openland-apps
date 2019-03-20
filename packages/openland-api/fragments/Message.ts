@@ -126,6 +126,7 @@ export const FullMessage = gql`
                     }
                     ...on MessageSpanLink{
                         url
+                        text
                     }
                 }
 

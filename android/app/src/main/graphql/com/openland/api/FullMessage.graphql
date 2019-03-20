@@ -134,6 +134,7 @@ fragment FullMessage on ModernMessage {
           }
         }
         ... on MessageSpanLink {
+          text
           url
         }
       }
