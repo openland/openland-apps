@@ -9,11 +9,11 @@ export class BaseApiClient {
         this.client = client;
     }
 
-    refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
+    protected refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
         return this.client.query(query, vars, { fetchPolicy: 'network-only' });
     }
 
-    useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
+    protected useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
         const [observableQuery, currentResult] = this.useObservableQuery(query, vars);
         if (currentResult && currentResult.error) {
             throw currentResult.error!!;
@@ -24,7 +24,7 @@ export class BaseApiClient {
         }
     }
 
-    useQuerySuspense<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
+    protected useQuerySuspense<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
         const [observableQuery, currentResult] = this.useObservableQuery(query, vars);
         if (currentResult && currentResult.error) {
             throw currentResult.error!!;
