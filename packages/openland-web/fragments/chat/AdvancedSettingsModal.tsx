@@ -159,21 +159,25 @@ class AdvancedSettingsInner extends React.Component<
                         group
                     </XView>
                     <XCheckbox
-                        label={welcomeMessageIsOn ? 'on' : 'off'}
+                        label={welcomeMessageIsOn ? 'On' : 'Off'}
                         checked={welcomeMessageIsOn}
                         onChange={this.handleSwitchWelcomeMsg}
                         switcher={true}
                     />
-                    <XSelect
-                        options={selectOptions}
-                        value={msgSender}
-                        onChange={this.welcomMsgSenderOnChange}
-                    />
-                    <XTextArea
-                        placeholder="Text message"
-                        onChange={this.welcomeMsgOnChange}
-                        value={welcomeMessageText || ''}
-                    />
+                    {welcomeMessageIsOn && (
+                        <>
+                            <XSelect
+                                options={selectOptions}
+                                value={msgSender}
+                                onChange={this.welcomMsgSenderOnChange}
+                            />
+                            <XTextArea
+                                placeholder="Text message"
+                                onChange={this.welcomeMsgOnChange}
+                                value={welcomeMessageText || ''}
+                            />
+                        </>
+                    )}
                     <XView>Social sharing image</XView>
                     <XView>
                         Choose an image to display when sharing invite to this group on social
