@@ -40,6 +40,7 @@ fragment RoomFull on Room {
         attachments {
           __typename
           ... on MessageAttachmentFile {
+            fileId
             fileMetadata {
               __typename
               imageHeight
@@ -51,6 +52,7 @@ fragment RoomFull on Room {
             id
           }
         }
+        date
         id
         message
         sender {
@@ -58,6 +60,22 @@ fragment RoomFull on Room {
           id
           name
           photo
+          photoRef {
+            __typename
+            crop {
+              __typename
+              h
+              w
+              x
+              y
+            }
+            uuid
+          }
+          primaryOrganization {
+            __typename
+            id
+            name
+          }
         }
       }
     }

@@ -4,12 +4,23 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { UserShort } from 'openland-api/Types';
+import { withPinMessage } from 'openland-web/api/withPinMessage';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { withDeleteMessages } from 'openland-web/api/withDeleteMessage';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { css } from 'linaria';
 import { XText } from 'openland-x/XText';
+import { XMutation } from 'openland-x/XMutation';
+
+const PinMessageButton = withPinMessage(props => (
+    <XMutation mutation={props.pinMessage} onSuccess={(props as any).onSuccess}>
+        <XButton text="Pin" />
+    </XMutation>
+)) as React.ComponentType<{
+    variables: { chatId: string; messageId: string };
+    onSuccess: () => void;
+}>;
 
 const ClearIconClass = css`
     margin-top: 4px;
@@ -92,6 +103,16 @@ export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) 
                             />
                         )}
                     </XWithRole>
+                    {state.selectedMessages.size === 1 &&
+                        !Array.from(state.selectedMessages)[0].isService && (
+                            <PinMessageButton
+                                variables={{
+                                    chatId: props.roomId,
+                                    messageId: Array.from(state.selectedMessages)[0].id!,
+                                }}
+                                onSuccess={state.resetAll}
+                            />
+                        )}
                     <XButton
                         text="Reply"
                         style="primary"

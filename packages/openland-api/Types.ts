@@ -5275,11 +5275,36 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
 
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop | null;
+}
+
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
+  photoRef: Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef | null;
+  primaryOrganization: Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -5298,6 +5323,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_M
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
+  fileId: string;
   fileMetadata: Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
 }
 
@@ -5309,6 +5335,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage {
    * State
    */
   id: string;
+  date: any;
   /**
    * Content
    */
@@ -6810,11 +6837,36 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   __typename: "ServiceMessage";
 }
 
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop | null;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
+  photoRef: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef | null;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -6833,6 +6885,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
+  fileId: string;
   fileMetadata: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
 }
 
@@ -6844,6 +6897,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
    * State
    */
   id: string;
+  date: any;
   /**
    * Content
    */
@@ -7014,11 +7068,36 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   __typename: "ServiceMessage";
 }
 
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
+  photoRef: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef | null;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -7037,6 +7116,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
+  fileId: string;
   fileMetadata: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
 }
 
@@ -7048,6 +7128,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
    * State
    */
   id: string;
+  date: any;
   /**
    * Content
    */
@@ -7215,11 +7296,36 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   __typename: "ServiceMessage";
 }
 
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
+  photoRef: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef | null;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -7238,6 +7344,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
+  fileId: string;
   fileMetadata: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
 }
 
@@ -7249,6 +7356,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
    * State
    */
   id: string;
+  date: any;
   /**
    * Content
    */
@@ -7419,11 +7527,36 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
 
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
+  photoRef: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef | null;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -7442,6 +7575,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_a
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
+  fileId: string;
   fileMetadata: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
 }
 
@@ -7453,6 +7587,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage {
    * State
    */
   id: string;
+  date: any;
   /**
    * Content
    */
@@ -7620,11 +7755,36 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   __typename: "ServiceMessage";
 }
 
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
+  photoRef: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef | null;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -7643,6 +7803,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
+  fileId: string;
   fileMetadata: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
 }
 
@@ -7654,6 +7815,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
    * State
    */
   id: string;
+  date: any;
   /**
    * Content
    */
@@ -7808,11 +7970,36 @@ export interface RoomSearch_items_edges_node_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
 
+export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_sender_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_sender_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_sender_photoRef_crop | null;
+}
+
+export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
+  photoRef: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_sender_photoRef | null;
+  primaryOrganization: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -7831,6 +8018,7 @@ export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attach
 export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
+  fileId: string;
   fileMetadata: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
 }
 
@@ -7842,6 +8030,7 @@ export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage {
    * State
    */
   id: string;
+  date: any;
   /**
    * Content
    */
@@ -8180,11 +8369,36 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
 
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop | null;
+}
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
+  photoRef: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef | null;
+  primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -8203,6 +8417,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachmen
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
+  fileId: string;
   fileMetadata: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
 }
 
@@ -8214,6 +8429,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage {
    * State
    */
   id: string;
+  date: any;
   /**
    * Content
    */
@@ -8400,11 +8616,36 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   __typename: "ServiceMessage";
 }
 
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
+  photoRef: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef | null;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -8423,6 +8664,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
+  fileId: string;
   fileMetadata: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
 }
 
@@ -8434,6 +8676,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
    * State
    */
   id: string;
+  date: any;
   /**
    * Content
    */
@@ -12970,11 +13213,36 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage {
   __typename: "ServiceMessage";
 }
 
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef_crop | null;
+}
+
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
+  /**
+   * Deprecated: Will be removed soon
+   */
+  photoRef: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender_photoRef | null;
+  primaryOrganization: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -12993,6 +13261,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_Me
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
   __typename: "MessageAttachmentFile";
   id: string;
+  fileId: string;
   fileMetadata: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
 }
 
@@ -13004,6 +13273,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage {
    * State
    */
   id: string;
+  date: any;
   /**
    * Content
    */

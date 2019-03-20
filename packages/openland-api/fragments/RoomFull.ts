@@ -46,15 +46,30 @@ export const RoomFull = gql`
             pinnedMessage {
                 ... on GeneralMessage {
                     id
+                    date
                     message
                     sender {
                         id
                         name
                         photo
+                        photoRef {
+                            uuid
+                            crop {
+                                x
+                                y
+                                w
+                                h
+                            }
+                        }
+                        primaryOrganization {
+                            id
+                            name
+                        }
                     }
                     attachments {
                         ...on MessageAttachmentFile {
                             id
+                            fileId
                             fileMetadata {
                                 name
                                 size
