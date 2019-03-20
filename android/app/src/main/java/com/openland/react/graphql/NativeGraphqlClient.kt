@@ -3,6 +3,7 @@ package com.openland.react.graphql
 import android.util.Log
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.ApolloQueryWatcher
 import com.apollographql.apollo.ApolloSubscriptionCall
 import com.apollographql.apollo.api.*
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
@@ -436,10 +437,23 @@ class JSOperationCallback(val id: String, val key: String, val context: ReactApp
     }
 }
 
+fun loadCachePolicy(parameters: ReadableMap): HttpCachePolicy.Policy {
+    var cachePolicy: HttpCachePolicy.Policy = HttpCachePolicy.CACHE_FIRST
+    val policy = parameters.getString("fetchPolicy")
+    when (policy) {
+        "cache-first" -> cachePolicy = HttpCachePolicy.CACHE_FIRST
+        "network-only" -> cachePolicy = HttpCachePolicy.NETWORK_ONLY
+        "cache-and-network" -> cachePolicy = HttpCachePolicy.CACHE_FIRST
+        "no-cache" -> cachePolicy = HttpCachePolicy.NETWORK_FIRST
+    }
+    return cachePolicy
+}
+
 class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?) {
 
     private val httpClient: OkHttpClient
     private val client: ApolloClient
+    private val watches = mutableMapOf<String, ApolloQueryWatcher<*>>()
 
     init {
 
@@ -508,16 +522,22 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 .build()
     }
 
-    fun query(id: String, query: String, arguments: ReadableMap?) {
+    fun query(id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
         this.client.query(createQuery(query, arguments))
-                .watcher()
-                .enqueueAndWatch(JSOperationCallback(id, key, context))
+                .httpCachePolicy(loadCachePolicy(parameters))
+                .enqueue(JSOperationCallback(id, key, context))
     }
 
-    fun refetch(id: String, query: String, arguments: ReadableMap?) {
-        this.client.query(createQuery(query, arguments))
-                .httpCachePolicy(HttpCachePolicy.NETWORK_FIRST)
-                .enqueue(JSOperationCallback(id, key, context))
+    fun watch(id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
+        val w = this.client.query(createQuery(query, arguments))
+                .httpCachePolicy(loadCachePolicy(parameters))
+                .watcher()
+        this.watches[id] = w
+        w.enqueueAndWatch(JSOperationCallback(id, key, context))
+    }
+
+    fun watchEnd(id: String) {
+        this.watches.remove(id)?.cancel()
     }
 
     fun mutate(id: String, query: String, arguments: ReadableMap?) {

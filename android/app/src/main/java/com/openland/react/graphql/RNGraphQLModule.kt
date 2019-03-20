@@ -24,19 +24,62 @@ class RNGraphQL(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
     }
 
     @ReactMethod
-    fun query(key: String, id: String, query: String, arguments: ReadableMap?) {
+    fun closeClient(key: String) {
         if (!this.clients.containsKey(key)) {
             throw Error("Client with key $key does not exists")
         }
-        this.clients[key]!!.query(id, query, arguments)
+        this.clients.remove(key)!!.dispose()
     }
 
     @ReactMethod
-    fun refetch(key: String, id: String, query: String, arguments: ReadableMap?) {
+    fun query(key: String, id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
         if (!this.clients.containsKey(key)) {
             throw Error("Client with key $key does not exists")
         }
-        this.clients[key]!!.refetch(id, query, arguments)
+        this.clients[key]!!.query(id, query, arguments, parameters)
+    }
+
+    @ReactMethod
+    fun watch(key: String, id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
+        if (!this.clients.containsKey(key)) {
+            throw Error("Client with key $key does not exists")
+        }
+        this.clients[key]!!.watch(id, query, arguments, parameters)
+    }
+
+    @ReactMethod
+    fun watchEnd(key: String, id: String) {
+        if (!this.clients.containsKey(key)) {
+            throw Error("Client with key $key does not exists")
+        }
+        this.clients[key]!!.watchEnd(id)
+    }
+
+
+    @ReactMethod
+    fun mutate(key: String, id: String, query: String, arguments: ReadableMap) {
+        if (!this.clients.containsKey(key)) {
+            throw Error("Client with key $key does not exists")
+        }
+        this.clients[key]!!.mutate(id, query, arguments)
+    }
+
+    @ReactMethod
+    fun subscribe(key: String, id: String, query: String, arguments: ReadableMap) {
+        if (!this.clients.containsKey(key)) {
+            throw Error("Client with key $key does not exists")
+        }
+        this.clients[key]!!.subscribe(id, query, arguments)
+    }
+
+    @ReactMethod
+    fun subscribeUpdate(key: String, id: String, arguments: ReadableMap) {
+        //
+    }
+
+    @ReactMethod
+    fun unsubscribe(key: String, id: String) {
+        //
     }
 
     @ReactMethod
@@ -47,13 +90,6 @@ class RNGraphQL(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
         this.clients[key]!!.read(id, query, arguments)
     }
 
-    @ReactMethod
-    fun subscribe(key: String, id: String, query: String, arguments: ReadableMap?) {
-        if (!this.clients.containsKey(key)) {
-            throw Error("Client with key $key does not exists")
-        }
-        this.clients[key]!!.subscribe(id, query, arguments)
-    }
 
     @ReactMethod
     fun write(key: String, id: String, data: ReadableMap, query: String, arguments: ReadableMap?) {
@@ -61,21 +97,5 @@ class RNGraphQL(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
             throw Error("Client with key $key does not exists")
         }
         this.clients[key]!!.write(id, data, query, arguments)
-    }
-
-    @ReactMethod
-    fun mutate(key: String, id: String, query: String, arguments: ReadableMap?) {
-        if (!this.clients.containsKey(key)) {
-            throw Error("Client with key $key does not exists")
-        }
-        this.clients[key]!!.mutate(id, query, arguments)
-    }
-
-    @ReactMethod
-    fun closeClient(key: String) {
-        if (!this.clients.containsKey(key)) {
-            throw Error("Client with key $key does not exists")
-        }
-        this.clients.remove(key)!!.dispose()
     }
 }

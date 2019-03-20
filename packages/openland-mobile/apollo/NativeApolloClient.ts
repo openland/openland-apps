@@ -1,117 +1,78 @@
-// import { NativeModules, DeviceEventEmitter } from 'react-native';
-// import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription, GraphqlQueryWatch } from 'openland-graphql/GraphqlClient';
-// import { randomKey } from 'openland-mobile/utils/randomKey';
-// import { delay } from 'openland-y-utils/timer';
-// import { BridgedClient } from './BridgedClient';
+import { BridgedClient } from 'openland-graphql/bridge/BridgedClient';
+import { OperationParameters } from 'openland-graphql/GraphqlClient';
+import { NativeModules, DeviceEventEmitter } from 'react-native';
+import { randomKey } from 'openland-graphql/utils/randomKey';
 
-// const NativeGraphQL = NativeModules.RNGraphQL as {
-//     createClient: (key: string, endpoint: string, token?: string) => void
-//     query: (key: string, id: string, query: string, vars?: any) => void;
-//     refetch: (key: string, id: string, query: string, vars?: any) => void;
-//     read: (key: string, id: string, query: string, vars?: any) => void;
-//     subscribe: (key: string, id: string, query: string, vars?: any) => void;
-//     unsubscribe: (key: string, id: string) => void;
-//     write: (key: string, id: string, data: any, query: string, vars?: any) => void;
-//     mutate: (key: string, id: string, query: string, vars?: any) => void;
-//     closeClient: (key: string) => void;
-// }
+const NativeGraphQL = NativeModules.RNGraphQL as {
+    createClient: (key: string, endpoint: string, token?: string) => void
+    closeClient: (key: string) => void;
 
-// export class NativeApolloClient implements GraphqlClient {
+    query: (key: string, id: string, query: string, vars?: any, params?: any) => void;
+    watch: (key: string, id: string, query: string, vars?: any, params?: any) => void;
+    watchEnd: (key: string, id: string) => void;
 
-//     private key: string = randomKey();
-//     private client = new BridgedClient({
-//         postMutation: (id, mutation, vars) => {
-//             NativeGraphQL.mutate(this.key, id, mutation.document.definitions[0].name.value, vars ? vars : {});
-//         },
-//         postQuery: (id, mutation, vars) => {
-//             NativeGraphQL.query(this.key, id, mutation.document.definitions[0].name.value, vars ? vars : {});
-//         },
-//         postSubscribe: (id, mutation, vars) => {
-//             NativeGraphQL.subscribe(this.key, id, mutation.document.definitions[0].name.value, vars ? vars : {});
-//         },
-//         postSubscribeUpdate: () => {
-//             //
-//         },
-//         postUnsubscribe: (id) => {
-//             NativeGraphQL.unsubscribe(this.key, id);
-//         },
-//         postRefetchQuery: (id, query, vars) => {
-//             NativeGraphQL.refetch(this.key, id, query.document.definitions[0].name.value, vars ? vars : {});
-//         },
-//         postReadQuery: (id, query, vars) => {
-//             NativeGraphQL.read(this.key, id, query.document.definitions[0].name.value, vars ? vars : {});
-//         },
-//         postWriteQuery: (id, data, query, vars) => {
-//             NativeGraphQL.write(this.key, id, data, query.document.definitions[0].name.value, vars ? vars : {});
-//         }
-//     });
+    mutate: (key: string, id: string, query: string, vars?: any) => void;
 
-//     constructor(token?: string) {
-//         DeviceEventEmitter.addListener('apollo_client', (src) => {
-//             if (src.key === this.key) {
-//                 console.log(src);
-//                 if (src.type === 'failure') {
-//                     this.client.operationFailed(src.id, src.data);
-//                 } else if (src.type === 'response') {
-//                     this.client.operationUpdated(src.id, src.data);
-//                 }
-//             }
-//         });
-//         NativeGraphQL.createClient(this.key, '//api.openland.com/api', token);
-//     }
+    subscribe: (key: string, id: string, query: string, vars?: any) => void;
+    subscribeUpdate: (key: string, id: string, vars?: any) => void;
+    unsubscribe: (key: string, id: string) => void;
 
-//     async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
-//         let id = this.client.registerQuery(query, vars);
-//         return await this.client.getOperation(id);
-//     }
+    read: (key: string, id: string, query: string, vars?: any) => void;
+    write: (key: string, id: string, data: any, query: string, vars?: any) => void;
+}
 
-//     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): GraphqlQueryWatch<TQuery> {
-//         throw Error()
-//     }
+export class NativeApolloClient extends BridgedClient {
+    private key: string = randomKey();
 
-//     async refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
-//         let id = this.client.registerRefetch(query, vars);
-//         return await this.client.getOperation(id);
-//     }
+    constructor(token?: string) {
+        super();
+        NativeGraphQL.createClient(this.key, '//api.openland.com/api', token);
 
-//     async mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation> {
-//         let id = this.client.registerMutation(mutation, vars);
-//         return await this.client.getOperation(id);
-//     }
+        DeviceEventEmitter.addListener('apollo_client', (src) => {
+            if (src.key === this.key) {
+                if (src.type === 'failure') {
+                    this.operationFailed(src.id, src.data);
+                } else if (src.type === 'response') {
+                    this.operationUpdated(src.id, src.data);
+                }
+            }
+        });
+    }
 
-//     subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
-//         return this.client.subscribe(subscription, vars);
-//     }
+    protected postQuery(id: string, query: any, vars: any, params?: OperationParameters) {
+        let name = query.document.definitions[0].name.value;
+        NativeGraphQL.query(this.key, id, name, vars ? vars : {}, params ? params : {});
+    }
+    protected postQueryWatch(id: string, query: any, vars: any, params?: OperationParameters) {
+        let name = query.document.definitions[0].name.value;
+        NativeGraphQL.watch(this.key, id, name, vars ? vars : {}, params ? params : {});
+    }
+    protected postQueryWatchEnd(id: string) {
+        NativeGraphQL.watchEnd(this.key, id);
+    }
 
-//     useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
-//         let id = this.client.registerQuery(query, vars);
-//         return this.client.useOperationSuspense(id);
-//     }
+    protected postMutation(id: string, query: any, vars: any) {
+        let name = query.document.definitions[0].name.value;
+        NativeGraphQL.mutate(this.key, id, name, vars ? vars : {});
+    }
 
-//     useWithoutLoaderQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
-//         let id = this.client.registerQuery(query, vars);
-//         return this.client.useOperation(id);
-//     }
+    protected postSubscribe(id: string, query: any, vars: any) {
+        let name = query.document.definitions[0].name.value;
+        NativeGraphQL.subscribe(this.key, id, name, vars ? vars : {});
+    }
+    protected postSubscribeUpdate(id: string, vars: any) {
+        NativeGraphQL.subscribeUpdate(this.key, id, vars ? vars : {});
+    }
+    protected postUnsubscribe(id: string) {
+        NativeGraphQL.unsubscribe(this.key, id);
+    }
 
-//     async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean> {
-//         let r = await this.readQuery(query, vars);
-//         if (r) {
-//             let udpated = updater(r);
-//             if (udpated) {
-//                 await this.writeQuery<TQuery, TVars>(r, query, vars);
-//                 return true;
-//             }
-//         }
-//         return false;
-//     }
-
-//     async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
-//         let id = this.client.registerReadQuery(query, vars);
-//         return this.client.getOperation(id);
-//     }
-
-//     async writeQuery<TQuery, TVars>(data: any, query: GraphqlQuery<TQuery, TVars>, vars?: TVars) {
-//         let id = this.client.registerWriteQuery(data, query, vars);
-//         return this.client.getOperation(id);
-//     }
-// }
+    protected postReadQuery(id: string, query: any, vars: any) {
+        let name = query.document.definitions[0].name.value;
+        NativeGraphQL.read(this.key, id, name, vars ? vars : {});
+    }
+    protected postWriteQuery(id: string, data: any, query: any, vars: any) {
+        let name = query.document.definitions[0].name.value;
+        NativeGraphQL.write(this.key, data, id, name, vars ? vars : {});
+    }
+}

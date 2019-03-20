@@ -44,7 +44,7 @@ export interface GraphqlQueryWatch<TQuery> {
 };
 
 export interface OperationParameters {
-    fetchPolicy?: 'cache-first' | 'network-only' | 'cache-and-network' | 'network-only' | 'no-cache'
+    fetchPolicy?: 'cache-first' | 'network-only' | 'cache-and-network' | 'no-cache'
 }
 
 export interface GraphqlClient {
