@@ -15,6 +15,8 @@ import { Room_room_SharedRoom } from 'openland-api/Types';
 import { ZAvatarPicker, ZAvatarPickerRenderProps } from 'openland-mobile/components/ZAvatarPicker';
 import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { ZImage } from 'openland-mobile/components/ZImage';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { SilentError } from 'openland-y-forms/errorHandling';
 
 const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
     const width = 190;
@@ -55,6 +57,20 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                 <ZForm
                     ref={ref}
                     action={async src => {
+                        if (welcomeMessageEnabled) {
+                            if (!welcomeMessageSender) {
+                                Alert.builder().title('Please select a welcome message sender').button('GOT IT!').show();
+        
+                                throw new SilentError();
+                            }
+
+                            if (typeof src.input.welcomeMessageText !== 'string' || src.input.welcomeMessageText === '') {
+                                Alert.builder().title('Please enter a welcome message').button('GOT IT!').show();
+        
+                                throw new SilentError();
+                            }
+                        }
+
                         let client = getClient();
 
                         await client.mutateUpdateWelcomeMessage({

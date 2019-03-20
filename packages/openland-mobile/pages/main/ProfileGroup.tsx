@@ -100,7 +100,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             builder.action('Edit', () => props.router.push('EditGroup', { id: room.id }));
         }
 
-        if (room.role === 'OWNER' || room.role === 'ADMIN') {
+        if (room.role === 'OWNER' || room.role === 'ADMIN' || room.organization!.isAdmin || room.organization!.isOwner) {
             builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }));
         }
 
