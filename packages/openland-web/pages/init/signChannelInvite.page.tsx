@@ -64,7 +64,7 @@ export const InviteInfoInner = (props: any) => {
                     (data.invite && data.invite.room && data.invite.room.title) ||
                     InitTexts.socialPageTitle
                 }
-                imgUrl={data.invite && data.invite.room ? data.invite.room.photo : undefined}
+                imgUrl={data.invite && data.invite.room ? (data.invite.room.socialImage || data.invite.room.photo) : undefined}
             />
             {instantRedirect && <XPageRedirect path={instantRedirect} />}
             {!instantRedirect && (
