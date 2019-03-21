@@ -84,7 +84,7 @@ const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
             alsoUseBottomCloser={true}
             targetQuery="advancedSettings"
             useTopCloser={true}
-            autoClose={false}
+            autoClose={true}
             title="Advanced settings"
             defaultAction={async data => {
                 const newSocialImage = data.input.socialImageRef;
