@@ -27,6 +27,15 @@ interface UrlAugmentationContentProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
+
+export let ricjAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {
+    return attach && attach.image &&
+        (
+            (attach.image.metadata && attach.image.metadata.imageHeight === attach.image.metadata.imageWidth)
+            ||
+            (attach.titleLink && (attach.titleLink.includes('openland.com/invite') || attach.titleLink.includes('openland.com/joinChannel')))
+        )
+}
 export class RichAttachContent extends React.PureComponent<UrlAugmentationContentProps, { downloadState?: DownloadState }> {
     private augLayout?: { width: number, height: number };
     private downloadManagerWatch?: WatchSubscription;
@@ -78,13 +87,12 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         let imageSource = { uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined };
 
         // invite link image placeholder
-        if (this.props.attach.titleLink &&
-            (this.props.attach.titleLink.includes('openland.com/invite') || this.props.attach.titleLink.includes('openland.com/joinChannel')) &&
-            !this.props.attach.image
-        ) {
+        if (ricjAttachImageShouldBeCompact(this.props.attach)) {
             imgCompact = true;
             imgLayout = { width: 36, height: 36 };
-            imageSource = this.props.message.isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
+            if (!this.props.attach.image) {
+                imageSource = this.props.message.isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
+            }
         }
 
         let maxWidth = (imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming);
@@ -162,7 +170,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     >
 
                         {!!this.props.attach.title && <ASText
-                            maxWidth={maxWidth}
+                            maxWidth={maxWidth - 36}
                             color={mainTextColor}
                             letterSpacing={-0.3}
                             fontSize={14}
@@ -195,6 +203,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     maxWidth={maxWidth}
                     color={out ? '#fff' : '#000'}
                     fontSize={14}
+                    marginTop={4}
                     marginBottom={4}
                     fontWeight={TextStyles.weight.regular}
                 >

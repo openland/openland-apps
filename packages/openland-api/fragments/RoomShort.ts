@@ -50,6 +50,8 @@ export const RoomShort = gql`
                                 imageFormat
                                 name
                                 size
+                                imageWidth
+                                imageHeight
                             }
                             filePreview
                         }

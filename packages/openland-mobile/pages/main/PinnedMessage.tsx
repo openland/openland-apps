@@ -5,17 +5,24 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { Room_room_SharedRoom } from 'openland-api/Types';
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASView } from 'react-native-async-view/ASView';
-import { convertMessage } from 'openland-engines/messenger/ConversationEngine';
+import { convertMessage, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncMessageContentView, extractContent } from 'openland-mobile/messenger/components/AsyncMessageContentView';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { UserView } from './components/UserView';
 import { formatDate } from 'openland-mobile/utils/formatDate';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { ASListView } from 'react-native-async-view/ASListView';
+import { ASDataView } from 'react-native-async-view/ASDataView';
+import { DataSource } from 'openland-y-utils/DataSource';
+import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
+import { ASText } from 'react-native-async-view/ASText';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 const PinnedMessageComponent = XMemo<PageProps>((props) => {
     let id = props.router.params.flexibleId || props.router.params.id;
@@ -25,27 +32,67 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
     let room = getClient().useRoomTiny({ id });
     let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
 
-    let message;
+    let message: any;
     if (sharedRoom && sharedRoom.pinnedMessage) {
         message = convertMessage(sharedRoom.pinnedMessage as any, room.room!.id, messenger.engine)
         message.isOut = false;
         message.attachTop = true;
     }
 
-    let { topContnet, bottomContent } = extractContent({ message: message as any, engine, onDocumentPress: messenger.handleDocumentClick, onMediaPress: messenger.handleMediaClick, onUserPress: messenger.handleAvatarClick })
+    let pinnedDs = new DataSource<DataSourceMessageItem>(() => false);
+    pinnedDs.initialize([message], true);
+
+    let pinnedDataView = new ASDataView(pinnedDs, (item) => {
+        let { topContnet, bottomContent } = extractContent({
+            message: item as any, engine,
+            onDocumentPress: messenger.handleDocumentClick,
+            onMediaPress: messenger.handleMediaClick,
+            onUserPress: messenger.handleAvatarClick,
+        }, Dimensions.get('screen').width - 32);
+        return (
+            <ASFlex flexGrow={1} flexDirection="column">
+
+                <ASFlex marginTop={15} marginBottom={15} onPress={() => messenger.handleAvatarClick(message.senderId)} flexDirection="row">
+                    <ASAvatar
+                        marginRight={15}
+                        size={40}
+                        src={message.senderPhoto}
+                        placeholderKey={message.senderId}
+                        placeholderTitle={message.senderName}
+
+                    />
+                    <ASFlex flexDirection="column">
+                        <ASText fontSize={15} fontWeight={TextStyles.weight.medium} color="#000">{message.senderName}
+                            {sharedRoom && sharedRoom.pinnedMessage && sharedRoom.pinnedMessage.sender.primaryOrganization &&
+                                <ASText fontSize={13} fontWeight={TextStyles.weight.medium} color="#99a2b0">
+                                    {' ' + sharedRoom.pinnedMessage.sender.primaryOrganization.name}
+                                </ASText>}
+                        </ASText>
+                        <ASText fontSize={14} marginTop={5} color="#99a2b0">{formatDate(message.date)}</ASText>
+                    </ASFlex>
+
+                </ASFlex>
+                {topContnet}
+                {bottomContent}
+            </ASFlex>
+        );
+    });
+
     return (
         <>
             <SHeader title="Pinned message" />
-            <SScrollView>
-                {sharedRoom && sharedRoom.pinnedMessage && <UserView subtitle={formatDate((message as any).date)} user={sharedRoom.pinnedMessage.sender as any} onPress={() => false} />}
-                {message &&
-                    <ASView style={{ width: '100%', height: '100%', marginLeft: 16, marginRight: 16 }}>
-                        <ASFlex flexGrow={1} flexDirection="column">
-                            {topContnet}
-                            {bottomContent}
-                        </ASFlex>
-                    </ASView>}
-            </SScrollView>
+
+            <ASSafeAreaContext.Consumer>
+                {area => (
+                    <ASListView
+                        style={{ width: '100%', height: '100%', marginLeft: 8 }}
+                        dataView={pinnedDataView}
+                        contentPaddingBottom={area.bottom}
+                        contentPaddingTop={area.top}
+                    />
+                )}
+            </ASSafeAreaContext.Consumer>
+
         </>
     );
 });

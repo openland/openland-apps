@@ -85,6 +85,8 @@ export const RoomFull = gql`
                                 imageFormat
                                 name
                                 size
+                                imageWidth
+                                imageHeight
                             }
                             filePreview
                         }

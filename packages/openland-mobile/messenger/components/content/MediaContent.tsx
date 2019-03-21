@@ -20,11 +20,12 @@ interface MediaContentProps {
     onUserPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    layout: { width: number, height: number }
+    layout: { width: number, height: number },
+    compensateBubble?: boolean;
 }
 
-export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeight: number | null }) => {
-    let maxSize = Platform.select({
+export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeight: number | null }, maxSize?: number) => {
+    maxSize = maxSize || Platform.select({
         default: 400,
         ios: Math.min(Dimensions.get('window').width - 120, 400),
         android: Math.min(Dimensions.get('window').width - 120, 400)
@@ -108,10 +109,10 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 flexDirection="column"
                 width={this.props.layout.width}
                 height={this.props.layout.height}
-                marginTop={this.props.single ? -contentInsetsTop : 8}
-                marginLeft={-contentInsetsHorizontal}
-                marginRight={-contentInsetsHorizontal}
-                marginBottom={-contentInsetsBottom}
+                marginTop={this.props.compensateBubble ? (this.props.single ? -contentInsetsTop : 8) : undefined}
+                marginLeft={this.props.compensateBubble ? - contentInsetsHorizontal : undefined}
+                marginRight={this.props.compensateBubble ? - contentInsetsHorizontal : undefined}
+                marginBottom={this.props.compensateBubble ? - contentInsetsBottom : undefined}
             >
                 <ASImage
                     maxWidth={this.props.layout.width}

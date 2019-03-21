@@ -11,6 +11,10 @@ interface ASAvatarProps {
     src?: string | null;
     placeholderKey?: string | null;
     placeholderTitle?: string | null;
+    marginLeft?: number;
+    marginRight?: number;
+    marginTop?: number;
+    marginBottom?: number;
 }
 
 export function ASAvatar(props: ASAvatarProps) {
@@ -19,6 +23,10 @@ export function ASAvatar(props: ASAvatarProps) {
         url += '-/scale_crop/' + 256 + 'x' + 256 + '/';
         return (
             <ASImage
+                marginLeft={props.marginLeft}
+                marginRight={props.marginRight}
+                marginTop={props.marginTop}
+                marginBottom={props.marginBottom}
                 width={props.size}
                 height={props.size}
                 source={{ uri: url }}

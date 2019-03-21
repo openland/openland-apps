@@ -14,7 +14,7 @@ import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { ReplyContent } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
 import { Span } from 'openland-mobile/utils/TextProcessor';
-import { RichAttachContent } from './content/RichAttachContent';
+import { RichAttachContent, ricjAttachImageShouldBeCompact } from './content/RichAttachContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -45,7 +45,7 @@ export let renderPreprocessedText = (v: Span, i: number, message: DataSourceMess
     }
 }
 
-export let extractContent = (props: AsyncMessageTextViewProps) => {
+export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {
     // todo: handle multiple attaches
     let attaches = (props.message.attachments || []);
     let fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
@@ -57,12 +57,13 @@ export let extractContent = (props: AsyncMessageTextViewProps) => {
 
     let imageLayout;
     if (hasImage) {
-        imageLayout = layoutImage(fileAttach!.fileMetadata);
+        imageLayout = layoutImage(fileAttach!.fileMetadata, maxSize);
     }
     let richAttachImageLayout;
     if (augmenationAttach && augmenationAttach.image && augmenationAttach.image.metadata) {
-        richAttachImageLayout = layoutImage(augmenationAttach.image.metadata);
+        richAttachImageLayout = layoutImage(augmenationAttach.image.metadata, maxSize);
     }
+    let richAttachIsCompact = ricjAttachImageShouldBeCompact(augmenationAttach);
 
     let hasDocument = !!(fileAttach && !hasImage);
     let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
@@ -78,10 +79,10 @@ export let extractContent = (props: AsyncMessageTextViewProps) => {
         topContnet.push(<TextContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasImage && imageLayout) {
-        topContnet.push(<MediaContent layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />);
+        topContnet.push(<MediaContent compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />);
     }
     if (hasDocument) {
-        topContnet.push(<DocumentContent attach={fileAttach!} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        topContnet.push(<DocumentContent compensateBubble={compensateBubble} attach={fileAttach!} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
 
     let bottomContent: any[] = [];
@@ -104,7 +105,8 @@ export let extractContent = (props: AsyncMessageTextViewProps) => {
         bottomContent,
         imageLayout,
         imageOnly,
-        richAttachImageLayout
+        richAttachImageLayout,
+        richAttachIsCompact
     }
 }
 
@@ -120,9 +122,10 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         topContnet,
         imageLayout,
         richAttachImageLayout,
-        bottomContent
-    } = extractContent(props);
-    let width = imageLayout ? imageLayout.width : richAttachImageLayout ? richAttachImageLayout.width : undefined;
+        bottomContent,
+        richAttachIsCompact
+    } = extractContent(props, undefined, true);
+    let width = imageLayout ? imageLayout.width : (richAttachImageLayout && !richAttachIsCompact) ? richAttachImageLayout.width : undefined;
     return (
         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
             <AsyncBubbleView pair={bottomContent.length ? 'top' : undefined} width={width} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>

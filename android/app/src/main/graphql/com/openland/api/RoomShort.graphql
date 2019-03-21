@@ -55,6 +55,8 @@ fragment RoomShort on Room {
             fileMetadata {
               __typename
               imageFormat
+              imageHeight
+              imageWidth
               isImage
               name
               size

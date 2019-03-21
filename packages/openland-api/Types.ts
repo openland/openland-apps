@@ -1070,6 +1070,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -1417,6 +1419,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -1694,6 +1698,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -2084,6 +2090,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -2443,6 +2451,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -2790,6 +2800,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -3067,6 +3079,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -3457,6 +3471,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -3768,6 +3784,8 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -4030,6 +4048,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -4377,6 +4397,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -4654,6 +4676,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -5044,6 +5068,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -5403,6 +5429,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -5750,6 +5778,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -6027,6 +6057,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -6417,6 +6449,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -6728,6 +6762,8 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -7934,6 +7970,8 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_M
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -8133,6 +8171,8 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_attachmen
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -8627,6 +8667,8 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMentio
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -8974,6 +9016,8 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -9251,6 +9295,8 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -9641,6 +9687,8 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMentio
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -10272,6 +10320,8 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -10610,6 +10660,8 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -10945,6 +10997,8 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -11283,6 +11337,8 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_a
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -11618,6 +11674,8 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -11940,6 +11998,8 @@ export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attach
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -12446,6 +12506,8 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachmen
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -12800,6 +12862,8 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -14391,6 +14455,8 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_at
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -14889,6 +14955,8 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -16274,6 +16342,8 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -16887,6 +16957,8 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -17164,6 +17236,8 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -17510,6 +17584,8 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_Sh
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -17791,6 +17867,8 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_Sh
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -18134,6 +18212,8 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_attachments
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -18629,6 +18709,8 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_Me
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -18820,6 +18902,8 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_attachments_M
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -19206,6 +19290,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -19553,6 +19639,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -19830,6 +19918,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -20220,6 +20310,8 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -20579,6 +20671,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -20926,6 +21020,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -21203,6 +21299,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -21593,6 +21691,8 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
@@ -21904,6 +22004,8 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   imageFormat: string | null;
   name: string;
   size: number;
+  imageWidth: number | null;
+  imageHeight: number | null;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile {
