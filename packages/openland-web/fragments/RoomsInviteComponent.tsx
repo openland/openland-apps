@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XScrollView } from 'openland-x/XScrollView';
-import { XAvatar } from 'openland-x/XAvatar';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import CloseIcon from 'openland-icons/ic-close.svg';
@@ -72,16 +72,7 @@ const Text = Glamorous.div<{ width?: number; autoMargin?: boolean }>(props => ({
     margin: props.autoMargin ? 'auto' : undefined,
 }));
 
-const UserAvatar = Glamorous(XAvatar)({
-    width: 24,
-    height: 24,
-    '& img': {
-        width: '24px !important',
-        height: '24px !important',
-    },
-});
-
-const RoomAvatar = Glamorous(XAvatar)({
+const RoomAvatar = Glamorous(XAvatar2)({
     width: 80,
     height: 80,
     '& img': {
@@ -251,12 +242,11 @@ export const RoomsInviteComponent = ({
             <XView flexDirection="column">
                 {invite && invite.invitedByUser ? (
                     <UserInfoWrapper separator={6} justifyContent="center" alignItems="center">
-                        <UserAvatar
-                            cloudImageUuid={invite.invitedByUser.photo || undefined}
-                            style="colorus"
-                            objectName={invite.invitedByUser.name}
-                            objectId={invite.invitedByUser.id}
-                            size="small"
+                        <XAvatar2
+                            src={invite.invitedByUser.photo || undefined}
+                            title={invite.invitedByUser.name}
+                            id={invite.invitedByUser.id}
+                            size={24}
                         />
                         <Text>{invite.invitedByUser.name} invites you to join group</Text>
                     </UserInfoWrapper>
@@ -265,11 +255,10 @@ export const RoomsInviteComponent = ({
                 )}
                 <XView marginTop={111} alignSelf="center" alignItems="center" maxWidth={428}>
                     <RoomAvatar
-                        cloudImageUuid={room.photo || undefined}
-                        style="room"
-                        objectName={room.title}
-                        objectId={room.id}
-                        size="x-medium"
+                        src={room.photo || undefined}
+                        title={room.title!!}
+                        id={room.id!!}
+                        size={74}
                     />
                     <XView marginTop={28} fontSize={24} fontWeight={'600'}>
                         {room.title}
