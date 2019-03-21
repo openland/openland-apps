@@ -31,24 +31,20 @@ interface AdvancedSettingsInnerProps {
 }
 
 const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
-    const [isOpen] = React.useState(true);
+    const [isOpen, setIsOpen] = React.useState(true);
     const [welcomeMessageIsOn, setWelcomeMessageIsOn] = React.useState(props.welcomeMessageIsOn);
     const [welcomeMessageText, setWelcomeMessageText] = React.useState(props.welcomeMessageText);
     const [welcomeMessageSender, setWelcomeMessageSender] = React.useState(
         props.welcomeMessageSender,
     );
-    const [welcomeMessageError, setWelcomeMessageError] = React.useState(false);
+    const [triedToSend, setTriedToSend] = React.useState(false);
+    const [welcomeMessageSenderError, setWelcomeMessageSenderError] = React.useState(true);
+    const [welcomeMessageTextError, setWelcomeMessageTextError] = React.useState(true);
 
-    const handleSwitchWelcomeMsg = () => {
-        setWelcomeMessageIsOn(!welcomeMessageIsOn);
-    };
+    const finalWelcomeMessageSenderError = triedToSend && welcomeMessageSenderError;
+    const finalWelcomeMessageTextError = triedToSend && welcomeMessageTextError;
 
-    const welcomeMsgOnChange = (data: string) => {
-        setWelcomeMessageText(data === '' ? null : data);
-        setWelcomeMessageError(false);
-    };
-
-    const welcomMsgSenderOnChange = (data: any) => {
+    const welcomeMsgSenderOnChange = (data: any) => {
         let sender: Room_room_SharedRoom_welcomeMessage_sender | null = null;
         if (data) {
             sender = {
@@ -58,7 +54,15 @@ const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
             };
         }
 
+        setWelcomeMessageSenderError(!data);
         setWelcomeMessageSender(sender);
+    };
+
+    const welcomeMsgOnChange = (data: string) => {
+        setWelcomeMessageText(data === '' ? null : data);
+        setWelcomeMessageSenderError(false);
+        setWelcomeMessageTextError(false);
+        setWelcomeMessageTextError(!data);
     };
 
     let msgSender: any = welcomeMessageSender;
@@ -83,9 +87,13 @@ const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
             alsoUseBottomCloser={true}
             targetQuery="advancedSettings"
             useTopCloser={true}
-            autoClose={true}
+            autoClose={false}
             title="Advanced settings"
             defaultAction={async data => {
+                if (welcomeMessageSenderError || welcomeMessageTextError) {
+                    setTriedToSend(true);
+                    return;
+                }
                 const newSocialImage = data.input.socialImageRef;
 
                 await props.alter({
@@ -111,6 +119,8 @@ const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
                         welcomeMessageText: welcomeMessageText,
                     },
                 });
+
+                setIsOpen(false);
             }}
             defaultData={{
                 input: {
@@ -132,7 +142,7 @@ const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
                     <XCheckbox
                         label={welcomeMessageIsOn ? 'On' : 'Off'}
                         checked={welcomeMessageIsOn}
-                        onChange={handleSwitchWelcomeMsg}
+                        onChange={() => setWelcomeMessageIsOn(!welcomeMessageIsOn)}
                         switcher={true}
                     />
                 </XView>
@@ -142,15 +152,27 @@ const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
                             <XSelect
                                 options={selectOptions}
                                 value={msgSender}
-                                onChange={welcomMsgSenderOnChange}
+                                onChange={welcomeMsgSenderOnChange}
+                                invalid={finalWelcomeMessageSenderError}
                             />
+                            {finalWelcomeMessageSenderError && (
+                                <XView color="#d75454" paddingLeft={17} marginTop={8}>
+                                    Please choose who will send the Welcome message
+                                </XView>
+                            )}
                         </XView>
                         <XView marginTop={16}>
                             <XTextArea
+                                invalid={finalWelcomeMessageTextError}
                                 placeholder="Text message"
                                 onChange={welcomeMsgOnChange}
                                 value={welcomeMessageText || ''}
                             />
+                            {finalWelcomeMessageTextError && (
+                                <XView color="#d75454" paddingLeft={17} marginTop={8}>
+                                    Please enter the Welcome message text
+                                </XView>
+                            )}
                         </XView>
                     </>
                 )}
