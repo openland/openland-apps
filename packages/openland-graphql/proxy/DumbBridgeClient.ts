@@ -11,7 +11,7 @@ export function createDumbBridgeClient(client: GraphqlClient) {
     let hostWorkerInterface: WorkerInterface = {
         post: (src) => {
             let conv = JSON.parse(JSON.stringify(src));
-            console.log('<<<', conv);
+            // console.log('<<<', conv);
             setTimeout(() => clientCallback(conv), 1)
         },
         setHandler: (handler) => hostCallback = handler
@@ -19,7 +19,7 @@ export function createDumbBridgeClient(client: GraphqlClient) {
     let clientWorkerInterface: WorkerInterface = {
         post: (src) => {
             let conv = JSON.parse(JSON.stringify(src));
-            console.log('>>>', conv);
+            // console.log('>>>', conv);
             setTimeout(() => hostCallback(conv), 1)
         },
         setHandler: (handler) => clientCallback = handler

@@ -21,7 +21,7 @@ const ProfileUserContent = XMemo<PageProps>((props) => {
     let conversation = userQuery.conversation;
 
     let myID = getMessenger().engine.user.id;
-    let online = getClient().useOnline({ userId: props.router.params.id }).user;
+    // let online = getClient().useOnline({ userId: props.router.params.id }).user;
 
     // const editTheme = React.useCallback(() => {
     //     changeThemeModal((userQuery.conversation! as any).id);
@@ -33,8 +33,8 @@ const ProfileUserContent = XMemo<PageProps>((props) => {
         sub = 'bot'
         subColor = '#0084fe'
     } else {
-        if (!online.online && online.lastSeen) {
-            sub = formatLastSeen(online.lastSeen);
+        if (!userQuery.user.online && userQuery.user.lastSeen) {
+            sub = formatLastSeen(userQuery.user.lastSeen);
         } else {
             sub = 'online';
             subColor = '#0084fe';

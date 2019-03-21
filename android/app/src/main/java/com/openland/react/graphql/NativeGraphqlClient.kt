@@ -439,7 +439,7 @@ class JSOperationCallback(val id: String, val key: String, val context: ReactApp
 
 fun loadCachePolicy(parameters: ReadableMap): HttpCachePolicy.Policy {
     var cachePolicy: HttpCachePolicy.Policy = HttpCachePolicy.CACHE_FIRST
-    val policy = parameters.getString("fetchPolicy")
+    val policy = if (parameters.hasKey("fetchPolicy")) parameters.getString ("fetchPolicy") else null
     when (policy) {
         "cache-first" -> cachePolicy = HttpCachePolicy.CACHE_FIRST
         "network-only" -> cachePolicy = HttpCachePolicy.NETWORK_ONLY
