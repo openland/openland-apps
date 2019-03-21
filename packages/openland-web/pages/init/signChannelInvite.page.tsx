@@ -29,18 +29,6 @@ const InfoText = Glamorous.div({
     marginBottom: 15,
 });
 
-const HeaderWrapper = Glamorous.div({
-    paddingLeft: 32,
-    paddingTop: 19,
-});
-
-const HeaderLogo = Glamorous.div({
-    width: 145,
-    height: 42,
-    background: 'url(/static/X/signup/logo-2.svg) no-repeat',
-    backgroundSize: '100% 100%',
-});
-
 type InviteInfoInner = {
     variables: { invite: string };
     redirect: string;
@@ -64,15 +52,16 @@ export const InviteInfoInner = (props: any) => {
                     (data.invite && data.invite.room && data.invite.room.title) ||
                     InitTexts.socialPageTitle
                 }
-                imgUrl={data.invite && data.invite.room ? data.invite.room.photo : undefined}
+                imgUrl={
+                    data.invite && data.invite.room
+                        ? data.invite.room.socialImage || data.invite.room.photo
+                        : undefined
+                }
             />
             {instantRedirect && <XPageRedirect path={instantRedirect} />}
             {!instantRedirect && (
                 <XTrack event="Join Room">
                     <Root>
-                        <HeaderWrapper>
-                            <HeaderLogo />
-                        </HeaderWrapper>
                         <Content>
                             {data.invite && (
                                 <RoomsInviteComponent

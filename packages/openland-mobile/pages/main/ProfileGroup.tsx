@@ -8,7 +8,7 @@ import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { Room_room_SharedRoom, RoomMemberRole, UserShort, RoomMembers_members, SharedRoomKind } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomMemberRole, UserShort, RoomMembers_members } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -100,7 +100,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             builder.action('Edit', () => props.router.push('EditGroup', { id: room.id }));
         }
 
-        if (room.role === 'OWNER' || room.role === 'ADMIN' || room.organization!.isAdmin || room.organization!.isOwner) {
+        if (room.role === 'OWNER' || room.role === 'ADMIN' || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
             builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }));
         }
 

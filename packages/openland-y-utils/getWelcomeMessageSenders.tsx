@@ -16,25 +16,32 @@ const containsMember = (members: Room_room_SharedRoom_members[], findMember: Roo
     return result;
 }
 
-export const getWelcomeMessageSenders = ({ chat }: { chat: Room_room_SharedRoom }) => {
+const addIfNew = (arrayToAdd: any, arrayWithIds: string[], user: { id: string }) => {
+    if (arrayWithIds.indexOf(user.id) === -1) {
+        arrayToAdd.push(user);
+        arrayWithIds.push(user.id);
+    }
+};
+
+export const getWelcomeMessageSenders = ({ chat }: { chat?: Room_room_SharedRoom }) => {
     const res: any[] = [];
     const addedIds: string[] = [];
 
-    const adminMembers = chat.organization ? chat.organization!!.adminMembers : [];
+    if (chat) {
+        const adminMembers = chat.organization ? chat.organization!!.adminMembers : [];
 
-    adminMembers.forEach((admin: Room_room_SharedRoom_organization_adminMembers) => {
-        if (containsMember(chat.members, admin)) {
-            res.push(admin.user);
-            addedIds.push(admin.user.id);
-        }
-    });
+        adminMembers.forEach((item: Room_room_SharedRoom_organization_adminMembers) => {
+            if (containsMember(chat.members, item)) {
+                addIfNew(res, addedIds, item.user);
+            }
+        });
 
-    chat.members.forEach((item: Room_room_SharedRoom_members) => {
-        if (item.role === 'OWNER' && addedIds.indexOf(item.user.id) === -1) {
-            res.push(item.user);
-            addedIds.push(item.user.id);
-        }
-    });
+        chat.members
+            .filter((item: Room_room_SharedRoom_members) => item.role === 'OWNER')
+            .forEach((item: Room_room_SharedRoom_members) => {
+                addIfNew(res, addedIds, item.user);
+            });
+    }
 
     return res;
 };

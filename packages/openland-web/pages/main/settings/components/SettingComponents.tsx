@@ -10,7 +10,7 @@ export const Header = (props: { children?: any }) => (
     </XView>
 );
 
-export const Group = (props: { children?: any }) => <XView maxWidth={570}>{props.children}</XView>;
+export const Group = (props: { children?: any }) => <XView maxWidth={575}>{props.children}</XView>;
 
 export const GroupText = css`
     font-size: 14px;

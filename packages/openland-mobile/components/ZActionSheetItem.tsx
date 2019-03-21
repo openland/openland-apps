@@ -9,11 +9,12 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         lineHeight: 24,
-        color: "#0084fe"
+        color: '#0084fe',
+        paddingHorizontal: 16,
     } as TextStyle,
 
     textDanger: {
-        color: "#ff3b30"
+        color: '#ff3b30'
     } as TextStyle,
 
     textCancel: {
@@ -30,6 +31,8 @@ interface ZActionSheetItemProps {
 }
 
 export const ZActionSheetItem = (props: ZActionSheetItemProps) => {
+    const theme = React.useContext(ThemeContext);
+
     if (Platform.OS === 'android') {
         return (
             <ZListItem
@@ -46,14 +49,21 @@ export const ZActionSheetItem = (props: ZActionSheetItemProps) => {
             props.appearance === 'cancel' ? styles.textCancel : undefined
         ];
 
+        let separatorColor = 'rgba(63, 63, 63, 0.15)';
+
+        if (theme.blurType === 'dark') {
+            separatorColor = theme.separatorColor;
+        }
+
         return (
             <ZListItemBase
                 onPress={props.onPress}
                 height={56}
                 separator={props.separator}
+                separatorColor={separatorColor}
             >
                 <View alignItems="center" justifyContent="center" flexGrow={1} height={56}>
-                    <Text style={textStyle}>{props.name}</Text>
+                    <Text style={textStyle} numberOfLines={1} allowFontScaling={false}>{props.name}</Text>
                 </View>
             </ZListItemBase>
         );
@@ -62,11 +72,16 @@ export const ZActionSheetItem = (props: ZActionSheetItemProps) => {
 
 export const ZActionSheetViewItem = (props: { children?: any, separator?: boolean }) => {
     const theme = React.useContext(ThemeContext);
+    let separatorColor = 'rgba(63, 63, 63, 0.15)';
+
+    if (theme.blurType === 'dark') {
+        separatorColor = theme.separatorColor;
+    }
 
     return (
         <>
             {props.children}
-            {props.separator !== false && <View style={{ backgroundColor: theme.separatorColor, height: 1 }} />}
+            {props.separator !== false && <View style={{ backgroundColor: separatorColor, height: 1 }} />}
         </>
     );
 }

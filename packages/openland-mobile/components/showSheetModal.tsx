@@ -138,9 +138,9 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                             backgroundColor="#ffffff"
                             borderTopRightRadius={12}
                             borderTopLeftRadius={12}
-                            paddingTop={12}
                             paddingBottom={this.props.safe.bottom + 8}
                             onLayout={this.onLayout}
+                            overflow="hidden"
                         >
                             <ScrollView maxHeight={Dimensions.get('screen').height - this.props.safe.top - this.props.safe.bottom - 100}>
                                 {this.contents}

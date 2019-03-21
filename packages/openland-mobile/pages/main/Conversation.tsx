@@ -31,6 +31,7 @@ import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handl
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { formatMessage } from 'openland-engines/messenger/DialogListEngine';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -150,51 +151,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     handleAttach = () => {
         let builder = new ActionSheetBuilder();
-        builder.action(Platform.OS === 'android' ? 'Take Photo' : 'Camera', () => {
-            Picker.launchCamera({ title: 'Camera', mediaType: 'mixed' }, (response) => {
-                if (response.error) {
-                    handlePermissionDismiss('camera');
-                    return;
-                }
-
-                if (response.didCancel) {
-                    return;
-                }
-
-                let isPhoto = checkFileIsPhoto(response.uri);
-
-                UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.path ? 'file://' + response.path : response.uri, response.fileSize);
-            });
-        }, false, Platform.OS === 'android' ? require('assets/ic-camera-24.png') : undefined);
-        if (Platform.OS === 'android') {
-            builder.action('Record Video', () => {
-                Picker.launchCamera({
-                    mediaType: 'video',
-                }, (response) => {
+        builder.action(Platform.OS === 'android' ? 'Take Photo' : 'Camera', async () => {
+            if (await checkPermissions('camera')) {
+                Picker.launchCamera({ title: 'Camera', mediaType: 'mixed' }, (response) => {
                     if (response.error) {
                         handlePermissionDismiss('camera');
-                        return;
-                    }
-
-                    if (response.didCancel) {
-                        return;
-                    }
-                    UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
-                });
-            }, false, Platform.OS === 'android' ? require('assets/ic-video-24.png') : undefined);
-        }
-        builder.action(Platform.select({ ios: 'Photo & Video Library', android: 'Photo Gallery' }), () => {
-            Picker.launchImageLibrary(
-                {
-                    maxWidth: 1024,
-                    maxHeight: 1024,
-                    quality: 1,
-                    videoQuality: Platform.OS === 'ios' ? 'medium' : undefined,
-                    mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed'
-                },
-                (response) => {
-                    if (response.error) {
-                        handlePermissionDismiss('gallery');
                         return;
                     }
 
@@ -204,25 +165,73 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
                     let isPhoto = checkFileIsPhoto(response.uri);
 
-                    UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
+                    UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.path ? 'file://' + response.path : response.uri, response.fileSize);
+                });
+            }
+        }, false, Platform.OS === 'android' ? require('assets/ic-camera-24.png') : undefined);
+        if (Platform.OS === 'android') {
+            builder.action('Record Video', async () => {
+                if (await checkPermissions('camera')) {
+                    Picker.launchCamera({
+                        mediaType: 'video',
+                    }, (response) => {
+                        if (response.error) {
+                            handlePermissionDismiss('camera');
+                            return;
+                        }
+
+                        if (response.didCancel) {
+                            return;
+                        }
+                        UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
+                    });
                 }
-            );
+            }, false, Platform.OS === 'android' ? require('assets/ic-video-24.png') : undefined);
+        }
+        builder.action(Platform.select({ ios: 'Photo & Video Library', android: 'Photo Gallery' }), async () => {
+            if (await checkPermissions('gallery')) {
+                Picker.launchImageLibrary(
+                    {
+                        maxWidth: 1024,
+                        maxHeight: 1024,
+                        quality: 1,
+                        videoQuality: Platform.OS === 'ios' ? 'medium' : undefined,
+                        mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed'
+                    },
+                    (response) => {
+                        if (response.error) {
+                            handlePermissionDismiss('gallery');
+                            return;
+                        }
+
+                        if (response.didCancel) {
+                            return;
+                        }
+
+                        let isPhoto = checkFileIsPhoto(response.uri);
+
+                        UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
+                    }
+                );
+            }
         }, false, Platform.OS === 'android' ? require('assets/ic-gallery-24.png') : undefined);
         if (Platform.OS === 'android') {
-            builder.action('Video Gallery', () => {
-                Picker.launchImageLibrary({
-                    mediaType: 'video',
-                }, (response) => {
-                    if (response.error) {
-                        handlePermissionDismiss('gallery');
-                        return;
-                    }
-
-                    if (response.didCancel) {
-                        return;
-                    }
-                    UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
-                });
+            builder.action('Video Gallery', async () => {
+                if (await checkPermissions('gallery')) {
+                    Picker.launchImageLibrary({
+                        mediaType: 'video',
+                    }, (response) => {
+                        if (response.error) {
+                            handlePermissionDismiss('gallery');
+                            return;
+                        }
+    
+                        if (response.didCancel) {
+                            return;
+                        }
+                        UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
+                    });
+                }
             }, false, Platform.OS === 'android' ? require('assets/ic-gallery-video-24.png') : undefined);
         }
 

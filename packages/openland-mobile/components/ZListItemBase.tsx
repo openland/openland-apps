@@ -9,6 +9,7 @@ import { AppTheme } from 'openland-mobile/themes/themes';
 export interface ZListItemBaseProps {
     separatorPaddingStart?: number;
     separator?: boolean;
+    separatorColor?: string;
     height?: number | null;
     onPress?: () => void;
     onLongPress?: () => void;
@@ -54,7 +55,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
                         <Image source={require('assets/ic-arrow-cell.png')} alignSelf="center" marginRight={15} style={{ tintColor: this.props.theme.arrowColor }} />
                     )}
                 </View>
-                {this.props.separator !== false && <View style={{ backgroundColor: this.props.theme.separatorColor, height: 1, marginLeft: this.props.separatorPaddingStart }} />}
+                {this.props.separator !== false && <View style={{ backgroundColor: this.props.separatorColor || this.props.theme.separatorColor, height: 1, marginLeft: this.props.separatorPaddingStart }} />}
             </View>
         );
 

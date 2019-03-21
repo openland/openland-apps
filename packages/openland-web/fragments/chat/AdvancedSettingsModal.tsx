@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { withAlterChat } from 'openland-web/api/withAlterChat';
 import { withUpdateWelcomeMessage } from 'openland-web/api/withUpdateWelcomeMessage';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
@@ -32,44 +30,21 @@ interface AdvancedSettingsInnerProps {
     updateWelcomeMessage: MutationFn<UpdateWelcomeMessage, Partial<UpdateWelcomeMessageVariables>>;
 }
 
-interface AdvancedSettingsInnerState {
-    isOpen: boolean;
-    welcomeMessageIsOn: boolean;
-    welcomeMessageText: string | null;
-    welcomeMessageSender: Room_room_SharedRoom_welcomeMessage_sender | null;
-    welcomeMessageError: boolean;
-}
+const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
+    const [isOpen, setIsOpen] = React.useState(true);
+    const [welcomeMessageIsOn, setWelcomeMessageIsOn] = React.useState(props.welcomeMessageIsOn);
+    const [welcomeMessageText, setWelcomeMessageText] = React.useState(props.welcomeMessageText);
+    const [welcomeMessageSender, setWelcomeMessageSender] = React.useState(
+        props.welcomeMessageSender,
+    );
+    const [triedToSend, setTriedToSend] = React.useState(false);
+    const [welcomeMessageSenderError, setWelcomeMessageSenderError] = React.useState(true);
+    const [welcomeMessageTextError, setWelcomeMessageTextError] = React.useState(true);
 
-class AdvancedSettingsInner extends React.Component<
-    AdvancedSettingsInnerProps,
-    AdvancedSettingsInnerState
-> {
-    constructor(props: AdvancedSettingsInnerProps) {
-        super(props);
+    const finalWelcomeMessageSenderError = triedToSend && welcomeMessageSenderError;
+    const finalWelcomeMessageTextError = triedToSend && welcomeMessageTextError;
 
-        this.state = {
-            isOpen: true,
-            welcomeMessageIsOn: props.welcomeMessageIsOn,
-            welcomeMessageText: props.welcomeMessageText,
-            welcomeMessageSender: props.welcomeMessageSender,
-            welcomeMessageError: false,
-        };
-    }
-
-    handleSwitchWelcomeMsg = () => {
-        this.setState({
-            welcomeMessageIsOn: !this.state.welcomeMessageIsOn,
-        });
-    };
-
-    welcomeMsgOnChange = (data: string) => {
-        this.setState({
-            welcomeMessageText: data === '' ? null : data,
-            welcomeMessageError: false,
-        });
-    };
-
-    welcomMsgSenderOnChange = (data: any) => {
+    const welcomeMsgSenderOnChange = (data: any) => {
         let sender: Room_room_SharedRoom_welcomeMessage_sender | null = null;
         if (data) {
             sender = {
@@ -78,111 +53,136 @@ class AdvancedSettingsInner extends React.Component<
                 __typename: 'User',
             };
         }
-        this.setState({
-            welcomeMessageSender: sender,
-        });
+
+        setWelcomeMessageSenderError(!data);
+        setWelcomeMessageSender(sender);
     };
 
-    render() {
-        const {
-            isOpen,
-            welcomeMessageIsOn,
-            welcomeMessageText,
-            welcomeMessageSender,
-            welcomeMessageError,
-        } = this.state;
+    const welcomeMsgOnChange = (data: string) => {
+        setWelcomeMessageText(data === '' ? null : data);
+        setWelcomeMessageSenderError(false);
+        setWelcomeMessageTextError(false);
+        setWelcomeMessageTextError(!data);
+    };
 
-        let msgSender: any = welcomeMessageSender;
+    let msgSender: any = welcomeMessageSender;
 
-        if (welcomeMessageSender) {
-            msgSender = {
-                value: welcomeMessageSender.id,
-                label: welcomeMessageSender.name,
-            };
-        }
+    if (welcomeMessageSender) {
+        msgSender = {
+            value: welcomeMessageSender.id,
+            label: welcomeMessageSender.name,
+        };
+    }
 
-        const { props } = this;
-        const selectOptions = props.canChangeAdvancedSettingsMembersUsers.map(
-            (user: Room_room_SharedRoom_members_user) => {
-                return { value: user.id, label: user.name };
-            },
-        );
-        return (
-            <XModalForm
-                isOpen={isOpen}
-                scrollableContent={true}
-                alsoUseBottomCloser={true}
-                targetQuery="advancedSettings"
-                useTopCloser={true}
-                autoClose={false}
-                title="Advanced settings"
-                defaultAction={async data => {
-                    const newSocialImage = data.input.socialImageRef;
+    const selectOptions = props.canChangeAdvancedSettingsMembersUsers.map(
+        (user: Room_room_SharedRoom_members_user) => {
+            return { value: user.id, label: user.name };
+        },
+    );
 
-                    await props.alter({
-                        variables: {
-                            roomId: props.roomId,
-                            input: {
-                                ...(newSocialImage && newSocialImage.uuid !== props.socialImage
-                                    ? {
-                                          socialImageRef: sanitizeImageRef(newSocialImage),
-                                      }
-                                    : {}),
-                            },
+    return (
+        <XModalForm
+            isOpen={isOpen}
+            scrollableContent={true}
+            alsoUseBottomCloser={true}
+            targetQuery="advancedSettings"
+            useTopCloser={true}
+            autoClose={false}
+            title="Advanced settings"
+            defaultAction={async data => {
+                if (welcomeMessageSenderError || welcomeMessageTextError) {
+                    setTriedToSend(true);
+                    return;
+                }
+                const newSocialImage = data.input.socialImageRef;
+
+                await props.alter({
+                    variables: {
+                        roomId: props.roomId,
+                        input: {
+                            ...(newSocialImage && newSocialImage.uuid !== props.socialImage
+                                ? {
+                                      socialImageRef: sanitizeImageRef(newSocialImage),
+                                  }
+                                : {}),
                         },
-                    });
-
-                    await props.updateWelcomeMessage({
-                        variables: {
-                            roomId: props.roomId,
-                            welcomeMessageIsOn: welcomeMessageIsOn,
-                            welcomeMessageSender: welcomeMessageSender
-                                ? welcomeMessageSender!!.id
-                                : null,
-                            welcomeMessageText: welcomeMessageText,
-                        },
-                    });
-                }}
-                defaultData={{
-                    input: {
-                        welcomeMessageIsOn: welcomeMessageIsOn ? 'true' : 'false',
-                        welcomeMessageText: welcomeMessageText,
-                        welcomeMessageSender: welcomeMessageSender,
-                        socialImageRef: props.socialImage ? { uuid: props.socialImage } : undefined,
                     },
-                }}
-            >
-                <XVertical separator={12}>
-                    <XView>Welcome message</XView>
-                    <XView>
-                        Send an automatic message in 1:1 chat to every new member who joins this
-                        group
-                    </XView>
+                });
+
+                await props.updateWelcomeMessage({
+                    variables: {
+                        roomId: props.roomId,
+                        welcomeMessageIsOn: welcomeMessageIsOn,
+                        welcomeMessageSender: welcomeMessageSender
+                            ? welcomeMessageSender!!.id
+                            : null,
+                        welcomeMessageText: welcomeMessageText,
+                    },
+                });
+
+                setIsOpen(false);
+            }}
+            defaultData={{
+                input: {
+                    welcomeMessageIsOn: welcomeMessageIsOn ? 'true' : 'false',
+                    welcomeMessageText: welcomeMessageText,
+                    welcomeMessageSender: welcomeMessageSender,
+                    socialImageRef: props.socialImage ? { uuid: props.socialImage } : undefined,
+                },
+            }}
+        >
+            <XView>
+                <XView fontSize={16} fontWeight="600">
+                    Welcome message
+                </XView>
+                <XView marginTop={4}>
+                    Send an automatic message in 1:1 chat to every new member who joins this group
+                </XView>
+                <XView marginTop={17}>
                     <XCheckbox
                         label={welcomeMessageIsOn ? 'On' : 'Off'}
                         checked={welcomeMessageIsOn}
-                        onChange={this.handleSwitchWelcomeMsg}
+                        onChange={() => setWelcomeMessageIsOn(!welcomeMessageIsOn)}
                         switcher={true}
                     />
-                    {welcomeMessageIsOn && (
-                        <>
+                </XView>
+                {welcomeMessageIsOn && (
+                    <>
+                        <XView marginTop={25}>
                             <XSelect
                                 options={selectOptions}
                                 value={msgSender}
-                                onChange={this.welcomMsgSenderOnChange}
+                                onChange={welcomeMsgSenderOnChange}
+                                invalid={finalWelcomeMessageSenderError}
                             />
+                            {finalWelcomeMessageSenderError && (
+                                <XView color="#d75454" paddingLeft={17} marginTop={8}>
+                                    Please choose who will send the Welcome message
+                                </XView>
+                            )}
+                        </XView>
+                        <XView marginTop={16}>
                             <XTextArea
+                                invalid={finalWelcomeMessageTextError}
                                 placeholder="Text message"
-                                onChange={this.welcomeMsgOnChange}
+                                onChange={welcomeMsgOnChange}
                                 value={welcomeMessageText || ''}
                             />
-                        </>
-                    )}
-                    <XView>Social sharing image</XView>
-                    <XView>
-                        Choose an image to display when sharing invite to this group on social
-                        networks
-                    </XView>
+                            {finalWelcomeMessageTextError && (
+                                <XView color="#d75454" paddingLeft={17} marginTop={8}>
+                                    Please enter the Welcome message text
+                                </XView>
+                            )}
+                        </XView>
+                    </>
+                )}
+                <XView marginTop={24} fontSize={16} fontWeight="600">
+                    Social sharing image
+                </XView>
+                <XView marginTop={4} fontSize={14}>
+                    Choose an image to display when sharing invite to this group on social networks
+                </XView>
+                <XView marginTop={16}>
                     <XAvatarUpload
                         cropParams="1:1, free"
                         field="input.socialImageRef"
@@ -191,11 +191,11 @@ class AdvancedSettingsInner extends React.Component<
                             change: 'Change social image',
                         }}
                     />
-                </XVertical>
-            </XModalForm>
-        );
-    }
-}
+                </XView>
+            </XView>
+        </XModalForm>
+    );
+};
 
 type AdvancedSettingsModalT = {
     socialImage: string | null;
