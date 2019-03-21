@@ -4,7 +4,10 @@ import { preprocessText } from '../../../../../utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XLink } from 'openland-x/XLink';
 import WebsiteIcon from 'openland-icons/website-2.svg';
-import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import {
+    FullMessage_GeneralMessage_attachments_MessageRichAttachment,
+    FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard,
+} from 'openland-api/Types';
 import { layoutMediaReverse } from '../../../../../utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import DeleteIcon from 'openland-icons/ic-close.svg';
@@ -15,6 +18,7 @@ import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSid
 import { emoji } from 'openland-y-utils/emoji';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
+import ImgThn from 'openland-icons/img-thn.svg';
 
 const Container = Glamorous(XLink)<{ isMobile: boolean }>(props => ({
     display: 'flex',
@@ -248,11 +252,140 @@ const InternalUrlCard = (props: InternalUrlCardInnerProps) => {
     return <InternalUrlCardInner {...props} isMobile={isMobile} />;
 };
 
+const Keyboard = React.memo(
+    ({
+        keyboard,
+    }: {
+        keyboard?: FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
+    }) => {
+        console.log(keyboard);
+        return (
+            <>
+                {!!keyboard &&
+                    keyboard.buttons.map((line, i) => (
+                        <XView
+                            key={i + ''}
+                            flexDirection="row"
+                            marginTop={4}
+                            alignSelf="stretch"
+                            marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}
+                        >
+                            {!!line &&
+                                line.map((button, j) => (
+                                    <XView
+                                        as="a"
+                                        marginTop={i !== 0 ? 4 : 0}
+                                        key={'button-' + i + '-' + j}
+                                        backgroundColor="rgba(244, 244, 244, 0.7)"
+                                        borderRadius={10}
+                                        marginLeft={j > 0 ? 4 : 0}
+                                        marginRight={j < line.length - 1 ? 4 : 0}
+                                        alignItems="center"
+                                        justifyContent="center"
+                                        height={41}
+                                        flexGrow={1}
+                                        hoverCursor="pointer"
+                                        href={button.url}
+                                    >
+                                        <XView
+                                            flexDirection="column"
+                                            justifyContent="center"
+                                            color={'#1790ff'}
+                                            fontSize={14}
+                                            fontWeight={'600'}
+                                        >
+                                            {button.title}
+                                        </XView>
+                                    </XView>
+                                ))}
+                        </XView>
+                    ))}
+            </>
+        );
+    },
+);
+
+type CardT = {
+    imageUrl?: string;
+    title: string;
+    subTitle: string;
+    description?: string | null;
+};
+
+const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
+    return (
+        <>
+            <XView
+                paddingTop={16}
+                paddingBottom={16}
+                paddingLeft={20}
+                paddingRight={20}
+                borderRadius={10}
+                backgroundColor={'rgba(244, 244, 244, 0.7)'}
+            >
+                <XView flexDirection="row">
+                    <XView marginRight={12}>
+                        {imageUrl ? (
+                            <XView
+                                as="img"
+                                width={40}
+                                height={40}
+                                borderRadius={20}
+                                src={imageUrl}
+                            />
+                        ) : (
+                            <ImgThn />
+                        )}
+                    </XView>
+                    <XView flexDirection="column" justifyContent="space-between" height={40}>
+                        <XView
+                            fontWeight={'600'}
+                            lineHeight={1.25}
+                            fontSize={16}
+                            color={'rgba(0, 0, 0)'}
+                        >
+                            {title}
+                        </XView>
+                        <XView fontSize={13} color={'rgba(0, 0, 0, 0.4)'}>
+                            {subTitle}
+                        </XView>
+                    </XView>
+                </XView>
+                {description && (
+                    <XView lineHeight={1.5} marginTop={8} color={'rgba(18, 30, 43, 0.9)'}>
+                        {description}
+                    </XView>
+                )}
+            </XView>
+        </>
+    );
+};
+
+const CardWithKeyboard = ({
+    card,
+    keyboard,
+}: {
+    card: CardT;
+    keyboard?: FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
+}) => {
+    return (
+        <XView marginTop={12}>
+            <Card {...card} />
+            {keyboard && (
+                <XView marginTop={8}>
+                    <Keyboard keyboard={keyboard} />
+                </XView>
+            )}
+        </XView>
+    );
+};
+
 const MessageUrlAugmentationComponentInner = React.memo(
     (props: MessageUrlAugmentationComponentProps & { isMobile: boolean }) => {
         let {
             isMobile,
             subTitle,
+            titleLink,
             titleLinkHostname,
             title,
             image,
@@ -260,6 +393,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
             icon,
             isMe,
             messageId,
+            keyboard,
         } = props;
 
         let href: string | undefined = props.titleLink || undefined;
@@ -304,6 +438,20 @@ const MessageUrlAugmentationComponentInner = React.memo(
                 image.metadata.imageHeight,
                 94,
                 94,
+            );
+        }
+
+        if (titleLink && titleLink.indexOf('joinChannel') !== -1) {
+            return (
+                <CardWithKeyboard
+                    card={{
+                        imageUrl: image!!.url,
+                        title: title!!,
+                        subTitle: subTitle!!,
+                        description: text,
+                    }}
+                    keyboard={keyboard}
+                />
             );
         }
 
