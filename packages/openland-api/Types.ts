@@ -1374,15 +1374,28 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions {
@@ -2091,15 +2104,28 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions {
@@ -2850,15 +2876,28 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -3603,15 +3642,28 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions {
@@ -4320,15 +4372,28 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions {
@@ -5079,15 +5144,28 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -6866,15 +6944,28 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 
 export type Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: Room_room_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -7645,15 +7736,28 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 
 export type RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -8630,15 +8734,28 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 
 export type ChatHistory_messages_GeneralMessage_quotedMessages = ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage | ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface ChatHistory_messages_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatHistory_messages_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: ChatHistory_messages_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ChatHistory_messages_GeneralMessage_reactions {
@@ -9709,15 +9826,28 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 
 export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -10627,15 +10757,28 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 
 export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -11542,15 +11685,28 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 
 export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -12460,15 +12616,28 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
 
 export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -13375,15 +13544,28 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 
 export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -14277,15 +14459,28 @@ export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_quoted
 
 export type RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_quotedMessages = RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_reactions {
@@ -15363,15 +15558,28 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 
 export type RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -16297,15 +16505,28 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 
 export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -18468,15 +18689,28 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
 
 export type Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages = Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: Organization_organization_rooms_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_reactions {
@@ -19547,15 +19781,28 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 
 export type OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages = OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_reactions {
@@ -21513,15 +21760,28 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 
 export type ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages = ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_reactions {
@@ -22434,15 +22694,28 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage {
 
 export type FullMessage_GeneralMessage_quotedMessages = FullMessage_GeneralMessage_quotedMessages_ServiceMessage | FullMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface FullMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface FullMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: FullMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface FullMessage_GeneralMessage_reactions {
@@ -23298,15 +23571,28 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
 
 export type OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages = OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: OrganizationFull_rooms_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_reactions {
@@ -24374,15 +24660,28 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
 
 export type RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -25145,15 +25444,28 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 
 export type RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_reactions {
@@ -26022,15 +26334,28 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 
 export type ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages = ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage | ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_reactions {
@@ -26739,15 +27064,28 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 
 export type ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages = ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage | ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_reactions {
@@ -27498,15 +27836,28 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 
 export type ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages = ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage;
 
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions_user {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions {

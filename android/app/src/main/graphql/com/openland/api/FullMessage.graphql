@@ -224,7 +224,7 @@ fragment FullMessage on ModernMessage {
       reaction
       user {
         __typename
-        ...UserTiny
+        ...UserShort
       }
     }
   }

@@ -197,7 +197,7 @@ export const FullMessage = gql`
 
             reactions{
                 user{
-                    ... UserTiny
+                    ... UserShort
                 }
                 reaction
             }
