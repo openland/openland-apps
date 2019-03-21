@@ -122,44 +122,56 @@ const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
                 },
             }}
         >
-            <XVertical separator={12}>
-                <XView>Welcome message</XView>
-                <XView>
+            <XView>
+                <XView fontSize={16} fontWeight="600">
+                    Welcome message
+                </XView>
+                <XView marginTop={4}>
                     Send an automatic message in 1:1 chat to every new member who joins this group
                 </XView>
-                <XCheckbox
-                    label={welcomeMessageIsOn ? 'On' : 'Off'}
-                    checked={welcomeMessageIsOn}
-                    onChange={handleSwitchWelcomeMsg}
-                    switcher={true}
-                />
+                <XView marginTop={17}>
+                    <XCheckbox
+                        label={welcomeMessageIsOn ? 'On' : 'Off'}
+                        checked={welcomeMessageIsOn}
+                        onChange={handleSwitchWelcomeMsg}
+                        switcher={true}
+                    />
+                </XView>
                 {welcomeMessageIsOn && (
                     <>
-                        <XSelect
-                            options={selectOptions}
-                            value={msgSender}
-                            onChange={welcomMsgSenderOnChange}
-                        />
-                        <XTextArea
-                            placeholder="Text message"
-                            onChange={welcomeMsgOnChange}
-                            value={welcomeMessageText || ''}
-                        />
+                        <XView marginTop={25}>
+                            <XSelect
+                                options={selectOptions}
+                                value={msgSender}
+                                onChange={welcomMsgSenderOnChange}
+                            />
+                        </XView>
+                        <XView marginTop={16}>
+                            <XTextArea
+                                placeholder="Text message"
+                                onChange={welcomeMsgOnChange}
+                                value={welcomeMessageText || ''}
+                            />
+                        </XView>
                     </>
                 )}
-                <XView>Social sharing image</XView>
-                <XView>
+                <XView marginTop={24} fontSize={16} fontWeight="600">
+                    Social sharing image
+                </XView>
+                <XView marginTop={4} fontSize={14}>
                     Choose an image to display when sharing invite to this group on social networks
                 </XView>
-                <XAvatarUpload
-                    cropParams="1:1, free"
-                    field="input.socialImageRef"
-                    placeholder={{
-                        add: 'Add social image',
-                        change: 'Change social image',
-                    }}
-                />
-            </XVertical>
+                <XView marginTop={16}>
+                    <XAvatarUpload
+                        cropParams="1:1, free"
+                        field="input.socialImageRef"
+                        placeholder={{
+                            add: 'Add social image',
+                            change: 'Change social image',
+                        }}
+                    />
+                </XView>
+            </XView>
         </XModalForm>
     );
 };
