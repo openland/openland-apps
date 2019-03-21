@@ -8,7 +8,7 @@ import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Platform, View, Text, TouchableOpacity } from 'react-native';
+import { Clipboard, Platform, View, Text, TouchableOpacity, Image } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
@@ -113,8 +113,17 @@ export class MobileMessenger {
 
         const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
 
+        const reactionsMap = {
+            '❤️': require('assets/reactions/ic-reaction-like.png'),
+            '👍': require('assets/reactions/ic-reaction-thumbsup.png'),
+            '😂': require('assets/reactions/ic-reaction-lol.png'),
+            '😱': require('assets/reactions/ic-reaction-wow.png'),
+            '😢': require('assets/reactions/ic-reaction-sad.png'),
+            '🤬': require('assets/reactions/ic-reaction-angry.png')
+        }
+
         builder.view((ctx: ZModalController) => (
-            <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={56} paddingHorizontal={10}>
+            <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={Platform.OS === 'android' ? 62 : 56} paddingHorizontal={10}>
                 {defaultReactions.map(r => (
                     <TouchableOpacity
                         onPress={() => {
@@ -122,7 +131,7 @@ export class MobileMessenger {
                             this.handleReactionSetUnset(message, r);
                         }}
                     >
-                        <Text style={{ fontSize: 30 }}>{r}</Text>
+                        <Image source={reactionsMap[r]} />
                     </TouchableOpacity>
                 ))}
             </View>
