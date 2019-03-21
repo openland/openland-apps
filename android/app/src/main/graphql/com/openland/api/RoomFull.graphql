@@ -80,6 +80,42 @@ fragment RoomFull on Room {
             }
             filePreview
           }
+          ... on MessageRichAttachment {
+            fallback
+            icon {
+              __typename
+              metadata {
+                __typename
+                imageFormat
+                imageHeight
+                imageWidth
+                isImage
+                mimeType
+                name
+                size
+              }
+              url
+            }
+            image {
+              __typename
+              metadata {
+                __typename
+                imageFormat
+                imageHeight
+                imageWidth
+                isImage
+                mimeType
+                name
+                size
+              }
+              url
+            }
+            subTitle
+            text
+            title
+            titleLink
+            titleLinkHostname
+          }
         }
         quotedMessages {
           __typename
@@ -189,6 +225,46 @@ fragment RoomFull on Room {
               }
             }
             edited
+          }
+        }
+        spans {
+          __typename
+          length
+          offset
+          ... on MessageSpanUserMention {
+            user {
+              __typename
+              id
+              name
+            }
+          }
+          ... on MessageSpanMultiUserMention {
+            users {
+              __typename
+              id
+              name
+            }
+          }
+          ... on MessageSpanRoomMention {
+            room {
+              __typename
+              ... on PrivateRoom {
+                id
+                user {
+                  __typename
+                  id
+                  name
+                }
+              }
+              ... on SharedRoom {
+                id
+                title
+              }
+            }
+          }
+          ... on MessageSpanLink {
+            text
+            url
           }
         }
       }
