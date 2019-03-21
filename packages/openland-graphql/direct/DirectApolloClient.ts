@@ -31,27 +31,30 @@ export class DirectApollolClient implements GraphqlClient {
             fetchPolicy = params.fetchPolicy
         }
         let source = this.client.client.watchQuery<TQuery, TVars>({ query: query.document, variables: vars, fetchPolicy: fetchPolicy })
-        let callback: ((args: { data?: TQuery, error?: Error }) => void) | undefined = undefined;
-        let subscription = source.subscribe({
-            next: (v) => {
-                if (callback) {
-                    if (v.errors) {
-                        callback({ error: convertError([...v.errors]) })
-                    } else {
-                        callback({ data: v.data });
-                    }
-                }
-            },
-            error: (e) => {
-                throwFatalError('Fatal error: Query Watch can\'t throw error')
-            },
-            complete: () => {
-                throwFatalError('Fatal error: Query Watch can\'t be completed')
-            }
-        });
+        // let callback: ((args: { data?: TQuery, error?: Error }) => void) | undefined = undefined;
         return {
             subscribe: (handler: ((args: { data?: TQuery, error?: Error }) => void)) => {
-                callback = handler
+                // callback = handler
+                let subscription = source.subscribe({
+                    next: (v) => {
+                        if (v.errors) {
+                            handler({ error: convertError([...v.errors]) })
+                        } else {
+                            handler({ data: v.data });
+                        }
+                    },
+                    error: (e) => {
+                        throwFatalError('Fatal error: Query Watch can\'t throw error')
+                    },
+                    complete: () => {
+                        throwFatalError('Fatal error: Query Watch can\'t be completed')
+                    }
+                });
+                return () => {
+                    if (!subscription.closed) {
+                        subscription.unsubscribe();
+                    }
+                }
             },
             currentResult: () => {
                 let res = source.currentResult();
@@ -72,11 +75,6 @@ export class DirectApollolClient implements GraphqlClient {
                     return ({ data: res.data as TQuery })
                 }
             },
-            destroy: () => {
-                if (!subscription.closed) {
-                    subscription.unsubscribe();
-                }
-            }
         }
     }
 

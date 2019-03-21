@@ -58,12 +58,9 @@ export class BaseApiClient {
 
         // Subscription
         React.useEffect(() => {
-            observableQuery.subscribe((args) => {
+            return observableQuery.subscribe((args) => {
                 setResponseId(x => x + 1)
             });
-            return () => {
-                observableQuery.destroy();
-            }
         }, [observableQuery]);
 
         return [observableQuery, currentResult]

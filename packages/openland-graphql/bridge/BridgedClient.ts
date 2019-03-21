@@ -30,7 +30,7 @@ export abstract class BridgedClient implements GraphqlClient {
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
         let id = this.nextKey();
         let watch = new BridgedQueryWatch();
-        let callback: ((args: { data?: TQuery, error?: Error }) => void) | undefined = undefined;
+        let callbacks = new Map<string, (args: { data?: TQuery, error?: Error }) => void>();
         let resolved = false;
         let resolve!: (data: TQuery) => void;
         let reject!: (error: Error) => void;
@@ -59,18 +59,22 @@ export abstract class BridgedClient implements GraphqlClient {
                     resolve(watch.value!);
                 }
             }
-            if (callback) {
+            for (let i of callbacks.values()) {
                 if (watch.hasError) {
-                    callback({ error: watch.error });
+                    i({ error: watch.error });
                 } else if (watch.hasValue) {
-                    callback({ data: watch.value });
+                    i({ data: watch.value });
                 }
             }
         });
         this.postQueryWatch(id, query, vars, params);
         return {
             subscribe: (handler: ((args: { data?: TQuery, error?: Error }) => void)) => {
-                callback = handler
+                let cbid = randomKey();
+                callbacks.set(cbid, handler);
+                return () => {
+                    callbacks.delete(cbid);
+                }
             },
             currentResult: () => {
                 if (watch.hasError) {
@@ -83,11 +87,11 @@ export abstract class BridgedClient implements GraphqlClient {
             result: () => {
                 return promise;
             },
-            destroy: () => {
-                this.queryWatches.delete(id);
-                this.handlers.delete(id);
-                this.postQueryWatchEnd(id);
-            }
+            // destroy: () => {
+            //     this.queryWatches.delete(id);
+            //     this.handlers.delete(id);
+            //     this.postQueryWatchEnd(id);
+            // }
         }
     }
 

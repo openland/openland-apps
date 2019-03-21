@@ -5,7 +5,7 @@ import { WorkerRequest, WorkerResponse } from './api/WorkerApi';
 export class WorkerApolloHost {
     private worker: WorkerInterface;
     private client: GraphqlClient;
-    private watches = new Map<string, GraphqlQueryWatch<{}>>();
+    private watches = new Map<string, () => void>();
     private subscriptions = new Map<string, GraphqlActiveSubscription<any, {}>>();
 
     constructor(client: GraphqlClient, worker: WorkerInterface) {
@@ -44,7 +44,6 @@ export class WorkerApolloHost {
         } else if (msg.type === 'watch') {
             let id = msg.id;
             let watch = this.client.queryWatch(msg.body, msg.variables, msg.params);
-            this.watches.set(msg.id, watch);
             let current = watch.currentResult();
             if (current) {
                 if (current.error) {
@@ -53,15 +52,17 @@ export class WorkerApolloHost {
                     this.postResult(id, current.data);
                 }
             }
-            watch.subscribe(({ data, error }) => {
+            let res = watch.subscribe(({ data, error }) => {
                 if (error) {
                     this.postError(id, error);
                 } else {
                     this.postResult(id, data);
                 }
-            })
+            });
+            this.watches.set(msg.id, res);
         } else if (msg.type === 'watch-destroy') {
-            this.watches.get(msg.id)!!.destroy();
+            this.watches.get(msg.id)!!();
+            this.watches.delete(msg.id);
         } else if (msg.type === 'subscribe') {
             let id = msg.id;
             let subscription = this.client.subscribe(msg.body, msg.variables);

@@ -37,10 +37,9 @@ export interface GraphqlActiveSubscription<TSubs, TVars> {
 };
 
 export interface GraphqlQueryWatch<TQuery> {
-    subscribe(handler: (args: GraphqlQueryResult<TQuery>) => void): void;
+    subscribe(handler: (args: GraphqlQueryResult<TQuery>) => void): () => void;
     currentResult(): GraphqlQueryResult<TQuery> | undefined;
     result(): Promise<GraphqlQueryResult<TQuery>>;
-    destroy(): void;
 };
 
 export interface OperationParameters {
