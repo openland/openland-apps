@@ -112,12 +112,12 @@ export const FullMessage = gql`
                     length
                     ...on MessageSpanUserMention{
                         user{
-                            ...UserTiny
+                            ...UserShort
                         }
                     }
                     ...on MessageSpanMultiUserMention{
                         users{
-                            ...UserTiny
+                            ...UserShort
                         }
                     }
                     ...on MessageSpanRoomMention{
@@ -197,7 +197,7 @@ export const FullMessage = gql`
 
             reactions{
                 user{
-                    ... UserTiny
+                    ... UserShort
                 }
                 reaction
             }
@@ -210,12 +210,12 @@ export const FullMessage = gql`
             length
             ...on MessageSpanUserMention{
                 user{
-                    ...UserTiny
+                    ...UserShort
                 }
             }
             ...on MessageSpanMultiUserMention{
                 users{
-                    ...UserTiny
+                    ...UserShort
                 }
             }
             ...on MessageSpanRoomMention{
@@ -243,19 +243,19 @@ export const FullMessage = gql`
             serviceMetadata{
                 ...on InviteServiceMetadata {
                     users{
-                        ...UserTiny
+                        ...UserShort
                     }
                     invitedBy{
-                        ...UserTiny
+                        ...UserShort
                     }
                 }
 
                 ...on KickServiceMetadata {
                     user{
-                        ...UserTiny
+                        ...UserShort
                     }
                     kickedBy{
-                        ...UserTiny
+                        ...UserShort
                     }
                 }
 

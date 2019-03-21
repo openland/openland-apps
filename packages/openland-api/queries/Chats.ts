@@ -84,7 +84,6 @@ export const ChatWatchSubscription = gql`
         # }
     }
     ${FullMessage}
-    ${UserTiny}
     ${UserShort}
     ${RoomShort}
 `;
@@ -313,7 +312,6 @@ export const ChatHistoryQuery = gql`
     }
     ${FullMessage}
     ${UserShort}
-    ${UserTiny}
     ${RoomShort}
 `;
 
@@ -718,6 +716,6 @@ export const UpdateWelcomeMessageMutation = gql`
             welcomeMessageIsOn: $welcomeMessageIsOn
             welcomeMessageSender: $welcomeMessageSender
             welcomeMessageText: $welcomeMessageText
-        ) 
+        )
     }
 `;
