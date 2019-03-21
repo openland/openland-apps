@@ -6,6 +6,8 @@ import { emoji } from 'openland-y-utils/emoji';
 import { XModal, XModalCloser } from 'openland-x-modal/XModal';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import {
+    Room_room_PrivateRoom,
+    Room_room_SharedRoom,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile,
 } from 'openland-api/Types';
@@ -17,6 +19,8 @@ import { MessageTextComponent } from 'openland-web/components/messenger/message/
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
 import { withUnpinMessage } from 'openland-web/api/withPinMessage';
 import { XMutation } from 'openland-x/XMutation';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 
 interface UnpinButtonProps {
     variables: {
@@ -49,23 +53,32 @@ type attachmentType = Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachme
 export interface PinMessageComponentProps {
     pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage;
     chatId: string;
+    room: Room_room_SharedRoom | Room_room_PrivateRoom;
 }
 
 const PinMessageModal = (props: PinMessageComponentProps) => {
-    const [show, handleShow] = React.useState(false);
-
-    const handleClose = () => {
-        handleShow(false);
-    };
-
-    const target = (
-        <XView cursor="pointer">
-            <ExpandIcon />
-        </XView>
-    );
-
+    const { room } = props;
     const { pinMessage } = props;
     const { sender, message } = pinMessage;
+    let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;
+    const userContext = React.useContext(UserInfoContext);
+    const myId = userContext!!.user!!.id!!;
+
+    let usersCanUnpinMessage = [];
+    let canMeUnpinMessage = false;
+    if (sharedRoom) {
+        usersCanUnpinMessage = getWelcomeMessageSenders({
+            chat: sharedRoom,
+        });
+    }
+    if (usersCanUnpinMessage.find(i => i.id === myId) !== undefined) {
+        canMeUnpinMessage = true;
+    }
+
+    if ((room as Room_room_SharedRoom).kind === 'GROUP' && pinMessage.sender.id === myId) {
+        canMeUnpinMessage = true;
+    }
+
     let attachment: attachmentType | null = null;
 
     if (
@@ -127,7 +140,9 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
                                 )}
                             </XView>
                             <XView flexDirection="row" alignItems="center">
-                                <UnpinButton variables={{ chatId: props.chatId }} />
+                                {canMeUnpinMessage && (
+                                    <UnpinButton variables={{ chatId: props.chatId }} />
+                                )}
                                 <XModalCloser autoClose={true} />
                             </XView>
                         </XView>
@@ -212,7 +227,14 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
             </XView>
         </XView>
     );
-    return <XModal isOpen={show} target={target} body={body} footer={null} />;
+
+    const target = (
+        <XView cursor="pointer">
+            <ExpandIcon />
+        </XView>
+    );
+
+    return <XModal body={body} target={target} footer={null} />;
 };
 
 const PinMessageText = (props: { message: string }) => (
@@ -302,7 +324,11 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                         </XView>
                     </XView>
                 </XView>
-                <PinMessageModal pinMessage={props.pinMessage} chatId={props.chatId} />
+                <PinMessageModal
+                    pinMessage={props.pinMessage}
+                    chatId={props.chatId}
+                    room={props.room}
+                />
             </XView>
             <XView height={1} width="100%" flexShrink={0} backgroundColor="#ececec" />
         </XView>

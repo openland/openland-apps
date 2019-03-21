@@ -20,6 +20,8 @@ import {
     SharedRoomKind,
     PostMessageType,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
+    Room_room_SharedRoom,
+    Room_room_PrivateRoom,
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../api/withDeleteMessage';
@@ -59,6 +61,7 @@ interface MessagesComponentProps {
     objectId?: string;
     cloudImageUuid?: string;
     pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null;
+    room: Room_room_SharedRoom | Room_room_PrivateRoom;
 }
 
 interface MessagesComponentState {
@@ -331,7 +334,11 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 {!this.state.hideChat && (
                     <>
                         {this.props.pinMessage && (
-                            <PinMessageComponent pinMessage={this.props.pinMessage} chatId={this.props.conversationId} />
+                            <PinMessageComponent
+                                pinMessage={this.props.pinMessage}
+                                chatId={this.props.conversationId}
+                                room={this.props.room}
+                            />
                         )}
                         <ConversationMessagesComponent
                             isActive={this.props.isActive}
@@ -389,6 +396,7 @@ interface MessengerRootComponentProps {
     objectId?: string;
     cloudImageUuid?: string;
     pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null;
+    room: Room_room_SharedRoom | Room_room_PrivateRoom;
 }
 
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
@@ -407,6 +415,7 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
             objectId={props.objectId}
             cloudImageUuid={props.cloudImageUuid}
             pinMessage={props.pinMessage}
+            room={props.room}
         />
     );
 };

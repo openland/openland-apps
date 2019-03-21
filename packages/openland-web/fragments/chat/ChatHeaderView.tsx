@@ -18,7 +18,7 @@ import CloseChatIcon from 'openland-icons/ic-chat-back.svg';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { HideOnDesktop } from 'openland-web/components/Adaptive';
 import { withRoom } from 'openland-web/api/withRoom';
-import { withUserInfo } from 'openland-web/components/UserInfo';
+import { UserInfoContext, withUserInfo } from 'openland-web/components/UserInfo';
 import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
 import { XLoader } from 'openland-x/XLoader';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
@@ -141,19 +141,34 @@ const RowWithSeparators = ({
 export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     const state = React.useContext(MessagesStateContext);
+    const userContext = React.useContext(UserInfoContext);
+    const myId = userContext!!.user!!.id!!;
+
+    let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;
+    let privateRoom = room.__typename === 'PrivateRoom' ? (room as Room_room_PrivateRoom) : null;
 
     if (state.useForwardHeader) {
+        let usersCanPinMessage = [];
+        let canMePinMessage = false;
+        if (sharedRoom) {
+            usersCanPinMessage = getWelcomeMessageSenders({
+                chat: sharedRoom,
+            });
+        }
+        if (usersCanPinMessage.find(i => i.id === myId) !== undefined) {
+            canMePinMessage = true
+        }
         return (
             <ChatForwardHeaderView
                 roomId={room.id}
                 me={me}
                 privateRoom={room.__typename === 'PrivateRoom'}
+                publicRoom={sharedRoom ? (room as Room_room_SharedRoom).kind === 'PUBLIC' : false}
+                canMePinMessage={canMePinMessage}
+                myId={myId}
             />
         );
     }
-
-    let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;
-    let privateRoom = room.__typename === 'PrivateRoom' ? (room as Room_room_PrivateRoom) : null;
 
     let headerPath: string | undefined = undefined;
     let subtitle = undefined;
@@ -274,7 +289,7 @@ interface MessengerComponentLoaderProps {
 }
 
 const ChatHeaderViewLoaderInner = withRoom(withUserInfo(
-    ({ user, data, loading }: MessengerComponentLoaderProps) => {
+    ({ user, data }: MessengerComponentLoaderProps) => {
         if (!data || !data.room) {
             return <XLoader loading={true} />;
         }

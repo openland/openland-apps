@@ -110,6 +110,7 @@ class MessagengerFragmentInner extends React.PureComponent<
                             pinMessage={pinMessage}
                             conversationId={data.room!.id}
                             conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
+                            room={data.room}
                         />
                     </XView>
                 </XView>

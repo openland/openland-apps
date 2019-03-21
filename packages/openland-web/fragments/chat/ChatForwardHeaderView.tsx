@@ -64,8 +64,28 @@ export const ChatForwardHeaderView = (props: {
     me: UserShort;
     roomId: string;
     privateRoom: boolean;
+    publicRoom: boolean;
+    canMePinMessage: boolean;
+    myId: string;
 }) => {
     const state = React.useContext(MessagesStateContext);
+    let pinMessageAccess = false;
+    let { selectedMessages } = state;
+    let selectedMessageArr = Array.from(selectedMessages);
+    const firstStepPinAccess =
+        !props.privateRoom &&
+        selectedMessages.size === 1 &&
+        !selectedMessageArr[0].isService &&
+        selectedMessageArr[0].sender.id === props.myId;
+
+    if (firstStepPinAccess && !props.publicRoom) {
+        pinMessageAccess = true;
+    }
+
+    if (firstStepPinAccess && props.publicRoom && props.canMePinMessage) {
+        pinMessageAccess = true;
+    }
+
     const { forwardMessagesId, resetAll } = state;
     if (forwardMessagesId && forwardMessagesId.size) {
         let size = forwardMessagesId.size;
@@ -107,17 +127,15 @@ export const ChatForwardHeaderView = (props: {
                             />
                         )}
                     </XWithRole>
-                    {!props.privateRoom &&
-                        state.selectedMessages.size === 1 &&
-                        !Array.from(state.selectedMessages)[0].isService && (
-                            <PinMessageButton
-                                variables={{
-                                    chatId: props.roomId,
-                                    messageId: Array.from(state.selectedMessages)[0].id!,
-                                }}
-                                onSuccess={state.resetAll}
-                            />
-                        )}
+                    {pinMessageAccess && (
+                        <PinMessageButton
+                            variables={{
+                                chatId: props.roomId,
+                                messageId: Array.from(state.selectedMessages)[0].id!,
+                            }}
+                            onSuccess={state.resetAll}
+                        />
+                    )}
                     <XButton
                         text="Reply"
                         style="primary"
