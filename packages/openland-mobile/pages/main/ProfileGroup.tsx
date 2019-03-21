@@ -114,9 +114,11 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
 
     const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member';
 
+    const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
+
     return (
         <>
-            {room.canEdit && <SHeaderButton title="Manage" icon={require('assets/ic-more-24.png')} onPress={handleManageClick} />}
+            {room.canEdit && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
 
             <ZListItemHeader
                 titleIcon={room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
