@@ -446,7 +446,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
             return (
                 <CardWithKeyboard
                     card={{
-                        imageUrl: image!!.url,
+                        imageUrl: image ? image.url : undefined,
                         title: title!!,
                         subTitle: subTitle!!,
                         description: text,
