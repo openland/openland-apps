@@ -57,7 +57,6 @@ const Close = Glamorous(XLink)({
 const UserInfoWrapper = Glamorous(XHorizontal)({
     margin: 'auto',
     marginTop: 50,
-    marginBottom: 24,
     flexShrink: 0,
     '@media (max-height: 800px)': {
         marginTop: 15,
@@ -74,11 +73,11 @@ const Text = Glamorous.div<{ width?: number; autoMargin?: boolean }>(props => ({
 }));
 
 const UserAvatar = Glamorous(XAvatar)({
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
     '& img': {
-        width: '20px !important',
-        height: '20px !important',
+        width: '24px !important',
+        height: '24px !important',
     },
 });
 
@@ -99,7 +98,7 @@ const ImageWrapper = Glamorous.div<{ hasFooter: boolean }>(({ hasFooter }) => {
         height: 367,
         position: 'absolute',
         right: 0,
-        bottom: hasFooter ? 60 - 18 : 18,
+        bottom: hasFooter ? 60 : 18,
         left: 0,
         overflow: 'hidden',
         'z-index': '-1!important',
@@ -251,13 +250,13 @@ export const RoomsInviteComponent = ({
             )}
             <XView flexDirection="column">
                 {invite && invite.invitedByUser ? (
-                    <UserInfoWrapper separator={6} justifyContent="center">
+                    <UserInfoWrapper separator={6} justifyContent="center" alignItems="center">
                         <UserAvatar
                             cloudImageUuid={invite.invitedByUser.photo || undefined}
                             style="colorus"
                             objectName={invite.invitedByUser.name}
                             objectId={invite.invitedByUser.id}
-                            size="l-small"
+                            size="small"
                         />
                         <Text>{invite.invitedByUser.name} invites you to join group</Text>
                     </UserInfoWrapper>
@@ -270,7 +269,7 @@ export const RoomsInviteComponent = ({
                         style="room"
                         objectName={room.title}
                         objectId={room.id}
-                        size="large"
+                        size="x-medium"
                     />
                     <XView marginTop={28} fontSize={24} fontWeight={'600'}>
                         {room.title}
