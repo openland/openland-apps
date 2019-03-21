@@ -54,6 +54,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     <ZTextInput
                         placeholder="Organization name"
                         field="input.name"
+                        autoFocus={true}
                     />
                 </ZAvatarPickerInputsGroup>
                 <View height={20} />
