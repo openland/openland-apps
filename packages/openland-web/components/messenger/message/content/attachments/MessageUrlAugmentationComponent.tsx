@@ -258,7 +258,6 @@ const Keyboard = React.memo(
     }: {
         keyboard?: FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
     }) => {
-        console.log(keyboard);
         return (
             <>
                 {!!keyboard &&
@@ -266,6 +265,7 @@ const Keyboard = React.memo(
                         <XView
                             key={i + ''}
                             flexDirection="row"
+                            maxWidth={540}
                             marginTop={4}
                             alignSelf="stretch"
                             marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}
@@ -316,6 +316,7 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
     return (
         <>
             <XView
+                maxWidth={540}
                 paddingTop={16}
                 paddingBottom={16}
                 paddingLeft={20}
