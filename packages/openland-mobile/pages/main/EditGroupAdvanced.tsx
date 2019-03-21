@@ -11,7 +11,6 @@ import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { Modals } from './modals/Modals';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
-import { Room_room_SharedRoom } from 'openland-api/Types';
 import { ZAvatarPicker, ZAvatarPickerRenderProps } from 'openland-mobile/components/ZAvatarPicker';
 import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { ZImage } from 'openland-mobile/components/ZImage';
@@ -42,12 +41,13 @@ const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
 
 const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
-    let group = getClient().useRoom({ id: props.router.params.id }).room;
+    let rawGroup = getClient().useRoom({ id: props.router.params.id }).room;
+    let group = (rawGroup && rawGroup.__typename === 'SharedRoom') ? rawGroup : undefined;
 
-    const [ welcomeMessageEnabled, setWelcomeMessageEnabled ] = React.useState((group && group.__typename === 'SharedRoom' && group.welcomeMessage) ? group.welcomeMessage.isOn : false);
-    const [ welcomeMessageSender, setWelcomeMessageSender ] = React.useState((group && group.__typename === 'SharedRoom' && group.welcomeMessage && group.welcomeMessage.sender) ? group.welcomeMessage.sender : undefined);
+    const [ welcomeMessageEnabled, setWelcomeMessageEnabled ] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.isOn : false);
+    const [ welcomeMessageSender, setWelcomeMessageSender ] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.sender : undefined);
 
-    if (group && group.__typename === 'SharedRoom') {
+    if (group) {
         let currentSocialImage = group.socialImage;
 
         return (
@@ -126,7 +126,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
 
                                             props.router.back();
                                         },
-                                        getWelcomeMessageSenders({ chat: group as Room_room_SharedRoom }),
+                                        getWelcomeMessageSenders({ chat: group }),
                                         'Choose sender',
                                         welcomeMessageSender ? welcomeMessageSender.id : undefined,
                                     );
