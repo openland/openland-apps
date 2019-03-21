@@ -55,7 +55,7 @@ import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -83,9 +83,6 @@ export const AdminTools = withRoomAdminTools(
 ) as React.ComponentType<{ id: string; variables: { id: string } }>;
 
 const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
-    let ctx = React.useContext(UserInfoContext);
-    const myUserId = ctx!!.user!!.id;
-
     let meMember = chat.membership === 'MEMBER';
     let leaveText = 'Leave group';
 
@@ -95,11 +92,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
         chat,
     });
 
-    const canSeeAdvancedSettings =
-        canChangeAdvancedSettingsMembersUsers
-            .filter(({ id }: { id: string }) => id)
-            .indexOf(myUserId) !== -1;
-
+    const canSeeAdvancedSettings = checkCanSeeAdvancedSettings({ chat });
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -145,8 +138,9 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                         >
                                             {leaveText}
                                         </XMenuItem>
-                                        <XMenuItemSeparator />
+
                                         <XWithRole role="super-admin" or={canSeeAdvancedSettings}>
+                                            <XMenuItemSeparator />
                                             <XMenuItem
                                                 query={{
                                                     field: 'advancedSettings',
@@ -155,9 +149,12 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                             >
                                                 Advanced settings
                                             </XMenuItem>
-                                        </XWithRole>
-                                        <XWithRole role="super-admin">
-                                            <AdminTools id={chat.id} variables={{ id: chat.id }} />
+                                            <XWithRole role="super-admin">
+                                                <AdminTools
+                                                    id={chat.id}
+                                                    variables={{ id: chat.id }}
+                                                />
+                                            </XWithRole>
                                         </XWithRole>
                                     </>
                                 }
