@@ -23,6 +23,8 @@ interface UrlAugmentationContentProps {
     message: DataSourceMessageItem;
     attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
     imageLayout?: { width: number, height: number };
+    compensateBubble?: boolean;
+    maxWidth?: number;
     onUserPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
@@ -95,7 +97,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
             }
         }
 
-        let maxWidth = (imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming);
+        let maxWidth = this.props.maxWidth || ((imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
         return (
 
             <ASFlex flexDirection="column" alignItems="stretch" alignSelf={'stretch'}>

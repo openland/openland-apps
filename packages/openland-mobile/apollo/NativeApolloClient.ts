@@ -84,6 +84,6 @@ export class NativeApolloClient extends BridgedClient {
     protected postWriteQuery(id: string, data: any, query: any, vars: any) {
         console.log('postWriteQuery');
         let name = query.document.definitions[0].name.value;
-        NativeGraphQL.write(this.key, data, id, name, vars ? vars : {});
+        NativeGraphQL.write(this.key, id, data, name, vars ? vars : {});
     }
 }

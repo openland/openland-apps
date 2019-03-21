@@ -68,9 +68,9 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
                 onUserPress: messenger.handleAvatarClick,
             }, Dimensions.get('screen').width - 32);
             return (
-                <ASFlex flexGrow={1} flexDirection="column">
+                <ASFlex flexGrow={1} flexDirection="column" alignItems="stretch" marginLeft={8} marginRight={8}>
 
-                    <ASFlex marginTop={15} marginBottom={15} onPress={() => messenger.handleAvatarClick(message.senderId)} flexDirection="row">
+                    <ASFlex alignItems="stretch" marginTop={15} marginBottom={15} onPress={() => messenger.handleAvatarClick(message.senderId)} flexDirection="row">
                         <ASAvatar
                             marginRight={15}
                             size={40}
@@ -108,7 +108,7 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
             {pinnedDataView && <ASSafeAreaContext.Consumer>
                 {area => (
                     <ASListView
-                        style={{ width: '100%', height: '100%', marginLeft: 8 }}
+                        style={{ width: '100%', height: '100%' }}
                         dataView={pinnedDataView!}
                         contentPaddingBottom={area.bottom}
                         contentPaddingTop={area.top}

@@ -27,7 +27,18 @@ fragment FullMessage on ModernMessage {
     ... on MessageSpanRoomMention {
       room {
         __typename
-        ...RoomShort
+        ... on PrivateRoom {
+          id
+          user {
+            __typename
+            id
+            name
+          }
+        }
+        ... on SharedRoom {
+          id
+          title
+        }
       }
     }
     ... on MessageSpanLink {
@@ -131,7 +142,18 @@ fragment FullMessage on ModernMessage {
         ... on MessageSpanRoomMention {
           room {
             __typename
-            ...RoomShort
+            ... on PrivateRoom {
+              id
+              user {
+                __typename
+                id
+                name
+              }
+            }
+            ... on SharedRoom {
+              id
+              title
+            }
           }
         }
         ... on MessageSpanLink {
