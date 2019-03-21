@@ -5,46 +5,50 @@ import { AdminTools } from 'openland-web/pages/main/profile/components/RoomProfi
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 
-export const HeaderMenu = (props: { room: Room_room_SharedRoom }) => (
-    <XOverflow
-        flat={true}
-        small={true}
-        placement="bottom-end"
-        content={
-            <>
-                <XWithRole role="super-admin" or={props.room.canEdit}>
+export const HeaderMenu = ({ room: { id, canEdit } }: { room: Room_room_SharedRoom }) => {
+    return (
+        <XOverflow
+            flat={true}
+            small={true}
+            placement="bottom-end"
+            content={
+                <>
+                    <XWithRole role="super-admin" or={canEdit}>
+                        <XMenuItem
+                            query={{
+                                field: 'editChat',
+                                value: 'true',
+                            }}
+                        >
+                            Settings
+                        </XMenuItem>
+                    </XWithRole>
+
                     <XMenuItem
                         query={{
-                            field: 'editChat',
-                            value: 'true',
+                            field: 'leaveFromChat',
+                            value: id,
                         }}
+                        style="danger"
                     >
-                        Settings
+                        Leave group
                     </XMenuItem>
-                </XWithRole>
-
-                <XMenuItem
-                    query={{
-                        field: 'leaveFromChat',
-                        value: props.room.id,
-                    }}
-                    style="danger"
-                >
-                    Leave group
-                </XMenuItem>
-                <XMenuItemSeparator />
-                <XMenuItem
-                    query={{
-                        field: 'advancedSettings',
-                        value: 'true',
-                    }}
-                >
-                    Advanced settings
-                </XMenuItem>
-                <XWithRole role="super-admin">
-                    <AdminTools id={props.room.id} variables={{ id: props.room.id }} />
-                </XWithRole>
-            </>
-        }
-    />
-);
+                    <XMenuItemSeparator />
+                    <XWithRole role="super-admin" or={canEdit}>
+                        <XMenuItem
+                            query={{
+                                field: 'advancedSettings',
+                                value: 'true',
+                            }}
+                        >
+                            Advanced settings
+                        </XMenuItem>
+                    </XWithRole>
+                    <XWithRole role="super-admin">
+                        <AdminTools id={id} variables={{ id }} />
+                    </XWithRole>
+                </>
+            }
+        />
+    );
+};

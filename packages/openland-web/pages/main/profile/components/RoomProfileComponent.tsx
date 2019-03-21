@@ -138,14 +138,16 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                             {leaveText}
                                         </XMenuItem>
                                         <XMenuItemSeparator />
-                                        <XMenuItem
-                                            query={{
-                                                field: 'advancedSettings',
-                                                value: 'true',
-                                            }}
-                                        >
-                                            Advanced settings
-                                        </XMenuItem>
+                                        <XWithRole role="super-admin" or={canEdit}>
+                                            <XMenuItem
+                                                query={{
+                                                    field: 'advancedSettings',
+                                                    value: 'true',
+                                                }}
+                                            >
+                                                Advanced settings
+                                            </XMenuItem>
+                                        </XWithRole>
                                         <XWithRole role="super-admin">
                                             <AdminTools id={chat.id} variables={{ id: chat.id }} />
                                         </XWithRole>

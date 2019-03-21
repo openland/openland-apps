@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { withAlterChat } from 'openland-web/api/withAlterChat';
 import { withUpdateWelcomeMessage } from 'openland-web/api/withUpdateWelcomeMessage';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
