@@ -12,15 +12,17 @@ import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile,
 } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
-import PinIcon from 'openland-icons/ic-pinned-message.svg';
-import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
-import AttachIcon from 'openland-icons/ic-attach-doc-blue.svg';
 import { MessageTextComponent } from 'openland-web/components/messenger/message/content/MessageTextComponent';
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
 import { withUnpinMessage } from 'openland-web/api/withPinMessage';
 import { XMutation } from 'openland-x/XMutation';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
+import IconFile from 'openland-icons/ic-pinfile-doc.svg';
+import IconImage from 'openland-icons/ic-pinfile-photo.svg';
+import PinIcon from 'openland-icons/ic-pinned-message.svg';
+import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
+import AttachIcon from 'openland-icons/ic-attach-doc-blue.svg';
 
 interface UnpinButtonProps {
     variables: {
@@ -187,7 +189,7 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
                                 hoverTextDecoration="none"
                                 href={`https://ucarecdn.com/${attachment.fileId}/${
                                     attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
-                                    }`}
+                                }`}
                             >
                                 <XView
                                     alignItems="center"
@@ -246,6 +248,8 @@ const PinMessageText = (props: { message: string }) => (
 
 export const PinMessageComponent = (props: PinMessageComponentProps) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
+    const { attachments } = props.pinMessage;
+    const attach = attachments[0] as attachmentType;
     return (
         <XView
             flexDirection="column"
@@ -308,12 +312,28 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                                 </XView>
                             )}
                         </XView>
-                        <XView color="rgba(0, 0, 0, 0.8)">
-                            <PinMessageText
-                                message={
-                                    props.pinMessage.message ? props.pinMessage.message : 'File'
-                                }
-                            />
+                        <XView color="rgba(0, 0, 0, 0.8)" fontSize={14}>
+                            {props.pinMessage.message && (
+                                <PinMessageText message={props.pinMessage.message} />
+                            )}
+                            {attach &&
+                                attach.fileMetadata.isImage && (
+                                    <XView flexDirection="row" alignItems="center">
+                                        <XView marginRight={6}>
+                                            <IconImage />
+                                        </XView>
+                                        <XView>Image</XView>
+                                    </XView>
+                                )}
+                            {attach &&
+                                !attach.fileMetadata.isImage && (
+                                    <XView flexDirection="row" alignItems="center">
+                                        <XView marginRight={6}>
+                                            <IconFile />
+                                        </XView>
+                                        <XView>Document</XView>
+                                    </XView>
+                                )}
                         </XView>
                     </XView>
                 </XView>
