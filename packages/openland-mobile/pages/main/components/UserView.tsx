@@ -23,7 +23,7 @@ export const UserView = (props: UserViewProps) => {
     return (
         <ZListItemBase key={props.user.id} separator={false} height={60} onPress={props.onPress} onLongPress={props.onLongPress} enabled={props.enabled}>
             <View paddingLeft={16} paddingRight={16} alignSelf="center" opacity={props.enabled === false ? 0.5 : 1}>
-                <ZAvatar size={42} src={props.user.photo} userId={props.user.id} placeholderKey={props.user.id} placeholderTitle={props.user.name} online={props.user.online} />
+                <ZAvatar size={42} src={props.user.picture} userId={props.user.id} placeholderKey={props.user.id} placeholderTitle={props.user.name} online={props.user.online} />
             </View>
             <View alignSelf="center" flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column" opacity={props.enabled === false ? 0.5 : 1} paddingRight={props.paddingRight}>
                 <View flexDirection="row">

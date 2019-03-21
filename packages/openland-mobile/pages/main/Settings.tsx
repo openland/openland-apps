@@ -25,7 +25,7 @@ let SettingsContent = ((props: PageProps) => {
     return (
         <SScrollView>
             <ZListItemHeader
-                photo={resp.me!!.photo}
+                photo={resp.me!!.picture}
                 id={resp!!.me!!.id}
                 userId={resp!!.me!!.id}
                 title={resp!!.me!!.name}

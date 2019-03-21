@@ -15,13 +15,13 @@ fragment FullMessage on ModernMessage {
     ... on MessageSpanUserMention {
       user {
         __typename
-        ...UserShort
+        ...UserTiny
       }
     }
     ... on MessageSpanMultiUserMention {
       users {
         __typename
-        ...UserShort
+        ...UserTiny
       }
     }
     ... on MessageSpanRoomMention {
@@ -130,13 +130,13 @@ fragment FullMessage on ModernMessage {
         ... on MessageSpanUserMention {
           user {
             __typename
-            ...UserShort
+            ...UserTiny
           }
         }
         ... on MessageSpanMultiUserMention {
           users {
             __typename
-            ...UserShort
+            ...UserTiny
           }
         }
         ... on MessageSpanRoomMention {
@@ -224,7 +224,7 @@ fragment FullMessage on ModernMessage {
       reaction
       user {
         __typename
-        ...UserShort
+        ...UserTiny
       }
     }
   }
@@ -234,21 +234,21 @@ fragment FullMessage on ModernMessage {
       ... on InviteServiceMetadata {
         invitedBy {
           __typename
-          ...UserShort
+          ...UserTiny
         }
         users {
           __typename
-          ...UserShort
+          ...UserTiny
         }
       }
       ... on KickServiceMetadata {
         kickedBy {
           __typename
-          ...UserShort
+          ...UserTiny
         }
         user {
           __typename
-          ...UserShort
+          ...UserTiny
         }
       }
       ... on TitleChangeServiceMetadata {

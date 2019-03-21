@@ -7,7 +7,7 @@ export const UserFull = gql`
         name
         firstName
         lastName
-        photo
+        picture
         phone
         email
         website

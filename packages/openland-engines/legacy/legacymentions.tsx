@@ -1,7 +1,9 @@
-import { FullMessage_GeneralMessage_spans_MessageSpanUserMention, UserShort } from 'openland-api/Types';
+import {
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
+    UserShort,
+} from 'openland-api/Types';
 
 export const prepareLegacyMentions = (message: string, intermediateMentions: UserShort[]) => {
-
     if (message.length === 0) {
         return [];
     }
@@ -31,10 +33,19 @@ export const prepareLegacyMentions = (message: string, intermediateMentions: Use
                 __typename: 'MessageSpanUserMention',
                 offset: index,
                 length: mentionText.length,
-                user: { __typename: 'User', name: mention.name, id: mention.id, isYou: true, firstName: mention.firstName, lastName: mention.lastName, shortname: mention.shortname, picture: mention.photo }
+                user: {
+                    __typename: 'User',
+                    name: mention.name,
+                    id: mention.id,
+                    isYou: true,
+                    firstName: mention.firstName,
+                    lastName: mention.lastName,
+                    shortname: mention.shortname,
+                    picture: mention.picture,
+                },
             });
         }
     }
 
     return spans;
-}
+};

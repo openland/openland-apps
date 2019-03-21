@@ -60,7 +60,7 @@ export class UserAvatar extends React.PureComponent<{
                 style="colorus"
                 objectName={this.props.user.name}
                 objectId={this.props.user.id}
-                cloudImageUuid={this.props.user.photo || undefined}
+                cloudImageUuid={this.props.user.picture || undefined}
                 path={usrPath}
             />
         );

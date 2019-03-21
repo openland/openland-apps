@@ -47,7 +47,7 @@ export const MentionsRender = (props: RenderMentionsProps) => {
                                             <ZAvatar
                                                 userId={user.id}
                                                 online={user.online}
-                                                src={user.photo}
+                                                src={user.picture}
                                                 size={28}
                                                 placeholderKey={user.id}
                                                 placeholderTitle={user.name}

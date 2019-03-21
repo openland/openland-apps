@@ -251,7 +251,7 @@ export const SpansMessage = ({
                             name: span.user.name,
                             firstName: span.user.name,
                             lastName: null,
-                            photo: span.user.picture,
+                            picture: span.user.picture,
                             email: null,
                             online: false,
                             lastSeen: null,

@@ -84,6 +84,7 @@ export const ChatWatchSubscription = gql`
         # }
     }
     ${FullMessage}
+    ${UserTiny}
     ${UserShort}
     ${RoomShort}
 `;
@@ -311,6 +312,7 @@ export const ChatHistoryQuery = gql`
         }
     }
     ${FullMessage}
+    ${UserTiny}
     ${UserShort}
     ${RoomShort}
 `;

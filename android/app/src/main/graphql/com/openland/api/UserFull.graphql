@@ -13,7 +13,7 @@ fragment UserFull on User {
   name
   online
   phone
-  photo
+  picture
   primaryOrganization {
     __typename
     ...OrganizationShort

@@ -163,14 +163,14 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                         user={props.sender}
                         ref={userPopperRef}
                     >
-                        <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
+                        <XAvatar2 id={sender.id} title={sender.name} src={sender.picture} size={36} />
                     </UserPopper>
                 ) : (
                     <XView>{hover && <XDate value={date.toString()} format="time" />}</XView>
                 )}
             </PreambulaContainer>
         ),
-        [props.sender.isYou, props.sender, sender.id, sender.name, sender.photo, date, hover],
+        [props.sender.isYou, props.sender, sender.id, sender.name, sender.picture, date, hover],
     );
 
     const notCompactHeader = React.useMemo(
@@ -289,7 +289,7 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
 
     const preambula = (
         <NotCompactPreambulaContainer>
-            <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
+            <XAvatar2 id={sender.id} title={sender.name} src={sender.picture} size={36} />
         </NotCompactPreambulaContainer>
     );
 

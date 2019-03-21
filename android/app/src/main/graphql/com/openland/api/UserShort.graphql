@@ -9,7 +9,7 @@ fragment UserShort on User {
   lastSeen
   name
   online
-  photo
+  picture
   primaryOrganization {
     __typename
     ...OrganizationShort

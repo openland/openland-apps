@@ -112,7 +112,7 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
                             style="colorus"
                             objectName={props.sender!!.name}
                             objectId={props.sender!!.id}
-                            cloudImageUuid={props.sender ? props.sender.photo : undefined}
+                            cloudImageUuid={props.sender ? props.sender.picture : undefined}
                             path={usrPath}
                         />
                     </XView>
