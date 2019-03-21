@@ -91,8 +91,104 @@ export const RoomFull = gql`
                             filePreview
                         }
                     }
-                    quotedMessages {
+                    quotedMessages{
                         id
+                        date
+                        message
+                        sender {
+                            id
+                            name
+                        }
+                        message
+                        fallback
+                        spans{
+                            offset
+                            length
+                            ...on MessageSpanUserMention{
+                                user{
+                                    id
+                                    name
+                                }
+                            }
+                            ...on MessageSpanMultiUserMention{
+                                users{
+                                    id
+                                    name
+                                }
+                            }
+                            ...on MessageSpanRoomMention{
+                                room{
+                                    ... on PrivateRoom {
+                                        id
+                                        user {
+                                            id
+                                            name
+                                        }
+                                    } 
+                                    ... on SharedRoom {
+                                        id
+                                        title
+                                    }
+                                }
+                            }
+                            ...on MessageSpanLink{
+                                url
+                                text
+                            }
+                        }
+
+                        ...on GeneralMessage{
+                            edited
+                            attachments{
+                                fallback
+                                ...on MessageAttachmentFile{
+                                    fileId
+                                    fileMetadata{
+                                        name
+                                        mimeType
+                                        size
+                                        isImage
+                                        imageWidth
+                                        imageHeight
+                                        imageFormat
+                                    }
+                                    filePreview
+                                }
+
+                                ...on MessageRichAttachment{
+                                    title
+                                    subTitle
+                                    titleLink
+                                    titleLinkHostname
+                                    text
+                                    icon{
+                                        url
+                                        metadata{
+                                            name
+                                            mimeType
+                                            size
+                                            isImage
+                                            imageWidth
+                                            imageHeight
+                                            imageFormat
+                                        }
+                                    }
+                                    image{
+                                        url
+                                        metadata{
+                                            name
+                                            mimeType
+                                            size
+                                            isImage
+                                            imageWidth
+                                            imageHeight
+                                            imageFormat
+                                        }
+                                    }
+                                    fallback
+                                }
+                            }
+                        }
                     }
                 }
             }
