@@ -155,7 +155,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                                 marginHorizontal={10}
                                 overflow="hidden"
                             >
-                                <ScrollView maxHeight={Dimensions.get('screen').height - this.props.safe.top - this.props.safe.bottom - 100}>
+                                <ScrollView alwaysBounceVertical={false} maxHeight={Dimensions.get('screen').height - this.props.safe.top - this.props.safe.bottom - 100}>
                                     {this.contents}
                                 </ScrollView>
                             </ZBlurredView>
