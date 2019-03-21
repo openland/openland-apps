@@ -46,6 +46,7 @@ export const MentionsRender = (props: RenderMentionsProps) => {
                                         <View paddingLeft={16} paddingRight={12} height={40} alignItems="center" justifyContent="center">
                                             <ZAvatar
                                                 userId={user.id}
+                                                online={user.online}
                                                 src={user.photo}
                                                 size={28}
                                                 placeholderKey={user.id}
