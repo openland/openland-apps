@@ -55,6 +55,7 @@ import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -81,8 +82,10 @@ export const AdminTools = withRoomAdminTools(
     )),
 ) as React.ComponentType<{ id: string; variables: { id: string } }>;
 
-const Header = (props: { chat: Room_room_SharedRoom }) => {
-    let chat = props.chat;
+const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
+    let ctx = React.useContext(UserInfoContext);
+    const myUserId = ctx!!.user!!.id;
+
     let meMember = chat.membership === 'MEMBER';
     let leaveText = 'Leave group';
 
@@ -91,6 +94,11 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
     const canChangeAdvancedSettingsMembersUsers = getWelcomeMessageSenders({
         chat,
     });
+
+    const canSeeAdvancedSettings =
+        canChangeAdvancedSettingsMembersUsers
+            .filter(({ id }: { id: string }) => id)
+            .indexOf(myUserId) !== -1;
 
     return (
         <HeaderWrapper>
@@ -138,7 +146,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                             {leaveText}
                                         </XMenuItem>
                                         <XMenuItemSeparator />
-                                        <XWithRole role="super-admin" or={canEdit}>
+                                        <XWithRole role="super-admin" or={canSeeAdvancedSettings}>
                                             <XMenuItem
                                                 query={{
                                                     field: 'advancedSettings',

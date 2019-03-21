@@ -60,8 +60,6 @@ const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
 
     const welcomeMsgOnChange = (data: string) => {
         setWelcomeMessageText(data === '' ? null : data);
-        setWelcomeMessageSenderError(false);
-        setWelcomeMessageTextError(false);
         setWelcomeMessageTextError(!data);
     };
 
