@@ -243,7 +243,7 @@ export const RoomsInviteComponent = ({
     return (
         <Root>
             {!noLogin && (
-                <XView position="absolute" right={0}>
+                <XView position="absolute" right={0} zIndex={100} hoverCursor="pointer">
                     <Close onClick={() => (canUseDOM ? window.history.back() : null)}>
                         <CloseIcon />
                     </Close>
@@ -257,6 +257,7 @@ export const RoomsInviteComponent = ({
                             style="colorus"
                             objectName={invite.invitedByUser.name}
                             objectId={invite.invitedByUser.id}
+                            size="l-small"
                         />
                         <Text>{invite.invitedByUser.name} invites you to join group</Text>
                     </UserInfoWrapper>
@@ -269,6 +270,7 @@ export const RoomsInviteComponent = ({
                         style="room"
                         objectName={room.title}
                         objectId={room.id}
+                        size="large"
                     />
                     <XView marginTop={28} fontSize={24} fontWeight={'600'}>
                         {room.title}
