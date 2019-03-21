@@ -302,14 +302,11 @@ export const RoomsInviteComponent = ({
                             </XView>
                         </XView>
                     )}
-                    <XView lineHeight={1.5} marginTop={20}>
-                        <div className={textAlignCenter}>
-                            {room.description
-                                ? room.description
-                                : `Invitation-only channel to connect with industry insiders, share
-                            market data, and discover opportunities`}
-                        </div>
-                    </XView>
+                    {room.description && (
+                        <XView lineHeight={1.5} marginTop={20}>
+                            <div className={textAlignCenter}>{room.description}</div>
+                        </XView>
+                    )}
                     {!signup && <XView marginTop={36}>{button}</XView>}
                 </XView>
             </XView>
