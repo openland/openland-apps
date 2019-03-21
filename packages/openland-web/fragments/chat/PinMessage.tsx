@@ -75,13 +75,6 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
         attachment = pinMessage.attachments[0] as attachmentType;
     }
 
-    let senderPhotoRef = undefined;
-    if (sender.photoRef) {
-        senderPhotoRef = {
-            uuid: sender.photoRef.uuid,
-            crop: sender.photoRef.crop,
-        };
-    }
     const body = (
         <XView padding={32} flexDirection="column">
             <XView flexDirection="row" alignItems="center" justifyContent="space-between">
@@ -89,7 +82,7 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
                     <XView flexDirection="row" alignItems="center" marginRight={12}>
                         <XAvatar
                             style="user"
-                            photoRef={senderPhotoRef}
+                            src={sender.photo || undefined}
                             objectId={sender.id}
                             objectName={sender.name}
                         />
@@ -179,7 +172,7 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
                                 hoverTextDecoration="none"
                                 href={`https://ucarecdn.com/${attachment.fileId}/${
                                     attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
-                                }`}
+                                    }`}
                             >
                                 <XView
                                     alignItems="center"
