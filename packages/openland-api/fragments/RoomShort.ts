@@ -15,6 +15,7 @@ export const RoomShort = gql`
             photo
             membership
             role
+            canEdit
             membersCount
             pinnedMessage {
                 id

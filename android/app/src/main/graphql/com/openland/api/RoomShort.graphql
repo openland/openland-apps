@@ -8,6 +8,7 @@ fragment RoomShort on Room {
     }
   }
   ... on SharedRoom {
+    canEdit
     id
     kind
     membersCount

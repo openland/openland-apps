@@ -165,8 +165,11 @@ export class MobileMessenger {
         if (role === RoomMemberRole.ADMIN || role === RoomMemberRole.OWNER) {
             builder.action('Pin', async () => {
                 startLoader();
-                await this.engine.client.mutatePinMessage({ chatId: message.chatId, messageId: message.id! })
-                stopLoader();
+                try {
+                    await this.engine.client.mutatePinMessage({ chatId: message.chatId, messageId: message.id! })
+                } finally {
+                    stopLoader();
+                }
             })
         }
 

@@ -1366,6 +1366,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -1953,6 +1954,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -2470,6 +2472,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -3100,6 +3103,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -3699,6 +3703,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -4286,6 +4291,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -4803,6 +4809,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -5433,6 +5440,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -5984,6 +5992,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_organization | null;
@@ -6486,6 +6495,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -7073,6 +7083,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -7590,6 +7601,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -8220,6 +8232,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -8819,6 +8832,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -9406,6 +9420,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -9923,6 +9938,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -10553,6 +10569,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -11104,6 +11121,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_organization | null;
@@ -12989,6 +13007,7 @@ export interface RoomTiny_room_SharedRoom {
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: RoomTiny_room_SharedRoom_pinnedMessage | null;
   organization: RoomTiny_room_SharedRoom_organization | null;
@@ -13723,6 +13742,7 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMentio
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatHistory_messages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -14310,6 +14330,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -14827,6 +14848,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -15457,6 +15479,7 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMentio
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -22367,6 +22390,7 @@ export interface Organization_organization_rooms {
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: Organization_organization_rooms_pinnedMessage | null;
   organization: Organization_organization_rooms_organization | null;
@@ -23105,6 +23129,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms {
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage | null;
   organization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_organization | null;
@@ -24730,6 +24755,7 @@ export interface ResolveShortName_item_Organization_rooms {
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ResolveShortName_item_Organization_rooms_pinnedMessage | null;
   organization: ResolveShortName_item_Organization_rooms_organization | null;
@@ -25583,6 +25609,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -26100,6 +26127,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -26686,6 +26714,7 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_Sh
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: FullMessage_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -27207,6 +27236,7 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_Sh
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: FullMessage_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -27790,6 +27820,7 @@ export interface OrganizationFull_rooms {
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: OrganizationFull_rooms_pinnedMessage | null;
   organization: OrganizationFull_rooms_organization | null;
@@ -28956,6 +28987,7 @@ export interface RoomShort_SharedRoom {
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: RoomShort_SharedRoom_pinnedMessage | null;
   organization: RoomShort_SharedRoom_organization | null;
@@ -29582,6 +29614,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -30169,6 +30202,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -30686,6 +30720,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -31316,6 +31351,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -31915,6 +31951,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -32502,6 +32539,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -33019,6 +33057,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -33649,6 +33688,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom_organization | null;
@@ -34200,6 +34240,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom {
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
+  canEdit: boolean;
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_organization | null;
