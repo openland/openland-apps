@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { FullMessage } from './Message';
 
 export const RoomFull = gql`
     fragment RoomFull on Room {
@@ -51,49 +52,10 @@ export const RoomFull = gql`
                 }
                 message
             }
-            pinnedMessage {
-                id
-                date
-                sender {
-                    id
-                    name
-                    photo
-                    photoRef {
-                        uuid
-                        crop {
-                            x
-                            y
-                            w
-                            h
-                        }
-                    }
-                    primaryOrganization {
-                        id
-                        name
-                    }
-                }
-                message
-                fallback
-                ... on GeneralMessage {
-                    attachments {
-                        id
-                        fallback
-                        ...on MessageAttachmentFile {
-                            fileId
-                            fileMetadata{
-                                isImage
-                                imageFormat
-                                name
-                                size
-                            }
-                            filePreview
-                        }
-                    }
-                    quotedMessages {
-                        id
-                    }
-                }
+            pinnedMessage{
+                ...FullMessage
             }
         }
     }
+    ${FullMessage}
 `;

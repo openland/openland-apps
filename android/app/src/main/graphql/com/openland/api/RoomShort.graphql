@@ -8,6 +8,7 @@ fragment RoomShort on Room {
     }
   }
   ... on SharedRoom {
+    canEdit
     id
     kind
     membersCount
@@ -19,54 +20,7 @@ fragment RoomShort on Room {
     photo
     pinnedMessage {
       __typename
-      date
-      fallback
-      id
-      message
-      sender {
-        __typename
-        id
-        name
-        photo
-        photoRef {
-          __typename
-          crop {
-            __typename
-            h
-            w
-            x
-            y
-          }
-          uuid
-        }
-        primaryOrganization {
-          __typename
-          id
-          name
-        }
-      }
-      ... on GeneralMessage {
-        attachments {
-          __typename
-          fallback
-          id
-          ... on MessageAttachmentFile {
-            fileId
-            fileMetadata {
-              __typename
-              imageFormat
-              isImage
-              name
-              size
-            }
-            filePreview
-          }
-        }
-        quotedMessages {
-          __typename
-          id
-        }
-      }
+      ...FullMessage
     }
     role
     title

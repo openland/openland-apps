@@ -4,17 +4,20 @@ import {
     Room_room_SharedRoom,
 } from 'openland-api/Types';
 
-const containsMember = (members: Room_room_SharedRoom_members[], findMember: Room_room_SharedRoom_organization_adminMembers) => {
+const containsMember = (
+    members: Room_room_SharedRoom_members[],
+    findMember: Room_room_SharedRoom_organization_adminMembers,
+) => {
     let result = false;
 
-    members.forEach((member) => {
+    members.forEach(member => {
         if (member.user.id === findMember.user.id) {
             result = true;
         }
     });
 
     return result;
-}
+};
 
 const addIfNew = (arrayToAdd: any, arrayWithIds: string[], user: { id: string }) => {
     if (arrayWithIds.indexOf(user.id) === -1) {

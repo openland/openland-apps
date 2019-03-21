@@ -38,23 +38,24 @@ const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
         props.welcomeMessageSender,
     );
     const [triedToSend, setTriedToSend] = React.useState(false);
-    const [welcomeMessageSenderError, setWelcomeMessageSenderError] = React.useState(true);
-    const [welcomeMessageTextError, setWelcomeMessageTextError] = React.useState(true);
+    const [welcomeMessageSenderError, setWelcomeMessageSenderError] = React.useState(
+        !welcomeMessageSender,
+    );
+    const [welcomeMessageTextError, setWelcomeMessageTextError] = React.useState(
+        !welcomeMessageText,
+    );
 
     const finalWelcomeMessageSenderError = triedToSend && welcomeMessageSenderError;
     const finalWelcomeMessageTextError = triedToSend && welcomeMessageTextError;
 
-    const welcomeMsgSenderOnChange = (data: any) => {
-        let sender: Room_room_SharedRoom_welcomeMessage_sender | null = null;
-        if (data) {
-            sender = {
-                id: data.id,
-                name: data.label,
-                __typename: 'User',
-            };
-        }
+    const welcomeMsgSenderOnChange = (data: { value: string; label: string }) => {
+        let sender: Room_room_SharedRoom_welcomeMessage_sender | null = {
+            id: data.value,
+            name: data.label,
+            __typename: 'User',
+        };
 
-        setWelcomeMessageSenderError(!data);
+        setWelcomeMessageSenderError(false);
         setWelcomeMessageSender(sender);
     };
 
@@ -85,10 +86,10 @@ const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
             alsoUseBottomCloser={true}
             targetQuery="advancedSettings"
             useTopCloser={true}
-            autoClose={false}
+            autoClose={true}
             title="Advanced settings"
             defaultAction={async data => {
-                if (welcomeMessageSenderError || welcomeMessageTextError) {
+                if (welcomeMessageIsOn && (welcomeMessageSenderError || welcomeMessageTextError)) {
                     setTriedToSend(true);
                     return;
                 }
@@ -118,6 +119,7 @@ const AdvancedSettingsInner = (props: AdvancedSettingsInnerProps) => {
                     },
                 });
 
+                setTriedToSend(true);
                 setIsOpen(false);
             }}
             defaultData={{

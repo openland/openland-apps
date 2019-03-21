@@ -78,7 +78,7 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
                     <ZAvatar size={86} src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
                     <Text style={styles.title}>{room.title}</Text>
 
-                    {room.membersCount && room.membersCount >= 100 && (
+                    {!!room.membersCount && room.membersCount >= 100 && (
                         <View flexDirection="row">
                             <Image source={require('assets/ic-members-16.png')} style={styles.membersIcon} />
                             <Text style={styles.members}>{room.membersCount} members</Text>

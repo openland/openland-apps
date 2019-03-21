@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image } from 'react-native';
+import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image, TouchableHighlight } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -225,7 +225,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             handlePermissionDismiss('gallery');
                             return;
                         }
-    
+
                         if (response.didCancel) {
                             return;
                         }
@@ -313,7 +313,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 <ASSafeAreaContext.Consumer>
                                     {area => (
                                         <View width="100%" height={56} flexDirection="column" zIndex={1} marginTop={area.top}>
-                                            <TouchableOpacity onPress={() => this.props.router.push('PinnedMessage', { id: this.props.chat.id })}>
+                                            <TouchableHighlight underlayColor={'white'} onPress={() => this.props.router.push('PinnedMessage', { id: this.props.chat.id })}>
                                                 <View backgroundColor="#f3f5f7" width="100%" height={56} flexDirection="column" zIndex={1} >
                                                     <View flexDirection="row" marginTop={9} marginLeft={12}>
                                                         <View flexGrow={1} flexDirection="row">
@@ -330,7 +330,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                                         {formatMessage(sharedRoom!.pinnedMessage as any)}
                                                     </Text>
                                                 </View>
-                                            </TouchableOpacity>
+                                            </TouchableHighlight>
                                         </View>
 
                                     )}

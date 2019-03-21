@@ -215,5 +215,9 @@
         "name": "ic-members",
         "src": "ic-members.svg",
         "sizes": [16]
+    }, {
+        "name": "ic-more-android",
+        "src": "ic-more-android.svg",
+        "sizes": [24]
     }]
 }

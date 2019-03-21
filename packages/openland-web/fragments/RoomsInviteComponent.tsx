@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XScrollView } from 'openland-x/XScrollView';
-import { XAvatar } from 'openland-x/XAvatar';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import CloseIcon from 'openland-icons/ic-close.svg';
@@ -57,7 +57,6 @@ const Close = Glamorous(XLink)({
 const UserInfoWrapper = Glamorous(XHorizontal)({
     margin: 'auto',
     marginTop: 50,
-    marginBottom: 24,
     flexShrink: 0,
     '@media (max-height: 800px)': {
         marginTop: 15,
@@ -73,16 +72,7 @@ const Text = Glamorous.div<{ width?: number; autoMargin?: boolean }>(props => ({
     margin: props.autoMargin ? 'auto' : undefined,
 }));
 
-const UserAvatar = Glamorous(XAvatar)({
-    width: 20,
-    height: 20,
-    '& img': {
-        width: '20px !important',
-        height: '20px !important',
-    },
-});
-
-const RoomAvatar = Glamorous(XAvatar)({
+const RoomAvatar = Glamorous(XAvatar2)({
     width: 80,
     height: 80,
     '& img': {
@@ -99,7 +89,7 @@ const ImageWrapper = Glamorous.div<{ hasFooter: boolean }>(({ hasFooter }) => {
         height: 367,
         position: 'absolute',
         right: 0,
-        bottom: hasFooter ? 60 - 18 : 18,
+        bottom: hasFooter ? 60 : 18,
         left: 0,
         overflow: 'hidden',
         'z-index': '-1!important',
@@ -243,7 +233,7 @@ export const RoomsInviteComponent = ({
     return (
         <Root>
             {!noLogin && (
-                <XView position="absolute" right={0}>
+                <XView position="absolute" right={0} zIndex={100} hoverCursor="pointer">
                     <Close onClick={() => (canUseDOM ? window.history.back() : null)}>
                         <CloseIcon />
                     </Close>
@@ -251,12 +241,12 @@ export const RoomsInviteComponent = ({
             )}
             <XView flexDirection="column">
                 {invite && invite.invitedByUser ? (
-                    <UserInfoWrapper separator={6} justifyContent="center">
-                        <UserAvatar
-                            cloudImageUuid={invite.invitedByUser.photo || undefined}
-                            style="colorus"
-                            objectName={invite.invitedByUser.name}
-                            objectId={invite.invitedByUser.id}
+                    <UserInfoWrapper separator={6} justifyContent="center" alignItems="center">
+                        <XAvatar2
+                            src={invite.invitedByUser.photo || undefined}
+                            title={invite.invitedByUser.name}
+                            id={invite.invitedByUser.id}
+                            size={24}
                         />
                         <Text>{invite.invitedByUser.name} invites you to join group</Text>
                     </UserInfoWrapper>
@@ -265,10 +255,10 @@ export const RoomsInviteComponent = ({
                 )}
                 <XView marginTop={111} alignSelf="center" alignItems="center" maxWidth={428}>
                     <RoomAvatar
-                        cloudImageUuid={room.photo || undefined}
-                        style="room"
-                        objectName={room.title}
-                        objectId={room.id}
+                        src={room.photo || undefined}
+                        title={room.title!!}
+                        id={room.id!!}
+                        size={74}
                     />
                     <XView marginTop={28} fontSize={24} fontWeight={'600'}>
                         {room.title}
@@ -300,14 +290,11 @@ export const RoomsInviteComponent = ({
                             </XView>
                         </XView>
                     )}
-                    <XView lineHeight={1.5} marginTop={20}>
-                        <div className={textAlignCenter}>
-                            {room.description
-                                ? room.description
-                                : `Invitation-only channel to connect with industry insiders, share
-                            market data, and discover opportunities`}
-                        </div>
-                    </XView>
+                    {room.description && (
+                        <XView lineHeight={1.5} marginTop={20}>
+                            <div className={textAlignCenter}>{room.description}</div>
+                        </XView>
+                    )}
                     {!signup && <XView marginTop={36}>{button}</XView>}
                 </XView>
             </XView>

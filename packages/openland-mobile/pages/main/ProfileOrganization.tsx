@@ -13,7 +13,7 @@ import { UserView } from './components/UserView';
 import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { Organization_organization_members } from 'openland-api/Types';
@@ -99,9 +99,11 @@ function ProfileOrganizationContent(props: PageProps) {
         .sort((a, b) => (a.user.name.localeCompare(b.user.name)))
         .sort((a, b) => (isAdmin(a) && isMember(b) ? -1 : 1));
 
+    const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
+
     return (
         <>
-            {(organization.isOwner || organization.isAdmin || canMakePrimary) && <SHeaderButton title="Manage" icon={require('assets/ic-more-24.png')} onPress={handleManageClick} />}
+            {(organization.isOwner || organization.isAdmin || canMakePrimary) && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
 
             <ZListItemHeader
                 photo={organization.photo}

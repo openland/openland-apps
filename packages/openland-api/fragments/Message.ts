@@ -122,7 +122,17 @@ export const FullMessage = gql`
                     }
                     ...on MessageSpanRoomMention{
                         room{
-                            ...RoomShort
+                            ... on PrivateRoom {
+                                id
+                                user {
+                                    id
+                                    name
+                                }
+                            } 
+                            ... on SharedRoom {
+                                id
+                                title
+                            }
                         }
                     }
                     ...on MessageSpanLink{
@@ -210,7 +220,17 @@ export const FullMessage = gql`
             }
             ...on MessageSpanRoomMention{
                 room{
-                    ...RoomShort
+                    ... on PrivateRoom {
+                        id
+                        user {
+                            id
+                            name
+                        }
+                    } 
+                    ... on SharedRoom {
+                        id
+                        title
+                    }
                 }
             }
             ...on MessageSpanLink{
