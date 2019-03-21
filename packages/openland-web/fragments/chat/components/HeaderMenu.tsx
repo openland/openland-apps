@@ -4,8 +4,24 @@ import { XMenuItemSeparator, XMenuItem } from 'openland-x/XMenuItem';
 import { AdminTools } from 'openland-web/pages/main/profile/components/RoomProfileComponent';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { Room_room_SharedRoom } from 'openland-api/Types';
+import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
-export const HeaderMenu = ({ room: { id, canEdit } }: { room: Room_room_SharedRoom }) => {
+export const HeaderMenu = ({ room }: { room: Room_room_SharedRoom }) => {
+    let ctx = React.useContext(UserInfoContext);
+    const myUserId = ctx!!.user!!.id;
+
+    const { id, canEdit } = room;
+
+    const canChangeAdvancedSettingsMembersUsers = getWelcomeMessageSenders({
+        chat: room,
+    });
+
+    const canSeeAdvancedSettings =
+        canChangeAdvancedSettingsMembersUsers
+            .filter((item: { id: string }) => item.id)
+            .indexOf(myUserId) !== -1;
+
     return (
         <XOverflow
             flat={true}
@@ -34,7 +50,7 @@ export const HeaderMenu = ({ room: { id, canEdit } }: { room: Room_room_SharedRo
                         Leave group
                     </XMenuItem>
                     <XMenuItemSeparator />
-                    <XWithRole role="super-admin" or={canEdit}>
+                    <XWithRole role="super-admin" or={canSeeAdvancedSettings}>
                         <XMenuItem
                             query={{
                                 field: 'advancedSettings',
