@@ -135,10 +135,10 @@ const Header = (props: { user: User_user }) => {
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
                 <XView paddingRight={18}>
-                    {user.picture && (
-                        <AvatarModal photo={user.picture} userName={user.name} userId={user.id} />
+                    {user.photo && (
+                        <AvatarModal photo={user.photo} userName={user.name} userId={user.id} />
                     )}
-                    {!user.picture && (
+                    {!user.photo && (
                         <XAvatar2 src={undefined} size={58} title={user.name} id={user.id} />
                     )}
                 </XView>

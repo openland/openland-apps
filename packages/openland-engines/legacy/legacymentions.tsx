@@ -41,7 +41,7 @@ export const prepareLegacyMentions = (message: string, intermediateMentions: Use
                     firstName: mention.firstName,
                     lastName: mention.lastName,
                     shortname: mention.shortname,
-                    picture: mention.picture,
+                    photo: mention.photo,
                 },
             });
         }

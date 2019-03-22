@@ -241,7 +241,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
         subtitle = <HeaderLastSeen variables={{ userId: privateRoom.user.id }} />;
     }
 
-    const photo = sharedRoom ? sharedRoom.photo : privateRoom!!.user.picture;
+    const photo = sharedRoom ? sharedRoom.photo : privateRoom!!.user.photo;
     const avatarTitle = sharedRoom ? sharedRoom.title : privateRoom!!.user.name;
     const id = sharedRoom ? sharedRoom.id : privateRoom ? privateRoom.user.id : '';
 

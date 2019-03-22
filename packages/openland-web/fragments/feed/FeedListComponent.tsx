@@ -30,7 +30,7 @@ export const FeedListComponent = withFeed(
                                 <XAvatar2
                                     title={v.by.name}
                                     id={v.by.id}
-                                    src={v.by.picture}
+                                    src={v.by.photo}
                                     size={40}
                                 />
                                 <XView paddingLeft={16}>

@@ -130,13 +130,13 @@ fragment FullMessage on ModernMessage {
         ... on MessageSpanUserMention {
           user {
             __typename
-            ...UserTiny
+            ...UserShort
           }
         }
         ... on MessageSpanMultiUserMention {
           users {
             __typename
-            ...UserTiny
+            ...UserShort
           }
         }
         ... on MessageSpanRoomMention {

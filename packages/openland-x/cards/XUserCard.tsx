@@ -186,7 +186,7 @@ export const XUserCard = ({
                 justifyContent="space-between"
                 alignItems="center"
             >
-                <XAvatar2 src={user.picture} title={user.name || ''} id={user.id || ''} />
+                <XAvatar2 src={user.photo} title={user.name || ''} id={user.id || ''} />
                 <XView
                     flexDirection="row"
                     justifyContent="space-between"

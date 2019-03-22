@@ -423,7 +423,7 @@ const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization
         <Query query={MyOrganizationsQuery.document}>
             {data => (
                 <UserPopper
-                    picture={user!!.picture}
+                    picture={user!!.photo}
                     name={user!!.name}
                     id={user!!.id}
                     primaryOrganization={organization || undefined}

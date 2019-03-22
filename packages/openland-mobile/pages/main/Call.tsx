@@ -21,7 +21,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let room = getClient().useRoomTiny({ id: props.id }).room!!;
 
     let title = room.__typename === 'PrivateRoom' ? room.user.name : room.title;
-    let photo = room.__typename === 'PrivateRoom' ? room.user.picture : room.photo;
+    let photo = room.__typename === 'PrivateRoom' ? room.user.photo : room.photo;
     let placeholderKey = room.id
 
     React.useLayoutEffect(() => {
