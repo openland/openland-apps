@@ -70,13 +70,14 @@ export const ChatForwardHeaderView = (props: {
 }) => {
     const state = React.useContext(MessagesStateContext);
     let pinMessageAccess = false;
-    let { selectedMessages } = state;
-    let selectedMessageArr = Array.from(selectedMessages);
+    const { selectedMessages } = state;
+    const selectedMessageArr = Array.from(selectedMessages);
+    const youPinMessage = selectedMessageArr[0];
     const firstStepPinAccess =
         !props.privateRoom &&
         selectedMessages.size === 1 &&
-        !selectedMessageArr[0].isService &&
-        selectedMessageArr[0].sender.id === props.myId;
+        !youPinMessage.isService &&
+        youPinMessage.sender.id === props.myId;
 
     if (firstStepPinAccess && !props.publicRoom) {
         pinMessageAccess = true;
@@ -84,6 +85,10 @@ export const ChatForwardHeaderView = (props: {
 
     if (firstStepPinAccess && props.publicRoom && props.canMePinMessage) {
         pinMessageAccess = true;
+    }
+
+    if (pinMessageAccess && youPinMessage.reply && youPinMessage.reply[0]) {
+        pinMessageAccess = false;
     }
 
     const { forwardMessagesId, resetAll } = state;

@@ -9,7 +9,7 @@ import { withCreateChannel } from 'openland-web/api/withCreateChannel';
 import { withExplorePeople } from 'openland-web/api/withExplorePeople';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
-import { withUserInfo } from 'openland-web/components/UserInfo';
+import { UserInfoContext, withUserInfo } from 'openland-web/components/UserInfo';
 import { withApp } from 'openland-web/components/withApp';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { XModal, XModalBody, XModalFooter } from 'openland-x-modal/XModal';
@@ -329,22 +329,30 @@ const OrganizationsList = (props: {
         );
     }
 
+    const userContext = React.useContext(UserInfoContext);
+    let primaryOrganizationId = '';
+    if (userContext && userContext.organization) {
+        primaryOrganizationId = userContext.organization.id;
+    }
+
     return (
         <XView flexShrink={1} flexGrow={1} flexDirection="column">
             <XView fontSize={18} fontWeight="600" marginBottom={20} marginTop={40} paddingLeft={16}>
                 Share with
             </XView>
             <div className={SelectOrganizationWrapperClassName}>
-                {props.organizations
-                    .sort((a, b) => a.name.localeCompare(b.name))
-                    .map(i => (
-                        <OrganizationItem
-                            organization={i}
-                            key={'org_' + i.id}
-                            onSelect={props.onSelect}
-                            isSelected={props.selectedOrg ? props.selectedOrg === i.id : false}
-                        />
-                    ))}
+                {props.organizations.sort((a, b) => a.name.localeCompare(b.name)).map(i => (
+                    <OrganizationItem
+                        organization={i}
+                        key={'org_' + i.id}
+                        onSelect={props.onSelect}
+                        isSelected={
+                            props.selectedOrg
+                                ? props.selectedOrg === i.id
+                                : primaryOrganizationId === i.id
+                        }
+                    />
+                ))}
             </div>
         </XView>
     );
