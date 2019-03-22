@@ -100,7 +100,7 @@ const UserPopperContent = XMemo(
                             style="user"
                             objectName={user.name}
                             objectId={user.id}
-                            cloudImageUuid={user.picture || undefined}
+                            cloudImageUuid={user.photo || undefined}
                             path={usrPath}
                         />
                         <Status variables={{ userId: user.id }} />

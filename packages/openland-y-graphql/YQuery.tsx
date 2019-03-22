@@ -12,7 +12,7 @@ export interface YQueryProps<QUERY, VARIABLES> {
 export class YQuery<QUERY, VARIABLES> extends React.PureComponent<YQueryProps<QUERY, VARIABLES>> {
     render() {
         return (
-            <Query query={this.props.query.document} variables={this.props.variables}>
+            <Query query={this.props.query.document} variables={this.props.variables as any}>
                 {this.props.children}
             </Query>
         );

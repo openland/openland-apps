@@ -5,6 +5,6 @@ fragment UserTiny on User {
   isYou
   lastName
   name
-  picture
+  photo
   shortname
 }

@@ -97,7 +97,7 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
                     <XView flexDirection="row" alignItems="center" marginRight={12}>
                         <XAvatar
                             style="user"
-                            src={sender.picture || undefined}
+                            src={sender.photo || undefined}
                             objectId={sender.id}
                             objectName={sender.name}
                         />

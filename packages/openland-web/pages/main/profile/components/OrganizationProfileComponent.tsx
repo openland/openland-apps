@@ -9,16 +9,13 @@ import {
     Organization_organization_requests,
     OrganizationAddMember,
     OrganizationAddMemberVariables,
-    RoomMembersShort_members,
-    RoomMemberRole,
 } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XIcon } from 'openland-x/XIcon';
-import { withRouter } from 'next/router';
-import { XWithRouter } from 'openland-x-routing/withRouter';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import {
     RemoveOrganizationModal,
@@ -782,7 +779,7 @@ interface InviteModalState {
 class OrganizationAddMemberModalInner extends React.Component<
     InviteModalProps & { isMobile: boolean },
     InviteModalState
-> {
+    > {
     constructor(props: InviteModalProps & { isMobile: boolean }) {
         super(props);
 
@@ -958,11 +955,11 @@ const Members = ({ organization, router, onDirectory }: MembersProps) => {
                                 linkInvitePath={
                                     onDirectory
                                         ? `/directory/o/${
-                                              organization.id
-                                          }?inviteToOrganizationByLink=true`
+                                        organization.id
+                                        }?inviteToOrganizationByLink=true`
                                         : `/mail/o/${
-                                              organization.id
-                                          }?inviteToOrganizationByLink=true`
+                                        organization.id
+                                        }?inviteToOrganizationByLink=true`
                                 }
                             />
                         </>
@@ -1106,8 +1103,8 @@ const OrganizationProvider = withOrganization(
                 onDirectory={(props as any).onDirectory}
             />
         ) : (
-            <XLoader loading={true} />
-        ),
+                <XLoader loading={true} />
+            ),
     ),
 ) as React.ComponentType<{
     variables: { organizationId: string };

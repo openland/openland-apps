@@ -266,20 +266,15 @@ const Keyboard = React.memo(
                             key={i + ''}
                             flexDirection="row"
                             maxWidth={540}
-                            marginTop={4}
                             alignSelf="stretch"
-                            marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}
                         >
                             {!!line &&
                                 line.map((button, j) => (
                                     <XView
                                         as="a"
-                                        marginTop={i !== 0 ? 4 : 0}
                                         key={'button-' + i + '-' + j}
                                         backgroundColor="rgba(244, 244, 244, 0.7)"
                                         borderRadius={10}
-                                        marginLeft={j > 0 ? 4 : 0}
-                                        marginRight={j < line.length - 1 ? 4 : 0}
                                         alignItems="center"
                                         justifyContent="center"
                                         height={41}
@@ -347,7 +342,7 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
                         >
                             {title}
                         </XView>
-                        <XView fontSize={13} color={'rgba(0, 0, 0, 0.4)'}>
+                        <XView fontWeight='600' fontSize={13} color={'rgba(0, 0, 0, 0.4)'} >
                             {subTitle}
                         </XView>
                     </XView>

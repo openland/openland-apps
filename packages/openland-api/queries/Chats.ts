@@ -699,7 +699,7 @@ export const TypingsWatchSubscription = gql`
             user {
                 id
                 name
-                picture
+                photo
             }
             cancel
         }

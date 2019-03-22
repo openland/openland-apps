@@ -160,7 +160,7 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
         }
     }, []);
 
-    React.useImperativeMethods(ref, () => ({
+    React.useImperativeHandle(ref, () => ({
         show: (element: HTMLElement) => {
             setNode(element);
             setIndex(index + 1);

@@ -44,7 +44,7 @@ export class DirectApollolClient implements GraphqlClient {
                         }
                     },
                     error: (e) => {
-                        throwFatalError(e)
+                        handler({ error: e });
                     },
                     complete: () => {
                         throwFatalError('Fatal error: Query Watch can\'t be completed')

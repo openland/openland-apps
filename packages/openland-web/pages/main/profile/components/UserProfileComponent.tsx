@@ -5,8 +5,7 @@ import { withUser } from 'openland-web/api/withUserSimple';
 import { User_user } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { withRouter } from 'next/router';
-import { XWithRouter } from 'openland-x-routing/withRouter';
+import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
@@ -135,10 +134,10 @@ const Header = (props: { user: User_user }) => {
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
                 <XView paddingRight={18}>
-                    {user.picture && (
-                        <AvatarModal photo={user.picture} userName={user.name} userId={user.id} />
+                    {user.photo && (
+                        <AvatarModal photo={user.photo} userName={user.name} userId={user.id} />
                     )}
-                    {!user.picture && (
+                    {!user.photo && (
                         <XAvatar2 src={undefined} size={58} title={user.name} id={user.id} />
                     )}
                 </XView>

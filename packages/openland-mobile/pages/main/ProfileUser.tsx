@@ -44,7 +44,7 @@ const ProfileUserContent = XMemo<PageProps>((props) => {
     return (
         <>
             <ZListItemHeader
-                photo={user.picture}
+                photo={user.photo}
                 id={user.id}
                 userId={user.id}
                 title={user.name}

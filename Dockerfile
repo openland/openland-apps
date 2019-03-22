@@ -5,7 +5,6 @@ ENTRYPOINT ["/sbin/tini", "--"]
 
 WORKDIR /app
 ADD package.prod.json /app/package.json
-ADD patches/next+7.0.2.patch /app/patches/next+7.0.2.patch
 RUN yarn install
 COPY dist/ /app/
 

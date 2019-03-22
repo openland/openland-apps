@@ -27,11 +27,12 @@ import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../api/withDeleteUrlAugmentation';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './post/CreatePostComponent';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { UploadContextProvider } from './MessageComposeComponent/FileUploading/UploadContext';
 import { PinMessageComponent } from 'openland-web/fragments/chat/PinMessage';
+import { withRouter } from 'openland-x-routing/withRouter';
+import { useClient } from 'openland-web/utils/useClient';
 
 export interface File {
     uuid: string;
@@ -108,15 +109,16 @@ const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation(props => {
     );
 });
 
-export const LeaveChatComponent = withChatLeave(props => {
+export const LeaveChatComponent = withRouter((props) => {
+    let client = useClient();
     let id = props.router.query.leaveFromChat;
     return (
         <XModalForm
             title="Leave the chat"
             targetQuery="leaveFromChat"
             submitBtnText="Leave"
-            defaultAction={data => {
-                props.leaveFromChat({ variables: { roomId: id } });
+            defaultAction={async data => {
+                await client.mutateRoomLeave({ roomId: id });
             }}
             submitProps={{ successText: 'Done!', style: 'danger' }}
         >
