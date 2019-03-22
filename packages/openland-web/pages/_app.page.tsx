@@ -31,6 +31,7 @@ import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
+import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
 
 export default withData(
     class MyApp extends App<{
@@ -98,11 +99,13 @@ export default withData(
                                 protocol={this.props.protocol}
                             >
                                 <YApolloProvider client={(this.props.apollo.client as DirectApollolClient).client}>
-                                    <RootErrorBoundary>
-                                        <AppContainer>
-                                            <Component {...pageProps} />
-                                        </AppContainer>
-                                    </RootErrorBoundary>
+                                    <OpenlandApiContext.Provider value={this.props.apollo}>
+                                        <RootErrorBoundary>
+                                            <AppContainer>
+                                                <Component {...pageProps} />
+                                            </AppContainer>
+                                        </RootErrorBoundary>
+                                    </OpenlandApiContext.Provider>
                                 </YApolloProvider>
                             </XRouterProvider>
                         </XStorageProvider>
