@@ -3,6 +3,7 @@
         "default": {
             "presets": ["next/babel", "@zeit/next-typescript/babel", "linaria/babel"],
             "plugins": [
+                "graphql-tag",
                 ["module-resolver", {
                     "root": ["./packages/"],
                     // "alias": {
@@ -24,6 +25,7 @@
         "webproduction": {
             "presets": ["next/babel", "@zeit/next-typescript/babel", "linaria/babel"],
             "plugins": [
+                "graphql-tag",
                 ["module-resolver", {
                     "root": ["./packages/"],
                     // "alias": {
@@ -46,6 +48,7 @@
         "production": {
             "presets": ["module:metro-react-native-babel-preset"],
             "plugins": [
+                "graphql-tag",
                 ["module-resolver", {
                     "root": ["./build/native"],
                     "alias": {
