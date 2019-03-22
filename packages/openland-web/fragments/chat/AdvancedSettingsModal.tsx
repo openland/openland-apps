@@ -35,7 +35,7 @@ const UsersWrapperClassName = css`
 
 export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
     const api = useClient();
-    const [roomId, setRoomId] = React.useState(props.roomId);
+
     const [isOpen, setIsOpen] = React.useState(true);
     const [isOpenUsers, setIsOpenUsers] = React.useState(false);
     const [welcomeMessageIsOn, setWelcomeMessageIsOn] = React.useState(props.welcomeMessageIsOn);
@@ -51,31 +51,17 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
         !welcomeMessageText,
     );
 
-    const saveState = () => {
-        setRoomId(roomId);
-        setIsOpen(true);
-        setIsOpenUsers(false);
-        setWelcomeMessageIsOn(welcomeMessageIsOn);
-        setWelcomeMessageText(welcomeMessageText);
-        setWelcomeMessageSender(welcomeMessageSender);
-        setTriedToSend(false);
-        setWelcomeMessageSenderError(!welcomeMessageSender);
-        setWelcomeMessageTextError(!welcomeMessageText);
-    };
+    React.useEffect(() => {
+        setWelcomeMessageIsOn(props.welcomeMessageIsOn);
+    }, [props.welcomeMessageIsOn]);
 
     React.useEffect(() => {
-        if (roomId !== props.roomId) {
-            setRoomId(props.roomId);
-            setIsOpen(true);
-            setIsOpenUsers(false);
-            setWelcomeMessageIsOn(props.welcomeMessageIsOn);
-            setWelcomeMessageText(props.welcomeMessageText);
-            setWelcomeMessageSender(props.welcomeMessageSender);
-            setTriedToSend(false);
-            setWelcomeMessageSenderError(!welcomeMessageSender);
-            setWelcomeMessageTextError(!welcomeMessageText);
-        }
-    });
+        setWelcomeMessageText(props.welcomeMessageText);
+    }, [props.welcomeMessageText]);
+
+    React.useEffect(() => {
+        setWelcomeMessageSender(props.welcomeMessageSender);
+    }, [props.welcomeMessageSender]);
 
     const finalWelcomeMessageSenderError = triedToSend && welcomeMessageSenderError;
     const finalWelcomeMessageTextError = triedToSend && welcomeMessageTextError;
@@ -141,7 +127,6 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
 
                 setTriedToSend(true);
                 setIsOpen(false);
-                saveState();
             }}
             defaultData={{
                 input: {
