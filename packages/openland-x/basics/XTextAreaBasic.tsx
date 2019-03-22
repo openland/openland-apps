@@ -41,7 +41,8 @@ let titleStyles = styleResolver({
     large: {
         top: 0,
         lineHeight: '32px',
-        left: 16,
+        paddingLeft: 19,
+        left: 0,
         height: 27,
         width: '100%',
         fontSize: 16,
@@ -49,7 +50,8 @@ let titleStyles = styleResolver({
     default: {
         top: 0,
         lineHeight: '32px',
-        left: 13,
+        paddingLeft: 16,
+        left: 0,
         height: 27,
         width: '100%',
         fontSize: 14,
@@ -60,10 +62,10 @@ export const Title = Glamorous.div<{ format?: XTextArea; invalid?: boolean }>([
     {
         pointerEvents: 'none',
         position: 'absolute',
-        paddingLeft: 3,
         paddingRight: 3,
         color: '#1488f3',
         backgroundColor: '#f2f3f4',
+        borderRadius: 10,
     },
     props => titleStyles(props.format),
     props => {
