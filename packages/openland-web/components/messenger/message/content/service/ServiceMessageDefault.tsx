@@ -220,6 +220,7 @@ export const SpansMessage = ({
                 );
                 lastOffset = span.offset + span.length;
             } else if (span.__typename === 'MessageSpanLink') {
+ 
                 res.push(
                     <span key={'link-' + i} className={LinkText}>
                         <XView
@@ -228,7 +229,7 @@ export const SpansMessage = ({
                             href={span.url}
                             onClick={(e: any) => e.stopPropagation()}
                         >
-                            {message.slice(span.offset + 1, span.offset + span.length)}
+                            {message.slice(span.offset, span.offset + span.length)}
                         </XView>
                     </span>,
                 );
