@@ -161,7 +161,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                                 {formatTime(props.message.date)}
                             </ASText>
                             {props.message.isOut && (
-                                <ASFlex width={13} height={13} marginLeft={2} marginTop={1} marginRight={0} justifyContent="flex-start" alignItems="center">
+                                <ASFlex width={13} height={13} marginLeft={3} marginTop={1} marginRight={0} justifyContent="flex-start" alignItems="center">
                                     {props.message.isSending && <ASImage source={require('assets/ic-status-sending-10.png')} width={10} height={10} tintColor="white" opacity={0.7} />}
                                     {!props.message.isSending && <ASImage source={require('assets/ic-status-sent-10.png')} width={10} height={10} tintColor="white" opacity={0.7} />}
                                 </ASFlex>
