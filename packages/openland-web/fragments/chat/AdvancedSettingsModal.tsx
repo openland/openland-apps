@@ -92,18 +92,16 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     input: {
                         ...(newSocialImage && newSocialImage.uuid !== props.socialImage
                             ? {
-                                socialImageRef: sanitizeImageRef(newSocialImage),
-                            }
+                                  socialImageRef: sanitizeImageRef(newSocialImage),
+                              }
                             : {}),
                     },
-                })
+                });
 
                 await api.mutateUpdateWelcomeMessage({
                     roomId: props.roomId,
                     welcomeMessageIsOn: welcomeMessageIsOn,
-                    welcomeMessageSender: welcomeMessageSender
-                        ? welcomeMessageSender!!.id
-                        : null,
+                    welcomeMessageSender: welcomeMessageSender ? welcomeMessageSender!!.id : null,
                     welcomeMessageText: welcomeMessageText,
                 });
 
@@ -151,6 +149,9 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                         </XView>
                         <XView marginTop={16}>
                             <XTextArea
+                                resize={false}
+                                title="Text message"
+                                mode="modern"
                                 invalid={finalWelcomeMessageTextError}
                                 placeholder="Text message"
                                 onChange={welcomeMsgOnChange}

@@ -322,7 +322,7 @@ const Input = Glamorous.input<XInputBasicProps & { format?: XInputSize }>([
     props => NonIconRightPaddingStyles(props.format, !props.iconRight),
 ]);
 
-const InputPlaceholder = Glamorous.div<XInputBasicProps & { format?: XInputSize }>([
+export const InputPlaceholder = Glamorous.div<XInputBasicProps & { format?: XInputSize }>([
     props => ({
         display: 'flex',
         alignItems: 'center',
@@ -343,13 +343,13 @@ const InputPlaceholder = Glamorous.div<XInputBasicProps & { format?: XInputSize 
     props => NonIconPaddingStyles(props.format, !props.icon),
 ]);
 
-const Title = Glamorous.div<{ format?: XInputSize }>([
+export const Title = Glamorous.div<{ format?: XInputSize }>([
     {
         position: 'absolute',
         paddingLeft: 3,
         paddingRight: 3,
         backgroundColor: 'white',
-        color: 'rgba(0, 0, 0, 0.4)',
+        color: '#1488f3',
     },
     props => titleStyles(props.format),
 ]);
@@ -365,7 +365,7 @@ const PopperPlaceholder = Glamorous.div({
     },
 });
 
-const RequireElement = Glamorous.span({
+export const RequireElement = Glamorous.span({
     width: 10,
     height: 10,
     fontSize: 14,
@@ -589,25 +589,22 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     lineHeight={this.props.lineHeight}
                     fontWeight={this.props.fontWeight}
                 />
-                {placeholder &&
-                    (!v || v === '') && (
-                        <InputPlaceholder
-                            className="input-placeholder"
-                            icon={icon}
-                            format={size}
-                            color={color}
-                            invalid={invalid}
-                            fontSize={this.props.fontSize}
-                            padding={this.props.padding}
-                            lineHeight={this.props.lineHeight}
-                            fontWeight={this.props.fontWeight}
-                        >
-                            <span>{placeholder}</span>
-                            {required && (
-                                <RequireElement className="required-star">*</RequireElement>
-                            )}
-                        </InputPlaceholder>
-                    )}
+                {placeholder && (!v || v === '') && (
+                    <InputPlaceholder
+                        className="input-placeholder"
+                        icon={icon}
+                        format={size}
+                        color={color}
+                        invalid={invalid}
+                        fontSize={this.props.fontSize}
+                        padding={this.props.padding}
+                        lineHeight={this.props.lineHeight}
+                        fontWeight={this.props.fontWeight}
+                    >
+                        <span>{placeholder}</span>
+                        {required && <RequireElement className="required-star">*</RequireElement>}
+                    </InputPlaceholder>
+                )}
                 {tooltipContent && (
                     <XPopper placement="bottom" content={tooltipContent} showOnHover={true}>
                         <PopperPlaceholder>
@@ -615,16 +612,15 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                         </PopperPlaceholder>
                     </XPopper>
                 )}
-                {cleanable &&
-                    v !== '' && (
-                        <ClearButton
-                            onClick={() => {
-                                this.handleClear();
-                            }}
-                        >
-                            <ClearIcon />
-                        </ClearButton>
-                    )}
+                {cleanable && v !== '' && (
+                    <ClearButton
+                        onClick={() => {
+                            this.handleClear();
+                        }}
+                    >
+                        <ClearIcon />
+                    </ClearButton>
+                )}
             </RootContainer>
         );
     }

@@ -393,6 +393,33 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                             />
                         </XVertical>
                     </XHorizontal>
+                    <XHorizontal>
+                        <XVertical flexGrow={1}>
+                            <XTextArea
+                                mode="modern"
+                                title="title"
+                                resize={false}
+                                rounded={true}
+                                placeholder="modern "
+                            />
+                            <XTextArea
+                                title="title"
+                                mode="modern"
+                                resize={false}
+                                rounded={true}
+                                value="disabled"
+                                disabled={true}
+                            />
+                            <XTextArea
+                                title="title"
+                                mode="modern"
+                                resize={false}
+                                rounded={true}
+                                value="invalid"
+                                invalid={true}
+                            />
+                        </XVertical>
+                    </XHorizontal>
                     <XTitle>Rich Text Input</XTitle>
                     <XVertical>
                         <XRichTextInput placeholder={'Try type something...'} value={''} />

@@ -2,14 +2,18 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XFlexStyles, applyFlex, extractFlexProps } from './Flex';
+import { RequireElement } from './XInputBasic';
+
+type XTextArea = 'large' | 'default' | 'small';
 
 interface TextAreaStyledProps {
+    mode?: 'modern' | null;
     invalid?: boolean;
     resize?: boolean;
     bordered?: boolean;
     disabled?: boolean;
     minHeight?: number | string;
-    format?: 'large' | 'default';
+    format?: XTextArea;
     rounded?: boolean;
     padding?: number;
 }
@@ -32,6 +36,45 @@ let sizeStyles = styleResolver({
         paddingBottom: 12,
     },
 });
+
+let titleStyles = styleResolver({
+    large: {
+        top: 9,
+        left: 13,
+        height: 20,
+        fontSize: 12,
+    },
+    default: {
+        top: 9,
+        left: 13,
+        height: 20,
+        fontSize: 12,
+    },
+    small: {
+        top: 9,
+        left: 9,
+        height: 14,
+        fontSize: 11,
+    },
+});
+
+export const Title = Glamorous.div<{ format?: XTextArea; invalid?: boolean }>([
+    {
+        position: 'absolute',
+        paddingLeft: 3,
+        paddingRight: 3,
+        color: '#1488f3',
+    },
+    props => titleStyles(props.format),
+    props => {
+        if (props.invalid) {
+            return {
+                color: '#d75454',
+            };
+        }
+        return {};
+    },
+]);
 
 const TextAreaStyled = Glamorous.textarea<TextAreaStyledProps & XFlexStyles>([
     (props: TextAreaStyledProps) => ({
@@ -72,6 +115,31 @@ const TextAreaStyled = Glamorous.textarea<TextAreaStyledProps & XFlexStyles>([
     }),
     props => applyFlex(props),
     props => sizeStyles(props.format),
+    props => {
+        if (props.mode && props.mode === 'modern') {
+            const invalidStyles = props.invalid
+                ? {
+                      color: '#d75454',
+                      borderBottom: '#d75454 1px solid',
+                      borderBottomLeftRadius: 0,
+                      borderBottomRightRadius: 0,
+                  }
+                : {};
+            return {
+                color: '#000',
+                backgroundColor: '#f2f3f4',
+                border: 'none',
+                paddingTop: 24,
+                '&:focus': {
+                    boxShadow: 'none',
+                    border: 'none',
+                    ...invalidStyles,
+                },
+                ...invalidStyles,
+            };
+        }
+        return {};
+    },
 ]);
 
 export interface XTextAreaBasicProps extends XFlexStyles {
@@ -84,14 +152,38 @@ export interface XTextAreaBasicProps extends XFlexStyles {
     bordered?: boolean;
     rounded?: boolean;
     minHeight?: number | string;
-    size?: 'large' | 'default';
+    size?: XTextArea;
+    title?: string;
+    required?: boolean;
+    mode?: 'modern' | null;
     padding?: number;
     onChange?: (value: string) => void;
     onEnter?: () => void;
 }
 
-export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps> {
+interface XTextAreaBasicState {
+    value: string;
+    titleInside: boolean;
+}
+
+export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps, XTextAreaBasicState> {
     TextAreaRef: any | null = null;
+
+    constructor(props: XTextAreaBasicProps) {
+        super(props);
+
+        if (this.props.value && this.props.value.length > 0) {
+            this.state = {
+                value: this.props.value,
+                titleInside: false,
+            };
+        } else {
+            this.state = {
+                value: '',
+                titleInside: true,
+            };
+        }
+    }
 
     handleRef = (e: any) => {
         if (e && this.props.autofocus) {
@@ -123,26 +215,44 @@ export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps> {
 
     render() {
         let v = this.props.value;
+        const { title, required, size } = this.props;
         if (v === null) {
             v = '';
         }
         return (
-            <TextAreaStyled
-                {...extractFlexProps(this.props)}
-                placeholder={this.props.placeholder}
-                value={v}
-                disabled={this.props.disabled}
-                autoFocus={this.props.autofocus}
-                onChange={this.handleChange}
-                invalid={this.props.invalid}
-                onKeyPress={this.handleKey}
-                resize={this.props.resize}
-                bordered={this.props.bordered}
-                format={this.props.size}
-                minHeight={this.props.minHeight}
-                rounded={this.props.rounded}
-                padding={this.props.padding}
-            />
+            <div style={{ position: 'relative' }}>
+                {title && (
+                    <>
+                        <Title
+                            format={size}
+                            invalid={this.props.invalid}
+                            className="input-placeholder"
+                        >
+                            {title}
+                            {required && (
+                                <RequireElement className="required-star">*</RequireElement>
+                            )}
+                        </Title>
+                    </>
+                )}
+                <TextAreaStyled
+                    {...extractFlexProps(this.props)}
+                    placeholder={this.props.placeholder}
+                    value={v}
+                    mode={this.props.mode}
+                    disabled={this.props.disabled}
+                    autoFocus={this.props.autofocus}
+                    onChange={this.handleChange}
+                    invalid={this.props.invalid}
+                    onKeyPress={this.handleKey}
+                    resize={this.props.resize}
+                    bordered={this.props.bordered}
+                    format={this.props.size}
+                    minHeight={this.props.minHeight}
+                    rounded={this.props.rounded}
+                    padding={this.props.padding}
+                />
+            </div>
         );
     }
 }
