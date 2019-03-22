@@ -54,7 +54,7 @@ let titleStyles = styleResolver({
         left: 0,
         height: 27,
         width: '100%',
-        fontSize: 14,
+        fontSize: 12,
     },
 });
 

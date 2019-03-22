@@ -460,7 +460,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private updateHandler = async (event: any) => {
-        console.log('ConversationEngine', event);
+        // console.log('ConversationEngine', event);
 
         if (event.__typename === 'ChatMessageReceived') {
             // Handle message

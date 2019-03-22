@@ -112,7 +112,7 @@ export class GlobalStateEngine {
     }
 
     private handleGlobalEvent = async (event: any) => {
-        console.log('handleGlobalEvent', event);
+        // console.log('handleGlobalEvent', event);
         if (event.__typename === 'DialogMessageReceived') {
             let visible = this.visibleConversations.has(event.cid);
 
@@ -168,7 +168,7 @@ export class GlobalStateEngine {
             this.engine.getConversation(event.cid).handlePhotoUpdated(event.photo)
         } else if (event.__typename === 'DialogMessageUpdated') {
             // Dialogs List
-            console.log(event);
+            // console.log(event);
             await this.engine.dialogList.handleMessageUpdated(event);
         } else if (event.__typename === 'DialogDeleted') {
             let visible = this.visibleConversations.has(event.conversationId);

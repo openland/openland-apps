@@ -80,6 +80,7 @@ const Tooltip = ({ isOwner }: { isOwner?: boolean }) => (
 );
 
 interface XUserCardProps {
+    onClick?: () => void;
     user: Partial<User_user>;
     path?: string;
     noPath?: boolean;
@@ -108,6 +109,7 @@ export const XUserCard = ({
     isAdmin,
     hideOrganization,
     isOwner,
+    onClick,
 }: XUserCardProps) => {
     const [isHovered, setIsHovered] = React.useState(false);
     const { isMobile } = React.useContext(MobileSidebarContext);
@@ -145,18 +147,19 @@ export const XUserCard = ({
             customMenu
         );
 
-    const organizationElem = !hideOrganization && user.primaryOrganization && (
-        <XView
-            fontSize={12}
-            lineHeight="22px"
-            fontWeight="600"
-            color="rgba(0, 0, 0, 0.4)"
-            marginTop={1}
-            marginBottom={-1}
-        >
-            {user.primaryOrganization.name}
-        </XView>
-    );
+    const organizationElem = !hideOrganization &&
+        user.primaryOrganization && (
+            <XView
+                fontSize={12}
+                lineHeight="22px"
+                fontWeight="600"
+                color="rgba(0, 0, 0, 0.4)"
+                marginTop={1}
+                marginBottom={-1}
+            >
+                {user.primaryOrganization.name}
+            </XView>
+        );
 
     let cardPath: string | undefined = path || '/directory/u/' + user.id;
 
@@ -164,10 +167,9 @@ export const XUserCard = ({
         cardPath = undefined;
     }
 
-    console.log(isAdmin);
-
     return (
         <XView
+            onClick={onClick}
             cursor="pointer"
             backgroundColor="#ffffff"
             paddingVertical={12}
@@ -220,9 +222,10 @@ export const XUserCard = ({
                             </XView>
                             {!isMobile && organizationElem}
                         </XView>
-                        {!isMobile && user.id && (
-                            <UserStatus variables={{ userId: user.id }} isBot={!!user.isBot} />
-                        )}
+                        {!isMobile &&
+                            user.id && (
+                                <UserStatus variables={{ userId: user.id }} isBot={!!user.isBot} />
+                            )}
                         {isMobile && organizationElem}
                     </XView>
                     <XView flexShrink={0} flexDirection="row" alignItems="center">
