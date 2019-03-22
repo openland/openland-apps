@@ -397,11 +397,13 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                         <XVertical flexGrow={1}>
                             <XTextArea
                                 mode="modern"
+                                title="title"
                                 resize={false}
                                 rounded={true}
                                 placeholder="modern "
                             />
                             <XTextArea
+                                title="title"
                                 mode="modern"
                                 resize={false}
                                 rounded={true}
@@ -409,6 +411,7 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 disabled={true}
                             />
                             <XTextArea
+                                title="title"
                                 mode="modern"
                                 resize={false}
                                 rounded={true}
