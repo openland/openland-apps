@@ -24,6 +24,8 @@
 		A0153A99222426F400C026A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0153A97222426F400C026A4 /* MainInterface.storyboard */; };
 		A0DDD9B62226BE8B00AA3061 /* openland-share-ex.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A0153A93222426F400C026A4 /* openland-share-ex.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		AA2365582244EBBA000AA3A7 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23654F2244EBB9000AA3A7 /* API.swift */; };
+		AA23655B2244EBFF000AA3A7 /* RNGraphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655A2244EBFF000AA3A7 /* RNGraphql.swift */; };
+		AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */; };
 		AA26084B22008C8300A69D84 /* index.thread.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AA260848220074F100A69D84 /* index.thread.jsbundle */; };
 		AA2FBA2922247CA4000915F7 /* RNSDevice-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2FBA2822247CA4000915F7 /* RNSDevice-Bridge.m */; };
 		AA2FBA2B22247D0E000915F7 /* RNSDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FBA2A22247D0E000915F7 /* RNSDevice.swift */; };
@@ -249,6 +251,8 @@
 		A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Pods/Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		A938EF8C563947299EE77727 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 		AA23654F2244EBB9000AA3A7 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		AA23655A2244EBFF000AA3A7 /* RNGraphql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphql.swift; sourceTree = "<group>"; };
+		AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlClient.swift; sourceTree = "<group>"; };
 		AA260848220074F100A69D84 /* index.thread.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = index.thread.jsbundle; sourceTree = "<group>"; };
 		AA2FBA2722247C8F000915F7 /* RNSDevice-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSDevice-Bridge.h"; sourceTree = "<group>"; };
 		AA2FBA2822247CA4000915F7 /* RNSDevice-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNSDevice-Bridge.m"; sourceTree = "<group>"; };
@@ -410,6 +414,7 @@
 		13B07FAE1A68108700A75B9A /* openland */ = {
 			isa = PBXGroup;
 			children = (
+				AA2365592244EBEE000AA3A7 /* RNGraphql */,
 				AA2FBA1E22247C61000915F7 /* RNSDevice */,
 				AAA4DA46221457BB00BB1781 /* appcenter */,
 				AAC60B06215AE3F0005E09BA /* RNSAuth0 */,
@@ -520,6 +525,15 @@
 				A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		AA2365592244EBEE000AA3A7 /* RNGraphql */ = {
+			isa = PBXGroup;
+			children = (
+				AA23655A2244EBFF000AA3A7 /* RNGraphql.swift */,
+				AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */,
+			);
+			name = RNGraphql;
 			sourceTree = "<group>";
 		};
 		AA2FBA1E22247C61000915F7 /* RNSDevice */ = {
@@ -1104,6 +1118,7 @@
 				"${BUILT_PRODUCTS_DIR}/ReactNativeIncallManager/ReactNativeIncallManager.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SimpleKeychain/SimpleKeychain.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Texture/AsyncDisplayKit.framework",
 				"${BUILT_PRODUCTS_DIR}/glog/glog.framework",
@@ -1145,6 +1160,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeIncallManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimpleKeychain.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AsyncDisplayKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
@@ -1185,6 +1201,7 @@
 				AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */,
 				AAB23E1A220B814900BFD222 /* RNLithoSpec.swift in Sources */,
 				AAA4DA502214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m in Sources */,
+				AA23655B2244EBFF000AA3A7 /* RNGraphql.swift in Sources */,
 				AAB0EEA321349F8000FBCB75 /* RNAsyncLoadingIndicator.swift in Sources */,
 				AA67E25321492C8400AE9CAC /* RNSAnimatedViewManager.swift in Sources */,
 				AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */,
@@ -1219,6 +1236,7 @@
 				AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */,
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
 				AAA4DA512214585E00BB1781 /* AppCenterReactNativeCrashes.m in Sources */,
+				AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */,
 				AAE50182214602D700BEAA04 /* RNSAnimatedView.swift in Sources */,
 				AAA4DA522214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m in Sources */,
 				AAB23E18220B808C00BFD222 /* RNLithoResolver.swift in Sources */,

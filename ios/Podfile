@@ -32,12 +32,13 @@ target 'openland' do
   pod 'Texture', '2.7'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Auth0', '~> 1.0'
+  pod 'Apollo'
+  pod 'Apollo/WebSocket'
 
   pod 'AppCenter', '~> 1.13.0'
   pod 'AppCenter/Crashes', '~> 1.13.0'
   pod 'AppCenter/Analytics', '~> 1.13.0'
   pod 'AppCenterReactNativeShared', '~> 1.12.0'
-  pod 'Apollo'
 
   pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
 

@@ -4,6 +4,9 @@ PODS:
   - Apollo (0.9.5):
     - Apollo/Core (= 0.9.5)
   - Apollo/Core (0.9.5)
+  - Apollo/WebSocket (0.9.5):
+    - Apollo/Core
+    - Starscream (~> 3.0.2)
   - AppCenter (1.13.0):
     - AppCenter/Analytics (= 1.13.0)
     - AppCenter/Crashes (= 1.13.0)
@@ -137,6 +140,7 @@ PODS:
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
   - SimpleKeychain (0.8.1)
+  - Starscream (3.0.6)
   - SwiftyJSON (4.2.0)
   - Texture (2.7):
     - Texture/PINRemoteImage (= 2.7)
@@ -150,6 +154,7 @@ PODS:
 DEPENDENCIES:
   - A0Auth0 (from `../node_modules/react-native-auth0`)
   - Apollo
+  - Apollo/WebSocket
   - AppCenter (~> 1.13.0)
   - AppCenter/Analytics (~> 1.13.0)
   - AppCenter/Crashes (~> 1.13.0)
@@ -210,6 +215,7 @@ SPEC REPOS:
     - RSKImageCropper
     - SDWebImage
     - SimpleKeychain
+    - Starscream
     - SwiftyJSON
     - Texture
 
@@ -295,10 +301,11 @@ SPEC CHECKSUMS:
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
   SimpleKeychain: e2485c28d82fcece35e9e41faeac42ebfe614815
+  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 8dda53ddf296ce389066479567b056f26504d144
+PODFILE CHECKSUM: c42c80503968245ff410ef3660747b1d1d79ccf1
 
 COCOAPODS: 1.5.3
