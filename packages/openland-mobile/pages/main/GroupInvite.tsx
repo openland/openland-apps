@@ -32,6 +32,8 @@ const styles = StyleSheet.create({
         lineHeight: 28,
         color: '#000000',
         marginTop: 20,
+        textAlign: 'center',
+        fontWeight: TextStyles.weight.medium,
     } as TextStyle,
 
     members: {
@@ -75,7 +77,7 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
             <View paddingHorizontal={32} flexGrow={1}>
                 <View paddingTop={20}>
                     <Text style={styles.label}>
-                        <Text style={styles.userName}>{user.name}</Text> invites you to join chat group
+                        <Text style={styles.userName}>{user.name}</Text> invites you to join chat
                     </Text>
                 </View>
                 <View paddingTop={screenHeight <= 640 ? 60 : 100} alignItems="center" flexDirection="column">
