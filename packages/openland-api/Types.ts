@@ -17638,12 +17638,6 @@ export interface RoomInviteInfo_invite_room_organization {
   isCommunity: boolean;
 }
 
-export interface RoomInviteInfo_invite_room_members {
-  __typename: "RoomMember";
-  role: RoomMemberRole;
-  membership: SharedRoomMembershipStatus;
-}
-
 export interface RoomInviteInfo_invite_room {
   __typename: "SharedRoom";
   id: string;
@@ -17655,7 +17649,6 @@ export interface RoomInviteInfo_invite_room {
   organization: RoomInviteInfo_invite_room_organization | null;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
-  members: RoomInviteInfo_invite_room_members[];
 }
 
 export interface RoomInviteInfo_invite_invitedByUser_primaryOrganization {
