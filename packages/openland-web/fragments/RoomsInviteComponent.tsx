@@ -7,7 +7,6 @@ import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import ProfileIcon from 'openland-icons/ic-profile.svg';
-import { withChannelJoin } from '../api/withChannelJoin';
 import { withChannelJoinInviteLink } from '../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
@@ -17,6 +16,7 @@ import { XView } from 'react-mental';
 import { isMobileUserAgent } from 'openland-web/utils/isMobileUserAgent';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import LogoWithName from 'openland-icons/logo.svg';
+import { useClient } from 'openland-web/utils/useClient';
 
 const Root = Glamorous(XScrollView)({
     position: 'relative',
@@ -116,7 +116,12 @@ const Image = Glamorous.div({
     },
 });
 
-const JoinButton = withChannelJoin(props => {
+const JoinButton = (props: {
+    channelId: string;
+    refetchVars: { conversationId: string };
+    text: string;
+}) => {
+    const client = useClient();
     return (
         <XButton
             style="primary"
@@ -125,17 +130,11 @@ const JoinButton = withChannelJoin(props => {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
-                await props.join({
-                    variables: { roomId: (props as any).channelId },
-                });
+                await client.mutateRoomJoin({ roomId: props.channelId });
             }}
         />
     );
-}) as React.ComponentType<{
-    channelId: string;
-    refetchVars: { conversationId: string };
-    text: string;
-}>;
+};
 
 const JoinLinkButton = withChannelJoinInviteLink(props => {
     return (
@@ -251,8 +250,8 @@ export const RoomsInviteComponent = ({
                         <Text>{invite.invitedByUser.name} invites you to join group</Text>
                     </UserInfoWrapper>
                 ) : (
-                    <div style={{ height: 50 }} />
-                )}
+                        <div style={{ height: 50 }} />
+                    )}
                 <XView marginTop={111} alignSelf="center" alignItems="center" maxWidth={428}>
                     <RoomAvatar
                         src={room.photo || undefined}
