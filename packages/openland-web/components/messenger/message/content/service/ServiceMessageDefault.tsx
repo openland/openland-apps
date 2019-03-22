@@ -228,7 +228,7 @@ export const SpansMessage = ({
                             href={span.url}
                             onClick={(e: any) => e.stopPropagation()}
                         >
-                            {span.text ? span.text : span.url}
+                            {message.slice(span.offset + 1, span.offset + span.length)}
                         </XView>
                     </span>,
                 );
