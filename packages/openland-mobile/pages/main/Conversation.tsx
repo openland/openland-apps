@@ -36,7 +36,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { ZErrorBoundary } from 'openland-mobile/components/ZErrorBoundary';
+import { SHeader } from 'react-native-s/SHeader';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -370,6 +370,27 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as Room_room_PrivateRoom : null;
 
+    // if (accessDenied) {
+    //     return (
+    //         <>
+    //             <SHeader title="Access Denied" />
+    //             <ASSafeAreaView flexGrow={1}>
+    //                 <View height="70%" alignItems="center" justifyContent="center">
+    //                     <Text style={{ fontSize: 100 }}>😢</Text>
+    //                 </View>
+    //                 <View height="30%" alignItems="center" justifyContent="center">
+    //                     <ZRoundedButton
+    //                         size="big"
+    //                         title="Go back"
+    //                         uppercase={false}
+    //                         onPress={() => props.router.back()}
+    //                     />
+    //                 </View>
+    //             </ASSafeAreaView>
+    //         </>
+    //     );
+    // }
+
     if (sharedRoom && sharedRoom.membership !== 'MEMBER' && sharedRoom.kind === 'PUBLIC') {
         // not a member - show preview with join/request access button
         return (
@@ -424,18 +445,4 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     );
 });
 
-const fallbackComponent = (props: { error: Error }) => {
-    return (
-        <ASSafeAreaView>
-            <Text>{JSON.stringify(props.error)}</Text>
-        </ASSafeAreaView>
-    );
-}
-
-const ConversationWrapper = (props: PageProps) => (
-    <ZErrorBoundary fallback={fallbackComponent}>
-        <ConversationComponent {...props} />
-    </ZErrorBoundary>
-);
-
-export const Conversation = withApp(ConversationWrapper, { navigationAppearance: 'small', hideBackText: true, hideHairline: true });
+export const Conversation = withApp(ConversationComponent, { navigationAppearance: 'small', hideBackText: true, hideHairline: true });
