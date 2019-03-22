@@ -157,11 +157,7 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
         }
     }, []);
 
-    // hack to fix useImperativeHandle typings
-    const useImperativeHandle = (React as any)
-        .useImperativeHandle as typeof React.useImperativeMethods;
-
-    useImperativeHandle(ref, () => ({
+    React.useImperativeHandle(ref, () => ({
         show: (element: HTMLElement) => {
             setNode(element);
             setIndex(index + 1);
