@@ -36,6 +36,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
+import { ZErrorBoundary } from 'openland-mobile/components/ZErrorBoundary';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -365,6 +366,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     let theme = React.useContext(ThemeContext);
     let messenger = getMessenger();
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id });
+
     let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as Room_room_PrivateRoom : null;
 
@@ -422,4 +424,18 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     );
 });
 
-export const Conversation = withApp(ConversationComponent, { navigationAppearance: 'small', hideBackText: true, hideHairline: true });
+const fallbackComponent = (props: { error: Error }) => {
+    return (
+        <ASSafeAreaView>
+            <Text>{JSON.stringify(props.error)}</Text>
+        </ASSafeAreaView>
+    );
+}
+
+const ConversationWrapper = (props: PageProps) => (
+    <ZErrorBoundary fallback={fallbackComponent}>
+        <ConversationComponent {...props} />
+    </ZErrorBoundary>
+);
+
+export const Conversation = withApp(ConversationWrapper, { navigationAppearance: 'small', hideBackText: true, hideHairline: true });
