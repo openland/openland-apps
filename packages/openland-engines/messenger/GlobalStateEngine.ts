@@ -149,7 +149,7 @@ export class GlobalStateEngine {
             // Notifications
             this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
 
-            this.engine.dialogList.handleMessageDeleted(event.cid, event.message.id, event.prevMessage, event.unread, event.haveMention);
+            this.engine.dialogList.handleMessageDeleted(event.cid, event.message.id, event.prevMessage, event.unread, event.haveMention, this.engine.user.id);
         } else if (event.__typename === 'DialogTitleUpdated') {
             console.warn('new title ', event);
             this.engine.dialogList.handleTitleUpdated(event.cid, event.title);

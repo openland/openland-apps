@@ -89,64 +89,61 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
     let currentPopper = React.useRef<Popper | undefined>(undefined);
 
     // Create popper if needed
-    React.useLayoutEffect(
-        () => {
-            if (node && internalNode && arrowNode) {
-                let popper = new Popper(node, internalNode, {
-                    eventsEnabled: true,
-                    modifiers: {
-                        arrow: {
-                            enabled: true,
-                            element: arrowNode,
-                        },
-                        // computeStyle: {
-                        //     gpuAcceleration: false
-                        // },
-                        preventOverflow: {
-                            order: 99,
-                            boundariesElement: 'viewport',
-                            padding: 16,
-                        },
+    React.useLayoutEffect(() => {
+        if (node && internalNode && arrowNode) {
+            let popper = new Popper(node, internalNode, {
+                eventsEnabled: true,
+                modifiers: {
+                    arrow: {
+                        enabled: true,
+                        element: arrowNode,
                     },
-                    onCreate: (data: Popper.Data) => {
-                        console.log(data);
-                        if (arrowNode) {
-                            arrowNode.setAttribute('x-placement', data.placement);
-                        }
-                        if (internalNode) {
-                            internalNode.setAttribute('x-placement', data.placement);
-                        }
-                        if (node) {
-                            node.setAttribute('x-placement', data.placement);
-                        }
+                    // computeStyle: {
+                    //     gpuAcceleration: false
+                    // },
+                    preventOverflow: {
+                        order: 99,
+                        boundariesElement: 'viewport',
+                        padding: 16,
                     },
-                    onUpdate: (data: Popper.Data) => {
-                        console.log(data);
-                        if (arrowNode) {
-                            arrowNode.setAttribute('x-placement', data.placement);
-                        }
-                        if (internalNode) {
-                            internalNode.setAttribute('x-placement', data.placement);
-                        }
-                        if (node) {
-                            node.setAttribute('x-placement', data.placement);
-                        }
-                    },
-                    placement: props.placement ? props.placement : 'auto',
-                });
-                currentPopper.current = popper;
-                return () => {
-                    currentPopper.current = undefined;
-                    popper.destroy();
-                };
-            } else {
-                return () => {
-                    // nothing to do
-                };
-            }
-        },
-        [node, internalNode, arrowNode, props.placement],
-    );
+                },
+                onCreate: (data: Popper.Data) => {
+                    console.log(data);
+                    if (arrowNode) {
+                        arrowNode.setAttribute('x-placement', data.placement);
+                    }
+                    if (internalNode) {
+                        internalNode.setAttribute('x-placement', data.placement);
+                    }
+                    if (node) {
+                        node.setAttribute('x-placement', data.placement);
+                    }
+                },
+                onUpdate: (data: Popper.Data) => {
+                    console.log(data);
+                    if (arrowNode) {
+                        arrowNode.setAttribute('x-placement', data.placement);
+                    }
+                    if (internalNode) {
+                        internalNode.setAttribute('x-placement', data.placement);
+                    }
+                    if (node) {
+                        node.setAttribute('x-placement', data.placement);
+                    }
+                },
+                placement: props.placement ? props.placement : 'auto',
+            });
+            currentPopper.current = popper;
+            return () => {
+                currentPopper.current = undefined;
+                popper.destroy();
+            };
+        } else {
+            return () => {
+                // nothing to do
+            };
+        }
+    }, [node, internalNode, arrowNode, props.placement]);
 
     let popupRef = React.useCallback((src: HTMLElement | null) => {
         if (src) {
@@ -173,37 +170,30 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
         },
     }));
 
-    let Component = React.useMemo(
-        () => {
-            return () => {
-                React.useLayoutEffect(() => {
-                    if (currentPopper.current) {
-                        currentPopper.current.update();
-                    }
-                });
-                return (
-                    <div key={'pop-' + index} ref={popupRef}>
-                        <div
-                            className={
-                                'popper ' + (props.className ? props.className : contentStyle)
-                            }
-                        >
-                            {props.children}
-                            {/* <ReactResizeDetector handleWidth={true} handleHeight={true} onResize={() => currentPopper.current && currentPopper.current.scheduleUpdate()} /> */}
-                        </div>
-                        <div
-                            className={arrowStyle}
-                            ref={popupArrowRef}
-                            style={{ width: 12, height: 6 }}
-                        >
-                            <div />
-                        </div>
+    let Component = React.useMemo(() => {
+        return () => {
+            React.useLayoutEffect(() => {
+                if (currentPopper.current) {
+                    currentPopper.current.update();
+                }
+            });
+            return (
+                <div key={'pop-' + index} ref={popupRef}>
+                    <div className={'popper ' + (props.className ? props.className : contentStyle)}>
+                        {props.children}
+                        {/* <ReactResizeDetector handleWidth={true} handleHeight={true} onResize={() => currentPopper.current && currentPopper.current.scheduleUpdate()} /> */}
                     </div>
-                );
-            };
-        },
-        [props.children],
-    );
+                    <div
+                        className={arrowStyle}
+                        ref={popupArrowRef}
+                        style={{ width: 12, height: 6 }}
+                    >
+                        <div />
+                    </div>
+                </div>
+            );
+        };
+    }, [props.children]);
 
     // Render
     if (node) {

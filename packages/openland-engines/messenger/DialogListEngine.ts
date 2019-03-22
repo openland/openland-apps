@@ -4,7 +4,6 @@ import {
     Dialogs_dialogs_items_topMessage,
     Room_room_SharedRoom,
     Room_room_PrivateRoom,
-    RoomFull,
     Dialogs_dialogs_items_topMessage_GeneralMessage_attachments,
     TinyMessage,
     DialogKind,
@@ -13,7 +12,6 @@ import { backoff } from 'openland-y-utils/timer';
 import { DialogsQuery, RoomQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
-import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export const emojifyMessage = (msg: string) => {
     return emoji({
@@ -253,13 +251,13 @@ export class DialogListEngine {
         }
     };
 
-    handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage, unread: number, haveMention: boolean) => {
+    handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage, unread: number, haveMention: boolean, uid: string) => {
         let existing = this.dataSource.getItem(cid);
 
         if (existing && existing.messageId === mid) {
             this.dataSource.updateItem(extractDialog({
                 cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
-            }, getMessenger().engine.user.id));
+            }, uid));
         }
     };
 

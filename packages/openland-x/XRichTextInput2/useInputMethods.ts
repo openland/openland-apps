@@ -45,7 +45,6 @@ export function useInputMethods({
         });
     };
 
-    // hack to fix useImperativeHandle typings
     React.useImperativeHandle<XRichTextInput2RefMethods, any>(ref, () => ({
         getMentions,
         focus,

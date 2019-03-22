@@ -12,11 +12,6 @@ query RoomInviteInfo($invite: String!) {
         description
         id
         kind
-        members {
-          __typename
-          membership
-          role
-        }
         membersCount
         membership
         organization {
