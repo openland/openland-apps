@@ -7,11 +7,13 @@ import {
     RoomFull,
     Dialogs_dialogs_items_topMessage_GeneralMessage_attachments,
     TinyMessage,
+    DialogKind,
 } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
 import { DialogsQuery, RoomQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export const emojifyMessage = (msg: string) => {
     return emoji({
@@ -251,19 +253,13 @@ export class DialogListEngine {
         }
     };
 
-    handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage) => {
+    handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage, unread: number, haveMention: boolean) => {
         let existing = this.dataSource.getItem(cid);
 
         if (existing && existing.messageId === mid) {
-            const message = prevMessage && prevMessage.message ? prevMessage.message : undefined;
-            this.dataSource.updateItem({
-                ...existing,
-                message,
-                messageEmojified: message ? emojifyMessage(message) : undefined,
-                attachments: prevMessage && prevMessage.__typename === 'GeneralMessage' ? prevMessage.attachments : undefined,
-                date: prevMessage ? prevMessage.date : undefined,
-                ...(prevMessage && prevMessage.id ? { messageId: prevMessage.id } : {})
-            });
+            this.dataSource.updateItem(extractDialog({
+                cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
+            }, getMessenger().engine.user.id));
         }
     };
 
