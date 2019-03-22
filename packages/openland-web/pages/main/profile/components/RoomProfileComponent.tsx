@@ -3,8 +3,7 @@ import { withAlterChat } from 'openland-web/api/withAlterChat';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { withRouter } from 'next/router';
-import { XWithRouter } from 'openland-x-routing/withRouter';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
@@ -443,8 +442,8 @@ const RoomGroupProfileProvider = withRoom(
                 conversationId={(props as any).conversationId}
             />
         ) : (
-            <XLoader loading={true} />
-        );
+                <XLoader loading={true} />
+            );
     }),
 ) as React.ComponentType<{
     variables: { id: string };

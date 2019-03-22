@@ -541,7 +541,7 @@ const RoomSignupHeader = Glamorous.div<{
 
 interface RoomSignupContainerProps {
     pageMode: PageModeT;
-    headerStyle: 'signin' | 'signup' | 'profile' | 'organization';
+    headerStyle?: 'signin' | 'signup' | 'profile' | 'organization';
     text?: string;
     path?: string;
     linkText?: string;

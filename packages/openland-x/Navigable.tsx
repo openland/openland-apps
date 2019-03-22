@@ -118,7 +118,6 @@ export function makeNavigable<T>(
                 __modal,
                 path,
                 query,
-                replace,
                 anchor,
                 enabled,
                 onClick,
