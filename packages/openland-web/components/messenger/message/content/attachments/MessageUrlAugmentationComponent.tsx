@@ -342,7 +342,7 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
                         >
                             {title}
                         </XView>
-                        <XView fontSize={13} color={'rgba(0, 0, 0, 0.4)'}>
+                        <XView fontWeight='600' fontSize={13} color={'rgba(0, 0, 0, 0.4)'} >
                             {subTitle}
                         </XView>
                     </XView>
