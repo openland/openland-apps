@@ -32,6 +32,10 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { formatMessage } from 'openland-engines/messenger/DialogListEngine';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
+import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -358,10 +362,55 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 }
 
 const ConversationComponent = XMemo<PageProps>((props) => {
+    let theme = React.useContext(ThemeContext);
     let messenger = getMessenger();
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id });
     let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as Room_room_PrivateRoom : null;
+
+    if (sharedRoom && sharedRoom.membership !== 'MEMBER' && sharedRoom.kind === 'PUBLIC') {
+        // not a member - show preview with join/request access button
+        return (
+            <View flexDirection="column" height="100%" width="100%">
+                <SHeaderView>
+                    <ChatHeader conversationId={sharedRoom.id} router={props.router} />
+                </SHeaderView>
+                <ASSafeAreaView width="100%" height="100%" justifyContent="center" >
+                    <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
+                        <ZAvatar
+                            src={sharedRoom.photo}
+                            size={100}
+                            placeholderKey={sharedRoom.id}
+                            placeholderTitle={sharedRoom.title}
+
+                        />
+                        <View flexDirection="column" zIndex={- 1}>
+                            <Text style={{ fontSize: 20, fontWeight: '500', color: theme.textColor, textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
+                            <Text style={{ fontSize: 15, color: theme.textLabelColor, textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
+                            <Text style={{ fontSize: 14, color: theme.textLabelColor, textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{sharedRoom.membersCount + ' members'}</Text>
+                        </View>
+                    </View>
+                    <View alignSelf="center" marginBottom={46}>
+                        <ZRoundedButton
+                            size="big"
+                            uppercase={false}
+                            title="Join"
+                            onPress={async () => {
+                                startLoader();
+                                try {
+                                    await getClient().mutateRoomJoin({ roomId: sharedRoom!.id });
+                                } catch (e) {
+                                    Alert.alert(e.message);
+                                }
+                                stopLoader();
+                            }}
+                        />
+                    </View>
+
+                </ASSafeAreaView>
+            </View>
+        );
+    }
 
     return (
         <View flexDirection={'column'} height="100%" width="100%">
