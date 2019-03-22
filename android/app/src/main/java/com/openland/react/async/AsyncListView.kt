@@ -61,13 +61,12 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                 android.widget.FrameLayout.LayoutParams(
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT))
+        updateData()
     }
 
     fun setInverted(inverted: Boolean) {
         this.inverted = inverted
-        if (inited) {
-            updateData()
-        }
+        updateData()
     }
 
     fun setDataViewKey(key: String) {
@@ -86,17 +85,14 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
 
     fun setHeaderPadding(value: Float) {
         this.headerPadding = value
-        if (inited) {
-            updateData()
-        }
+        updateData()
+
     }
 
      fun setOverflowColor(value: Int) {
         this.overflowColor = value
-        if (inited) {
-            updateData()
-        }
-    }
+         updateData()
+     }
 
     private fun updateData() {
         val recycler = RecyclerCollectionComponent.create(asyncContext)
@@ -110,7 +106,8 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                         .overflowColor(this.overflowColor)
                         .reactContext(context as ReactContext)
                         .loading(!this.state.competed)
-                        .dataViewKey(this.dataViewKey!!))
+                        .dataViewKey(if (this.dataViewKey !== null) this.dataViewKey!! else "empty")
+                )
                 .recyclerConfiguration(ListRecyclerConfiguration<SectionBinderTarget>(LinearLayoutManager.VERTICAL, this.inverted))
                 .onScrollListener(this.scrollListener)
                 .itemAnimator(null)
