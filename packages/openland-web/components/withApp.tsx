@@ -4,6 +4,8 @@ import { withAppBase } from './withAppBase';
 import { AuthRouter } from '../pages/root/AuthRouter';
 import { XShortcutsRoot, XShortcuts } from 'openland-x/XShortcuts';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { XLoader } from 'openland-x/XLoader';
 
 export function withApp(
     name: string,
@@ -31,7 +33,14 @@ export function withApp(
                                 },
                             }}
                         >
-                            <WrappedComponent />
+                            {canUseDOM && (
+                                <React.Suspense fallback={<XLoader />} >
+                                    <WrappedComponent />
+                                </React.Suspense>
+                            )}
+                            {!canUseDOM && (
+                                <WrappedComponent />
+                            )}
                         </XShortcuts>
                     </XShortcutsRoot>
                 </XWithRole>

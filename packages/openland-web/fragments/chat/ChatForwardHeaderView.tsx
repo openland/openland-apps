@@ -7,11 +7,11 @@ import { UserShort } from 'openland-api/Types';
 import { withPinMessage } from 'openland-web/api/withPinMessage';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
-import { withDeleteMessages } from 'openland-web/api/withDeleteMessage';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { css } from 'linaria';
 import { XText } from 'openland-x/XText';
 import { XMutation } from 'openland-x/XMutation';
+import { useClient } from 'openland-web/utils/useClient';
 
 const PinMessageButton = withPinMessage(props => (
     <XMutation mutation={props.pinMessage} onSuccess={(props as any).onSuccess}>
@@ -36,8 +36,12 @@ const ClearIconClass = css`
     }
 `;
 
-const DeleteMessagesFrom = withDeleteMessages(props => (
-    <XModalForm
+const DeleteMessagesFrom = (props: {
+    messagesIds: string[];
+    onDelete: () => void;
+}) => {
+    const client = useClient();
+    return (<XModalForm
         submitProps={{
             text: 'Delete',
             style: 'danger',
@@ -45,20 +49,16 @@ const DeleteMessagesFrom = withDeleteMessages(props => (
         title="Delete message"
         target={<XButton text="Delete" style="default" />}
         defaultAction={async () => {
-            await props.deleteMessages({
-                variables: {
-                    mids: (props as any).messagesIds,
-                },
+            await client.mutateRoomDeleteMessages({
+                mids: (props as any).messagesIds,
             });
             await (props as any).onDelete();
         }}
     >
         <XText>Delete selected messages for everyone? This cannot be undone.</XText>
     </XModalForm>
-)) as React.ComponentType<{
-    messagesIds: string[];
-    onDelete: () => void;
-}>;
+    );
+}
 
 export const ChatForwardHeaderView = (props: {
     me: UserShort;
@@ -121,11 +121,11 @@ export const ChatForwardHeaderView = (props: {
                         {!Array.from(state.selectedMessages).find(
                             msg => msg.sender.id !== props.me.id,
                         ) && (
-                            <DeleteMessagesFrom
-                                messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
-                                onDelete={resetAll}
-                            />
-                        )}
+                                <DeleteMessagesFrom
+                                    messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
+                                    onDelete={resetAll}
+                                />
+                            )}
                     </XWithRole>
                     {pinMessageAccess && (
                         <PinMessageButton
