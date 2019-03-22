@@ -371,7 +371,7 @@ export class DialogListEngine {
                         (sharedRoom
                             ? sharedRoom.photo
                             : privateRoom
-                                ? privateRoom.user.photo
+                                ? privateRoom.user.picture
                                 : undefined) || undefined,
                     unread: unreadCount,
                     isOut: isOut,

@@ -135,3 +135,27 @@ export const MediaCandidateMutation = gql`
         }
     }
 `;
+
+export const ConferenceMediaWatchSubscription = gql`
+    subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
+        media: alphaConferenceMediaWatch(id: $id, peerId: $peerId) {
+            id
+            streams {
+                id
+                state
+                sdp
+                ice
+            }
+        }
+    }
+`;
+
+export const ConferenceWatchSubscription = gql`
+    subscription ConferenceWatch($id: ID!) {
+        alphaConferenceWatch(id: $id) {
+            ...ConferenceFull
+        }
+    }
+    ${ConferenceFull}
+    ${UserShort}
+`;

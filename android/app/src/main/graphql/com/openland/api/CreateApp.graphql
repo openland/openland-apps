@@ -1,0 +1,6 @@
+mutation CreateApp($about: String, $name: String!, $photoRef: ImageRefInput, $shortname: String) {
+  createApp(about: $about, name: $name, photoRef: $photoRef, shortname: $shortname) {
+    __typename
+    ...AppFull
+  }
+}

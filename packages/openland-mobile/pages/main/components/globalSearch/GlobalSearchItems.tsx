@@ -91,7 +91,7 @@ export class GlobalSearchItemUser extends React.PureComponent<{
             <ASFlex height={height} flexDirection="row" highlightColor={ZStyles.selectedListItem} onPress={this.handlePress} alignItems={'center'}>
                 <ASFlex marginLeft={7} width={height} height={height} alignItems="center" justifyContent="center">
                     <UserAvatar
-                        src={item.photo}
+                        src={item.picture}
                         size={avatarSize}
                         placeholderKey={item.id}
                         placeholderTitle={item.name}

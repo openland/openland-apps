@@ -4,7 +4,7 @@ import { UserShort } from 'openland-api/Types';
 import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
+import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 
 let cachedMessenger: MessengerEngine | null = null;
 
@@ -20,7 +20,7 @@ const Messenger = (props: { currentUser: UserShort; children?: any }) => {
                         let platform = 'web ' + location.hostname;
 
                         cachedMessenger = new MessengerEngine(
-                            new OpenlandClient(new ApolloGraphqlClient(apollo)),
+                            new OpenlandClient(new DirectApollolClient(apollo)),
                             props.currentUser,
                             platform,
                         );

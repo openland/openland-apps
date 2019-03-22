@@ -37,6 +37,140 @@ export const DialogsQuery = gql`
     ${TinyMessage}
 `;
 
+export const ChatWatchSubscription = gql`
+    subscription ChatWatch($chatId: ID!, $state: String) {
+        event: chatUpdates(chatId: $chatId, fromState: $state) {
+            ... on ChatUpdateSingle {
+                seq
+                state
+                update {
+                    ...ChatUpdateFragment
+                }
+            }
+            ... on ChatUpdateBatch {
+                fromSeq
+                seq
+                state
+                updates {
+                    ...ChatUpdateFragment
+                }
+            }
+        }
+    }
+    fragment ChatUpdateFragment on ChatUpdate {
+        ... on ChatMessageReceived {
+            message {
+                ...FullMessage
+            }
+            repeatKey
+        }
+        ... on ChatMessageUpdated {
+            message {
+                ...FullMessage
+            }
+        }
+        ... on ChatMessageDeleted {
+            message {
+                id
+            }
+        }
+        ... on ChatUpdated {
+            chat {
+                ...RoomShort
+            }
+        }
+        # ... on ConversationLostAccess {
+        #    lostAccess
+        # }
+    }
+    ${FullMessage}
+    ${UserTiny}
+    ${UserShort}
+    ${RoomShort}
+`;
+
+export const DialogsWatchSubscription = gql`
+    subscription DialogsWatch($state: String) {
+        event: dialogsUpdates(fromState: $state) {
+            ... on DialogUpdateSingle {
+                seq
+                state
+                update {
+                    ...DialogUpdateFragment
+                }
+            }
+            ... on DialogUpdateBatch {
+                fromSeq
+                seq
+                state
+                updates {
+                    ...DialogUpdateFragment
+                }
+            }
+        }
+    }
+    fragment DialogUpdateFragment on DialogUpdate {
+        ... on DialogMessageReceived {
+            cid
+            unread
+            globalUnread
+            message: alphaMessage {
+                ...TinyMessage
+            }
+        }
+        ... on DialogMessageUpdated {
+            cid
+            message: alphaMessage {
+                ...TinyMessage
+            }
+        }
+        ... on DialogMessageDeleted {
+            cid
+            message: alphaMessage {
+                ...TinyMessage
+            }
+            prevMessage: alphaPrevMessage {
+                ...TinyMessage
+            }
+            unread
+            globalUnread
+        }
+        ... on DialogMessageRead {
+            cid
+            unread
+            globalUnread
+        }
+        ... on DialogMessageRead {
+            cid
+            unread
+            globalUnread
+        }
+        ... on DialogTitleUpdated {
+            cid
+            title
+        }
+        ... on DialogMuteChanged {
+            cid
+            mute
+        }
+        ... on DialogMentionedChanged {
+            cid
+            haveMention
+        }
+        ... on DialogPhotoUpdated {
+            cid
+            photo
+        }
+        ... on DialogDeleted {
+            cid
+            globalUnread
+        }
+    }
+    ${UserTiny}
+    ${TinyMessage}
+    ${RoomShort}
+`;
+
 export const RoomQuery = gql`
     query Room($id: ID!) {
         room(id: $id) {
@@ -66,6 +200,18 @@ export const RoomSuperQuery = gql`
             featured
             listed
         }
+    }
+`;
+
+export const PinMessageMutation = gql`
+    mutation PinMessage($chatId: ID!, $messageId: ID!) {
+        pinMessage(chatId: $chatId, messageId: $messageId)
+    }
+`;
+
+export const UnpinMessageMutation = gql`
+    mutation UnpinMessage($chatId: ID!) {
+        unpinMessage(chatId: $chatId)
     }
 `;
 
@@ -166,8 +312,8 @@ export const ChatHistoryQuery = gql`
         }
     }
     ${FullMessage}
-    ${UserShort}
     ${UserTiny}
+    ${UserShort}
     ${RoomShort}
 `;
 
@@ -457,6 +603,7 @@ export const RoomInviteLinkQuery = gql`
 export const RoomInviteInfoQuery = gql`
     query RoomInviteInfo($invite: String!) {
         invite: betaRoomInviteInfo(invite: $invite) {
+            id
             room {
                 ... on SharedRoom {
                     id
@@ -540,5 +687,37 @@ export const RoomEditMessageMutation = gql`
 export const MarkSequenceReadMutation = gql`
     mutation MarkSequenceRead($seq: Int!) {
         alphaGlobalRead(toSeq: $seq)
+    }
+`;
+
+export const TypingsWatchSubscription = gql`
+    subscription TypingsWatch {
+        typings {
+            conversation {
+                id
+            }
+            user {
+                id
+                name
+                picture
+            }
+            cancel
+        }
+    }
+`;
+
+export const UpdateWelcomeMessageMutation = gql`
+    mutation UpdateWelcomeMessage(
+        $roomId: ID!
+        $welcomeMessageIsOn: Boolean!
+        $welcomeMessageSender: ID
+        $welcomeMessageText: String
+    ) {
+        updateWelcomeMessage(
+            roomId: $roomId
+            welcomeMessageIsOn: $welcomeMessageIsOn
+            welcomeMessageSender: $welcomeMessageSender
+            welcomeMessageText: $welcomeMessageText
+        )
     }
 `;

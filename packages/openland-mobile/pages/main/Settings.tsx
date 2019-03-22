@@ -25,7 +25,7 @@ let SettingsContent = ((props: PageProps) => {
     return (
         <SScrollView>
             <ZListItemHeader
-                photo={resp.me!!.photo}
+                photo={resp.me!!.picture}
                 id={resp!!.me!!.id}
                 userId={resp!!.me!!.id}
                 title={resp!!.me!!.name}
@@ -123,3 +123,4 @@ class SettingsComponent extends React.Component<PageProps> {
 }
 
 export const Settings = withApp(SettingsComponent, { navigationAppearance: 'small-hidden' });
+Settings.displayName = 'Settings';

@@ -77,15 +77,5 @@ class XPAvatarInner extends React.PureComponent<ZAvatarProps> {
 }
 
 export const ZAvatar = XMemo<ZAvatarProps>((props) => {
-    if (!props.userId) {
-        return <XPAvatarInner {...props} />;
-    }
-
-    let online = getClient().useWithoutLoaderOnline({ userId: props.userId });
-    return (
-        <XPAvatarInner
-            {...props}
-            online={online && online.user && online.user.online || false}
-        />
-    )
+    return (<XPAvatarInner {...props} />);
 })

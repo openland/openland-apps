@@ -9,11 +9,11 @@ export const TinyMessage = gql`
         }
         message
         fallback
-        ... on GeneralMessage{
-            attachments{
+        ... on GeneralMessage {
+            attachments {
                 id
                 fallback
-                ...on MessageAttachmentFile{
+                ...on MessageAttachmentFile {
                     fileId
                     fileMetadata{
                         isImage
@@ -22,7 +22,7 @@ export const TinyMessage = gql`
                     filePreview
                 }
             }
-            quotedMessages{
+            quotedMessages {
                 id
             }
         }
@@ -44,6 +44,7 @@ export const FullMessage = gql`
             attachments{
                 fallback
                 ...on MessageAttachmentFile{
+                    id
                     fileId
                     fileMetadata{
                         name
@@ -87,6 +88,13 @@ export const FullMessage = gql`
                             imageFormat
                         }
                     }
+                    keyboard{
+                        buttons{
+                            title
+                            style
+                            url
+                        }
+                    }
                     fallback
                 }
             }
@@ -114,11 +122,22 @@ export const FullMessage = gql`
                     }
                     ...on MessageSpanRoomMention{
                         room{
-                            ...RoomShort
+                            ... on PrivateRoom {
+                                id
+                                user {
+                                    id
+                                    name
+                                }
+                            } 
+                            ... on SharedRoom {
+                                id
+                                title
+                            }
                         }
                     }
                     ...on MessageSpanLink{
                         url
+                        text
                     }
                 }
 
@@ -178,7 +197,7 @@ export const FullMessage = gql`
 
             reactions{
                 user{
-                    ... UserTiny
+                    ... UserShort
                 }
                 reaction
             }
@@ -201,11 +220,22 @@ export const FullMessage = gql`
             }
             ...on MessageSpanRoomMention{
                 room{
-                    ...RoomShort
+                    ... on PrivateRoom {
+                        id
+                        user {
+                            id
+                            name
+                        }
+                    } 
+                    ... on SharedRoom {
+                        id
+                        title
+                    }
                 }
             }
             ...on MessageSpanLink{
                 url
+                text
             }
         }
 

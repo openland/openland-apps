@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+    <defs>
+        <linearGradient id="b" x1="0%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#60B8F9"/>
+            <stop offset="100%" stop-color="#4A9DF9"/>
+        </linearGradient>
+        <rect id="a" width="40" height="40" rx="20"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="c" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <use fill="url(#b)" fill-rule="nonzero" xlink:href="#a"/>
+        <g fill="#FFF" mask="url(#c)">
+            <path fill-opacity=".01" d="M9 8h22.941v22.941H9z"/>
+            <path fill-rule="nonzero" d="M17.03 10.868a4.586 4.586 0 0 0-4.589 4.588 4.586 4.586 0 0 0 4.588 4.588 4.586 4.586 0 0 0 4.589-4.588 4.586 4.586 0 0 0-4.589-4.588zm0 2.294a2.293 2.293 0 0 1 2.294 2.294 2.293 2.293 0 0 1-2.295 2.294 2.293 2.293 0 0 1-2.294-2.294 2.293 2.293 0 0 1 2.294-2.294zm8.602 0a2.87 2.87 0 0 0-2.867 2.867 2.87 2.87 0 0 0 2.867 2.868A2.87 2.87 0 0 0 28.5 16.03a2.87 2.87 0 0 0-2.868-2.867zm.574 6.882c-1.716 0-2.98.605-3.871 1.326 2.688 1.52 3.736 3.836 3.8 3.98l.07.214v.215h5.736v-1.9s-1.38-3.835-5.735-3.835zm-9.177 1.147C10.931 21.191 9 25.78 9 25.78v2.295h16.059v-2.295s-1.931-4.588-8.03-4.588zm0 2.294c3.939 0 5.198 2.294 5.198 2.294H11.832s1.308-2.294 5.197-2.294z"/>
+        </g>
+    </g>
+</svg>

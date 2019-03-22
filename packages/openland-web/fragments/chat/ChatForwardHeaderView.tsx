@@ -4,12 +4,23 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { UserShort } from 'openland-api/Types';
+import { withPinMessage } from 'openland-web/api/withPinMessage';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { withDeleteMessages } from 'openland-web/api/withDeleteMessage';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { css } from 'linaria';
 import { XText } from 'openland-x/XText';
+import { XMutation } from 'openland-x/XMutation';
+
+const PinMessageButton = withPinMessage(props => (
+    <XMutation mutation={props.pinMessage} onSuccess={(props as any).onSuccess}>
+        <XButton text="Pin" />
+    </XMutation>
+)) as React.ComponentType<{
+    variables: { chatId: string; messageId: string };
+    onSuccess: () => void;
+}>;
 
 const ClearIconClass = css`
     margin-top: 4px;
@@ -49,8 +60,32 @@ const DeleteMessagesFrom = withDeleteMessages(props => (
     onDelete: () => void;
 }>;
 
-export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) => {
+export const ChatForwardHeaderView = (props: {
+    me: UserShort;
+    roomId: string;
+    privateRoom: boolean;
+    publicRoom: boolean;
+    canMePinMessage: boolean;
+    myId: string;
+}) => {
     const state = React.useContext(MessagesStateContext);
+    let pinMessageAccess = false;
+    let { selectedMessages } = state;
+    let selectedMessageArr = Array.from(selectedMessages);
+    const firstStepPinAccess =
+        !props.privateRoom &&
+        selectedMessages.size === 1 &&
+        !selectedMessageArr[0].isService &&
+        selectedMessageArr[0].sender.id === props.myId;
+
+    if (firstStepPinAccess && !props.publicRoom) {
+        pinMessageAccess = true;
+    }
+
+    if (firstStepPinAccess && props.publicRoom && props.canMePinMessage) {
+        pinMessageAccess = true;
+    }
+
     const { forwardMessagesId, resetAll } = state;
     if (forwardMessagesId && forwardMessagesId.size) {
         let size = forwardMessagesId.size;
@@ -92,6 +127,15 @@ export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) 
                             />
                         )}
                     </XWithRole>
+                    {pinMessageAccess && (
+                        <PinMessageButton
+                            variables={{
+                                chatId: props.roomId,
+                                messageId: Array.from(state.selectedMessages)[0].id!,
+                            }}
+                            onSuccess={state.resetAll}
+                        />
+                    )}
                     <XButton
                         text="Reply"
                         style="primary"

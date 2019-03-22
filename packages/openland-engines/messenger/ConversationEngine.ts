@@ -1,67 +1,14 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, ChatHistoryQuery, RoomQuery } from 'openland-api';
+import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatWatchSubscription, RoomTinyQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
-import gql from 'graphql-tag';
 import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_ServiceMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
-import { FullMessage as FullMessageFragment } from 'openland-api/fragments/Message';
-import { UserTiny } from 'openland-api/fragments/UserTiny';
-import { RoomShort } from 'openland-api/fragments/RoomShort';
-import { UserShort as UserShortFragnemt } from 'openland-api/fragments/UserShort';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
-
-const CHAT_SUBSCRIPTION = gql`
-  subscription ChatSubscription($chatId: ID!, $fromState: String) {
-    event: chatUpdates(chatId: $chatId, fromState: $fromState) {
-        ... on ChatUpdateSingle {
-            seq
-            state
-            update {
-                ...ChatUpdateFragment
-            }
-        }
-        ... on ChatUpdateBatch {
-            fromSeq
-            seq
-            state
-            updates {
-                ...ChatUpdateFragment
-            }
-        }
-       
-    }
-  }
-  fragment ChatUpdateFragment on ChatUpdate {
-    ... on ChatMessageReceived {
-        message {
-            ...FullMessage
-        }
-        repeatKey
-    }
-    ... on ChatMessageUpdated {
-        message {
-            ...FullMessage
-        }
-    }
-    ... on ChatMessageDeleted {
-        message {
-            id
-        }
-    }
-    ... on ConversationLostAccess {
-       lostAccess
-    }
-   
-  }
-  ${FullMessageFragment}
-  ${UserTiny}
-  ${UserShortFragnemt}
-  ${RoomShort}
-`;
+import * as Types from 'openland-api/Types';
 
 export interface ConversationStateHandler {
     onConversationUpdated(state: ConversationState): void;
@@ -71,7 +18,10 @@ export interface ConversationStateHandler {
 
 const CONVERSATION_PAGE_SIZE = 15;
 
+const timeGroup = 1000 * 60 * 60;
+
 export interface DataSourceMessageItem {
+    chatId: string;
     type: 'message';
     key: string;
     id?: string;
@@ -104,10 +54,11 @@ export interface DataSourceDateItem {
     year: number;
 }
 
-export function convertMessage(src: FullMessage & { repeatKey?: string }, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
+export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
     return {
+        chatId: chaId,
         type: 'message',
         id: src.id,
         key: src.repeatKey || src.id,
@@ -115,12 +66,12 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, engine
         isOut: src.sender.id === engine.user.id,
         senderId: src.sender.id,
         senderName: src.sender.name,
-        senderPhoto: src.sender.photo || undefined,
+        senderPhoto: src.sender.picture || undefined,
         sender: src.sender,
         text: src.message || undefined,
         isSending: false,
-        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && (src.date - next.date < 10000) && ((next.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
-        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && (prev.date - src.date < 10000) && ((prev.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
+        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && (src.date - next.date < timeGroup) && ((next.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
+        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && (prev.date - src.date < timeGroup) && ((prev.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
         reactions: generalMessage && generalMessage.reactions,
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
         isService: !!serviceMessage,
@@ -161,7 +112,7 @@ export class ConversationEngine implements MessageSendHandler {
     historyFullyLoaded?: boolean;
 
     private isStarted = false;
-    private watcher: SequenceModernWatcher | null = null;
+    private watcher: SequenceModernWatcher<Types.ChatWatch, Types.ChatWatchVariables> | null = null;
     private isOpen = false;
     private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
@@ -169,10 +120,12 @@ export class ConversationEngine implements MessageSendHandler {
     private listeners: ConversationStateHandler[] = [];
     private loadingHistory?: string = undefined;
     private localMessagesMap = new Map<string, string>();
+    role?: Types.RoomMemberRole | null;
 
     constructor(engine: MessengerEngine, conversationId: string) {
         this.engine = engine;
         this.conversationId = conversationId;
+
         this.state = new ConversationState(true, [], [], undefined, false, false);
         this.dataSource = new DataSource(() => {
             this.loadBefore();
@@ -188,7 +141,9 @@ export class ConversationEngine implements MessageSendHandler {
         console.info('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
-                return await this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId });
+                let room = await this.engine.client.client.query(RoomTinyQuery, { id: this.conversationId });
+                let history = await this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId });
+                return { ...history, ...room };
             } catch (e) {
                 console.warn(e);
                 throw e;
@@ -200,10 +155,12 @@ export class ConversationEngine implements MessageSendHandler {
         this.messages = [...(initialChat).messages];
         this.messages.reverse();
 
+        this.role = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.role || null;
+
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         console.info('Initial state for ' + this.conversationId);
-        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
+        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: initialChat.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
         this.onMessagesUpdated();
 
         // Update Data Source
@@ -218,7 +175,7 @@ export class ConversationEngine implements MessageSendHandler {
                 dsItems.push(createDateDataSourceItem(d));
             }
 
-            dsItems.push(convertMessage(sourceFragments[i], this.engine, sourceFragments[i - 1], sourceFragments[i + 1]));
+            dsItems.push(convertMessage(sourceFragments[i], this.conversationId, this.engine, sourceFragments[i - 1], sourceFragments[i + 1]));
             prevDate = sourceFragments[i].date;
         }
 
@@ -285,7 +242,7 @@ export class ConversationEngine implements MessageSendHandler {
                     dsItems.push(createDateDataSourceItem(d));
                 }
 
-                dsItems.push(convertMessage(sourceFragments[i] as any, this.engine, sourceFragments[i - 1] as any, sourceFragments[i + 1] as any));
+                dsItems.push(convertMessage(sourceFragments[i] as any, this.conversationId, this.engine, sourceFragments[i - 1] as any, sourceFragments[i + 1] as any));
                 prevDate = sourceFragments[i].date;
             }
             if (this.historyFullyLoaded && prevDate) {
@@ -561,7 +518,7 @@ export class ConversationEngine implements MessageSendHandler {
             this.onMessagesUpdated();
 
             // Update in datasource
-            let conv = convertMessage(event.message, this.engine);
+            let conv = convertMessage(event.message, this.conversationId, this.engine);
             conv.key = this.localMessagesMap.get(event.message.id) || event.message.id;
             let old = this.dataSource.getItem(conv.key);
             conv.attachTop = old ? (old as DataSourceMessageItem).attachTop : conv.attachTop;
@@ -584,19 +541,20 @@ export class ConversationEngine implements MessageSendHandler {
         }
         let conv: DataSourceMessageItem;
         if (isServerMessage(src)) {
-            conv = convertMessage(src, this.engine, undefined);
+            conv = convertMessage(src, this.conversationId, this.engine, undefined);
 
             conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id && !!prev.serviceMetaData === !!(src.__typename === 'ServiceMessage') : false;
         } else {
             let p = src as PendingMessage;
             conv = {
                 type: 'message',
+                chatId: this.conversationId,
                 key: src.key,
                 date: parseInt(src.date, 10),
                 senderId: this.engine.user.id,
                 senderName: this.engine.user.name,
                 sender: this.engine.user,
-                senderPhoto: this.engine.user.photo ? this.engine.user.photo : undefined,
+                senderPhoto: this.engine.user.picture ? this.engine.user.picture : undefined,
                 isOut: true,
                 isSending: true,
                 text: src.message ? src.message : undefined,
@@ -604,6 +562,7 @@ export class ConversationEngine implements MessageSendHandler {
                 spans: src.spans,
                 attachments: p.uri ? [{
                     __typename: "MessageAttachmentFile",
+                    id: 'pending_message_attach_file_id',
                     uri: p.uri,
                     fileId: '',
                     fallback: 'Document',
@@ -634,7 +593,7 @@ export class ConversationEngine implements MessageSendHandler {
             if (prev && prev.type === 'message' && prev.senderId === conv.senderId && (!!prev.serviceMetaData === !!conv.serviceMetaData)) {
                 // same sender and prev not service
                 let dateChanged = prev.date && !isSameIntDate(prev.date, conv.date);
-                let prevMessageTooOld = prev.date && (conv.date - prev.date > 10000);
+                let prevMessageTooOld = prev.date && (conv.date - prev.date > timeGroup);
 
                 if (dateChanged) {
                     this.dataSource.addItem(createDateDataSourceItem(new Date(conv.date)), 0);
@@ -696,7 +655,7 @@ export class ConversationEngine implements MessageSendHandler {
             let isService = isServerMessage(message) && message.__typename === 'ServiceMessage';
             if (prevMessageSender === sender.id && prevMessageDate !== undefined && isService === prevMessageIsService) {
                 // 10 sec
-                if ((date - prevMessageDate < 10000) && currentCollapsed < 10) {
+                if ((date - prevMessageDate < timeGroup) && currentCollapsed < 10) {
                     prevMessageDate = date;
                     currentCollapsed++;
                     return currentGroup!!;

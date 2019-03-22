@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { GraphqlTypedQuery } from './typed';
 import { Query, QueryResult } from 'react-apollo';
-import { IsActiveContext } from '../openland-web/pages/main/mail/components/Components';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 export interface YQueryProps<QUERY, VARIABLES> {
     retry?: boolean;

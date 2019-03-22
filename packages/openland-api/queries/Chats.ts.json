@@ -1,9 +1,13 @@
 {
     "operations": [
         { "name": "DialogsQuery", "type": "query", "hasVariables": true },
+        { "name": "ChatWatchSubscription", "type": "subscription", "hasVariables": true },
+        { "name": "DialogsWatchSubscription", "type": "subscription", "hasVariables": true },
         { "name": "RoomQuery", "type": "query", "hasVariables": true },
         { "name": "RoomTinyQuery", "type": "query", "hasVariables": true },
         { "name": "RoomSuperQuery", "type": "query", "hasVariables": true },
+        { "name": "PinMessageMutation", "type": "mutation", "hasVariables": true },
+        { "name": "UnpinMessageMutation", "type": "mutation", "hasVariables": true },
         { "name": "MessageSetReactionMutation", "type": "mutation", "hasVariables": true },
         { "name": "SwitchReactionMutation", "type": "mutation", "hasVariables": true },
         { "name": "MessageUnsetReactionMutation", "type": "mutation", "hasVariables": true },
@@ -46,6 +50,8 @@
         { "name": "RoomDeleteMessagesMutation", "type": "mutation", "hasVariables": true },
         { "name": "RoomDeleteUrlAugmentationMutation", "type": "mutation", "hasVariables": true },
         { "name": "RoomEditMessageMutation", "type": "mutation", "hasVariables": true },
-        { "name": "MarkSequenceReadMutation", "type": "mutation", "hasVariables": true }
+        { "name": "MarkSequenceReadMutation", "type": "mutation", "hasVariables": true },
+        { "name": "TypingsWatchSubscription", "type": "subscription", "hasVariables": false },
+        { "name": "UpdateWelcomeMessageMutation", "type": "mutation", "hasVariables": true }
     ]
 }

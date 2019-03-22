@@ -1,0 +1,19 @@
+query AvailableRooms {
+  rooms: betaAvailableRooms {
+    __typename
+    ... on SharedRoom {
+      id
+      kind
+      membersCount
+      membership
+      organization {
+        __typename
+        id
+        name
+        photo
+      }
+      photo
+      title
+    }
+  }
+}

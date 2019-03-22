@@ -86,7 +86,7 @@ export const handlePermissionDismiss = (permission: permissionsType) => {
             },
             android: {
                 title: 'Allow Openland to take pictures and record video?',
-                message: 'To upload a photo or video, allow Openland access to your camera. Tap Settings > Permissions, and turn on Camera.'
+                message: 'To upload a photo or video, allow Openland access to your camera and storage. Tap Settings > Permissions, and turn on Camera and Storage.'
             }
         });
     } else if (permission === 'android-storage') {

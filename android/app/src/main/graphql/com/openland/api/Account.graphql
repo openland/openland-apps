@@ -1,0 +1,14 @@
+query Account {
+  me: me {
+    __typename
+    ...UserShort
+  }
+  myPermissions {
+    __typename
+    roles
+  }
+  sessionState: sessionState {
+    __typename
+    ...SessionStateFull
+  }
+}

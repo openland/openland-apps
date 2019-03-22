@@ -90,16 +90,16 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
             }
 
             // use actual data about user online
-            let online = getClient().useWithoutLoaderOnline({ userId: privateRoom.user.id });
-            if (online && online.user) {
-                if (!online.user.online && online.user.lastSeen) {
-                    subtitle = formatLastSeen(online.user.lastSeen);
-                    accent = false;
-                } else if (online.user.online) {
-                    subtitle = 'online'
-                    accent = true;
-                }
-            }
+            // let online = getClient().useWithoutLoaderOnline({ userId: privateRoom.user.id });
+            // if (online && online.user) {
+            //     if (!online.user.online && online.user.lastSeen) {
+            //         subtitle = formatLastSeen(online.user.lastSeen);
+            //         accent = false;
+            //     } else if (online.user.online) {
+            //         subtitle = 'online'
+            //         accent = true;
+            //     }
+            // }
         }
     }
 

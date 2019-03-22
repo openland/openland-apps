@@ -1,31 +1,10 @@
-import gql from 'graphql-tag';
 import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-
-const SUBSCRIBE_ONLINES = gql`
-    subscription SubscribeOnlines($conversations: [ID!]!) {
-        alphaSubscribeChatOnline(conversations: $conversations) {
-            user: user {
-                id
-                online
-                lastSeen
-            }
-            type
-            timeout
-        }
-    }
-`;
-
-const USER_ONLINE = gql`
-    fragment UserOnline on User{
-        id
-        online
-    }
-`;
+import { OnlineWatch, OnlineWatchVariables } from 'openland-api/Types';
 
 export class OnlineWatcher {
     private onlinesData = new Map<string, boolean>();
-    private sub?: GraphqlActiveSubscription = undefined;
+    private sub?: GraphqlActiveSubscription<OnlineWatch, OnlineWatchVariables> = undefined;
 
     private listeners: ((data: {}) => void)[] = [];
     private singleChangeListeners: ((user: string, online: boolean) => void)[] = [];
@@ -37,16 +16,16 @@ export class OnlineWatcher {
     onDialogListChange(conversations: string[]) {
         this.destroy();
 
-        let s = this.client.client.subscribe(SUBSCRIBE_ONLINES, { conversations });
+        let s = this.client.subscribeOnlineWatch({ conversations });
         this.sub = s;
 
         (async () => {
             while (true) {
                 let event = await s.get();
-                if (!event || !event.data) {
-                    continue;
-                }
-                let evData = event.data.alphaSubscribeChatOnline;
+                // if (!event) {
+                //     continue;
+                // }
+                let evData = event.alphaSubscribeChatOnline;
                 let userId = evData.user.id;
 
                 this.onlinesData.set(userId, evData.user.online);

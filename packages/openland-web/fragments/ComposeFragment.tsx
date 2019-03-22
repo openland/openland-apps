@@ -67,7 +67,7 @@ const SearchPeopleModule = withExplorePeople(props => {
                     return {
                         label: u.name,
                         value: u.id,
-                        photo: u.photo,
+                        photo: u.picture,
                         org: u.primaryOrganization ? u.primaryOrganization.name : '',
                     };
                 }) || []
@@ -136,7 +136,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
 
     onConversationLostAccess = () => {
         console.log('onConversationLostAccess');
-     };
+    };
 
     onConversationUpdated = (state: ConversationState) => {
         this.setState({ loading: state.loading, messages: state.messages });

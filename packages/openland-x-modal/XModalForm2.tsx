@@ -11,6 +11,7 @@ export interface XModalFormProps extends XFormProps, XModalProps {
     submitProps?: XFormSubmitProps;
     customFooter?: any;
     submitBtnText?: string;
+    alsoUseBottomCloser?: boolean;
 }
 
 const BodyPadding = Glamorous.div<XFlexStyles>(
@@ -61,7 +62,10 @@ export class XModalForm extends React.Component<XModalFormProps & XFlexStyles> {
                 ? null
                 : this.props.customFooter || (
                       <XModalFooter>
-                          <XHorizontal>
+                          <XHorizontal separator={6}>
+                              {this.props.alsoUseBottomCloser && (
+                                  <XButton text="Cancel" style="ghost" autoClose={true} />
+                              )}
                               <XFormSubmit
                                   style="primary"
                                   text={
@@ -72,9 +76,10 @@ export class XModalForm extends React.Component<XModalFormProps & XFlexStyles> {
                                   {...submitProps}
                                   keyDownSubmit={true}
                               />
-                              {!this.props.useTopCloser && (
-                                  <XButton text="Cancel" style="ghost" autoClose={true} />
-                              )}
+                              {!this.props.useTopCloser &&
+                                  !this.props.alsoUseBottomCloser && (
+                                      <XButton text="Cancel" style="ghost" autoClose={true} />
+                                  )}
                           </XHorizontal>
                       </XModalFooter>
                   );

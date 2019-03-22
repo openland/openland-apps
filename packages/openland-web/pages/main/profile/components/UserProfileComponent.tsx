@@ -135,10 +135,10 @@ const Header = (props: { user: User_user }) => {
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
                 <XView paddingRight={18}>
-                    {user.photo && (
-                        <AvatarModal photo={user.photo} userName={user.name} userId={user.id} />
+                    {user.picture && (
+                        <AvatarModal photo={user.picture} userName={user.name} userId={user.id} />
                     )}
-                    {!user.photo && (
+                    {!user.picture && (
                         <XAvatar2 src={undefined} size={58} title={user.name} id={user.id} />
                     )}
                 </XView>
@@ -260,17 +260,16 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
 };
 
 const UserProvider = withUser(
-    withRouter(
-        props =>
-            props.data.user ? (
-                <UserProfileInner
-                    user={props.data.user}
-                    router={props.router}
-                    onDirectory={(props as any).onDirectory}
-                />
-            ) : (
-                <XLoader loading={true} />
-            ),
+    withRouter(props =>
+        props.data.user ? (
+            <UserProfileInner
+                user={props.data.user}
+                router={props.router}
+                onDirectory={(props as any).onDirectory}
+            />
+        ) : (
+            <XLoader loading={true} />
+        ),
     ),
 ) as React.ComponentType<{
     variables: { userId: string };

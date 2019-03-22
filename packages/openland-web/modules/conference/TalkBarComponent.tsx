@@ -55,7 +55,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                                 objectId={v.user.id}
                                                 objectName={v.user.name}
                                                 online={false}
-                                                cloudImageUuid={v.user.photo || undefined}
+                                                cloudImageUuid={v.user.picture || undefined}
                                             />
                                             {/* <span>{v.connection && v.connection.state}</span> */}
                                         </XView>
@@ -73,13 +73,15 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                         <XButton
                                             style="success"
                                             text={
-                                                callState.status === 'connecting' ? 'Connecting' : 'Leave'
+                                                callState.status === 'connecting'
+                                                    ? 'Connecting'
+                                                    : 'Leave'
                                             }
                                             onClick={() => calls.leaveCall()}
                                         />
                                     </>
                                 )}
-                                {(callState.conversationId !== props.conversationId) && (
+                                {callState.conversationId !== props.conversationId && (
                                     <XButton
                                         style="success"
                                         text={callState.conversationId ? 'Leave' : 'Join'}

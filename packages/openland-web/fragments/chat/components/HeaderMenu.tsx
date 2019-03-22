@@ -4,41 +4,55 @@ import { XMenuItemSeparator, XMenuItem } from 'openland-x/XMenuItem';
 import { AdminTools } from 'openland-web/pages/main/profile/components/RoomProfileComponent';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { Room_room_SharedRoom } from 'openland-api/Types';
+import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 
-export const HeaderMenu = (props: { room: Room_room_SharedRoom }) => (
-    <XOverflow
-        flat={true}
-        small={true}
-        placement="bottom-end"
-        content={
-            <>
-                <XWithRole
-                    role="super-admin"
-                    or={props.room.role === 'OWNER' || props.room.role === 'ADMIN'}
-                >
+export const HeaderMenu = ({ room }: { room: Room_room_SharedRoom }) => {
+    const { id, canEdit } = room;
+
+    const canSeeAdvancedSettings = checkCanSeeAdvancedSettings({ chat: room });
+    return (
+        <XOverflow
+            flat={true}
+            small={true}
+            placement="bottom-end"
+            content={
+                <>
+                    <XWithRole role="super-admin" or={canEdit}>
+                        <XMenuItem
+                            query={{
+                                field: 'editChat',
+                                value: 'true',
+                            }}
+                        >
+                            Settings
+                        </XMenuItem>
+                    </XWithRole>
+
                     <XMenuItem
                         query={{
-                            field: 'editChat',
-                            value: 'true',
+                            field: 'leaveFromChat',
+                            value: id,
                         }}
+                        style="danger"
                     >
-                        Settings
+                        Leave group
                     </XMenuItem>
-                </XWithRole>
-                <XMenuItem
-                    query={{
-                        field: 'leaveFromChat',
-                        value: props.room.id,
-                    }}
-                    style="danger"
-                >
-                    Leave group
-                </XMenuItem>
-                <XWithRole role="super-admin">
-                    <XMenuItemSeparator />
-                    <AdminTools id={props.room.id} variables={{ id: props.room.id }} />
-                </XWithRole>
-            </>
-        }
-    />
-);
+                    <XWithRole role="super-admin" or={canSeeAdvancedSettings}>
+                        <XMenuItemSeparator />
+                        <XMenuItem
+                            query={{
+                                field: 'advancedSettings',
+                                value: 'true',
+                            }}
+                        >
+                            Advanced settings
+                        </XMenuItem>
+                        <XWithRole role="super-admin">
+                            <AdminTools id={id} variables={{ id }} />
+                        </XWithRole>
+                    </XWithRole>
+                </>
+            }
+        />
+    );
+};

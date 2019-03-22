@@ -41,6 +41,20 @@ export const OnlineQuery = gql`
     }
 `;
 
+export const OnlineWatchSubscription = gql`
+    subscription OnlineWatch($conversations: [ID!]!) {
+        alphaSubscribeChatOnline(conversations: $conversations) {
+            user: user {
+                id
+                online
+                lastSeen
+            }
+            type
+            timeout
+        }
+    }
+`;
+
 export const ExplorePeopleQuery = gql`
     query ExplorePeople($query: String, $sort: String, $page: Int, $after: String) {
         items: userSearch(query: $query, sort: $sort, page: $page, first: 25, after: $after) {

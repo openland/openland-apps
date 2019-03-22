@@ -1,0 +1,13 @@
+subscription OnlineWatch($conversations: [ID!]!) {
+  alphaSubscribeChatOnline(conversations: $conversations) {
+    __typename
+    timeout
+    type
+    user: user {
+      __typename
+      id
+      lastSeen
+      online
+    }
+  }
+}

@@ -1,0 +1,10 @@
+mutation ConferenceJoin($id: ID!) {
+  conferenceJoin(id: $id) {
+    __typename
+    conference {
+      __typename
+      ...ConferenceFull
+    }
+    peerId
+  }
+}

@@ -126,15 +126,12 @@ const SpansMessageTextPreprocess = ({ text, isEdited }: { text: string; isEdited
 
 const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserShort; text: string; isYou: boolean }) => {
-        const userNameEmojified = React.useMemo(
-            () => {
-                return emoji({
-                    src: text,
-                    size: 16,
-                });
-            },
-            [text],
-        );
+        const userNameEmojified = React.useMemo(() => {
+            return emoji({
+                src: text,
+                size: 16,
+            });
+        }, [text]);
 
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
@@ -165,7 +162,6 @@ const SpansMessageText = ({ text }: { text: string }) => {
         </>
     );
 };
-
 export const SpansMessage = ({
     message,
     spans,
@@ -201,10 +197,10 @@ export const SpansMessage = ({
                         <OthersPopper
                             show={true}
                             items={span.users.map(
-                                ({ id, name, photo, primaryOrganization }: any) => ({
+                                ({ id, name, picture, primaryOrganization }: any) => ({
                                     title: name,
                                     subtitle: primaryOrganization ? primaryOrganization.name : '',
-                                    photo,
+                                    picture,
                                     id,
                                 }),
                             )}
@@ -232,28 +228,34 @@ export const SpansMessage = ({
                             href={span.url}
                             onClick={(e: any) => e.stopPropagation()}
                         >
-                            {span.url}
+                            {span.text ? span.text : span.url}
                         </XView>
                     </span>,
                 );
                 lastOffset = span.offset + span.length;
             } else if (span.__typename === 'MessageSpanUserMention') {
+                let finalMessage = message.slice(span.offset, span.offset + span.length);
+
+                if (finalMessage.startsWith('@')) {
+                    finalMessage = finalMessage.slice(1);
+                }
+
                 res.push(
                     <MentionedUser
                         key={'user-' + i}
-                        isYou={false}
-                        text={message.slice(span.offset + 1, span.offset + span.length)}
+                        isYou={span.user.isYou}
+                        text={finalMessage}
                         user={{
                             __typename: 'User',
                             id: span.user.id,
                             name: span.user.name,
                             firstName: span.user.name,
                             lastName: null,
-                            photo: null,
+                            picture: span.user.picture,
                             email: null,
                             online: false,
                             lastSeen: null,
-                            isYou: false,
+                            isYou: span.user.isYou,
                             isBot: false,
                             shortname: null,
                             primaryOrganization: null,

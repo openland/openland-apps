@@ -19,9 +19,9 @@ interface DocumentContentProps {
     message: DataSourceMessageItem;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
     onUserPress: (id: string) => void;
-    onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    padded?: boolean;
+    compensateBubble?: boolean;
 }
 export class DocumentContent extends React.PureComponent<DocumentContentProps, { downloadState?: DownloadState }> {
     private handlePress = () => {
@@ -80,7 +80,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                 onPress={this.handlePress}
                 marginTop={2}
                 marginBottom={1}
-                marginLeft={-2}
+                marginLeft={this.props.compensateBubble ? -2 : undefined}
             >
 
                 <ASFlex

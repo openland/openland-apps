@@ -1,0 +1,6 @@
+mutation AddAppToChat($appId: ID!, $chatId: ID!) {
+  addAppToChat(appId: $appId, chatId: $chatId) {
+    __typename
+    ...AppChat
+  }
+}

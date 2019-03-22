@@ -1,0 +1,25 @@
+query GlobalSearch($query: String!) {
+  items: alphaGlobalSearch(query: $query) {
+    __typename
+    ... on Organization {
+      ...OrganizationShort
+    }
+    ... on User {
+      ...UserShort
+    }
+    ... on SharedRoom {
+      id
+      kind
+      membersCount
+      membership
+      organization {
+        __typename
+        id
+        name
+        photo
+      }
+      roomPhoto: photo
+      title
+    }
+  }
+}

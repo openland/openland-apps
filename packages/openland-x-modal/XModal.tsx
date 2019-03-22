@@ -26,7 +26,7 @@ interface ModalRenderProps {
 
 const ModalRender = XMemo<ModalRenderProps>(props => {
     const { isMobile } = React.useContext(MobileSidebarContext);
-    let width = 570;
+    let width = 575;
     if (props.sWidth !== undefined) {
         width = props.sWidth;
     } else if (props.size === 'large') {

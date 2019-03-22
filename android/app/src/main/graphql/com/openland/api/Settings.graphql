@@ -1,0 +1,6 @@
+query Settings {
+  settings {
+    __typename
+    ...SettingsFull
+  }
+}

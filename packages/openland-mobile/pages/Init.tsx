@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AsyncStorage, View, Linking } from 'react-native';
 import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/apolloClient';
-import { AccountQuery } from 'openland-api';
+import { AccountQuery, SettingsQuery } from 'openland-api';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
 import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
@@ -20,6 +20,7 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
+// import { cachedQuery } from 'openland-mobile/utils/cachedQuery';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -93,19 +94,14 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     }
                 } else {
                     let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
-                    let userAccount: string | undefined = undefined; // await AsyncStorage.getItem('openland-account-3');
                     let res: any;
                     if (userToken) {
                         this.setState({ state: 'loading' });
                         let client = buildNativeClient(userToken);
                         saveClient(client);
-                        res = userAccount ? JSON.parse(userAccount) : (await backoff(async () => await getClient().queryAccount()));
-
-                        // Refresh
-                        if (userAccount) {
-                            getClient().client.updateQuery((data) => res, AccountQuery);
-                            backoff(async () => await getClient().queryAccount())
-                        }
+                        res = await client.queryAccount();
+                        // res = await cachedQuery(client.client, AccountQuery, {}, 'account');
+                        // await cachedQuery(client.client, SettingsQuery, {}, 'settings')
 
                         let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState) : undefined;
                         this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });

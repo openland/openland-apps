@@ -1,0 +1,6 @@
+query FetchPushSettings {
+  pushSettings {
+    __typename
+    webPushKey
+  }
+}

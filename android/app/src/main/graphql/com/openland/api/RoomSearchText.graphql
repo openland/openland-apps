@@ -1,0 +1,10 @@
+query RoomSearchText($query: String!) {
+  items: betaDialogTextSearch(query: $query) {
+    __typename
+    id: cid
+    flexibleId: fid
+    kind
+    photo
+    title
+  }
+}

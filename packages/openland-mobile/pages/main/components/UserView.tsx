@@ -13,7 +13,7 @@ interface UserViewProps {
     enabled?: boolean;
     onPress: () => void;
     onLongPress?: () => void;
-
+    subtitle?: string;
     paddingRight?: number;
 }
 
@@ -23,14 +23,14 @@ export const UserView = (props: UserViewProps) => {
     return (
         <ZListItemBase key={props.user.id} separator={false} height={60} onPress={props.onPress} onLongPress={props.onLongPress} enabled={props.enabled}>
             <View paddingLeft={16} paddingRight={16} alignSelf="center" opacity={props.enabled === false ? 0.5 : 1}>
-                <ZAvatar size={42} src={props.user.photo} userId={props.user.id} placeholderKey={props.user.id} placeholderTitle={props.user.name} />
+                <ZAvatar size={42} src={props.user.picture} userId={props.user.id} placeholderKey={props.user.id} placeholderTitle={props.user.name} online={props.user.online} />
             </View>
             <View alignSelf="center" flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column" opacity={props.enabled === false ? 0.5 : 1} paddingRight={props.paddingRight}>
                 <View flexDirection="row">
                     {props.isAdmin && <Image source={require('assets/ic-star-16.png')} style={{ tintColor: '#fbc139', alignSelf: 'center', marginRight: 2, marginBottom: 4 }} />}
                     <Text numberOfLines={1} style={{ fontSize: 16, fontWeight: '500', color: theme.textColor, height: 22, marginBottom: 0 }}>{props.user.name}{props.user.primaryOrganization && <Text style={{ fontSize: 15, color: '#99a2b0' }}>  {props.user.primaryOrganization.name}</Text>}</Text>
                 </View>
-                <PresenceComponent isBot={props.user.isBot} uid={props.user.id} style={{ fontSize: 14, color: '#99a2b0', height: 20, marginBottom: -4 }} onlineStyle={{ color: '#0084fe' }} />
+                {props.subtitle ? <Text style={{ fontSize: 14, marginTop: 4, color: '#99a2b0' }}>{props.subtitle}</Text> : <PresenceComponent isBot={props.user.isBot} uid={props.user.id} lastSeen={props.user.lastSeen} online={props.user.online} style={{ fontSize: 14, color: '#99a2b0', height: 20, marginBottom: -4 }} onlineStyle={{ color: '#0084fe' }} />}
             </View>
         </ZListItemBase>
     );

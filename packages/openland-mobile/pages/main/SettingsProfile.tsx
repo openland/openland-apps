@@ -53,6 +53,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     <ZTextInput
                         placeholder="First name"
                         field="input.firstName"
+                        autoFocus={true}
                     />
                     <ZTextInput
                         placeholder="Last name"

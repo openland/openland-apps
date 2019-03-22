@@ -8,7 +8,7 @@ import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Platform, View, Text, TouchableOpacity } from 'react-native';
+import { Clipboard, Platform, View, Text, TouchableOpacity, Image } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
@@ -16,7 +16,7 @@ import { Prompt } from '../components/Prompt';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, SharedRoomMembershipStatus, RoomMemberRole } from 'openland-api/Types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
 
@@ -56,12 +56,11 @@ export class MobileMessenger {
         return this.conversations.get(id)!!;
     }
 
-    private handleMediaClick = (document: DataSourceMessageItem, event: { path: string } & ASPressEvent) => {
-        let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+    handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => {
         showPictureModal({
             url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
-            width: attach.fileMetadata.imageWidth!,
-            height: attach.fileMetadata.imageWidth!!,
+            width: fileMeta.imageWidth,
+            height: fileMeta.imageHeight,
             isGif: false,
             animate: {
                 x: event.x,
@@ -81,16 +80,16 @@ export class MobileMessenger {
         });
     }
 
-    private handleDocumentClick = (document: DataSourceMessageItem) => {
+    handleDocumentClick = (document: DataSourceMessageItem) => {
         let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         // { config: { uuid, name, size }
         this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
     }
 
-    private handleDialogClick = (id: string) => {
+    handleDialogClick = (id: string) => {
         this.history.navigationManager.push('Conversation', { id });
     }
-    private handleAvatarClick = (id: string) => {
+    handleAvatarClick = (id: string) => {
         this.history.navigationManager.push('ProfileUser', { id });
     }
 
@@ -114,8 +113,17 @@ export class MobileMessenger {
 
         const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
 
+        const reactionsMap = {
+            '❤️': require('assets/reactions/ic-reaction-like.png'),
+            '👍': require('assets/reactions/ic-reaction-thumbsup.png'),
+            '😂': require('assets/reactions/ic-reaction-lol.png'),
+            '😱': require('assets/reactions/ic-reaction-wow.png'),
+            '😢': require('assets/reactions/ic-reaction-sad.png'),
+            '🤬': require('assets/reactions/ic-reaction-angry.png')
+        }
+
         builder.view((ctx: ZModalController) => (
-            <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={56} paddingHorizontal={10}>
+            <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={Platform.OS === 'android' ? 62 : 56} paddingHorizontal={10}>
                 {defaultReactions.map(r => (
                     <TouchableOpacity
                         onPress={() => {
@@ -123,7 +131,7 @@ export class MobileMessenger {
                             this.handleReactionSetUnset(message, r);
                         }}
                     >
-                        <Text style={{ fontSize: 30 }}>{r}</Text>
+                        <Image source={reactionsMap[r]} />
                     </TouchableOpacity>
                 ))}
             </View>
@@ -151,6 +159,18 @@ export class MobileMessenger {
             builder.action('Copy', () => {
                 Clipboard.setString(message.text!!);
             });
+        }
+
+        let role = this.engine.getConversation(message.chatId).role;
+        if (role === RoomMemberRole.ADMIN || role === RoomMemberRole.OWNER) {
+            builder.action('Pin', async () => {
+                startLoader();
+                try {
+                    await this.engine.client.mutatePinMessage({ chatId: message.chatId, messageId: message.id! })
+                } finally {
+                    stopLoader();
+                }
+            })
         }
 
         if (message.senderId === this.engine.user.id) {

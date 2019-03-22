@@ -1,0 +1,6 @@
+mutation RoomAddMembers($invites: [RoomInviteInput!]!, $roomId: ID!) {
+  betaRoomInvite(invites: $invites, roomId: $roomId) {
+    __typename
+    ...RoomFull
+  }
+}

@@ -1,0 +1,3 @@
+mutation SetTyping($conversationId: ID!) {
+  typingSend(conversationId: $conversationId, type: TEXT)
+}

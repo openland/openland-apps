@@ -50,9 +50,12 @@ import {
     RoomSetHidden,
 } from 'openland-web/pages/main/profile/components/RoomControls';
 import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
+import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
+import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
+import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -79,13 +82,17 @@ export const AdminTools = withRoomAdminTools(
     )),
 ) as React.ComponentType<{ id: string; variables: { id: string } }>;
 
-const Header = (props: { chat: Room_room_SharedRoom }) => {
-    let chat = props.chat;
+const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     let meMember = chat.membership === 'MEMBER';
     let leaveText = 'Leave group';
 
     const canEdit = chat.canEdit;
 
+    const canChangeAdvancedSettingsMembersUsers = getWelcomeMessageSenders({
+        chat,
+    });
+
+    const canSeeAdvancedSettings = checkCanSeeAdvancedSettings({ chat });
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -131,14 +138,36 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                         >
                                             {leaveText}
                                         </XMenuItem>
-                                        <XWithRole role="super-admin">
+
+                                        <XWithRole role="super-admin" or={canSeeAdvancedSettings}>
                                             <XMenuItemSeparator />
-                                            <AdminTools id={chat.id} variables={{ id: chat.id }} />
+                                            <XMenuItem
+                                                query={{
+                                                    field: 'advancedSettings',
+                                                    value: 'true',
+                                                }}
+                                            >
+                                                Advanced settings
+                                            </XMenuItem>
+                                            <XWithRole role="super-admin">
+                                                <AdminTools
+                                                    id={chat.id}
+                                                    variables={{ id: chat.id }}
+                                                />
+                                            </XWithRole>
                                         </XWithRole>
                                     </>
                                 }
                             />
                             <LeaveChatComponent />
+                            <AdvancedSettingsModal
+                                roomId={chat.id}
+                                socialImage={chat.socialImage}
+                                canChangeAdvancedSettingsMembersUsers={
+                                    canChangeAdvancedSettingsMembersUsers
+                                }
+                                welcomeMessage={chat.welcomeMessage!!}
+                            />
                             <RoomEditModal
                                 roomId={chat.id}
                                 title={chat.title}

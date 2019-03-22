@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text, AsyncStorage, Platform, TouchableOpacity, Image, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
+import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image, TouchableHighlight } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -11,16 +11,12 @@ import { SHeaderView } from 'react-native-s/SHeaderView';
 import { ChatHeader } from './components/ChatHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
-import { ZRoundedButton } from '../../components/ZRoundedButton';
-import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members_user, UserShort } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -30,9 +26,16 @@ import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { showCallModal } from './Call';
 import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { formatMessage } from 'openland-engines/messenger/DialogListEngine';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
+import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -152,51 +155,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     handleAttach = () => {
         let builder = new ActionSheetBuilder();
-        builder.action(Platform.OS === 'android' ? 'Take Photo' : 'Camera', () => {
-            Picker.launchCamera({ title: 'Camera', mediaType: 'mixed' }, (response) => {
-                if (response.error) {
-                    handlePermissionDismiss('camera');
-                    return;
-                }
-
-                if (response.didCancel) {
-                    return;
-                }
-
-                let isPhoto = checkFileIsPhoto(response.uri);
-
-                UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.path ? 'file://' + response.path : response.uri, response.fileSize);
-            });
-        }, false, Platform.OS === 'android' ? require('assets/ic-camera-24.png') : undefined);
-        if (Platform.OS === 'android') {
-            builder.action('Record Video', () => {
-                Picker.launchCamera({
-                    mediaType: 'video',
-                }, (response) => {
+        builder.action(Platform.OS === 'android' ? 'Take Photo' : 'Camera', async () => {
+            if (await checkPermissions('camera')) {
+                Picker.launchCamera({ title: 'Camera', mediaType: 'mixed' }, (response) => {
                     if (response.error) {
                         handlePermissionDismiss('camera');
-                        return;
-                    }
-
-                    if (response.didCancel) {
-                        return;
-                    }
-                    UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
-                });
-            }, false, Platform.OS === 'android' ? require('assets/ic-video-24.png') : undefined);
-        }
-        builder.action(Platform.select({ ios: 'Photo & Video Library', android: 'Photo Gallery' }), () => {
-            Picker.launchImageLibrary(
-                {
-                    maxWidth: 1024,
-                    maxHeight: 1024,
-                    quality: 1,
-                    videoQuality: Platform.OS === 'ios' ? 'medium' : undefined,
-                    mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed'
-                },
-                (response) => {
-                    if (response.error) {
-                        handlePermissionDismiss('gallery');
                         return;
                     }
 
@@ -206,25 +169,73 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
                     let isPhoto = checkFileIsPhoto(response.uri);
 
-                    UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
+                    UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.path ? 'file://' + response.path : response.uri, response.fileSize);
+                });
+            }
+        }, false, Platform.OS === 'android' ? require('assets/ic-camera-24.png') : undefined);
+        if (Platform.OS === 'android') {
+            builder.action('Record Video', async () => {
+                if (await checkPermissions('camera')) {
+                    Picker.launchCamera({
+                        mediaType: 'video',
+                    }, (response) => {
+                        if (response.error) {
+                            handlePermissionDismiss('camera');
+                            return;
+                        }
+
+                        if (response.didCancel) {
+                            return;
+                        }
+                        UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
+                    });
                 }
-            );
+            }, false, Platform.OS === 'android' ? require('assets/ic-video-24.png') : undefined);
+        }
+        builder.action(Platform.select({ ios: 'Photo & Video Library', android: 'Photo Gallery' }), async () => {
+            if (await checkPermissions('gallery')) {
+                Picker.launchImageLibrary(
+                    {
+                        maxWidth: 1024,
+                        maxHeight: 1024,
+                        quality: 1,
+                        videoQuality: Platform.OS === 'ios' ? 'medium' : undefined,
+                        mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed'
+                    },
+                    (response) => {
+                        if (response.error) {
+                            handlePermissionDismiss('gallery');
+                            return;
+                        }
+
+                        if (response.didCancel) {
+                            return;
+                        }
+
+                        let isPhoto = checkFileIsPhoto(response.uri);
+
+                        UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
+                    }
+                );
+            }
         }, false, Platform.OS === 'android' ? require('assets/ic-gallery-24.png') : undefined);
         if (Platform.OS === 'android') {
-            builder.action('Video Gallery', () => {
-                Picker.launchImageLibrary({
-                    mediaType: 'video',
-                }, (response) => {
-                    if (response.error) {
-                        handlePermissionDismiss('gallery');
-                        return;
-                    }
+            builder.action('Video Gallery', async () => {
+                if (await checkPermissions('gallery')) {
+                    Picker.launchImageLibrary({
+                        mediaType: 'video',
+                    }, (response) => {
+                        if (response.error) {
+                            handlePermissionDismiss('gallery');
+                            return;
+                        }
 
-                    if (response.didCancel) {
-                        return;
-                    }
-                    UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
-                });
+                        if (response.didCancel) {
+                            return;
+                        }
+                        UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
+                    });
+                }
             }, false, Platform.OS === 'android' ? require('assets/ic-gallery-video-24.png') : undefined);
         }
 
@@ -273,17 +284,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 </View>
             </TouchableOpacity>
         );
-        // if (Platform.OS === 'ios') {
-        //     header = <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />;
-        // }
-        // let button = null;
-        // if (Platform.OS === 'ios') {
-        //     button = (
-        //         <SHeaderButton>
-        //             <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
-        //         </SHeaderButton>
-        //     );
-        // }
 
         let mentions = null;
         let activeWord = findActiveWord(this.state.text, this.state.selection);
@@ -297,6 +297,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             );
         }
 
+        let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
+
         return (
             <>
                 <SHeaderView>
@@ -307,10 +309,38 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     icon={require('assets/ic-call-20.png')}
                     onPress={async () => { showCallModal(this.props.chat.id); }}
                 />
-                {/* {button} */}
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
+
+                            {sharedRoom && sharedRoom.pinnedMessage && (
+                                <ASSafeAreaContext.Consumer>
+                                    {area => (
+                                        <View width="100%" height={56} flexDirection="column" zIndex={1} marginTop={area.top}>
+                                            <TouchableHighlight underlayColor={'white'} onPress={() => this.props.router.push('PinnedMessage', { id: this.props.chat.id })}>
+                                                <View backgroundColor="#f3f5f7" width="100%" height={56} flexDirection="column" zIndex={1} >
+                                                    <View flexDirection="row" marginTop={9} marginLeft={12}>
+                                                        <View flexGrow={1} flexDirection="row">
+                                                            <Image style={{ width: 15, height: 15, tintColor: '#1790ff', marginRight: 6 }} source={require('assets/ic-pinned.png')} />
+                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: '#000', marginRight: 8, fontWeight: TextStyles.weight.medium as any }}>{sharedRoom!.pinnedMessage!.sender.name}</Text>
+                                                            {sharedRoom!.pinnedMessage!.sender.primaryOrganization &&
+                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: '#99a2b0', fontWeight: TextStyles.weight.medium as any }}>{sharedRoom!.pinnedMessage!.sender.primaryOrganization!.name}</Text>
+                                                            }
+                                                        </View>
+                                                        <Image style={{ width: 14, height: 14, marginRight: 10, opacity: 0.25 }} source={require('assets/ic-expand.png')} />
+
+                                                    </View>
+                                                    <Text numberOfLines={1} style={{ fontSize: 14, marginRight: 9, fontWeight: TextStyles.weight.regular as any, marginLeft: 12, marginTop: 6 }}>
+                                                        {formatMessage(sharedRoom!.pinnedMessage as any)}
+                                                    </Text>
+                                                </View>
+                                            </TouchableHighlight>
+                                        </View>
+
+                                    )}
+                                </ASSafeAreaContext.Consumer>
+
+                            )}
                             <ConversationView engine={this.engine} theme={this.state.theme} />
                             <MessageInputBar
                                 onAttachPress={this.handleAttach}
@@ -337,90 +367,49 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id });
     let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as Room_room_PrivateRoom : null;
-    let invite = props.router.params.invite;
 
-    if (sharedRoom && sharedRoom.membership !== 'MEMBER' && sharedRoom.kind !== 'INTERNAL') {
+    if (sharedRoom && sharedRoom.membership !== 'MEMBER' && sharedRoom.kind === 'PUBLIC') {
         // not a member - show preview with join/request access button
-        if (sharedRoom.kind === 'PUBLIC' || invite) {
-            return (
-                <View flexDirection={'column'} height="100%" width="100%">
-                    <SHeaderView>
-                        <ChatHeader conversationId={sharedRoom.id} router={props.router} />
-                    </SHeaderView>
-                    {/* <ASView
-                        style={{ position: 'absolute', zIndex: -1, left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-                    >
-                        <ASFlex
-                            width={Dimensions.get('window').width}
-                            height={Dimensions.get('window').height}
-                        >
-                            <ASImage
-                                source={require('assets/img-chat-3.jpg')}
-                                width={Dimensions.get('window').width}
-                                height={Dimensions.get('window').height}
-                            />
-                        </ASFlex>
-                    </ASView> */}
-                    <ASSafeAreaView width="100%" height="100%" justifyContent="center" >
+        return (
+            <View flexDirection="column" height="100%" width="100%">
+                <SHeaderView>
+                    <ChatHeader conversationId={sharedRoom.id} router={props.router} />
+                </SHeaderView>
+                <ASSafeAreaView width="100%" height="100%" justifyContent="center" >
+                    <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
+                        <ZAvatar
+                            src={sharedRoom.photo}
+                            size={100}
+                            placeholderKey={sharedRoom.id}
+                            placeholderTitle={sharedRoom.title}
 
-                        <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
-                            <ZAvatar
-                                src={sharedRoom.photo}
-                                size={100}
-                                placeholderKey={sharedRoom.id}
-                                placeholderTitle={sharedRoom.title}
-
-                            />
-                            <View flexDirection="column" zIndex={- 1}>
-                                {/* <Image source={require('assets/back.png')} resizeMode="stretch" style={{ position: 'absolute', width: '250%', height: '300%', top: '-75%', left: '-75%' }} /> */}
-                                <Text style={{ fontSize: 20, fontWeight: '500', color: theme.textColor, textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
-                                <Text style={{ fontSize: 15, color: theme.textLabelColor, textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
-                                <Text style={{ fontSize: 14, color: theme.textLabelColor, textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{sharedRoom.membersCount + ' members'}</Text>
-                            </View>
+                        />
+                        <View flexDirection="column" zIndex={- 1}>
+                            <Text style={{ fontSize: 20, fontWeight: '500', color: theme.textColor, textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
+                            <Text style={{ fontSize: 15, color: theme.textLabelColor, textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
+                            <Text style={{ fontSize: 14, color: theme.textLabelColor, textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{sharedRoom.membersCount + ' members'}</Text>
                         </View>
-                        <View alignSelf="center" marginBottom={46}>
-                            {!invite &&
-                                <ZRoundedButton
-                                    size="big"
-                                    uppercase={false}
-                                    title={sharedRoom!.membership === 'REQUESTED' ? 'Join requested' : 'Join'}
-                                    onPress={async () => {
-                                        startLoader();
-                                        try {
-                                            await getClient().mutateRoomJoin({ roomId: sharedRoom!.id });
-                                        } catch (e) {
-                                            Alert.alert(e.message);
-                                        }
-                                        stopLoader();
+                    </View>
+                    <View alignSelf="center" marginBottom={46}>
+                        <ZRoundedButton
+                            size="big"
+                            uppercase={false}
+                            title="Join"
+                            onPress={async () => {
+                                startLoader();
+                                try {
+                                    await getClient().mutateRoomJoin({ roomId: sharedRoom!.id });
+                                } catch (e) {
+                                    Alert.alert(e.message);
+                                }
+                                stopLoader();
+                            }}
+                        />
+                    </View>
 
-                                    }}
-                                />}
-                            {invite &&
-                                <ZRoundedButton
-                                    size="big"
-                                    uppercase={false}
-                                    title={'Accept invitation'}
-                                    onPress={async () => {
-                                        startLoader();
-                                        try {
-                                            let client = getClient();
-                                            await client.mutateRoomJoinInviteLink({ invite });
-                                        } catch (e) {
-                                            Alert.alert(e.message);
-                                        }
-                                        stopLoader();
-
-                                    }}
-                                />
-                            }
-                        </View>
-
-                    </ASSafeAreaView>
-                </View>
-            );
-        } else {
-            return null;
-        }
+                </ASSafeAreaView>
+            </View>
+        );
     }
 
     return (

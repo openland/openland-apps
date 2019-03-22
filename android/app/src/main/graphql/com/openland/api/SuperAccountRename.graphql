@@ -1,0 +1,7 @@
+mutation SuperAccountRename($accountId: ID!, $title: String!) {
+  superAccountRename(id: $accountId, title: $title) {
+    __typename
+    id
+    title
+  }
+}

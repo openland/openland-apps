@@ -15,7 +15,14 @@ import {
 import { MobileMessageCompose } from './MessageComposeComponent/MessageComposeComponentMobile';
 import { ConversationMessagesComponent } from '../components/messenger/ConversationMessagesComponent';
 import { UplaodCareUploading } from '../utils/UploadCareUploading';
-import { UserShort, SharedRoomKind, PostMessageType } from 'openland-api/Types';
+import {
+    UserShort,
+    SharedRoomKind,
+    PostMessageType,
+    Room_room_SharedRoom_pinnedMessage_GeneralMessage,
+    Room_room_SharedRoom,
+    Room_room_PrivateRoom,
+} from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../api/withDeleteUrlAugmentation';
@@ -24,6 +31,7 @@ import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './post/CreatePostComponent';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { UploadContextProvider } from './MessageComposeComponent/FileUploading/UploadContext';
+import { PinMessageComponent } from 'openland-web/fragments/chat/PinMessage';
 
 export interface File {
     uuid: string;
@@ -52,6 +60,8 @@ interface MessagesComponentProps {
     objectName: string;
     objectId?: string;
     cloudImageUuid?: string;
+    pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null;
+    room: Room_room_SharedRoom | Room_room_PrivateRoom;
 }
 
 interface MessagesComponentState {
@@ -203,7 +213,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (props.isActive) {
             this.conversation = props.messenger.getConversation(props.conversationId);
             this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
-            
+
             this.unmounter2 = this.conversation.subscribe(this);
 
             if (!this.conversation) {
@@ -324,6 +334,13 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 )}
                 {!this.state.hideChat && (
                     <>
+                        {this.props.pinMessage && (
+                            <PinMessageComponent
+                                pinMessage={this.props.pinMessage}
+                                chatId={this.props.conversationId}
+                                room={this.props.room}
+                            />
+                        )}
                         <ConversationMessagesComponent
                             isActive={this.props.isActive}
                             ref={this.messagesList}
@@ -379,6 +396,8 @@ interface MessengerRootComponentProps {
     objectName: string;
     objectId?: string;
     cloudImageUuid?: string;
+    pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null;
+    room: Room_room_SharedRoom | Room_room_PrivateRoom;
 }
 
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
@@ -397,6 +416,8 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
             objectName={props.objectName}
             objectId={props.objectId}
             cloudImageUuid={props.cloudImageUuid}
+            pinMessage={props.pinMessage}
+            room={props.room}
         />
     );
 };

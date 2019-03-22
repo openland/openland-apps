@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XScrollView } from 'openland-x/XScrollView';
-import { XAvatar } from 'openland-x/XAvatar';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import CloseIcon from 'openland-icons/ic-close.svg';
@@ -13,7 +13,10 @@ import { delayForewer } from 'openland-y-utils/timer';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { css } from 'linaria';
+import { XView } from 'react-mental';
 import { isMobileUserAgent } from 'openland-web/utils/isMobileUserAgent';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import LogoWithName from 'openland-icons/logo.svg';
 
 const Root = Glamorous(XScrollView)({
     position: 'relative',
@@ -53,57 +56,11 @@ const Close = Glamorous(XLink)({
 
 const UserInfoWrapper = Glamorous(XHorizontal)({
     margin: 'auto',
-    marginTop: 65,
-    marginBottom: 24,
+    marginTop: 50,
     flexShrink: 0,
     '@media (max-height: 800px)': {
         marginTop: 15,
     },
-});
-
-const InfoCardWrapper = Glamorous.div({
-    borderRadius: 15,
-    backgroundColor: '#fff',
-    paddingLeft: 28,
-    paddingRight: 19,
-    paddingTop: 19,
-    paddingBottom: 15,
-    flexShrink: 0,
-    position: 'relative',
-    borderBottom: 'solid 1px #ececec',
-    borderTop: 'solid 1px #ececec',
-    borderRight: 'solid 1px #ececec',
-    maxWidth: 460,
-    overflow: 'hidden',
-    margin: 'auto',
-    marginBottom: 20,
-
-    '&:after': {
-        content: ' ',
-        display: 'block',
-        width: 8,
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        backgroundColor: '#f9a540',
-    },
-});
-
-const InfoCardHeader = Glamorous(XHorizontal)<{ haveDescription: boolean }>(
-    ({ haveDescription }) => {
-        return {
-            borderBottom: haveDescription ? '1px solid #ececec' : 'none',
-            paddingBottom: haveDescription ? 20 : 0,
-            marginBottom: 12,
-        };
-    },
-);
-
-const InfoCardBody = Glamorous.div({
-    fontSize: 16,
-    lineHeight: '24px',
-    letterSpacing: 0,
 });
 
 const Text = Glamorous.div<{ width?: number; autoMargin?: boolean }>(props => ({
@@ -115,79 +72,31 @@ const Text = Glamorous.div<{ width?: number; autoMargin?: boolean }>(props => ({
     margin: props.autoMargin ? 'auto' : undefined,
 }));
 
-const RoomTitle = Glamorous.div({
-    fontSize: 18,
-    fontWeight: 600,
-    lineHeight: '24px',
-    letterSpacing: 0,
-    margin: '2px 0 8px',
-});
-
-const UserAvatar = Glamorous(XAvatar)({
-    width: 20,
-    height: 20,
+const RoomAvatar = Glamorous(XAvatar2)({
+    width: 80,
+    height: 80,
     '& img': {
-        width: '20px !important',
-        height: '20px !important',
-    },
-});
-
-const RoomAvatar = Glamorous(XAvatar)({
-    width: 60,
-    height: 60,
-    '& img': {
-        width: '60px !important',
-        height: '60px !important',
+        width: '80px !important',
+        height: '80px !important',
     },
     '& > div': {
-        borderRadius: 30,
+        borderRadius: 40,
     },
 });
 
-const RoomCounter = Glamorous.div({
-    borderRadius: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-    paddingLeft: 9,
-    paddingRight: 11,
-    display: 'inline-block',
-    verticalAlign: 'top',
-    fontSize: 0,
-    lineHeight: 0,
-    '& > span': {
-        paddingTop: 3,
-        paddingBottom: 3,
-        display: 'inline-block',
-        verticalAlign: 'top',
-        fontSize: 13,
-        fontWeight: 400,
-        lineHeight: '16px',
-        letterSpacing: 0,
-        color: 'rgba(0, 0, 0, 0.5)',
-    },
-    '& > svg': {
-        display: 'inline-block',
-        verticalAlign: 'top',
-        marginTop: 5,
-        marginBottom: 6,
-        marginRight: 5,
-
-        '& path:last-child': {
-            fill: 'rgba(0, 0, 0, 0.25)',
+const ImageWrapper = Glamorous.div<{ hasFooter: boolean }>(({ hasFooter }) => {
+    return {
+        height: 367,
+        position: 'absolute',
+        right: 0,
+        bottom: hasFooter ? 60 : 18,
+        left: 0,
+        overflow: 'hidden',
+        'z-index': '-1!important',
+        '@media (max-height: 800px)': {
+            height: 250,
         },
-    },
-});
-
-const ImageWrapper = Glamorous.div({
-    height: 367,
-    position: 'absolute',
-    right: 0,
-    bottom: 18,
-    left: 0,
-    overflow: 'hidden',
-    'z-index': '1!important',
-    '@media (max-height: 800px)': {
-        height: 250,
-    },
+    };
 });
 
 const Image = Glamorous.div({
@@ -206,14 +115,6 @@ const Image = Glamorous.div({
         marginLeft: -500,
     },
 });
-
-const aboutTextClass = css`
-    text-align: center;
-    font-size: 14px;
-    line-height: 22px;
-    margin: 0 auto 32px;
-    max-width: 460px;
-`;
 
 const JoinButton = withChannelJoin(props => {
     return (
@@ -273,128 +174,176 @@ interface RoomsInviteComponentProps {
     noLogin?: boolean;
 }
 
-export class RoomsInviteComponent extends React.Component<RoomsInviteComponentProps> {
-    render() {
-        let room = this.props.room;
-        return (
-            <Root>
-                <MainContent>
-                    {!this.props.noLogin && (
-                        <XHorizontal justifyContent="flex-end">
-                            <Close onClick={() => (canUseDOM ? window.history.back() : null)}>
-                                <CloseIcon />
-                            </Close>
-                        </XHorizontal>
-                    )}
-                    {this.props.invite && this.props.invite.invitedByUser ? (
-                        <UserInfoWrapper separator={6} justifyContent="center">
-                            <UserAvatar
-                                cloudImageUuid={this.props.invite.invitedByUser.photo || undefined}
-                                style="colorus"
-                                objectName={this.props.invite.invitedByUser.name}
-                                objectId={this.props.invite.invitedByUser.id}
-                            />
-                            <Text>
-                                {this.props.invite.invitedByUser.name} invites you to join group
-                            </Text>
-                        </UserInfoWrapper>
-                    ) : (
-                        <div style={{ height: 50 }} />
-                    )}
-                    <InfoCardWrapper>
-                        <InfoCardHeader separator={8} haveDescription={!!room.description}>
-                            <RoomAvatar
-                                cloudImageUuid={room.photo || undefined}
-                                style="room"
-                                objectName={room.title}
-                                objectId={room.id}
-                            />
-                            <div>
-                                <RoomTitle>{room.title}</RoomTitle>
-                                {room.membersCount && room.membersCount >= 100 && (
-                                    <RoomCounter>
-                                        <ProfileIcon />
-                                        <span>
-                                            {room.membersCount}{' '}
-                                            {room.membersCount && room.membersCount > 1
-                                                ? 'members'
-                                                : 'member'}
-                                        </span>
-                                    </RoomCounter>
-                                )}
-                            </div>
-                        </InfoCardHeader>
-                        {room.description && <InfoCardBody>{room.description}</InfoCardBody>}
-                    </InfoCardWrapper>
-                    {this.props.signup && (
-                        <div className={aboutTextClass}>
-                            Openland is a professional messenger, built for productivity and speed.
-                            Currently it's in invite-only mode.
-                        </div>
-                    )}
-                    {!this.props.signup && (
-                        <>
-                            {(room.membership === 'NONE' ||
-                                room.membership === 'KICKED' ||
-                                room.membership === 'LEFT') &&
-                                !this.props.inviteLink && (
-                                    <JoinButton
-                                        channelId={room.id!}
-                                        refetchVars={{
-                                            conversationId: room.id!,
-                                        }}
-                                        text="Join group"
-                                    />
-                                )}
-                            {this.props.inviteLink && (
-                                <JoinLinkButton
-                                    invite={this.props.inviteLink}
-                                    refetchVars={{ conversationId: room.id! }}
-                                    text="Accept invite"
-                                />
-                            )}
-                            {room.membership === 'REQUESTED' && (
-                                <XButton
-                                    style="ghost"
-                                    size="large"
-                                    text="Pending"
-                                    alignSelf="center"
-                                    flexShrink={0}
-                                />
-                            )}
-                            {room.membership === 'MEMBER' && (
-                                <XButton
-                                    style="primary"
-                                    size="large"
-                                    text="Open room"
-                                    alignSelf="center"
-                                    flexShrink={0}
-                                    path={'/mail/' + room.id}
-                                />
-                            )}
-                        </>
-                    )}
-                    {this.props.signup && (
-                        <XButton
-                            style="primary"
-                            size="large"
-                            text="Accept invitation"
-                            alignSelf="center"
-                            flexShrink={0}
-                            path={this.props.signup}
-                            onClick={() => {
-                                if (isMobileUserAgent) {
-                                    window.location.href =
-                                        'openland://deep/joinroom/' + this.props.inviteLink;
-                                }
-                            }}
+const textAlignCenter = css`
+    text-align: center;
+`;
+
+export const RoomsInviteComponent = ({
+    room,
+    invite,
+    inviteLink,
+    noLogin,
+    signup,
+}: RoomsInviteComponentProps) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+
+    const button = (
+        <>
+            {(room.membership === 'NONE' ||
+                room.membership === 'KICKED' ||
+                room.membership === 'LEFT') &&
+                !inviteLink && (
+                    <JoinButton
+                        channelId={room.id!}
+                        refetchVars={{
+                            conversationId: room.id!,
+                        }}
+                        text="Join group"
+                    />
+                )}
+            {inviteLink && (
+                <JoinLinkButton
+                    invite={inviteLink}
+                    refetchVars={{ conversationId: room.id! }}
+                    text="Accept invite"
+                />
+            )}
+            {room.membership === 'REQUESTED' && (
+                <XButton
+                    style="ghost"
+                    size="large"
+                    text="Pending"
+                    alignSelf="center"
+                    flexShrink={0}
+                />
+            )}
+            {room.membership === 'MEMBER' && (
+                <XButton
+                    style="primary"
+                    size="large"
+                    text="Open room"
+                    alignSelf="center"
+                    flexShrink={0}
+                    path={'/mail/' + room.id}
+                />
+            )}
+        </>
+    );
+
+    return (
+        <Root>
+            {!noLogin && (
+                <XView position="absolute" right={0} zIndex={100} hoverCursor="pointer">
+                    <Close onClick={() => (canUseDOM ? window.history.back() : null)}>
+                        <CloseIcon />
+                    </Close>
+                </XView>
+            )}
+            <XView flexDirection="column">
+                {invite && invite.invitedByUser ? (
+                    <UserInfoWrapper separator={6} justifyContent="center" alignItems="center">
+                        <XAvatar2
+                            src={invite.invitedByUser.photo || undefined}
+                            title={invite.invitedByUser.name}
+                            id={invite.invitedByUser.id}
+                            size={24}
                         />
+                        <Text>{invite.invitedByUser.name} invites you to join group</Text>
+                    </UserInfoWrapper>
+                ) : (
+                    <div style={{ height: 50 }} />
+                )}
+                <XView marginTop={111} alignSelf="center" alignItems="center" maxWidth={428}>
+                    <RoomAvatar
+                        src={room.photo || undefined}
+                        title={room.title!!}
+                        id={room.id!!}
+                        size={74}
+                    />
+                    <XView marginTop={28} fontSize={24} fontWeight={'600'}>
+                        {room.title}
+                    </XView>
+                    {room.membersCount && room.membersCount > 10 && (
+                        <XView
+                            marginTop={12}
+                            paddingBottom={6}
+                            paddingTop={6}
+                            paddingLeft={12}
+                            paddingRight={12}
+                            height={23}
+                            borderRadius={16}
+                            backgroundColor={'rgba(23, 144, 255, 0.1)'}
+                            justifyContent="center"
+                        >
+                            <XView
+                                flexDirection="row"
+                                fontSize={13}
+                                fontWeight={'600'}
+                                color={'#1790ff'}
+                                lineHeight={1.23}
+                            >
+                                <XView marginTop={1} marginRight={4}>
+                                    <ProfileIcon />
+                                </XView>
+
+                                {`${room.membersCount} members`}
+                            </XView>
+                        </XView>
                     )}
-                    <ImageWrapper>
-                        <Image />
-                    </ImageWrapper>
+                    {room.description && (
+                        <XView lineHeight={1.5} marginTop={20}>
+                            <div className={textAlignCenter}>{room.description}</div>
+                        </XView>
+                    )}
+                    {!signup && <XView marginTop={36}>{button}</XView>}
+                </XView>
+            </XView>
+            <ImageWrapper hasFooter={isMobile || !!noLogin}>
+                <Image />
+            </ImageWrapper>
+            {(isMobile || !!noLogin) && (
+                <XView
+                    justifyContent="center"
+                    alignItems="center"
+                    flexDirection="row"
+                    width="100%"
+                    bottom={0}
+                    position="absolute"
+                    height={60}
+                    backgroundColor={'#f9f9f9'}
+                >
+                    <XView marginTop={-10}>
+                        <LogoWithName />
+                    </XView>
+                    <XView
+                        marginLeft={8}
+                        borderRadius={2}
+                        width={4}
+                        height={4}
+                        backgroundColor={'#d8d8d8'}
+                    />
+                    <XView marginLeft={8} fontSize={13} color={'rgba(0, 0, 0, 0.5)'}>
+                        Professional messenger for project collaboration
+                    </XView>
+                </XView>
+            )}
+            {signup && (
+                <MainContent>
+                    <XButton
+                        style="primary"
+                        size="large"
+                        text="Accept invitation"
+                        alignSelf="center"
+                        flexShrink={0}
+                        path={signup}
+                        onClick={() => {
+                            if (isMobileUserAgent) {
+                                window.location.href = 'openland://deep/joinroom/' + inviteLink;
+                            }
+                        }}
+                    />
                 </MainContent>
-            </Root>
-        );
-    }
-}
+            )}
+        </Root>
+    );
+};

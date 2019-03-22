@@ -25,7 +25,7 @@ export const RoomInviteFromLink = withChannelInviteInfo(
                                 description={data.invite.room.description}
                                 imgUrl={
                                     data.invite && data.invite.room
-                                        ? data.invite.room.photo
+                                        ? (data.invite.room.socialImage || data.invite.room.photo)
                                         : undefined
                                 }
                             />

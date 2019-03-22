@@ -48,9 +48,12 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             );
         };
     }, []);
-    const renderDialog = React.useMemo(() => {
-        return (item: DialogDataSourceItem) => <DialogView item={item} />;
-    }, [props.onDialogClick]);
+    const renderDialog = React.useMemo(
+        () => {
+            return (item: DialogDataSourceItem) => <DialogView item={item} />;
+        },
+        [props.onDialogClick],
+    );
 
     const getCurrentConversationId = () => {
         return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;

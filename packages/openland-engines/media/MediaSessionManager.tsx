@@ -1,30 +1,17 @@
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { backoff, delay } from 'openland-y-utils/timer';
-import gql from 'graphql-tag';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-
-const ConferenceMediaWatchSubscription = gql`
-    subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
-        media: alphaConferenceMediaWatch(id: $id, peerId: $peerId) {
-            id
-            streams {
-                id
-                state
-                sdp
-                ice
-            }
-        }
-    }
-`;
+import { ConferenceMediaWatchSubscription } from 'openland-api';
+import { ConferenceMediaWatch_media_streams } from 'openland-api/Types';
 
 export class MediaSessionManager {
     readonly conversationId: string;
     private readonly client: OpenlandClient;
     private readonly onReady: () => void;
     private mediaStream!: AppMediaStream;
-    private streamConfigs!: any[];
+    private streamConfigs!: ConferenceMediaWatch_media_streams[];
     private iceServers!: any[];
     private conferenceId!: string;
     private peerId!: string;
@@ -144,13 +131,12 @@ export class MediaSessionManager {
             });
 
         // Load media streams
-        let subscription = this.client.client.subscribe(
-            ConferenceMediaWatchSubscription, { peerId: this.peerId, id: this.conferenceId });
+        let subscription = this.client.subscribeConferenceMediaWatch({ peerId: this.peerId, id: this.conferenceId });
 
         (async () => {
             while (!this.destroyed) {
-                let state = (await subscription.get()).data.media;
-                let streams = state.streams as any[];
+                let state = (await subscription.get()).media;
+                let streams = state.streams;
                 this.streamConfigs = streams;
                 this.handleState();
             }

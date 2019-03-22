@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from "linaria";
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -10,7 +10,7 @@ export const Header = (props: { children?: any }) => (
     </XView>
 );
 
-export const Group = (props: { children?: any }) => <XView maxWidth={570}>{props.children}</XView>;
+export const Group = (props: { children?: any }) => <XView maxWidth={575}>{props.children}</XView>;
 
 export const GroupText = css`
     font-size: 14px;

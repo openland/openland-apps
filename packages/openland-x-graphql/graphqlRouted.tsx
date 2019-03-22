@@ -4,7 +4,7 @@ import { GraphQLRoutedComponentProps } from './graphql';
 import { prepareParams } from './prepareParams';
 import { GraphqlTypedQuery } from 'openland-y-graphql/typed';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { IsActiveContext } from '../openland-web/pages/main/mail/components/Components';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { throwGraphQLErrors } from './throwErrors';
 
 export function graphqlRouted<TResult, TVars>(

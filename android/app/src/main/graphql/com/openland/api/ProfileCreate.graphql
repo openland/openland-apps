@@ -1,0 +1,24 @@
+mutation ProfileCreate($input: CreateProfileInput!) {
+  createProfile(input: $input) {
+    __typename
+    about
+    email
+    firstName
+    id
+    lastName
+    location
+    phone
+    photoRef {
+      __typename
+      crop {
+        __typename
+        h
+        w
+        x
+        y
+      }
+      uuid
+    }
+    website
+  }
+}

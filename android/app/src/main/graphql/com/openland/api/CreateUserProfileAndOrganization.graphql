@@ -1,0 +1,14 @@
+mutation CreateUserProfileAndOrganization($organization: CreateOrganizationInput!, $user: ProfileInput!) {
+  alphaCreateUserProfileAndOrganization(organization: $organization, user: $user) {
+    __typename
+    organization {
+      __typename
+      id
+      name
+    }
+    user {
+      __typename
+      ...UserFull
+    }
+  }
+}

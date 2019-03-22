@@ -61,7 +61,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                                 divider={false}
                                 footer="Please, provide organization name and optional logo"
                             >
-                                <ZTextInput placeholder="Organization name" field="input.name" />
+                                <ZTextInput placeholder="Organization name" field="input.name" autoFocus={true} />
                             </ZListItemGroup>
                         </>
                     )}
@@ -69,7 +69,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                     {isCommunity && (
                         <>
                             <ZAvatarPickerInputsGroup avatarField="input.photoRef">
-                                <ZTextInput placeholder="Community name" field="input.name" />
+                                <ZTextInput placeholder="Community name" field="input.name" autoFocus={true} />
                             </ZAvatarPickerInputsGroup>
                             <View height={20} />
                             <ZTextInput placeholder="About" field="input.about" multiline={true} />

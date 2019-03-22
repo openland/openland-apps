@@ -211,5 +211,13 @@
         "name": "ic-attachment",
         "src": "ic-attachment.svg",
         "sizes": [11]
+    }, {
+        "name": "ic-members",
+        "src": "ic-members.svg",
+        "sizes": [16]
+    }, {
+        "name": "ic-more-android",
+        "src": "ic-more-android.svg",
+        "sizes": [24]
     }]
 }

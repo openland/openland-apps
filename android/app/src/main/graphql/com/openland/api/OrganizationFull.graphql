@@ -1,0 +1,38 @@
+fragment OrganizationFull on Organization {
+  __typename
+  about
+  featured: alphaFeatured
+  isCommunity: alphaIsCommunity
+  requests: alphaOrganizationMemberRequests {
+    __typename
+    role
+    user {
+      __typename
+      ...UserFull
+    }
+  }
+  members: alphaOrganizationMembers {
+    __typename
+    role
+    user {
+      __typename
+      ...UserFull
+    }
+  }
+  isAdmin: betaIsAdmin
+  isOwner: betaIsOwner
+  rooms: betaPublicRooms {
+    __typename
+    ...RoomShort
+  }
+  facebook
+  id
+  isMine
+  linkedin
+  name
+  photo
+  shortname
+  superAccountId
+  twitter
+  website
+}

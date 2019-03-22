@@ -54,6 +54,7 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                         <ZTextInput
                             placeholder="Group name"
                             field="input.title"
+                            autoFocus={true}
                         />
                     </ZAvatarPickerInputsGroup>
                     <View height={20} />

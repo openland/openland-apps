@@ -1,3 +1,5 @@
+import { ApiError } from 'openland-graphql/GraphqlClient';
+
 // import { trackError } from 'openland-x-analytics';
 
 export class SilentError extends Error {
@@ -7,7 +9,9 @@ export class SilentError extends Error {
 }
 
 export function formatError(error: any): string {
-    if (error.networkError) {
+    if (error instanceof ApiError) {
+        return error.message;
+    } else if (error.networkError) {
         if (Math.ceil(error.networkError.statusCode / 100) === 5) {
             // Track network errors
             // trackError(error);
@@ -31,6 +35,8 @@ export function formatError(error: any): string {
 }
 
 export function exportWrongFields(error: any) {
+    console.warn(error);
+    console.warn(error.invalidFields);
     let invalidFields: { key: string, messages: string[] }[] = [];
     if (error.graphQLErrors && error.graphQLErrors.length > 0) {
         for (let e of error.graphQLErrors) {
@@ -46,6 +52,17 @@ export function exportWrongFields(error: any) {
             }
         }
     }
+    if (error.invalidFields && error.invalidFields.length > 0) {
+        for (let i of error.invalidFields) {
+            let ex = invalidFields.find((v) => v.key === i.key);
+            if (ex) {
+                ex.messages = [...ex.messages, ...i.messages];
+            } else {
+                invalidFields.push({ key: i.key, messages: i.messages });
+            }
+        }
+    }
+    console.warn(invalidFields);
     return invalidFields;
 }
 

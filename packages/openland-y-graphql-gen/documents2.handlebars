@@ -1,7 +1,7 @@
 { 
   "operations": [
 {{#each operations }}
-    { "name": "{{ name }}{{ toPascalCase operationType }}", "type": "{{#ifEq operationType 'mutation' }}mutation{{else}}query{{/ifEq}}", "hasVariables": {{hasVariables}} }
+    { "name": "{{ name }}{{ toPascalCase operationType }}", "type": "{{#ifEq operationType 'mutation' }}mutation{{else}}{{#ifEq operationType 'query' }}query{{else}}subscription{{/ifEq}}{{/ifEq}}", "hasVariables": {{hasVariables}} }
 {{#unless @last}},{{/unless}}
 {{/each}}
   ]

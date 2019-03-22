@@ -1,0 +1,24 @@
+fragment UserFull on User {
+  __typename
+  about
+  email
+  firstName
+  id
+  isBot
+  isYou
+  lastName
+  lastSeen
+  linkedin
+  location
+  name
+  online
+  phone
+  picture
+  primaryOrganization {
+    __typename
+    ...OrganizationShort
+  }
+  shortname
+  twitter
+  website
+}

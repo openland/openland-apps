@@ -1,0 +1,3 @@
+mutation RoomCreateIntro($about: String, $file: String, $roomId: ID!, $uid: ID!) {
+  intro: betaIntroSend(about: $about, file: $file, message: $about, room: $roomId, uid: $uid)
+}

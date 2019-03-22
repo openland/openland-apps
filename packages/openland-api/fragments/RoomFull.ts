@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { FullMessage } from './Message';
 
 export const RoomFull = gql`
     fragment RoomFull on Room {
@@ -31,7 +32,7 @@ export const RoomFull = gql`
                 user {
                     ...UserShort
                 }
-                canKick,
+                canKick
             }
             requests {
                 user {
@@ -43,6 +44,18 @@ export const RoomFull = gql`
                 mute
             }
             canEdit
+            welcomeMessage {
+                isOn
+                sender {
+                    id
+                    name
+                }
+                message
+            }
+            pinnedMessage{
+                ...FullMessage
+            }
         }
     }
+    ${FullMessage}
 `;

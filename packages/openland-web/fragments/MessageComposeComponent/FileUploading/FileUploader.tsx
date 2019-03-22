@@ -79,33 +79,27 @@ export const FileUploader = () => {
 
     return (
         <>
-            {file &&
-                fileSrc && (
-                    <CoverWrapper>
-                        <img src={fileSrc} />
-                        <CoverDelButton onClick={fileRemover}>
+            {file && fileSrc && (
+                <CoverWrapper>
+                    <img src={fileSrc} />
+                    <CoverDelButton onClick={fileRemover}>
+                        <RemoveIcon />
+                    </CoverDelButton>
+                </CoverWrapper>
+            )}
+            {file && fileName && (
+                <FileItem key={'file' + fileName} separator={4} alignItems="center">
+                    <FileImage />
+                    <XHorizontal alignItems="center" separator={4}>
+                        <div>
+                            {fileName} <span>•</span> {niceBytes(Number((file as any).size))}
+                        </div>
+                        <XHorizontal alignItems="center" className="remove" onClick={fileRemover}>
                             <RemoveIcon />
-                        </CoverDelButton>
-                    </CoverWrapper>
-                )}
-            {file &&
-                fileName && (
-                    <FileItem key={'file' + fileName} separator={4} alignItems="center">
-                        <FileImage />
-                        <XHorizontal alignItems="center" separator={4}>
-                            <div>
-                                {fileName} <span>•</span> {niceBytes(Number((file as any).size))}
-                            </div>
-                            <XHorizontal
-                                alignItems="center"
-                                className="remove"
-                                onClick={fileRemover}
-                            >
-                                <RemoveIcon />
-                            </XHorizontal>
                         </XHorizontal>
-                    </FileItem>
-                )}
+                    </XHorizontal>
+                </FileItem>
+            )}
         </>
     );
 };

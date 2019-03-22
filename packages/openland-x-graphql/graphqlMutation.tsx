@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { MutationFunc, Mutation } from 'react-apollo';
-import { prepareParams } from './prepareParams';
+import { prepareParams, prepareSourceTargetParams } from './prepareParams';
 import { GraphqlTypedMutation, GraphqlTypedQuery } from 'openland-y-graphql/typed';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
-import { IsActiveContext } from '../openland-web/pages/main/mail/components/Components';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 export interface MutationParams {
     params?: string[];
     refetchParams?: string[];
     refetchQueries?: GraphqlTypedQuery<any, any>[];
+    refetchRouterParams?: { sourceParamName: string; targetParamName: string }[];
 }
 
 export function graphqlMutation<TQuery, TVars, TN extends string>(
@@ -87,6 +88,12 @@ export function graphqlMutation<TQuery, TVars, TN extends string>(
                               ...prepareParams(
                                   params.refetchParams ? params.refetchParams : [],
                                   router!!.routeQuery,
+                              ),
+                              ...prepareSourceTargetParams(
+                                    params.refetchRouterParams
+                                        ? params.refetchRouterParams
+                                        : [],
+                                    router!!.routeQuery,
                               ),
                               ...this.props.refetchVars,
                           },

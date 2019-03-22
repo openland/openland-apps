@@ -1,0 +1,32 @@
+query RoomInviteInfo($invite: String!) {
+  invite: betaRoomInviteInfo(invite: $invite) {
+    __typename
+    id
+    invitedByUser {
+      __typename
+      ...UserShort
+    }
+    room {
+      __typename
+      ... on SharedRoom {
+        description
+        id
+        kind
+        members {
+          __typename
+          membership
+          role
+        }
+        membersCount
+        membership
+        organization {
+          __typename
+          ...OrganizationShort
+        }
+        photo
+        socialImage
+        title
+      }
+    }
+  }
+}
