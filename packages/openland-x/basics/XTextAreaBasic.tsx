@@ -4,6 +4,7 @@ import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XFlexStyles, applyFlex, extractFlexProps } from './Flex';
 
 interface TextAreaStyledProps {
+    mode?: 'modern' | null;
     invalid?: boolean;
     resize?: boolean;
     bordered?: boolean;
@@ -72,6 +73,20 @@ const TextAreaStyled = Glamorous.textarea<TextAreaStyledProps & XFlexStyles>([
     }),
     props => applyFlex(props),
     props => sizeStyles(props.format),
+    props => {
+        if (props.mode && props.mode === 'modern') {
+            return {
+                color: '#000',
+                backgroundColor: '#f2f3f4',
+                border: 'none',
+                '&:focus': {
+                    boxShadow: 'none',
+                    border: 'none',
+                },
+            };
+        }
+        return {};
+    },
 ]);
 
 export interface XTextAreaBasicProps extends XFlexStyles {
@@ -85,6 +100,7 @@ export interface XTextAreaBasicProps extends XFlexStyles {
     rounded?: boolean;
     minHeight?: number | string;
     size?: 'large' | 'default';
+    mode?: 'modern' | null;
     padding?: number;
     onChange?: (value: string) => void;
     onEnter?: () => void;
@@ -127,22 +143,34 @@ export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps> {
             v = '';
         }
         return (
-            <TextAreaStyled
-                {...extractFlexProps(this.props)}
-                placeholder={this.props.placeholder}
-                value={v}
-                disabled={this.props.disabled}
-                autoFocus={this.props.autofocus}
-                onChange={this.handleChange}
-                invalid={this.props.invalid}
-                onKeyPress={this.handleKey}
-                resize={this.props.resize}
-                bordered={this.props.bordered}
-                format={this.props.size}
-                minHeight={this.props.minHeight}
-                rounded={this.props.rounded}
-                padding={this.props.padding}
-            />
+            <>
+                <TextAreaStyled
+                    {...extractFlexProps(this.props)}
+                    placeholder={this.props.placeholder}
+                    value={v}
+                    mode={this.props.mode}
+                    disabled={this.props.disabled}
+                    autoFocus={this.props.autofocus}
+                    onChange={this.handleChange}
+                    invalid={this.props.invalid}
+                    onKeyPress={this.handleKey}
+                    resize={this.props.resize}
+                    bordered={this.props.bordered}
+                    format={this.props.size}
+                    minHeight={this.props.minHeight}
+                    rounded={this.props.rounded}
+                    padding={this.props.padding}
+                >
+                    {/* <label
+                        style={{
+                            display: 'block',
+                            margin: '-330px 5px 0 5px',
+                        }}
+                    >
+                        some text
+                    </label> */}
+                </TextAreaStyled>
+            </>
         );
     }
 }
