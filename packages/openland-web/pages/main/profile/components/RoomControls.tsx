@@ -2,19 +2,17 @@ import * as React from 'react';
 import { XMenuItemWrapper } from 'openland-x/XMenuItem';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { withChannelSetFeatured } from 'openland-web/api/withChannelSetFeatured';
-import { withChannelSetHidden } from 'openland-web/api/withChannelSetHidden';
+import { useClient } from 'openland-web/utils/useClient';
 
 class SwitchComponent extends React.Component<
     {
-        mutation: any;
+        handler: (val: boolean) => void;
         roomId: string;
         val: boolean;
-        fieldName: string;
-        fieldTitle?: string;
+        fieldTitle: string;
     },
     { val: boolean }
-> {
+    > {
     constructor(props: any) {
         super(props);
         this.state = { val: props.val };
@@ -25,16 +23,11 @@ class SwitchComponent extends React.Component<
             <XMenuItemWrapper>
                 <XVertical>
                     <XCheckbox
-                        label={this.props.fieldTitle || this.props.fieldName}
+                        label={this.props.fieldTitle}
                         value={this.state.val ? 'featured' : 'unfeatured'}
                         trueValue="featured"
                         onChange={() => {
-                            this.props.mutation({
-                                variables: {
-                                    roomId: this.props.roomId,
-                                    [this.props.fieldName]: !this.props.val,
-                                },
-                            });
+                            this.props.handler(!this.props.val)
                             this.setState({
                                 val: !this.state.val,
                             });
@@ -46,22 +39,26 @@ class SwitchComponent extends React.Component<
     }
 }
 
-export const RoomSetFeatured = withChannelSetFeatured(props => (
-    <SwitchComponent
-        mutation={props.setFeatured}
-        val={(props as any).val}
-        fieldName={'featured'}
-        fieldTitle={'Featured'}
-        roomId={(props as any).roomId}
-    />
-)) as React.ComponentType<{ val: boolean; roomId: string }>;
+export const RoomSetFeatured = (props: { val: boolean; roomId: string }) => {
+    let client = useClient();
+    return (
+        <SwitchComponent
+            handler={(v) => client.mutateRoomAlterFeatured({ roomId: props.roomId, featured: v })}
+            val={props.val}
+            fieldTitle={'Featured'}
+            roomId={props.roomId}
+        />
+    );
+};
 
-export const RoomSetHidden = withChannelSetHidden(props => (
-    <SwitchComponent
-        mutation={props.setHidden}
-        val={(props as any).val}
-        fieldName={'listed'}
-        fieldTitle={'Listed'}
-        roomId={(props as any).roomId}
-    />
-)) as React.ComponentType<{ val: boolean; roomId: string }>;
+export const RoomSetHidden = (props: { val: boolean; roomId: string }) => {
+    let client = useClient();
+    return (
+        <SwitchComponent
+            handler={(v) => client.mutateRoomAlterHidden({ roomId: props.roomId, listed: v })}
+            val={props.val}
+            fieldTitle={'Listed'}
+            roomId={props.roomId}
+        />
+    );
+};

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { withAlterChat } from 'openland-web/api/withAlterChat';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XInput } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
+import { useClient } from 'openland-web/utils/useClient';
 
 type RoomEditModalT = {
     title: string;
@@ -17,47 +17,44 @@ type RoomEditModalT = {
     roomId: string;
 }
 
-export const RoomEditModal = withAlterChat(props => {
-    const typedProps = props as typeof props & RoomEditModalT;
-    let editPhotoRef = typedProps.photo;
-    let editSocialImageRef = typedProps.socialImage;
+export const RoomEditModal = (props: RoomEditModalT) => {
+    let client = useClient();
+    let editPhotoRef = props.photo;
+    let editSocialImageRef = props.socialImage;
     return (
         <XModalForm
             scrollableContent={true}
             targetQuery="editChat"
             useTopCloser={true}
             title="Group settings"
-            defaultAction={data => {
+            defaultAction={async data => {
                 let newTitle = data.input.title;
                 let newDescription = data.input.description;
                 let newPhoto = data.input.photoRef;
                 let newSocialImage = data.input.socialImageRef;
-                console.warn(newPhoto, newSocialImage);
-                props.alter({
-                    variables: {
-                        roomId: typedProps.roomId,
-                        input: {
-                            ...{ title: newTitle },
-                            ...{ description: newDescription },
-                            ...(newPhoto && newPhoto.uuid !== editPhotoRef
-                                ? { photoRef: sanitizeImageRef(newPhoto) }
-                                : {}),
-                            ...(newSocialImage && newSocialImage.uuid !== editSocialImageRef
-                                ? {
-                                      socialImageRef: sanitizeImageRef(newSocialImage),
-                                  }
-                                : {}),
-                        },
+                await client.mutateRoomUpdate({
+                    roomId: props.roomId,
+                    input: {
+                        ...{ title: newTitle },
+                        ...{ description: newDescription },
+                        ...(newPhoto && newPhoto.uuid !== editPhotoRef
+                            ? { photoRef: sanitizeImageRef(newPhoto) }
+                            : {}),
+                        ...(newSocialImage && newSocialImage.uuid !== editSocialImageRef
+                            ? {
+                                socialImageRef: sanitizeImageRef(newSocialImage),
+                            }
+                            : {}),
                     },
                 });
             }}
             defaultData={{
                 input: {
-                    title: typedProps.title || '',
-                    description: typedProps.description || '',
-                    photoRef: { uuid: typedProps.photo },
-                    socialImageRef: typedProps.socialImage
-                        ? { uuid: typedProps.socialImage }
+                    title: props.title || '',
+                    description: props.description || '',
+                    photoRef: { uuid: props.photo },
+                    socialImageRef: props.socialImage
+                        ? { uuid: props.socialImage }
                         : undefined,
                 },
             }}
@@ -100,4 +97,4 @@ export const RoomEditModal = withAlterChat(props => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<RoomEditModalT>;
+};
