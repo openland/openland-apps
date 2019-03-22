@@ -78,7 +78,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
             alsoUseBottomCloser={true}
             targetQuery="advancedSettings"
             useTopCloser={true}
-            autoClose={true}
+            autoClose={false}
             title="Advanced settings"
             defaultAction={async data => {
                 if (welcomeMessageIsOn && (welcomeMessageSenderError || welcomeMessageTextError)) {
