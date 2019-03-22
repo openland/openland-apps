@@ -257,7 +257,7 @@ export const RoomsInviteComponent = ({
                         id={room.id!!}
                         size={74}
                     />
-                    <XView marginTop={28} fontSize={24} fontWeight={'600'}>
+                    <XView marginTop={28} lineHeight={1} fontSize={24} fontWeight={'600'}>
                         {room.title}
                     </XView>
                     {room.membersCount && room.membersCount > 10 && (
