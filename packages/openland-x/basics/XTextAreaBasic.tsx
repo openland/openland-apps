@@ -4,7 +4,7 @@ import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XFlexStyles, applyFlex, extractFlexProps } from './Flex';
 import { RequireElement } from './XInputBasic';
 
-type XTextArea = 'large' | 'default' | 'small';
+type XTextArea = 'large' | 'default';
 
 interface TextAreaStyledProps {
     mode?: 'modern' | null;
@@ -39,31 +39,31 @@ let sizeStyles = styleResolver({
 
 let titleStyles = styleResolver({
     large: {
-        top: 9,
-        left: 13,
-        height: 20,
-        fontSize: 12,
+        top: 0,
+        lineHeight: '32px',
+        left: 16,
+        height: 27,
+        width: '100%',
+        fontSize: 16,
     },
     default: {
-        top: 9,
+        top: 0,
+        lineHeight: '32px',
         left: 13,
-        height: 20,
-        fontSize: 12,
-    },
-    small: {
-        top: 9,
-        left: 9,
-        height: 14,
-        fontSize: 11,
+        height: 27,
+        width: '100%',
+        fontSize: 14,
     },
 });
 
 export const Title = Glamorous.div<{ format?: XTextArea; invalid?: boolean }>([
     {
+        pointerEvents: 'none',
         position: 'absolute',
         paddingLeft: 3,
         paddingRight: 3,
         color: '#1488f3',
+        backgroundColor: '#f2f3f4',
     },
     props => titleStyles(props.format),
     props => {
