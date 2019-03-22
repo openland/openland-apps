@@ -132,7 +132,7 @@ export const DirectoryNavigation = XMemo(
         const [isMobile] = useIsMobile();
         return (
             <Navigation
-                title={title}
+                title={isMobile ? title : 'Directory'}
                 swapFragmentsOnMobile
                 tab={tabs.empty}
                 menuRightContent={
