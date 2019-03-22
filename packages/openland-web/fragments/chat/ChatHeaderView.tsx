@@ -222,7 +222,9 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                     roomId={sharedRoom.id}
                     socialImage={sharedRoom.socialImage}
                     canChangeAdvancedSettingsMembersUsers={canChangeAdvancedSettingsMembersUsers}
-                    welcomeMessage={sharedRoom.welcomeMessage!!}
+                    welcomeMessageText={sharedRoom.welcomeMessage!!.message}
+                    welcomeMessageSender={sharedRoom.welcomeMessage!!.sender}
+                    welcomeMessageIsOn={sharedRoom.welcomeMessage!!.isOn}
                 />
                 <RoomEditModal
                     title={sharedRoom.title}
