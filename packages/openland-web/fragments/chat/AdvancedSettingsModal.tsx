@@ -33,6 +33,19 @@ const UsersWrapperClassName = css`
     border: solid 1px rgba(220, 222, 228, 0.4);
 `;
 
+const SocialImageWrapperClassName = css`
+    & > div {
+        width: 190px;
+        height: 100px;
+    }
+
+    & img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+    }
+`;
+
 export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
     const api = useClient();
     let router = React.useContext(XRouterContext)!;
@@ -52,17 +65,26 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
         !welcomeMessageText,
     );
 
-    React.useEffect(() => {
-        setWelcomeMessageIsOn(props.welcomeMessageIsOn);
-    }, [props.welcomeMessageIsOn]);
+    React.useEffect(
+        () => {
+            setWelcomeMessageIsOn(props.welcomeMessageIsOn);
+        },
+        [props.welcomeMessageIsOn],
+    );
 
-    React.useEffect(() => {
-        setWelcomeMessageText(props.welcomeMessageText);
-    }, [props.welcomeMessageText]);
+    React.useEffect(
+        () => {
+            setWelcomeMessageText(props.welcomeMessageText);
+        },
+        [props.welcomeMessageText],
+    );
 
-    React.useEffect(() => {
-        setWelcomeMessageSender(props.welcomeMessageSender);
-    }, [props.welcomeMessageSender]);
+    React.useEffect(
+        () => {
+            setWelcomeMessageSender(props.welcomeMessageSender);
+        },
+        [props.welcomeMessageSender],
+    );
 
     const finalWelcomeMessageSenderError = triedToSend && welcomeMessageSenderError;
     const finalWelcomeMessageTextError = triedToSend && welcomeMessageTextError;
@@ -92,12 +114,15 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
         };
     }
 
-    React.useEffect(() => {
-        if (isOpen === false) {
-            router!!.replaceQuery('advancedSettings', undefined);
-            setIsOpen(true);
-        }
-    }, [isOpen]);
+    React.useEffect(
+        () => {
+            if (isOpen === false) {
+                router!!.replaceQuery('advancedSettings', undefined);
+                setIsOpen(true);
+            }
+        },
+        [isOpen],
+    );
 
     return (
         <XModalForm
@@ -249,14 +274,16 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     Choose an image to display when sharing invite to this group on social networks
                 </XView>
                 <XView marginTop={16}>
-                    <XAvatarUpload
-                        cropParams="1:1, free"
-                        field="input.socialImageRef"
-                        placeholder={{
-                            add: 'Add social image',
-                            change: 'Change social image',
-                        }}
-                    />
+                    <div className={SocialImageWrapperClassName}>
+                        <XAvatarUpload
+                            cropParams="16:9, free"
+                            field="input.socialImageRef"
+                            placeholder={{
+                                add: 'Add image',
+                                change: 'Change image',
+                            }}
+                        />
+                    </div>
                 </XView>
             </XView>
         </XModalForm>
