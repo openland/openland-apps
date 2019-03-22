@@ -19,6 +19,7 @@ import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, SharedRoomMembershipStatus, RoomMemberRole } from 'openland-api/Types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
+import { reactionsImagesMap, defaultReactions } from './components/AsyncMessageReactionsView';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -111,17 +112,6 @@ export class MobileMessenger {
     private handleMessageLongPress = (message: DataSourceMessageItem) => {
         let builder = new ActionSheetBuilder();
 
-        const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
-
-        const reactionsMap = {
-            '❤️': require('assets/reactions/ic-reaction-like.png'),
-            '👍': require('assets/reactions/ic-reaction-thumbsup.png'),
-            '😂': require('assets/reactions/ic-reaction-lol.png'),
-            '😱': require('assets/reactions/ic-reaction-wow.png'),
-            '😢': require('assets/reactions/ic-reaction-sad.png'),
-            '🤬': require('assets/reactions/ic-reaction-angry.png')
-        }
-
         builder.view((ctx: ZModalController) => (
             <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={Platform.OS === 'android' ? 62 : 56} paddingHorizontal={10}>
                 {defaultReactions.map(r => (
@@ -131,7 +121,7 @@ export class MobileMessenger {
                             this.handleReactionSetUnset(message, r);
                         }}
                     >
-                        <Image source={reactionsMap[r]} />
+                        <Image source={reactionsImagesMap[r]} />
                     </TouchableOpacity>
                 ))}
             </View>

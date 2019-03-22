@@ -142,7 +142,7 @@ interface XOrganizationCardProps {
             user: {
                 id: string;
                 name: string;
-                picture: string | null;
+                photo: string | null;
             };
         }[];
     };
@@ -252,7 +252,7 @@ export const XOrganizationCard = (props: XOrganizationCardProps) => {
                                     objectId={firstMember.user.id}
                                     size="l-small"
                                     style="colorus"
-                                    cloudImageUuid={firstMember.user.picture || undefined}
+                                    cloudImageUuid={firstMember.user.photo || undefined}
                                 />
                                 <span>
                                     {firstMember.user.name +

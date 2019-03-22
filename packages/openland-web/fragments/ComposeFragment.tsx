@@ -67,7 +67,7 @@ const SearchPeopleModule = withExplorePeople(props => {
                     return {
                         label: u.name,
                         value: u.id,
-                        photo: u.picture,
+                        photo: u.photo,
                         org: u.primaryOrganization ? u.primaryOrganization.name : '',
                     };
                 }) || []

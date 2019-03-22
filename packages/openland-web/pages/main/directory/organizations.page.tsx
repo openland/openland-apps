@@ -20,7 +20,6 @@ export const OrganizationCards = withExploreOrganizations(props => {
     if (!(props.data && props.data.items)) {
         return null;
     }
-    console.log(props);
 
     let noData =
         props.error ||

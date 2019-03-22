@@ -99,7 +99,7 @@ class MessagengerFragmentInner extends React.PureComponent<
                             }
                             cloudImageUuid={
                                 (sharedRoom && sharedRoom.photo) ||
-                                (privateRoom && privateRoom.user.picture) ||
+                                (privateRoom && privateRoom.user.photo) ||
                                 undefined
                             }
                             organizationId={

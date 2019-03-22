@@ -10,7 +10,7 @@ subscription TypingsWatch {
       __typename
       id
       name
-      picture
+      photo
     }
   }
 }

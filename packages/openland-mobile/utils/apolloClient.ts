@@ -4,8 +4,8 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 import { createWorkerClient } from 'openland-mobile/apollo/createWorkerClient';
 import { createDumbBridgeClient } from 'openland-graphql/proxy/DumbBridgeClient';
-import { NativeApolloClient } from 'openland-mobile/apollo/NativeApolloClient';
-import { Platform } from 'react-native';
+// import { NativeApolloClient } from 'openland-mobile/apollo/NativeApolloClient';
+// import { Platform } from 'react-native';
 
 let cachedClient: OpenlandClient | null;
 
@@ -32,9 +32,9 @@ export function buildNativeClient(token: string) {
 
     // return new OpenlandClient(new NativeApolloClient(token));
 
-    if (Platform.OS === 'android') {
-        return new OpenlandClient(new NativeApolloClient(token));
-    }
+    // if (Platform.OS === 'android') {
+    //     return new OpenlandClient(new NativeApolloClient(token));
+    // }
 
     if (__DEV__) {
         return new OpenlandClient(createDumbBridgeClient(new DirectApollolClient(buildClient({

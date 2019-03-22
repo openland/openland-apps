@@ -7,7 +7,7 @@ export const UserShort = gql`
         name
         firstName
         lastName
-        picture
+        photo
         email
         online
         lastSeen

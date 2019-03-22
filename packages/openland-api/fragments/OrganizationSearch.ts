@@ -14,7 +14,7 @@ export const OrganizationSearch = gql`
             user {
                 id
                 name
-                picture
+                photo
             }
         }
     }
