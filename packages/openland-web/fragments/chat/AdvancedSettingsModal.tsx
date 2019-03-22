@@ -13,7 +13,7 @@ import {
 } from 'openland-api/Types';
 import { useClient } from 'openland-web/utils/useClient';
 import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
-
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 interface AdvancedSettingsInnerProps {
     socialImage: string | null;
     roomId: string;
@@ -35,6 +35,7 @@ const UsersWrapperClassName = css`
 
 export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
     const api = useClient();
+    let router = React.useContext(XRouterContext)!;
 
     const [isOpen, setIsOpen] = React.useState(true);
     const [isOpenUsers, setIsOpenUsers] = React.useState(false);
@@ -90,6 +91,13 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
             label: welcomeMessageSender.name,
         };
     }
+
+    React.useEffect(() => {
+        if (isOpen === false) {
+            router!!.replaceQuery('advancedSettings', undefined);
+            setIsOpen(true);
+        }
+    }, [isOpen]);
 
     return (
         <XModalForm

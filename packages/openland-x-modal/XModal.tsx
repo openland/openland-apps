@@ -257,12 +257,6 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
         });
     };
 
-    componentWillReceiveProps(nextProps: XModalProps) {
-        if (this.props.isOpen === true && nextProps.isOpen === false) {
-            this.onModalCloseRequest();
-        }
-    }
-
     onModalCloseRequest = () => {
         if (this.props.onClosed) {
             this.props.onClosed();
