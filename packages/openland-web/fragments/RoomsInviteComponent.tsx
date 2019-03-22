@@ -58,9 +58,6 @@ const UserInfoWrapper = Glamorous(XHorizontal)({
     margin: 'auto',
     marginTop: 50,
     flexShrink: 0,
-    '@media (max-height: 800px)': {
-        marginTop: 15,
-    },
 });
 
 const Text = Glamorous.div<{ width?: number; autoMargin?: boolean }>(props => ({
