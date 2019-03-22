@@ -471,10 +471,10 @@
       }
     },
     {
-      "signature": "b0d1ff8164df0a3d7a679c3720c8e0338fd8d788b88bf707022d21f1e9bfbb5a",
-      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomInviteInfo($invite:String!){invite:betaRoomInviteInfo(invite:$invite){__typename id invitedByUser{__typename...UserShort}room{__typename...on SharedRoom{description id kind members{__typename membership role}membersCount membership organization{__typename...OrganizationShort}photo socialImage title}}}}",
+      "signature": "be2101057a56a0f9fc06a52b947ea70b9468503d3ee88f754bca76bdc5aea0bb",
+      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomInviteInfo($invite:String!){invite:betaRoomInviteInfo(invite:$invite){__typename id invitedByUser{__typename...UserShort}room{__typename...on SharedRoom{description id kind membersCount membership organization{__typename...OrganizationShort}photo socialImage title}}}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomInviteInfo($invite:String!){betaRoomInviteInfo(invite:$invite){__typename id invitedByUser{__typename...UserShort}room{__typename...on SharedRoom{description id kind members{__typename membership role}membersCount membership organization{__typename...OrganizationShort}photo socialImage title}}}}"
+        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomInviteInfo($invite:String!){betaRoomInviteInfo(invite:$invite){__typename id invitedByUser{__typename...UserShort}room{__typename...on SharedRoom{description id kind membersCount membership organization{__typename...OrganizationShort}photo socialImage title}}}}"
       }
     },
     {

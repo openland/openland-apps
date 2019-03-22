@@ -17,7 +17,7 @@ export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { naviga
                 <SHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
                     {args && args.hideBackText && <SHeader hideBackText={true} />}
                     {args && args.hideHairline && <SHeader hairline="hidden" />}
-                    <React.Suspense fallback={<ZLoader />}>
+                    <React.Suspense fallback={<ZLoader />} >
                         <Wrapped {...this.props} />
                     </React.Suspense>
                 </SHeaderSafeArea>

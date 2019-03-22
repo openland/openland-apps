@@ -91,17 +91,14 @@ const CacheComponent = ({
 }) => {
     const [cachedProps, setCachedProps] = React.useState({});
 
-    React.useLayoutEffect(
-        () => {
-            if (activeChat) {
-                setCachedProps({
-                    ...cachedProps,
-                    [activeChat]: componentProps,
-                });
-            }
-        },
-        [activeChat],
-    );
+    React.useLayoutEffect(() => {
+        if (activeChat) {
+            setCachedProps({
+                ...cachedProps,
+                [activeChat]: componentProps,
+            });
+        }
+    }, [activeChat]);
 
     if (true || ((window as any).safari !== undefined && !isMobile)) {
         return <>{activeChat && <Component {...componentProps} isActive={true} />}</>;
