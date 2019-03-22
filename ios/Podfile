@@ -37,6 +37,7 @@ target 'openland' do
   pod 'AppCenter/Crashes', '~> 1.13.0'
   pod 'AppCenter/Analytics', '~> 1.13.0'
   pod 'AppCenterReactNativeShared', '~> 1.12.0'
+  pod 'Apollo'
 
   pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
 

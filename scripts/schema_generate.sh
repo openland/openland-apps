@@ -19,3 +19,6 @@ rimraf ./android/app/src/main/graphql
 mkdir -p ./android/app/src/main/graphql/com/openland/api
 cp ./schema.json ./android/app/src/main/graphql/com/openland/api/
 ./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/exportQueries.ts
+
+# iOS Schemas
+yarn apollo codegen:generate --queries="$(find . -name './android/app/src/main/graphql/com/openland/api/*.graphql')" --target swift ./ios/API.swift
