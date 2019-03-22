@@ -10,24 +10,15 @@ import { Stopwatch } from 'openland-y-utils/stopwatch';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASImage } from 'react-native-async-view/ASImage';
 
-let reactionMap = {
-    'LIKE': '❤️',
-    'THUMB_UP': '👍',
-    'JOY': '😂',
-    'SCREAM': '😱',
-    'CRYING': '😢',
-    'ANGRY': '🤬',
-}
-
-export const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
+export const defaultReactions = ['LIKE', 'THUMB_UP', 'JOY', 'SCREAM', 'CRYING', 'ANGRY'];
 
 export const reactionsImagesMap = {
-    '❤️': require('assets/reactions/ic-reaction-like.png'),
-    '👍': require('assets/reactions/ic-reaction-thumbsup.png'),
-    '😂': require('assets/reactions/ic-reaction-lol.png'),
-    '😱': require('assets/reactions/ic-reaction-wow.png'),
-    '😢': require('assets/reactions/ic-reaction-sad.png'),
-    '🤬': require('assets/reactions/ic-reaction-angry.png')
+    'LIKE': require('assets/reactions/ic-reaction-like.png'),
+    'THUMB_UP': require('assets/reactions/ic-reaction-thumbsup.png'),
+    'JOY': require('assets/reactions/ic-reaction-lol.png'),
+    'SCREAM': require('assets/reactions/ic-reaction-wow.png'),
+    'CRYING': require('assets/reactions/ic-reaction-sad.png'),
+    'ANGRY': require('assets/reactions/ic-reaction-angry.png')
 }
 
 export const AsyncMessageReactionsView = React.memo<{ message: DataSourceMessageItem }>((props) => {
@@ -37,10 +28,7 @@ export const AsyncMessageReactionsView = React.memo<{ message: DataSourceMessage
     if (!props.message.reactions || props.message.reactions!.length === 0) {
         return null;
     }
-    let reactionsMap = props.message.reactions!.map(r => {
-        r.reaction = reactionMap[r.reaction] as any || r.reaction;
-        return r;
-    })
+    let reactions = props.message.reactions!
         .reduce(
             (res, r) => {
                 let data = res.get(r.reaction) || { reaction: r.reaction, count: 0, my: false };
@@ -51,7 +39,7 @@ export const AsyncMessageReactionsView = React.memo<{ message: DataSourceMessage
             },
             new Map<string, { count: number, my: boolean, reaction: string }>()
         );
-    let reactions = [...reactionsMap.values()].sort((a, b) => a.count - b.count);
+    let reactionsSorted = [...reactions.values()].sort((a, b) => a.count - b.count);
     let users = props.message.reactions!
         .reduce(
             (res, r) => res.find(u => u.id === r.user.id) ? res : [...res, r.user],
@@ -69,7 +57,7 @@ export const AsyncMessageReactionsView = React.memo<{ message: DataSourceMessage
     return (
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={30} backgroundColor={theme.backgroundColor} >
             <ASFlex flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 14 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={5}>
-                {[...reactions].map((i) =>
+                {[...reactionsSorted].map((i) =>
                     (
                         <ASImage marginLeft={3} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
                     )
