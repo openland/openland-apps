@@ -376,8 +376,8 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             this.props.animation === null
                 ? 0
                 : this.props.animationDurationOut !== undefined
-                ? this.props.animationDurationOut
-                : 150;
+                    ? this.props.animationDurationOut
+                    : 150;
         this.willHideTimeout = window.setTimeout(() => {
             this.setState({ willHide: true }, () => {
                 if (this._popper) {
@@ -435,7 +435,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     }
 
     componentWillUnmount() {
-        this.mounted = false;
+        // this.mounted = false;
         if (this.props.onClickOutside) {
             document.removeEventListener('mousedown', this.onMouseDown, true);
         }
@@ -470,23 +470,23 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             marginLeft: this.props.marginLeft
                 ? this.props.marginLeft
                 : isHorizontal
-                ? this.props.padding || 10
-                : undefined,
+                    ? this.props.padding || 10
+                    : undefined,
             marginRight: this.props.marginRight
                 ? this.props.marginRight
                 : isHorizontal
-                ? this.props.padding || 10
-                : undefined,
+                    ? this.props.padding || 10
+                    : undefined,
             marginTop: this.props.marginTop
                 ? this.props.marginTop
                 : isVertical
-                ? this.props.padding || 10
-                : undefined,
+                    ? this.props.padding || 10
+                    : undefined,
             marginBottom: this.props.marginBottom
                 ? this.props.marginBottom
                 : isVertical
-                ? this.props.padding || 10
-                : undefined,
+                    ? this.props.padding || 10
+                    : undefined,
 
             groupId: this.props.groupId,
             animation: this.props.animation,
