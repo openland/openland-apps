@@ -14,7 +14,7 @@ import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { XSelect } from 'openland-x/XSelect';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { Query } from '../../../../../node_modules/react-apollo';
+import { Query } from 'react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import { XInput } from 'openland-x/XInput';
 import { XDate } from 'openland-x/XDate';
