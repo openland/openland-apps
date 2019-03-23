@@ -121,6 +121,7 @@ export class ConversationEngine implements MessageSendHandler {
     private loadingHistory?: string = undefined;
     private localMessagesMap = new Map<string, string>();
     role?: Types.RoomMemberRole | null;
+    canEdit?: boolean;
 
     constructor(engine: MessengerEngine, conversationId: string) {
         this.engine = engine;
@@ -156,6 +157,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.messages.reverse();
 
         this.role = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.role || null;
+        this.canEdit = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canEdit || false;
 
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;

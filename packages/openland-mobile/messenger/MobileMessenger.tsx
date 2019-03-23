@@ -160,8 +160,7 @@ export class MobileMessenger {
             });
         }
 
-        let role = this.engine.getConversation(message.chatId).role;
-        if (role === RoomMemberRole.ADMIN || role === RoomMemberRole.OWNER) {
+        if (this.engine.getConversation(message.chatId).canEdit) {
             builder.action('Pin', async () => {
                 startLoader();
                 try {
