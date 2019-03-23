@@ -6,6 +6,22 @@ const X_WIDTH = 375;
 const X_HEIGHT = 812;
 const XSMAX_WIDTH = 414;
 const XSMAX_HEIGHT = 896;
+
+const IPADPRO11_WIDTH = 834;
+const IPADPRO11_HEIGHT = 1194;
+const IPADPRO129_HEIGHT = 1024;
+const IPADPRO129_WIDTH = 1366;
+
+const isNewIPadPro = (() => {
+    if (Platform.OS !== 'ios') { return false; }
+    return (
+        (D_HEIGHT === IPADPRO11_HEIGHT && D_WIDTH === IPADPRO11_WIDTH) ||
+        (D_HEIGHT === IPADPRO11_WIDTH && D_WIDTH === IPADPRO11_HEIGHT) ||
+        ((D_HEIGHT === IPADPRO129_HEIGHT && D_WIDTH === IPADPRO129_WIDTH) ||
+            (D_HEIGHT === IPADPRO129_WIDTH && D_WIDTH === IPADPRO129_HEIGHT))
+    );
+})();
+
 const isIphoneX = Platform.OS === 'ios' && D_WIDTH === X_WIDTH && D_HEIGHT === X_HEIGHT;
 const isIphoneXSMAX = Platform.OS === 'ios' && D_WIDTH === XSMAX_WIDTH && D_HEIGHT === XSMAX_HEIGHT;
 
@@ -14,7 +30,7 @@ const isIphoneXSMAX = Platform.OS === 'ios' && D_WIDTH === XSMAX_WIDTH && D_HEIG
 // Eventually we will add support for safe area api for androids.
 //
 const safeAreaTop = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 22 : 0) : 0;
-let safeAreaBottom = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 34 : 0) : NativeModules.RNSWindowManager.NAVIGATION_BAR; // DimensionsAndroid.get('SOFT_MENU_BAR_HEIGHT'); // - (Platform.Version < 28 ? 0 : DimensionsAndroid.get('STATUS_BAR_HEIGHT'));
+let safeAreaBottom = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 34 : (isNewIPadPro ? 20 : 0)) : NativeModules.RNSWindowManager.NAVIGATION_BAR; // DimensionsAndroid.get('SOFT_MENU_BAR_HEIGHT'); // - (Platform.Version < 28 ? 0 : DimensionsAndroid.get('STATUS_BAR_HEIGHT'));
 // console.log('SOFT: ' + DimensionsAndroid.get('SOFT_MENU_BAR_HEIGHT'));
 
 //

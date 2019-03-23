@@ -2,6 +2,7 @@ import { generate } from 'graphql-code-generator';
 import * as fs from 'fs';
 import * as path from 'path';
 import { generateApi } from './generateApi';
+import { generateNativeApi } from './generateNativeApi';
 
 // let documents = fs.readFileSync(__dirname + '/documents.handlebars', 'utf-8');
 
