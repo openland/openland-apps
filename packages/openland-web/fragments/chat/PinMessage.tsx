@@ -189,7 +189,7 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
                                 hoverTextDecoration="none"
                                 href={`https://ucarecdn.com/${attachment.fileId}/${
                                     attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
-                                }`}
+                                    }`}
                             >
                                 <XView
                                     alignItems="center"
@@ -249,7 +249,7 @@ const PinMessageText = (props: { message: string }) => (
 export const PinMessageComponent = (props: PinMessageComponentProps) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     const { attachments } = props.pinMessage;
-    const attach = attachments[0] as attachmentType;
+    const attach = attachments[0];
     return (
         <XView
             flexDirection="column"
@@ -316,24 +316,26 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                             {props.pinMessage.message && (
                                 <PinMessageText message={props.pinMessage.message} />
                             )}
-                            {attach &&
-                                attach.fileMetadata.isImage && (
-                                    <XView flexDirection="row" alignItems="center">
-                                        <XView marginRight={6}>
-                                            <IconImage />
+                            {attach.__typename === 'MessageAttachmentFile' && <>
+                                {attach &&
+                                    attach.fileMetadata.isImage && (
+                                        <XView flexDirection="row" alignItems="center">
+                                            <XView marginRight={6}>
+                                                <IconImage />
+                                            </XView>
+                                            <XView>Image</XView>
                                         </XView>
-                                        <XView>Image</XView>
-                                    </XView>
-                                )}
-                            {attach &&
-                                !attach.fileMetadata.isImage && (
-                                    <XView flexDirection="row" alignItems="center">
-                                        <XView marginRight={6}>
-                                            <IconFile />
+                                    )}
+                                {attach &&
+                                    !attach.fileMetadata.isImage && (
+                                        <XView flexDirection="row" alignItems="center">
+                                            <XView marginRight={6}>
+                                                <IconFile />
+                                            </XView>
+                                            <XView>Document</XView>
                                         </XView>
-                                        <XView>Document</XView>
-                                    </XView>
-                                )}
+                                    )}
+                            </>}
                         </XView>
                     </XView>
                 </XView>
