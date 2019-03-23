@@ -97,52 +97,29 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 18 }) => {
         size,
     });
 };
-class ReactionPicker extends React.Component<{ onRef: any; setReaction: any }> {
-    defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
-    state = {
-        show: false,
-    };
 
-    onClickOutside = () => {
-        this.setState({
-            show: false,
-        });
-    };
+const ReactionPicker = (props: { setReaction: (src: any) => void }) => {
+    const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
 
-    switch = () => {
-        this.setState({
-            show: !this.state.show,
-        });
-    };
-
-    handleSetReaction = (emj: any) => {
-        this.props.setReaction(emj);
-        this.setState({
-            show: false,
-        });
-    };
-
-    render() {
-        return (
-            <XHorizontal separator={6} alignItems="center">
-                {this.defaultReactions.map((src: string) => (
-                    <ReactionItem
-                        key={'msg_reaction' + src}
-                        onClick={e => {
-                            e.stopPropagation();
-                            this.handleSetReaction(src);
-                        }}
-                    >
-                        {emojifyReactions({
-                            src,
-                            size: 25,
-                        })}
-                    </ReactionItem>
-                ))}
-            </XHorizontal>
-        );
-    }
-}
+    return (
+        <XHorizontal separator={6} alignItems="center">
+            {defaultReactions.map((src: string) => (
+                <ReactionItem
+                    key={'msg_reaction' + src}
+                    onClick={e => {
+                        e.stopPropagation();
+                        props.setReaction(src);
+                    }}
+                >
+                    {emojifyReactions({
+                        src,
+                        size: 25,
+                    })}
+                </ReactionItem>
+            ))}
+        </XHorizontal>
+    );
+};
 
 class ReactionComponentInner extends React.PureComponent<{
     messageId: string;
@@ -150,12 +127,6 @@ class ReactionComponentInner extends React.PureComponent<{
     marginLeft?: number;
     handler: (reaction: string) => void;
 }> {
-    inner = 0;
-
-    onInner = (ref: any) => {
-        this.inner += ref ? 1 : -1;
-    };
-
     handleSetReaction = (emj: any) => {
         this.props.handler(typeof emj === 'string' ? emj : emj.native);
     };
@@ -167,9 +138,7 @@ class ReactionComponentInner extends React.PureComponent<{
     render() {
         return (
             <XPopper
-                content={
-                    <ReactionPicker onRef={this.onInner} setReaction={this.handleSetReaction} />
-                }
+                content={<ReactionPicker setReaction={this.handleSetReaction} />}
                 showOnHover
                 placement="top"
                 contentContainer={<CustomPickerDiv />}

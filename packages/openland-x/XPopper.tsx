@@ -435,7 +435,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     }
 
     componentWillUnmount() {
-        // this.mounted = false;
+        this.mounted = false;
         if (this.props.onClickOutside) {
             document.removeEventListener('mousedown', this.onMouseDown, true);
         }
