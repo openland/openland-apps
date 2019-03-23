@@ -4,20 +4,16 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Platform, Linking, PixelRatio, Image } from 'react-native';
-import { preprocessText } from 'openland-mobile/utils/TextProcessor';
-import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
+import { Platform, Linking, PixelRatio } from 'react-native';
+import { paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { bubbleMaxWidth, bubbleMaxWidthIncoming, AsyncBubbleView, contentInsetsHorizontal } from '../AsyncBubbleView';
-import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment, ModernMessageButtonStyle } from 'openland-api/Types';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { AppTheme } from 'openland-mobile/themes/themes';
 
 interface UrlAugmentationContentProps {
     message: DataSourceMessageItem;
@@ -28,6 +24,11 @@ interface UrlAugmentationContentProps {
     onUserPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
+    padded?: boolean;
+}
+
+export let isInvite = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {
+    return attach && attach.titleLink && (attach.titleLink.includes('openland.com/invite') || attach.titleLink.includes('openland.com/joinChannel'));
 }
 
 export let ricjAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {
@@ -35,7 +36,7 @@ export let ricjAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage
         (
             (attach.image.metadata && attach.image.metadata.imageHeight === attach.image.metadata.imageWidth)
             ||
-            (attach.titleLink && (attach.titleLink.includes('openland.com/invite') || attach.titleLink.includes('openland.com/joinChannel')))
+            isInvite(attach)
         )
 }
 export class RichAttachContent extends React.PureComponent<UrlAugmentationContentProps, { downloadState?: DownloadState }> {
@@ -47,7 +48,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         if (this.props.attach && this.props.attach.image && this.props.imageLayout) {
 
             this.augLayout = this.props.imageLayout;
-            if (this.props.attach.image.metadata!.imageHeight === this.props.attach.image.metadata!.imageWidth) {
+            if (ricjAttachImageShouldBeCompact(this.props.attach)) {
                 this.imageCompact = true;
                 this.augLayout = { width: 36, height: 36 };
             }
@@ -91,8 +92,8 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         // invite link image placeholder
         if (ricjAttachImageShouldBeCompact(this.props.attach) || !this.props.attach.image) {
             imgCompact = true;
-            imgLayout = { width: 36, height: 36 };
-            if (!this.props.attach.image) {
+            imgLayout = !!imgLayout ? { width: 36, height: 36 } : undefined;
+            if (isInvite(this.props.attach) && !this.props.attach.image) {
                 imageSource = this.props.message.isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
             }
         }
@@ -153,7 +154,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 </ASText>}
 
                 <ASFlex flexDirection="row" marginTop={5}>
-                    {imgCompact && imgLayout && (
+                    {imgCompact && imgLayout && imageSource && (
                         <ASFlex>
                             <ASImage
                                 onPress={this.onMediaPress}
@@ -176,16 +177,16 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             color={mainTextColor}
                             letterSpacing={-0.3}
                             fontSize={14}
-                            marginTop={Platform.OS === 'android' ? -4 : undefined}
+                            marginTop={Platform.OS === 'android' ? -4 : -1}
                             numberOfLines={subTitle && imgCompact ? 1 : 2}
                             marginBottom={4}
                             fontWeight={TextStyles.weight.medium}
                         >
                             {this.props.attach.title}
-                            {/* {!this.props.attach.subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)} */}
+                            {this.props.padded && !subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)}
                         </ASText>}
                         {!!subTitle && <ASText
-                            marginTop={Platform.OS === 'android' ? -4 : undefined}
+                            marginTop={(Platform.OS === 'android' ? -4 : -1)}
                             maxWidth={maxWidth - 36}
                             color={out ? '#fff' : '#000'}
                             opacity={out ? 0.7 : 0.6}
@@ -195,7 +196,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             fontWeight={TextStyles.weight.regular}
                         >
                             {subTitle}
-                            {/* {this.props.message.isOut ? paddedTextOut : paddedText} */}
+                            {this.props.padded && (this.props.message.isOut ? paddedTextOut : paddedText)}
                         </ASText>}
                     </ASFlex>
 
@@ -205,12 +206,12 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     maxWidth={maxWidth}
                     color={out ? '#fff' : '#000'}
                     fontSize={14}
-                    marginTop={4}
+                    marginTop={this.imageCompact && imgLayout ? 4 : 0}
                     marginBottom={4}
                     fontWeight={TextStyles.weight.regular}
                 >
                     {text}
-                    {/* {this.props.message.isOut ? paddedTextOut : paddedText} */}
+                    {this.props.padded && (this.props.message.isOut ? paddedTextOut : paddedText)}
                 </ASText>}
 
                 {!!keyboard && keyboard.buttons.map((line, i) =>
