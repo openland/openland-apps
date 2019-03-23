@@ -1,4 +1,6 @@
 import gql from 'graphql-tag';
+import { UserTiny } from './UserTiny';
+import { UserShort } from './UserShort';
 
 export const TinyMessage = gql`
     fragment TinyMessage on ModernMessage {
@@ -27,6 +29,7 @@ export const TinyMessage = gql`
             }
         }
     }
+    ${UserTiny}
 `;
 
 export const FullMessage = gql`
@@ -271,4 +274,6 @@ export const FullMessage = gql`
             }
         }
     }
+    ${UserTiny}
+    ${UserShort}
 `;
