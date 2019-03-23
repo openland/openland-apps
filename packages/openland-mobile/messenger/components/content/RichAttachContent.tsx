@@ -89,7 +89,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         let imageSource = { uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined };
 
         // invite link image placeholder
-        if (ricjAttachImageShouldBeCompact(this.props.attach)) {
+        if (ricjAttachImageShouldBeCompact(this.props.attach) || !this.props.attach.image) {
             imgCompact = true;
             imgLayout = { width: 36, height: 36 };
             if (!this.props.attach.image) {
