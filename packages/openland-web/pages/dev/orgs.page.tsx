@@ -11,8 +11,8 @@ import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XView } from 'react-mental';
-import { useClient } from 'openland-mobile/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
+import { useClient } from 'openland-web/utils/useClient';
 
 const AddAccountForm = withSuperAccountAdd(props => {
     return (
