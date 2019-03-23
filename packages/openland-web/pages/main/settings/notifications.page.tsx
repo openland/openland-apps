@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView, XImage } from 'react-mental';
-import { MutationFunc } from 'react-apollo';
 import { withApp } from 'openland-web/components/withApp';
-import { withSettings } from 'openland-web/api/withSettings';
-import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
@@ -15,8 +12,6 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import {
     NotificationMessages,
     Settings_settings,
-    SettingsUpdate,
-    SettingsUpdateVariables,
 } from 'openland-api/Types';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';

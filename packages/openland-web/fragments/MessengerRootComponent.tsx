@@ -78,7 +78,7 @@ interface MessagesComponentState {
 const DeleteMessageComponent = () => {
     const router = useXRouter();
     const client = useClient();
-    let id = router.query.deleteMessage;
+    let id = router.routeQuery.deleteMessage;
     return (
         <XModalForm
             title="Delete message"

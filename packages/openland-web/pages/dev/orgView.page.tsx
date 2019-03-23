@@ -17,9 +17,10 @@ import { XForm } from 'openland-x-forms/XForm';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { withQueryLoader } from '../../components/withQueryLoader';
-import { withSuperAccount } from '../../api/withSuperAccount';
 import { withOrganizationPublishedAlterSuper } from '../../api/withOrganizationPublishedAlter';
 import { XOverflow } from '../../components/XOverflow';
+import { useClient } from 'openland-web/utils/useClient';
+import { useXRouter } from 'openland-x-routing/useXRouter';
 
 const ActivateButton = withSuperAccountActivate(props => (
     <XButton style="primary" action={() => props.activate({})} text="Activate" />
@@ -152,78 +153,75 @@ const Edit = withSuperAccountRename(props => {
     );
 }) as React.ComponentType<{ orgTitle: string }>;
 
-export default withApp(
-    'Super Organization',
-    'super-admin',
-    withSuperAccount(
-        withQueryLoader(props => {
-            console.warn(props);
-            return (
-                <DevToolsScaffold title={props.data.superAccount.title}>
-                    <XHeader
-                        text={props.data.superAccount.title}
-                        description={'Current State: ' + props.data.superAccount.state}
-                    >
-                        <Edit orgTitle={props.data.superAccount.title} />
-                        <AddMemberForm />
-                        <RemoveMemberForm />
-                        {props.data.superAccount.state !== 'ACTIVATED' && <ActivateButton />}
-                        {props.data.superAccount.state === 'ACTIVATED' && <SuspendButton />}
-                        {props.data.superAccount.state === 'ACTIVATED' && <PendButton />}
-                        <XOverflow
-                            placement="bottom-end"
-                            content={
-                                <AlterOrgPublishedButton
-                                    orgId={props.data.superAccount.orgId}
-                                    published={props.data.superAccount.published}
-                                    refetchVars={{
-                                        published: props.data.superAccount.published,
-                                    }}
-                                />
-                            }
+export default withApp('Super Organization', 'super-admin', () => {
+    const client = useClient();
+    const router = useXRouter();
+    const accountId = router.routeQuery.accountId as string;
+    const superAccount = client.useSuperAccount({ accountId }).superAccount;
+    return (
+        <DevToolsScaffold title={superAccount.title}>
+            <XHeader
+                text={superAccount.title}
+                description={'Current State: ' + superAccount.state}
+            >
+                <Edit orgTitle={superAccount.title} />
+                <AddMemberForm />
+                <RemoveMemberForm />
+                {superAccount.state !== 'ACTIVATED' && <ActivateButton />}
+                {superAccount.state === 'ACTIVATED' && <SuspendButton />}
+                {superAccount.state === 'ACTIVATED' && <PendButton />}
+                <XOverflow
+                    placement="bottom-end"
+                    content={
+                        <AlterOrgPublishedButton
+                            orgId={superAccount.orgId}
+                            published={superAccount.published}
+                            refetchVars={{
+                                published: superAccount.published,
+                            }}
                         />
-                    </XHeader>
-                    <XHeader
-                        text="Members"
-                        description={props.data.superAccount.members.length + ' total'}
-                    />
-                    <XTable>
-                        <XTable.Header>
-                            <XTable.Cell>Name</XTable.Cell>
-                            <XTable.Cell>Email</XTable.Cell>
-                        </XTable.Header>
-                        <XTable.Body>
-                            {props.data.superAccount.members.map(v => (
-                                <XTable.Row key={v.id} noHover={true}>
-                                    <XTable.Cell>{v.name}</XTable.Cell>
-                                    <XTable.Cell>{v.email}</XTable.Cell>
-                                </XTable.Row>
-                            ))}
-                        </XTable.Body>
-                    </XTable>
-                    <XHeader
-                        text="Features"
-                        description={props.data.superAccount.features.length + ' total'}
-                    >
-                        <AddFeature />
-                        <RemoveFeature />
-                    </XHeader>
-                    <XTable>
-                        <XTable.Header>
-                            <XTable.Cell>Key</XTable.Cell>
-                            <XTable.Cell>Title</XTable.Cell>
-                        </XTable.Header>
-                        <XTable.Body>
-                            {props.data.superAccount.features.map(v => (
-                                <XTable.Row key={v.id} noHover={true}>
-                                    <XTable.Cell>{v.key}</XTable.Cell>
-                                    <XTable.Cell>{v.title}</XTable.Cell>
-                                </XTable.Row>
-                            ))}
-                        </XTable.Body>
-                    </XTable>
-                </DevToolsScaffold>
-            );
-        }),
-    ),
-);
+                    }
+                />
+            </XHeader>
+            <XHeader
+                text="Members"
+                description={superAccount.members.length + ' total'}
+            />
+            <XTable>
+                <XTable.Header>
+                    <XTable.Cell>Name</XTable.Cell>
+                    <XTable.Cell>Email</XTable.Cell>
+                </XTable.Header>
+                <XTable.Body>
+                    {superAccount.members.map(v => (
+                        <XTable.Row key={v.id} noHover={true}>
+                            <XTable.Cell>{v.name}</XTable.Cell>
+                            <XTable.Cell>{v.email}</XTable.Cell>
+                        </XTable.Row>
+                    ))}
+                </XTable.Body>
+            </XTable>
+            <XHeader
+                text="Features"
+                description={superAccount.features.length + ' total'}
+            >
+                <AddFeature />
+                <RemoveFeature />
+            </XHeader>
+            <XTable>
+                <XTable.Header>
+                    <XTable.Cell>Key</XTable.Cell>
+                    <XTable.Cell>Title</XTable.Cell>
+                </XTable.Header>
+                <XTable.Body>
+                    {superAccount.features.map(v => (
+                        <XTable.Row key={v.id} noHover={true}>
+                            <XTable.Cell>{v.key}</XTable.Cell>
+                            <XTable.Cell>{v.title}</XTable.Cell>
+                        </XTable.Row>
+                    ))}
+                </XTable.Body>
+            </XTable>
+        </DevToolsScaffold>
+    );
+});

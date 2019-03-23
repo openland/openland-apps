@@ -12,10 +12,10 @@ import MobileChatIcon from 'openland-icons/ic-chat.svg';
 import { useIsMobile } from 'openland-web/hooks';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { findChild } from '../utils';
-import { withNotificationCounter } from '../../api/withNotificationCounter';
 import { DesktopScaffold, DesktopScafoldMenuItem } from './DesktopComponents';
 import { MobileScaffold, MobileScafoldMenuItem } from './MobileComponents';
 import { MobileSidebarContext } from './MobileSidebarContext';
+import { useClient } from 'openland-web/utils/useClient';
 
 const CounterWrapper = (props: { count: number }) => (
     <div className="unread-messages-counter">
@@ -104,13 +104,15 @@ class ScaffoldContent extends React.Component<{
     }
 }
 
-const NotificationCounter = withNotificationCounter(props => (
-    <>
-        {props.data.counter && props.data.counter.unreadCount > 0 && (
-            <CounterWrapper count={props.data.counter.unreadCount} />
+const NotificationCounter = () => {
+    const client = useClient();
+    const data = client.useWithoutLoaderGlobalCounter();
+    return (<>
+        {data && data.counter && data.counter.unreadCount > 0 && (
+            <CounterWrapper count={data.counter.unreadCount} />
         )}
-    </>
-));
+    </>)
+};
 
 const UniversalScaffold = AdaptiveHOC({
     DesktopComponent: DesktopScaffold,
