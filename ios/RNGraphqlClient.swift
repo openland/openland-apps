@@ -18,5 +18,6 @@ class RNGraphqlClient {
     let httpTransport =  HTTPNetworkTransport(url:URL(string: "https:"+endpoint)!)
     let transport = SplitNetworkTransport(httpNetworkTransport: httpTransport, webSocketNetworkTransport: wsTransport)
     self.client = ApolloClient(networkTransport: transport)
+    let factory = ApiFactory()
   }
 }

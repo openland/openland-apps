@@ -22,6 +22,7 @@
         "baseUrl": "packages",
         "importHelpers": true,
         "skipLibCheck": true,
+        "resolveJsonModule": true
     },
     "exclude": [
         "node_modules",
