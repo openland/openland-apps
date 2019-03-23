@@ -15,7 +15,7 @@ import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
-import { RemoveMemberModal } from '../../channel/components/membersComponent';
+import { RemoveMemberModal } from '../../../../fragments/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     HeaderAvatar,
@@ -51,7 +51,7 @@ import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
 import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
-import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
+import { InviteMembersModal } from 'openland-web/fragments/inviteMembersModal';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { useClient } from 'openland-web/utils/useClient';

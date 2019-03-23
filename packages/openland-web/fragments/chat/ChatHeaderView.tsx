@@ -24,7 +24,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
+import { InviteMembersModal } from 'openland-web/fragments/inviteMembersModal';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 

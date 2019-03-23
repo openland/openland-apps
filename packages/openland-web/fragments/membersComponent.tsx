@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XOverflow } from '../../../../components/XOverflow';
+import { XOverflow } from '../components/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XButton } from 'openland-x/XButton';
