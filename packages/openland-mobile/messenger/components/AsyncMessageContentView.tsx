@@ -85,7 +85,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     let bottomContent: any[] = [];
     if (hasUrlAug) {
-        bottomContent.push(<RichAttachContent padded={!topContnet.length} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        bottomContent.push(<RichAttachContent padded={!topContnet.length} compensateBubble={compensateBubble} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
 
     if (!topContnet.length && bottomContent.length) {
