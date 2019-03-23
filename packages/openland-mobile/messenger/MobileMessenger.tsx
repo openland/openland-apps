@@ -112,13 +112,22 @@ export class MobileMessenger {
     private handleMessageLongPress = (message: DataSourceMessageItem) => {
         let builder = new ActionSheetBuilder();
 
+        let reactionMap = {
+            'LIKE': '❤️',
+            'THUMB_UP': '👍',
+            'JOY': '😂',
+            'SCREAM': '😱',
+            'CRYING': '😢',
+            'ANGRY': '🤬',
+        }
+
         builder.view((ctx: ZModalController) => (
             <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={Platform.OS === 'android' ? 62 : 56} paddingHorizontal={10}>
                 {defaultReactions.map(r => (
                     <TouchableOpacity
                         onPress={() => {
                             ctx.hide();
-                            this.handleReactionSetUnset(message, r);
+                            this.handleReactionSetUnset(message, reactionMap[r]);
                         }}
                     >
                         <Image source={reactionsImagesMap[r]} />
