@@ -40,7 +40,7 @@ const Separator = Glamorous.div({
 class InviteComponent extends React.PureComponent<
     {},
     { activePage: number; visible1: boolean; visible2: boolean }
-> {
+    > {
     private initialPage = new XSAnimatedShadowView({ opacity: 1 });
     private secondPage = new XSAnimatedShadowView({ opacity: 0 });
 
@@ -140,4 +140,4 @@ export default withApp('Invite', 'viewer', () => {
             </Scaffold.Content>
         </Scaffold>
     );
-});
+}, true);
