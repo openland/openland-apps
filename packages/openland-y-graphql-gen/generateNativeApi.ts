@@ -13,6 +13,26 @@ function fixParameters(src?: ReadonlyArray<VariableDefinitionNode>): VariableDef
     }
 }
 
+function buildItemReader(name: string, v: TypeNode): string {
+    if (v.kind === 'NamedType') {
+        if (v.name.value === 'String' || v.name.value === 'ID') {
+            return 'readStringList(src, "' + name + '")'
+        } else if (v.name.value === 'Boolean') {
+            return 'readBoolList(src, "' + name + '")'
+        } else if (v.name.value === 'Int') {
+            return 'readIntList(src, "' + name + '")'
+        } else if (v.name.value === 'Float') {
+            return 'readFloatList(src, "' + name + '")'
+        } else {
+            throw Error();
+        }
+    } else if (v.kind === 'NonNullType') {
+        return 'notNullListItems(' + buildItemReader(name, (v as NonNullTypeNode).type) + ')';
+    } else {
+        throw Error();
+    }
+}
+
 function buildReader(name: string, v: TypeNode): string {
     if (v.kind === 'NamedType') {
         if (v.name.value === 'String' || v.name.value === 'ID') {
@@ -27,15 +47,7 @@ function buildReader(name: string, v: TypeNode): string {
             throw Error();
         }
     } else if (v.kind === 'ListType') {
-        if (v.type.kind === 'NamedType') {
-            if (v.type.name.value === 'String' || v.type.name.value === 'ID') {
-                return 'readListString(src, "' + name + '")'
-            } else {
-                throw Error();
-            }
-        } else {
-            throw Error(v.type.kind);
-        }
+        return buildItemReader(name, v.type);
     } else if (v.kind === 'NonNullType') {
         return 'notNull(' + buildReader(name, (v as NonNullTypeNode).type) + ')';
     } else {
@@ -54,7 +66,7 @@ export function generateNativeApi() {
     let map = '';
     map += 'import Apollo\n';
     map += 'class ApiFactory: ApiFactoryBase {\n'
-    map += '  func buildQuery(name: String, src: NSDictionary) -> GraphQLQuery {\n'
+    map += '  func buildQuery(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n'
     for (let m of manifest.operations) {
         let doc = m.source;
         let parsed = parse(doc);
@@ -70,7 +82,11 @@ export function generateNativeApi() {
                     for (let v of vars) {
                         map += '      let ' + v.variable.name.value + ' = ' + buildReader(v.variable.name.value, v.type) + '\n';
                     }
-                    map += '      return ' + def.name!!.value + 'Query(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
+                    map += '      let requestBody = ' + def.name!!.value + 'Query(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
+                    map += '      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in\n'
+                    map += '          handler(r!.data!.resultMap, nil)\n'
+                    map += '      }\n'
+                    map += '      return\n'
                     // map += ')\n';
                     map += '    }\n';
                 }

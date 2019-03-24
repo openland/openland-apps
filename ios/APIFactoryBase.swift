@@ -7,9 +7,16 @@
 //
 
 import Foundation
+import Apollo
+
+typealias ResponseHandler = (_ result: ResultMap?, _ error: Error?) -> Void
 
 class ApiFactoryBase {
   func readInt(_ src: NSDictionary, _ name: String) -> Int? {
+    return nil
+  }
+  
+  func readFloat(_ src: NSDictionary, _ name: String) -> Bool? {
     return nil
   }
   
@@ -21,10 +28,38 @@ class ApiFactoryBase {
     return nil
   }
   
+  func readStringList(_ src: NSDictionary, _ name: String) -> [String?]? {
+    return nil
+  }
+  
+  func readIntList(_ src: NSDictionary, _ name: String) -> [String?]? {
+    return nil
+  }
+  
+  func readFloatList(_ src: NSDictionary, _ name: String) -> [String?]? {
+    return nil
+  }
+  
+  func readBoolList(_ src: NSDictionary, _ name: String) -> [String?]? {
+    return nil
+  }
+  
+  
   func notNull<T>(_ v: T?) -> T {
     if v == nil {
       fatalError()
     }
     return v!
+  }
+  
+  func notNullListItems<T>(_ v:[T?]?) -> [T]? {
+    if v == nil {
+      return nil
+    }
+    var res: [T] = []
+    for i in v! {
+      res.append(i!)
+    }
+    return res
   }
 }

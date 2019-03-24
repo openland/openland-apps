@@ -1,133 +1,269 @@
 import Apollo
 class ApiFactory: ApiFactoryBase {
-  func buildQuery(name: String, src: NSDictionary) -> Any {
+  func buildQuery(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {
     if (name == "Account") {
-      return AccountQuery()
+      let requestBody = AccountQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "AccountSettings") {
-      return AccountSettingsQuery()
+      let requestBody = AccountSettingsQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "AccountInviteInfo") {
       let inviteKey = notNull(readString(src, "inviteKey"))
-      return AccountInviteInfoQuery(inviteKey: inviteKey)
+      let requestBody = AccountInviteInfoQuery(inviteKey: inviteKey)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "AccountAppInviteInfo") {
       let inviteKey = notNull(readString(src, "inviteKey"))
-      return AccountAppInviteInfoQuery(inviteKey: inviteKey)
+      let requestBody = AccountAppInviteInfoQuery(inviteKey: inviteKey)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "AccountAppInvite") {
-      return AccountAppInviteQuery()
+      let requestBody = AccountAppInviteQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "AccountInvites") {
-      return AccountInvitesQuery()
+      let requestBody = AccountInvitesQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "AccountInvitesHistory") {
-      return AccountInvitesHistoryQuery()
+      let requestBody = AccountInvitesHistoryQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "ProfilePrefill") {
-      return ProfilePrefillQuery()
+      let requestBody = ProfilePrefillQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "FetchPushSettings") {
-      return FetchPushSettingsQuery()
+      let requestBody = FetchPushSettingsQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "MyApps") {
-      return MyAppsQuery()
+      let requestBody = MyAppsQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "Dialogs") {
       let after = readString(src, "after")
-      return DialogsQuery(after: after)
+      let requestBody = DialogsQuery(after: after)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "Room") {
       let id = notNull(readString(src, "id"))
-      return RoomQuery(id: id)
+      let requestBody = RoomQuery(id: id)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "RoomTiny") {
       let id = notNull(readString(src, "id"))
-      return RoomTinyQuery(id: id)
+      let requestBody = RoomTinyQuery(id: id)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "RoomSuper") {
       let id = notNull(readString(src, "id"))
-      return RoomSuperQuery(id: id)
+      let requestBody = RoomSuperQuery(id: id)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "GetDraftMessage") {
       let conversationId = notNull(readString(src, "conversationId"))
-      return GetDraftMessageQuery(conversationId: conversationId)
+      let requestBody = GetDraftMessageQuery(conversationId: conversationId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "GlobalCounter") {
-      return GlobalCounterQuery()
+      let requestBody = GlobalCounterQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "ChatHistory") {
       let chatId = notNull(readString(src, "chatId"))
       let before = readString(src, "before")
       let first = readInt(src, "first")
-      return ChatHistoryQuery(chatId: chatId, before: before, first: first)
+      let requestBody = ChatHistoryQuery(chatId: chatId, before: before, first: first)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "ChatSearchGroup") {
-      let members = notNull(readList())
-      return ChatSearchGroupQuery(members: members)
+      let members = notNull(notNullListItems(readStringList(src, "members")))
+      let requestBody = ChatSearchGroupQuery(members: members)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "RoomSearchText") {
       let query = notNull(readString(src, "query"))
-      return RoomSearchTextQuery(query: query)
+      let requestBody = RoomSearchTextQuery(query: query)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "RoomSearch") {
       let query = readString(src, "query")
       let sort = readString(src, "sort")
       let page = readInt(src, "page")
-      return RoomSearchQuery(query: query, sort: sort, page: page)
+      let requestBody = RoomSearchQuery(query: query, sort: sort, page: page)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "RoomMembersShort") {
       let roomId = notNull(readString(src, "roomId"))
-      return RoomMembersShortQuery(roomId: roomId)
+      let requestBody = RoomMembersShortQuery(roomId: roomId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "RoomMembers") {
       let roomId = notNull(readString(src, "roomId"))
-      return RoomMembersQuery(roomId: roomId)
+      let requestBody = RoomMembersQuery(roomId: roomId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "RoomInviteLink") {
       let roomId = notNull(readString(src, "roomId"))
-      return RoomInviteLinkQuery(roomId: roomId)
+      let requestBody = RoomInviteLinkQuery(roomId: roomId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "RoomInviteInfo") {
       let invite = notNull(readString(src, "invite"))
-      return RoomInviteInfoQuery(invite: invite)
+      let requestBody = RoomInviteInfoQuery(invite: invite)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "Conference") {
       let id = notNull(readString(src, "id"))
-      return ConferenceQuery(id: id)
+      let requestBody = ConferenceQuery(id: id)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "ConferenceMedia") {
       let id = notNull(readString(src, "id"))
       let peerId = notNull(readString(src, "peerId"))
-      return ConferenceMediaQuery(id: id, peerId: peerId)
+      let requestBody = ConferenceMediaQuery(id: id, peerId: peerId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "AvailableRooms") {
-      return AvailableRoomsQuery()
+      let requestBody = AvailableRoomsQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "GlobalSearch") {
       let query = notNull(readString(src, "query"))
-      return GlobalSearchQuery(query: query)
+      let requestBody = GlobalSearchQuery(query: query)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "FeatureFlags") {
-      return FeatureFlagsQuery()
+      let requestBody = FeatureFlagsQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "FeedHome") {
-      return FeedHomeQuery()
+      let requestBody = FeedHomeQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "MyOrganizations") {
-      return MyOrganizationsQuery()
+      let requestBody = MyOrganizationsQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "Organization") {
       let organizationId = notNull(readString(src, "organizationId"))
-      return OrganizationQuery(organizationId: organizationId)
+      let requestBody = OrganizationQuery(organizationId: organizationId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "OrganizationMembersShort") {
       let organizationId = notNull(readString(src, "organizationId"))
-      return OrganizationMembersShortQuery(organizationId: organizationId)
+      let requestBody = OrganizationMembersShortQuery(organizationId: organizationId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "OrganizationProfile") {
       let organizationId = notNull(readString(src, "organizationId"))
-      return OrganizationProfileQuery(organizationId: organizationId)
+      let requestBody = OrganizationProfileQuery(organizationId: organizationId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "ExploreOrganizations") {
       let query = readString(src, "query")
@@ -136,64 +272,124 @@ class ApiFactory: ApiFactoryBase {
       let page = readInt(src, "page")
       let after = readString(src, "after")
       let all = readBool(src, "all")
-      return ExploreOrganizationsQuery(query: query, prefix: prefix, sort: sort, page: page, after: after, all: all)
+      let requestBody = ExploreOrganizationsQuery(query: query, prefix: prefix, sort: sort, page: page, after: after, all: all)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "ExploreComunity") {
       let query = readString(src, "query")
       let sort = readString(src, "sort")
       let page = readInt(src, "page")
-      return ExploreComunityQuery(query: query, sort: sort, page: page)
+      let requestBody = ExploreComunityQuery(query: query, sort: sort, page: page)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "OrganizationPublicInvite") {
       let organizationId = readString(src, "organizationId")
-      return OrganizationPublicInviteQuery(organizationId: organizationId)
+      let requestBody = OrganizationPublicInviteQuery(organizationId: organizationId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "OrganizationByPrefix") {
       let query = notNull(readString(src, "query"))
-      return OrganizationByPrefixQuery(query: query)
+      let requestBody = OrganizationByPrefixQuery(query: query)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "Permissions") {
-      return PermissionsQuery()
+      let requestBody = PermissionsQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "SuperAdmins") {
-      return SuperAdminsQuery()
+      let requestBody = SuperAdminsQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "SuperAccounts") {
-      return SuperAccountsQuery()
+      let requestBody = SuperAccountsQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "SuperAccount") {
       let accountId = notNull(readString(src, "accountId"))
       let viaOrgId = readBool(src, "viaOrgId")
-      return SuperAccountQuery(accountId: accountId, viaOrgId: viaOrgId)
+      let requestBody = SuperAccountQuery(accountId: accountId, viaOrgId: viaOrgId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "Profile") {
-      return ProfileQuery()
+      let requestBody = ProfileQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "Settings") {
-      return SettingsQuery()
+      let requestBody = SettingsQuery()
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "Users") {
       let query = notNull(readString(src, "query"))
-      return UsersQuery(query: query)
+      let requestBody = UsersQuery(query: query)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "User") {
       let userId = notNull(readString(src, "userId"))
-      return UserQuery(userId: userId)
+      let requestBody = UserQuery(userId: userId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "Online") {
       let userId = notNull(readString(src, "userId"))
-      return OnlineQuery(userId: userId)
+      let requestBody = OnlineQuery(userId: userId)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "ExplorePeople") {
       let query = readString(src, "query")
       let sort = readString(src, "sort")
       let page = readInt(src, "page")
       let after = readString(src, "after")
-      return ExplorePeopleQuery(query: query, sort: sort, page: page, after: after)
+      let requestBody = ExplorePeopleQuery(query: query, sort: sort, page: page, after: after)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     if (name == "ResolveShortName") {
       let shortname = notNull(readString(src, "shortname"))
-      return ResolveShortNameQuery(shortname: shortname)
+      let requestBody = ResolveShortNameQuery(shortname: shortname)
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+          handler(r!.data!.resultMap, nil)
+      }
+      return
     }
     fatalError()
   }
