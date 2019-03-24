@@ -11,12 +11,22 @@ import Apollo
 
 class RNGraphqlClient {
   
+  let key: String
+  let module: RNGraphQL
   let client: ApolloClient
   let factory = ApiFactory()
   
-  init(endpoint: String, token: String?) {
-    let wsTransport = WebSocketTransport(request: URLRequest(url: URL(string: "wss:"+endpoint)!))
-    let httpTransport =  HTTPNetworkTransport(url:URL(string: "https:"+endpoint)!)
+  init(key: String, endpoint: String, token: String?, module: RNGraphQL) {
+    self.module = module
+    self.key = key
+    let configuration = URLSessionConfiguration.default
+    if token != nil {
+      configuration.httpAdditionalHeaders = ["x-openland-token": token]
+    }
+    let wsTransport = WebSocketTransport(
+      request: URLRequest(url: URL(string: "wss:"+endpoint)!),
+      connectingPayload:["x-openland-token": token])
+    let httpTransport =  HTTPNetworkTransport(url:URL(string: "https:"+endpoint)!, configuration: configuration)
     let transport = SplitNetworkTransport(httpNetworkTransport: httpTransport, webSocketNetworkTransport: wsTransport)
     self.client = ApolloClient(networkTransport: transport)
   }
@@ -26,8 +36,8 @@ class RNGraphqlClient {
       if err != nil {
         // Handle error
       } else {
-        let res = res!
         // Handle result
+        self.module.reportResult(key: self.key, id: id, result: res! as NSDictionary)
       }
     }
   }

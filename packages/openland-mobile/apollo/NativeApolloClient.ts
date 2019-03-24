@@ -1,6 +1,6 @@
 import { BridgedClient } from 'openland-graphql/bridge/BridgedClient';
 import { OperationParameters } from 'openland-graphql/GraphqlClient';
-import { NativeModules, DeviceEventEmitter } from 'react-native';
+import { NativeModules, DeviceEventEmitter, NativeEventEmitter, Platform } from 'react-native';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 
 const NativeGraphQL = NativeModules.RNGraphQL as {
@@ -13,13 +13,15 @@ const NativeGraphQL = NativeModules.RNGraphQL as {
 
     mutate: (key: string, id: string, query: string, vars: any) => void;
 
-    subscribe: (key: string, id: string, query: string, vars?: any) => void;
-    subscribeUpdate: (key: string, id: string, vars?: any) => void;
+    subscribe: (key: string, id: string, query: string, vars: any) => void;
+    subscribeUpdate: (key: string, id: string, vars: any) => void;
     unsubscribe: (key: string, id: string) => void;
 
-    read: (key: string, id: string, query: string, vars?: any) => void;
-    write: (key: string, id: string, data: any, query: string, vars?: any) => void;
+    read: (key: string, id: string, query: string, vars: any) => void;
+    write: (key: string, id: string, data: any, query: string, vars: any) => void;
 }
+
+const RNGraphQLEmitter = new NativeEventEmitter(NativeModules.RNGraphQL);
 
 export class NativeApolloClient extends BridgedClient {
     private key: string = randomKey();
@@ -28,17 +30,32 @@ export class NativeApolloClient extends BridgedClient {
         super();
         NativeGraphQL.createClient(this.key, '//api.openland.com/api', token);
 
-        DeviceEventEmitter.addListener('apollo_client', (src) => {
-            if (src.key === this.key) {
-                if (src.type === 'failure') {
-                    // console.log(src);
-                    this.operationFailed(src.id, src.data);
-                } else if (src.type === 'response') {
-                    // console.log(src);
-                    this.operationUpdated(src.id, src.data);
+        if (Platform.OS === 'ios') {
+            RNGraphQLEmitter.addListener('apollo_client', (src) => {
+                // console.log(src);
+                if (src.key === this.key) {
+                    if (src.type === 'failure') {
+                        // console.log(src);
+                        this.operationFailed(src.id, src.data);
+                    } else if (src.type === 'response') {
+                        console.log(src);
+                        this.operationUpdated(src.id, src.data);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            DeviceEventEmitter.addListener('apollo_client', (src) => {
+                if (src.key === this.key) {
+                    if (src.type === 'failure') {
+                        // console.log(src);
+                        this.operationFailed(src.id, src.data);
+                    } else if (src.type === 'response') {
+                        // console.log(src);
+                        this.operationUpdated(src.id, src.data);
+                    }
+                }
+            });
+        }
     }
 
     protected postQuery(id: string, query: any, vars: any, params?: OperationParameters) {
