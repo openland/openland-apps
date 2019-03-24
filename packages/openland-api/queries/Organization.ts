@@ -3,6 +3,7 @@ import { OrganizationFull } from '../fragments/OrganizationFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
 import { OrganizationSearch } from '../fragments/OrganizationSearch';
+import { UserShort } from 'openland-api/fragments/UserShort';
 
 export const MyOrganizationsQuery = gql`
     query MyOrganizations {
@@ -37,6 +38,7 @@ export const OrganizationQuery = gql`
         }
     }
     ${OrganizationFull}
+    ${UserShort}
 `;
 
 export const OrganizationMembersShortQuery = gql`

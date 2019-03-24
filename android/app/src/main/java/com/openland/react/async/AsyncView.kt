@@ -14,7 +14,7 @@ class AsyncView(context: ReactContext) : FrameLayout(context) {
     private val asyncContext = ComponentContext(context)
     private val lithoView = LithoView(context)
     private var spec: AsyncViewSpec? = null
-    private var inited = false
+    private var prevSpec: AsyncViewSpec? = null
 
     init {
         this.addView(this.lithoView,
@@ -27,9 +27,7 @@ class AsyncView(context: ReactContext) : FrameLayout(context) {
     fun setConfigKey(src: String) {
         specViews[src] = this
         this.spec = specs[src]
-        if (inited) {
-            this.lithoView.setComponentAsync(resolveNode(this.asyncContext, this.spec!!, context as ReactContext))
-        }
+        setComponentIfReady()
 //        if (specs.containsKey(src)) {
 //            this.setConfig(specs[src]!!)
 //        }
@@ -37,18 +35,18 @@ class AsyncView(context: ReactContext) : FrameLayout(context) {
 
     fun setConfig(config: AsyncViewSpec) {
         this.spec = config
-        if (this.inited) {
-            this.lithoView.setComponentAsync(resolveNode(this.asyncContext, config, context as ReactContext))
-        }
+        setComponentIfReady()
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        if (!this.inited) {
-            this.inited = true
-            if (this.spec != null) {
-                this.lithoView.setComponentAsync(resolveNode(this.asyncContext, this.spec!!, context as ReactContext))
-            }
+        setComponentIfReady()
+    }
+
+    private fun setComponentIfReady(){
+        if (this.spec != null && this.spec != this.prevSpec) {
+            this.prevSpec = this.spec
+            this.lithoView.setComponentAsync(resolveNode(this.asyncContext, this.spec!!, context as ReactContext))
         }
     }
 }

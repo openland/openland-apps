@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { withSuperAdmins } from '../../api/withSuperAdmins';
 import { UserSelect } from '../../api/UserSelect';
 import { withSuperAdminAdd } from '../../api/withSuperAdminAdd';
 import { withSuperAdminRemove } from '../../api/withSuperAdminRemove';
@@ -11,7 +10,7 @@ import { XForm } from 'openland-x-forms/XForm';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
-import { withQueryLoader } from '../../components/withQueryLoader';
+import { useClient } from 'openland-web/utils/useClient';
 
 const AddSuperAdminForm = withSuperAdminAdd(props => {
     return (
@@ -59,40 +58,36 @@ const RemoveSuperAdminForm = withSuperAdminRemove(props => {
     );
 });
 
-export default withApp(
-    'Super Admins',
-    'super-admin',
-    withSuperAdmins(
-        withQueryLoader(props => {
-            return (
-                <DevToolsScaffold title="Super Admins">
-                    <XHeader
-                        text="Super Admins"
-                        description={props.data.superAdmins.length + ' total'}
-                    >
-                        <AddSuperAdminForm />
-                        <RemoveSuperAdminForm />
-                    </XHeader>
-                    <XTable>
-                        <XTable.Header>
-                            <XTable.Cell width={100}>First Name</XTable.Cell>
-                            <XTable.Cell width={100}>Last Name</XTable.Cell>
-                            <XTable.Cell>Email</XTable.Cell>
-                            <XTable.Cell>Role</XTable.Cell>
-                        </XTable.Header>
-                        <XTable.Body>
-                            {props.data.superAdmins.map(v => (
-                                <XTable.Row key={v.user.id}>
-                                    <XTable.Cell width={100}>{v.user.firstName}</XTable.Cell>
-                                    <XTable.Cell width={100}>{v.user.lastName}</XTable.Cell>
-                                    <XTable.Cell>{v.email}</XTable.Cell>
-                                    <XTable.Cell>{v.role}</XTable.Cell>
-                                </XTable.Row>
-                            ))}
-                        </XTable.Body>
-                    </XTable>
-                </DevToolsScaffold>
-            );
-        }),
-    ),
-);
+export default withApp('Super Admins', 'super-admin', () => {
+    const client = useClient();
+    const superAdmins = client.useSuperAdmins().superAdmins;
+    return (
+        <DevToolsScaffold title="Super Admins">
+            <XHeader
+                text="Super Admins"
+                description={superAdmins.length + ' total'}
+            >
+                <AddSuperAdminForm />
+                <RemoveSuperAdminForm />
+            </XHeader>
+            <XTable>
+                <XTable.Header>
+                    <XTable.Cell width={100}>First Name</XTable.Cell>
+                    <XTable.Cell width={100}>Last Name</XTable.Cell>
+                    <XTable.Cell>Email</XTable.Cell>
+                    <XTable.Cell>Role</XTable.Cell>
+                </XTable.Header>
+                <XTable.Body>
+                    {superAdmins.map(v => (
+                        <XTable.Row key={v.user.id}>
+                            <XTable.Cell width={100}>{v.user.firstName}</XTable.Cell>
+                            <XTable.Cell width={100}>{v.user.lastName}</XTable.Cell>
+                            <XTable.Cell>{v.email}</XTable.Cell>
+                            <XTable.Cell>{v.role}</XTable.Cell>
+                        </XTable.Row>
+                    ))}
+                </XTable.Body>
+            </XTable>
+        </DevToolsScaffold>
+    );
+});

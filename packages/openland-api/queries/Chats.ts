@@ -617,10 +617,6 @@ export const RoomInviteInfoQuery = gql`
                     }
                     membership
                     membersCount
-                    members {
-                        role
-                        membership
-                    }
                 }
             }
             invitedByUser {

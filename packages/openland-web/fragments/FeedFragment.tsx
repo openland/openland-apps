@@ -4,18 +4,20 @@ import { XTitle } from 'openland-x/XTitle';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { withCreatePost } from 'openland-web/api/withFeed';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { FeedListComponent } from './feed/FeedListComponent';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { useClient } from 'openland-web/utils/useClient';
 
-const NewPostModal = withCreatePost(props => {
+const NewPostModal = () => {
+    const client = useClient();
     return (
         <XModalForm
             title="Create post"
-            defaultAction={src => {
-                return props.post({ variables: { message: src.message } });
+            defaultAction={async src => {
+                await client.mutateFeedPost({ message: src.message });
+                await client.refetchFeedHome();
             }}
             targetQuery="new"
         >
@@ -29,7 +31,7 @@ const NewPostModal = withCreatePost(props => {
             </XFormField>
         </XModalForm>
     );
-});
+};
 
 export const FeedFragment = XMemo(() => {
     return (

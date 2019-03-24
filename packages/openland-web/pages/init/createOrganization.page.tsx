@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withApp } from '../../components/withApp';
 import { withCreateOrganization } from '../../api/withCreateOrganization';
-import { withRouter } from 'next/router';
 import { withUserInfo } from '../../components/UserInfo';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
@@ -16,6 +15,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { withExploreOrganizations } from '../../api/withExploreOrganizations';
 import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
     const children = props.children as Function;
@@ -27,12 +27,12 @@ const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
                     !props.data || !props.data.items
                         ? []
                         : props.data.items.edges
-                              .filter(({ node }: any) => {
-                                  return node.status === 'activated';
-                              })
-                              .map(({ node: { id, name } }: any) => {
-                                  return { value: id, label: name };
-                              }),
+                            .filter(({ node }: any) => {
+                                return node.status === 'activated';
+                            })
+                            .map(({ node: { id, name } }: any) => {
+                                return { value: id, label: name };
+                            }),
                 loading: false,
             })}
         </>
@@ -50,7 +50,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
     {
         lastLoadedOrganizations: any;
     }
-> {
+    > {
     componentWillReceiveProps(nextProps: any) {
         this.setState({
             lastLoadedOrganizations: nextProps.organizations,
@@ -89,7 +89,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
 class CreateOrganizationPrefixHolderRoot extends React.Component<
     any,
     { organizationPrefix: string; lastLoadedOrganizations: any[] }
-> {
+    > {
     constructor(props: any) {
         super(props);
         this.state = {

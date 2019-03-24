@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView, XImage } from 'react-mental';
-import { MutationFunc } from 'react-apollo';
 import { withApp } from 'openland-web/components/withApp';
-import { withSettings } from 'openland-web/api/withSettings';
-import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
@@ -15,8 +12,6 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import {
     NotificationMessages,
     Settings_settings,
-    SettingsUpdate,
-    SettingsUpdateVariables,
 } from 'openland-api/Types';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
@@ -34,6 +29,8 @@ import {
     GroupTitle,
     GroupText,
 } from './components/SettingComponents';
+import { useClient } from 'openland-web/utils/useClient';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 const Instruction = (props: { children?: any }) => (
     <XView paddingTop={4} paddingBottom={40}>
@@ -65,7 +62,7 @@ const InstructionItem = css`
 class BrowserNotifications extends React.Component<
     {},
     { notificationsState: AppNotifcationsState }
-> {
+    > {
     constructor(props: {}) {
         super(props);
 
@@ -236,7 +233,7 @@ const MobileApps = () => (
 
 interface NotificationsSettingsPageProps {
     settings: Settings_settings;
-    update: MutationFunc<SettingsUpdate, Partial<SettingsUpdateVariables>>;
+    client: OpenlandClient;
 }
 
 interface NotificationsSettingsPageState {
@@ -247,7 +244,7 @@ interface NotificationsSettingsPageState {
 class NotificationsSettingsPageInner extends React.Component<
     NotificationsSettingsPageProps,
     NotificationsSettingsPageState
-> {
+    > {
     constructor(props: NotificationsSettingsPageProps) {
         super(props);
 
@@ -300,12 +297,10 @@ class NotificationsSettingsPageInner extends React.Component<
                                 },
                             }}
                             defaultAction={async data => {
-                                await this.props.update({
-                                    variables: {
-                                        input: {
-                                            desktopNotifications: data.input.notifications,
-                                            mobileNotifications: data.input.notifications,
-                                        },
+                                await this.props.client.mutateSettingsUpdate({
+                                    input: {
+                                        desktopNotifications: data.input.notifications,
+                                        mobileNotifications: data.input.notifications,
                                     },
                                 });
                             }}
@@ -359,11 +354,9 @@ class NotificationsSettingsPageInner extends React.Component<
                                 },
                             }}
                             defaultAction={async data => {
-                                await this.props.update({
-                                    variables: {
-                                        input: {
-                                            emailFrequency: data.input.emailFrequency,
-                                        },
+                                await this.props.client.mutateSettingsUpdate({
+                                    input: {
+                                        emailFrequency: data.input.emailFrequency,
                                     },
                                 });
                             }}
@@ -429,12 +422,18 @@ class NotificationsSettingsPageInner extends React.Component<
     }
 }
 
-export default withApp(
-    'Notifications',
-    'viewer',
-    withSettings(
-        withQueryLoader(props => (
-            <NotificationsSettingsPageInner settings={props.data.settings} update={props.update} />
-        )),
-    ),
+export default withApp('Notifications', 'viewer', () => {
+    if (!canUseDOM) {
+        return null;
+    }
+    const client = useClient();
+    const settings = client.useSettings();
+    return <NotificationsSettingsPageInner settings={settings.settings} client={client} />
+}
+
+    // withSettings(
+    //     withQueryLoader(props => (
+    //         <NotificationsSettingsPageInner settings={props.data.settings} update={props.update} />
+    //     )),
+    // ),
 );

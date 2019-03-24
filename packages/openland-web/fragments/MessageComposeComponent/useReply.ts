@@ -8,6 +8,7 @@ import {
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { QuoteStateT } from './useQuote';
 import { MentionsStateT } from './useMentions';
+import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 
 export type useReplyPropsT = {
     replyMessage?: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
@@ -47,7 +48,7 @@ export function useReply({
 
     const replyMessagesProc = () => {
         if (finalQuoteMessagesId.length > 0) {
-            let mentions = null;
+            let mentions: MentionDataT[] = [];
             // TODO simplify here
             if (supportMentions() && mentionsState!!.getMentions) {
                 mentions = mentionsState!!.getMentions();
@@ -63,7 +64,7 @@ export function useReply({
                 variables: {
                     roomId: conversationId,
                     message: inputValue,
-                    mentions: [],
+                    mentions: mentions.map(m => m.id),
                     replyMessages: finalQuoteMessagesId,
                 },
             });

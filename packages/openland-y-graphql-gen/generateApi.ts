@@ -10,7 +10,7 @@ export function generateApi() {
     let output = '';
     output += 'import * as Source from \'./index\';\n';
     output += 'import * as Types from \'./Types\'\n';
-    output += 'import { GraphqlClient, GraphqlActiveSubscription } from \'openland-graphql/GraphqlClient\'\n';
+    output += 'import { GraphqlClient, GraphqlActiveSubscription, OperationParameters } from \'openland-graphql/GraphqlClient\'\n';
     output += 'import { BaseApiClient } from \'openland-graphql/BaseApiClient\'\n';
     output += 'export class OpenlandClient extends BaseApiClient {\n';
     output += '    constructor(client: GraphqlClient) {\n';
@@ -26,8 +26,8 @@ export function generateApi() {
                 }
 
                 if (op.hasVariables) {
-                    output += '    async query' + name + '(variables: Types.' + name + 'Variables): Promise<Types.' + name + '> {\n';
-                    output += '        return this.client.query(Source.' + op.name + ', variables);\n';
+                    output += '    async query' + name + '(variables: Types.' + name + 'Variables, opts?: OperationParameters): Promise<Types.' + name + '> {\n';
+                    output += '        return this.client.query(Source.' + op.name + ', variables, opts);\n';
                     output += '    }\n';
                     output += '    async refetch' + name + '(variables: Types.' + name + 'Variables): Promise<Types.' + name + '> {\n';
                     output += '        return this.refetch(Source.' + op.name + ', variables);\n';
@@ -39,8 +39,8 @@ export function generateApi() {
                     output += '        return this.useQuery(Source.' + op.name + ', variables);\n';
                     output += '    }\n';
                 } else {
-                    output += '    async query' + name + '(): Promise<Types.' + name + '> {\n';
-                    output += '        return this.client.query(Source.' + op.name + ');\n';
+                    output += '    async query' + name + '(opts?: OperationParameters): Promise<Types.' + name + '> {\n';
+                    output += '        return this.client.query(Source.' + op.name + ', undefined, opts);\n';
                     output += '    }\n';
                     output += '    async refetch' + name + '(): Promise<Types.' + name + '> {\n';
                     output += '        return this.refetch(Source.' + op.name + ');\n';

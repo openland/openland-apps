@@ -8,7 +8,6 @@ import { XModal } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
 import Lorem from 'react-lorem-component';
 
-import { BrowseChannelsModal } from '../../main/channel/components/browseChannelsModal';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
 
@@ -35,11 +34,6 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
             <XContent>
                 <XVertical>
                     <XTitle>for rooms</XTitle>
-                    <BrowseChannelsModal
-                        title="Browse rooms"
-                        target={<XButton text="Browse rooms" />}
-                    />
-
                     <XTitle>Modals</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={2} />

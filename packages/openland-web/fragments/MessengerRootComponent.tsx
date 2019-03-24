@@ -24,14 +24,15 @@ import {
     Room_room_PrivateRoom,
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
-import { withDeleteMessage } from '../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../api/withDeleteUrlAugmentation';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './post/CreatePostComponent';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { UploadContextProvider } from './MessageComposeComponent/FileUploading/UploadContext';
 import { PinMessageComponent } from 'openland-web/fragments/chat/PinMessage';
+import { withRouter } from 'openland-x-routing/withRouter';
+import { useClient } from 'openland-web/utils/useClient';
+import { useXRouter } from 'openland-x-routing/useXRouter';
 
 export interface File {
     uuid: string;
@@ -74,22 +75,24 @@ interface MessagesComponentState {
     messageListScrollPosition: number;
 }
 
-const DeleteMessageComponent = withDeleteMessage(props => {
-    let id = props.router.query.deleteMessage;
+const DeleteMessageComponent = () => {
+    const router = useXRouter();
+    const client = useClient();
+    let id = router.routeQuery.deleteMessage;
     return (
         <XModalForm
             title="Delete message"
             targetQuery="deleteMessage"
             submitBtnText="Delete"
-            defaultAction={data => {
-                props.deleteMessage({ variables: { messageId: id } });
+            defaultAction={async data => {
+                await client.mutateRoomDeleteMessage({ messageId: id });
             }}
             submitProps={{ successText: 'Deleted!', style: 'danger' }}
         >
             <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
         </XModalForm>
     );
-});
+};
 
 const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation(props => {
     let id = props.router.query.deleteUrlAugmentation;
@@ -108,15 +111,16 @@ const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation(props => {
     );
 });
 
-export const LeaveChatComponent = withChatLeave(props => {
+export const LeaveChatComponent = withRouter((props) => {
+    let client = useClient();
     let id = props.router.query.leaveFromChat;
     return (
         <XModalForm
             title="Leave the chat"
             targetQuery="leaveFromChat"
             submitBtnText="Leave"
-            defaultAction={data => {
-                props.leaveFromChat({ variables: { roomId: id } });
+            defaultAction={async data => {
+                await client.mutateRoomLeave({ roomId: id });
             }}
             submitProps={{ successText: 'Done!', style: 'danger' }}
         >

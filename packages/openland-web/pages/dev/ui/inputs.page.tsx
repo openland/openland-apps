@@ -397,11 +397,13 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                         <XVertical flexGrow={1}>
                             <XTextArea
                                 mode="modern"
+                                title="title"
                                 resize={false}
                                 rounded={true}
                                 placeholder="modern "
                             />
                             <XTextArea
+                                title="title"
                                 mode="modern"
                                 resize={false}
                                 rounded={true}
@@ -409,10 +411,39 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 disabled={true}
                             />
                             <XTextArea
+                                title="title"
                                 mode="modern"
                                 resize={false}
                                 rounded={true}
                                 value="invalid"
+                                invalid={true}
+                            />
+                        </XVertical>
+                        <XVertical flexGrow={1}>
+                            <XTextArea
+                                size="large"
+                                mode="modern"
+                                title="title"
+                                resize={false}
+                                rounded={true}
+                                placeholder="modern large"
+                            />
+                            <XTextArea
+                                size="large"
+                                title="title"
+                                mode="modern"
+                                resize={false}
+                                rounded={true}
+                                value="disabled large"
+                                disabled={true}
+                            />
+                            <XTextArea
+                                size="large"
+                                title="title"
+                                mode="modern"
+                                resize={false}
+                                rounded={true}
+                                value="invalid large"
                                 invalid={true}
                             />
                         </XVertical>

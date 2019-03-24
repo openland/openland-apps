@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { withAlterChat } from 'openland-web/api/withAlterChat';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { withRouter } from 'next/router';
-import { XWithRouter } from 'openland-x-routing/withRouter';
+import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
@@ -17,7 +15,7 @@ import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
-import { RemoveMemberModal } from '../../channel/components/membersComponent';
+import { RemoveMemberModal } from '../../../../fragments/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     HeaderAvatar,
@@ -53,9 +51,10 @@ import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
 import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
-import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
+import { InviteMembersModal } from 'openland-web/fragments/inviteMembersModal';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
+import { useClient } from 'openland-web/utils/useClient';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -166,7 +165,9 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                 canChangeAdvancedSettingsMembersUsers={
                                     canChangeAdvancedSettingsMembersUsers
                                 }
-                                welcomeMessage={chat.welcomeMessage!!}
+                                welcomeMessageText={chat.welcomeMessage!!.message}
+                                welcomeMessageSender={chat.welcomeMessage!!.sender}
+                                welcomeMessageIsOn={chat.welcomeMessage!!.isOn}
                             />
                             <RoomEditModal
                                 roomId={chat.id}
@@ -183,7 +184,12 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     );
 };
 
-const AboutPlaceholder = withAlterChat(props => {
+const AboutPlaceholder = (props: {
+    target: any;
+    description: string | null;
+    roomId: string;
+}) => {
+    let client = useClient();
     let editDescription = (props as any).description;
     return (
         <XModalForm
@@ -191,17 +197,15 @@ const AboutPlaceholder = withAlterChat(props => {
             target={(props as any).target}
             useTopCloser={true}
             title="Add short description"
-            defaultAction={data => {
+            defaultAction={async data => {
                 let newDescription = data.input.description;
 
-                props.alter({
-                    variables: {
-                        roomId: (props as any).roomId,
-                        input: {
-                            ...(newDescription !== editDescription
-                                ? { description: newDescription }
-                                : {}),
-                        },
+                await client.mutateRoomUpdate({
+                    roomId: (props as any).roomId,
+                    input: {
+                        ...(newDescription !== editDescription
+                            ? { description: newDescription }
+                            : {}),
                     },
                 });
             }}
@@ -224,11 +228,7 @@ const AboutPlaceholder = withAlterChat(props => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{
-    target: any;
-    description: string | null;
-    roomId: string;
-}>;
+};
 
 const About = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
@@ -443,8 +443,8 @@ const RoomGroupProfileProvider = withRoom(
                 conversationId={(props as any).conversationId}
             />
         ) : (
-            <XLoader loading={true} />
-        );
+                <XLoader loading={true} />
+            );
     }),
 ) as React.ComponentType<{
     variables: { id: string };

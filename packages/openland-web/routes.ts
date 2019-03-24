@@ -65,19 +65,12 @@ routes.add('/settings/notifications', '/main/settings/notifications');
 routes.add('/settings/notifications/', '/main/settings/notifications');
 routes.add('/settings/appearance', '/main/settings/appearance');
 routes.add('/settings/appearance/', '/main/settings/appearance');
-routes.add('/settings/invites', '/main/settings/globalInvites');
-routes.add('/settings/invites/', '/main/settings/globalInvites/');
 routes.add('/settings/apps', '/main/settings/apps');
 routes.add('/settings/apps/', '/main/settings/apps');
 routes.add('/settings/dev', '/main/settings/developer');
 routes.add('/settings/dev/', '/main/settings/developer');
 routes.add('/settings/organization/:organizationId', '/main/settings/organization');
 routes.add('/settings/organization/:organizationId/', '/main/settings/organization');
-
-//
-// Onboarding
-//
-routes.add('/new/invite', '/main/onboarding/invite');
 
 //
 // Feed

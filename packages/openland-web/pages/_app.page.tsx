@@ -19,7 +19,6 @@ import * as Sentry from '@sentry/browser';
 import { loadConfig } from 'openland-x-config';
 import { buildConfig } from '../config';
 import { withData } from './root/withData';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { RootErrorBoundary } from './root/RootErrorBoundary';
 import moment from 'moment-timezone';
@@ -30,10 +29,13 @@ import { XRouterProvider } from 'openland-x-routing/XRouterProvider';
 import { Routes } from '../routes';
 import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
+import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
 
 export default withData(
     class MyApp extends App<{
-        apollo: OpenApolloClient;
+        apollo: OpenlandClient;
         storage: SharedStorage;
         host: string;
         protocol: string;
@@ -43,7 +45,7 @@ export default withData(
 
         constructor(
             props: {
-                apollo: OpenApolloClient;
+                apollo: OpenlandClient;
                 storage: SharedStorage;
                 host: string;
                 protocol: string;
@@ -96,12 +98,14 @@ export default withData(
                                 hostName={this.props.host}
                                 protocol={this.props.protocol}
                             >
-                                <YApolloProvider client={this.props.apollo}>
-                                    <RootErrorBoundary>
-                                        <AppContainer>
-                                            <Component {...pageProps} />
-                                        </AppContainer>
-                                    </RootErrorBoundary>
+                                <YApolloProvider client={(this.props.apollo.client as DirectApollolClient).client}>
+                                    <OpenlandApiContext.Provider value={this.props.apollo}>
+                                        <RootErrorBoundary>
+                                            <AppContainer>
+                                                <Component {...pageProps} />
+                                            </AppContainer>
+                                        </RootErrorBoundary>
+                                    </OpenlandApiContext.Provider>
                                 </YApolloProvider>
                             </XRouterProvider>
                         </XStorageProvider>

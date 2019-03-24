@@ -32,6 +32,8 @@ const styles = StyleSheet.create({
         lineHeight: 28,
         color: '#000000',
         marginTop: 20,
+        textAlign: 'center',
+        fontWeight: TextStyles.weight.medium,
     } as TextStyle,
 
     members: {
@@ -59,6 +61,8 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
+const MIN_MEMBERS_COUNT_TO_SHOW = 10;
+
 const GroupInviteContent = XMemo<PageProps>((props) => {
     let invite: RoomInviteInfo_invite = props.router.params.invite;
     let inviteId = props.router.params.inviteId;
@@ -66,24 +70,26 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
     let user = invite.invitedByUser;
     let screenHeight = Dimensions.get('screen').height;
 
+    let showMembersCount = room.membersCount ? room.membersCount >= MIN_MEMBERS_COUNT_TO_SHOW : false;
+
     return (
         <ASSafeAreaView flexGrow={1}>
             <View paddingHorizontal={32} flexGrow={1}>
                 <View paddingTop={20}>
                     <Text style={styles.label}>
-                        <Text style={styles.userName}>{user.name}</Text> invites you to join chat group
+                        <Text style={styles.userName}>{user.name}</Text> invites you to join chat
                     </Text>
                 </View>
                 <View paddingTop={screenHeight <= 640 ? 60 : 100} alignItems="center" flexDirection="column">
                     <ZAvatar size={86} src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
                     <Text style={styles.title}>{room.title}</Text>
 
-                    {!!room.membersCount && room.membersCount >= 100 && (
-                        <View flexDirection="row">
-                            <Image source={require('assets/ic-members-16.png')} style={styles.membersIcon} />
-                            <Text style={styles.members}>{room.membersCount} members</Text>
-                        </View>
-                    )}
+                    <View flexDirection="row">
+                        {showMembersCount && (<Image source={require('assets/ic-members-16.png')} style={styles.membersIcon} />)}
+                        <Text style={styles.members}>
+                            {showMembersCount ? (room.membersCount + ' members') : 'New group'}
+                        </Text>
+                    </View>
 
                     {typeof room.description === 'string' && (
                         <Text style={styles.description}>{room.description}</Text>

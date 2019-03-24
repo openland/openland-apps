@@ -69,9 +69,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
 
     let topContnet = [];
-    if (!props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument) {
-        topContnet.push(<ASText fontSize={13} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{props.message.senderName}</ASText>);
-    }
+
     if (hasReply) {
         topContnet.push(<ReplyContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
@@ -87,12 +85,16 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     let bottomContent: any[] = [];
     if (hasUrlAug) {
-        bottomContent.push(<RichAttachContent attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        bottomContent.push(<RichAttachContent padded={!topContnet.length} compensateBubble={compensateBubble} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
 
     if (!topContnet.length && bottomContent.length) {
         topContnet = bottomContent;
         bottomContent = [];
+    }
+
+    if (!props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument) {
+        topContnet.unshift(<ASText fontSize={13} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{props.message.senderName}</ASText>);
     }
 
     return {

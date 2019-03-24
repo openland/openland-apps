@@ -3,11 +3,12 @@ import { NextAppContext } from 'next/app';
 import { getToken } from 'openland-x-graphql/auth';
 import Head from 'next/head';
 import { apolloClient } from 'openland-x-graphql/apolloClient';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { getDataFromTree } from 'react-apollo';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 import { isPageChanged } from 'openland-x-routing/NextRouting';
+import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 export function withData(App: React.ComponentType<any>) {
     return class WithData extends React.Component<{ apolloState: any }> {
@@ -83,7 +84,7 @@ export function withData(App: React.ComponentType<any>) {
                 }
             }
 
-            const apolloState = apollo.client.cache.extract();
+            const apolloState = (apollo.client as DirectApollolClient).client.client.extract();
             return {
                 ...appProps,
                 apolloState,
@@ -95,7 +96,7 @@ export function withData(App: React.ComponentType<any>) {
             };
         }
 
-        private apollo: OpenApolloClient;
+        private apollo: OpenlandClient;
         constructor(props: any) {
             super(props);
             this.apollo = apolloClient(props.apolloState, props.token);

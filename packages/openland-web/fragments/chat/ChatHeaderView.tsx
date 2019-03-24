@@ -24,7 +24,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
+import { InviteMembersModal } from 'openland-web/fragments/inviteMembersModal';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 
@@ -156,7 +156,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
             });
         }
         if (usersCanPinMessage.find(i => i.id === myId) !== undefined) {
-            canMePinMessage = true
+            canMePinMessage = true;
         }
         return (
             <ChatForwardHeaderView
@@ -222,7 +222,9 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                     roomId={sharedRoom.id}
                     socialImage={sharedRoom.socialImage}
                     canChangeAdvancedSettingsMembersUsers={canChangeAdvancedSettingsMembersUsers}
-                    welcomeMessage={sharedRoom.welcomeMessage!!}
+                    welcomeMessageText={sharedRoom.welcomeMessage!!.message}
+                    welcomeMessageSender={sharedRoom.welcomeMessage!!.sender}
+                    welcomeMessageIsOn={sharedRoom.welcomeMessage!!.isOn}
                 />
                 <RoomEditModal
                     title={sharedRoom.title}
@@ -312,6 +314,31 @@ const ChatHeaderViewLoaderInner = withRoom(withUserInfo(
     state?: MessagesStateContextProps;
 }>;
 
+class ErrorBoundary extends React.Component<any, { error: any }> {
+    static getDerivedStateFromError(error: any) {
+        return { error };
+    }
+
+    constructor(props: any) {
+        super(props);
+        this.state = { error: null };
+    }
+
+    componentWillReceiveProps() {
+        this.setState({
+            error: null,
+        });
+    }
+
+    render() {
+        if (this.state.error) {
+            return null;
+        }
+
+        return this.props.children;
+    }
+}
+
 export const ChatHeaderViewLoader = (props: {
     variables: {
         id?: string | false | null;
@@ -324,10 +351,12 @@ export const ChatHeaderViewLoader = (props: {
         return <XLoader loading={true} />;
     }
     return (
-        <ChatHeaderViewLoaderInner
-            variables={{
-                id: props.variables.id,
-            }}
-        />
+        <ErrorBoundary>
+            <ChatHeaderViewLoaderInner
+                variables={{
+                    id: props.variables.id,
+                }}
+            />
+        </ErrorBoundary>
     );
 };

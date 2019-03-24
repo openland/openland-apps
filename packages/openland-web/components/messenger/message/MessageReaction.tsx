@@ -2,13 +2,11 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
-import { MutationFunc } from 'react-apollo';
-import { withSetReaction, withUnsetReaction } from '../../../api/withSetReaction';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
 import { emoji } from 'openland-y-utils/emoji';
-import { renderDevPortal } from 'openland-web/pages/dev/components/renderDevPortal';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { useClient } from 'openland-web/utils/useClient';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 10px',
@@ -99,72 +97,38 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 18 }) => {
         size,
     });
 };
-class ReactionPicker extends React.PureComponent<{ onRef: any; setReaction: any }> {
-    defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
-    state = {
-        show: false,
-    };
 
-    onClickOutside = () => {
-        this.setState({
-            show: false,
-        });
-    };
+const ReactionPicker = (props: { setReaction: (src: any) => void }) => {
+    const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
 
-    switch = () => {
-        this.setState({
-            show: !this.state.show,
-        });
-    };
-
-    handleSetReaction = (emj: any) => {
-        this.props.setReaction(emj);
-        this.setState({
-            show: false,
-        });
-    };
-
-    render() {
-        return (
-            <XHorizontal separator={6} alignItems="center">
-                {this.defaultReactions.map((src: string) => (
-                    <ReactionItem
-                        key={'msg_reaction' + src}
-                        onClick={e => {
-                            e.stopPropagation();
-                            this.handleSetReaction(src);
-                        }}
-                    >
-                        {emojifyReactions({
-                            src,
-                            size: 25,
-                        })}
-                    </ReactionItem>
-                ))}
-            </XHorizontal>
-        );
-    }
-}
+    return (
+        <XHorizontal separator={6} alignItems="center">
+            {defaultReactions.map((src: string) => (
+                <ReactionItem
+                    key={'msg_reaction' + src}
+                    onClick={e => {
+                        e.stopPropagation();
+                        props.setReaction(src);
+                    }}
+                >
+                    {emojifyReactions({
+                        src,
+                        size: 25,
+                    })}
+                </ReactionItem>
+            ))}
+        </XHorizontal>
+    );
+};
 
 class ReactionComponentInner extends React.PureComponent<{
     messageId: string;
     marginTop?: number;
     marginLeft?: number;
-    mutation: MutationFunc<{}>;
+    handler: (reaction: string) => void;
 }> {
-    inner = 0;
-
-    onInner = (ref: any) => {
-        this.inner += ref ? 1 : -1;
-    };
-
     handleSetReaction = (emj: any) => {
-        this.props.mutation({
-            variables: {
-                messageId: this.props.messageId,
-                reaction: typeof emj === 'string' ? emj : emj.native,
-            },
-        });
+        this.props.handler(typeof emj === 'string' ? emj : emj.native);
     };
 
     handleClick = () => {
@@ -174,9 +138,7 @@ class ReactionComponentInner extends React.PureComponent<{
     render() {
         return (
             <XPopper
-                content={
-                    <ReactionPicker onRef={this.onInner} setReaction={this.handleSetReaction} />
-                }
+                content={<ReactionPicker setReaction={this.handleSetReaction} />}
                 showOnHover
                 placement="top"
                 contentContainer={<CustomPickerDiv />}
@@ -201,17 +163,19 @@ type ReactionComponentT = {
     marginLeft?: number;
 };
 
-export const ReactionComponent = withSetReaction(props => {
-    const typedProps = props as typeof props & ReactionComponentT;
+export const ReactionComponent = (props: ReactionComponentT) => {
+    let client = useClient();
     return (
         <ReactionComponentInner
-            mutation={props.setReaction}
-            messageId={typedProps.messageId}
-            marginTop={typedProps.marginTop}
-            marginLeft={typedProps.marginLeft}
+            handler={it =>
+                client.mutateMessageSetReaction({ messageId: props.messageId, reaction: it })
+            }
+            messageId={props.messageId}
+            marginTop={props.marginTop}
+            marginLeft={props.marginLeft}
         />
     );
-}) as React.ComponentType<ReactionComponentT>;
+};
 
 const ReactionsWrapper = Glamorous.div({
     display: 'flex',
@@ -239,7 +203,7 @@ class SingleReaction extends React.PureComponent<{
     messageId: string;
     reaction: string;
     isMy: boolean;
-    mutation: MutationFunc<{}>;
+    handler: (reaction: string) => void;
     unset: boolean;
 }> {
     handleChangeReaction = (e: any) => {
@@ -260,19 +224,9 @@ class SingleReaction extends React.PureComponent<{
             } else if (reaction === 'ANGRY') {
                 r = '🤬';
             }
-            this.props.mutation({
-                variables: {
-                    messageId: messageId,
-                    reaction: r,
-                },
-            });
+            this.props.handler(r);
         } else {
-            this.props.mutation({
-                variables: {
-                    messageId: messageId,
-                    reaction: reaction,
-                },
-            });
+            this.props.handler(reaction);
         }
     };
     render() {
@@ -288,44 +242,61 @@ type SingleReactionSetT = {
     messageId: string;
     reaction: string;
     isMy: boolean;
+    children?: any;
 };
 
-const SingleReactionSet = withSetReaction(props => {
-    const typedProps = props as typeof props & SingleReactionSetT;
-    return null;
+const SingleReactionSetInner = (props: SingleReactionSetT) => {
+    let client = useClient();
     return (
         <SingleReaction
-            mutation={props.setReaction}
-            messageId={typedProps.messageId}
-            reaction={typedProps.reaction}
-            isMy={typedProps.isMy}
+            handler={it =>
+                client.mutateMessageSetReaction({ messageId: props.messageId, reaction: it })
+            }
+            messageId={props.messageId}
+            reaction={props.reaction}
+            isMy={props.isMy}
             unset={false}
         >
-            {typedProps.children}
+            {props.children}
         </SingleReaction>
     );
-}) as React.ComponentType<SingleReactionSetT>;
+};
+
+class SingleReactionSet extends React.PureComponent<SingleReactionUnsetT> {
+    render() {
+        return <SingleReactionSetInner {...this.props} />;
+    }
+}
 
 type SingleReactionUnsetT = {
     messageId: string;
     reaction: string;
     isMy: boolean;
+    children?: any;
 };
 
-const SingleReactionUnset = withUnsetReaction(props => {
-    const typedProps = props as typeof props & SingleReactionUnsetT;
+const SingleReactionUnsetInner = (props: SingleReactionUnsetT) => {
+    const client = useClient();
     return (
         <SingleReaction
-            mutation={props.unsetReaction}
-            messageId={typedProps.messageId}
-            reaction={typedProps.reaction}
-            isMy={typedProps.isMy}
+            handler={it =>
+                client.mutateMessageUnsetReaction({ messageId: props.messageId, reaction: it })
+            }
+            messageId={props.messageId}
+            reaction={props.reaction}
+            isMy={props.isMy}
             unset={true}
         >
-            {typedProps.children}
+            {props.children}
         </SingleReaction>
     );
-}) as React.ComponentType<SingleReactionUnsetT>;
+};
+
+class SingleReactionUnset extends React.PureComponent<SingleReactionUnsetT> {
+    render() {
+        return <SingleReactionUnsetInner {...this.props} />;
+    }
+}
 
 interface ReactionsInnerProps {
     messageId: string;
@@ -496,7 +467,6 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
 export class Reactions extends React.PureComponent<ReactionsInnerProps> {
     render() {
         const { reactions, meId, messageId } = this.props;
-        return null;
         return (
             <>
                 {reactions && reactions.length > 0 ? (

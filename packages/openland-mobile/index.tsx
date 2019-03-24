@@ -16,7 +16,7 @@ import './utils/installAndroidFonts';
 import 'openland-y-runtime/AppNotifications';
 
 // Disable annoying yellow box
-console.disableYellowBox = true;
+(console as any).disableYellowBox = true;
 
 // Init static Auth0 Client just for case
 import Auth0 from 'react-native-auth0';
