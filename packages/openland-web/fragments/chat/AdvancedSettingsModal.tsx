@@ -32,6 +32,9 @@ const UsersWrapperClassName = css`
     border-radius: 6px;
     box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.06);
     border: solid 1px rgba(220, 222, 228, 0.4);
+    max-height: 250px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 `;
 
 const SocialImageWrapperClassName = css`
@@ -136,8 +139,8 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     input: {
                         ...(newSocialImage && newSocialImage.uuid !== props.socialImage
                             ? {
-                                  socialImageRef: sanitizeImageRef(newSocialImage),
-                              }
+                                socialImageRef: sanitizeImageRef(newSocialImage),
+                            }
                             : {}),
                     },
                 });
@@ -178,7 +181,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                 </XView>
                 {welcomeMessageIsOn && (
                     <>
-                        <XView marginTop={25}>
+                        <XView marginTop={25} zIndex={3}>
                             <XView
                                 onClick={() => setIsOpenUsers(!isOpenUsers)}
                                 height={52}
@@ -202,7 +205,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                                         {msgSender ? msgSender.label : 'Select'}
                                     </XView>
                                 </XView>
-                                <ArrowIcon />
+                                <ArrowIcon/>
                             </XView>
                             {isOpenUsers && (
                                 <XView
@@ -246,7 +249,6 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                                 title="Text message"
                                 mode="modern"
                                 invalid={finalWelcomeMessageTextError}
-                                placeholder="Text message"
                                 onChange={welcomeMsgOnChange}
                                 value={welcomeMessageText || ''}
                             />
