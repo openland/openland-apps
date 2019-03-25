@@ -161,6 +161,7 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
                 !this.props.file.uuid.startsWith('ph://') &&
                 this.props.file.isImage) ||
             false;
+
         let isFreeCrop =
             this.props.file &&
             this.props.file.crop &&
@@ -176,10 +177,18 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
             >
                 {hasImage && (
                     <AvatarImage
-                        width={AvatarImageSize[this.props.size || 'normal']}
-                        height={AvatarImageSize[this.props.size || 'normal']}
+                        width={
+                            this.props.file && this.props.file.crop && isFreeCrop
+                                ? this.props.file.crop.width
+                                : AvatarImageSize[this.props.size || 'normal']
+                        }
+                        height={
+                            this.props.file && this.props.file.crop && isFreeCrop
+                                ? this.props.file.crop.height
+                                : AvatarImageSize[this.props.size || 'normal']
+                        }
                         srcCloud={prepareSrc(this.props.file!!.uuid, this.props.file!!.crop)}
-                        resize={isFreeCrop ? undefined : 'fill'}
+                        resize={'fill'}
                         onLoad={this.handleOnLoad}
                     />
                 )}

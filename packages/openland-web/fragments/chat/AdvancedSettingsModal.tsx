@@ -165,7 +165,15 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     welcomeMessageIsOn: welcomeMessageIsOn ? 'true' : 'false',
                     welcomeMessageText: welcomeMessageText,
                     welcomeMessageSender: welcomeMessageSender,
-                    socialImageRef: props.socialImage ? { uuid: props.socialImage } : undefined,
+                    socialImageRef: props.socialImage
+                        ? {
+                              uuid: props.socialImage,
+                              crop: {
+                                  w: 190,
+                                  h: 100,
+                              },
+                          }
+                        : undefined,
                 },
             }}
         >
@@ -274,7 +282,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                 <XView marginTop={16}>
                     <div className={SocialImageWrapperClassName}>
                         <XAvatarUpload
-                            cropParams="16:9, free"
+                            cropParams="16:9"
                             field="input.socialImageRef"
                             placeholder={{
                                 add: 'Add image',
