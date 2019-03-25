@@ -109,19 +109,22 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
     React.useEffect(() => {
         if (!isOpen) {
             router!!.replaceQuery('advancedSettings', undefined);
-
-            setIsOpen(true);
         }
     }, [isOpen]);
+
+    React.useEffect(() => {
+        if (!router.query.advancedSettings && !isOpen) {
+            setWelcomeMessageIsOn(props.welcomeMessageIsOn);
+            setWelcomeMessageText(props.welcomeMessageText);
+            setWelcomeMessageSender(props.welcomeMessageSender);
+            setIsOpen(true);
+            setTriedToSend(false);
+        }
+    }, [router.query]);
 
     return (
         <XModalForm
             isOpen={isOpen}
-            onClosed={() => {
-                setWelcomeMessageIsOn(props.welcomeMessageIsOn);
-                setWelcomeMessageText(props.welcomeMessageText);
-                setWelcomeMessageSender(props.welcomeMessageSender);
-            }}
             scrollableContent={true}
             alsoUseBottomCloser={true}
             targetQuery="advancedSettings"
@@ -145,10 +148,6 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     },
                 });
 
-                await api.refetchRoom({
-                    id: props.roomId,
-                });
-
                 await api.mutateUpdateWelcomeMessage({
                     roomId: props.roomId,
                     welcomeMessageIsOn: welcomeMessageIsOn,
@@ -156,6 +155,9 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     welcomeMessageText: welcomeMessageText,
                 });
 
+                await api.refetchRoom({
+                    id: props.roomId,
+                });
                 setTriedToSend(true);
                 setIsOpen(false);
             }}
