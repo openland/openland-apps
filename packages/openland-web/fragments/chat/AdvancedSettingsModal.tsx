@@ -72,14 +72,11 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
         !welcomeMessageText,
     );
 
-    React.useEffect(
-        () => {
-            setWelcomeMessageIsOn(props.welcomeMessageIsOn);
-            setWelcomeMessageText(props.welcomeMessageText);
-            setWelcomeMessageSender(props.welcomeMessageSender);
-        },
-        [props.welcomeMessageIsOn, props.welcomeMessageText, props.welcomeMessageSender],
-    );
+    React.useEffect(() => {
+        setWelcomeMessageIsOn(props.welcomeMessageIsOn);
+        setWelcomeMessageText(props.welcomeMessageText);
+        setWelcomeMessageSender(props.welcomeMessageSender);
+    }, [props.welcomeMessageIsOn, props.welcomeMessageText, props.welcomeMessageSender]);
 
     const finalWelcomeMessageSenderError = triedToSend && welcomeMessageSenderError;
     const finalWelcomeMessageTextError = triedToSend && welcomeMessageTextError;
@@ -109,19 +106,22 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
         };
     }
 
-    React.useEffect(
-        () => {
-            if (!isOpen) {
-                router!!.replaceQuery('advancedSettings', undefined);
-                setIsOpen(true);
-            }
-        },
-        [isOpen],
-    );
+    React.useEffect(() => {
+        if (!isOpen) {
+            router!!.replaceQuery('advancedSettings', undefined);
+
+            setIsOpen(true);
+        }
+    }, [isOpen]);
 
     return (
         <XModalForm
             isOpen={isOpen}
+            onClosed={() => {
+                setWelcomeMessageIsOn(props.welcomeMessageIsOn);
+                setWelcomeMessageText(props.welcomeMessageText);
+                setWelcomeMessageSender(props.welcomeMessageSender);
+            }}
             scrollableContent={true}
             alsoUseBottomCloser={true}
             targetQuery="advancedSettings"
