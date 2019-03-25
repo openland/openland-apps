@@ -22,6 +22,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { delay } from 'openland-y-utils/timer';
+import { SDeferred } from 'react-native-s/SDeferred';
 
 const PinnedMessageComponent = XMemo<PageProps>((props) => {
     let id = props.router.params.flexibleId || props.router.params.id;
@@ -104,18 +105,18 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title="Pinned message" />
             {sharedRoom && sharedRoom.canEdit && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
-
-            {pinnedDataView && <ASSafeAreaContext.Consumer>
-                {area => (
-                    <ASListView
-                        style={{ width: '100%', height: '100%' }}
-                        dataView={pinnedDataView!}
-                        contentPaddingBottom={area.bottom}
-                        contentPaddingTop={area.top}
-                    />
-                )}
-            </ASSafeAreaContext.Consumer>}
-
+            <SDeferred>
+                {pinnedDataView && <ASSafeAreaContext.Consumer>
+                    {area => (
+                        <ASListView
+                            style={{ width: '100%', height: '100%' }}
+                            dataView={pinnedDataView!}
+                            contentPaddingBottom={area.bottom}
+                            contentPaddingTop={area.top}
+                        />
+                    )}
+                </ASSafeAreaContext.Consumer>}
+            </SDeferred>
         </>
     );
 });
