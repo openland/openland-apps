@@ -8,12 +8,10 @@
 
 import Foundation
 
+let GraphQLQueue = DispatchQueue(label: "gql", qos: DispatchQoS.background)
+
 @objc(RNGraphQL)
 class RNGraphQL: RCTEventEmitter {
-  
-  override func supportedEvents() -> [String]! {
-    return ["apollo_client"]
-  }
   
   private var clients: [String: RNGraphqlClient] = [:]
   
@@ -24,8 +22,7 @@ class RNGraphQL: RCTEventEmitter {
   
   @objc(closeClient:)
   func closeClient(key: String) {
-    // TODO: Delete
-    self.clients.removeValue(forKey: key)
+    self.clients.removeValue(forKey: key)!.dispose()
   }
   
   @objc(query:id:query:arguments:parameters:)
@@ -55,7 +52,7 @@ class RNGraphQL: RCTEventEmitter {
   
   @objc(subscribeUpdate:id:arguments:)
   func subscribeUpdate(key: String, id: String, arguments: NSDictionary) {
-    // TODO: Implement
+    self.clients[key]!.subscribeUpdate(id: id, arguments: arguments)
   }
   
   @objc(unsubscribe:id:)
@@ -73,6 +70,10 @@ class RNGraphQL: RCTEventEmitter {
     self.clients[key]!.write(id: id, data: data, query: query, arguments: arguments)
   }
   
+  //
+  // Implementation
+  //
+  
   func reportResult(key: String, id: String, result: NSDictionary) {
     var dict:[String:Any] = [:]
     dict["key"] = key
@@ -88,5 +89,26 @@ class RNGraphQL: RCTEventEmitter {
     dict["id"] = id
     dict["type"] = "error"
     self.sendEvent(withName: "apollo_client", body: dict)
+  }
+  
+  override var methodQueue: DispatchQueue! {
+     get { return GraphQLQueue }
+  }
+  
+  override static func requiresMainQueueSetup() -> Bool {
+    return false
+  }
+  
+  @objc(invalidate)
+  func invalidate() {
+    print("invalidate")
+    for s in self.clients.values {
+      s.dispose()
+    }
+    self.clients.removeAll()
+  }
+  
+  override func supportedEvents() -> [String]! {
+    return ["apollo_client"]
   }
 }

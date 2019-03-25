@@ -3,7 +3,7 @@ class ApiFactory: ApiFactoryBase {
   func runQuery(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {
     if (name == "Account") {
       let requestBody = AccountQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -16,7 +16,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "AccountSettings") {
       let requestBody = AccountSettingsQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -30,7 +30,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "AccountInviteInfo") {
       let inviteKey = notNull(readString(src, "inviteKey"))
       let requestBody = AccountInviteInfoQuery(inviteKey: inviteKey)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -44,7 +44,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "AccountAppInviteInfo") {
       let inviteKey = notNull(readString(src, "inviteKey"))
       let requestBody = AccountAppInviteInfoQuery(inviteKey: inviteKey)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -57,7 +57,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "AccountAppInvite") {
       let requestBody = AccountAppInviteQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -70,7 +70,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "AccountInvites") {
       let requestBody = AccountInvitesQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -83,7 +83,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "AccountInvitesHistory") {
       let requestBody = AccountInvitesHistoryQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -96,7 +96,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "ProfilePrefill") {
       let requestBody = ProfilePrefillQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -109,7 +109,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "FetchPushSettings") {
       let requestBody = FetchPushSettingsQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -122,7 +122,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "MyApps") {
       let requestBody = MyAppsQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -136,7 +136,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Dialogs") {
       let after = readString(src, "after")
       let requestBody = DialogsQuery(after: after)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -150,7 +150,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Room") {
       let id = notNull(readString(src, "id"))
       let requestBody = RoomQuery(id: id)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -164,7 +164,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomTiny") {
       let id = notNull(readString(src, "id"))
       let requestBody = RoomTinyQuery(id: id)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -178,7 +178,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomSuper") {
       let id = notNull(readString(src, "id"))
       let requestBody = RoomSuperQuery(id: id)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -192,7 +192,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "GetDraftMessage") {
       let conversationId = notNull(readString(src, "conversationId"))
       let requestBody = GetDraftMessageQuery(conversationId: conversationId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -205,7 +205,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "GlobalCounter") {
       let requestBody = GlobalCounterQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -221,7 +221,7 @@ class ApiFactory: ApiFactoryBase {
       let before = readString(src, "before")
       let first = notNull(readInt(src, "first"))
       let requestBody = ChatHistoryQuery(chatId: chatId, before: before, first: first)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -235,7 +235,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "ChatSearchGroup") {
       let members = notNull(notNullListItems(readStringList(src, "members")))
       let requestBody = ChatSearchGroupQuery(members: members)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -249,7 +249,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomSearchText") {
       let query = notNull(readString(src, "query"))
       let requestBody = RoomSearchTextQuery(query: query)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -265,7 +265,7 @@ class ApiFactory: ApiFactoryBase {
       let sort = readString(src, "sort")
       let page = readInt(src, "page")
       let requestBody = RoomSearchQuery(query: query, sort: sort, page: page)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -279,7 +279,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomMembersShort") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomMembersShortQuery(roomId: roomId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -293,7 +293,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomMembers") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomMembersQuery(roomId: roomId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -307,7 +307,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomInviteLink") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomInviteLinkQuery(roomId: roomId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -321,7 +321,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomInviteInfo") {
       let invite = notNull(readString(src, "invite"))
       let requestBody = RoomInviteInfoQuery(invite: invite)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -335,7 +335,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Conference") {
       let id = notNull(readString(src, "id"))
       let requestBody = ConferenceQuery(id: id)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -350,7 +350,7 @@ class ApiFactory: ApiFactoryBase {
       let id = notNull(readString(src, "id"))
       let peerId = notNull(readString(src, "peerId"))
       let requestBody = ConferenceMediaQuery(id: id, peerId: peerId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -363,7 +363,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "AvailableRooms") {
       let requestBody = AvailableRoomsQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -377,7 +377,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "GlobalSearch") {
       let query = notNull(readString(src, "query"))
       let requestBody = GlobalSearchQuery(query: query)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -390,7 +390,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "FeatureFlags") {
       let requestBody = FeatureFlagsQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -403,7 +403,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "FeedHome") {
       let requestBody = FeedHomeQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -416,7 +416,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "MyOrganizations") {
       let requestBody = MyOrganizationsQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -430,7 +430,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Organization") {
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationQuery(organizationId: organizationId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -444,7 +444,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "OrganizationMembersShort") {
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationMembersShortQuery(organizationId: organizationId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -458,7 +458,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "OrganizationProfile") {
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationProfileQuery(organizationId: organizationId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -477,7 +477,7 @@ class ApiFactory: ApiFactoryBase {
       let after = readString(src, "after")
       let all = readBool(src, "all")
       let requestBody = ExploreOrganizationsQuery(query: query, prefix: prefix, sort: sort, page: page, after: after, all: all)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -493,7 +493,7 @@ class ApiFactory: ApiFactoryBase {
       let sort = readString(src, "sort")
       let page = readInt(src, "page")
       let requestBody = ExploreComunityQuery(query: query, sort: sort, page: page)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -507,7 +507,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "OrganizationPublicInvite") {
       let organizationId = readString(src, "organizationId")
       let requestBody = OrganizationPublicInviteQuery(organizationId: organizationId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -521,7 +521,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "OrganizationByPrefix") {
       let query = notNull(readString(src, "query"))
       let requestBody = OrganizationByPrefixQuery(query: query)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -534,7 +534,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "Permissions") {
       let requestBody = PermissionsQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -547,7 +547,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "SuperAdmins") {
       let requestBody = SuperAdminsQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -560,7 +560,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "SuperAccounts") {
       let requestBody = SuperAccountsQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -575,7 +575,7 @@ class ApiFactory: ApiFactoryBase {
       let accountId = notNull(readString(src, "accountId"))
       let viaOrgId = readBool(src, "viaOrgId")
       let requestBody = SuperAccountQuery(accountId: accountId, viaOrgId: viaOrgId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -588,7 +588,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "Profile") {
       let requestBody = ProfileQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -601,7 +601,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "Settings") {
       let requestBody = SettingsQuery()
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -615,7 +615,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Users") {
       let query = notNull(readString(src, "query"))
       let requestBody = UsersQuery(query: query)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -629,7 +629,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "User") {
       let userId = notNull(readString(src, "userId"))
       let requestBody = UserQuery(userId: userId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -643,7 +643,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Online") {
       let userId = notNull(readString(src, "userId"))
       let requestBody = OnlineQuery(userId: userId)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -660,7 +660,7 @@ class ApiFactory: ApiFactoryBase {
       let page = readInt(src, "page")
       let after = readString(src, "after")
       let requestBody = ExplorePeopleQuery(query: query, sort: sort, page: page, after: after)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -674,7 +674,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "ResolveShortName") {
       let shortname = notNull(readString(src, "shortname"))
       let requestBody = ResolveShortNameQuery(shortname: shortname)
-      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -691,7 +691,7 @@ class ApiFactory: ApiFactoryBase {
   func watchQuery(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) -> WatchCancel {
     if (name == "Account") {
       let requestBody = AccountQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -704,7 +704,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "AccountSettings") {
       let requestBody = AccountSettingsQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -718,7 +718,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "AccountInviteInfo") {
       let inviteKey = notNull(readString(src, "inviteKey"))
       let requestBody = AccountInviteInfoQuery(inviteKey: inviteKey)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -732,7 +732,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "AccountAppInviteInfo") {
       let inviteKey = notNull(readString(src, "inviteKey"))
       let requestBody = AccountAppInviteInfoQuery(inviteKey: inviteKey)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -745,7 +745,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "AccountAppInvite") {
       let requestBody = AccountAppInviteQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -758,7 +758,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "AccountInvites") {
       let requestBody = AccountInvitesQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -771,7 +771,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "AccountInvitesHistory") {
       let requestBody = AccountInvitesHistoryQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -784,7 +784,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "ProfilePrefill") {
       let requestBody = ProfilePrefillQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -797,7 +797,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "FetchPushSettings") {
       let requestBody = FetchPushSettingsQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -810,7 +810,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "MyApps") {
       let requestBody = MyAppsQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -824,7 +824,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Dialogs") {
       let after = readString(src, "after")
       let requestBody = DialogsQuery(after: after)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -838,7 +838,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Room") {
       let id = notNull(readString(src, "id"))
       let requestBody = RoomQuery(id: id)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -852,7 +852,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomTiny") {
       let id = notNull(readString(src, "id"))
       let requestBody = RoomTinyQuery(id: id)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -866,7 +866,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomSuper") {
       let id = notNull(readString(src, "id"))
       let requestBody = RoomSuperQuery(id: id)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -880,7 +880,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "GetDraftMessage") {
       let conversationId = notNull(readString(src, "conversationId"))
       let requestBody = GetDraftMessageQuery(conversationId: conversationId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -893,7 +893,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "GlobalCounter") {
       let requestBody = GlobalCounterQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -909,7 +909,7 @@ class ApiFactory: ApiFactoryBase {
       let before = readString(src, "before")
       let first = notNull(readInt(src, "first"))
       let requestBody = ChatHistoryQuery(chatId: chatId, before: before, first: first)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -923,7 +923,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "ChatSearchGroup") {
       let members = notNull(notNullListItems(readStringList(src, "members")))
       let requestBody = ChatSearchGroupQuery(members: members)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -937,7 +937,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomSearchText") {
       let query = notNull(readString(src, "query"))
       let requestBody = RoomSearchTextQuery(query: query)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -953,7 +953,7 @@ class ApiFactory: ApiFactoryBase {
       let sort = readString(src, "sort")
       let page = readInt(src, "page")
       let requestBody = RoomSearchQuery(query: query, sort: sort, page: page)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -967,7 +967,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomMembersShort") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomMembersShortQuery(roomId: roomId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -981,7 +981,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomMembers") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomMembersQuery(roomId: roomId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -995,7 +995,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomInviteLink") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomInviteLinkQuery(roomId: roomId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1009,7 +1009,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomInviteInfo") {
       let invite = notNull(readString(src, "invite"))
       let requestBody = RoomInviteInfoQuery(invite: invite)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1023,7 +1023,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Conference") {
       let id = notNull(readString(src, "id"))
       let requestBody = ConferenceQuery(id: id)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1038,7 +1038,7 @@ class ApiFactory: ApiFactoryBase {
       let id = notNull(readString(src, "id"))
       let peerId = notNull(readString(src, "peerId"))
       let requestBody = ConferenceMediaQuery(id: id, peerId: peerId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1051,7 +1051,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "AvailableRooms") {
       let requestBody = AvailableRoomsQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1065,7 +1065,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "GlobalSearch") {
       let query = notNull(readString(src, "query"))
       let requestBody = GlobalSearchQuery(query: query)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1078,7 +1078,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "FeatureFlags") {
       let requestBody = FeatureFlagsQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1091,7 +1091,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "FeedHome") {
       let requestBody = FeedHomeQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1104,7 +1104,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "MyOrganizations") {
       let requestBody = MyOrganizationsQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1118,7 +1118,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Organization") {
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationQuery(organizationId: organizationId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1132,7 +1132,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "OrganizationMembersShort") {
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationMembersShortQuery(organizationId: organizationId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1146,7 +1146,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "OrganizationProfile") {
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationProfileQuery(organizationId: organizationId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1165,7 +1165,7 @@ class ApiFactory: ApiFactoryBase {
       let after = readString(src, "after")
       let all = readBool(src, "all")
       let requestBody = ExploreOrganizationsQuery(query: query, prefix: prefix, sort: sort, page: page, after: after, all: all)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1181,7 +1181,7 @@ class ApiFactory: ApiFactoryBase {
       let sort = readString(src, "sort")
       let page = readInt(src, "page")
       let requestBody = ExploreComunityQuery(query: query, sort: sort, page: page)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1195,7 +1195,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "OrganizationPublicInvite") {
       let organizationId = readString(src, "organizationId")
       let requestBody = OrganizationPublicInviteQuery(organizationId: organizationId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1209,7 +1209,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "OrganizationByPrefix") {
       let query = notNull(readString(src, "query"))
       let requestBody = OrganizationByPrefixQuery(query: query)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1222,7 +1222,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "Permissions") {
       let requestBody = PermissionsQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1235,7 +1235,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "SuperAdmins") {
       let requestBody = SuperAdminsQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1248,7 +1248,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "SuperAccounts") {
       let requestBody = SuperAccountsQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1263,7 +1263,7 @@ class ApiFactory: ApiFactoryBase {
       let accountId = notNull(readString(src, "accountId"))
       let viaOrgId = readBool(src, "viaOrgId")
       let requestBody = SuperAccountQuery(accountId: accountId, viaOrgId: viaOrgId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1276,7 +1276,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "Profile") {
       let requestBody = ProfileQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1289,7 +1289,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "Settings") {
       let requestBody = SettingsQuery()
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1303,7 +1303,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Users") {
       let query = notNull(readString(src, "query"))
       let requestBody = UsersQuery(query: query)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1317,7 +1317,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "User") {
       let userId = notNull(readString(src, "userId"))
       let requestBody = UserQuery(userId: userId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1331,7 +1331,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Online") {
       let userId = notNull(readString(src, "userId"))
       let requestBody = OnlineQuery(userId: userId)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1348,7 +1348,7 @@ class ApiFactory: ApiFactoryBase {
       let page = readInt(src, "page")
       let after = readString(src, "after")
       let requestBody = ExplorePeopleQuery(query: query, sort: sort, page: page, after: after)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1362,7 +1362,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "ResolveShortName") {
       let shortname = notNull(readString(src, "shortname"))
       let requestBody = ResolveShortNameQuery(shortname: shortname)
-      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
+      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1380,7 +1380,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "CreateOrganization") {
       let input = notNull(readCreateOrganizationInput(src, "input"))
       let requestBody = CreateOrganizationMutation(input: input)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1394,7 +1394,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "AccountInviteJoin") {
       let inviteKey = notNull(readString(src, "inviteKey"))
       let requestBody = AccountInviteJoinMutation(inviteKey: inviteKey)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1407,7 +1407,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "AccountCreateInvite") {
       let requestBody = AccountCreateInviteMutation()
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1421,7 +1421,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "AccountDestroyInvite") {
       let id = notNull(readString(src, "id"))
       let requestBody = AccountDestroyInviteMutation(id: id)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1436,7 +1436,7 @@ class ApiFactory: ApiFactoryBase {
       let user = notNull(readProfileInput(src, "user"))
       let organization = notNull(readCreateOrganizationInput(src, "organization"))
       let requestBody = CreateUserProfileAndOrganizationMutation(user: user, organization: organization)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1451,7 +1451,7 @@ class ApiFactory: ApiFactoryBase {
       let active = readBool(src, "active")
       let platform = readString(src, "platform")
       let requestBody = ReportOnlineMutation(active: active, platform: platform)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1466,7 +1466,7 @@ class ApiFactory: ApiFactoryBase {
       let endpoint = notNull(readString(src, "endpoint"))
       let type = notNull(readPushType(src, "type"))
       let requestBody = RegisterPushMutation(endpoint: endpoint, type: type)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1480,7 +1480,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RegisterWebPush") {
       let endpoint = notNull(readString(src, "endpoint"))
       let requestBody = RegisterWebPushMutation(endpoint: endpoint)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1497,7 +1497,7 @@ class ApiFactory: ApiFactoryBase {
       let photoRef = readImageRefInput(src, "photoRef")
       let about = readString(src, "about")
       let requestBody = CreateAppMutation(name: name, shortname: shortname, photoRef: photoRef, about: about)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1512,7 +1512,7 @@ class ApiFactory: ApiFactoryBase {
       let appId = notNull(readString(src, "appId"))
       let input = notNull(readAppProfileInput(src, "input"))
       let requestBody = UpdateAppMutation(appId: appId, input: input)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1526,7 +1526,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RefreshAppToken") {
       let appId = notNull(readString(src, "appId"))
       let requestBody = RefreshAppTokenMutation(appId: appId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1541,7 +1541,7 @@ class ApiFactory: ApiFactoryBase {
       let appId = notNull(readString(src, "appId"))
       let chatId = notNull(readString(src, "chatId"))
       let requestBody = AddAppToChatMutation(appId: appId, chatId: chatId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1556,7 +1556,7 @@ class ApiFactory: ApiFactoryBase {
       let chatId = notNull(readString(src, "chatId"))
       let messageId = notNull(readString(src, "messageId"))
       let requestBody = PinMessageMutation(chatId: chatId, messageId: messageId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1570,7 +1570,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "UnpinMessage") {
       let chatId = notNull(readString(src, "chatId"))
       let requestBody = UnpinMessageMutation(chatId: chatId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1585,7 +1585,7 @@ class ApiFactory: ApiFactoryBase {
       let messageId = notNull(readString(src, "messageId"))
       let reaction = notNull(readString(src, "reaction"))
       let requestBody = MessageSetReactionMutation(messageId: messageId, reaction: reaction)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1601,7 +1601,7 @@ class ApiFactory: ApiFactoryBase {
       let from = notNull(readString(src, "from"))
       let to = notNull(readString(src, "to"))
       let requestBody = SwitchReactionMutation(messageId: messageId, from: from, to: to)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1616,7 +1616,7 @@ class ApiFactory: ApiFactoryBase {
       let messageId = notNull(readString(src, "messageId"))
       let reaction = notNull(readString(src, "reaction"))
       let requestBody = MessageUnsetReactionMutation(messageId: messageId, reaction: reaction)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1634,7 +1634,7 @@ class ApiFactory: ApiFactoryBase {
       let attachments = notNullListItems(readStringList(src, "attachments"))
       let postType = notNull(readPostMessageType(src, "postType"))
       let requestBody = SendPostMessageMutation(conversationId: conversationId, title: title, text: text, attachments: attachments, postType: postType)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1652,7 +1652,7 @@ class ApiFactory: ApiFactoryBase {
       let attachments = notNullListItems(readStringList(src, "attachments"))
       let postType = notNull(readPostMessageType(src, "postType"))
       let requestBody = EditPostMessageMutation(messageId: messageId, title: title, text: text, attachments: attachments, postType: postType)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1668,7 +1668,7 @@ class ApiFactory: ApiFactoryBase {
       let buttonId = notNull(readString(src, "buttonId"))
       let reaction = notNull(readString(src, "reaction"))
       let requestBody = RespondPostMessageMutation(messageId: messageId, buttonId: buttonId, reaction: reaction)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1683,7 +1683,7 @@ class ApiFactory: ApiFactoryBase {
       let conversationId = notNull(readString(src, "conversationId"))
       let message = notNull(readString(src, "message"))
       let requestBody = SaveDraftMessageMutation(conversationId: conversationId, message: message)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1702,7 +1702,7 @@ class ApiFactory: ApiFactoryBase {
       let mentions = notNullListItems(readStringList(src, "mentions"))
       let room = notNull(readString(src, "room"))
       let requestBody = SendMessageMutation(message: message, file: file, repeatKey: repeatKey, replyMessages: replyMessages, mentions: mentions, room: room)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1719,7 +1719,7 @@ class ApiFactory: ApiFactoryBase {
       let replyMessages = notNullListItems(readStringList(src, "replyMessages"))
       let mentions = notNullListItems(readStringList(src, "mentions"))
       let requestBody = ReplyMessageMutation(roomId: roomId, message: message, replyMessages: replyMessages, mentions: mentions)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1734,7 +1734,7 @@ class ApiFactory: ApiFactoryBase {
       let id = notNull(readString(src, "id"))
       let mid = notNull(readString(src, "mid"))
       let requestBody = RoomReadMutation(id: id, mid: mid)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1754,7 +1754,7 @@ class ApiFactory: ApiFactoryBase {
       let photoRef = readImageRefInput(src, "photoRef")
       let organizationId = readString(src, "organizationId")
       let requestBody = RoomCreateMutation(kind: kind, members: members, message: message, title: title, description: description, photoRef: photoRef, organizationId: organizationId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1771,7 +1771,7 @@ class ApiFactory: ApiFactoryBase {
       let about = readString(src, "about")
       let file = readString(src, "file")
       let requestBody = RoomCreateIntroMutation(roomId: roomId, uid: uid, about: about, file: file)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1788,7 +1788,7 @@ class ApiFactory: ApiFactoryBase {
       let about = readString(src, "about")
       let file = readString(src, "file")
       let requestBody = RoomEditIntroMutation(messageId: messageId, uid: uid, about: about, file: file)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1802,7 +1802,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "SetTyping") {
       let conversationId = notNull(readString(src, "conversationId"))
       let requestBody = SetTypingMutation(conversationId: conversationId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1816,7 +1816,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "CancelTyping") {
       let conversationId = notNull(readString(src, "conversationId"))
       let requestBody = CancelTypingMutation(conversationId: conversationId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1831,7 +1831,7 @@ class ApiFactory: ApiFactoryBase {
       let roomId = notNull(readString(src, "roomId"))
       let userId = notNull(readString(src, "userId"))
       let requestBody = RoomAddMemberMutation(roomId: roomId, userId: userId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1846,7 +1846,7 @@ class ApiFactory: ApiFactoryBase {
       let roomId = notNull(readString(src, "roomId"))
       let userId = notNull(readString(src, "userId"))
       let requestBody = RoomDeclineJoinReuestMutation(roomId: roomId, userId: userId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1861,7 +1861,7 @@ class ApiFactory: ApiFactoryBase {
       let roomId = notNull(readString(src, "roomId"))
       let invites = notNull(notNullListItems(readRoomInviteInputList(src, "invites")))
       let requestBody = RoomAddMembersMutation(roomId: roomId, invites: invites)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1876,7 +1876,7 @@ class ApiFactory: ApiFactoryBase {
       let roomId = notNull(readString(src, "roomId"))
       let userId = notNull(readString(src, "userId"))
       let requestBody = RoomKickMutation(roomId: roomId, userId: userId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1890,7 +1890,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomLeave") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomLeaveMutation(roomId: roomId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1905,7 +1905,7 @@ class ApiFactory: ApiFactoryBase {
       let roomId = notNull(readString(src, "roomId"))
       let featured = notNull(readBool(src, "featured"))
       let requestBody = RoomAlterFeaturedMutation(roomId: roomId, featured: featured)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1920,7 +1920,7 @@ class ApiFactory: ApiFactoryBase {
       let roomId = notNull(readString(src, "roomId"))
       let listed = notNull(readBool(src, "listed"))
       let requestBody = RoomAlterHiddenMutation(roomId: roomId, listed: listed)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1935,7 +1935,7 @@ class ApiFactory: ApiFactoryBase {
       let settings = notNull(readRoomUserNotificaionSettingsInput(src, "settings"))
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomSettingsUpdateMutation(settings: settings, roomId: roomId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1949,7 +1949,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomJoin") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomJoinMutation(roomId: roomId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1964,7 +1964,7 @@ class ApiFactory: ApiFactoryBase {
       let roomId = notNull(readString(src, "roomId"))
       let inviteRequests = notNull(notNullListItems(readRoomInviteEmailRequestList(src, "inviteRequests")))
       let requestBody = RoomSendEmailInviteMutation(roomId: roomId, inviteRequests: inviteRequests)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1978,7 +1978,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomJoinInviteLink") {
       let invite = notNull(readString(src, "invite"))
       let requestBody = RoomJoinInviteLinkMutation(invite: invite)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -1992,7 +1992,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomRenewInviteLink") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomRenewInviteLinkMutation(roomId: roomId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2007,7 +2007,7 @@ class ApiFactory: ApiFactoryBase {
       let roomId = notNull(readString(src, "roomId"))
       let input = notNull(readRoomUpdateInput(src, "input"))
       let requestBody = RoomUpdateMutation(roomId: roomId, input: input)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2021,7 +2021,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomDeleteMessage") {
       let messageId = notNull(readString(src, "messageId"))
       let requestBody = RoomDeleteMessageMutation(messageId: messageId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2035,7 +2035,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomDeleteMessages") {
       let mids = notNull(notNullListItems(readStringList(src, "mids")))
       let requestBody = RoomDeleteMessagesMutation(mids: mids)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2049,7 +2049,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomDeleteUrlAugmentation") {
       let messageId = notNull(readString(src, "messageId"))
       let requestBody = RoomDeleteUrlAugmentationMutation(messageId: messageId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2067,7 +2067,7 @@ class ApiFactory: ApiFactoryBase {
       let replyMessages = notNullListItems(readStringList(src, "replyMessages"))
       let mentions = notNullListItems(readStringList(src, "mentions"))
       let requestBody = RoomEditMessageMutation(messageId: messageId, message: message, file: file, replyMessages: replyMessages, mentions: mentions)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2081,7 +2081,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "MarkSequenceRead") {
       let seq = notNull(readInt(src, "seq"))
       let requestBody = MarkSequenceReadMutation(seq: seq)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2098,7 +2098,7 @@ class ApiFactory: ApiFactoryBase {
       let welcomeMessageSender = readString(src, "welcomeMessageSender")
       let welcomeMessageText = readString(src, "welcomeMessageText")
       let requestBody = UpdateWelcomeMessageMutation(roomId: roomId, welcomeMessageIsOn: welcomeMessageIsOn, welcomeMessageSender: welcomeMessageSender, welcomeMessageText: welcomeMessageText)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2112,7 +2112,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "ConferenceJoin") {
       let id = notNull(readString(src, "id"))
       let requestBody = ConferenceJoinMutation(id: id)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2127,7 +2127,7 @@ class ApiFactory: ApiFactoryBase {
       let id = notNull(readString(src, "id"))
       let peerId = notNull(readString(src, "peerId"))
       let requestBody = ConferenceLeaveMutation(id: id, peerId: peerId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2142,7 +2142,7 @@ class ApiFactory: ApiFactoryBase {
       let id = notNull(readString(src, "id"))
       let peerId = notNull(readString(src, "peerId"))
       let requestBody = ConferenceKeepAliveMutation(id: id, peerId: peerId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2159,7 +2159,7 @@ class ApiFactory: ApiFactoryBase {
       let peerId = notNull(readString(src, "peerId"))
       let offer = notNull(readString(src, "offer"))
       let requestBody = ConferenceOfferMutation(id: id, ownPeerId: ownPeerId, peerId: peerId, offer: offer)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2176,7 +2176,7 @@ class ApiFactory: ApiFactoryBase {
       let peerId = notNull(readString(src, "peerId"))
       let answer = notNull(readString(src, "answer"))
       let requestBody = ConferenceAnswerMutation(id: id, ownPeerId: ownPeerId, peerId: peerId, answer: answer)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2193,7 +2193,7 @@ class ApiFactory: ApiFactoryBase {
       let peerId = notNull(readString(src, "peerId"))
       let candidate = notNull(readString(src, "candidate"))
       let requestBody = ConferenceCandidateMutation(id: id, ownPeerId: ownPeerId, peerId: peerId, candidate: candidate)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2209,7 +2209,7 @@ class ApiFactory: ApiFactoryBase {
       let peerId = notNull(readString(src, "peerId"))
       let offer = notNull(readString(src, "offer"))
       let requestBody = MediaOfferMutation(id: id, peerId: peerId, offer: offer)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2225,7 +2225,7 @@ class ApiFactory: ApiFactoryBase {
       let peerId = notNull(readString(src, "peerId"))
       let answer = notNull(readString(src, "answer"))
       let requestBody = MediaAnswerMutation(id: id, peerId: peerId, answer: answer)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2241,7 +2241,7 @@ class ApiFactory: ApiFactoryBase {
       let peerId = notNull(readString(src, "peerId"))
       let candidate = notNull(readString(src, "candidate"))
       let requestBody = MediaCandidateMutation(id: id, peerId: peerId, candidate: candidate)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2256,7 +2256,7 @@ class ApiFactory: ApiFactoryBase {
       let key = notNull(readString(src, "key"))
       let title = notNull(readString(src, "title"))
       let requestBody = FeatureFlagAddMutation(key: key, title: title)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2271,7 +2271,7 @@ class ApiFactory: ApiFactoryBase {
       let accountId = notNull(readString(src, "accountId"))
       let featureId = notNull(readString(src, "featureId"))
       let requestBody = FeatureFlagEnableMutation(accountId: accountId, featureId: featureId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2286,7 +2286,7 @@ class ApiFactory: ApiFactoryBase {
       let accountId = notNull(readString(src, "accountId"))
       let featureId = notNull(readString(src, "featureId"))
       let requestBody = FeatureFlagDisableMutation(accountId: accountId, featureId: featureId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2300,7 +2300,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "FeedPost") {
       let message = notNull(readString(src, "message"))
       let requestBody = FeedPostMutation(message: message)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2315,7 +2315,7 @@ class ApiFactory: ApiFactoryBase {
       let input = notNull(readUpdateOrganizationProfileInput(src, "input"))
       let organizationId = readString(src, "organizationId")
       let requestBody = UpdateOrganizationMutation(input: input, organizationId: organizationId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2330,7 +2330,7 @@ class ApiFactory: ApiFactoryBase {
       let organizationId = notNull(readString(src, "organizationId"))
       let shortname = notNull(readString(src, "shortname"))
       let requestBody = SetOrgShortnameMutation(organizationId: organizationId, shortname: shortname)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2346,7 +2346,7 @@ class ApiFactory: ApiFactoryBase {
       let newRole = notNull(readOrganizationMemberRole(src, "newRole"))
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationChangeMemberRoleMutation(memberId: memberId, newRole: newRole, organizationId: organizationId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2361,7 +2361,7 @@ class ApiFactory: ApiFactoryBase {
       let userIds = notNullListItems(readStringList(src, "userIds"))
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationAddMemberMutation(userIds: userIds, organizationId: organizationId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2376,7 +2376,7 @@ class ApiFactory: ApiFactoryBase {
       let memberId = notNull(readString(src, "memberId"))
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationRemoveMemberMutation(memberId: memberId, organizationId: organizationId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2391,7 +2391,7 @@ class ApiFactory: ApiFactoryBase {
       let inviteRequests = notNull(notNullListItems(readInviteRequestList(src, "inviteRequests")))
       let organizationId = readString(src, "organizationId")
       let requestBody = OrganizationInviteMembersMutation(inviteRequests: inviteRequests, organizationId: organizationId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2406,7 +2406,7 @@ class ApiFactory: ApiFactoryBase {
       let expirationDays = readInt(src, "expirationDays")
       let organizationId = readString(src, "organizationId")
       let requestBody = OrganizationCreatePublicInviteMutation(expirationDays: expirationDays, organizationId: organizationId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2420,7 +2420,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "DeleteOrganization") {
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = DeleteOrganizationMutation(organizationId: organizationId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2435,7 +2435,7 @@ class ApiFactory: ApiFactoryBase {
       let userId = notNull(readString(src, "userId"))
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationMemberRemoveMutation(userId: userId, organizationId: organizationId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2449,7 +2449,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "OrganizationActivateByInvite") {
       let inviteKey = notNull(readString(src, "inviteKey"))
       let requestBody = OrganizationActivateByInviteMutation(inviteKey: inviteKey)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2464,7 +2464,7 @@ class ApiFactory: ApiFactoryBase {
       let organizationId = notNull(readString(src, "organizationId"))
       let published = notNull(readBool(src, "published"))
       let requestBody = OrganizationAlterPublishedMutation(organizationId: organizationId, published: published)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2478,7 +2478,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "DebugMails") {
       let type = notNull(readDebugEmailType(src, "type"))
       let requestBody = DebugMailsMutation(type: type)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2493,7 +2493,7 @@ class ApiFactory: ApiFactoryBase {
       let accountId = notNull(readString(src, "accountId"))
       let title = notNull(readString(src, "title"))
       let requestBody = SuperAccountRenameMutation(accountId: accountId, title: title)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2507,7 +2507,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "SuperAccountActivate") {
       let accountId = notNull(readString(src, "accountId"))
       let requestBody = SuperAccountActivateMutation(accountId: accountId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2521,7 +2521,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "SuperAccountSuspend") {
       let accountId = notNull(readString(src, "accountId"))
       let requestBody = SuperAccountSuspendMutation(accountId: accountId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2535,7 +2535,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "SuperAccountPend") {
       let accountId = notNull(readString(src, "accountId"))
       let requestBody = SuperAccountPendMutation(accountId: accountId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2549,7 +2549,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "SuperAccountAdd") {
       let title = notNull(readString(src, "title"))
       let requestBody = SuperAccountAddMutation(title: title)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2564,7 +2564,7 @@ class ApiFactory: ApiFactoryBase {
       let accountId = notNull(readString(src, "accountId"))
       let userId = notNull(readString(src, "userId"))
       let requestBody = SuperAccountMemberAddMutation(accountId: accountId, userId: userId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2579,7 +2579,7 @@ class ApiFactory: ApiFactoryBase {
       let accountId = notNull(readString(src, "accountId"))
       let userId = notNull(readString(src, "userId"))
       let requestBody = SuperAccountMemberRemoveMutation(accountId: accountId, userId: userId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2594,7 +2594,7 @@ class ApiFactory: ApiFactoryBase {
       let userId = notNull(readString(src, "userId"))
       let role = notNull(readSuperAdminRole(src, "role"))
       let requestBody = SuperAdminAddMutation(userId: userId, role: role)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2608,7 +2608,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "SuperAdminRemove") {
       let userId = notNull(readString(src, "userId"))
       let requestBody = SuperAdminRemoveMutation(userId: userId)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2623,7 +2623,7 @@ class ApiFactory: ApiFactoryBase {
       let input = notNull(readUpdateProfileInput(src, "input"))
       let uid = readString(src, "uid")
       let requestBody = ProfileUpdateMutation(input: input, uid: uid)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2637,7 +2637,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "SetUserShortname") {
       let shortname = notNull(readString(src, "shortname"))
       let requestBody = SetUserShortnameMutation(shortname: shortname)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2651,7 +2651,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "ProfileCreate") {
       let input = notNull(readCreateProfileInput(src, "input"))
       let requestBody = ProfileCreateMutation(input: input)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2665,7 +2665,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "SettingsUpdate") {
       let input = readUpdateSettingsInput(src, "input")
       let requestBody = SettingsUpdateMutation(input: input)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2680,7 +2680,7 @@ class ApiFactory: ApiFactoryBase {
       let did = notNull(readString(src, "did"))
       let events = notNull(notNullListItems(readEventList(src, "events")))
       let requestBody = PersistEventsMutation(did: did, events: events)
-      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2697,7 +2697,7 @@ class ApiFactory: ApiFactoryBase {
   func runSubscription(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) -> WatchCancel {
     if (name == "SettingsWatch") {
       let requestBody = SettingsWatchSubscription()
-      let res = client.subscribe(subscription: requestBody, queue: DispatchQueue.main) { (r, e) in
+      let res = client.subscribe(subscription: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2712,7 +2712,7 @@ class ApiFactory: ApiFactoryBase {
       let chatId = notNull(readString(src, "chatId"))
       let state = readString(src, "state")
       let requestBody = ChatWatchSubscription(chatId: chatId, state: state)
-      let res = client.subscribe(subscription: requestBody, queue: DispatchQueue.main) { (r, e) in
+      let res = client.subscribe(subscription: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2726,7 +2726,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "DialogsWatch") {
       let state = readString(src, "state")
       let requestBody = DialogsWatchSubscription(state: state)
-      let res = client.subscribe(subscription: requestBody, queue: DispatchQueue.main) { (r, e) in
+      let res = client.subscribe(subscription: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2739,7 +2739,7 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "TypingsWatch") {
       let requestBody = TypingsWatchSubscription()
-      let res = client.subscribe(subscription: requestBody, queue: DispatchQueue.main) { (r, e) in
+      let res = client.subscribe(subscription: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2754,7 +2754,7 @@ class ApiFactory: ApiFactoryBase {
       let id = notNull(readString(src, "id"))
       let peerId = notNull(readString(src, "peerId"))
       let requestBody = ConferenceMediaWatchSubscription(id: id, peerId: peerId)
-      let res = client.subscribe(subscription: requestBody, queue: DispatchQueue.main) { (r, e) in
+      let res = client.subscribe(subscription: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2768,7 +2768,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "ConferenceWatch") {
       let id = notNull(readString(src, "id"))
       let requestBody = ConferenceWatchSubscription(id: id)
-      let res = client.subscribe(subscription: requestBody, queue: DispatchQueue.main) { (r, e) in
+      let res = client.subscribe(subscription: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {
@@ -2782,7 +2782,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "OnlineWatch") {
       let conversations = notNull(notNullListItems(readStringList(src, "conversations")))
       let requestBody = OnlineWatchSubscription(conversations: conversations)
-      let res = client.subscribe(subscription: requestBody, queue: DispatchQueue.main) { (r, e) in
+      let res = client.subscribe(subscription: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
           } else if (r != nil && r!.data != nil) {

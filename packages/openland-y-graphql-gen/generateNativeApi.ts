@@ -198,7 +198,7 @@ export function generateNativeApi() {
                         runQuery += '      let ' + v.variable.name.value + ' = ' + buildReader(v.variable.name.value, v.type) + '\n';
                     }
                     runQuery += '      let requestBody = ' + def.name!!.value + 'Query(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
-                    runQuery += '      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in\n'
+                    runQuery += '      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in\n'
                     runQuery += '          if e != nil {\n'
                     runQuery += '            handler(nil, e)\n'
                     runQuery += '          } else if (r != nil && r!.data != nil) {\n'
@@ -242,7 +242,7 @@ export function generateNativeApi() {
                         watchQuery += '      let ' + v.variable.name.value + ' = ' + buildReader(v.variable.name.value, v.type) + '\n';
                     }
                     watchQuery += '      let requestBody = ' + def.name!!.value + 'Query(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
-                    watchQuery += '      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in\n'
+                    watchQuery += '      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in\n'
                     watchQuery += '          if e != nil {\n'
                     watchQuery += '            handler(nil, e)\n'
                     watchQuery += '          } else if (r != nil && r!.data != nil) {\n'
@@ -264,7 +264,7 @@ export function generateNativeApi() {
                         runMutation += '      let ' + v.variable.name.value + ' = ' + buildReader(v.variable.name.value, v.type) + '\n';
                     }
                     runMutation += '      let requestBody = ' + def.name!!.value + 'Mutation(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
-                    runMutation += '      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in\n'
+                    runMutation += '      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in\n'
                     runMutation += '          if e != nil {\n'
                     runMutation += '            handler(nil, e)\n'
                     runMutation += '          } else if (r != nil && r!.data != nil) {\n'
@@ -286,7 +286,7 @@ export function generateNativeApi() {
                         runSubscription += '      let ' + v.variable.name.value + ' = ' + buildReader(v.variable.name.value, v.type) + '\n';
                     }
                     runSubscription += '      let requestBody = ' + def.name!!.value + 'Subscription(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
-                    runSubscription += '      let res = client.subscribe(subscription: requestBody, queue: DispatchQueue.main) { (r, e) in\n'
+                    runSubscription += '      let res = client.subscribe(subscription: requestBody, queue: GraphQLQueue) { (r, e) in\n'
                     runSubscription += '          if e != nil {\n'
                     runSubscription += '            handler(nil, e)\n'
                     runSubscription += '          } else if (r != nil && r!.data != nil) {\n'
