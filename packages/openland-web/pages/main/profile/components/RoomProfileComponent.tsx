@@ -159,7 +159,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                 }
                             />
                             <LeaveChatComponent />
-                            <AdvancedSettingsModal
+                            {chat.welcomeMessage && <AdvancedSettingsModal
                                 roomId={chat.id}
                                 socialImage={chat.socialImage}
                                 canChangeAdvancedSettingsMembersUsers={
@@ -168,7 +168,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                 welcomeMessageText={chat.welcomeMessage!!.message}
                                 welcomeMessageSender={chat.welcomeMessage!!.sender}
                                 welcomeMessageIsOn={chat.welcomeMessage!!.isOn}
-                            />
+                            />}
                             <RoomEditModal
                                 roomId={chat.id}
                                 title={chat.title}
