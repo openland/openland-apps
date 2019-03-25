@@ -14,6 +14,7 @@ import {
 import { useClient } from 'openland-web/utils/useClient';
 import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+
 interface AdvancedSettingsInnerProps {
     socialImage: string | null;
     roomId: string;
@@ -68,22 +69,10 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
     React.useEffect(
         () => {
             setWelcomeMessageIsOn(props.welcomeMessageIsOn);
-        },
-        [props.welcomeMessageIsOn],
-    );
-
-    React.useEffect(
-        () => {
             setWelcomeMessageText(props.welcomeMessageText);
-        },
-        [props.welcomeMessageText],
-    );
-
-    React.useEffect(
-        () => {
             setWelcomeMessageSender(props.welcomeMessageSender);
         },
-        [props.welcomeMessageSender],
+        [props.welcomeMessageIsOn, props.welcomeMessageText, props.welcomeMessageSender],
     );
 
     const finalWelcomeMessageSenderError = triedToSend && welcomeMessageSenderError;
@@ -116,7 +105,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
 
     React.useEffect(
         () => {
-            if (isOpen === false) {
+            if (!isOpen) {
                 router!!.replaceQuery('advancedSettings', undefined);
                 setIsOpen(true);
             }
@@ -145,8 +134,8 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     input: {
                         ...(newSocialImage && newSocialImage.uuid !== props.socialImage
                             ? {
-                                  socialImageRef: sanitizeImageRef(newSocialImage),
-                              }
+                                socialImageRef: sanitizeImageRef(newSocialImage),
+                            }
                             : {}),
                     },
                 });
@@ -206,12 +195,12 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                                     <XView
                                         fontSize={14}
                                         marginTop={-4}
-                                        color={msgSender ? '#000' : 'rbga(0, 0, 0, 0.5)'}
+                                        color={msgSender ? '#000' : 'rgba(0, 0, 0, 0.5)'}
                                     >
                                         {msgSender ? msgSender.label : 'Select'}
                                     </XView>
                                 </XView>
-                                <ArrowIcon />
+                                <ArrowIcon/>
                             </XView>
                             {isOpenUsers && (
                                 <XView
