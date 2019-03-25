@@ -242,14 +242,12 @@ const MessageUrlAugmentationComponentInner = React.memo(
             );
         }
 
-        let isOpenlandLink = false;
+        let hideButton = false;
         let isUserLink = false;
         let isOrgLink = false;
         let objectId = '';
 
         if (titleLink && titleLink.match('openland.com')) {
-            isOpenlandLink = true;
-
             if (titleLink.match('/u/')) {
                 isUserLink = true;
                 objectId = titleLink.substring(titleLink.search('/u/') + 3, titleLink.length);
@@ -258,6 +256,9 @@ const MessageUrlAugmentationComponentInner = React.memo(
             if (titleLink.match('/o/')) {
                 isOrgLink = true;
                 objectId = titleLink.substring(titleLink.search('/o/') + 3, titleLink.length);
+            }
+            if (titleLink.match('/mail/') && !isUserLink && !isOrgLink) {
+                hideButton = true;
             }
         }
 
@@ -377,32 +378,34 @@ const MessageUrlAugmentationComponentInner = React.memo(
                             </XView>
                         )}
                 </XView>
-                {!keyboard && (
-                    <XView
-                        width="100%"
-                        backgroundColor="rgba(244, 244, 244, 0.7)"
-                        borderRadius={10}
-                        flexDirection="row"
-                        justifyContent="center"
-                        alignItems="center"
-                        color={'#1790ff'}
-                        fontSize={14}
-                        fontWeight={'600'}
-                        as="a"
-                        href={href}
-                        path={isUserLink ? `/mail/${objectId}` : path}
-                        target="_blank"
-                        height={41}
-                        marginTop={8}
-                    >
-                        {isUserLink ? 'Message' : 'Open link'}
-                    </XView>
-                )}
-                {keyboard && (
-                    <XView marginTop={8}>
-                        <Keyboard keyboard={keyboard} />
-                    </XView>
-                )}
+                {!keyboard &&
+                    !hideButton && (
+                        <XView
+                            width="100%"
+                            backgroundColor="rgba(244, 244, 244, 0.7)"
+                            borderRadius={10}
+                            flexDirection="row"
+                            justifyContent="center"
+                            alignItems="center"
+                            color={'#1790ff'}
+                            fontSize={14}
+                            fontWeight={'600'}
+                            as="a"
+                            href={href}
+                            path={isUserLink ? `/mail/${objectId}` : path}
+                            target="_blank"
+                            height={41}
+                            marginTop={8}
+                        >
+                            {isUserLink ? 'Message' : 'Open link'}
+                        </XView>
+                    )}
+                {keyboard &&
+                    !hideButton && (
+                        <XView marginTop={8}>
+                            <Keyboard keyboard={keyboard} />
+                        </XView>
+                    )}
             </XView>
         );
     },
