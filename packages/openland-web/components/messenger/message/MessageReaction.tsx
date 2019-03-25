@@ -16,6 +16,7 @@ const CustomPickerDiv = Glamorous(XPopper.Content)({
 const ReactionButton = Glamorous.div<{
     marginTop?: number;
     marginLeft?: number;
+    hovered: boolean;
 }>(props => ({
     display: 'flex',
     alignSelf: 'flex-start',
@@ -25,6 +26,10 @@ const ReactionButton = Glamorous.div<{
     marginTop: props.marginTop,
     marginLeft: props.marginLeft,
     paddingTop: 6,
+    '& svg > path': {
+        fill: props.hovered ? '#d75454' : undefined,
+        opacity: props.hovered ? 1 : undefined,
+    },
     '&:hover svg > path': {
         fill: '#d75454',
         opacity: 1,
@@ -98,28 +103,38 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 18 }) => {
     });
 };
 
-const ReactionPicker = (props: { setReaction: (src: any) => void }) => {
-    const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
+class ReactionPicker extends React.PureComponent<{
+    setReaction: (src: any) => void;
+    onHover: (hover: boolean) => void;
+}> {
+    componentWillUnmount() {
+        this.props.onHover(false);
+    }
 
-    return (
-        <XHorizontal separator={6} alignItems="center">
-            {defaultReactions.map((src: string) => (
-                <ReactionItem
-                    key={'msg_reaction' + src}
-                    onClick={e => {
-                        e.stopPropagation();
-                        props.setReaction(src);
-                    }}
-                >
-                    {emojifyReactions({
-                        src,
-                        size: 25,
-                    })}
-                </ReactionItem>
-            ))}
-        </XHorizontal>
-    );
-};
+    render() {
+        const { props } = this;
+        const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
+
+        return (
+            <XHorizontal separator={6} alignItems="center" onMouseEnter={() => props.onHover(true)}>
+                {defaultReactions.map((src: string) => (
+                    <ReactionItem
+                        key={'msg_reaction' + src}
+                        onClick={e => {
+                            e.stopPropagation();
+                            props.setReaction(src);
+                        }}
+                    >
+                        {emojifyReactions({
+                            src,
+                            size: 25,
+                        })}
+                    </ReactionItem>
+                ))}
+            </XHorizontal>
+        );
+    }
+}
 
 class ReactionComponentInner extends React.PureComponent<{
     messageId: string;
@@ -127,6 +142,9 @@ class ReactionComponentInner extends React.PureComponent<{
     marginLeft?: number;
     handler: (reaction: string) => void;
 }> {
+    state = {
+        hovered: false,
+    };
     handleSetReaction = (emj: any) => {
         this.props.handler(typeof emj === 'string' ? emj : emj.native);
     };
@@ -135,10 +153,21 @@ class ReactionComponentInner extends React.PureComponent<{
         this.handleSetReaction('❤️');
     };
 
+    onReactionsHover = (data: boolean) => {
+        this.setState({
+            hovered: data,
+        });
+    };
+
     render() {
         return (
             <XPopper
-                content={<ReactionPicker setReaction={this.handleSetReaction} />}
+                content={
+                    <ReactionPicker
+                        setReaction={this.handleSetReaction}
+                        onHover={this.onReactionsHover}
+                    />
+                }
                 showOnHover
                 placement="top"
                 contentContainer={<CustomPickerDiv />}
@@ -149,6 +178,7 @@ class ReactionComponentInner extends React.PureComponent<{
                     onClick={this.handleClick}
                     marginTop={this.props.marginTop}
                     marginLeft={this.props.marginLeft}
+                    hovered={this.state.hovered}
                 >
                     <ReactionIcon />
                 </ReactionButton>

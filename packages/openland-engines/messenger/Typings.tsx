@@ -40,7 +40,7 @@ export class TypingsWatcher {
                 let event = await this.subscription.get();
                 if (event) {
                     if (event.typings.user.id === currentuserId) {
-                        return;
+                        continue;
                     }
                     let cId: string = event.typings.conversation.id;
                     let type: string = event.typings.conversation.__typename;

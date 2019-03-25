@@ -39,6 +39,9 @@ export let ricjAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage
             isInvite(attach)
         )
 }
+
+export const paddedTextPrfix = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 9, ios: 8 }))}</ASText >;
+
 export class RichAttachContent extends React.PureComponent<UrlAugmentationContentProps, { downloadState?: DownloadState }> {
     private augLayout?: { width: number, height: number };
     private downloadManagerWatch?: WatchSubscription;
@@ -215,10 +218,13 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     maxWidth={maxWidth}
                     color={out ? '#fff' : '#000'}
                     fontSize={14}
-                    marginTop={this.imageCompact && imgLayout ? 4 : 0}
+                    marginTop={this.imageCompact && imgLayout ? (subTitle ? 4 : -19) : 0}
                     marginBottom={4}
+                    lineHeight={19}
+                    numberOfLines={10}
                     fontWeight={TextStyles.weight.regular}
                 >
+                    {!subTitle && this.imageCompact && imgLayout && paddedTextPrfix}
                     {text}
                     {this.props.padded && (this.props.message.isOut ? paddedTextOut : paddedText)}
                 </ASText>}
