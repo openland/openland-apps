@@ -15,6 +15,7 @@ class RNGraphqlClient {
   let module: RNGraphQL
   let client: ApolloClient
   let factory = ApiFactory()
+  var watches: [String: WatchCancel] = [:]
   
   init(key: String, endpoint: String, token: String?, module: RNGraphQL) {
     self.module = module
@@ -32,7 +33,7 @@ class RNGraphqlClient {
   }
   
   func query(id: String, query: String, arguments: NSDictionary) {
-    self.factory.buildQuery(client: self.client, name: query, src: arguments) { (res, err) in
+    self.factory.runQuery(client: self.client, name: query, src: arguments) { (res, err) in
       if err != nil {
         // Handle error
       } else {
@@ -40,5 +41,21 @@ class RNGraphqlClient {
         self.module.reportResult(key: self.key, id: id, result: res! as NSDictionary)
       }
     }
+  }
+  
+  func watch(id: String, query: String, arguments: NSDictionary) {
+    let c = self.factory.watchQuery(client: self.client, name: query, src: arguments) { (res, err) in
+      if err != nil {
+        // Handle error
+      } else {
+        // Handle result
+        self.module.reportResult(key: self.key, id: id, result: res! as NSDictionary)
+      }
+    }
+    self.watches[id] = c
+  }
+  
+  func watchEnd(id: String) {
+    self.watches.removeValue(forKey: id)?()
   }
 }

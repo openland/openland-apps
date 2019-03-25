@@ -35,7 +35,7 @@ class RNGraphQL: RCTEventEmitter {
   
   @objc(watch:id:query:arguments:parameters:)
   func watch(key: String, id: String, query: String, arguments: NSDictionary, parameters: NSDictionary) {
-    // TODO: Implement
+    self.clients[key]!.watch(id: id, query: query, arguments: arguments)
   }
   
   @objc(watchEnd:id:)

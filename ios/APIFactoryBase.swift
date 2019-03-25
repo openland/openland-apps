@@ -10,9 +10,14 @@ import Foundation
 import Apollo
 
 typealias ResponseHandler = (_ result: ResultMap?, _ error: Error?) -> Void
+typealias WatchCancel = () -> Void
 
 class ApiFactoryBase {
   func readInt(_ src: NSDictionary, _ name: String) -> Int? {
+    let res = src[name]
+    if res != nil {
+      return res as! Int
+    }
     return nil
   }
   
@@ -21,6 +26,10 @@ class ApiFactoryBase {
   }
   
   func readString(_ src: NSDictionary, _ name: String) -> String? {
+    let res = src[name]
+    if res != nil {
+      return res as! String
+    }
     return nil
   }
   
