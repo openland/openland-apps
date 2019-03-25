@@ -1,6 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { parse, NonNullTypeNode, TypeNode, print, VariableDefinitionNode } from 'graphql/language/index';
+import { camelCase } from "change-case";
+
+function structNameForPropertyName(propertyName: string) {
+    return camelCase(propertyName);
+}
 
 function fixParameters(src?: ReadonlyArray<VariableDefinitionNode>): VariableDefinitionNode[] {
     if (src) {
@@ -245,12 +250,12 @@ export function generateNativeApi() {
             for (let v of type.inputFields) {
                 inputTypes += '    let ' + v.name + ' = ' + buildSchemaReader(v.name, v.type) + '\n';
             }
-            inputTypes += '    return ' + type.name + '(' + type.inputFields!.map((v) => v.name + ': ' + v.name).join(', ') + ')\n'
+            inputTypes += '    return ' + type.name + '(' + type.inputFields!.map((v) => structNameForPropertyName(v.name) + ': ' + v.name).join(', ') + ')\n'
             inputTypes += '  }\n';
 
             inputTypes += '  func read' + type.name + '(_ src: NSDictionary, _ name: String) -> ' + type.name + '? {\n'
             inputTypes += '    let v = src[name]\n'
-            inputTypes += '    if v != nil {\n'
+            inputTypes += '    if v != nil && !(v is NSNull) {\n'
             inputTypes += '      return self.parse' + type.name + '(v as! NSDictionary)\n'
             inputTypes += '    } else {\n'
             inputTypes += '      return nil\n'
@@ -259,17 +264,18 @@ export function generateNativeApi() {
 
             inputTypes += '  func read' + type.name + 'List(_ src: NSDictionary, _ name: String) -> [' + type.name + '?]? {\n'
             inputTypes += '    let v = src[name]\n'
-            inputTypes += '    if v != nil {\n'
+            inputTypes += '    if v != nil && !(v is NSNull) {\n'
             inputTypes += '      let items = v as! [NSDictionary?]\n'
             inputTypes += '      var res: [' + type.name + '?] = []\n'
             inputTypes += '      for i in 0..<items.count {\n'
             inputTypes += '        let itm = items[i]\n'
-            inputTypes += '        if itm != nil {\n'
+            inputTypes += '        if itm != nil && !(itm is NSNull) {\n'
             inputTypes += '          res.append(self.parse' + type.name + '(itm!))\n'
             inputTypes += '        } else {\n'
             inputTypes += '          res.append(nil)\n'
             inputTypes += '        }\n'
             inputTypes += '      }\n'
+            inputTypes += '      return res\n'
             inputTypes += '    } else {\n'
             inputTypes += '      return nil\n'
             inputTypes += '    }\n'
@@ -278,7 +284,7 @@ export function generateNativeApi() {
         if (type.kind === 'ENUM' && identifiers.has(type.name)) {
             inputTypes += '  func read' + type.name + '(_ src: NSDictionary, _ name: String) -> ' + type.name + '? {\n'
             inputTypes += '    let v = self.readString(src, name);\n'
-            inputTypes += '    if v != nil {\n'
+            inputTypes += '    if v != nil && !(v is NSNull) {\n'
             inputTypes += '      return ' + type.name + '.init(rawValue: v!)\n'
             inputTypes += '     } else {\n'
             inputTypes += '       return nil\n'

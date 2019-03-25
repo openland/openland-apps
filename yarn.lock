@@ -1891,6 +1891,11 @@
     "@types/events" "*"
     "@types/node" "*"
 
+"@types/inflected@^1.1.29":
+  version "1.1.29"
+  resolved "https://registry.yarnpkg.com/@types/inflected/-/inflected-1.1.29.tgz#8ef717dcf618d84584f506108ea85cd852f6d3ab"
+  integrity sha1-jvcX3PYY2EWE9QYQjqhc2FL206s=
+
 "@types/is-glob@4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/is-glob/-/is-glob-4.0.0.tgz#fb8a2bff539025d4dcd6d5efe7689e03341b876d"
@@ -4875,6 +4880,30 @@ chalk@~0.4.0:
 change-case@3.0.2, change-case@^3.0.1:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/change-case/-/change-case-3.0.2.tgz#fd48746cce02f03f0a672577d1d3a8dc2eceb037"
+  dependencies:
+    camel-case "^3.0.0"
+    constant-case "^2.0.0"
+    dot-case "^2.1.0"
+    header-case "^1.0.0"
+    is-lower-case "^1.1.0"
+    is-upper-case "^1.1.0"
+    lower-case "^1.1.1"
+    lower-case-first "^1.0.0"
+    no-case "^2.3.2"
+    param-case "^2.1.0"
+    pascal-case "^2.0.0"
+    path-case "^2.1.0"
+    sentence-case "^2.1.0"
+    snake-case "^2.1.0"
+    swap-case "^1.1.0"
+    title-case "^2.1.0"
+    upper-case "^1.1.1"
+    upper-case-first "^1.1.0"
+
+change-case@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/change-case/-/change-case-3.1.0.tgz#0e611b7edc9952df2e8513b27b42de72647dd17e"
+  integrity sha512-2AZp7uJZbYEzRPsFoa+ijKdvp9zsrnnt6+yFokfwEpeJm0xuJDVoxiRCAaTzyJND8GJkofo2IcKWaUZ/OECVzw==
   dependencies:
     camel-case "^3.0.0"
     constant-case "^2.0.0"
@@ -8269,7 +8298,7 @@ indexof@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/indexof/-/indexof-0.0.1.tgz#82dc336d232b9062179d05ab3293a66059fd435d"
 
-inflected@^2.0.3:
+inflected@^2.0.3, inflected@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/inflected/-/inflected-2.0.4.tgz#323770961ccbe992a98ea930512e9a82d3d3ef77"
 

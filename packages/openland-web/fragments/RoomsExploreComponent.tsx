@@ -56,7 +56,7 @@ export const Rooms = withChatSearchChannels(props => {
                             customButton={customButton}
                             CustomButtonComponent={CustomButtonComponent}
                             key={c.node.id}
-                            room={room}
+                            room={room as any /* Sorry, universe */}
                             path={'/directory/p/' + room.id}
                             isMember={room.membership === 'MEMBER'}
                         />

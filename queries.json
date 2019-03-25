@@ -3983,7 +3983,7 @@
 					"type": "Int"
 				}
 			],
-			"source": "query RoomSearch($query: String, $sort: String, $page: Int) {\n  items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...RoomFull\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}",
+			"source": "query RoomSearch($query: String, $sort: String, $page: Int) {\n  items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...RoomShort\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "items",
@@ -4057,7 +4057,7 @@
 										}
 									],
 									"fragmentSpreads": [
-										"RoomFull"
+										"RoomShort"
 									],
 									"inlineFragments": []
 								},
@@ -4139,16 +4139,14 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"RoomFull",
+				"RoomShort",
 				"UserShort",
 				"OrganizationShort",
-				"OrganizationMedium",
-				"UserFull",
 				"FullMessage",
 				"UserTiny"
 			],
-			"sourceWithFragments": "query RoomSearch($query: String, $sort: String, $page: Int) {\n  items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...RoomFull\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}\nfragment RoomFull on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    title\n    photo\n    socialImage\n    description\n    organization {\n      __typename\n      ...OrganizationMedium\n    }\n    membership\n    role\n    membersCount\n    members {\n      __typename\n      role\n      membership\n      user {\n        __typename\n        ...UserShort\n      }\n      canKick\n    }\n    requests {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n    canEdit\n    welcomeMessage {\n      __typename\n      isOn\n      sender {\n        __typename\n        id\n        name\n      }\n      message\n    }\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}\nfragment OrganizationMedium on Organization {\n  __typename\n  id\n  name\n  photo\n  isMine\n  isOwner: betaIsOwner\n  isAdmin: betaIsAdmin\n  isCommunity: alphaIsCommunity\n  adminMembers: alphaOrganizationAdminMembers {\n    __typename\n    role\n    user {\n      __typename\n      ...UserFull\n    }\n  }\n}\nfragment UserFull on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  phone\n  email\n  website\n  about\n  location\n  isBot\n  isYou\n  online\n  lastSeen\n  linkedin\n  twitter\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}",
-			"operationId": "48a6001e2ca8d30362ae8d750a71acdd0841b7b22f656739ba3ff72baecb2117"
+			"sourceWithFragments": "query RoomSearch($query: String, $sort: String, $page: Int) {\n  items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...RoomShort\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}\nfragment RoomShort on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    title\n    photo\n    membership\n    role\n    canEdit\n    membersCount\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n    organization {\n      __typename\n      ...OrganizationShort\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}",
+			"operationId": "a54db3625bee6f4cf75a7e572e237f29de4324d84edb2d1160fa430b13091ce1"
 		},
 		{
 			"filePath": "file:///Users/steve/Develop/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -17475,110 +17473,6 @@
 				{
 					"name": "alphaFeatured",
 					"type": "Boolean"
-				},
-				{
-					"name": "alphaLocations",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaInterests",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaOrganizationType",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaPotentialSites",
-					"type": "[RangeInput]"
-				},
-				{
-					"name": "alphaSiteSizes",
-					"type": "[RangeInput]"
-				},
-				{
-					"name": "alphaDevelopmentModels",
-					"type": "[String]"
-				},
-				{
-					"name": "alphaAvailability",
-					"type": "[String]"
-				},
-				{
-					"name": "alphaLandUse",
-					"type": "[String]"
-				},
-				{
-					"name": "alphaGoodFor",
-					"type": "[String]"
-				},
-				{
-					"name": "alphaSpecialAttributes",
-					"type": "[String]"
-				},
-				{
-					"name": "alphaLookingFor",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaGeographies",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaDOShapeAndForm",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaDOCurrentUse",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaDOGoodFitFor",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaDOSpecialAttributes",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaDOAvailability",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaARGeographies",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaARAreaRange",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaARHeightLimit",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaARActivityStatus",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaARAquisitionBudget",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaARAquisitionRate",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaARClosingTime",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaARSpecialAttributes",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaARLandUse",
-					"type": "[String!]"
 				}
 			]
 		},
@@ -17613,20 +17507,6 @@
 				{
 					"name": "twitter",
 					"type": "String"
-				}
-			]
-		},
-		{
-			"kind": "InputObjectType",
-			"name": "RangeInput",
-			"fields": [
-				{
-					"name": "from",
-					"type": "Int"
-				},
-				{
-					"name": "to",
-					"type": "Int"
 				}
 			]
 		},

@@ -13,45 +13,54 @@ typealias ResponseHandler = (_ result: ResultMap?, _ error: Error?) -> Void
 typealias WatchCancel = () -> Void
 
 class ApiFactoryBase {
+  
   func readInt(_ src: NSDictionary, _ name: String) -> Int? {
     let res = src[name]
     if res != nil {
-      return res as! Int
+      return Int(res as! NSNumber)
     }
     return nil
   }
   
-  func readFloat(_ src: NSDictionary, _ name: String) -> Bool? {
-    return nil
-  }
+//  func readFloat(_ src: NSDictionary, _ name: String) -> Bool? {
+//    return nil
+//  }
   
   func readString(_ src: NSDictionary, _ name: String) -> String? {
     let res = src[name]
-    if res != nil {
+    if res != nil && !(res is NSNull) {
       return res as! String
     }
     return nil
   }
   
   func readBool(_ src: NSDictionary, _ name: String) -> Bool? {
+    let res = src[name]
+    if res != nil && !(res is NSNull) {
+      return res as! Bool
+    }
     return nil
   }
   
   func readStringList(_ src: NSDictionary, _ name: String) -> [String?]? {
+    let d = src[name]
+    if d != nil && !(d is NSNull) {
+      return d as! [String?]
+    }
     return nil
   }
   
-  func readIntList(_ src: NSDictionary, _ name: String) -> [String?]? {
-    return nil
-  }
+//  func readIntList(_ src: NSDictionary, _ name: String) -> [String?]? {
+//    return nil
+//  }
   
-  func readFloatList(_ src: NSDictionary, _ name: String) -> [String?]? {
-    return nil
-  }
+//  func readFloatList(_ src: NSDictionary, _ name: String) -> [String?]? {
+//    return nil
+//  }
   
-  func readBoolList(_ src: NSDictionary, _ name: String) -> [String?]? {
-    return nil
-  }
+//  func readBoolList(_ src: NSDictionary, _ name: String) -> [String?]? {
+//    return nil
+//  }
   
   
   func notNull<T>(_ v: T?) -> T {

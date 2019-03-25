@@ -1586,7 +1586,7 @@ class ApiFactory: ApiFactoryBase {
 
   func readNotificationMessages(_ src: NSDictionary, _ name: String) -> NotificationMessages? {
     let v = self.readString(src, name);
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return NotificationMessages.init(rawValue: v!)
      } else {
        return nil
@@ -1594,7 +1594,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readOrganizationMemberRole(_ src: NSDictionary, _ name: String) -> OrganizationMemberRole? {
     let v = self.readString(src, name);
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return OrganizationMemberRole.init(rawValue: v!)
      } else {
        return nil
@@ -1602,7 +1602,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readSharedRoomKind(_ src: NSDictionary, _ name: String) -> SharedRoomKind? {
     let v = self.readString(src, name);
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return SharedRoomKind.init(rawValue: v!)
      } else {
        return nil
@@ -1610,7 +1610,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readRoomMemberRole(_ src: NSDictionary, _ name: String) -> RoomMemberRole? {
     let v = self.readString(src, name);
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return RoomMemberRole.init(rawValue: v!)
      } else {
        return nil
@@ -1618,7 +1618,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readPostMessageType(_ src: NSDictionary, _ name: String) -> PostMessageType? {
     let v = self.readString(src, name);
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return PostMessageType.init(rawValue: v!)
      } else {
        return nil
@@ -1626,7 +1626,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readEmailFrequency(_ src: NSDictionary, _ name: String) -> EmailFrequency? {
     let v = self.readString(src, name);
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return EmailFrequency.init(rawValue: v!)
      } else {
        return nil
@@ -1634,7 +1634,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readNotificationsDelay(_ src: NSDictionary, _ name: String) -> NotificationsDelay? {
     let v = self.readString(src, name);
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return NotificationsDelay.init(rawValue: v!)
      } else {
        return nil
@@ -1642,7 +1642,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readSuperAdminRole(_ src: NSDictionary, _ name: String) -> SuperAdminRole? {
     let v = self.readString(src, name);
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return SuperAdminRole.init(rawValue: v!)
      } else {
        return nil
@@ -1655,7 +1655,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readImageRefInput(_ src: NSDictionary, _ name: String) -> ImageRefInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseImageRefInput(v as! NSDictionary)
     } else {
       return nil
@@ -1663,17 +1663,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readImageRefInputList(_ src: NSDictionary, _ name: String) -> [ImageRefInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [ImageRefInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseImageRefInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -1687,7 +1688,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readImageCropInput(_ src: NSDictionary, _ name: String) -> ImageCropInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseImageCropInput(v as! NSDictionary)
     } else {
       return nil
@@ -1695,17 +1696,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readImageCropInputList(_ src: NSDictionary, _ name: String) -> [ImageCropInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [ImageCropInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseImageCropInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -1726,7 +1728,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readProfileInput(_ src: NSDictionary, _ name: String) -> ProfileInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseProfileInput(v as! NSDictionary)
     } else {
       return nil
@@ -1734,17 +1736,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readProfileInputList(_ src: NSDictionary, _ name: String) -> [ProfileInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [ProfileInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseProfileInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -1765,7 +1768,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readCreateProfileInput(_ src: NSDictionary, _ name: String) -> CreateProfileInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseCreateProfileInput(v as! NSDictionary)
     } else {
       return nil
@@ -1773,17 +1776,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readCreateProfileInputList(_ src: NSDictionary, _ name: String) -> [CreateProfileInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [CreateProfileInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseCreateProfileInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -1809,7 +1813,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readUpdateProfileInput(_ src: NSDictionary, _ name: String) -> UpdateProfileInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseUpdateProfileInput(v as! NSDictionary)
     } else {
       return nil
@@ -1817,17 +1821,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readUpdateProfileInputList(_ src: NSDictionary, _ name: String) -> [UpdateProfileInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [UpdateProfileInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseUpdateProfileInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -1844,7 +1849,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readCreateOrganizationInput(_ src: NSDictionary, _ name: String) -> CreateOrganizationInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseCreateOrganizationInput(v as! NSDictionary)
     } else {
       return nil
@@ -1852,24 +1857,25 @@ class ApiFactory: ApiFactoryBase {
   }
   func readCreateOrganizationInputList(_ src: NSDictionary, _ name: String) -> [CreateOrganizationInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [CreateOrganizationInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseCreateOrganizationInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
   }
   func readDebugEmailType(_ src: NSDictionary, _ name: String) -> DebugEmailType? {
     let v = self.readString(src, name);
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return DebugEmailType.init(rawValue: v!)
      } else {
        return nil
@@ -1887,7 +1893,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readUpdateSettingsInput(_ src: NSDictionary, _ name: String) -> UpdateSettingsInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseUpdateSettingsInput(v as! NSDictionary)
     } else {
       return nil
@@ -1895,17 +1901,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readUpdateSettingsInputList(_ src: NSDictionary, _ name: String) -> [UpdateSettingsInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [UpdateSettingsInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseUpdateSettingsInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -1920,7 +1927,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readInviteRequest(_ src: NSDictionary, _ name: String) -> InviteRequest? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseInviteRequest(v as! NSDictionary)
     } else {
       return nil
@@ -1928,17 +1935,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readInviteRequestList(_ src: NSDictionary, _ name: String) -> [InviteRequest?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [InviteRequest?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseInviteRequest(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -1951,7 +1959,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readEvent(_ src: NSDictionary, _ name: String) -> Event? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseEvent(v as! NSDictionary)
     } else {
       return nil
@@ -1959,17 +1967,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readEventList(_ src: NSDictionary, _ name: String) -> [Event?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [Event?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseEvent(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -1983,7 +1992,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readAppProfileInput(_ src: NSDictionary, _ name: String) -> AppProfileInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseAppProfileInput(v as! NSDictionary)
     } else {
       return nil
@@ -1991,17 +2000,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readAppProfileInputList(_ src: NSDictionary, _ name: String) -> [AppProfileInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [AppProfileInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseAppProfileInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -2020,37 +2030,11 @@ class ApiFactory: ApiFactoryBase {
     let alphaPublished = readBool(src, "alphaPublished")
     let alphaEditorial = readBool(src, "alphaEditorial")
     let alphaFeatured = readBool(src, "alphaFeatured")
-    let alphaLocations = notNullListItems(readStringList(src, "alphaLocations"))
-    let alphaInterests = notNullListItems(readStringList(src, "alphaInterests"))
-    let alphaOrganizationType = notNullListItems(readStringList(src, "alphaOrganizationType"))
-    let alphaPotentialSites = readRangeInputList(src, "alphaPotentialSites")
-    let alphaSiteSizes = readRangeInputList(src, "alphaSiteSizes")
-    let alphaDevelopmentModels = readStringList(src, "alphaDevelopmentModels")
-    let alphaAvailability = readStringList(src, "alphaAvailability")
-    let alphaLandUse = readStringList(src, "alphaLandUse")
-    let alphaGoodFor = readStringList(src, "alphaGoodFor")
-    let alphaSpecialAttributes = readStringList(src, "alphaSpecialAttributes")
-    let alphaLookingFor = notNullListItems(readStringList(src, "alphaLookingFor"))
-    let alphaGeographies = notNullListItems(readStringList(src, "alphaGeographies"))
-    let alphaDOShapeAndForm = notNullListItems(readStringList(src, "alphaDOShapeAndForm"))
-    let alphaDOCurrentUse = notNullListItems(readStringList(src, "alphaDOCurrentUse"))
-    let alphaDOGoodFitFor = notNullListItems(readStringList(src, "alphaDOGoodFitFor"))
-    let alphaDOSpecialAttributes = notNullListItems(readStringList(src, "alphaDOSpecialAttributes"))
-    let alphaDOAvailability = notNullListItems(readStringList(src, "alphaDOAvailability"))
-    let alphaARGeographies = notNullListItems(readStringList(src, "alphaARGeographies"))
-    let alphaARAreaRange = notNullListItems(readStringList(src, "alphaARAreaRange"))
-    let alphaARHeightLimit = notNullListItems(readStringList(src, "alphaARHeightLimit"))
-    let alphaARActivityStatus = notNullListItems(readStringList(src, "alphaARActivityStatus"))
-    let alphaARAquisitionBudget = notNullListItems(readStringList(src, "alphaARAquisitionBudget"))
-    let alphaARAquisitionRate = notNullListItems(readStringList(src, "alphaARAquisitionRate"))
-    let alphaARClosingTime = notNullListItems(readStringList(src, "alphaARClosingTime"))
-    let alphaARSpecialAttributes = notNullListItems(readStringList(src, "alphaARSpecialAttributes"))
-    let alphaARLandUse = notNullListItems(readStringList(src, "alphaARLandUse"))
-    return UpdateOrganizationProfileInput(name: name, photoRef: photoRef, website: website, websiteTitle: websiteTitle, about: about, twitter: twitter, facebook: facebook, linkedin: linkedin, location: location, contacts: contacts, alphaPublished: alphaPublished, alphaEditorial: alphaEditorial, alphaFeatured: alphaFeatured, alphaLocations: alphaLocations, alphaInterests: alphaInterests, alphaOrganizationType: alphaOrganizationType, alphaPotentialSites: alphaPotentialSites, alphaSiteSizes: alphaSiteSizes, alphaDevelopmentModels: alphaDevelopmentModels, alphaAvailability: alphaAvailability, alphaLandUse: alphaLandUse, alphaGoodFor: alphaGoodFor, alphaSpecialAttributes: alphaSpecialAttributes, alphaLookingFor: alphaLookingFor, alphaGeographies: alphaGeographies, alphaDOShapeAndForm: alphaDOShapeAndForm, alphaDOCurrentUse: alphaDOCurrentUse, alphaDOGoodFitFor: alphaDOGoodFitFor, alphaDOSpecialAttributes: alphaDOSpecialAttributes, alphaDOAvailability: alphaDOAvailability, alphaARGeographies: alphaARGeographies, alphaARAreaRange: alphaARAreaRange, alphaARHeightLimit: alphaARHeightLimit, alphaARActivityStatus: alphaARActivityStatus, alphaARAquisitionBudget: alphaARAquisitionBudget, alphaARAquisitionRate: alphaARAquisitionRate, alphaARClosingTime: alphaARClosingTime, alphaARSpecialAttributes: alphaARSpecialAttributes, alphaARLandUse: alphaARLandUse)
+    return UpdateOrganizationProfileInput(name: name, photoRef: photoRef, website: website, websiteTitle: websiteTitle, about: about, twitter: twitter, facebook: facebook, linkedin: linkedin, location: location, contacts: contacts, alphaPublished: alphaPublished, alphaEditorial: alphaEditorial, alphaFeatured: alphaFeatured)
   }
   func readUpdateOrganizationProfileInput(_ src: NSDictionary, _ name: String) -> UpdateOrganizationProfileInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseUpdateOrganizationProfileInput(v as! NSDictionary)
     } else {
       return nil
@@ -2058,17 +2042,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readUpdateOrganizationProfileInputList(_ src: NSDictionary, _ name: String) -> [UpdateOrganizationProfileInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [UpdateOrganizationProfileInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseUpdateOrganizationProfileInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -2085,7 +2070,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readContactPersonInput(_ src: NSDictionary, _ name: String) -> ContactPersonInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseContactPersonInput(v as! NSDictionary)
     } else {
       return nil
@@ -2093,54 +2078,25 @@ class ApiFactory: ApiFactoryBase {
   }
   func readContactPersonInputList(_ src: NSDictionary, _ name: String) -> [ContactPersonInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [ContactPersonInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseContactPersonInput(itm!))
         } else {
           res.append(nil)
         }
       }
-    } else {
-      return nil
-    }
-  }
-  func parseRangeInput(_ src: NSDictionary) -> RangeInput {
-    let from = readInt(src, "from")
-    let to = readInt(src, "to")
-    return RangeInput(from: from, to: to)
-  }
-  func readRangeInput(_ src: NSDictionary, _ name: String) -> RangeInput? {
-    let v = src[name]
-    if v != nil {
-      return self.parseRangeInput(v as! NSDictionary)
-    } else {
-      return nil
-    }
-  }
-  func readRangeInputList(_ src: NSDictionary, _ name: String) -> [RangeInput?]? {
-    let v = src[name]
-    if v != nil {
-      let items = v as! [NSDictionary?]
-      var res: [RangeInput?] = []
-      for i in 0..<items.count {
-        let itm = items[i]
-        if itm != nil {
-          res.append(self.parseRangeInput(itm!))
-        } else {
-          res.append(nil)
-        }
-      }
+      return res
     } else {
       return nil
     }
   }
   func readPushType(_ src: NSDictionary, _ name: String) -> PushType? {
     let v = self.readString(src, name);
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return PushType.init(rawValue: v!)
      } else {
        return nil
@@ -2156,7 +2112,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readRoomUpdateInput(_ src: NSDictionary, _ name: String) -> RoomUpdateInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseRoomUpdateInput(v as! NSDictionary)
     } else {
       return nil
@@ -2164,17 +2120,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readRoomUpdateInputList(_ src: NSDictionary, _ name: String) -> [RoomUpdateInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [RoomUpdateInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseRoomUpdateInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -2186,7 +2143,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readRoomInviteInput(_ src: NSDictionary, _ name: String) -> RoomInviteInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseRoomInviteInput(v as! NSDictionary)
     } else {
       return nil
@@ -2194,17 +2151,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readRoomInviteInputList(_ src: NSDictionary, _ name: String) -> [RoomInviteInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [RoomInviteInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseRoomInviteInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -2218,7 +2176,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readRoomInviteEmailRequest(_ src: NSDictionary, _ name: String) -> RoomInviteEmailRequest? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseRoomInviteEmailRequest(v as! NSDictionary)
     } else {
       return nil
@@ -2226,17 +2184,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readRoomInviteEmailRequestList(_ src: NSDictionary, _ name: String) -> [RoomInviteEmailRequest?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [RoomInviteEmailRequest?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseRoomInviteEmailRequest(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }
@@ -2247,7 +2206,7 @@ class ApiFactory: ApiFactoryBase {
   }
   func readRoomUserNotificaionSettingsInput(_ src: NSDictionary, _ name: String) -> RoomUserNotificaionSettingsInput? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       return self.parseRoomUserNotificaionSettingsInput(v as! NSDictionary)
     } else {
       return nil
@@ -2255,17 +2214,18 @@ class ApiFactory: ApiFactoryBase {
   }
   func readRoomUserNotificaionSettingsInputList(_ src: NSDictionary, _ name: String) -> [RoomUserNotificaionSettingsInput?]? {
     let v = src[name]
-    if v != nil {
+    if v != nil && !(v is NSNull) {
       let items = v as! [NSDictionary?]
       var res: [RoomUserNotificaionSettingsInput?] = []
       for i in 0..<items.count {
         let itm = items[i]
-        if itm != nil {
+        if itm != nil && !(itm is NSNull) {
           res.append(self.parseRoomUserNotificaionSettingsInput(itm!))
         } else {
           res.append(nil)
         }
       }
+      return res
     } else {
       return nil
     }

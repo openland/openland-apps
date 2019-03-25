@@ -40,12 +40,12 @@ class RNGraphQL: RCTEventEmitter {
   
   @objc(watchEnd:id:)
   func watchEnd(key: String, id: String) {
-    // TODO: Implement
+    self.clients[key]!.watchEnd(id: id)
   }
   
   @objc(mutate:id:mutation:arguments:)
   func mutate(key: String, id: String, mutation: String, arguments: NSDictionary) {
-    // TODO: Implement
+    self.clients[key]!.mutate(id: id, mutation: mutation, arguments: arguments)
   }
   
   @objc(subscribe:id:query:arguments:)

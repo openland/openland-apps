@@ -58,4 +58,15 @@ class RNGraphqlClient {
   func watchEnd(id: String) {
     self.watches.removeValue(forKey: id)?()
   }
+  
+  func mutate(id: String, mutation: String, arguments: NSDictionary) {
+    self.factory.runMutation(client: self.client, name: mutation, src: arguments) { (res, err) in
+      if err != nil {
+        // Handle error
+      } else {
+        // Handle result
+        self.module.reportResult(key: self.key, id: id, result: res! as NSDictionary)
+      }
+    }
+  }
 }

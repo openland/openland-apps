@@ -489,7 +489,7 @@ export const RoomSearchQuery = gql`
         items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {
             edges {
                 node {
-                    ...RoomFull
+                    ...RoomShort
                 }
                 cursor
             }
@@ -503,7 +503,7 @@ export const RoomSearchQuery = gql`
             }
         }
     }
-    ${RoomFull}
+    ${RoomShort}
     ${UserShort}
     ${OrganizationMedium}
 `;
