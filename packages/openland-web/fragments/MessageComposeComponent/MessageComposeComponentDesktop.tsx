@@ -21,7 +21,6 @@ import {
     RoomEditMessage,
     SharedRoomKind,
     RoomMembers_members,
-    PostMessageType,
     UserShort,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
@@ -45,7 +44,6 @@ export interface MessageComposeComponentProps {
     onSend?: (text: string, mentions: UserShort[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
-    handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
     getMessages?: () => ModelMessage[];
 }
 
@@ -159,7 +157,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
                     quoteState={quoteState}
                     handleChange={handleChange}
                     handleSend={handleSend}
-                    handleHideChat={messageComposeProps.handleHideChat}
                     inputRef={inputRef}
                     inputValue={inputValue}
                     enabled={messageComposeProps.enabled}

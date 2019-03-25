@@ -5,7 +5,6 @@ import { XButton } from 'openland-x/XButton';
 import { FileUploader } from './FileUploading/FileUploader';
 import { SendMessageWrapper, SendMessageContent } from './Components';
 import { AttachmentButtons } from './AttachmentButtons';
-import { PostMessageType } from 'openland-api/Types';
 import { EditView } from './EditView';
 import { MentionsStateT } from './useMentions';
 import { QuoteStateT } from './useQuote';
@@ -26,7 +25,6 @@ export type TextInputComponentInnerT = TextInputComponentT & { placeholder: stri
 
 export type DumpSendMessagePropsT = TextInputComponentT & {
     enabled?: boolean;
-    handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
     quoteState?: QuoteStateT;
     closeEditor?: () => void;
 };
@@ -43,7 +41,6 @@ export const DumpSendMessage = ({
     inputRef,
     inputValue,
     enabled,
-    handleHideChat,
     quoteState,
     closeEditor,
 }: DumpSendMessageT) => {
@@ -53,13 +50,15 @@ export const DumpSendMessage = ({
             <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
             <SendMessageContent separator={4} alignItems="center">
                 <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                    {closeEditor && quoteState && quoteState.quoteMessageReply && (
-                        <EditView
-                            message={quoteState.quoteMessageReply}
-                            title={quoteState.quoteMessageSender || 'Edit message'}
-                            onCancel={closeEditor}
-                        />
-                    )}
+                    {closeEditor &&
+                        quoteState &&
+                        quoteState.quoteMessageReply && (
+                            <EditView
+                                message={quoteState.quoteMessageReply}
+                                title={quoteState.quoteMessageSender || 'Edit message'}
+                                onCancel={closeEditor}
+                            />
+                        )}
                     <FileUploader />
                     <TextInputComponent
                         placeholder="Write a message..."
@@ -71,7 +70,7 @@ export const DumpSendMessage = ({
                         handleDrop={handleDrop}
                     />
                     <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
-                        <AttachmentButtons enabled={enabled} handleHideChat={handleHideChat} />
+                        <AttachmentButtons enabled={enabled} />
 
                         <XButton
                             text="Send"

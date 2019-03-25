@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     buttons: {
         height: '35%',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     } as ViewStyle,
     buttonWrapper: {
         flexGrow: 1,

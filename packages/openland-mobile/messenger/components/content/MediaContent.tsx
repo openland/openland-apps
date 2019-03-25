@@ -107,12 +107,15 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         return (
             <ASFlex
                 flexDirection="column"
-                width={this.props.layout.width}
+                width={this.props.single ? this.props.layout.width : undefined}
                 height={this.props.layout.height}
                 marginTop={this.props.compensateBubble ? (this.props.single ? -contentInsetsTop : 8) : undefined}
                 marginLeft={this.props.compensateBubble ? - contentInsetsHorizontal : undefined}
                 marginRight={this.props.compensateBubble ? - contentInsetsHorizontal : undefined}
                 marginBottom={this.props.compensateBubble ? - contentInsetsBottom : undefined}
+                backgroundColor={!this.props.single ? '#dbdce1' : undefined}
+                borderRadius={18}
+                alignItems="center"
             >
                 <ASImage
                     maxWidth={this.props.layout.width}

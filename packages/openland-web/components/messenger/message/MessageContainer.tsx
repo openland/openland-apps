@@ -34,6 +34,7 @@ const CompactPreambulaContainer = ({ children }: { children: any }) => {
             whiteSpace={'nowrap'}
             overflow={'hidden'}
             paddingTop={1}
+            marginTop={1}
             fontWeight={'600'}
             lineHeight={'22px'}
             color={'rgba(0, 0, 0, 0.4)'}

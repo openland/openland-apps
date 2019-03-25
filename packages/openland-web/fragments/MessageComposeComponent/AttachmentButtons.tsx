@@ -3,22 +3,10 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import Glamorous from 'glamorous';
 import FileIcon from 'openland-icons/ic-file-3.svg';
-import IntroIc from 'openland-icons/ic-attach-intro-3.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import { XLink } from 'openland-x/XLink';
-import PostIcon from 'openland-icons/ic-add-post.svg';
 import { ShortcutsModal } from 'openland-web/components/messenger/view/ShortcutsModal';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
-import { PostMessageType } from 'openland-api/Types';
-import { XPopper } from 'openland-x/XPopper';
-import { XMenuVertical, XMenuItemSeparator } from 'openland-x/XMenuItem';
-import { XMenuItem } from 'openland-x/XMenuItem';
 import { UploadContext } from './FileUploading/UploadContext';
-
-interface PostButtonProps {
-    enabled?: boolean;
-    handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
-}
 
 const FileInput = Glamorous.input({
     display: 'none',
@@ -70,109 +58,7 @@ export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props =>
     },
 }));
 
-export class PostButton extends React.PureComponent<PostButtonProps> {
-    state = {
-        show: false,
-    };
-
-    private handleShowMenu = () => {
-        this.setState({
-            show: !this.state.show,
-        });
-    };
-
-    private handleCloseMenu = () => {
-        this.setState({
-            show: false,
-        });
-    };
-
-    render() {
-        const { props } = this;
-        let onClickHandler =
-            props.enabled === false
-                ? undefined
-                : props.handleHideChat
-                ? props.handleHideChat
-                : undefined;
-
-        let enableProps = {
-            enabled: props.enabled === false,
-            disable: props.enabled === false,
-        };
-
-        return (
-            <XPopper
-                placement="top-start"
-                arrow={null}
-                showOnHover={false}
-                show={this.state.show}
-                contentContainer={<XMenuVertical />}
-                onClickOutside={this.handleCloseMenu}
-                content={
-                    <>
-                        <XMenuItem
-                            style="gray"
-                            {...enableProps}
-                            onClick={() =>
-                                onClickHandler && onClickHandler(true, PostMessageType.BLANK)
-                            }
-                        >
-                            Quick post
-                        </XMenuItem>
-                        <XMenuItemSeparator />
-                        <XMenuItem
-                            style="gray"
-                            {...enableProps}
-                            onClick={() =>
-                                onClickHandler &&
-                                onClickHandler(true, PostMessageType.JOB_OPPORTUNITY)
-                            }
-                        >
-                            Job opportunity
-                        </XMenuItem>
-                        <XMenuItem
-                            style="gray"
-                            {...enableProps}
-                            onClick={() =>
-                                onClickHandler && onClickHandler(true, PostMessageType.OFFICE_HOURS)
-                            }
-                        >
-                            Office hours
-                        </XMenuItem>
-                        <XMenuItem
-                            style="gray"
-                            {...enableProps}
-                            onClick={() =>
-                                onClickHandler &&
-                                onClickHandler(true, PostMessageType.REQUEST_FOR_STARTUPS)
-                            }
-                        >
-                            Request for startups
-                        </XMenuItem>
-                    </>
-                }
-            >
-                <AttachmentButton
-                    {...enableProps}
-                    onClick={props.enabled === false ? undefined : this.handleShowMenu}
-                    className="document-button"
-                >
-                    <PostIcon />
-                    <span>Post</span>
-                </AttachmentButton>
-            </XPopper>
-        );
-    }
-}
-
-export const AttachmentButtons = ({
-    enabled,
-    handleHideChat,
-}: {
-    enabled?: boolean;
-    handleHideChat?: (show: boolean, postType: any) => void;
-}) => {
+export const AttachmentButtons = ({ enabled }: { enabled?: boolean }) => {
     const fileInput: React.RefObject<HTMLInputElement> = React.createRef();
     const { handleDrop } = React.useContext(UploadContext);
     const fileSelector = () => {
@@ -187,8 +73,6 @@ export const AttachmentButtons = ({
             fileInput.current.value = '';
         }
     };
-
-    const { isMobile } = React.useContext(MobileSidebarContext);
 
     return (
         <XHorizontal separator="none">
@@ -210,24 +94,6 @@ export const AttachmentButtons = ({
                 <FileIcon />
                 <span>Document</span>
             </AttachmentButton>
-            <PostButton enabled={enabled} handleHideChat={handleHideChat} />
-            {!isMobile && (
-                <AttachmentButton
-                    query={
-                        !enabled
-                            ? undefined
-                            : {
-                                  field: 'addItro',
-                                  value: 'true',
-                              }
-                    }
-                    className="intro-button"
-                    disable={!enabled}
-                >
-                    <IntroIc />
-                    <span>Intro</span>
-                </AttachmentButton>
-            )}
             <ShortcutsModal
                 target={
                     <AttachmentButton className="shortcuts-button">

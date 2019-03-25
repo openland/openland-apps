@@ -564,7 +564,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       }
     } else if indexPath.section == 0 {
       let padding = self.headerPadding
-      let w = self.bounds.size.width
       return { () -> ASCellNode in
         let res = ASCellNode()
         res.clipsToBounds = false
@@ -574,12 +573,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           res.direction = ASStackLayoutDirection.vertical
           res.alignItems = ASStackLayoutAlignItems.center
           res.justifyContent = ASStackLayoutJustifyContent.center
-          res.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
+          res.style.flexGrow = 1
           res.style.height = ASDimension(unit: ASDimensionUnit.points, value: CGFloat(padding))
           if(self.overflowColor != nil){
             let overflow = ASDisplayNode()
             overflow.backgroundColor = resolveColorR(self.overflowColor!)
-            overflow.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
+            overflow.style.flexGrow = 1
             overflow.style.height = ASDimension(unit: ASDimensionUnit.points, value: 10001)
             overflow.clipsToBounds = false
             
