@@ -305,11 +305,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SHeaderView>
                     {header}
                 </SHeaderView>
-                <SHeaderButton
+                {/* <SHeaderButton
                     title="Call"
                     icon={require('assets/ic-call-20.png')}
                     onPress={async () => { showCallModal(this.props.chat.id); }}
-                />
+                /> */}
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
