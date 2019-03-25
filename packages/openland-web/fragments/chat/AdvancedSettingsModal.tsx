@@ -139,8 +139,8 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     input: {
                         ...(newSocialImage && newSocialImage.uuid !== props.socialImage
                             ? {
-                                socialImageRef: sanitizeImageRef(newSocialImage),
-                            }
+                                  socialImageRef: sanitizeImageRef(newSocialImage),
+                              }
                             : {}),
                     },
                 });
@@ -171,7 +171,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                 <XView marginTop={4}>
                     Send an automatic message in 1:1 chat to every new member who joins this group
                 </XView>
-                <XView marginTop={17}>
+                <XView marginTop={17} alignSelf="flex-start">
                     <XCheckbox
                         label={welcomeMessageIsOn ? 'On' : 'Off'}
                         checked={welcomeMessageIsOn}
@@ -205,7 +205,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                                         {msgSender ? msgSender.label : 'Select'}
                                     </XView>
                                 </XView>
-                                <ArrowIcon/>
+                                <ArrowIcon />
                             </XView>
                             {isOpenUsers && (
                                 <XView
