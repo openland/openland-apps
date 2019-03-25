@@ -30,21 +30,21 @@ export function getClient(): OpenlandClient {
 
 export function buildNativeClient(token: string) {
 
-    return new OpenlandClient(new NativeApolloClient(token));
+    // return new OpenlandClient(new NativeApolloClient(token));
 
     // if (Platform.OS === 'android') {
     //     return new OpenlandClient(new NativeApolloClient(token));
     // }
 
-    // if (__DEV__) {
-    //     return new OpenlandClient(createDumbBridgeClient(new DirectApollolClient(buildClient({
-    //         token: token,
-    //         endpoint: 'https://api.openland.com/api',
-    //         wsEndpoint: 'wss://api.openland.com/api'
-    //     }))));
-    // } else {
-    //     return new OpenlandClient(createWorkerClient(token));
-    // }
+    if (__DEV__) {
+        return new OpenlandClient(createDumbBridgeClient(new DirectApollolClient(buildClient({
+            token: token,
+            endpoint: 'https://api.openland.com/api',
+            wsEndpoint: 'wss://api.openland.com/api'
+        }))));
+    } else {
+        return new OpenlandClient(createWorkerClient(token));
+    }
 
     // return new OpenlandClient(createWorkerClient(token));
 
