@@ -21,7 +21,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { ASView } from 'react-native-async-view/ASView';
+import { delay } from 'openland-y-utils/timer';
 
 const PinnedMessageComponent = XMemo<PageProps>((props) => {
     let id = props.router.params.flexibleId || props.router.params.id;
@@ -55,49 +55,64 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
         message.attachTop = true;
     }
 
-    const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
+    let pinnedDataView: ASDataView<DataSourceMessageItem> | undefined;
+    if (message) {
+        let pinnedDs = new DataSource<DataSourceMessageItem>(() => false);
+        pinnedDs.initialize([message], true);
 
-    let { topContnet, bottomContent } = extractContent({
-        message: message as any, engine,
-        onDocumentPress: messenger.handleDocumentClick,
-        onMediaPress: messenger.handleMediaClick,
-        onUserPress: messenger.handleAvatarClick,
-    }, Dimensions.get('screen').width - 16);
+        pinnedDataView = new ASDataView(pinnedDs, (item) => {
+            let { topContnet, bottomContent } = extractContent({
+                message: item as any, engine,
+                onDocumentPress: messenger.handleDocumentClick,
+                onMediaPress: messenger.handleMediaClick,
+                onUserPress: messenger.handleAvatarClick,
+            }, Dimensions.get('screen').width - 16);
+            return (
+                <ASFlex flexGrow={1} flexDirection="column" alignItems="stretch" marginLeft={8} marginRight={8}>
+
+                    <ASFlex alignItems="stretch" marginTop={15} marginBottom={15} onPress={() => messenger.handleAvatarClick(message.senderId)} flexDirection="row">
+                        <ASAvatar
+                            marginRight={15}
+                            size={40}
+                            src={message.senderPhoto}
+                            placeholderKey={message.senderId}
+                            placeholderTitle={message.senderName}
+
+                        />
+                        <ASFlex flexDirection="column">
+                            <ASText fontSize={15} fontWeight={TextStyles.weight.medium} color="#000">{message.senderName}
+                                {sharedRoom && sharedRoom.pinnedMessage && sharedRoom.pinnedMessage.sender.primaryOrganization &&
+                                    <ASText fontSize={13} fontWeight={TextStyles.weight.medium} color="#99a2b0">
+                                        {' ' + sharedRoom.pinnedMessage.sender.primaryOrganization.name}
+                                    </ASText>}
+                            </ASText>
+                            <ASText fontSize={14} marginTop={5} color="#99a2b0">{formatDate(message.date)}</ASText>
+                        </ASFlex>
+
+                    </ASFlex>
+                    {topContnet}
+                    {bottomContent}
+                </ASFlex>
+            );
+        });
+
+    }
+
+    const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 
     return (
         <>
             <SHeader title="Pinned message" />
             {sharedRoom && sharedRoom.canEdit && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
 
-            {<ASSafeAreaContext.Consumer>
+            {pinnedDataView && <ASSafeAreaContext.Consumer>
                 {area => (
-                    <ASView style={{ width: '100%', height: '100%', marginTop: area.top }}>
-                        <ASFlex flexGrow={1} flexDirection="column" alignItems="stretch" marginLeft={8} marginRight={8}>
-
-                            <ASFlex alignItems="stretch" marginTop={15} marginBottom={15} onPress={() => messenger.handleAvatarClick(message.senderId)} flexDirection="row">
-                                <ASAvatar
-                                    marginRight={15}
-                                    size={40}
-                                    src={message.senderPhoto}
-                                    placeholderKey={message.senderId}
-                                    placeholderTitle={message.senderName}
-
-                                />
-                                <ASFlex flexDirection="column">
-                                    <ASText fontSize={15} fontWeight={TextStyles.weight.medium} color="#000">{message.senderName}
-                                        {sharedRoom && sharedRoom.pinnedMessage && sharedRoom.pinnedMessage.sender.primaryOrganization &&
-                                            <ASText fontSize={13} fontWeight={TextStyles.weight.medium} color="#99a2b0">
-                                                {' ' + sharedRoom.pinnedMessage.sender.primaryOrganization.name}
-                                            </ASText>}
-                                    </ASText>
-                                    <ASText fontSize={14} marginTop={5} color="#99a2b0">{formatDate(message.date)}</ASText>
-                                </ASFlex>
-
-                            </ASFlex>
-                            {topContnet}
-                            {bottomContent}
-                        </ASFlex>
-                    </ASView>
+                    <ASListView
+                        style={{ width: '100%', height: '100%' }}
+                        dataView={pinnedDataView!}
+                        contentPaddingBottom={area.bottom}
+                        contentPaddingTop={area.top}
+                    />
                 )}
             </ASSafeAreaContext.Consumer>}
 

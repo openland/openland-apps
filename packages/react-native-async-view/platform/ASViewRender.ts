@@ -2,7 +2,7 @@ import { requireNativeComponent, StyleProp, ViewStyle, NativeSyntheticEvent, Nat
 
 export const ASViewRender = requireNativeComponent<{ style?: StyleProp<ViewStyle>, configKey: string }>('RNAsyncView');
 
-export const ASViewListRender = Animated.createAnimatedComponent(requireNativeComponent<{
+export const ASViewListRender = requireNativeComponent<{
     style?: StyleProp<ViewStyle>,
     dataViewKey: string,
     inverted?: boolean,
@@ -10,5 +10,6 @@ export const ASViewListRender = Animated.createAnimatedComponent(requireNativeCo
     contentPaddingBottom?: number,
     headerPadding?: number,
     overscrollCompensation?: boolean,
-    onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void
-}>('RNAsyncListView'));
+    onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void,
+    overflowColor?: number,
+}>('RNAsyncListView');

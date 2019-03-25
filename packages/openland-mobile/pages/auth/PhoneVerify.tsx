@@ -102,10 +102,7 @@ class CountrySearch extends React.Component<{ query: string, router: SRouter, da
                     contentPaddingTop={0}
                     contentPaddingBottom={52}
                     dataView={this.props.data}
-                    style={[{ flexGrow: 1 }, {
-                        // Work-around for freezing navive animation driver
-                        opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
-                    } as any]}
+                    style={[{ flexGrow: 1 }]}
                     onScroll={this.contentOffset.event}
                     headerPadding={4}
                 />
