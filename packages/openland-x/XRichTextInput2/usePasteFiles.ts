@@ -2,10 +2,10 @@ import { DraftHandleValue } from 'draft-js';
 
 export function usePasteFiles({
     onPasteFile,
-    resetAndFocus,
+    focus,
 }: {
     onPasteFile?: (file: any) => void;
-    resetAndFocus: Function;
+    focus: Function;
 }) {
     const onPasteFiles = (files: Blob[]): DraftHandleValue => {
         let file = files[0];
@@ -17,7 +17,7 @@ export function usePasteFiles({
             onPasteFile(file);
         }
 
-        resetAndFocus();
+        focus();
         return 'handled';
     };
 
