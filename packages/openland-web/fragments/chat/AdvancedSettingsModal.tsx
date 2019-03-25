@@ -145,6 +145,10 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     },
                 });
 
+                await api.refetchRoom({
+                    id: props.roomId,
+                });
+
                 await api.mutateUpdateWelcomeMessage({
                     roomId: props.roomId,
                     welcomeMessageIsOn: welcomeMessageIsOn,
