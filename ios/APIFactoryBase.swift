@@ -14,6 +14,26 @@ typealias WatchCancel = () -> Void
 
 class ApiFactoryBase {
   
+  func convertData(src: NSDictionary) -> ResultMap {
+    let d = src as! Dictionary<String, Any?>
+    var r: [String: Any?] = [:]
+    for k in d.keys {
+      let v = d[k]
+      if v == nil {
+        //
+      } else if v is String {
+        r[k] = v as! String
+      } else if v is Int {
+        r[k] = v as! Int
+      } else if v is Bool {
+        r[k] = v as! Bool
+      } else {
+        r[k] = convertData(src: v as! NSDictionary)
+      }
+    }
+    return r
+  }
+  
   func readInt(_ src: NSDictionary, _ name: String) -> Int? {
     let res = src[name]
     if res != nil {

@@ -25,4 +25,7 @@ RCT_EXTERN_METHOD(mutate: (NSString *)key id: (NSString *)id mutation: (NSString
 RCT_EXTERN_METHOD(subscribe: (NSString *)key id: (NSString *)id query: (NSString *)query arguments: (NSDictionary *)arguments)
 RCT_EXTERN_METHOD(subscribeUpdate: (NSString *)key id: (NSString *)id arguments: (NSDictionary *)arguments)
 RCT_EXTERN_METHOD(unsubscribe: (NSString *)key id: (NSString *)id)
+
+RCT_EXTERN_METHOD(read: (NSString *)key id: (NSString *)id query: (NSString *)query arguments: (NSDictionary *)arguments)
+RCT_EXTERN_METHOD(write: (NSString *)key id: (NSString *)id data: (NSDictionary *)data query: (NSString *)query arguments: (NSDictionary *)arguments)
 @end

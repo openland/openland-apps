@@ -13,9 +13,11 @@ class RNGraphqlClient {
   
   let key: String
   let module: RNGraphQL
+  let store: ApolloStore
   let client: ApolloClient
   let factory = ApiFactory()
   var watches: [String: WatchCancel] = [:]
+  var subscriptions: [String: WatchCancel] = [:]
   
   init(key: String, endpoint: String, token: String?, module: RNGraphQL) {
     self.module = module
@@ -29,7 +31,8 @@ class RNGraphqlClient {
       connectingPayload:["x-openland-token": token])
     let httpTransport =  HTTPNetworkTransport(url:URL(string: "https:"+endpoint)!, configuration: configuration)
     let transport = SplitNetworkTransport(httpNetworkTransport: httpTransport, webSocketNetworkTransport: wsTransport)
-    self.client = ApolloClient(networkTransport: transport)
+    self.store = ApolloStore(cache: InMemoryNormalizedCache())
+    self.client = ApolloClient(networkTransport: transport, store: self.store)
   }
   
   func query(id: String, query: String, arguments: NSDictionary) {
@@ -39,6 +42,28 @@ class RNGraphqlClient {
       } else {
         // Handle result
         self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+      }
+    }
+  }
+  
+  func read(id: String, query: String, arguments: NSDictionary) {
+    self.factory.readQuery(store: self.store, name: query, src: arguments) { (res, err) in
+      if err != nil {
+        // Handle error
+      } else {
+        // Handle result
+        self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+      }
+    }
+  }
+  
+  func write(id: String, data: NSDictionary, query: String, arguments: NSDictionary) {
+    self.factory.writeQuery(store: self.store, data: data, name: query, src: arguments) { (res, err) in
+      if err != nil {
+        // Handle error
+      } else {
+        // Handle result
+        self.module.reportResult(key: self.key, id: id, result: NSDictionary())
       }
     }
   }
@@ -68,5 +93,21 @@ class RNGraphqlClient {
         self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
       }
     }
+  }
+  
+  func subscribe(id: String, subscription: String, arguments: NSDictionary) {
+    let c = self.factory.runSubscription(client: self.client, name: subscription, src: arguments) { (res, err) in
+      if err != nil {
+        // Handle error
+      } else {
+        // Handle result
+        self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+      }
+    }
+    self.subscriptions[id] = c
+  }
+  
+  func subscribeEnd(id: String) {
+    self.subscriptions.removeValue(forKey: id)?()
   }
 }

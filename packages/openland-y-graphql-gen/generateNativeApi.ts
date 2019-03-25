@@ -129,8 +129,11 @@ export function generateNativeApi() {
     // Run Query
 
     let runQuery = '  func runQuery(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n';
+    let readQuery = '  func readQuery(store: ApolloStore, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n';
+    let writeQuery = '  func writeQuery(store: ApolloStore, data: NSDictionary, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n';
     let runMutation = '  func runMutation(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n';
     let watchQuery = '  func watchQuery(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) -> WatchCancel {\n';
+    let runSubscription = '  func runSubscription(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) -> WatchCancel {\n'
     let inputTypes = '';
     let identifiers = new Set<string>();
 
@@ -196,10 +199,42 @@ export function generateNativeApi() {
                     }
                     runQuery += '      let requestBody = ' + def.name!!.value + 'Query(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
                     runQuery += '      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in\n'
-                    runQuery += '          handler(r!.data!.resultMap, nil)\n'
+                    runQuery += '          if e != nil {\n'
+                    runQuery += '            handler(nil, e)\n'
+                    runQuery += '          } else if (r != nil && r!.data != nil) {\n'
+                    runQuery += '            handler(r!.data!.resultMap, nil)\n'
+                    runQuery += '          } else {\n'
+                    runQuery += '            handler(nil, nil)\n'
+                    runQuery += '          }\n'
                     runQuery += '      }\n'
                     runQuery += '      return\n'
                     runQuery += '    }\n';
+
+                    // Read Query
+                    readQuery += '    if (name == "' + def.name!!.value + '") {\n'
+                    for (let v of vars) {
+                        readQuery += '      let ' + v.variable.name.value + ' = ' + buildReader(v.variable.name.value, v.type) + '\n';
+                    }
+                    readQuery += '      let requestBody = ' + def.name!!.value + 'Query(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
+                    readQuery += '      store.withinReadTransaction { (tx) in\n'
+                    readQuery += '        handler((try tx.read(query: requestBody)).resultMap, nil)\n';
+                    readQuery += '      }\n'
+                    readQuery += '      return\n'
+                    readQuery += '    }\n';
+
+                    // Write Query
+                    writeQuery += '    if (name == "' + def.name!!.value + '") {\n'
+                    for (let v of vars) {
+                        writeQuery += '      let ' + v.variable.name.value + ' = ' + buildReader(v.variable.name.value, v.type) + '\n';
+                    }
+                    writeQuery += '      let requestBody = ' + def.name!!.value + 'Query(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
+                    writeQuery += '      let data = ' + def.name!!.value + 'Query.Data(unsafeResultMap: self.convertData(src: data))\n'
+                    writeQuery += '      store.withinReadWriteTransaction { (tx) in\n'
+                    writeQuery += '        try tx.write(data: data, forQuery: requestBody)\n'
+                    writeQuery += '        handler(nil, nil)\n';
+                    writeQuery += '      }\n'
+                    writeQuery += '      return\n'
+                    writeQuery += '    }\n';
 
                     // WatchQuery
                     watchQuery += '    if (name == "' + def.name!!.value + '") {\n'
@@ -208,7 +243,13 @@ export function generateNativeApi() {
                     }
                     watchQuery += '      let requestBody = ' + def.name!!.value + 'Query(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
                     watchQuery += '      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in\n'
-                    watchQuery += '          handler(r!.data!.resultMap, nil)\n'
+                    watchQuery += '          if e != nil {\n'
+                    watchQuery += '            handler(nil, e)\n'
+                    watchQuery += '          } else if (r != nil && r!.data != nil) {\n'
+                    watchQuery += '            handler(r!.data!.resultMap, nil)\n'
+                    watchQuery += '          } else {\n'
+                    watchQuery += '            handler(nil, nil)\n'
+                    watchQuery += '          }\n'
                     watchQuery += '      }\n'
                     watchQuery += '      return { () in res.cancel() }\n'
                     watchQuery += '    }\n';
@@ -224,10 +265,38 @@ export function generateNativeApi() {
                     }
                     runMutation += '      let requestBody = ' + def.name!!.value + 'Mutation(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
                     runMutation += '      client.perform(mutation: requestBody, queue: DispatchQueue.main) { (r, e) in\n'
-                    runMutation += '          handler(r!.data!.resultMap, nil)\n'
+                    runMutation += '          if e != nil {\n'
+                    runMutation += '            handler(nil, e)\n'
+                    runMutation += '          } else if (r != nil && r!.data != nil) {\n'
+                    runMutation += '            handler(r!.data!.resultMap, nil)\n'
+                    runMutation += '          } else {\n'
+                    runMutation += '            handler(nil, nil)\n'
+                    runMutation += '          }\n'
                     runMutation += '      }\n'
                     runMutation += '      return\n'
                     runMutation += '    }\n';
+                } else if (def.operation === 'subscription') {
+                    let vars = fixParameters(def.variableDefinitions);
+                    for (let v of vars) {
+                        populateIds(v.type);
+                    }
+
+                    runSubscription += '    if (name == "' + def.name!!.value + '") {\n'
+                    for (let v of vars) {
+                        runSubscription += '      let ' + v.variable.name.value + ' = ' + buildReader(v.variable.name.value, v.type) + '\n';
+                    }
+                    runSubscription += '      let requestBody = ' + def.name!!.value + 'Subscription(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
+                    runSubscription += '      let res = client.subscribe(subscription: requestBody, queue: DispatchQueue.main) { (r, e) in\n'
+                    runSubscription += '          if e != nil {\n'
+                    runSubscription += '            handler(nil, e)\n'
+                    runSubscription += '          } else if (r != nil && r!.data != nil) {\n'
+                    runSubscription += '            handler(r!.data!.resultMap, nil)\n'
+                    runSubscription += '          } else {\n'
+                    runSubscription += '            handler(nil, nil)\n'
+                    runSubscription += '          }\n'
+                    runSubscription += '      }\n'
+                    runSubscription += '      return { () in res.cancel() }\n'
+                    runSubscription += '    }\n';
                 }
             }
         }
@@ -307,7 +376,13 @@ export function generateNativeApi() {
     watchQuery += '    fatalError()\n';
     watchQuery += '  }\n';
     runMutation += '    fatalError()\n';
-    runMutation += '  }\n';
+    runMutation += '  }\n'
+    runSubscription += '    fatalError()\n';
+    runSubscription += '  }\n';
+    readQuery += '    fatalError()\n';
+    readQuery += '  }\n';
+    writeQuery += '    fatalError()\n';
+    writeQuery += '  }\n';
 
     map += runQuery;
     map += '\n';
@@ -315,6 +390,13 @@ export function generateNativeApi() {
     map += '\n';
     map += runMutation;
     map += '\n';
+    map += runSubscription
+    map += '\n';
+    map += readQuery;
+    map += '\n';
+    map += writeQuery;
+    map += '\n';
+
     map += inputTypes;
 
     map += '}\n';

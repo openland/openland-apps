@@ -50,7 +50,7 @@ class RNGraphQL: RCTEventEmitter {
   
   @objc(subscribe:id:query:arguments:)
   func subscribe(key: String, id: String, query: String, arguments: NSDictionary) {
-    // TODO: Implement
+    self.clients[key]!.subscribe(id: id, subscription: query, arguments: arguments)
   }
   
   @objc(subscribeUpdate:id:arguments:)
@@ -60,7 +60,17 @@ class RNGraphQL: RCTEventEmitter {
   
   @objc(unsubscribe:id:)
   func unsubscribe(key: String, id: String) {
-    // TODO: Implement
+    self.clients[key]!.subscribeEnd(id: id)
+  }
+  
+  @objc(read:id:query:arguments:)
+  func read(key: String, id: String, query: String, arguments: NSDictionary) {
+    self.clients[key]!.read(id: id, query: query, arguments: arguments)
+  }
+  
+  @objc(write:id:data:query:arguments:)
+  func write(key: String, id: String, data: NSDictionary, query: String, arguments: NSDictionary) {
+    self.clients[key]!.write(id: id, data: data, query: query, arguments: arguments)
   }
   
   func reportResult(key: String, id: String, result: NSDictionary) {
