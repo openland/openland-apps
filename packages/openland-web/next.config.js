@@ -209,7 +209,6 @@ const config = {
 
         // Add moment to commons
         if (!isServer) {
-            config.optimization.splitChunks.cacheGroups.commons.minChunks = 2;
             if (config.optimization.splitChunks.cacheGroups) {
                 (config.optimization.splitChunks.cacheGroups.uploadcare = {
                     test: /\/node_modules\/uploadcare/,
