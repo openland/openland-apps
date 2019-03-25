@@ -38,6 +38,9 @@ const SocialImageWrapperClassName = css`
     & > div {
         width: 190px;
         height: 100px;
+        border-color: transparent;
+        border-radius: 10px;
+        background-color: #f2f3f4;
     }
 
     & img {
@@ -120,7 +123,6 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
             alsoUseBottomCloser={true}
             targetQuery="advancedSettings"
             useTopCloser={true}
-            autoClose={false}
             title="Advanced settings"
             defaultAction={async data => {
                 if (welcomeMessageIsOn && (welcomeMessageSenderError || welcomeMessageTextError)) {
@@ -134,8 +136,8 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     input: {
                         ...(newSocialImage && newSocialImage.uuid !== props.socialImage
                             ? {
-                                socialImageRef: sanitizeImageRef(newSocialImage),
-                            }
+                                  socialImageRef: sanitizeImageRef(newSocialImage),
+                              }
                             : {}),
                     },
                 });
@@ -200,7 +202,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                                         {msgSender ? msgSender.label : 'Select'}
                                     </XView>
                                 </XView>
-                                <ArrowIcon/>
+                                <ArrowIcon />
                             </XView>
                             {isOpenUsers && (
                                 <XView
