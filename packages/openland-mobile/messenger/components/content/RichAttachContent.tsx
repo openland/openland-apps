@@ -190,9 +190,10 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             letterSpacing={-0.3}
                             fontSize={14}
                             marginTop={Platform.OS === 'android' ? -4 : -1}
-                            numberOfLines={subTitle && imgCompact ? 1 : 2}
+                            numberOfLines={1}
                             marginBottom={4}
                             fontWeight={TextStyles.weight.medium}
+
                         >
                             {this.props.attach.title}
                             {this.props.padded && !subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)}
@@ -211,7 +212,6 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             {this.props.padded && (this.props.message.isOut ? paddedTextOut : paddedText)}
                         </ASText>}
                     </ASFlex>
-
                 </ASFlex>
 
                 {!!text && <ASText
