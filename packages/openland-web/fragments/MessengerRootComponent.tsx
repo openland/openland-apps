@@ -26,7 +26,6 @@ import {
 import { XText } from 'openland-x/XText';
 import { withDeleteUrlAugmentation } from '../api/withDeleteUrlAugmentation';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { CreatePostComponent } from './post/CreatePostComponent';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { UploadContextProvider } from './MessageComposeComponent/FileUploading/UploadContext';
 import { PinMessageComponent } from 'openland-web/fragments/chat/PinMessage';
@@ -69,9 +68,6 @@ interface MessagesComponentState {
     hideInput: boolean;
     loading: boolean;
     messages: ModelMessage[];
-    hideChat: boolean;
-    postType: PostMessageType | null;
-    postEditData: EditPostProps | null;
     messageListScrollPosition: number;
 }
 
@@ -165,9 +161,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             hideInput: false,
             messages: [],
             loading: true,
-            hideChat: false,
-            postType: null,
-            postEditData: null,
             messageListScrollPosition: 0,
         };
     }
@@ -242,12 +235,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
     componentWillReceiveProps(props: MessagesComponentProps) {
         this.updateConversation(props);
-
-        if (this.props.conversationId !== props.conversationId) {
-            this.setState({
-                hideChat: false,
-            });
-        }
     }
 
     handleChange = async (text: string) => {
@@ -293,22 +280,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         });
     };
 
-    handleHideChat = (show: boolean, postTipe: PostMessageType | null) => {
-        this.setState({
-            hideChat: show,
-            postType: postTipe,
-            postEditData: null,
-        });
-    };
-
-    editPostHandler = (data: EditPostProps) => {
-        this.setState({
-            hideChat: true,
-            postType: data.postTipe,
-            postEditData: data,
-        });
-    };
-
     getMessages = () => {
         return this.state.messages;
     };
@@ -324,67 +295,50 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
         return (
             <XView flexDirection="column" flexGrow={1} flexShrink={1}>
-                {this.state.hideChat && (
-                    <CreatePostComponent
-                        handleHideChat={this.handleHideChat}
-                        conversationId={this.props.conversationId}
-                        postType={this.state.postType}
-                        editData={this.state.postEditData}
-                        objectName={this.props.objectName}
-                        objectId={this.props.objectId}
-                        cloudImageUuid={this.props.cloudImageUuid}
+                {this.props.pinMessage && (
+                    <PinMessageComponent
+                        pinMessage={this.props.pinMessage}
+                        chatId={this.props.conversationId}
+                        room={this.props.room}
                     />
                 )}
-                {!this.state.hideChat && (
-                    <>
-                        {this.props.pinMessage && (
-                            <PinMessageComponent
-                                pinMessage={this.props.pinMessage}
-                                chatId={this.props.conversationId}
-                                room={this.props.room}
-                            />
-                        )}
-                        <ConversationMessagesComponent
-                            isActive={this.props.isActive}
-                            ref={this.messagesList}
-                            key={this.props.conversationId}
-                            me={this.props.me}
-                            messages={this.state.messages}
-                            loading={this.state.loading}
-                            conversation={this.conversation}
-                            conversationId={this.props.conversationId}
-                            conversationType={this.props.conversationType}
-                            inputShower={this.handleShowIput}
-                            editPostHandler={this.editPostHandler}
-                            scrollPosition={this.onMessageListScroll}
-                        />
+                <ConversationMessagesComponent
+                    isActive={this.props.isActive}
+                    ref={this.messagesList}
+                    key={this.props.conversationId}
+                    me={this.props.me}
+                    messages={this.state.messages}
+                    loading={this.state.loading}
+                    conversation={this.conversation}
+                    conversationId={this.props.conversationId}
+                    conversationType={this.props.conversationType}
+                    inputShower={this.handleShowIput}
+                    scrollPosition={this.onMessageListScroll}
+                />
 
-                        {!this.state.hideInput && (
-                            <UploadContextProvider>
-                                <MessageComposeHandler
-                                    isActive={this.props.isActive}
-                                    getMessages={this.getMessages}
-                                    conversation={this.conversation}
-                                    onChange={this.handleChange}
-                                    onSend={this.handleSend}
-                                    onSendFile={this.handleSendFile}
-                                    enabled={true}
-                                    conversationType={this.props.conversationType}
-                                    conversationId={this.props.conversationId}
-                                    handleHideChat={this.handleHideChat}
-                                    variables={{
-                                        roomId: this.props.conversationId,
-                                        conversationId: this.props.conversationId,
-                                        organizationId: this.props.organizationId,
-                                    }}
-                                />
-                            </UploadContextProvider>
-                        )}
-                        <DeleteUrlAugmentationComponent />
-                        <DeleteMessageComponent />
-                        <LeaveChatComponent />
-                    </>
+                {!this.state.hideInput && (
+                    <UploadContextProvider>
+                        <MessageComposeHandler
+                            isActive={this.props.isActive}
+                            getMessages={this.getMessages}
+                            conversation={this.conversation}
+                            onChange={this.handleChange}
+                            onSend={this.handleSend}
+                            onSendFile={this.handleSendFile}
+                            enabled={true}
+                            conversationType={this.props.conversationType}
+                            conversationId={this.props.conversationId}
+                            variables={{
+                                roomId: this.props.conversationId,
+                                conversationId: this.props.conversationId,
+                                organizationId: this.props.organizationId,
+                            }}
+                        />
+                    </UploadContextProvider>
                 )}
+                <DeleteUrlAugmentationComponent />
+                <DeleteMessageComponent />
+                <LeaveChatComponent />
             </XView>
         );
     }

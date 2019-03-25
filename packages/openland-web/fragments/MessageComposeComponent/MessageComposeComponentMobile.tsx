@@ -34,7 +34,6 @@ export const MobileMessageCompose = (messageComposeProps: MessageComposeComponen
             inputRef={inputRef}
             inputValue={inputValue}
             enabled={messageComposeProps.enabled}
-            handleHideChat={messageComposeProps.handleHideChat}
         />
     );
 };
