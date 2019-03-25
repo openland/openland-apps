@@ -195,7 +195,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                             >
                                 <XView flexDirection="column" marginTop={-3}>
                                     <XView color="#1488f3" fontSize={12}>
-                                        Group type
+                                        Sender
                                     </XView>
                                     <XView
                                         fontSize={14}
