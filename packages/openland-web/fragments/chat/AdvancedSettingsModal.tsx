@@ -109,32 +109,31 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
     React.useEffect(() => {
         if (!isOpen) {
             router!!.replaceQuery('advancedSettings', undefined);
+            setIsOpen(true);
         }
     }, [isOpen]);
-
-    React.useEffect(() => {
-        if (!router.query.advancedSettings && !isOpen) {
-            setWelcomeMessageIsOn(props.welcomeMessageIsOn);
-            setWelcomeMessageText(props.welcomeMessageText);
-            setWelcomeMessageSender(props.welcomeMessageSender);
-            setIsOpen(true);
-            setTriedToSend(false);
-        }
-    }, [router.query]);
 
     return (
         <XModalForm
             isOpen={isOpen}
+            defaultLayout={false}
             scrollableContent={true}
             alsoUseBottomCloser={true}
+            onClosed={() => {
+                setWelcomeMessageIsOn(props.welcomeMessageIsOn);
+                setWelcomeMessageText(props.welcomeMessageText);
+                setWelcomeMessageSender(props.welcomeMessageSender);
+                setTriedToSend(false);
+            }}
             targetQuery="advancedSettings"
             useTopCloser={true}
             title="Advanced settings"
             defaultAction={async data => {
                 if (welcomeMessageIsOn && (welcomeMessageSenderError || welcomeMessageTextError)) {
                     setTriedToSend(true);
-                    return;
+                    throw Error();
                 }
+
                 const newSocialImage = data.input.socialImageRef;
 
                 await api.mutateRoomUpdate({
