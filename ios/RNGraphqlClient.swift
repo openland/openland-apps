@@ -9,6 +9,71 @@
 import Foundation
 import Apollo
 
+class ActiveSubscription {
+  let key: String
+  let id: String
+  let subscription: String
+  let factory: ApiFactory
+  let client: ApolloClient
+  let module: RNGraphQL
+  var arguments: NSDictionary
+  private var isActive = false
+  private var active: WatchCancel? = nil
+  
+  init(key: String, id: String, subscription: String, arguments: NSDictionary, factory: ApiFactory, client: ApolloClient, module: RNGraphQL) {
+    self.key = key
+    self.id = id
+    self.subscription = subscription
+    self.arguments = arguments
+    self.factory = factory
+    self.client = client
+    self.module = module
+  }
+  
+  func start() {
+    if !self.isActive {
+      self.isActive = true
+      self.active = self.factory.runSubscription(client: self.client, name: self.subscription, src: self.arguments) { (data, err) in
+        if !self.isActive {
+          return
+        }
+        if err != nil {
+          if err is WebSocketError {
+            let wse = (err as! WebSocketError)
+            switch(wse.kind) {
+            case .unprocessedMessage(_):
+              return;
+            default:
+              print(wse.localizedDescription)
+            }
+          } else {
+            print(err!.localizedDescription)
+          }
+          
+          self.stop()
+          self.start()
+        } else {
+          self.module.reportResult(key: self.key, id: self.id, result: data!.jsonObject as NSDictionary)
+        }
+      }
+    }
+  }
+  
+  func update(arguments: NSDictionary) {
+    self.arguments = arguments
+  }
+  
+  func stop() {
+    if self.isActive {
+      self.isActive = false
+      if self.active != nil {
+        self.active!()
+        self.active = nil
+      }
+    }
+  }
+}
+
 class RNGraphqlClient: WebSocketTransportDelegate {
   
   let key: String
@@ -17,7 +82,8 @@ class RNGraphqlClient: WebSocketTransportDelegate {
   let client: ApolloClient
   let factory = ApiFactory()
   var watches: [String: WatchCancel] = [:]
-  var subscriptions: [String: WatchCancel] = [:]
+  var subscriptions: [String: ActiveSubscription] = [:]
+  var connected: Bool = false
   
   init(key: String, endpoint: String, token: String?, module: RNGraphQL) {
     self.module = module
@@ -96,42 +162,51 @@ class RNGraphqlClient: WebSocketTransportDelegate {
   }
   
   func subscribe(id: String, subscription: String, arguments: NSDictionary) {
-    let c = self.factory.runSubscription(client: self.client, name: subscription, src: arguments) { (res, err) in
-      if err != nil {
-        self.handleError(id: id, err: err!)
-      } else {
-        // Handle result
-        self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
-      }
+    let s = ActiveSubscription(key: self.key, id: id, subscription: subscription, arguments: arguments, factory: self.factory, client: self.client, module: self.module)
+    if self.connected {
+      s.start()
     }
-    self.subscriptions[id] = c
+    self.subscriptions[id] = s
+  }
+  
+  func subscribeUpdate(id: String, arguments: NSDictionary) {
+    self.subscriptions[id]!.update(arguments: arguments)
   }
   
   func subscribeEnd(id: String) {
-    self.subscriptions.removeValue(forKey: id)?()
+    self.subscriptions.removeValue(forKey: id)!.stop()
   }
   
   private func handleError(id: String, err: Error) {
-    if err is WebSocketError {
-      let wse = (err as! WebSocketError)
-      switch(wse.kind) {
-      case let .unprocessedMessage(str):
-        break;
-      default:
-       print(wse.localizedDescription)
-      }
-    } else {
-      print(err.localizedDescription)
-    }
+    print(err.localizedDescription)
+    self.module.reportError(key: self.key, id: id)
   }
   
   func webSocketTransportDidConnect(_ webSocketTransport: WebSocketTransport) {
     print("connects")
+    if !self.connected {
+      self.connected = true
+      for s in self.subscriptions.values {
+        s.start()
+      }
+    }
   }
   func webSocketTransportDidReconnect(_ webSocketTransport: WebSocketTransport) {
     print("reconnect")
+    if !self.connected {
+      self.connected = true
+      for s in self.subscriptions.values {
+        s.start()
+      }
+    }
   }
   func webSocketTransport(_ webSocketTransport: WebSocketTransport, didDisconnectWithError error:Error?) {
     print("didDisconnect")
+    if self.connected {
+      self.connected = false
+      for s in self.subscriptions.values {
+        s.stop()
+      }
+    }
   }
 }
