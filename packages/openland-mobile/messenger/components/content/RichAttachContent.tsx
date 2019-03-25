@@ -90,12 +90,16 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         let imageSource = { uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined };
 
         // invite link image placeholder
-        if (ricjAttachImageShouldBeCompact(this.props.attach) || !this.props.attach.image) {
+        if (ricjAttachImageShouldBeCompact(this.props.attach)) {
             imgCompact = true;
             imgLayout = !!imgLayout ? { width: 36, height: 36 } : undefined;
-            if (isInvite(this.props.attach) && !this.props.attach.image) {
-                imageSource = this.props.message.isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
-            }
+
+        }
+
+        if (isInvite(this.props.attach) && !this.props.attach.image) {
+            imgCompact = true;
+            imgLayout = { width: 36, height: 36 };
+            imageSource = this.props.message.isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
         }
 
         let maxWidth = this.props.maxWidth || ((imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
