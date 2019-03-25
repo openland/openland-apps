@@ -14,6 +14,8 @@ import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSid
 import { emoji } from 'openland-y-utils/emoji';
 import { XView } from 'react-mental';
 import ImgThn from 'openland-icons/img-thn.svg';
+import { XLinkExternal } from 'openland-x/XLinkExternal';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 
 const Favicon = css`
     width: 14px;
@@ -21,6 +23,7 @@ const Favicon = css`
     margin: -1px 5px -1px 0;
     overflow: hidden;
     display: block;
+    flex-shrink: 0;
 `;
 
 interface MessageUrlAugmentationComponentProps
@@ -89,7 +92,7 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
                 paddingLeft={20}
                 paddingRight={20}
                 borderRadius={10}
-                backgroundColor={'rgba(244, 244, 244, 0.7)'}
+                backgroundColor="rgba(244, 244, 244, 0.7)"
             >
                 <XView flexDirection="row">
                     <XView marginRight={12}>
@@ -114,13 +117,13 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
                         >
                             {title}
                         </XView>
-                        <XView fontWeight="600" fontSize={13} color={'rgba(0, 0, 0, 0.4)'}>
+                        <XView fontWeight="600" fontSize={13} color="rgba(0, 0, 0, 0.4)">
                             {subTitle}
                         </XView>
                     </XView>
                 </XView>
                 {description && (
-                    <XView lineHeight={1.5} marginTop={8} color={'rgba(18, 30, 43, 0.9)'}>
+                    <XView lineHeight={1.5} marginTop={8} color="rgba(18, 30, 43, 0.9)">
                         {description}
                     </XView>
                 )}
@@ -181,6 +184,16 @@ const MessageUrlAugmentationComponentInner = React.memo(
         let parts = preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
+            } else if (v.type === 'link') {
+                return (
+                    <XLinkExternal
+                        className="link"
+                        key={'link-' + i}
+                        href={v.link!!}
+                        content={v.text!!}
+                        showIcon={false}
+                    />
+                );
             } else {
                 return (
                     <span key={'text-' + i}>
@@ -217,8 +230,27 @@ const MessageUrlAugmentationComponentInner = React.memo(
             );
         }
 
+        let isOpenlandLink = false;
+        let isUserLink = false;
+        let isOrgLink = false;
+        let objectId = '';
+
+        if (titleLink && titleLink.match('openland.com')) {
+            isOpenlandLink = true;
+
+            if (titleLink.match('/u/')) {
+                isUserLink = true;
+                objectId = titleLink.substring(titleLink.search('/u/') + 3, titleLink.length);
+            }
+
+            if (titleLink.match('/o/')) {
+                isOrgLink = true;
+                objectId = titleLink.substring(titleLink.search('/o/') + 3, titleLink.length);
+            }
+        }
+
         return (
-            <XView width="100%" flexDirection="column">
+            <XView width="100%" flexDirection="column" maxWidth={540}>
                 <XView
                     width="100%"
                     backgroundColor="rgba(244, 244, 244, 0.7)"
@@ -231,7 +263,9 @@ const MessageUrlAugmentationComponentInner = React.memo(
                 >
                     <XView flexDirection="row">
                         {image &&
-                            dimensions && (
+                            dimensions &&
+                            !isOrgLink &&
+                            !isUserLink && (
                                 <XView marginRight={20} flexDirection="row" alignItems="flex-start">
                                     <XView
                                         borderRadius={4}
@@ -248,7 +282,29 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                     </XView>
                                 </XView>
                             )}
-                        {(title || titleLinkHostname) && (
+                        {image &&
+                            (isUserLink || isOrgLink) && (
+                                <XView marginRight={12} flexShrink={0}>
+                                    {image.url ? (
+                                        <XView
+                                            as="img"
+                                            width={40}
+                                            height={40}
+                                            borderRadius={20}
+                                            src={image.url}
+                                        />
+                                    ) : (
+                                        <ImgThn />
+                                    )}
+                                </XView>
+                            )}
+                        {!image &&
+                            (isUserLink || isOrgLink) && (
+                                <XView marginRight={12} flexShrink={0}>
+                                    <XAvatar2 id={objectId} title={title || ''} />
+                                </XView>
+                            )}
+                        {(title || titleLinkHostname || subTitle) && (
                             <XView flexDirection="column" flexGrow={1} flexShrink={1}>
                                 {title && (
                                     <XView fontSize={16} fontWeight="600" marginBottom={4}>
@@ -258,33 +314,57 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                         })}
                                     </XView>
                                 )}
-                                {titleLinkHostname && (
-                                    <XView
-                                        fontSize={13}
-                                        fontWeight="600"
-                                        color="rgba(0, 0, 0, 0.4)"
-                                        flexDirection="row"
-                                        alignItems="center"
-                                    >
-                                        {icon && <img src={icon.url} className={Favicon} />}
-                                        {!icon && <WebsiteIcon />}
-                                        <span>{titleLinkHostname}</span>
-                                    </XView>
-                                )}
+                                {titleLinkHostname &&
+                                    !isUserLink &&
+                                    !isOrgLink && (
+                                        <XView
+                                            fontSize={13}
+                                            fontWeight="600"
+                                            color="rgba(0, 0, 0, 0.4)"
+                                            flexDirection="row"
+                                            alignItems="center"
+                                        >
+                                            {icon && <img src={icon.url} className={Favicon} />}
+                                            {!icon && (
+                                                <XView
+                                                    flexShrink={0}
+                                                    marginTop={-1}
+                                                    marginRight={5}
+                                                    marginBottom={-1}
+                                                >
+                                                    <WebsiteIcon />
+                                                </XView>
+                                            )}
+                                            <span>{titleLinkHostname}</span>
+                                        </XView>
+                                    )}
+                                {subTitle &&
+                                    isUserLink && (
+                                        <XView
+                                            fontSize={13}
+                                            fontWeight="600"
+                                            color="rgba(0, 0, 0, 0.4)"
+                                            flexDirection="row"
+                                            alignItems="center"
+                                        >
+                                            <span>{subTitle}</span>
+                                        </XView>
+                                    )}
                             </XView>
                         )}
                     </XView>
-                    {parts && (
-                        <XView
-                            flexShrink={1}
-                            fontSize={14}
-                            color="#121e2b"
-                            opacity={0.9}
-                            marginTop={8}
-                        >
-                            {parts}
-                        </XView>
-                    )}
+                    {parts &&
+                        !isUserLink && (
+                            <XView
+                                flexShrink={1}
+                                fontSize={14}
+                                color="#121e2b"
+                                opacity={0.9}
+                                marginTop={8}
+                            >
+                                {parts}
+                            </XView>
+                        )}
                 </XView>
                 <XView
                     width="100%"
@@ -298,10 +378,11 @@ const MessageUrlAugmentationComponentInner = React.memo(
                     fontWeight={'600'}
                     as="a"
                     href={href}
+                    path={isUserLink ? `/mail/${objectId}` : path}
                     target="_blank"
                     height={41}
                 >
-                    Open link
+                    {isUserLink ? 'Message' : 'Open link'}
                 </XView>
             </XView>
         );
