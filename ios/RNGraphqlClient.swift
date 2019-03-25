@@ -38,7 +38,7 @@ class RNGraphqlClient {
         // Handle error
       } else {
         // Handle result
-        self.module.reportResult(key: self.key, id: id, result: res! as NSDictionary)
+        self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
       }
     }
   }
@@ -49,7 +49,7 @@ class RNGraphqlClient {
         // Handle error
       } else {
         // Handle result
-        self.module.reportResult(key: self.key, id: id, result: res! as NSDictionary)
+        self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
       }
     }
     self.watches[id] = c
@@ -65,7 +65,7 @@ class RNGraphqlClient {
         // Handle error
       } else {
         // Handle result
-        self.module.reportResult(key: self.key, id: id, result: res! as NSDictionary)
+        self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
       }
     }
   }

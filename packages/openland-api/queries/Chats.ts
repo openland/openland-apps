@@ -303,7 +303,7 @@ export const GlobalCounterQuery = gql`
 `;
 
 export const ChatHistoryQuery = gql`
-    query ChatHistory($chatId: ID!, $before: ID, $first: Int = 15) {
+    query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {
         messages(chatId: $chatId, first: $first, before: $before) {
             ...FullMessage
         }

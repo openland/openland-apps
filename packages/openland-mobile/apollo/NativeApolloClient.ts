@@ -38,7 +38,7 @@ export class NativeApolloClient extends BridgedClient {
                         // console.log(src);
                         this.operationFailed(src.id, src.data);
                     } else if (src.type === 'response') {
-                        console.log(src);
+                        // console.log(src);
                         this.operationUpdated(src.id, src.data);
                     }
                 }

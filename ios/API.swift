@@ -6130,15 +6130,15 @@ public final class GlobalCounterQuery: GraphQLQuery {
 
 public final class ChatHistoryQuery: GraphQLQuery {
   public let operationDefinition =
-    "query ChatHistory($chatId: ID!, $before: ID, $first: Int = 15) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n}"
+    "query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(FullMessage.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
 
   public var chatId: GraphQLID
   public var before: GraphQLID?
-  public var first: Int?
+  public var first: Int
 
-  public init(chatId: GraphQLID, before: GraphQLID? = nil, first: Int? = nil) {
+  public init(chatId: GraphQLID, before: GraphQLID? = nil, first: Int) {
     self.chatId = chatId
     self.before = before
     self.first = first

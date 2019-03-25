@@ -123,7 +123,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "ChatHistory") {
       let chatId = notNull(readString(src, "chatId"))
       let before = readString(src, "before")
-      let first = readInt(src, "first")
+      let first = notNull(readInt(src, "first"))
       let requestBody = ChatHistoryQuery(chatId: chatId, before: before, first: first)
       client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
           handler(r!.data!.resultMap, nil)
@@ -517,7 +517,7 @@ class ApiFactory: ApiFactoryBase {
     if (name == "ChatHistory") {
       let chatId = notNull(readString(src, "chatId"))
       let before = readString(src, "before")
-      let first = readInt(src, "first")
+      let first = notNull(readInt(src, "first"))
       let requestBody = ChatHistoryQuery(chatId: chatId, before: before, first: first)
       let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: DispatchQueue.main) { (r, e) in
           handler(r!.data!.resultMap, nil)

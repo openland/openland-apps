@@ -1,4 +1,4 @@
-query ChatHistory($before: ID, $chatId: ID!, $first: Int = 15) {
+query ChatHistory($before: ID, $chatId: ID!, $first: Int!) {
   state: conversationState(id: $chatId) {
     __typename
     state

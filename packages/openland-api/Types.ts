@@ -9418,7 +9418,7 @@ export interface ChatHistory {
 export interface ChatHistoryVariables {
   chatId: string;
   before?: string | null;
-  first?: number | null;
+  first: number;
 }
 
 /* tslint:disable */
