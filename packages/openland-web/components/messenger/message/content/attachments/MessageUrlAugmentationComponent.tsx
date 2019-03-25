@@ -44,30 +44,42 @@ const Keyboard = React.memo(
                     keyboard.buttons.map((line, i) => (
                         <XView key={i + ''} flexDirection="row" maxWidth={540} alignSelf="stretch">
                             {!!line &&
-                                line.map((button, j) => (
-                                    <XView
-                                        as="a"
-                                        key={'button-' + i + '-' + j}
-                                        backgroundColor="rgba(244, 244, 244, 0.7)"
-                                        borderRadius={10}
-                                        alignItems="center"
-                                        justifyContent="center"
-                                        height={41}
-                                        flexGrow={1}
-                                        hoverCursor="pointer"
-                                        href={button.url}
-                                    >
+                                line.map((button, j) => {
+                                    let href: string | undefined = button.url || undefined;
+                                    let path: string | undefined = undefined;
+
+                                    if (isInternalLink(href || '')) {
+                                        path = makeInternalLinkRelative(href || '');
+                                        href = undefined;
+                                    }
+
+                                    return (
                                         <XView
-                                            flexDirection="column"
+                                            as="a"
+                                            key={'button-' + i + '-' + j}
+                                            backgroundColor="rgba(244, 244, 244, 0.7)"
+                                            borderRadius={10}
+                                            alignItems="center"
                                             justifyContent="center"
-                                            color={'#1790ff'}
-                                            fontSize={14}
-                                            fontWeight={'600'}
+                                            height={41}
+                                            flexGrow={1}
+                                            hoverCursor="pointer"
+                                            target="_blank"
+                                            href={href}
+                                            path={path}
                                         >
-                                            {button.title}
+                                            <XView
+                                                flexDirection="column"
+                                                justifyContent="center"
+                                                color={'#1790ff'}
+                                                fontSize={14}
+                                                fontWeight={'600'}
+                                            >
+                                                {button.title}
+                                            </XView>
                                         </XView>
-                                    </XView>
-                                ))}
+                                    );
+                                })}
                         </XView>
                     ))}
             </>
@@ -259,7 +271,6 @@ const MessageUrlAugmentationComponentInner = React.memo(
                     paddingHorizontal={20}
                     flexDirection="column"
                     marginTop={10}
-                    marginBottom={8}
                 >
                     <XView flexDirection="row">
                         {image &&
@@ -366,24 +377,32 @@ const MessageUrlAugmentationComponentInner = React.memo(
                             </XView>
                         )}
                 </XView>
-                <XView
-                    width="100%"
-                    backgroundColor="rgba(244, 244, 244, 0.7)"
-                    borderRadius={10}
-                    flexDirection="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    color={'#1790ff'}
-                    fontSize={14}
-                    fontWeight={'600'}
-                    as="a"
-                    href={href}
-                    path={isUserLink ? `/mail/${objectId}` : path}
-                    target="_blank"
-                    height={41}
-                >
-                    {isUserLink ? 'Message' : 'Open link'}
-                </XView>
+                {!keyboard && (
+                    <XView
+                        width="100%"
+                        backgroundColor="rgba(244, 244, 244, 0.7)"
+                        borderRadius={10}
+                        flexDirection="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        color={'#1790ff'}
+                        fontSize={14}
+                        fontWeight={'600'}
+                        as="a"
+                        href={href}
+                        path={isUserLink ? `/mail/${objectId}` : path}
+                        target="_blank"
+                        height={41}
+                        marginTop={8}
+                    >
+                        {isUserLink ? 'Message' : 'Open link'}
+                    </XView>
+                )}
+                {keyboard && (
+                    <XView marginTop={8}>
+                        <Keyboard keyboard={keyboard} />
+                    </XView>
+                )}
             </XView>
         );
     },
