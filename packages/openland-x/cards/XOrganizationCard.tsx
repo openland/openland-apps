@@ -11,7 +11,7 @@ import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { TextProfiles } from 'openland-text/TextProfiles';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
 const OrganizationCardWrapper = makeNavigable(
     Glamorous.div<NavigableChildProps>(props => ({
@@ -154,7 +154,7 @@ interface XOrganizationCardProps {
 
 export const XOrganizationCard = (props: XOrganizationCardProps) => {
     const [isHovered, setIsHovered] = React.useState(false);
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     let { organization, path, customButton, customMenu, extraMenu } = props;
 
     let firstMember = organization.members[0];

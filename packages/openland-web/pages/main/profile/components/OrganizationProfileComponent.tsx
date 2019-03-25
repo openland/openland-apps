@@ -38,7 +38,7 @@ import { XInput } from 'openland-x/XInput';
 import { withOrganizationRemoveMember } from 'openland-web/api/withOrganizationRemoveMember';
 import { withOrganizationMemberChangeRole } from 'openland-web/api/withOrganizationMemberChangeRole';
 import { withOrganizationAddMembers } from 'openland-web/api/withOrganizationAddMembers';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
@@ -779,7 +779,7 @@ interface InviteModalState {
 class OrganizationAddMemberModalInner extends React.Component<
     InviteModalProps & { isMobile: boolean },
     InviteModalState
-    > {
+> {
     constructor(props: InviteModalProps & { isMobile: boolean }) {
         super(props);
 
@@ -889,7 +889,7 @@ class OrganizationAddMemberModalInner extends React.Component<
 }
 
 const OrganizationAddMemberModalRoot = (props: InviteModalProps) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     return <OrganizationAddMemberModalInner {...props} isMobile={isMobile} />;
 };
 
@@ -955,11 +955,11 @@ const Members = ({ organization, router, onDirectory }: MembersProps) => {
                                 linkInvitePath={
                                     onDirectory
                                         ? `/directory/o/${
-                                        organization.id
-                                        }?inviteToOrganizationByLink=true`
+                                              organization.id
+                                          }?inviteToOrganizationByLink=true`
                                         : `/mail/o/${
-                                        organization.id
-                                        }?inviteToOrganizationByLink=true`
+                                              organization.id
+                                          }?inviteToOrganizationByLink=true`
                                 }
                             />
                         </>
@@ -1103,8 +1103,8 @@ const OrganizationProvider = withOrganization(
                 onDirectory={(props as any).onDirectory}
             />
         ) : (
-                <XLoader loading={true} />
-            ),
+            <XLoader loading={true} />
+        ),
     ),
 ) as React.ComponentType<{
     variables: { organizationId: string };

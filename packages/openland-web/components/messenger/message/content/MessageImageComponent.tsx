@@ -6,7 +6,7 @@ import { XModal } from 'openland-x-modal/XModal';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
-import { MobileSidebarContext } from '../../../Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 
@@ -62,7 +62,7 @@ interface MessageImageComponentProps {
 
 export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
     let [isOpen, handleOpen] = React.useState(false);
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     const UserInfo = React.useContext(UserInfoContext);
     const openView = (e: any) => {
         if (props.startSelected) {

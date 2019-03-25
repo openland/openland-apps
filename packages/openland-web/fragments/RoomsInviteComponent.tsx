@@ -14,7 +14,7 @@ import { Room_room_SharedRoom } from 'openland-api/Types';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { isMobileUserAgent } from 'openland-web/utils/isMobileUserAgent';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import LogoWithName from 'openland-icons/logo.svg';
 import { useClient } from 'openland-web/utils/useClient';
 
@@ -181,7 +181,7 @@ export const RoomsInviteComponent = ({
     noLogin,
     signup,
 }: RoomsInviteComponentProps) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
 
     const button = (
         <>
@@ -247,8 +247,8 @@ export const RoomsInviteComponent = ({
                         <Text>{invite.invitedByUser.name} invites you to join group</Text>
                     </UserInfoWrapper>
                 ) : (
-                        <div style={{ height: 50 }} />
-                    )}
+                    <div style={{ height: 50 }} />
+                )}
                 <XView marginTop={111} alignSelf="center" alignItems="center" maxWidth={428}>
                     <RoomAvatar
                         src={room.photo || undefined}

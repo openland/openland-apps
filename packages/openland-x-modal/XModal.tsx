@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactModal from 'react-modal';
 import Glamorous from 'glamorous';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLink, XLinkProps } from 'openland-x/XLink';
@@ -25,7 +25,7 @@ interface ModalRenderProps {
 }
 
 const ModalRender = XMemo<ModalRenderProps>(props => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     let width = 575;
     if (props.sWidth !== undefined) {
         width = props.sWidth;

@@ -9,13 +9,15 @@ import { XScrollView } from 'openland-x/XScrollView';
 import RoomIcon from 'openland-icons/channel-2.svg';
 import DirectoryIcon from 'openland-icons/directory-3.svg';
 import MobileChatIcon from 'openland-icons/ic-chat.svg';
-import { useIsMobile } from 'openland-web/hooks';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { findChild } from '../utils';
 import { DesktopScaffold, DesktopScafoldMenuItem } from './DesktopComponents';
 import { MobileScaffold, MobileScafoldMenuItem } from './MobileComponents';
 import { MobileSidebarContext } from './MobileSidebarContext';
+import { RenderedOnceContext } from './RenderedOnceContext';
+import { IsMobileContext } from './IsMobileContext';
 import { useClient } from 'openland-web/utils/useClient';
+import { useIsMobile } from 'openland-web/hooks';
 
 const CounterWrapper = (props: { count: number }) => (
     <div className="unread-messages-counter">
@@ -107,11 +109,13 @@ class ScaffoldContent extends React.Component<{
 const NotificationCounter = () => {
     const client = useClient();
     const data = client.useWithoutLoaderGlobalCounter();
-    return (<>
-        {data && data.counter && data.counter.unreadCount > 0 && (
-            <CounterWrapper count={data.counter.unreadCount} />
-        )}
-    </>)
+    return (
+        <>
+            {data && data.counter && data.counter.unreadCount > 0 && (
+                <CounterWrapper count={data.counter.unreadCount} />
+            )}
+        </>
+    );
 };
 
 const UniversalScaffold = AdaptiveHOC({
@@ -127,11 +131,8 @@ const UniversalScafoldMenuItem = AdaptiveHOC({
 });
 
 const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
-    const [isMobile] = useIsMobile();
-
-    const [showSidebar, setShowSidebar] = React.useState(false);
-    const [showMenu, setShowMenu] = React.useState(false);
     const [renderedOnce, setRenderedOnce] = React.useState(false);
+    const [isMobile] = useIsMobile();
 
     React.useEffect(() => {
         if (!renderedOnce) {
@@ -139,76 +140,64 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
         }
     });
 
-    const setSidebarOrInnerMenu = ({
-        mode,
-        value,
-    }: {
-        mode: 'sidebar' | 'menu';
-        value: boolean;
-    }) => {
-        if (mode === 'menu') {
-            setShowMenu(value);
-            if (value) {
-                setShowSidebar(false);
-            }
-        }
-
-        if (mode === 'sidebar') {
-            setShowSidebar(value);
-            if (value) {
-                setShowMenu(false);
-            }
-        }
-    };
+    const [mobileSidebarContextState, setMobileSidebarContextState] = React.useState({
+        showSidebar: false,
+        setShowSidebar: (value: boolean) => {
+            setMobileSidebarContextState({
+                ...mobileSidebarContextState,
+                showSidebar: value,
+                ...(value ? { showMenu: false } : {}),
+            });
+        },
+        showMenu: false,
+        setShowMenu: (value: boolean) => {
+            setMobileSidebarContextState({
+                ...mobileSidebarContextState,
+                showMenu: value,
+                ...(value ? { showSidebar: false } : {}),
+            });
+        },
+    });
 
     return (
-        <MobileSidebarContext.Provider
-            value={{
-                renderedOnce,
-                showSidebar,
-                setShowSidebar: (value: boolean) => {
-                    setSidebarOrInnerMenu({ mode: 'sidebar', value });
-                },
-                showMenu,
-                setShowMenu: (value: boolean) => {
-                    setSidebarOrInnerMenu({ mode: 'menu', value });
-                },
-                isMobile: !!isMobile,
-            }}
-        >
-            <UniversalScaffold
-                topItems={
-                    <>
-                        <XWithRole role="feature-non-production">
-                            <UniversalScafoldMenuItem
-                                name={TextAppBar.items.feed}
-                                path="/feed"
-                                icon={<RoomIcon />}
-                            />
-                        </XWithRole>
+        <IsMobileContext.Provider value={!!isMobile}>
+            <RenderedOnceContext.Provider value={renderedOnce}>
+                <MobileSidebarContext.Provider value={mobileSidebarContextState}>
+                    <UniversalScaffold
+                        topItems={
+                            <>
+                                <XWithRole role="feature-non-production">
+                                    <UniversalScafoldMenuItem
+                                        name={TextAppBar.items.feed}
+                                        path="/feed"
+                                        icon={<RoomIcon />}
+                                    />
+                                </XWithRole>
 
-                        <UniversalScafoldMenuItem
-                            name={'Messages'}
-                            path="/mail"
-                            icon={
-                                <>
-                                    <MobileChatIcon />
-                                    <NotificationCounter />
-                                </>
-                            }
-                        />
+                                <UniversalScafoldMenuItem
+                                    name={'Messages'}
+                                    path="/mail"
+                                    icon={
+                                        <>
+                                            <MobileChatIcon />
+                                            <NotificationCounter />
+                                        </>
+                                    }
+                                />
 
-                        <UniversalScafoldMenuItem
-                            name={TextAppBar.items.directory}
-                            path="/directory"
-                            icon={<DirectoryIcon />}
-                        />
-                    </>
-                }
-                menu={menu}
-                content={content}
-            />
-        </MobileSidebarContext.Provider>
+                                <UniversalScafoldMenuItem
+                                    name={TextAppBar.items.directory}
+                                    path="/directory"
+                                    icon={<DirectoryIcon />}
+                                />
+                            </>
+                        }
+                        menu={menu}
+                        content={content}
+                    />
+                </MobileSidebarContext.Provider>
+            </RenderedOnceContext.Provider>
+        </IsMobileContext.Provider>
     );
 };
 

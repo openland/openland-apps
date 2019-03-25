@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { RenderedOnceContext } from 'openland-web/components/Scaffold/RenderedOnceContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
 const noFlexShrinkClassName = css`
     flex-shrink: 0;
@@ -43,7 +44,9 @@ export const HideOnMobile = ({
     fullWidth?: boolean;
     fullHeight?: boolean;
 }) => {
-    const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
+    const renderedOnce = React.useContext(RenderedOnceContext);
+    const isMobile = React.useContext(IsMobileContext);
+
     return (
         <>
             <div
@@ -75,7 +78,9 @@ export const HideOnDesktop = ({
     fullWidth?: boolean;
     fullHeight?: boolean;
 }) => {
-    const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
+    const renderedOnce = React.useContext(RenderedOnceContext);
+    const isMobile = React.useContext(IsMobileContext);
+
     return (
         <>
             <div
@@ -120,7 +125,9 @@ export const AdaptiveComponent = ({
     fullWidth?: boolean;
     fullHeight?: boolean;
 }) => {
-    const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
+    const renderedOnce = React.useContext(RenderedOnceContext);
+    const isMobile = React.useContext(IsMobileContext);
+
     return (
         <>
             <div
@@ -159,7 +166,8 @@ export const AdaptiveHOC = ({
     fullHeight?: boolean;
 }) => {
     const Component: any = (props: any) => {
-        const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
+        const renderedOnce = React.useContext(RenderedOnceContext);
+        const isMobile = React.useContext(IsMobileContext);
 
         return (
             <>

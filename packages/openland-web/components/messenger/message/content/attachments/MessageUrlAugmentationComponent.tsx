@@ -14,7 +14,7 @@ import DeleteIcon from 'openland-icons/ic-close.svg';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { emoji } from 'openland-y-utils/emoji';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -248,7 +248,7 @@ const InternalUrlCardInner = React.memo(
 );
 
 const InternalUrlCard = (props: InternalUrlCardInnerProps) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     return <InternalUrlCardInner {...props} isMobile={isMobile} />;
 };
 
@@ -262,12 +262,7 @@ const Keyboard = React.memo(
             <>
                 {!!keyboard &&
                     keyboard.buttons.map((line, i) => (
-                        <XView
-                            key={i + ''}
-                            flexDirection="row"
-                            maxWidth={540}
-                            alignSelf="stretch"
-                        >
+                        <XView key={i + ''} flexDirection="row" maxWidth={540} alignSelf="stretch">
                             {!!line &&
                                 line.map((button, j) => (
                                     <XView
@@ -342,7 +337,7 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
                         >
                             {title}
                         </XView>
-                        <XView fontWeight='600' fontSize={13} color={'rgba(0, 0, 0, 0.4)'} >
+                        <XView fontWeight="600" fontSize={13} color={'rgba(0, 0, 0, 0.4)'}>
                             {subTitle}
                         </XView>
                     </XView>
@@ -504,9 +499,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
 
 export const MessageUrlAugmentationComponent = React.memo(
     (props: MessageUrlAugmentationComponentProps) => {
-        const sidebarContext = React.useContext(MobileSidebarContext);
-
-        const { isMobile } = sidebarContext;
+        const isMobile = React.useContext(IsMobileContext);
 
         return <MessageUrlAugmentationComponentInner {...props} isMobile={isMobile} />;
     },

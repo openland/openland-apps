@@ -119,9 +119,9 @@ class MessagengerFragmentInner extends React.PureComponent<
     }
 }
 
-const MessengerComponentLoader = withRoom(withQueryLoader(
+const MessengerComponentLoader = withRoom(
     withUserInfo(MessagengerFragmentInner as any),
-) as any) as React.ComponentType<{
+) as React.ComponentType<{
     isActive: boolean;
     variables: { id: string };
     state: MessagesStateContextProps;

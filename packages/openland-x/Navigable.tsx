@@ -248,25 +248,17 @@ export function makeNavigable<T>(
         }
     };
 
-    // Forwarding contexts
-    class ContextWrapper extends React.PureComponent<NavigableParentProps<T>> {
-        render() {
-            let { children, ...other } = this.props as any;
-            return (
-                <XModalContext.Consumer>
-                    {modal => (
-                        <XRouterContext.Consumer>
-                            {router => (
-                                <Actionable {...other} __router={router!!} __modal={modal}>
-                                    {children}
-                                </Actionable>
-                            )}
-                        </XRouterContext.Consumer>
-                    )}
-                </XModalContext.Consumer>
-            );
-        }
-    }
+    const ContextWrapper = (props: NavigableParentProps<T>) => {
+        const { children, ...other } = props as any;
+        const modal = React.useContext(XModalContext);
+        const router = React.useContext(XRouterContext);
+
+        return (
+            <Actionable {...other} __router={router!!} __modal={modal}>
+                {children}
+            </Actionable>
+        );
+    };
 
     return ContextWrapper;
 }
