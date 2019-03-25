@@ -4,7 +4,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { Room_room_SharedRoom } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomTiny } from 'openland-api/Types';
 import { Dimensions, Platform } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { convertMessage, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
@@ -27,8 +27,7 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
     let messenger = getMessenger();
     let engine = messenger.engine.getConversation(id);
 
-    let room = getClient().useRoomTiny({ id });
-    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
+    let sharedRoom: Room_room_SharedRoom = props.router.params.room;
 
     let handleManageClick = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
@@ -50,7 +49,7 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
 
     let message: any;
     if (sharedRoom && sharedRoom.pinnedMessage) {
-        message = convertMessage(sharedRoom.pinnedMessage as any, room.room!.id, messenger.engine)
+        message = convertMessage(sharedRoom.pinnedMessage as any, sharedRoom.id, messenger.engine)
         message.isOut = false;
         message.attachTop = true;
     }
