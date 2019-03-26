@@ -3,6 +3,29 @@
         "default": {
             "presets": ["next/babel", "@zeit/next-typescript/babel", "linaria/babel"],
             "plugins": [
+                "graphql-tag",
+                ["module-resolver", {
+                    "root": ["./packages/"],
+                    // "alias": {
+                    //     "openland-icons": "openland-icons"
+                    // }
+                }],
+                "inline-react-svg",
+                "transform-react-constant-elements",
+                "transform-react-remove-prop-types",
+                "glamorous-displayname",
+                [
+                    "react-native-web",
+                    {
+                        "commonjs": true
+                    }
+                ]
+            ]
+        },
+        "webproduction": {
+            "presets": ["next/babel", "@zeit/next-typescript/babel", "linaria/babel"],
+            "plugins": [
+                "graphql-tag",
                 ["module-resolver", {
                     "root": ["./packages/"],
                     // "alias": {
@@ -25,6 +48,7 @@
         "production": {
             "presets": ["module:metro-react-native-babel-preset"],
             "plugins": [
+                "graphql-tag",
                 ["module-resolver", {
                     "root": ["./build/native"],
                     "alias": {
@@ -47,7 +71,7 @@
                         "assets-s": "./packages/react-native-s/assets"
                     }
                 }],
-                // "transform-remove-console",
+                "transform-remove-console",
                 // "@babel/plugin-transform-react-inline-elements",
                 // "@babel/plugin-transform-react-constant-elements",
                 "./packages/react-native-async-view-babel/lib"
