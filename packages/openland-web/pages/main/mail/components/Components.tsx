@@ -144,14 +144,6 @@ const CacheComponent = ({
         }
     }, [activeChat]);
 
-    if ((window as any).safari !== undefined && !isMobile) {
-        return (
-            <IsActiveContext.Provider value={true}>
-                {activeChat && <Component {...componentProps} isActive={true} />}{' '}
-            </IsActiveContext.Provider>
-        );
-    }
-
     const renderedElements = [];
 
     for (let i = 0; i < cachedPropsArray.length; i++) {

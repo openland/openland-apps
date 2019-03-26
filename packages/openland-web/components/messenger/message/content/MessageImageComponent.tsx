@@ -63,7 +63,7 @@ interface MessageImageComponentProps {
 export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
     let [isOpen, handleOpen] = React.useState(false);
     const isMobile = React.useContext(IsMobileContext);
-    const UserInfo = React.useContext(UserInfoContext);
+
     const openView = (e: any) => {
         if (props.startSelected) {
             return;
@@ -131,10 +131,6 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
     let localSettingsRadius = localStorage.getItem('image_view_alternative');
     if (localSettingsRadius) {
         if (localSettingsRadius === 'true') {
-            radiusForImages = true;
-        }
-    } else {
-        if (UserInfo && UserInfo.user && UserInfo.user.id === 'LOaDEWDj9zsVv999DDpJiEj05K') {
             radiusForImages = true;
         }
     }

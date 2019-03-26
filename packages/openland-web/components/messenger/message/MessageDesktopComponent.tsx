@@ -174,36 +174,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         }
     };
 
-    private setEditPostMessage = (e: any) => {
-        let { message, editPostHandler } = this.props;
-        if (!message.isSending && editPostHandler && message.title && message.text) {
-            let postFiles: Set<File> = new Set();
-            let file: File | null = null;
-
-            (message.attachments || []).map(i => {
-                if (i.__typename === 'MessageAttachmentFile') {
-                    file = {
-                        uuid: i.fileId,
-                        name: i.fileMetadata.name,
-                        size: String(i.fileMetadata.size),
-                        isImage: i.fileMetadata.isImage,
-                    };
-
-                    postFiles.add(file);
-                }
-            });
-            let postData: EditPostProps = {
-                title: message.title!,
-                text: message.text!,
-                postTipe: (message as any).alphaPostType,
-                files: postFiles,
-                messageId: message.id!,
-            };
-
-            editPostHandler(postData);
-        }
-    };
-
     private setReplyMessages = (e: any) => {
         let { message, messagesContext } = this.props;
 

@@ -240,133 +240,129 @@ export interface XModalProps extends ModalContentRenderProps {
     targetQuery?: string;
 }
 
-export const XModal = (props: any) => {
-    return null;
-};
+export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }> {
+    static Footer = XModalFooter;
 
-// export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }> {
-//     static Footer = XModalFooter;
+    // TODO: Better perissting of router
+    lastRouter: XRouter | undefined;
 
-//     // TODO: Better perissting of router
-//     lastRouter: XRouter | undefined;
+    constructor(props: XModalProps) {
+        super(props);
+        this.state = { isOpen: false };
+    }
 
-//     constructor(props: XModalProps) {
-//         super(props);
-//         this.state = { isOpen: false };
-//     }
+    onTargetClick = () => {
+        this.setState({
+            isOpen: true,
+        });
+    };
 
-//     onTargetClick = () => {
-//         this.setState({
-//             isOpen: true,
-//         });
-//     };
+    onModalCloseRequest = () => {
+        if (this.props.onClosed) {
+            this.props.onClosed();
+        }
+        if (this.props.target) {
+            this.setState(state => ({ isOpen: false }));
+        } else if (this.props.targetQuery) {
+            if (this.lastRouter) {
+                this.lastRouter!!.replaceQuery(this.props.targetQuery!!, undefined); // this will delete targetQuery
+            }
+        }
+    };
 
-//     onModalCloseRequest = () => {
-//         if (this.props.onClosed) {
-//             this.props.onClosed();
-//         }
-//         if (this.props.target) {
-//             this.setState(state => ({ isOpen: false }));
-//         } else if (this.props.targetQuery) {
-//             if (this.lastRouter) {
-//                 this.lastRouter!!.replaceQuery(this.props.targetQuery!!, undefined); // this will delete targetQuery
-//             }
-//         }
-//     };
-
-//     render() {
-//         let size = this.props.size || 'default';
-//         if (this.props.target) {
-//             let TargetClone = React.cloneElement(this.props.target, {
-//                 onClick: this.onTargetClick,
-//             });
-//             return (
-//                 <>
-//                     {TargetClone}
-//                     <ModalRender
-//                         scrollableContent={this.props.scrollableContent}
-//                         isOpen={this.state.isOpen}
-//                         onCloseRequest={this.onModalCloseRequest}
-//                         size={size}
-//                         sWidth={this.props.width}
-//                         closeOnClick={this.props.closeOnClick}
-//                         transparent={this.props.transparent}
-//                     >
-//                         <ModalContentRender
-//                             scrollableContent={this.props.scrollableContent}
-//                             title={this.props.title}
-//                             titleChildren={this.props.titleChildren}
-//                             useTopCloser={this.props.useTopCloser}
-//                             heading={this.props.heading}
-//                             footer={this.props.footer}
-//                             body={this.props.body}
-//                             customContent={this.props.customContent}
-//                         >
-//                             {this.props.children}
-//                         </ModalContentRender>
-//                     </ModalRender>
-//                 </>
-//             );
-//         } else if (this.props.targetQuery) {
-//             let q = this.props.targetQuery;
-//             return (
-//                 <XRouterContext.Consumer>
-//                     {router => {
-//                         this.lastRouter = router;
-//                         return (
-//                             <ModalRender
-//                                 scrollableContent={this.props.scrollableContent}
-//                                 isOpen={!!router!!.query[q]}
-//                                 onCloseRequest={this.onModalCloseRequest}
-//                                 size={size}
-//                                 sWidth={this.props.width}
-//                                 closeOnClick={this.props.closeOnClick}
-//                                 transparent={this.props.transparent}
-//                             >
-//                                 <ModalContentRender
-//                                     scrollableContent={this.props.scrollableContent}
-//                                     title={this.props.title}
-//                                     titleChildren={this.props.titleChildren}
-//                                     useTopCloser={this.props.useTopCloser}
-//                                     heading={this.props.heading}
-//                                     footer={this.props.footer}
-//                                     body={this.props.body}
-//                                     customContent={this.props.customContent}
-//                                 >
-//                                     {this.props.children}
-//                                 </ModalContentRender>
-//                             </ModalRender>
-//                         );
-//                     }}
-//                 </XRouterContext.Consumer>
-//             );
-//         } else if (this.props.isOpen !== undefined) {
-//             return (
-//                 <ModalRender
-//                     scrollableContent={this.props.scrollableContent}
-//                     isOpen={this.props.isOpen}
-//                     onCloseRequest={this.onModalCloseRequest}
-//                     size={size}
-//                     sWidth={this.props.width}
-//                     closeOnClick={this.props.closeOnClick}
-//                     transparent={this.props.transparent}
-//                 >
-//                     <ModalContentRender
-//                         scrollableContent={this.props.scrollableContent}
-//                         title={this.props.title}
-//                         titleChildren={this.props.titleChildren}
-//                         useTopCloser={this.props.useTopCloser}
-//                         heading={this.props.heading}
-//                         footer={this.props.footer}
-//                         body={this.props.body}
-//                         customContent={this.props.customContent}
-//                     >
-//                         {this.props.children}
-//                     </ModalContentRender>
-//                 </ModalRender>
-//             );
-//         } else {
-//             throw Error('You should provide show, targetQuery or target');
-//         }
-//     }
-// }
+    render() {
+        let size = this.props.size || 'default';
+        if (this.props.target) {
+            let TargetClone = React.cloneElement(this.props.target, {
+                onClick: this.onTargetClick,
+            });
+            return (
+                <>
+                    {TargetClone}
+                    <ModalRender
+                        scrollableContent={this.props.scrollableContent}
+                        isOpen={this.state.isOpen}
+                        onCloseRequest={this.onModalCloseRequest}
+                        size={size}
+                        sWidth={this.props.width}
+                        closeOnClick={this.props.closeOnClick}
+                        transparent={this.props.transparent}
+                    >
+                        <ModalContentRender
+                            scrollableContent={this.props.scrollableContent}
+                            title={this.props.title}
+                            titleChildren={this.props.titleChildren}
+                            useTopCloser={this.props.useTopCloser}
+                            heading={this.props.heading}
+                            footer={this.props.footer}
+                            body={this.props.body}
+                            customContent={this.props.customContent}
+                        >
+                            {this.props.children}
+                        </ModalContentRender>
+                    </ModalRender>
+                </>
+            );
+        } else if (this.props.targetQuery) {
+            let q = this.props.targetQuery;
+            return (
+                <XRouterContext.Consumer>
+                    {router => {
+                        this.lastRouter = router;
+                        return (
+                            <ModalRender
+                                scrollableContent={this.props.scrollableContent}
+                                isOpen={!!router!!.query[q]}
+                                onCloseRequest={this.onModalCloseRequest}
+                                size={size}
+                                sWidth={this.props.width}
+                                closeOnClick={this.props.closeOnClick}
+                                transparent={this.props.transparent}
+                            >
+                                <ModalContentRender
+                                    scrollableContent={this.props.scrollableContent}
+                                    title={this.props.title}
+                                    titleChildren={this.props.titleChildren}
+                                    useTopCloser={this.props.useTopCloser}
+                                    heading={this.props.heading}
+                                    footer={this.props.footer}
+                                    body={this.props.body}
+                                    customContent={this.props.customContent}
+                                >
+                                    {this.props.children}
+                                </ModalContentRender>
+                            </ModalRender>
+                        );
+                    }}
+                </XRouterContext.Consumer>
+            );
+        } else if (this.props.isOpen !== undefined) {
+            return (
+                <ModalRender
+                    scrollableContent={this.props.scrollableContent}
+                    isOpen={this.props.isOpen}
+                    onCloseRequest={this.onModalCloseRequest}
+                    size={size}
+                    sWidth={this.props.width}
+                    closeOnClick={this.props.closeOnClick}
+                    transparent={this.props.transparent}
+                >
+                    <ModalContentRender
+                        scrollableContent={this.props.scrollableContent}
+                        title={this.props.title}
+                        titleChildren={this.props.titleChildren}
+                        useTopCloser={this.props.useTopCloser}
+                        heading={this.props.heading}
+                        footer={this.props.footer}
+                        body={this.props.body}
+                        customContent={this.props.customContent}
+                    >
+                        {this.props.children}
+                    </ModalContentRender>
+                </ModalRender>
+            );
+        } else {
+            throw Error('You should provide show, targetQuery or target');
+        }
+    }
+}

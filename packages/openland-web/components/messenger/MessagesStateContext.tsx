@@ -48,6 +48,19 @@ type MessagePageProps = {
     userId?: string;
     organizationId?: string;
 };
+
+function eqSet(as: any, bs: any) {
+    if (as.size !== bs.size) {
+        return false;
+    }
+    for (let a of as) {
+        if (!bs.has(a)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 export class MessageStateProviderComponent extends React.PureComponent<
     MessagePageProps,
     MessagesStateContextProps
@@ -95,11 +108,32 @@ export class MessageStateProviderComponent extends React.PureComponent<
                 useForwardHeader: false,
             };
 
-            if (!includes(this.state, target)) {
+            if (!this.checkMixIsSame(this.state, target)) {
                 this.setState(target);
             }
         }
     }
+
+    private checkIsSame = (state1: any, state2: any) => {
+        for (let key of Object.keys(state1)) {
+            const item1 = state1[key];
+            const item2 = state2[key];
+
+            if (typeof item1 === typeof item2 && item2 instanceof Set) {
+                if (!eqSet(item1, item2)) {
+                    return false;
+                }
+            } else if (item1 !== item2) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+    private checkMixIsSame = (state1: any, mix: any) => {
+        return this.checkIsSame(mix, state1);
+    };
 
     private switchMessageSelect = (message: DataSourceMessageItem) => {
         let res = new Set(this.state.selectedMessages);
@@ -108,16 +142,25 @@ export class MessageStateProviderComponent extends React.PureComponent<
         } else {
             res.add(message);
         }
-        this.setState({
+
+        let target = {
             selectedMessages: res,
-        });
+        };
+
+        if (!this.checkMixIsSame(this.state, target)) {
+            this.setState(target);
+        }
     };
 
     private setEditMessage = (id: string | null, message: string | null) => {
-        this.setState({
+        let target = {
             editMessageId: id,
             editMessage: message,
-        });
+        };
+
+        if (!this.checkMixIsSame(this.state, target)) {
+            this.setState(target);
+        }
     };
 
     private setForwardMessages = (id: Set<string>) => {
@@ -125,54 +168,73 @@ export class MessageStateProviderComponent extends React.PureComponent<
         if (id && id.size > 0) {
             useHeader = true;
         }
-        this.setState({
+
+        let target = {
             forwardMessagesId: id,
             useForwardHeader: useHeader,
-        });
+        };
+
+        if (!this.checkMixIsSame(this.state, target)) {
+            this.setState(target);
+        }
     };
 
     private forwardMessages = () => {
-        this.setState({
+        let target = {
             useForwardMessages: true,
             useForwardPlaceholder: true,
             useForwardHeader: false,
-        });
+        };
+
+        if (!this.checkMixIsSame(this.state, target)) {
+            this.setState(target);
+        }
     };
 
     private setReplyMessages = (id: Set<string>, messages: Set<string>, sender: Set<string>) => {
-        this.setState({
+        let target = {
             replyMessagesId: id,
             replyMessages: messages,
             replyMessagesSender: sender,
             forwardMessagesId: new Set(),
-        });
+        };
+
+        if (!this.checkMixIsSame(this.state, target)) {
+            this.setState(target);
+        }
     };
 
     private changeForwardConverstion = () => {
-        this.setState({
+        let target = {
             useForwardPlaceholder: false,
             useForwardHeader: false,
             replyMessagesId: new Set(),
             replyMessages: new Set(),
             replyMessagesSender: new Set(),
-        });
+        };
+
+        if (!this.checkMixIsSame(this.state, target)) {
+            this.setState(target);
+        }
     };
 
     private resetAll = () => {
         let target = {
             editMessageId: null,
             editMessage: null,
+            useForwardMessages: false,
+            useForwardPlaceholder: false,
+            useForwardHeader: false,
             forwardMessagesId: new Set(),
             selectedMessages: new Set(),
             replyMessagesId: new Set(),
             replyMessages: new Set(),
             replyMessagesSender: new Set(),
-            useForwardMessages: false,
-            useForwardPlaceholder: false,
-            useForwardHeader: false,
         };
 
-        this.setState(target);
+        if (!this.checkMixIsSame(this.state, target)) {
+            this.setState(target);
+        }
     };
 
     render() {

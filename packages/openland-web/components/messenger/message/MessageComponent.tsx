@@ -12,9 +12,22 @@ const MessageComponentInner = React.memo(
         },
     ) => {
         return props.isMobile ? (
-            <MobileMessageComponentInner {...props} />
+            <MobileMessageComponentInner
+                message={props.message}
+                conversation={props.conversation}
+                me={props.me}
+                conversationType={props.conversationType}
+                editPostHandler={props.editPostHandler}
+            />
         ) : (
-            <DesktopMessageComponentInner {...props} messagesContext={props.messagesContextProps} />
+            <DesktopMessageComponentInner
+                message={props.message}
+                conversation={props.conversation}
+                me={props.me}
+                conversationType={props.conversationType}
+                editPostHandler={props.editPostHandler}
+                messagesContext={props.messagesContextProps}
+            />
         );
     },
 );
@@ -25,7 +38,11 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     return (
         <MessageComponentInner
-            {...props}
+            message={props.message}
+            conversation={props.conversation}
+            me={props.me}
+            conversationType={props.conversationType}
+            editPostHandler={props.editPostHandler}
             messagesContextProps={messagesContextProps}
             isMobile={isMobile}
         />
