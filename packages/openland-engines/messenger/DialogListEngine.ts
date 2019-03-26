@@ -303,7 +303,6 @@ export class DialogListEngine {
         const conversationId = event.cid as string;
         const unreadCount = event.unread as number;
 
-        // Write message to datasource
         let res = this.dataSource.getItem(conversationId);
         let isOut = event.message.sender.id === this.engine.user.id;
         let sender = isOut ? 'You' : event.message.sender.firstName;

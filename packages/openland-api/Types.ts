@@ -6141,7 +6141,102 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted {
   globalUnread: number;
 }
 
-export type DialogsWatch_event_DialogUpdateSingle_update = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead | DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted;
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage = DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage | DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump {
+  __typename: "DialogBump";
+  cid: string;
+  globalUnread: number;
+  unread: number;
+  topMessage: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage | null;
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead | DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogBump;
 
 export interface DialogsWatch_event_DialogUpdateSingle {
   __typename: "DialogUpdateSingle";
@@ -6558,7 +6653,102 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted {
   globalUnread: number;
 }
 
-export type DialogsWatch_event_DialogUpdateBatch_updates = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead | DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted;
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage = DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage | DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump {
+  __typename: "DialogBump";
+  cid: string;
+  globalUnread: number;
+  unread: number;
+  topMessage: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage | null;
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead | DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogBump;
 
 export interface DialogsWatch_event_DialogUpdateBatch {
   __typename: "DialogUpdateBatch";
@@ -29724,7 +29914,102 @@ export interface DialogUpdateFragment_DialogDeleted {
   globalUnread: number;
 }
 
-export type DialogUpdateFragment = DialogUpdateFragment_DialogMessageReceived | DialogUpdateFragment_DialogMessageUpdated | DialogUpdateFragment_DialogMessageDeleted | DialogUpdateFragment_DialogMessageRead | DialogUpdateFragment_DialogTitleUpdated | DialogUpdateFragment_DialogMuteChanged | DialogUpdateFragment_DialogMentionedChanged | DialogUpdateFragment_DialogPhotoUpdated | DialogUpdateFragment_DialogDeleted;
+export interface DialogUpdateFragment_DialogBump_topMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogBump_topMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments = DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost | DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments[];
+  quotedMessages: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_quotedMessages[];
+}
+
+export type DialogUpdateFragment_DialogBump_topMessage = DialogUpdateFragment_DialogBump_topMessage_ServiceMessage | DialogUpdateFragment_DialogBump_topMessage_GeneralMessage;
+
+export interface DialogUpdateFragment_DialogBump {
+  __typename: "DialogBump";
+  cid: string;
+  globalUnread: number;
+  unread: number;
+  topMessage: DialogUpdateFragment_DialogBump_topMessage | null;
+}
+
+export type DialogUpdateFragment = DialogUpdateFragment_DialogMessageReceived | DialogUpdateFragment_DialogMessageUpdated | DialogUpdateFragment_DialogMessageDeleted | DialogUpdateFragment_DialogMessageRead | DialogUpdateFragment_DialogTitleUpdated | DialogUpdateFragment_DialogMuteChanged | DialogUpdateFragment_DialogMentionedChanged | DialogUpdateFragment_DialogPhotoUpdated | DialogUpdateFragment_DialogDeleted | DialogUpdateFragment_DialogBump;
 
 /* tslint:disable */
 /* eslint-disable */

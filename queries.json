@@ -1922,8 +1922,8 @@
 				"TinyMessage",
 				"UserTiny"
 			],
-			"sourceWithFragments": "subscription DialogsWatch($state: String) {\n  event: dialogsUpdates(fromState: $state) {\n    __typename\n    ... on DialogUpdateSingle {\n      seq\n      state\n      update {\n        __typename\n        ...DialogUpdateFragment\n      }\n    }\n    ... on DialogUpdateBatch {\n      fromSeq\n      seq\n      state\n      updates {\n        __typename\n        ...DialogUpdateFragment\n      }\n    }\n  }\n}\nfragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogTitleUpdated {\n    cid\n    title\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogMentionedChanged {\n    cid\n    haveMention\n  }\n  ... on DialogPhotoUpdated {\n    cid\n    photo\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n}\nfragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}",
-			"operationId": "76a389c52c8d5b12a17c8bf1d29066178f36073255a49e124e2e5c91eeca37bd"
+			"sourceWithFragments": "subscription DialogsWatch($state: String) {\n  event: dialogsUpdates(fromState: $state) {\n    __typename\n    ... on DialogUpdateSingle {\n      seq\n      state\n      update {\n        __typename\n        ...DialogUpdateFragment\n      }\n    }\n    ... on DialogUpdateBatch {\n      fromSeq\n      seq\n      state\n      updates {\n        __typename\n        ...DialogUpdateFragment\n      }\n    }\n  }\n}\nfragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogTitleUpdated {\n    cid\n    title\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogMentionedChanged {\n    cid\n    haveMention\n  }\n  ... on DialogPhotoUpdated {\n    cid\n    photo\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n  ... on DialogBump {\n    cid\n    globalUnread\n    unread\n    topMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n}\nfragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}",
+			"operationId": "e85142ae1f35b9cad8be0cba77e4c06cf552d9dcff8a416c877b3924e7b5f567"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -16715,11 +16715,12 @@
 				"DialogDeleted",
 				"DialogPhotoUpdated",
 				"DialogMuteChanged",
-				"DialogMentionedChanged"
+				"DialogMentionedChanged",
+				"DialogBump"
 			],
 			"fragmentName": "DialogUpdateFragment",
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Chats.ts",
-			"source": "fragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogTitleUpdated {\n    cid\n    title\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogMentionedChanged {\n    cid\n    haveMention\n  }\n  ... on DialogPhotoUpdated {\n    cid\n    photo\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n}",
+			"source": "fragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogTitleUpdated {\n    cid\n    title\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogMentionedChanged {\n    cid\n    haveMention\n  }\n  ... on DialogPhotoUpdated {\n    cid\n    photo\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n  ... on DialogBump {\n    cid\n    globalUnread\n    unread\n    topMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -17077,6 +17078,61 @@
 							"type": "Int!",
 							"isConditional": false,
 							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": []
+				},
+				{
+					"typeCondition": "DialogBump",
+					"possibleTypes": [
+						"DialogBump"
+					],
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "cid",
+							"fieldName": "cid",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "globalUnread",
+							"fieldName": "globalUnread",
+							"type": "Int!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "unread",
+							"fieldName": "unread",
+							"type": "Int!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "topMessage",
+							"fieldName": "topMessage",
+							"type": "ModernMessage",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"TinyMessage"
+							],
+							"inlineFragments": []
 						}
 					],
 					"fragmentSpreads": []

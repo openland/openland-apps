@@ -165,6 +165,15 @@ export const DialogsWatchSubscription = gql`
             cid
             globalUnread
         }
+        ... on DialogBump {
+            cid
+            globalUnread
+            unread
+            topMessage {
+                ...TinyMessage
+            }
+        }
+        
     }
     ${UserTiny}
     ${TinyMessage}

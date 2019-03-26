@@ -345,7 +345,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
                             )}
                             <ConversationView engine={this.engine} theme={this.state.theme} />
-                            <MessageInputBar
+                            {(!sharedRoom || sharedRoom.canSendMessage) && <MessageInputBar
                                 onAttachPress={this.handleAttach}
                                 onSubmitPress={this.handleSubmit}
                                 onChangeText={this.handleTextChange}
@@ -355,7 +355,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 text={this.state.text}
                                 theme={this.state.theme}
                                 topContent={mentions}
-                            />
+                            />}
                         </View>
                     </KeyboardSafeAreaView>
                 </SDeferred>

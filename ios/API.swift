@@ -4981,7 +4981,7 @@ public final class DialogsWatchSubscription: GraphQLSubscription {
         }
 
         public struct Update: GraphQLSelectionSet {
-          public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged"]
+          public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged", "DialogBump"]
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
@@ -5133,7 +5133,7 @@ public final class DialogsWatchSubscription: GraphQLSubscription {
         }
 
         public struct Update: GraphQLSelectionSet {
-          public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged"]
+          public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged", "DialogBump"]
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
@@ -29351,13 +29351,13 @@ public struct ChatUpdateFragment: GraphQLFragment {
 
 public struct DialogUpdateFragment: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogTitleUpdated {\n    cid\n    title\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogMentionedChanged {\n    cid\n    haveMention\n  }\n  ... on DialogPhotoUpdated {\n    cid\n    photo\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n}"
+    "fragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogTitleUpdated {\n    cid\n    title\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogMentionedChanged {\n    cid\n    haveMention\n  }\n  ... on DialogPhotoUpdated {\n    cid\n    photo\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n  ... on DialogBump {\n    cid\n    globalUnread\n    unread\n    topMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n}"
 
-  public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged"]
+  public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged", "DialogBump"]
 
   public static let selections: [GraphQLSelection] = [
     GraphQLTypeCase(
-      variants: ["DialogMessageReceived": AsDialogMessageReceived.selections, "DialogMessageUpdated": AsDialogMessageUpdated.selections, "DialogMessageDeleted": AsDialogMessageDeleted.selections, "DialogMessageRead": AsDialogMessageRead.selections, "DialogTitleUpdated": AsDialogTitleUpdated.selections, "DialogMuteChanged": AsDialogMuteChanged.selections, "DialogMentionedChanged": AsDialogMentionedChanged.selections, "DialogPhotoUpdated": AsDialogPhotoUpdated.selections, "DialogDeleted": AsDialogDeleted.selections],
+      variants: ["DialogMessageReceived": AsDialogMessageReceived.selections, "DialogMessageUpdated": AsDialogMessageUpdated.selections, "DialogMessageDeleted": AsDialogMessageDeleted.selections, "DialogMessageRead": AsDialogMessageRead.selections, "DialogTitleUpdated": AsDialogTitleUpdated.selections, "DialogMuteChanged": AsDialogMuteChanged.selections, "DialogMentionedChanged": AsDialogMentionedChanged.selections, "DialogPhotoUpdated": AsDialogPhotoUpdated.selections, "DialogDeleted": AsDialogDeleted.selections, "DialogBump": AsDialogBump.selections],
       default: [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       ]
@@ -29404,6 +29404,10 @@ public struct DialogUpdateFragment: GraphQLFragment {
 
   public static func makeDialogDeleted(cid: GraphQLID, globalUnread: Int) -> DialogUpdateFragment {
     return DialogUpdateFragment(unsafeResultMap: ["__typename": "DialogDeleted", "cid": cid, "globalUnread": globalUnread])
+  }
+
+  public static func makeDialogBump(cid: GraphQLID, globalUnread: Int, unread: Int, topMessage: AsDialogBump.TopMessage? = nil) -> DialogUpdateFragment {
+    return DialogUpdateFragment(unsafeResultMap: ["__typename": "DialogBump", "cid": cid, "globalUnread": globalUnread, "unread": unread, "topMessage": topMessage.flatMap { (value: AsDialogBump.TopMessage) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -30196,6 +30200,134 @@ public struct DialogUpdateFragment: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "globalUnread")
+      }
+    }
+  }
+
+  public var asDialogBump: AsDialogBump? {
+    get {
+      if !AsDialogBump.possibleTypes.contains(__typename) { return nil }
+      return AsDialogBump(unsafeResultMap: resultMap)
+    }
+    set {
+      guard let newValue = newValue else { return }
+      resultMap = newValue.resultMap
+    }
+  }
+
+  public struct AsDialogBump: GraphQLSelectionSet {
+    public static let possibleTypes = ["DialogBump"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("cid", type: .nonNull(.scalar(GraphQLID.self))),
+      GraphQLField("globalUnread", type: .nonNull(.scalar(Int.self))),
+      GraphQLField("unread", type: .nonNull(.scalar(Int.self))),
+      GraphQLField("topMessage", type: .object(TopMessage.selections)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(cid: GraphQLID, globalUnread: Int, unread: Int, topMessage: TopMessage? = nil) {
+      self.init(unsafeResultMap: ["__typename": "DialogBump", "cid": cid, "globalUnread": globalUnread, "unread": unread, "topMessage": topMessage.flatMap { (value: TopMessage) -> ResultMap in value.resultMap }])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var cid: GraphQLID {
+      get {
+        return resultMap["cid"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "cid")
+      }
+    }
+
+    public var globalUnread: Int {
+      get {
+        return resultMap["globalUnread"]! as! Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "globalUnread")
+      }
+    }
+
+    public var unread: Int {
+      get {
+        return resultMap["unread"]! as! Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "unread")
+      }
+    }
+
+    public var topMessage: TopMessage? {
+      get {
+        return (resultMap["topMessage"] as? ResultMap).flatMap { TopMessage(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "topMessage")
+      }
+    }
+
+    public struct TopMessage: GraphQLSelectionSet {
+      public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(TinyMessage.self),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var tinyMessage: TinyMessage {
+          get {
+            return TinyMessage(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
       }
     }
   }
