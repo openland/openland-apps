@@ -43,14 +43,6 @@ const ImageClassName = css`
     margin-left: -3px;
 `;
 
-const ImageWrapperRadius = css`
-    border-radius: 3px;
-`;
-
-const ImageRadiusClassName = css`
-    border-radius: 3px;
-`;
-
 interface MessageImageComponentProps {
     file: string;
     fileName?: string;
@@ -126,18 +118,6 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
     let dimensions = layoutMedia(props.width, props.height);
     let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
 
-    let radiusForImages = false;
-    let localSettingsRadius = localStorage.getItem('image_view_alternative');
-    if (localSettingsRadius) {
-        if (localSettingsRadius === 'true') {
-            radiusForImages = true;
-        }
-    } else {
-        if (UserInfo && UserInfo.user && UserInfo.user.id === 'LOaDEWDj9zsVv999DDpJiEj05K') {
-            radiusForImages = true;
-        }
-    }
-
     return (
         <>
             {!isMobile && (
@@ -152,20 +132,13 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
                 />
             )}
             <XView onClick={openView} cursor="pointer" paddingBottom={5}>
-                <div
-                    className={
-                        ImageWrapper + (radiusForImages ? ' ' + ImageWrapperRadius : undefined)
-                    }
-                >
+                <div className={ImageWrapper}>
                     <XCloudImage
                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                         resize={'fill'}
                         width={dimensions.width}
                         height={dimensions.height}
-                        className={
-                            ImageClassName +
-                            (radiusForImages ? ' ' + ImageRadiusClassName : undefined)
-                        }
+                        className={ImageClassName}
                     />
                 </div>
             </XView>

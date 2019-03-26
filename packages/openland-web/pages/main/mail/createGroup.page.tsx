@@ -91,20 +91,20 @@ const MainWrapper = (props: { back: boolean; onBackClick: () => void; children: 
                 </XView>
             )}
             <XModal
-                title="Discard changes"
+                title="Leave and delete group"
                 width={380}
                 body={
                     <XModalBody>
                         <XView paddingBottom={30}>
-                            If you leave now, this group won't be created.
+                            If you leave now, this group will be deleted.
                         </XView>
                     </XModalBody>
                 }
                 footer={
                     <XModalFooter>
-                        <XButton text="Go back" style="primary" autoClose={true} />
+                        <XButton text="Cancel" style="primary" autoClose={true} />
                         <XView width={12} flexShrink={0} />
-                        <XButton text="Discard" style="ghost" path="/mail" />
+                        <XButton text="Leave and delete" style="ghost" path="/mail" />
                     </XModalFooter>
                 }
                 target={

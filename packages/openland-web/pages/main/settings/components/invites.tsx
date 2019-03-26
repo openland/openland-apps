@@ -249,7 +249,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
                         />
                         <InviteText>
                             {!this.props.organization
-                                ? 'Anyone with link can join as organization member'
+                                ? 'Anyone with link can join as community member'
                                 : 'Anyone with link can join Openland'}
                         </InviteText>
                     </LinkHolder>
