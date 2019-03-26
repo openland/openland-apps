@@ -52,7 +52,7 @@ interface MessageImageComponentProps {
 
 export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
     let [isOpen, handleOpen] = React.useState(false);
-    const sMobile = React.useContext(IsMobileContext);
+    const isMobile = React.useContext(IsMobileContext);
 
     const openView = (e: any) => {
         if (props.startSelected) {
