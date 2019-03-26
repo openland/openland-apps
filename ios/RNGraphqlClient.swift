@@ -109,6 +109,8 @@ class RNGraphqlClient: WebSocketTransportDelegate {
           cache = ex!
         } else {
           let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+          let url = URL(fileURLWithPath: s + ".sqlite", relativeTo: path)
+          print("Loading storage: \(storage) at \(url.absoluteURL)")
           let c = try SQLiteNormalizedCache(fileURL: URL(fileURLWithPath: s + ".sqlite", relativeTo: path))
           sqlCaches[s] = c
           cache = c
