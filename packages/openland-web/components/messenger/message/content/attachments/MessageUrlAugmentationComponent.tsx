@@ -167,6 +167,12 @@ const ImageClassName = css`
     display: block;
 `;
 
+const DomainNameClassName = css`
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+`;
+
 const MessageUrlAugmentationComponentInner = React.memo(
     (props: MessageUrlAugmentationComponentProps & { isMobile: boolean }) => {
         let {
@@ -347,7 +353,9 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                                     <WebsiteIcon />
                                                 </XView>
                                             )}
-                                            <span>{titleLinkHostname}</span>
+                                            <span className={DomainNameClassName}>
+                                                {titleLinkHostname}
+                                            </span>
                                         </XView>
                                     )}
                                 {subTitle &&
