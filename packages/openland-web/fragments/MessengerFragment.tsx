@@ -32,7 +32,6 @@ interface MessengerComponentLoaderProps {
     isActive: boolean;
     state: MessagesStateContextProps;
     user: UserShort;
-    loading: boolean;
     data: Room;
 }
 
@@ -44,12 +43,9 @@ class MessagengerFragmentInner extends React.PureComponent<
     };
 
     render() {
-        const { state, data, loading, isActive } = this.props;
-        if (!data || !data.room || loading) {
-            if (loading) {
-                return <XLoader loading={true} />;
-            }
-            return <div />;
+        const { state, data, isActive } = this.props;
+        if (!data || !data.room) {
+            return <XLoader loading={true} />;
         }
 
         let sharedRoom: Room_room_SharedRoom | null =
@@ -131,7 +127,6 @@ export const MessengerFragment = (props: { id: string; isActive: boolean }) => {
             isActive={props.isActive}
             state={state}
             user={user}
-            loading={false}
             data={room}
             apollo={apollo}
         />
