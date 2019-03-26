@@ -107,7 +107,7 @@ const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation(props => {
     );
 });
 
-export const LeaveChatComponent = withRouter((props) => {
+export const LeaveChatComponent = withRouter(props => {
     let client = useClient();
     let id = props.router.query.leaveFromChat;
     return (
@@ -289,7 +289,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     //
 
     render() {
-        // console.log('render MessagesComponent');
         if (!this.conversation) {
             return null;
         }

@@ -75,7 +75,9 @@ class ShouldUpdateComponent extends React.Component<ShouldUpdateComponentT> {
         return this.props.isActive && props.isActive;
     }
     render() {
-        return <this.props.Component {...this.props.componentProps} isActive={true} />;
+        return (
+            <this.props.Component {...this.props.componentProps} isActive={this.props.isActive} />
+        );
     }
 }
 
@@ -103,7 +105,6 @@ const SIZE_OF_CACHE = 20;
 
 const CacheComponent = ({
     Component,
-    isMobile,
     activeChat,
     componentProps,
 }: {
@@ -143,6 +144,14 @@ const CacheComponent = ({
             }
         }
     }, [activeChat]);
+
+    if (true) {
+        return (
+            <IsActiveContext.Provider value={true}>
+                {activeChat && <Component {...componentProps} isActive={true} />}{' '}
+            </IsActiveContext.Provider>
+        );
+    }
 
     const renderedElements = [];
 

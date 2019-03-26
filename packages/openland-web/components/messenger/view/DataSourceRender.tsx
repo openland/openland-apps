@@ -94,8 +94,6 @@ const WrapWith = ({
     );
 };
 
-// WrapWith.whyDidYouRender = true;
-
 export const DataSourceRender = React.memo(function<T extends DataSourceItem>(
     props: XListViewProps<T>,
 ) {

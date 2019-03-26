@@ -27,8 +27,6 @@ export function graphqlMutation<TQuery, TVars, TN extends string>(
         >,
     ): React.ComponentType<{ variables?: Partial<TVars> }> {
         class MutationComponentWrapper extends React.Component<any> {
-            // static whyDidYouRender = true;
-
             shouldComponentUpdate(props: any) {
                 return props.isActive !== false;
             }
@@ -90,10 +88,8 @@ export function graphqlMutation<TQuery, TVars, TN extends string>(
                                   router!!.routeQuery,
                               ),
                               ...prepareSourceTargetParams(
-                                    params.refetchRouterParams
-                                        ? params.refetchRouterParams
-                                        : [],
-                                    router!!.routeQuery,
+                                  params.refetchRouterParams ? params.refetchRouterParams : [],
+                                  router!!.routeQuery,
                               ),
                               ...this.props.refetchVars,
                           },

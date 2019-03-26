@@ -27,8 +27,6 @@ export function graphqlRouted<TResult, TVars>(
         Component: React.ComponentType<GraphQLRoutedComponentProps<TResult>>,
     ): React.ComponentType<{ variables?: TVars }> {
         class QueryComponentWrapper extends React.Component<any> {
-            // static whyDidYouRender = true;
-
             shouldComponentUpdate(props: any) {
                 return props.isActive !== false;
             }
@@ -47,16 +45,7 @@ export function graphqlRouted<TResult, TVars>(
             variables?: TVars;
             isActive: boolean | null;
         }> {
-            // static whyDidYouRender = true;
-
-            // shouldComponentUpdate(props: any) {
-            //     console.log(props.isActive !== false);
-            //     return props.isActive !== false;
-            // }
-
             renderQuery(preparedVariables: any, other: any, router: any, results: any) {
-                // console.log('renderQuery');
-
                 if (options && options.throwOnError && results.data.error) {
                     throw results.data.error;
                 }
@@ -65,9 +54,6 @@ export function graphqlRouted<TResult, TVars>(
 
                     throwGraphQLErrors(results.error);
                 }
-
-                // console.log('isActive', this.props.isActive);
-                // console.log(JSON.stringify(results.data, null, 2));
 
                 return (
                     <QueryComponentWrapper
@@ -84,8 +70,6 @@ export function graphqlRouted<TResult, TVars>(
             }
 
             renderRouter(other: any, router: any) {
-                // console.log('renderRouter');
-                // console.log('isActive', this.props.isActive);
                 let preparedVariables = {
                     ...prepareParams(
                         options && options.params ? options.params : [],
