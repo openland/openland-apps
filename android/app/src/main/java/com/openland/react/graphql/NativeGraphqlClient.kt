@@ -8,9 +8,7 @@ import com.apollographql.apollo.ApolloSubscriptionCall
 import com.apollographql.apollo.api.*
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.api.internal.Optional
-import com.apollographql.apollo.cache.normalized.ApolloStoreOperation
-import com.apollographql.apollo.cache.normalized.CacheKey
-import com.apollographql.apollo.cache.normalized.CacheKeyResolver
+import com.apollographql.apollo.cache.normalized.*
 import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
 import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
 import com.apollographql.apollo.cache.normalized.sql.ApolloSqlHelper
@@ -38,6 +36,7 @@ import okhttp3.Request
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
+import java.text.Normalizer
 import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.jvm.jvmErasure
@@ -361,7 +360,7 @@ fun loadCachePolicy(parameters: ReadableMap): HttpCachePolicy.Policy {
     return cachePolicy
 }
 
-class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?) {
+class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?, storage: String?) {
 
     private val httpClient: OkHttpClient
     private val client: ApolloClient
@@ -373,7 +372,6 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
         val dateCustomTypeAdapter = object : CustomTypeAdapter<String> {
             override fun decode(value: CustomTypeValue<*>): String {
                 return value.value.toString()
-
             }
 
             override fun encode(value: String): CustomTypeValue<*> {
@@ -381,8 +379,13 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
             }
         }
 
-//        val apolloSqlHelper = ApolloSqlHelper.create(context, "appcache")
-        val cacheFactory = LruNormalizedCacheFactory(EvictionPolicy.builder().build())
+        val cacheFactory: NormalizedCacheFactory<*>
+        cacheFactory = if (storage != null) {
+            val apolloSqlHelper = ApolloSqlHelper.create(context, "gql-$storage.sqlite")
+            SqlNormalizedCacheFactory(apolloSqlHelper)
+        } else {
+            LruNormalizedCacheFactory(EvictionPolicy.builder().build())
+        }
         val resolver = object : CacheKeyResolver() {
             override fun fromFieldRecordSet(field: ResponseField, recordSet: Map<String, Any>): CacheKey {
                 return formatCacheKey(recordSet["id"] as String?, recordSet["__typename"] as String?)

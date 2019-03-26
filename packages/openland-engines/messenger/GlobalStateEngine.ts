@@ -25,13 +25,13 @@ export class GlobalStateEngine {
 
         // Loading settings
         let settings = backoff(async () => {
-            return await this.engine.client.client.query(SettingsQuery);
+            return await this.engine.client.querySettings({ fetchPolicy: 'cache-and-network' });
         });
 
         // Loading initial chat state
         let start = Date.now();
         let res = (await backoff(async () => {
-            return await this.engine.client.client.query(DialogsQuery);
+            return await this.engine.client.queryDialogs({}, { fetchPolicy: 'network-only' });
         }));
         await settings;
         console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');

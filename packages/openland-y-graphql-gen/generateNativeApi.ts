@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { parse, NonNullTypeNode, TypeNode, print, VariableDefinitionNode } from 'graphql/language/index';
+import { parse, NonNullTypeNode, TypeNode, VariableDefinitionNode } from 'graphql/language/index';
 import { camelCase } from "change-case";
 
 function structNameForPropertyName(propertyName: string) {
@@ -128,11 +128,11 @@ export function generateNativeApi() {
 
     // Run Query
 
-    let runQuery = '  func runQuery(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n';
+    let runQuery = '  func runQuery(client: ApolloClient, name: String, src: NSDictionary, cachePolicy: CachePolicy, handler: @escaping ResponseHandler) {\n';
     let readQuery = '  func readQuery(store: ApolloStore, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n';
     let writeQuery = '  func writeQuery(store: ApolloStore, data: NSDictionary, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n';
     let runMutation = '  func runMutation(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n';
-    let watchQuery = '  func watchQuery(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) -> WatchCancel {\n';
+    let watchQuery = '  func watchQuery(client: ApolloClient, name: String, src: NSDictionary, cachePolicy: CachePolicy, handler: @escaping ResponseHandler) -> WatchCancel {\n';
     let runSubscription = '  func runSubscription(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) -> WatchCancel {\n'
     let inputTypes = '';
     let identifiers = new Set<string>();
@@ -198,7 +198,7 @@ export function generateNativeApi() {
                         runQuery += '      let ' + v.variable.name.value + ' = ' + buildReader(v.variable.name.value, v.type) + '\n';
                     }
                     runQuery += '      let requestBody = ' + def.name!!.value + 'Query(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
-                    runQuery += '      client.fetch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in\n'
+                    runQuery += '      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in\n'
                     runQuery += '          if e != nil {\n'
                     runQuery += '            handler(nil, e)\n'
                     runQuery += '          } else if (r != nil && r!.data != nil) {\n'
@@ -242,7 +242,7 @@ export function generateNativeApi() {
                         watchQuery += '      let ' + v.variable.name.value + ' = ' + buildReader(v.variable.name.value, v.type) + '\n';
                     }
                     watchQuery += '      let requestBody = ' + def.name!!.value + 'Query(' + vars.map((v) => v.variable.name.value + ': ' + v.variable.name.value).join(', ') + ')\n'
-                    watchQuery += '      let res = client.watch(query: requestBody, cachePolicy: CachePolicy.returnCacheDataElseFetch, queue: GraphQLQueue) { (r, e) in\n'
+                    watchQuery += '      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in\n'
                     watchQuery += '          if e != nil {\n'
                     watchQuery += '            handler(nil, e)\n'
                     watchQuery += '          } else if (r != nil && r!.data != nil) {\n'

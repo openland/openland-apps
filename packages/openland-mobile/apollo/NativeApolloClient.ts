@@ -4,7 +4,7 @@ import { NativeModules, DeviceEventEmitter, NativeEventEmitter, Platform } from 
 import { randomKey } from 'openland-graphql/utils/randomKey';
 
 const NativeGraphQL = NativeModules.RNGraphQL as {
-    createClient: (key: string, endpoint: string, token?: string) => void
+    createClient: (key: string, endpoint: string, token?: string, storage?: string) => void
     closeClient: (key: string) => void;
 
     query: (key: string, id: string, query: string, vars: any, params: any) => void;
@@ -26,19 +26,16 @@ const RNGraphQLEmitter = new NativeEventEmitter(NativeModules.RNGraphQL);
 export class NativeApolloClient extends BridgedClient {
     private key: string = randomKey();
 
-    constructor(token?: string) {
+    constructor(storageKey: string, token?: string) {
         super();
-        NativeGraphQL.createClient(this.key, '//api.openland.com/api', token);
+        NativeGraphQL.createClient(this.key, '//api.openland.com/api', token, 'gql-' + storageKey);
 
         if (Platform.OS === 'ios') {
             RNGraphQLEmitter.addListener('apollo_client', (src) => {
-                // console.log(src);
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
-                        // console.log(src);
                         this.operationFailed(src.id, src.data);
                     } else if (src.type === 'response') {
-                        // console.log(src);
                         this.operationUpdated(src.id, src.data);
                     }
                 }

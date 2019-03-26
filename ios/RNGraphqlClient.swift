@@ -74,7 +74,7 @@ class ActiveSubscription {
   }
 }
 
-var normalizedCache: NormalizedCache? = nil
+var sqlCaches: [String: NormalizedCache] = [:]
 
 class RNGraphqlClient: WebSocketTransportDelegate {
   
@@ -89,7 +89,7 @@ class RNGraphqlClient: WebSocketTransportDelegate {
   var connected: Bool = false
   var live = true
   
-  init(key: String, endpoint: String, token: String?, module: RNGraphQL) {
+  init(key: String, endpoint: String, token: String?, storage: String?, module: RNGraphQL) {
     self.module = module
     self.key = key
     let configuration = URLSessionConfiguration.default
@@ -102,12 +102,21 @@ class RNGraphqlClient: WebSocketTransportDelegate {
     let httpTransport =  HTTPNetworkTransport(url:URL(string: "https:"+endpoint)!, configuration: configuration)
     let transport = SplitNetworkTransport(httpNetworkTransport: httpTransport, webSocketNetworkTransport: self.ws)
     do {
-      if normalizedCache == nil {
-        let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        normalizedCache = try SQLiteNormalizedCache(fileURL: URL(fileURLWithPath: "db.sqlite", relativeTo: path))
+      let cache: NormalizedCache
+      if let s = storage {
+        let ex = sqlCaches[s]
+        if ex != nil {
+          cache = ex!
+        } else {
+          let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+          let c = try SQLiteNormalizedCache(fileURL: URL(fileURLWithPath: s + ".sqlite", relativeTo: path))
+          sqlCaches[s] = c
+          cache = c
+        }
+      } else {
+        cache = InMemoryNormalizedCache()
       }
-      // let normalizedCache = InMemoryNormalizedCache()
-      self.store = ApolloStore(cache: normalizedCache!)
+      self.store = ApolloStore(cache: cache)
       self.client = ApolloClient(networkTransport: transport, store: self.store)
       self.ws.delegate = self
     } catch {
@@ -115,18 +124,29 @@ class RNGraphqlClient: WebSocketTransportDelegate {
     }
   }
   
-  func query(id: String, query: String, arguments: NSDictionary) {
+  func query(id: String, query: String, arguments: NSDictionary, parameters: NSDictionary) {
     if !self.live {
       return
     }
-    self.factory.runQuery(client: self.client, name: query, src: arguments) { (res, err) in
+    
+    let cachePolicy = self.resolveFetchPolicy(parameters: parameters)
+    let start = DispatchTime.now()
+    self.factory.runQuery(client: self.client, name: query, src: arguments, cachePolicy: cachePolicy) { (res, err) in
       if !self.live {
         return
       }
+      let end = DispatchTime.now()
+      let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+      let timeInterval = Double(nanoTime) / 1_000_000
+      print("Query \(query) completed in \(timeInterval) ms")
       if err != nil {
         self.handleError(id: id, err: err!)
       } else {
-        self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+        if res != nil {
+          self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+        } else {
+          self.module.reportResult(key: self.key, id: id, result: nil)
+        }
       }
     }
   }
@@ -142,7 +162,11 @@ class RNGraphqlClient: WebSocketTransportDelegate {
       if err != nil {
         self.handleError(id: id, err: err!)
       } else {
-        self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+        if res != nil {
+          self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+        } else {
+          self.module.reportResult(key: self.key, id: id, result: nil)
+        }
       }
     }
   }
@@ -158,23 +182,28 @@ class RNGraphqlClient: WebSocketTransportDelegate {
       if err != nil {
         self.handleError(id: id, err: err!)
       } else {
-        self.module.reportResult(key: self.key, id: id, result: NSDictionary())
+        self.module.reportResult(key: self.key, id: id, result: nil)
       }
     }
   }
   
-  func watch(id: String, query: String, arguments: NSDictionary) {
+  func watch(id: String, query: String, arguments: NSDictionary, parameters: NSDictionary) {
     if !self.live {
       return
     }
-    let c = self.factory.watchQuery(client: self.client, name: query, src: arguments) { (res, err) in
+    let cachePolicy = self.resolveFetchPolicy(parameters: parameters)
+    let c = self.factory.watchQuery(client: self.client, name: query, src: arguments, cachePolicy: cachePolicy) { (res, err) in
       if !self.live {
         return
       }
       if err != nil {
         self.handleError(id: id, err: err!)
       } else {
-        self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+        if res != nil {
+          self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+        } else {
+          self.module.reportResult(key: self.key, id: id, result: nil)
+        }
       }
     }
     self.watches[id] = c
@@ -198,7 +227,11 @@ class RNGraphqlClient: WebSocketTransportDelegate {
       if err != nil {
         self.handleError(id: id, err: err!)
       } else {
-        self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+        if res != nil {
+          self.module.reportResult(key: self.key, id: id, result: res!.jsonObject as NSDictionary)
+        } else {
+          self.module.reportResult(key: self.key, id: id, result: nil)
+        }
       }
     }
   }
@@ -285,5 +318,26 @@ class RNGraphqlClient: WebSocketTransportDelegate {
         }
       }
     }
+  }
+  
+  private func resolveFetchPolicy(parameters: NSDictionary) -> CachePolicy {
+    var cachePolicy = CachePolicy.returnCacheDataElseFetch
+    var cp = parameters.value(forKey: "fetchPolicy")
+    if cp != nil && !(cp is NSNull) {
+      let cps = cp as! String
+      if cps == "cache-first" {
+        cachePolicy = CachePolicy.returnCacheDataElseFetch
+      } else if cps == "network-only" {
+        cachePolicy = CachePolicy.fetchIgnoringCacheData
+      } else if cps == "cache-and-network" {
+        cachePolicy = CachePolicy.returnCacheDataAndFetch
+      } else if cps == "no-cache" {
+        // cachePolicy = CachePolicy.returnCacheDataAndFetch
+        fatalError("no-cache is not supported on iOS")
+      } else {
+        fatalError("Unsupported fetch policy: " + cps)
+      }
+    }
+    return cachePolicy
   }
 }

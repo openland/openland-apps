@@ -29,10 +29,10 @@ export function getClient(): OpenlandClient {
     return cachedClient;
 }
 
-export function buildNativeClient(token: string) {
+export function buildNativeClient(storage: string, token: string) {
 
     if (Platform.OS === 'ios') {
-        return new OpenlandClient(new NativeApolloClient(token));
+        return new OpenlandClient(new NativeApolloClient(storage, token));
     }
 
     // if (Platform.OS === 'android') {

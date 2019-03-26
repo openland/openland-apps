@@ -15,9 +15,9 @@ class RNGraphQL: RCTEventEmitter {
   
   private var clients: [String: RNGraphqlClient] = [:]
   
-  @objc(createClient:endpoint:token:)
-  func createClient(key: String, endpoint: String, token: String?) {
-    self.clients[key] = RNGraphqlClient(key: key, endpoint: endpoint, token: token, module: self)
+  @objc(createClient:endpoint:token:storage:)
+  func createClient(key: String, endpoint: String, token: String?, storage: String?) {
+    self.clients[key] = RNGraphqlClient(key: key, endpoint: endpoint, token: token, storage: storage, module: self)
   }
   
   @objc(closeClient:)
@@ -27,12 +27,12 @@ class RNGraphQL: RCTEventEmitter {
   
   @objc(query:id:query:arguments:parameters:)
   func query(key: String, id: String, query: String, arguments: NSDictionary, parameters: NSDictionary) {
-    self.clients[key]!.query(id: id, query: query, arguments: arguments)
+    self.clients[key]!.query(id: id, query: query, arguments: arguments, parameters: parameters)
   }
   
   @objc(watch:id:query:arguments:parameters:)
   func watch(key: String, id: String, query: String, arguments: NSDictionary, parameters: NSDictionary) {
-    self.clients[key]!.watch(id: id, query: query, arguments: arguments)
+    self.clients[key]!.watch(id: id, query: query, arguments: arguments, parameters: parameters)
   }
   
   @objc(watchEnd:id:)
@@ -74,12 +74,16 @@ class RNGraphQL: RCTEventEmitter {
   // Implementation
   //
   
-  func reportResult(key: String, id: String, result: NSDictionary) {
+  func reportResult(key: String, id: String, result: NSDictionary?) {
     var dict:[String:Any] = [:]
     dict["key"] = key
     dict["id"] = id
     dict["type"] = "response"
-    dict["data"] = result
+    if result != nil {
+      dict["data"] = result
+    } else {
+      dict["data"] = nil
+    }
     self.sendEvent(withName: "apollo_client", body: dict)
   }
   

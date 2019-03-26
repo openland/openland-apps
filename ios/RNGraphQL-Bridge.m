@@ -11,7 +11,7 @@
 #import "RNSDevice-Bridge.h"
 
 @interface RCT_EXTERN_MODULE(RNGraphQL, RCTEventEmitter)
-RCT_EXTERN_METHOD(createClient: (NSString *)key endpoint: (NSString *)endpoint token: (NSString *)token)
+RCT_EXTERN_METHOD(createClient: (NSString *)key endpoint: (NSString *)endpoint token: (NSString *)token storage: (NSString *)storage)
 RCT_EXTERN_METHOD(closeClient: (NSString *)key)
 
 RCT_EXTERN_METHOD(query: (NSString *)key id: (NSString *)id query: (NSString *)query arguments: (NSDictionary *)arguments

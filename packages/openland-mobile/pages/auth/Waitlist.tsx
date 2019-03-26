@@ -3,17 +3,18 @@ import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { AsyncStorage, View, Image, Dimensions, Text } from 'react-native';
+import { View, Image, Dimensions, Text } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { joinInviteIfHave } from 'openland-mobile/utils/internalLnksResolver';
 import { ZText } from 'openland-mobile/components/ZText';
+import { AppStorage } from 'openland-mobile/utils/AppStorage';
 
 export class WaitlistComponent extends React.PureComponent<PageProps> {
 
     handleLogout = () => {
         (async () => {
-            AsyncStorage.clear();
+            await AppStorage.resetToken();
             RNRestart.Restart();
         })();
     }

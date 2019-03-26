@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { AsyncStorage, View, Linking } from 'react-native';
+import { View, Linking } from 'react-native';
 import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/apolloClient';
-import { AccountQuery, SettingsQuery } from 'openland-api';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
 import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
@@ -20,7 +19,7 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
-// import { cachedQuery } from 'openland-mobile/utils/cachedQuery';
+import { AppStorage } from 'openland-mobile/utils/AppStorage';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -50,7 +49,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         }
         this.resolving = true;
         if (this.pendingDeepLink && state !== 'loading' && state !== 'start') {
-            let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
+            await AppStorage.prepare();
+            let userToken: string | undefined = AppStorage.token;
             let acc = userToken && await backoff(async () => await getClient().queryAccount());
             if (!acc || !acc.me || !acc.sessionState.isAccountExists) {
                 // unauthorized
@@ -83,21 +83,21 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
 
         (async () => {
             await ThemePersister.prepare();
+            await AppStorage.prepare();
             try {
                 if (hasClient()) {
                     let res = (await backoff(async () => await getClient().queryAccount()));
                     if (res && res.me) {
-                        await AsyncStorage.setItem('openland-account-3', JSON.stringify(res));
                         this.setState({ state: 'app' });
                     } else {
                         this.setState({ state: 'signup' });
                     }
                 } else {
-                    let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
                     let res: any;
-                    if (userToken) {
+                    let authenticated = false;
+                    if (AppStorage.token) {
                         this.setState({ state: 'loading' });
-                        let client = buildNativeClient(userToken);
+                        let client = buildNativeClient(AppStorage.storage, AppStorage.token);
                         saveClient(client);
                         res = await client.queryAccount();
                         // res = await cachedQuery(client.client, AccountQuery, {}, 'account');
@@ -112,20 +112,20 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         }
 
                         if (!res.sessionState.isLoggedIn) {
-                            userToken = undefined;
+                            authenticated = false;
+                        } else {
+                            authenticated = true;
                         }
-
                     }
 
                     // Reset badge if not authenticated
-                    if (!userToken) {
+                    if (!authenticated) {
                         AppBadge.setBadge(0);
                     }
 
                     // Launch app or login sequence
-                    if (userToken) {
+                    if (authenticated) {
                         if (res && res.me) {
-                            await AsyncStorage.setItem('openland-account-3', JSON.stringify(res));
                             this.setState({ state: 'app' });
                         } else {
                             this.setState({ state: 'signup' });
