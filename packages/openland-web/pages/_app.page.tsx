@@ -14,7 +14,7 @@ import './_app.css';
 import './init';
 import '../globals';
 import React from 'react';
-import App, { AppProps, Container, DefaultAppIProps } from 'next/app';
+import App, { AppProps, Container } from 'next/app';
 import * as Sentry from '@sentry/browser';
 import { loadConfig } from 'openland-x-config';
 import { buildConfig } from '../config';
@@ -50,7 +50,7 @@ export default withData(
                 host: string;
                 protocol: string;
                 isApp: boolean;
-            } & AppProps & DefaultAppIProps,
+            } & AppProps,
         ) {
             super(props);
             let cfg = canUseDOM ? loadConfig() : buildConfig();
