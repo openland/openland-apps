@@ -193,7 +193,7 @@ type ReactionComponentT = {
     marginLeft?: number;
 };
 
-export const ReactionComponent = (props: ReactionComponentT) => {
+export const ReactionComponent = React.memo((props: ReactionComponentT) => {
     let client = useClient();
     return (
         <ReactionComponentInner
@@ -205,7 +205,7 @@ export const ReactionComponent = (props: ReactionComponentT) => {
             marginLeft={props.marginLeft}
         />
     );
-};
+});
 
 const ReactionsWrapper = Glamorous.div({
     display: 'flex',

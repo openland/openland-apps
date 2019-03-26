@@ -1,19 +1,11 @@
-import { MutationFunc } from 'react-apollo';
-import {
-    ReplyMessageVariables,
-    ReplyMessage,
-    RoomMembers_members,
-    FullMessage,
-} from 'openland-api/Types';
-import { ModelMessage } from 'openland-engines/messenger/types';
+import { ReplyMessageVariables, ReplyMessage, RoomMembers_members } from 'openland-api/Types';
 import { QuoteStateT } from './useQuote';
 import { MentionsStateT } from './useMentions';
 import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 
 export type useReplyPropsT = {
-    replyMessage?: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
+    replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
     conversationId?: string;
-    getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
     mentionsState?: MentionsStateT;
     quoteState?: QuoteStateT;
@@ -26,7 +18,6 @@ export function useReply({
     mentionsState,
     replyMessage,
     members,
-    getMessages,
     conversationId,
 }: useReplyPropsT) {
     const supportReply = () => {
@@ -46,7 +37,7 @@ export function useReply({
         };
     }
 
-    const replyMessagesProc = () => {
+    const replyMessagesProc = async () => {
         if (finalQuoteMessagesId.length > 0) {
             let mentions: MentionDataT[] = [];
             // TODO simplify here
@@ -54,19 +45,11 @@ export function useReply({
                 mentions = mentionsState!!.getMentions();
             }
 
-            const currentMessages = getMessages ? getMessages() : [];
-
-            const messagesToReply = currentMessages.filter(
-                (item: FullMessage) => finalQuoteMessagesId.indexOf(item.id) !== -1,
-            );
-
-            replyMessage!!({
-                variables: {
-                    roomId: conversationId,
-                    message: inputValue,
-                    mentions: mentions.map(m => m.id),
-                    replyMessages: finalQuoteMessagesId,
-                },
+            await replyMessage!!({
+                roomId: conversationId!!,
+                message: inputValue,
+                mentions: mentions.map(m => m.id),
+                replyMessages: finalQuoteMessagesId,
             });
         }
     };

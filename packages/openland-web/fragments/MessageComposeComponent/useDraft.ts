@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { SaveDraftMessageVariables, SaveDraftMessage } from 'openland-api/Types';
-import { MutationFunc } from 'react-apollo';
 import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 import * as DraftStore from './DraftStore';
 
@@ -15,16 +14,16 @@ export type DraftStateT = {
 
 export function useDraft({
     conversationId,
-    saveDraft,
+    saveDraftMessage,
     draft,
 }: {
     draft?: string | null;
     conversationId?: string;
-    saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
+    saveDraftMessage: (variables: SaveDraftMessageVariables) => Promise<SaveDraftMessage>;
 }) {
     const [beDrafted, setBeDrafted] = React.useState(false);
 
-    const changeDraft = (message: string, mentions: MentionDataT[]) => {
+    const changeDraft = async (message: string, mentions: MentionDataT[]) => {
         if (!beDrafted) {
             setBeDrafted(true);
         }
@@ -33,11 +32,9 @@ export function useDraft({
             DraftStore.setDraftMessage(conversationId, message, mentions);
         }
 
-        saveDraft({
-            variables: {
-                conversationId,
-                message,
-            },
+        await saveDraftMessage({
+            conversationId: conversationId!!,
+            message,
         });
     };
 

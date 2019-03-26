@@ -2,23 +2,18 @@ import * as React from 'react';
 import UploadCare from 'uploadcare-widget';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { XWithRouter } from 'openland-x-routing/withRouter';
-import { MutationFunc } from 'react-apollo';
-import { withUserInfo, UserInfo } from '../../components/UserInfo';
+import { UserInfoContext } from '../../components/UserInfo';
 import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from '../../components/messenger/MessagesStateContext';
-import { withMessageState } from 'openland-web/api/withMessageState';
-import { withGetDraftMessage } from 'openland-web/api/withMessageState';
-import { withChannelMembers } from 'openland-web/api/withChannelMembers';
 import {
     ReplyMessageVariables,
     ReplyMessage,
     SaveDraftMessageVariables,
     SaveDraftMessage,
-    RoomEditMessageVariables,
-    RoomEditMessage,
+    EditPostMessageVariables,
+    EditPostMessage,
     SharedRoomKind,
     RoomMembers_members,
     UserShort,
@@ -35,7 +30,7 @@ import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
 import { UploadContext } from './FileUploading/UploadContext';
 import { IsActiveContext } from '../../pages/main/mail/components/Components';
-
+import { useClient } from 'openland-web/utils/useClient';
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId?: string;
@@ -49,15 +44,11 @@ export interface MessageComposeComponentProps {
 
 export type MessageComposeComponentInnerProps = {
     TextInputComponent?: any;
-    messagesContext: MessagesStateContextProps;
-    replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
-    saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
-    editMessage: MutationFunc<RoomEditMessage, Partial<RoomEditMessageVariables>>;
+    replyMessage: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
+    saveDraftMessage: (variables: SaveDraftMessageVariables) => Promise<SaveDraftMessage>;
+    editMessage: (variables: EditPostMessageVariables) => Promise<EditPostMessage>;
     draft?: string | null;
-} & MessageComposeComponentProps &
-    XWithRouter &
-    UserInfo &
-    MessageComposeComponentT;
+} & MessageComposeComponentProps & { user: UserShort } & MessageComposeComponentT; // XWithRouter &
 
 const MessageComposeComponentInner = (messageComposeProps: MessageComposeComponentInnerProps) => {
     const inputRef = React.useRef<XRichTextInput2RefMethods>(null);
@@ -86,7 +77,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     const { handleSend, closeEditor } = useHandleSend({
         replyMessage: messageComposeProps.replyMessage,
         members: messageComposeProps.members,
-        getMessages: messageComposeProps.getMessages,
         conversationId: messageComposeProps.conversationId,
         onSend: messageComposeProps.onSend,
         onSendFile: messageComposeProps.onSendFile,
@@ -172,19 +162,27 @@ type MessageComposeComponentT = MessageComposeWithDraft & {
     members?: RoomMembers_members[];
 };
 
-export const MessageComposeComponent = withMessageState(
-    withUserInfo(MessageComposeComponentInner),
-) as React.ComponentType<MessageComposeComponentT>;
+export const MessageComposeComponent = (props => {
+    const ctx = React.useContext(UserInfoContext);
+    let client = useClient();
+    const replyMessage = client.mutateReplyMessage.bind(client);
+    const editMessage = client.mutateEditPostMessage.bind(client);
+    const saveDraftMessage = client.mutateSaveDraftMessage.bind(client);
+
+    return (
+        <MessageComposeComponentInner
+            {...props}
+            replyMessage={replyMessage}
+            editMessage={editMessage}
+            saveDraftMessage={saveDraftMessage}
+            user={ctx!!.user!!}
+        />
+    );
+}) as React.ComponentType<MessageComposeComponentT>;
 
 type MessageComposeWithDraft = MessageComposeComponentProps & {
     draft?: string | null;
 };
-
-const MessageComposeComponentChannelMembers = withChannelMembers(props => {
-    const typedProps = props as typeof props & MessageComposeWithDraft;
-
-    return <MessageComposeComponent members={typedProps.data.members} {...typedProps} />;
-}) as React.ComponentType<MessageComposeWithDraft>;
 
 export type MessageComposeComponentDraftProps = MessageComposeComponentProps & {
     TextInputComponent?: any;
@@ -196,10 +194,22 @@ export type MessageComposeComponentDraftProps = MessageComposeComponentProps & {
     getMessages?: () => ModelMessage[];
 };
 
-export const MessageComposeComponentDraft = withGetDraftMessage(props => {
-    const typedProps = props as typeof props & MessageComposeComponentDraftProps;
+export const MessageComposeComponentDraft = (props => {
+    let client = useClient();
+
+    const draft = client.useWithoutLoaderGetDraftMessage({
+        conversationId: props.conversationId!!,
+    });
+
+    const members = client.useWithoutLoaderRoomMembers({
+        roomId: props.conversationId!!,
+    });
 
     return (
-        <MessageComposeComponentChannelMembers {...typedProps} draft={typedProps.data.message} />
+        <MessageComposeComponent
+            draft={draft ? draft.message : null}
+            members={members ? members.members : []}
+            {...props}
+        />
     );
 }) as React.ComponentType<MessageComposeComponentDraftProps>;

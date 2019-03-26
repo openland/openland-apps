@@ -30,7 +30,6 @@ export function useHandleSend({
     onSendFile,
     replyMessage,
     members,
-    getMessages,
     conversationId,
     inputValue,
     inputMethodsState,
@@ -58,7 +57,6 @@ export function useHandleSend({
     const { replyMessagesProc } = useReply({
         replyMessage,
         members,
-        getMessages,
         conversationId,
         quoteState,
         mentionsState,
