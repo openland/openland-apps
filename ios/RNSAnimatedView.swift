@@ -17,6 +17,8 @@ class RNSAnimatedView: RCTView {
   var sourceCenter = CGPoint.zero
   var currentTranslateX: CGFloat = 0.0
   var currentTranslateY: CGFloat = 0.0
+  var currentWidthDelta: CGFloat = 0.0
+  var currentHeightDelta: CGFloat = 0.0
   
   init(manager: RNSAnimatedViewManager) {
     self.manager = manager
@@ -54,12 +56,10 @@ class RNSAnimatedView: RCTView {
   }
   
   private func viewDidUpdated() {
-//    let dy = self.sourceCenter.y - self.center.y
-//    let dx = self.sourceCenter.x - self.center.x
-//    self.layer.position.x += dx
-//    self.layer.position.y += dy
-    self.center = CGPoint(x: self.currentTranslateX + self.sourceCenter.x, y: self.currentTranslateY + self.sourceCenter.y)
-    self.bounds = CGRect(origin: CGPoint.zero, size: sourceSize)
+    self.center = CGPoint(x: self.sourceCenter.x, y: self.sourceCenter.y)
+    self.bounds = CGRect(origin: CGPoint.zero, size: CGSize(width: self.sourceSize.width + self.currentWidthDelta, height: self.sourceSize.height + self.currentHeightDelta))
+    self.layer.position.x = self.sourceCenter.x + self.currentTranslateX
+    self.layer.position.y = self.sourceCenter.y + self.currentTranslateY
   }
   
   override func reactSetFrame(_ frame: CGRect) {
