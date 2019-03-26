@@ -9,22 +9,22 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDevice } from 'react-native-s/SDevice';
 
 export interface RootProps {
+    width: number;
+    height: number;
     routing: SRouting;
     padLayout?: boolean;
 }
 
 let isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
 
-class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme }, { width: number, height: number, masterRouting?: SRouting, masterKey?: string }> {
+class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme }, { masterRouting?: SRouting, masterKey?: string }> {
 
     private isIPad = false;
 
     constructor(props: RootProps & { theme: AppTheme }) {
         super(props);
-        this.state = {
-            width: Dimensions.get('screen').width,
-            height: Dimensions.get('screen').height,
-        };
+
+        this.state = {};
 
         this.isIPad = isPad && this.props.padLayout !== false;
 
@@ -33,33 +33,20 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
         }
     }
 
-    private handlePush = (route: string, params?: any) => {
-        let man = new NavigationManager(this.props.routing.navigationManager.routes, route, params);
-        this.setState({ masterRouting: new SRouting(man), masterKey: randomKey() });
-        return true;
+    componentWillReceiveProps(nextProps: RootProps & { theme: AppTheme }) {
+        if (this.isIPad && nextProps.width <= 375 * 2 && this.props.width > 375 * 2) {
+            this.setState({ masterKey: undefined, masterRouting: undefined });
+        }
     }
 
-    private handleLayoutChange = (e: LayoutChangeEvent) => {
-        let w: number;
-        let h: number;
-        if (Platform.OS === 'ios') {
-            w = e.nativeEvent.layout.width;
-            h = e.nativeEvent.layout.height;
+    private handlePush = (route: string, params?: any) => {
+        if (this.isIPad && this.props.width > 375 * 2) {
+            let man = new NavigationManager(this.props.routing.navigationManager.routes, route, params);
+            this.setState({ masterRouting: new SRouting(man), masterKey: randomKey() });
+            return true;
         } else {
-            w = Dimensions.get('screen').width;
-            h = Dimensions.get('screen').height;
+            return false;
         }
-        if (Platform.OS === 'ios') {
-            if (this.state.width !== w || this.state.height !== h) {
-                LayoutAnimation.configureNext({
-                    duration: 250,
-                    update: {
-                        type: 'linear'
-                    }
-                });
-            }
-        }
-        this.setState({ width: w, height: h });
     }
 
     render() {
@@ -77,29 +64,29 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
             keyboardAppearance: this.props.theme.keyboardAppearance
         };
 
-        if (this.isIPad) {
+        if (this.isIPad && this.props.width > 375 * 2) {
 
             let sideWidth = 320;
-            if (this.state.width > 1000) {
-                console.log(this.state.width);
+            if (this.props.width > 1000) {
+                console.log(this.props.width);
                 sideWidth = 375;
             }
 
             return (
-                <View width="100%" height="100%" flexDirection="row" onLayout={this.handleLayoutChange}>
+                <View width="100%" height="100%" flexDirection="row">
                     <SNavigationView
                         width={sideWidth}
-                        height={this.state.height}
+                        height={this.props.height}
                         routing={this.props.routing}
                         navigationBarStyle={style}
                     />
                     <View height={'100%'} width={0.5} backgroundColor={this.props.theme.separatorColor} />
-                    <View width={this.state.width - sideWidth} height={'100%'}>
+                    <View width={this.props.width - sideWidth} height={'100%'}>
                         {this.state.masterRouting && (
                             <SNavigationView
                                 key={this.state.masterKey!!}
-                                width={this.state.width - sideWidth}
-                                height={this.state.height}
+                                width={this.props.width - sideWidth}
+                                height={this.props.height}
                                 routing={this.state.masterRouting}
                                 navigationBarStyle={style}
                             />
@@ -110,10 +97,10 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
         }
 
         return (
-            <View width="100%" height="100%" flexDirection="row" onLayout={this.handleLayoutChange}>
+            <View width="100%" height="100%" flexDirection="row">
                 <SNavigationView
-                    width={this.state.width}
-                    height={this.state.height}
+                    width={this.props.width}
+                    height={this.props.height}
                     routing={this.props.routing}
                     navigationBarStyle={style}
                 />

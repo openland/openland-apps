@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Linking } from 'react-native';
+import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation } from 'react-native';
 import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/apolloClient';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
 import { ZLoader } from '../components/ZLoader';
@@ -21,10 +21,11 @@ import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 
-export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
+export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull, dimensions?: { width: number, height: number } }> {
 
-    history: any;
+    private history: any;
     private pendingDeepLink?: string;
+    private resolving = false;
 
     constructor(props: PageProps) {
         super(props);
@@ -37,12 +38,34 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         Linking.removeEventListener('url', this.handleOpenURL);
     }
 
+    private handleLayoutChange = (e: LayoutChangeEvent) => {
+        let w: number;
+        let h: number;
+        if (Platform.OS === 'ios') {
+            w = e.nativeEvent.layout.width;
+            h = e.nativeEvent.layout.height;
+        } else {
+            w = Dimensions.get('screen').width;
+            h = Dimensions.get('screen').height;
+        }
+        if (Platform.OS === 'ios') {
+            if (this.state.dimensions && (this.state.dimensions.width !== w || this.state.dimensions.height !== h)) {
+                LayoutAnimation.configureNext({
+                    duration: 250,
+                    update: {
+                        type: 'linear'
+                    }
+                });
+            }
+        }
+        this.setState({ dimensions: { width: w, height: h } });
+    }
+
     handleOpenURL = async (event: { url: string }) => {
         this.pendingDeepLink = event.url;
         await this.tryResolveLink(this.state.state);
     }
 
-    resolving = false;
     tryResolveLink = async (state: string) => {
         if (this.resolving) {
             return;
@@ -145,8 +168,10 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         if (this.state.state === 'loading') {
             return (
                 <ThemeProvider>
-                    <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
-                        <ZLoader appearance="large" />
+                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
+                        <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
+                            <ZLoader appearance="large" />
+                        </View>
                     </View>
                 </ThemeProvider>
             );
@@ -154,8 +179,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             return (
                 <ThemeProvider>
                     <PushManager client={getClient()} />
-                    <View style={{ width: '100%', height: '100%' }}>
-                        <Root routing={getMessenger().history} />
+                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
+                        {this.state.dimensions && <Root routing={getMessenger().history} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
                         <ZModalProvider />
                         {/* <View position="absolute" top={0} left={0} right={0} height={SDevice.safeArea.top} backgroundColor="red" /> */}
                         {/* <View position="absolute" top={0} left={0} right={0} height={SDevice.safeArea.top + SDevice.statusBarHeight} backgroundColor="yellow" />
@@ -166,8 +191,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         } else if (this.state.state === 'initial') {
             return (
                 <ThemeProvider>
-                    <View style={{ width: '100%', height: '100%' }}>
-                        <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
+                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
+                        {this.state.dimensions && <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
                         <ZModalProvider />
                     </View>
                 </ThemeProvider>
@@ -175,8 +200,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         } else if (this.state.state === 'signup') {
             return (
                 <ThemeProvider>
-                    <View style={{ width: '100%', height: '100%' }}>
-                        <Root routing={this.history} />
+                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
+                        {this.state.dimensions && <Root routing={this.history} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
                         <ZModalProvider />
                     </View>
                 </ThemeProvider>
@@ -185,8 +210,10 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
 
         return (
             <ThemeProvider>
-                <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
-                    <ZLoader appearance="large" />
+                <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
+                    <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
+                        <ZLoader appearance="large" />
+                    </View>
                 </View>
             </ThemeProvider>
         )
