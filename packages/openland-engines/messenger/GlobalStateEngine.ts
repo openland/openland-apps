@@ -25,8 +25,9 @@ export class GlobalStateEngine {
 
         // Loading settings
         let settings = backoff(async () => {
-            return await this.engine.client.querySettings({ fetchPolicy: 'cache-and-network' });
+            return await this.engine.client.querySettings({ fetchPolicy: 'cache-first' });
         });
+        this.engine.client.querySettings({ fetchPolicy: 'network-only' });
 
         // Loading initial chat state
         let start = Date.now();
