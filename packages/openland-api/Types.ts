@@ -3271,11 +3271,13 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_organization | null;
@@ -5683,11 +5685,13 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_organization | null;
@@ -7523,6 +7527,7 @@ export interface Room_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -7535,6 +7540,7 @@ export interface Room_room_SharedRoom {
   requests: Room_room_SharedRoom_requests[] | null;
   settings: Room_room_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: Room_room_SharedRoom_welcomeMessage | null;
   pinnedMessage: Room_room_SharedRoom_pinnedMessage | null;
 }
@@ -8371,11 +8377,13 @@ export interface RoomTiny_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: RoomTiny_room_SharedRoom_pinnedMessage | null;
   organization: RoomTiny_room_SharedRoom_organization | null;
@@ -9528,6 +9536,7 @@ export interface RoomCreateVariables {
   description?: string | null;
   photoRef?: ImageRefInput | null;
   organizationId?: string | null;
+  channel: boolean;
 }
 
 /* tslint:disable */
@@ -10549,6 +10558,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -10561,6 +10571,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom {
   requests: RoomAddMember_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMember_betaRoomInvite_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage | null;
 }
@@ -11528,6 +11539,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -11540,6 +11552,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom {
   requests: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests[] | null;
   settings: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage | null;
 }
@@ -12504,6 +12517,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -12516,6 +12530,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom {
   requests: RoomAddMembers_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMembers_betaRoomInvite_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage | null;
 }
@@ -13483,6 +13498,7 @@ export interface RoomKick_betaRoomKick_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -13495,6 +13511,7 @@ export interface RoomKick_betaRoomKick_SharedRoom {
   requests: RoomKick_betaRoomKick_SharedRoom_requests[] | null;
   settings: RoomKick_betaRoomKick_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomKick_betaRoomKick_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomKick_betaRoomKick_SharedRoom_pinnedMessage | null;
 }
@@ -14459,6 +14476,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -14471,6 +14489,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom {
   requests: RoomLeave_betaRoomLeave_SharedRoom_requests[] | null;
   settings: RoomLeave_betaRoomLeave_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage | null;
 }
@@ -15302,11 +15321,13 @@ export interface RoomSearch_items_edges_node {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: RoomSearch_items_edges_node_pinnedMessage | null;
   organization: RoomSearch_items_edges_node_organization | null;
@@ -16443,6 +16464,7 @@ export interface RoomJoin_join_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -16455,6 +16477,7 @@ export interface RoomJoin_join_SharedRoom {
   requests: RoomJoin_join_SharedRoom_requests[] | null;
   settings: RoomJoin_join_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomJoin_join_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomJoin_join_SharedRoom_pinnedMessage | null;
 }
@@ -17438,6 +17461,7 @@ export interface RoomJoinInviteLink_join_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -17450,6 +17474,7 @@ export interface RoomJoinInviteLink_join_SharedRoom {
   requests: RoomJoinInviteLink_join_SharedRoom_requests[] | null;
   settings: RoomJoinInviteLink_join_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomJoinInviteLink_join_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomJoinInviteLink_join_SharedRoom_pinnedMessage | null;
 }
@@ -19671,11 +19696,13 @@ export interface Organization_organization_rooms {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: Organization_organization_rooms_pinnedMessage | null;
   organization: Organization_organization_rooms_organization | null;
@@ -20811,11 +20838,13 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage | null;
   organization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_organization | null;
@@ -22838,11 +22867,13 @@ export interface ResolveShortName_item_Organization_rooms {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: ResolveShortName_item_Organization_rooms_pinnedMessage | null;
   organization: ResolveShortName_item_Organization_rooms_organization | null;
@@ -24745,11 +24776,13 @@ export interface OrganizationFull_rooms {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: OrganizationFull_rooms_pinnedMessage | null;
   organization: OrganizationFull_rooms_organization | null;
@@ -25874,6 +25907,7 @@ export interface RoomFull_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -25886,6 +25920,7 @@ export interface RoomFull_SharedRoom {
   requests: RoomFull_SharedRoom_requests[] | null;
   settings: RoomFull_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomFull_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomFull_SharedRoom_pinnedMessage | null;
 }
@@ -26714,11 +26749,13 @@ export interface RoomShort_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: RoomShort_SharedRoom_pinnedMessage | null;
   organization: RoomShort_SharedRoom_organization | null;
@@ -29250,11 +29287,13 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_organization | null;

@@ -14,8 +14,10 @@ fragment RoomFull on Room {
   }
   ... on SharedRoom {
     canEdit
+    canSendMessage
     description
     id
+    isChannel
     kind
     members {
       __typename

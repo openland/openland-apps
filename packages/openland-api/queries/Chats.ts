@@ -372,6 +372,7 @@ export const RoomCreateMutation = gql`
         $description: String
         $photoRef: ImageRefInput
         $organizationId: ID
+        $channel: Boolean!
     ) {
         room: betaRoomCreate(
             kind: $kind
@@ -381,6 +382,7 @@ export const RoomCreateMutation = gql`
             description: $description
             photoRef: $photoRef
             organizationId: $organizationId
+            channel: $channel
         ) {
             id
         }
