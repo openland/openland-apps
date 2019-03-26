@@ -10,15 +10,13 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 import { SDevice } from 'react-native-s/SDevice';
 
 export class DialogListComponent extends React.PureComponent<{ dialogs: ASDataView<DialogDataSourceItem> }> {
-    private contentOffset = new STrackedValue();
-
+    contentOffset = new STrackedValue();
     render() {
         return (
             <ASSafeAreaContext.Consumer>
                 {area => {
                     return (
                         <>
-                            <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />
                             <ASListView
                                 overscrollCompensation={true}
                                 contentPaddingTop={area.top}
