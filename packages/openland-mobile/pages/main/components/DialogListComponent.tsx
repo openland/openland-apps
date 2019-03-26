@@ -17,6 +17,7 @@ export class DialogListComponent extends React.PureComponent<{ dialogs: ASDataVi
                 {area => {
                     return (
                         <>
+                            <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />
                             <ASListView
                                 overscrollCompensation={true}
                                 contentPaddingTop={area.top}
