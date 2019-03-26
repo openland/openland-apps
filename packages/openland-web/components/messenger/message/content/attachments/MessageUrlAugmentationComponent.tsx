@@ -165,6 +165,7 @@ const CardWithKeyboard = ({
 
 const ImageClassName = css`
     display: block;
+    flex-shrink: 0;
 `;
 
 const DomainNameClassName = css`
@@ -284,11 +285,19 @@ const MessageUrlAugmentationComponentInner = React.memo(
                             dimensions &&
                             !isOrgLink &&
                             !isUserLink && (
-                                <XView marginRight={20} flexDirection="row" alignItems="flex-start">
+                                <XView
+                                    marginRight={20}
+                                    flexDirection="row"
+                                    alignItems="flex-start"
+                                    maxWidth="60%"
+                                >
                                     <XView
+                                        flexDirection="row"
+                                        justifyContent="center"
                                         borderRadius={4}
                                         overflow="hidden"
                                         alignSelf="flex-start"
+                                        maxWidth="100%"
                                     >
                                         <XCloudImage
                                             srcCloud={image.url}
