@@ -116,11 +116,7 @@ class MessagengerFragmentInner extends React.PureComponent<
     }
 }
 
-export const MessengerFragment = (props: {
-    id: string;
-    state: MessagesStateContextProps;
-    user?: any;
-}) => {
+export const MessengerFragment = (props: { id: string; isActive: boolean }) => {
     const client = useClient();
 
     const apollo = React.useContext(YApolloContext)!;
@@ -132,7 +128,7 @@ export const MessengerFragment = (props: {
 
     return (
         <MessagengerFragmentInner
-            isActive={true}
+            isActive={props.isActive}
             state={state}
             user={user}
             loading={false}

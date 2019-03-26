@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XModal, XModalCloser } from 'openland-x-modal/XModal';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import {
     Room_room_PrivateRoom,
     Room_room_SharedRoom,
@@ -236,7 +236,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
 });
 
 export const PinMessageComponent = React.memo((props: PinMessageComponentProps) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     const { pinMessage, chatId, room } = props;
     const { attachments, sender } = pinMessage;
     const attach = attachments[0];
