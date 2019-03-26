@@ -20,44 +20,52 @@ export const UploadContext = React.createContext<ContextT>({
     handleDrop: () => null,
 });
 
-export const UploadContextProvider = ({ children }: any) => {
-    const [file, setFile] = React.useState<FileT>(null);
-    const [fileSrc, setFileSrc] = React.useState<FileSrcT>(null);
-    const [fileName, setFileName] = React.useState<FileNameT>(null);
+export class UploadContextProvider extends React.Component<any, ContextT> {
+    constructor(props: any) {
+        super(props);
 
-    const fileRemover = () => {
-        setFile(null);
-        setFileSrc(null);
-        setFileName(null);
-    };
+        this.state = {
+            file: null,
+            fileSrc: null,
+            fileName: null,
+            fileRemover: this.fileRemover,
+            handleDrop: this.handleDrop,
+        };
+    }
 
-    const handleDrop = (droppedFile: any) => {
+    private handleDrop = (droppedFile: any) => {
         const reader = new FileReader();
         reader.readAsDataURL(droppedFile);
         reader.onloadend = () => {
             if (droppedFile.type.match('image')) {
-                setFile(droppedFile);
-                setFileSrc(reader.result as any);
-                setFileName(null);
+                this.setState({
+                    file: droppedFile,
+                    fileSrc: reader.result as any,
+                    fileName: null,
+                });
             } else {
-                setFile(droppedFile);
-                setFileSrc(null);
-                setFileName(droppedFile.name);
+                this.setState({
+                    file: droppedFile,
+                    fileSrc: null,
+                    fileName: droppedFile.name,
+                });
             }
         };
     };
 
-    return (
-        <UploadContext.Provider
-            value={{
-                file,
-                fileSrc,
-                fileName,
-                fileRemover,
-                handleDrop,
-            }}
-        >
-            {children}
-        </UploadContext.Provider>
-    );
-};
+    private fileRemover = () => {
+        this.setState({
+            file: null,
+            fileSrc: null,
+            fileName: null,
+        });
+    };
+
+    render() {
+        return (
+            <UploadContext.Provider value={this.state}>
+                {this.props.children}
+            </UploadContext.Provider>
+        );
+    }
+}
