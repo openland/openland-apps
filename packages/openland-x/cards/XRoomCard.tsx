@@ -135,7 +135,7 @@ export const XRoomCard = XMemo<XRoomCardProps>(props => {
             borderRadius={8}
             flexDirection="row"
             hoverBackgroundColor="#F9F9F9"
-            path={path || '/mail/' + room.id}
+            path={(isMember === false ? '/directory/r/' + room.id : '/mail/' + room.id) || path}
             key={'room_' + room.id}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}

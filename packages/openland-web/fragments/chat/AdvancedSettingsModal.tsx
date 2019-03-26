@@ -14,6 +14,7 @@ import {
 import { useClient } from 'openland-web/utils/useClient';
 import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+
 interface AdvancedSettingsInnerProps {
     socialImage: string | null;
     roomId: string;
@@ -31,12 +32,18 @@ const UsersWrapperClassName = css`
     border-radius: 6px;
     box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.06);
     border: solid 1px rgba(220, 222, 228, 0.4);
+    max-height: 250px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 `;
 
 const SocialImageWrapperClassName = css`
     & > div {
         width: 190px;
         height: 100px;
+        border-color: transparent;
+        border-radius: 10px;
+        background-color: #f2f3f4;
     }
 
     & img {
@@ -65,26 +72,11 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
         !welcomeMessageText,
     );
 
-    React.useEffect(
-        () => {
-            setWelcomeMessageIsOn(props.welcomeMessageIsOn);
-        },
-        [props.welcomeMessageIsOn],
-    );
-
-    React.useEffect(
-        () => {
-            setWelcomeMessageText(props.welcomeMessageText);
-        },
-        [props.welcomeMessageText],
-    );
-
-    React.useEffect(
-        () => {
-            setWelcomeMessageSender(props.welcomeMessageSender);
-        },
-        [props.welcomeMessageSender],
-    );
+    React.useEffect(() => {
+        setWelcomeMessageIsOn(props.welcomeMessageIsOn);
+        setWelcomeMessageText(props.welcomeMessageText);
+        setWelcomeMessageSender(props.welcomeMessageSender);
+    }, [props.welcomeMessageIsOn, props.welcomeMessageText, props.welcomeMessageSender]);
 
     const finalWelcomeMessageSenderError = triedToSend && welcomeMessageSenderError;
     const finalWelcomeMessageTextError = triedToSend && welcomeMessageTextError;
@@ -114,30 +106,34 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
         };
     }
 
-    React.useEffect(
-        () => {
-            if (isOpen === false) {
-                router!!.replaceQuery('advancedSettings', undefined);
-                setIsOpen(true);
-            }
-        },
-        [isOpen],
-    );
+    React.useEffect(() => {
+        if (!isOpen) {
+            router!!.replaceQuery('advancedSettings', undefined);
+            setIsOpen(true);
+        }
+    }, [isOpen]);
 
     return (
         <XModalForm
             isOpen={isOpen}
+            defaultLayout={false}
             scrollableContent={true}
             alsoUseBottomCloser={true}
+            onClosed={() => {
+                setWelcomeMessageIsOn(props.welcomeMessageIsOn);
+                setWelcomeMessageText(props.welcomeMessageText);
+                setWelcomeMessageSender(props.welcomeMessageSender);
+                setTriedToSend(false);
+            }}
             targetQuery="advancedSettings"
             useTopCloser={true}
-            autoClose={false}
             title="Advanced settings"
             defaultAction={async data => {
                 if (welcomeMessageIsOn && (welcomeMessageSenderError || welcomeMessageTextError)) {
                     setTriedToSend(true);
-                    return;
+                    throw Error();
                 }
+
                 const newSocialImage = data.input.socialImageRef;
 
                 await api.mutateRoomUpdate({
@@ -158,6 +154,9 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     welcomeMessageText: welcomeMessageText,
                 });
 
+                await api.refetchRoom({
+                    id: props.roomId,
+                });
                 setTriedToSend(true);
                 setIsOpen(false);
             }}
@@ -166,7 +165,15 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                     welcomeMessageIsOn: welcomeMessageIsOn ? 'true' : 'false',
                     welcomeMessageText: welcomeMessageText,
                     welcomeMessageSender: welcomeMessageSender,
-                    socialImageRef: props.socialImage ? { uuid: props.socialImage } : undefined,
+                    socialImageRef: props.socialImage
+                        ? {
+                              uuid: props.socialImage,
+                              crop: {
+                                  w: 190,
+                                  h: 100,
+                              },
+                          }
+                        : undefined,
                 },
             }}
         >
@@ -177,7 +184,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                 <XView marginTop={4}>
                     Send an automatic message in 1:1 chat to every new member who joins this group
                 </XView>
-                <XView marginTop={17}>
+                <XView marginTop={17} alignSelf="flex-start">
                     <XCheckbox
                         label={welcomeMessageIsOn ? 'On' : 'Off'}
                         checked={welcomeMessageIsOn}
@@ -187,7 +194,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                 </XView>
                 {welcomeMessageIsOn && (
                     <>
-                        <XView marginTop={25}>
+                        <XView marginTop={25} zIndex={3}>
                             <XView
                                 onClick={() => setIsOpenUsers(!isOpenUsers)}
                                 height={52}
@@ -201,12 +208,12 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                             >
                                 <XView flexDirection="column" marginTop={-3}>
                                     <XView color="#1488f3" fontSize={12}>
-                                        Group type
+                                        Sender
                                     </XView>
                                     <XView
                                         fontSize={14}
                                         marginTop={-4}
-                                        color={msgSender ? '#000' : 'rbga(0, 0, 0, 0.5)'}
+                                        color={msgSender ? '#000' : 'rgba(0, 0, 0, 0.5)'}
                                     >
                                         {msgSender ? msgSender.label : 'Select'}
                                     </XView>
@@ -255,7 +262,6 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                                 title="Text message"
                                 mode="modern"
                                 invalid={finalWelcomeMessageTextError}
-                                placeholder="Text message"
                                 onChange={welcomeMsgOnChange}
                                 value={welcomeMessageText || ''}
                             />
@@ -276,7 +282,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                 <XView marginTop={16}>
                     <div className={SocialImageWrapperClassName}>
                         <XAvatarUpload
-                            cropParams="16:9, free"
+                            cropParams="16:9"
                             field="input.socialImageRef"
                             placeholder={{
                                 add: 'Add image',

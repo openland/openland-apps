@@ -4,7 +4,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { Room_room_SharedRoom } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomTiny } from 'openland-api/Types';
 import { Dimensions, Platform } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { convertMessage, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
@@ -21,14 +21,15 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
+import { delay } from 'openland-y-utils/timer';
+import { SDeferred } from 'react-native-s/SDeferred';
 
 const PinnedMessageComponent = XMemo<PageProps>((props) => {
     let id = props.router.params.flexibleId || props.router.params.id;
     let messenger = getMessenger();
     let engine = messenger.engine.getConversation(id);
 
-    let room = getClient().useRoomTiny({ id });
-    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
+    let sharedRoom: Room_room_SharedRoom = props.router.params.room;
 
     let handleManageClick = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
@@ -50,7 +51,7 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
 
     let message: any;
     if (sharedRoom && sharedRoom.pinnedMessage) {
-        message = convertMessage(sharedRoom.pinnedMessage as any, room.room!.id, messenger.engine)
+        message = convertMessage(sharedRoom.pinnedMessage as any, sharedRoom.id, messenger.engine)
         message.isOut = false;
         message.attachTop = true;
     }
@@ -66,7 +67,7 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
                 onDocumentPress: messenger.handleDocumentClick,
                 onMediaPress: messenger.handleMediaClick,
                 onUserPress: messenger.handleAvatarClick,
-            }, Dimensions.get('screen').width - 32);
+            }, Dimensions.get('screen').width - 16);
             return (
                 <ASFlex flexGrow={1} flexDirection="column" alignItems="stretch" marginLeft={8} marginRight={8}>
 
@@ -104,18 +105,18 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title="Pinned message" />
             {sharedRoom && sharedRoom.canEdit && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
-
-            {pinnedDataView && <ASSafeAreaContext.Consumer>
-                {area => (
-                    <ASListView
-                        style={{ width: '100%', height: '100%' }}
-                        dataView={pinnedDataView!}
-                        contentPaddingBottom={area.bottom}
-                        contentPaddingTop={area.top}
-                    />
-                )}
-            </ASSafeAreaContext.Consumer>}
-
+            <SDeferred>
+                {pinnedDataView && <ASSafeAreaContext.Consumer>
+                    {area => (
+                        <ASListView
+                            style={{ width: '100%', height: '100%' }}
+                            dataView={pinnedDataView!}
+                            contentPaddingBottom={area.bottom}
+                            contentPaddingTop={area.top}
+                        />
+                    )}
+                </ASSafeAreaContext.Consumer>}
+            </SDeferred>
         </>
     );
 });

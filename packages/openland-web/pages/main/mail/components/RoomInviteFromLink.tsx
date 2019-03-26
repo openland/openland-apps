@@ -20,12 +20,12 @@ export const RoomInviteFromLink = withChannelInviteInfo(
                     ) : (
                         <>
                             <XDocumentHead
-                                titleSocial={data.invite.room.title}
-                                title={data.invite.room.title}
-                                description={data.invite.room.description}
+                                titleSocial={data.invite && data.invite.room.title}
+                                title={data.invite && data.invite.room.title}
+                                description={data.invite && data.invite.room.description}
                                 imgUrl={
                                     data.invite && data.invite.room
-                                        ? (data.invite.room.socialImage || data.invite.room.photo)
+                                        ? data.invite.room.socialImage || data.invite.room.photo
                                         : undefined
                                 }
                             />

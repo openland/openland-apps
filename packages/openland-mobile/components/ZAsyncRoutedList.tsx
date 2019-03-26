@@ -113,9 +113,7 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
                         <>
                             <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />
                             <ASListView
-                                style={[this.props.style, {
-                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
-                                } as any]}
+                                style={[this.props.style]}
                                 dataView={this.dataView}
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}

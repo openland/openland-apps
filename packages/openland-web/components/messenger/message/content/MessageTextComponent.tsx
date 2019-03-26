@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FullMessage_GeneralMessage_spans } from 'openland-api/Types';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { SpansMessage } from './service/ServiceMessageDefault';
 
@@ -9,6 +9,7 @@ export interface MessageTextComponentProps {
     message: string;
     isEdited: boolean;
     isService?: boolean;
+    shouldCrop?: boolean;
 }
 
 const styleSpansMessageContainer = css`
@@ -23,8 +24,17 @@ const styleSpansMessageContainer = css`
     color: rgba(0, 0, 0, 0.8);
 `;
 
-export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => (
-    <div className={styleSpansMessageContainer}>
-        <SpansMessage message={props.message} spans={props.spans} isEdited={props.isEdited} />
-    </div>
-));
+const cropTextStyle = css`
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+`;
+
+export const MessageTextComponent = XMemo<MessageTextComponentProps>(
+    ({ shouldCrop, message, spans, isEdited }) => (
+        <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
+            <SpansMessage message={message} spans={spans} isEdited={isEdited} />
+        </div>
+    ),
+);

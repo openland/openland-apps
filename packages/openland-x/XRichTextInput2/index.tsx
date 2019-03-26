@@ -54,7 +54,7 @@ export const XRichTextInput2 = React.memo(
 
             const { handlePastedText } = useHandlePastedText({ editorState, updateEditorState });
 
-            const { resetAndFocus } = useInputMethods({
+            const { focus } = useInputMethods({
                 updateEditorStateFromTextAndMentions,
                 ref,
                 editorRef,
@@ -65,7 +65,7 @@ export const XRichTextInput2 = React.memo(
 
             const { onPasteFiles } = usePasteFiles({
                 onPasteFile: props.onPasteFile,
-                resetAndFocus,
+                focus,
             });
 
             const emojiState = useEmojiSuggestions({

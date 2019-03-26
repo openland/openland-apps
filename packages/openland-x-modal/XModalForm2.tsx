@@ -76,10 +76,9 @@ export class XModalForm extends React.Component<XModalFormProps & XFlexStyles> {
                                   {...submitProps}
                                   keyDownSubmit={true}
                               />
-                              {!this.props.useTopCloser &&
-                                  !this.props.alsoUseBottomCloser && (
-                                      <XButton text="Cancel" style="ghost" autoClose={true} />
-                                  )}
+                              {!this.props.useTopCloser && !this.props.alsoUseBottomCloser && (
+                                  <XButton text="Cancel" style="ghost" autoClose={true} />
+                              )}
                           </XHorizontal>
                       </XModalFooter>
                   );
@@ -90,6 +89,7 @@ export class XModalForm extends React.Component<XModalFormProps & XFlexStyles> {
                 body={
                     <XForm
                         defaultData={defaultData}
+                        defaultLayout={defaultLayout}
                         staticData={staticData}
                         defaultAction={defaultAction}
                         autoClose={this.props.autoClose || true}

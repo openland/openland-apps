@@ -37,6 +37,8 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { SHeader } from 'react-native-s/SHeader';
+import { renderPreprocessedText } from 'openland-mobile/messenger/components/AsyncMessageContentView';
+import { preprocessText } from 'openland-mobile/utils/TextProcessor';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -305,11 +307,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SHeaderView>
                     {header}
                 </SHeaderView>
-                <SHeaderButton
+                {/* <SHeaderButton
                     title="Call"
                     icon={require('assets/ic-call-20.png')}
                     onPress={async () => { showCallModal(this.props.chat.id); }}
-                />
+                /> */}
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
@@ -318,7 +320,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 <ASSafeAreaContext.Consumer>
                                     {area => (
                                         <View width="100%" height={56} flexDirection="column" zIndex={1} marginTop={area.top}>
-                                            <TouchableHighlight underlayColor={'white'} onPress={() => this.props.router.push('PinnedMessage', { id: this.props.chat.id })}>
+                                            <TouchableHighlight underlayColor={'white'} onPress={() => this.props.router.push('PinnedMessage', { id: this.props.chat.id, room: sharedRoom })}>
                                                 <View backgroundColor="#f3f5f7" width="100%" height={56} flexDirection="column" zIndex={1} >
                                                     <View flexDirection="row" marginTop={9} marginLeft={12}>
                                                         <View flexGrow={1} flexDirection="row">

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform, Linking, Image, PixelRatio } from 'react-native';
 import { DataSourceMessageItem, ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ASText } from 'react-native-async-view/ASText';
-import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming } from './AsyncBubbleView';
+import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { formatTime } from '../../utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
@@ -126,13 +126,15 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         richAttachImageLayout,
         bottomContent,
         richAttachIsCompact
-    } = extractContent(props, undefined, true);
-    let width = imageLayout ? imageLayout.width : (richAttachImageLayout && !richAttachIsCompact) ? richAttachImageLayout.width : undefined;
+    } = extractContent(props, (props.message.isOut ? bubbleMaxWidth - 12 : bubbleMaxWidthIncoming - 4), true);
+    // let width = imageLayout ? imageLayout.previewWidth : (richAttachImageLayout && !richAttachIsCompact) ? richAttachImageLayout.previewWidth : undefined;
+    let fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
     return (
         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
-            <AsyncBubbleView pair={bottomContent.length ? 'top' : undefined} width={width} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
+            <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} pair={bottomContent.length ? 'top' : undefined} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
                 <ASFlex
                     flexDirection="column"
+                    alignItems="stretch"
                 >
 
                     {topContnet}
@@ -174,7 +176,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
 
             </AsyncBubbleView >
             {!!bottomContent.length && <ASFlex height={3} backgroundColor='white' />}
-            {!!bottomContent.length && <AsyncBubbleView pair={'bottom'} width={width} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
+            {!!bottomContent.length && <AsyncBubbleView pair={'bottom'} width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
                 {bottomContent}
             </AsyncBubbleView >}
         </ASFlex>

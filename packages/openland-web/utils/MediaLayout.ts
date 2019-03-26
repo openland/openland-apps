@@ -1,27 +1,36 @@
 const MAX_W = 400;
 const MAX_H = 400;
+const MIN_W = 100;
+const MIN_H = 100;
 
 export function layoutMedia(
     width: number,
     height: number,
     maxWidth: number = MAX_W,
     maxHeight: number = MAX_H,
+    minWidth: number = MIN_W,
+    minHeight: number = MIN_H,
 ) {
+    let w = width;
+    let h = height;
     if (width > height) {
         if (width > maxWidth) {
-            return {
-                width: Math.round(maxWidth),
-                height: Math.round(height * (maxWidth / width)),
-            };
+            w = Math.round(maxWidth);
+            h = Math.round(height * (maxWidth / width));
         }
     } else if (height > maxHeight) {
-        return {
-            width: Math.round(width * (maxHeight / height)),
-            height: Math.round(maxHeight),
-        };
+        w = Math.round(width * (maxHeight / height));
+        h = Math.round(maxHeight);
     }
 
-    return { width, height };
+    let previewWidth = w;
+    let previewHeight = h;
+    if (w < minWidth || h < minHeight) {
+        previewWidth = minWidth;
+        previewHeight = minWidth;
+    }
+
+    return { width: w, height: h, previewWidth, previewHeight };
 }
 
 export function layoutMediaReverse(

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { MenuItem } from 'openland-web/components/MainLayout';
-import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
+import NewIcon from 'openland-icons/ic-add-medium-2.svg';
 import { tabs } from '../../mail/tabs';
 import RoomIcon from 'openland-icons/dir-rooms.svg';
 import PeopleIcon from 'openland-icons/dir-people.svg';
@@ -78,19 +78,20 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 && itemCount > 0 && (
-                            <XSubHeader
-                                title={hasQueryText}
-                                counter={itemCount}
-                                right={
-                                    <SortPicker
-                                        sort={sort}
-                                        onPick={setSort}
-                                        withoutFeatured={withoutFeatured}
-                                    />
-                                }
-                            />
-                        )}
+                        {query.length > 0 &&
+                            itemCount > 0 && (
+                                <XSubHeader
+                                    title={hasQueryText}
+                                    counter={itemCount}
+                                    right={
+                                        <SortPicker
+                                            sort={sort}
+                                            onPick={setSort}
+                                            withoutFeatured={withoutFeatured}
+                                        />
+                                    }
+                                />
+                            )}
                         <CardsComponent
                             featuredFirst={sort.featured}
                             orderBy={sort.orderBy}
@@ -137,7 +138,7 @@ export const DirectoryNavigation = XMemo(
                 tab={tabs.empty}
                 menuRightContent={
                     <PopperOptionsButton
-                        icon={<PlusIcon />}
+                        icon={<NewIcon />}
                         title={TextDirectory.create.title}
                         content={
                             <>

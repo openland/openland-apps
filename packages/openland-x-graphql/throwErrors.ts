@@ -7,7 +7,7 @@ export const throwGraphQLErrors = (error: any) => {
     if (graphQLErrors && graphQLErrors.length) {
         graphQLErrors.forEach(
             ({ message, error_code }: { message: string; error_code: string }) => {
-                if (error_code === 'CANT_JOIN_GROUP' || 'CANT_JOIN_ORG') {
+                if (error_code === 'CANT_JOIN_GROUP' || error_code === 'CANT_JOIN_ORG') {
                     const e = Error(message);
                     e.name = WHITE_LISTED_ERROR_NAME;
                     throw e;

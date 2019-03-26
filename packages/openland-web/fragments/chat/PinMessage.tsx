@@ -2,9 +2,8 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
-import { emoji } from 'openland-y-utils/emoji';
 import { XModal, XModalCloser } from 'openland-x-modal/XModal';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import {
     Room_room_PrivateRoom,
     Room_room_SharedRoom,
@@ -58,7 +57,7 @@ export interface PinMessageComponentProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
 }
 
-const PinMessageModal = (props: PinMessageComponentProps) => {
+const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
     const { room } = props;
     const { pinMessage } = props;
     const { sender, message } = pinMessage;
@@ -164,7 +163,13 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
                 </XView>
             </XView>
             <XView marginTop={12}>
-                {message && <MessageTextComponent message={message} isEdited={false} />}
+                {message && (
+                    <MessageTextComponent
+                        spans={pinMessage.spans}
+                        message={message}
+                        isEdited={false}
+                    />
+                )}
                 {attachment && attachment.fileMetadata.isImage && (
                     <img
                         src={'https://ucarecdn.com/' + attachment.fileId + '/'}
@@ -228,26 +233,14 @@ const PinMessageModal = (props: PinMessageComponentProps) => {
     );
 
     return <XModal body={body} target={target} footer={null} />;
-};
+});
 
-const PinMessageText = (props: { message: string }) => (
-    <span
-        style={{
-            display: 'block',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',
-            maxWidth: '100%',
-            overflow: 'hidden',
-        }}
-    >
-        {emoji({ src: props.message, size: 14 })}
-    </span>
-);
-
-export const PinMessageComponent = (props: PinMessageComponentProps) => {
-    const isMobile = React.useContext(IsMobileContext);
-    const { attachments } = props.pinMessage;
+export const PinMessageComponent = React.memo((props: PinMessageComponentProps) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    const { pinMessage, chatId, room } = props;
+    const { attachments, sender } = pinMessage;
     const attach = attachments[0];
+
     return (
         <XView
             flexDirection="column"
@@ -285,20 +278,18 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                         <XView flexDirection="row" maxWidth="100%">
                             <XView
                                 as="a"
-                                path={'/mail/u/' + props.pinMessage.sender.id}
+                                path={'/mail/u/' + sender.id}
                                 color="rgba(0, 0, 0, 0.8)"
                                 hoverTextDecoration="none"
                                 fontWeight="600"
                                 fontSize={13}
                             >
-                                {props.pinMessage.sender.name}
+                                {sender.name}
                             </XView>
-                            {props.pinMessage.sender.primaryOrganization && (
+                            {sender.primaryOrganization && (
                                 <XView
                                     as="a"
-                                    path={
-                                        '/mail/o/' + props.pinMessage.sender.primaryOrganization.id
-                                    }
+                                    path={'/mail/o/' + sender.primaryOrganization.id}
                                     hoverTextDecoration="none"
                                     color="rgba(0, 0, 0, 0.4)"
                                     hoverColor="#1790ff"
@@ -306,17 +297,22 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                                     fontSize={13}
                                     marginLeft={8}
                                 >
-                                    {props.pinMessage.sender.primaryOrganization.name}
+                                    {sender.primaryOrganization.name}
                                 </XView>
                             )}
                         </XView>
                         <XView color="rgba(0, 0, 0, 0.8)" fontSize={14}>
-                            {props.pinMessage.message && (
-                                <PinMessageText message={props.pinMessage.message} />
+                            {pinMessage.message && (
+                                <MessageTextComponent
+                                    spans={pinMessage.spans}
+                                    message={pinMessage.message}
+                                    isEdited={false}
+                                    shouldCrop
+                                />
                             )}
-                            {attach.__typename === 'MessageAttachmentFile' && (
+                            {attach && attach.__typename === 'MessageAttachmentFile' && (
                                 <>
-                                    {attach && attach.fileMetadata.isImage && (
+                                    {attach.fileMetadata.isImage && (
                                         <XView flexDirection="row" alignItems="center">
                                             <XView marginRight={6}>
                                                 <IconImage />
@@ -324,7 +320,7 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                                             <XView>Image</XView>
                                         </XView>
                                     )}
-                                    {attach && !attach.fileMetadata.isImage && (
+                                    {!attach.fileMetadata.isImage && (
                                         <XView flexDirection="row" alignItems="center">
                                             <XView marginRight={6}>
                                                 <IconFile />
@@ -337,13 +333,9 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                         </XView>
                     </XView>
                 </XView>
-                <PinMessageModal
-                    pinMessage={props.pinMessage}
-                    chatId={props.chatId}
-                    room={props.room}
-                />
+                <PinMessageModal pinMessage={pinMessage} chatId={chatId} room={room} />
             </XView>
             <XView height={1} width="100%" flexShrink={0} backgroundColor="#ececec" />
         </XView>
     );
-};
+});

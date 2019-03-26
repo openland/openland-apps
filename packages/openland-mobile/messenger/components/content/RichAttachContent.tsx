@@ -39,6 +39,9 @@ export let ricjAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage
             isInvite(attach)
         )
 }
+
+export const paddedTextPrfix = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 9, ios: 8 }))}</ASText >;
+
 export class RichAttachContent extends React.PureComponent<UrlAugmentationContentProps, { downloadState?: DownloadState }> {
     private augLayout?: { width: number, height: number };
     private downloadManagerWatch?: WatchSubscription;
@@ -90,12 +93,16 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         let imageSource = { uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined };
 
         // invite link image placeholder
-        if (ricjAttachImageShouldBeCompact(this.props.attach) || !this.props.attach.image) {
+        if (ricjAttachImageShouldBeCompact(this.props.attach)) {
             imgCompact = true;
             imgLayout = !!imgLayout ? { width: 36, height: 36 } : undefined;
-            if (isInvite(this.props.attach) && !this.props.attach.image) {
-                imageSource = this.props.message.isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
-            }
+
+        }
+
+        if (isInvite(this.props.attach) && !this.props.attach.image) {
+            imgCompact = true;
+            imgLayout = { width: 36, height: 36 };
+            imageSource = this.props.message.isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
         }
 
         let maxWidth = this.props.maxWidth || ((imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
@@ -114,12 +121,17 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 </ASText>}
 
                 {!imgCompact && this.props.attach.image && imgLayout && (
-                    <ASFlex>
+                    <ASFlex
+                        backgroundColor="#dbdce1"
+                        marginTop={this.props.compensateBubble ? -5 : 5}
+                        marginLeft={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
+                        marginRight={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
+                        justifyContent="center"
+                        borderRadius={8}
+                    >
                         <ASImage
                             onPress={this.onMediaPress}
-                            marginTop={this.props.compensateBubble ? -5 : 5}
-                            marginLeft={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
-                            marginRight={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
+
                             source={imageSource}
                             width={imgLayout!.width}
                             height={imgLayout!.height}
@@ -178,9 +190,10 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             letterSpacing={-0.3}
                             fontSize={14}
                             marginTop={Platform.OS === 'android' ? -4 : -1}
-                            numberOfLines={subTitle && imgCompact ? 1 : 2}
+                            numberOfLines={1}
                             marginBottom={4}
                             fontWeight={TextStyles.weight.medium}
+
                         >
                             {this.props.attach.title}
                             {this.props.padded && !subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)}
@@ -199,17 +212,19 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             {this.props.padded && (this.props.message.isOut ? paddedTextOut : paddedText)}
                         </ASText>}
                     </ASFlex>
-
                 </ASFlex>
 
                 {!!text && <ASText
                     maxWidth={maxWidth}
                     color={out ? '#fff' : '#000'}
                     fontSize={14}
-                    marginTop={this.imageCompact && imgLayout ? 4 : 0}
+                    marginTop={this.imageCompact && imgLayout ? (subTitle ? 4 : -19) : 0}
                     marginBottom={4}
+                    lineHeight={19}
+                    numberOfLines={10}
                     fontWeight={TextStyles.weight.regular}
                 >
+                    {!subTitle && this.imageCompact && imgLayout && paddedTextPrfix}
                     {text}
                     {this.props.padded && (this.props.message.isOut ? paddedTextOut : paddedText)}
                 </ASText>}
