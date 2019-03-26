@@ -143,7 +143,7 @@ export class ConversationEngine implements MessageSendHandler {
         let initialChat = await backoff(async () => {
             try {
                 let room = await this.engine.client.client.query(RoomTinyQuery, { id: this.conversationId });
-                let history = await this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, first: 15 });
+                let history = await this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, first: 15 }, { fetchPolicy: 'network-only' });
                 return { ...history, ...room };
             } catch (e) {
                 console.warn(e);

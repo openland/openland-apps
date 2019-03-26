@@ -73,20 +73,27 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
         };
 
         if (this.isIPad) {
+
+            let sideWidth = 320;
+            if (this.state.width > 1000) {
+                console.log(this.state.width);
+                sideWidth = 375;
+            }
+
             return (
                 <View width="100%" height="100%" flexDirection="row" onLayout={this.handleLayoutChange}>
                     <SNavigationView
-                        width={300}
+                        width={sideWidth}
                         height={this.state.height}
                         routing={this.props.routing}
                         navigationBarStyle={style}
                     />
-                    <View height={'100%'} width={0.5} backgroundColor={AppStyles.separatorColor} />
-                    <View width={this.state.width - 300} height={'100%'}>
+                    <View height={'100%'} width={0.5} backgroundColor={this.props.theme.separatorColor} />
+                    <View width={this.state.width - sideWidth} height={'100%'}>
                         {this.state.masterRouting && (
                             <SNavigationView
                                 key={this.state.masterKey!!}
-                                width={this.state.width - 300}
+                                width={this.state.width - sideWidth}
                                 height={this.state.height}
                                 routing={this.state.masterRouting}
                                 navigationBarStyle={style}

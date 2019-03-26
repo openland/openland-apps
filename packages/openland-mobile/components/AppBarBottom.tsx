@@ -4,6 +4,7 @@ import { SDevice } from 'react-native-s/SDevice';
 import { AppStyles } from '../styles/AppStyles';
 import { ZCounter } from './ZCounter';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ZBlurredView } from './ZBlurredView';
 
 export interface AppBarBottomItemProps {
     title: string;
@@ -75,9 +76,9 @@ export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
 export const AppBarBottom = React.memo<{ children?: any }>((props) => {
     let theme = React.useContext(ThemeContext);
     return (
-        <View
+        <ZBlurredView
             style={{
-                backgroundColor: theme.backgroundColor,
+                // backgroundColor: theme.backgroundColor,
                 paddingBottom: SDevice.safeArea.bottom,
                 flexDirection: 'column',
                 alignItems: 'stretch',
@@ -88,10 +89,10 @@ export const AppBarBottom = React.memo<{ children?: any }>((props) => {
         >
             {/* {Platform.OS === 'ios' && (<View style={{ height: 1, backgroundColor: AppStyles.separatorColor, opacity: 0.5 }} />)}
             {Platform.OS !== 'ios' && (<View style={{ height: 1, backgroundColor: '#f5f5f5' }} />)} */}
-            <View style={{ height: 1, backgroundColor: theme.separatorColor }} />
+            {/* <View style={{ height: 1, backgroundColor: theme.separatorColor }} /> */}
             <View style={{ flexDirection: 'row', height: 48 }}>
                 {props.children}
             </View>
-        </View>
+        </ZBlurredView>
     );
 });
