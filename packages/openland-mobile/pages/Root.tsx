@@ -2,7 +2,6 @@ import * as React from 'react';
 import { SRouting } from 'react-native-s/SRouting';
 import { Platform, Dimensions, View, LayoutChangeEvent, LayoutAnimation } from 'react-native';
 import { SNavigationView, SNavigationViewStyle } from 'react-native-s/SNavigationView';
-import { AppStyles } from '../styles/AppStyles';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { AppTheme } from 'openland-mobile/themes/themes';
@@ -41,8 +40,15 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
     }
 
     private handleLayoutChange = (e: LayoutChangeEvent) => {
-        let w = Dimensions.get('screen').width;
-        let h = Dimensions.get('screen').height;
+        let w: number;
+        let h: number;
+        if (Platform.OS === 'ios') {
+            w = e.nativeEvent.layout.width;
+            h = e.nativeEvent.layout.height;
+        } else {
+            w = Dimensions.get('screen').width;
+            h = Dimensions.get('screen').height;
+        }
         if (Platform.OS === 'ios') {
             if (this.state.width !== w || this.state.height !== h) {
                 LayoutAnimation.configureNext({
@@ -57,7 +63,6 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
     }
 
     render() {
-
         let bgColor = this.props.theme.backgroundColor;
         let textColor = this.props.theme.textColor;
         let blurType = this.props.theme.blurType;
