@@ -19,6 +19,7 @@ export const emojifyMessage = (msg: string) => {
         size: 14,
     });
 };
+
 export interface DialogDataSourceItem {
     key: string;
     flexibleId: string;
@@ -40,7 +41,6 @@ export interface DialogDataSourceItem {
     messageId?: string;
     message?: string;
     fallback: string
-    messageEmojified?: any;
     isService?: boolean;
     sender?: string;
     isOut?: boolean;
@@ -122,7 +122,6 @@ export const extractDialog = (
         messageId: topMessage ? topMessage.id : undefined,
         date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
         forward: topMessage ? topMessage.__typename === 'GeneralMessage' && !!topMessage.quotedMessages.length && !topMessage.message : false,
-        messageEmojified: msg ? emojifyMessage(msg) : undefined,
         isService,
         showSenderName: !!(msg && (isOut || kind !== 'PRIVATE') && sender) && !isService,
     };
@@ -244,7 +243,6 @@ export class DialogListEngine {
                 this.dataSource.updateItem({
                     ...existing,
                     message,
-                    messageEmojified: message ? emojifyMessage(message) : undefined,
                     attachments: event.message.attachments,
                 });
             }
@@ -321,7 +319,6 @@ export class DialogListEngine {
                 messageId: event.message.id,
                 message: event.message && event.message.message ? msg : undefined,
                 fallback: msg,
-                messageEmojified: msg ? emojifyMessage(msg) : undefined,
                 date: parseInt(event.message.date, 10),
                 attachments: event.message.attachments,
                 forward: !event.message.message && event.message.quotedMessages && event.message.quotedMessages.length,
@@ -373,7 +370,6 @@ export class DialogListEngine {
                     messageId: event.message.id,
                     message: event.message && event.message.message ? msg : undefined,
                     fallback: msg,
-                    messageEmojified: msg ? emojifyMessage(msg) : undefined,
                     date: parseInt(event.message.date, 10),
                     forward: event.message.quotedMessages && !!event.message.quotedMessages.length,
                     attachments: event.message.attachments,

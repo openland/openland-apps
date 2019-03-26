@@ -64,8 +64,8 @@ export const DialogView = XMemo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{emojifyMessage(dialog.sender)}: </>
     ) : (
-        ''
-    );
+                    ''
+                );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
     if (dialog.typing) {
@@ -76,7 +76,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
             message = (
                 <span>
                     {!isService && sender}
-                    {dialog.messageEmojified}
+                    {dialog.message ? emojifyMessage(dialog.message) : undefined}
                 </span>
             );
         } else if (dialog.attachments && dialog.attachments.length === 1) {
