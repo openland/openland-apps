@@ -267,6 +267,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
                     message: msg,
                     title: this.state.values.map(v => v.label).join(', '),
                     members: this.state.values.map(v => v.value as string),
+                    channel: false
                 });
                 Router.replaceRoute('/mail/' + res.room.id);
             }
