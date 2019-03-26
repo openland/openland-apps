@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { AsyncStorage, View, Linking } from 'react-native';
+import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation } from 'react-native';
 import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/apolloClient';
-import { AccountQuery, SettingsQuery } from 'openland-api';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
 import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
@@ -20,12 +19,13 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
-// import { cachedQuery } from 'openland-mobile/utils/cachedQuery';
+import { AppStorage } from 'openland-mobile/utils/AppStorage';
 
-export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
+export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull, dimensions?: { width: number, height: number } }> {
 
-    history: any;
+    private history: any;
     private pendingDeepLink?: string;
+    private resolving = false;
 
     constructor(props: PageProps) {
         super(props);
@@ -38,19 +38,42 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         Linking.removeEventListener('url', this.handleOpenURL);
     }
 
+    private handleLayoutChange = (e: LayoutChangeEvent) => {
+        let w: number;
+        let h: number;
+        if (Platform.OS === 'ios') {
+            w = e.nativeEvent.layout.width;
+            h = e.nativeEvent.layout.height;
+        } else {
+            w = Dimensions.get('screen').width;
+            h = Dimensions.get('screen').height;
+        }
+        if (Platform.OS === 'ios') {
+            if (this.state.dimensions && (this.state.dimensions.width !== w || this.state.dimensions.height !== h)) {
+                LayoutAnimation.configureNext({
+                    duration: 250,
+                    update: {
+                        type: 'linear'
+                    }
+                });
+            }
+        }
+        this.setState({ dimensions: { width: w, height: h } });
+    }
+
     handleOpenURL = async (event: { url: string }) => {
         this.pendingDeepLink = event.url;
         await this.tryResolveLink(this.state.state);
     }
 
-    resolving = false;
     tryResolveLink = async (state: string) => {
         if (this.resolving) {
             return;
         }
         this.resolving = true;
         if (this.pendingDeepLink && state !== 'loading' && state !== 'start') {
-            let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
+            await AppStorage.prepare();
+            let userToken: string | undefined = AppStorage.token;
             let acc = userToken && await backoff(async () => await getClient().queryAccount());
             if (!acc || !acc.me || !acc.sessionState.isAccountExists) {
                 // unauthorized
@@ -83,21 +106,21 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
 
         (async () => {
             await ThemePersister.prepare();
+            await AppStorage.prepare();
             try {
                 if (hasClient()) {
                     let res = (await backoff(async () => await getClient().queryAccount()));
                     if (res && res.me) {
-                        await AsyncStorage.setItem('openland-account-3', JSON.stringify(res));
                         this.setState({ state: 'app' });
                     } else {
                         this.setState({ state: 'signup' });
                     }
                 } else {
-                    let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
                     let res: any;
-                    if (userToken) {
+                    let authenticated = false;
+                    if (AppStorage.token) {
                         this.setState({ state: 'loading' });
-                        let client = buildNativeClient(userToken);
+                        let client = buildNativeClient(AppStorage.storage, AppStorage.token);
                         saveClient(client);
                         res = await client.queryAccount();
                         // res = await cachedQuery(client.client, AccountQuery, {}, 'account');
@@ -112,20 +135,20 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         }
 
                         if (!res.sessionState.isLoggedIn) {
-                            userToken = undefined;
+                            authenticated = false;
+                        } else {
+                            authenticated = true;
                         }
-
                     }
 
                     // Reset badge if not authenticated
-                    if (!userToken) {
+                    if (!authenticated) {
                         AppBadge.setBadge(0);
                     }
 
                     // Launch app or login sequence
-                    if (userToken) {
+                    if (authenticated) {
                         if (res && res.me) {
-                            await AsyncStorage.setItem('openland-account-3', JSON.stringify(res));
                             this.setState({ state: 'app' });
                         } else {
                             this.setState({ state: 'signup' });
@@ -145,8 +168,10 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         if (this.state.state === 'loading') {
             return (
                 <ThemeProvider>
-                    <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
-                        <ZLoader appearance="large" />
+                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
+                        <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
+                            <ZLoader appearance="large" />
+                        </View>
                     </View>
                 </ThemeProvider>
             );
@@ -154,8 +179,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             return (
                 <ThemeProvider>
                     <PushManager client={getClient()} />
-                    <View style={{ width: '100%', height: '100%' }}>
-                        <Root routing={getMessenger().history} />
+                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
+                        {this.state.dimensions && <Root routing={getMessenger().history} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
                         <ZModalProvider />
                         {/* <View position="absolute" top={0} left={0} right={0} height={SDevice.safeArea.top} backgroundColor="red" /> */}
                         {/* <View position="absolute" top={0} left={0} right={0} height={SDevice.safeArea.top + SDevice.statusBarHeight} backgroundColor="yellow" />
@@ -166,8 +191,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         } else if (this.state.state === 'initial') {
             return (
                 <ThemeProvider>
-                    <View style={{ width: '100%', height: '100%' }}>
-                        <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
+                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
+                        {this.state.dimensions && <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
                         <ZModalProvider />
                     </View>
                 </ThemeProvider>
@@ -175,8 +200,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         } else if (this.state.state === 'signup') {
             return (
                 <ThemeProvider>
-                    <View style={{ width: '100%', height: '100%' }}>
-                        <Root routing={this.history} />
+                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
+                        {this.state.dimensions && <Root routing={this.history} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
                         <ZModalProvider />
                     </View>
                 </ThemeProvider>
@@ -185,8 +210,10 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
 
         return (
             <ThemeProvider>
-                <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
-                    <ZLoader appearance="large" />
+                <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
+                    <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
+                        <ZLoader appearance="large" />
+                    </View>
                 </View>
             </ThemeProvider>
         )

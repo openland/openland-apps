@@ -6,7 +6,7 @@ import { XModal } from 'openland-x-modal/XModal';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
+import { MobileSidebarContext } from '../../../Scaffold/MobileSidebarContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 
@@ -43,15 +43,6 @@ const ImageClassName = css`
     margin-left: -3px;
 `;
 
-const ImageWrapperRadius = css`
-    border-radius: 3px;
-`;
-
-const ImageRadiusShadowClassName = css`
-    border-radius: 3px;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-`;
-
 interface MessageImageComponentProps {
     file: string;
     fileName?: string;
@@ -62,8 +53,8 @@ interface MessageImageComponentProps {
 
 export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
     let [isOpen, handleOpen] = React.useState(false);
-    const isMobile = React.useContext(IsMobileContext);
-
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    const UserInfo = React.useContext(UserInfoContext);
     const openView = (e: any) => {
         if (props.startSelected) {
             return;
@@ -127,14 +118,6 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
     let dimensions = layoutMedia(props.width, props.height);
     let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
 
-    let radiusForImages = false;
-    let localSettingsRadius = localStorage.getItem('image_view_alternative');
-    if (localSettingsRadius) {
-        if (localSettingsRadius === 'true') {
-            radiusForImages = true;
-        }
-    }
-
     return (
         <>
             {!isMobile && (
@@ -149,20 +132,13 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
                 />
             )}
             <XView onClick={openView} cursor="pointer" paddingBottom={5}>
-                <div
-                    className={
-                        ImageWrapper + (radiusForImages ? ' ' + ImageWrapperRadius : undefined)
-                    }
-                >
+                <div className={ImageWrapper}>
                     <XCloudImage
                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                         resize={'fill'}
                         width={dimensions.width}
                         height={dimensions.height}
-                        className={
-                            ImageClassName +
-                            (radiusForImages ? ' ' + ImageRadiusShadowClassName : undefined)
-                        }
+                        className={ImageClassName}
                     />
                 </div>
             </XView>

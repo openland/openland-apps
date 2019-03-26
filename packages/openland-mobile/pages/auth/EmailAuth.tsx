@@ -7,10 +7,11 @@ import { ZTextInput } from '../../components/ZTextInput';
 import { signupStyles } from './SignupUser';
 import { ZForm } from '../../components/ZForm';
 import RNRestart from 'react-native-restart';
-import { AsyncStorage, Text, StyleSheet, TextStyle, Keyboard } from 'react-native';
+import { Text, StyleSheet, TextStyle } from 'react-native';
 import { UserError, NamedError } from 'openland-y-forms/errorHandling';
 import { ShowAuthError } from './ShowAuthError';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { AppStorage } from 'openland-mobile/utils/AppStorage';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
@@ -181,7 +182,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                             method: 'POST',
                         });
 
-                        await AsyncStorage.setItem('openland-token', res2.accessToken);
+                        await AppStorage.setToken(res2.accessToken);
                     }}
                     onError={(e: Error) => {
                         if (e.name === 'code_expired') {

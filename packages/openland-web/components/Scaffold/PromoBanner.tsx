@@ -7,7 +7,11 @@ import AndroidIcon from 'openland-icons/ic-android-white.svg';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
 
 const ActiveButton = Glamorous(XButton)({
-    backgroundColor: '#1585ed',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    border: 'solid 1px #ffffff',
+    '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    }
 });
 
 export const PromoBanner = (props: { onClise: () => void }) => (
@@ -15,15 +19,15 @@ export const PromoBanner = (props: { onClise: () => void }) => (
         height={50}
         width="100%"
         flexShrink={0}
-        backgroundColor="#1790ff"
+        backgroundImage="linear-gradient(92deg, #28a2dc, #3394ed)"
         alignItems="center"
         flexDirection="row"
         justifyContent="center"
     >
-        <XView fontSize={16} fontWeight="600" color="#fff" whiteSpace="nowrap" marginRight={16}>
-            Install Openland mobile app to get messages on the go!
+        <XView fontSize={16} fontWeight="600" color="#fff" whiteSpace="nowrap" marginRight={24}>
+            Install Openland mobile app
         </XView>
-        <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={10}>
+        <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={16}>
             <ActiveButton
                 text="Get iOS app"
                 style="primary"

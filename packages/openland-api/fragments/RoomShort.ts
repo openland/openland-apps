@@ -18,7 +18,7 @@ export const RoomShort = gql`
             role
             canEdit
             membersCount
-            pinnedMessage{
+            pinnedMessage {
                 ...FullMessage
             }
             organization{

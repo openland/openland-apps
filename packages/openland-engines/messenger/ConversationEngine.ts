@@ -143,7 +143,7 @@ export class ConversationEngine implements MessageSendHandler {
         let initialChat = await backoff(async () => {
             try {
                 let room = await this.engine.client.client.query(RoomTinyQuery, { id: this.conversationId });
-                let history = await this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId });
+                let history = await this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, first: 15 }, { fetchPolicy: 'network-only' });
                 return { ...history, ...room };
             } catch (e) {
                 console.warn(e);
@@ -220,7 +220,7 @@ export class ConversationEngine implements MessageSendHandler {
             this.loadingHistory = id;
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, true, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
-            let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: id }));
+            let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: id, first: 15 }));
 
             let history = [...(loaded.messages as any as FullMessage[])].filter((remote: FullMessage) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
             history.reverse();

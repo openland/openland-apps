@@ -12,7 +12,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { emoji } from 'openland-y-utils/emoji';
 import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
-import GroupIcon from 'openland-icons/ic-group.svg';
+import LockIcon from 'openland-icons/ic-group.svg';
 
 export let iconClass = css`
     display: inline-block;
@@ -76,7 +76,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
             message = (
                 <span>
                     {!isService && sender}
-                    {dialog.messageEmojified}
+                    {dialog.message ? emojifyMessage(dialog.message) : undefined}
                 </span>
             );
         } else if (dialog.attachments && dialog.attachments.length === 1) {
@@ -188,7 +188,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                         lineHeight="18px"
                         color={
                             highlightSecretChat && dialog.kind === 'GROUP'
-                                ? '#6cb83d'
+                                ? '#129f25'
                                 : theme.dialogTitleTextColor
                         }
                         selectedColor={theme.dialogTitleTextColorSelected}
@@ -196,11 +196,12 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
                     >
-                        {highlightSecretChat && dialog.kind === 'GROUP' && (
-                            <XView>
-                                <GroupIcon className={GroupIconClass} />
-                            </XView>
-                        )}
+                        {highlightSecretChat &&
+                            dialog.kind === 'GROUP' && (
+                                <XView>
+                                    <LockIcon className={GroupIconClass} />
+                                </XView>
+                            )}
                         <span>
                             {emoji({
                                 src: dialog.title,

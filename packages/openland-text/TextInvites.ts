@@ -5,7 +5,7 @@ export const TextInvites = {
 
     // MODALS
 
-    modalTitle: 'Invite members of your organization',
+    modalTitle: 'Invitation link',
     modalAction: 'Send Invitations',
 
     modalGlobalTitle: 'Invite people to Openland',

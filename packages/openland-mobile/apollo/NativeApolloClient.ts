@@ -1,10 +1,10 @@
 import { BridgedClient } from 'openland-graphql/bridge/BridgedClient';
 import { OperationParameters } from 'openland-graphql/GraphqlClient';
-import { NativeModules, DeviceEventEmitter } from 'react-native';
+import { NativeModules, DeviceEventEmitter, NativeEventEmitter, Platform } from 'react-native';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 
 const NativeGraphQL = NativeModules.RNGraphQL as {
-    createClient: (key: string, endpoint: string, token?: string) => void
+    createClient: (key: string, endpoint: string, token?: string, storage?: string) => void
     closeClient: (key: string) => void;
 
     query: (key: string, id: string, query: string, vars: any, params: any) => void;
@@ -13,32 +13,46 @@ const NativeGraphQL = NativeModules.RNGraphQL as {
 
     mutate: (key: string, id: string, query: string, vars: any) => void;
 
-    subscribe: (key: string, id: string, query: string, vars?: any) => void;
-    subscribeUpdate: (key: string, id: string, vars?: any) => void;
+    subscribe: (key: string, id: string, query: string, vars: any) => void;
+    subscribeUpdate: (key: string, id: string, vars: any) => void;
     unsubscribe: (key: string, id: string) => void;
 
-    read: (key: string, id: string, query: string, vars?: any) => void;
-    write: (key: string, id: string, data: any, query: string, vars?: any) => void;
+    read: (key: string, id: string, query: string, vars: any) => void;
+    write: (key: string, id: string, data: any, query: string, vars: any) => void;
 }
+
+const RNGraphQLEmitter = new NativeEventEmitter(NativeModules.RNGraphQL);
 
 export class NativeApolloClient extends BridgedClient {
     private key: string = randomKey();
 
-    constructor(token?: string) {
+    constructor(storageKey: string, token?: string) {
         super();
-        NativeGraphQL.createClient(this.key, '//api.openland.com/api', token);
+        NativeGraphQL.createClient(this.key, '//api.openland.com/api', token, 'gql-' + storageKey);
 
-        DeviceEventEmitter.addListener('apollo_client', (src) => {
-            if (src.key === this.key) {
-                if (src.type === 'failure') {
-                    // console.log(src);
-                    this.operationFailed(src.id, src.data);
-                } else if (src.type === 'response') {
-                    // console.log(src);
-                    this.operationUpdated(src.id, src.data);
+        if (Platform.OS === 'ios') {
+            RNGraphQLEmitter.addListener('apollo_client', (src) => {
+                if (src.key === this.key) {
+                    if (src.type === 'failure') {
+                        this.operationFailed(src.id, src.data);
+                    } else if (src.type === 'response') {
+                        this.operationUpdated(src.id, src.data);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            DeviceEventEmitter.addListener('apollo_client', (src) => {
+                if (src.key === this.key) {
+                    if (src.type === 'failure') {
+                        // console.log(src);
+                        this.operationFailed(src.id, src.data);
+                    } else if (src.type === 'response') {
+                        // console.log(src);
+                        this.operationUpdated(src.id, src.data);
+                    }
+                }
+            });
+        }
     }
 
     protected postQuery(id: string, query: any, vars: any, params?: OperationParameters) {

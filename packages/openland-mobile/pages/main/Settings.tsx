@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, Share, Platform } from 'react-native';
+import { Share, Platform } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';

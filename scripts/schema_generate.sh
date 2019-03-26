@@ -10,7 +10,6 @@ yarn apollo codegen:generate --target=typescript --outputFlat=./packages/openlan
 
 # Generate openland types wrappers
 ./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generator.ts
-./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateNativeApi.ts
 
 # Export fragments for fragment matcher
 node ./fetch-fragments.js
@@ -23,3 +22,7 @@ cp ./schema.json ./android/app/src/main/graphql/com/openland/api/
 
 # iOS Schemas
 yarn apollo codegen:generate --queries="$(find . -name './android/app/src/main/graphql/com/openland/api/*.graphql')" --target swift ./ios/API.swift
+yarn apollo codegen:generate --queries="$(find . -name './android/app/src/main/graphql/com/openland/api/*.graphql')" --target json ./queries.json
+
+# Generate Native
+./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateNativeApi.ts

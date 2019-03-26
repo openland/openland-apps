@@ -34,6 +34,7 @@ target 'openland' do
   pod 'Auth0', '~> 1.0'
   pod 'Apollo'
   pod 'Apollo/WebSocket'
+  pod 'Apollo/SQLite'
 
   pod 'AppCenter', '~> 1.13.0'
   pod 'AppCenter/Crashes', '~> 1.13.0'

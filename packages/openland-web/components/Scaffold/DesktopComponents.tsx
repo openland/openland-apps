@@ -449,9 +449,7 @@ export const DesktopScaffold = ({
     content: any;
     topItems: any;
 }) => {
-    const [banner, bannerHandler] = React.useState(() => {
-        return typeof require === 'undefined';
-    });
+    const [banner, bannerHandler] = React.useState(true);
     const handleHideBanner = () => {
         bannerHandler(false);
         localStorage.setItem('promo-banner-be-show', 'hidden');

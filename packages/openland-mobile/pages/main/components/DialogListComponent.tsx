@@ -10,19 +10,24 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 import { SDevice } from 'react-native-s/SDevice';
 
 export class DialogListComponent extends React.PureComponent<{ dialogs: ASDataView<DialogDataSourceItem> }> {
-
+    contentOffset = new STrackedValue();
     render() {
         return (
             <ASSafeAreaContext.Consumer>
                 {area => {
                     return (
                         <>
+                            <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />
                             <ASListView
                                 overscrollCompensation={true}
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}
                                 dataView={this.props.dialogs}
-                                style={[{ flexGrow: 1 }]}
+                                style={[{ flexGrow: 1 }, {
+                                    // Work-around for freezing navive animation driver
+                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
+                                } as any]}
+                                onScroll={this.contentOffset.event}
                                 headerPadding={4}
                             />
                         </>

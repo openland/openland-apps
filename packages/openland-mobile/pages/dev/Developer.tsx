@@ -4,8 +4,8 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { AsyncStorage } from 'react-native';
 import RNRestart from 'react-native-restart';
+import { AppStorage } from 'openland-mobile/utils/AppStorage';
 // import { NativeModules } from 'react-native';
 
 // function doBenchmark(name: string, count: number, src: Function) {
@@ -24,7 +24,7 @@ export const Developer = withApp(() => {
     // });
     const handleLogout = () => {
         (async () => {
-            AsyncStorage.clear();
+            await AppStorage.resetToken();
             RNRestart.Restart();
         })();
     }

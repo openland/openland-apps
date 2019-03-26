@@ -9418,7 +9418,7 @@ export interface ChatHistory {
 export interface ChatHistoryVariables {
   chatId: string;
   before?: string | null;
-  first?: number | null;
+  first: number;
 }
 
 /* tslint:disable */
@@ -14518,134 +14518,6 @@ export interface RoomSearchTextVariables {
 // GraphQL query operation: RoomSearch
 // ====================================================
 
-export interface RoomSearch_items_edges_node_organization_adminMembers_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomSearch_items_edges_node_organization_adminMembers_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  about: string | null;
-  location: string | null;
-  isBot: boolean;
-  isYou: boolean;
-  online: boolean;
-  lastSeen: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  shortname: string | null;
-  primaryOrganization: RoomSearch_items_edges_node_organization_adminMembers_user_primaryOrganization | null;
-}
-
-export interface RoomSearch_items_edges_node_organization_adminMembers {
-  __typename: "OrganizationJoinedMember";
-  role: OrganizationMemberRole;
-  user: RoomSearch_items_edges_node_organization_adminMembers_user;
-}
-
-export interface RoomSearch_items_edges_node_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isMine: boolean;
-  isOwner: boolean;
-  isAdmin: boolean;
-  isCommunity: boolean;
-  adminMembers: RoomSearch_items_edges_node_organization_adminMembers[];
-}
-
-export interface RoomSearch_items_edges_node_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomSearch_items_edges_node_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomSearch_items_edges_node_members_user_primaryOrganization | null;
-}
-
-export interface RoomSearch_items_edges_node_members {
-  __typename: "RoomMember";
-  role: RoomMemberRole;
-  membership: SharedRoomMembershipStatus;
-  user: RoomSearch_items_edges_node_members_user;
-  canKick: boolean;
-}
-
-export interface RoomSearch_items_edges_node_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomSearch_items_edges_node_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  isBot: boolean;
-  shortname: string | null;
-  primaryOrganization: RoomSearch_items_edges_node_requests_user_primaryOrganization | null;
-}
-
-export interface RoomSearch_items_edges_node_requests {
-  __typename: "RoomMember";
-  user: RoomSearch_items_edges_node_requests_user;
-}
-
-export interface RoomSearch_items_edges_node_settings {
-  __typename: "RoomUserNotificaionSettings";
-  id: string;
-  mute: boolean | null;
-}
-
-export interface RoomSearch_items_edges_node_welcomeMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface RoomSearch_items_edges_node_welcomeMessage {
-  __typename: "WelcomeMessage";
-  isOn: boolean;
-  sender: RoomSearch_items_edges_node_welcomeMessage_sender | null;
-  message: string | null;
-}
-
 export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
@@ -15418,24 +15290,26 @@ export interface RoomSearch_items_edges_node_pinnedMessage_ServiceMessage {
 
 export type RoomSearch_items_edges_node_pinnedMessage = RoomSearch_items_edges_node_pinnedMessage_GeneralMessage | RoomSearch_items_edges_node_pinnedMessage_ServiceMessage;
 
+export interface RoomSearch_items_edges_node_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomSearch_items_edges_node {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
   title: string;
   photo: string;
-  socialImage: string | null;
-  description: string | null;
-  organization: RoomSearch_items_edges_node_organization | null;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
-  membersCount: number | null;
-  members: RoomSearch_items_edges_node_members[];
-  requests: RoomSearch_items_edges_node_requests[] | null;
-  settings: RoomSearch_items_edges_node_settings;
   canEdit: boolean;
-  welcomeMessage: RoomSearch_items_edges_node_welcomeMessage | null;
+  membersCount: number | null;
   pinnedMessage: RoomSearch_items_edges_node_pinnedMessage | null;
+  organization: RoomSearch_items_edges_node_organization | null;
 }
 
 export interface RoomSearch_items_edges {
@@ -30035,11 +29909,6 @@ export interface ProfileInput {
   primaryOrganization?: string | null;
 }
 
-export interface RangeInput {
-  from?: number | null;
-  to?: number | null;
-}
-
 export interface RoomInviteEmailRequest {
   email: string;
   emailText?: string | null;
@@ -30078,32 +29947,6 @@ export interface UpdateOrganizationProfileInput {
   alphaPublished?: boolean | null;
   alphaEditorial?: boolean | null;
   alphaFeatured?: boolean | null;
-  alphaLocations?: string[] | null;
-  alphaInterests?: string[] | null;
-  alphaOrganizationType?: string[] | null;
-  alphaPotentialSites?: (RangeInput | null)[] | null;
-  alphaSiteSizes?: (RangeInput | null)[] | null;
-  alphaDevelopmentModels?: (string | null)[] | null;
-  alphaAvailability?: (string | null)[] | null;
-  alphaLandUse?: (string | null)[] | null;
-  alphaGoodFor?: (string | null)[] | null;
-  alphaSpecialAttributes?: (string | null)[] | null;
-  alphaLookingFor?: string[] | null;
-  alphaGeographies?: string[] | null;
-  alphaDOShapeAndForm?: string[] | null;
-  alphaDOCurrentUse?: string[] | null;
-  alphaDOGoodFitFor?: string[] | null;
-  alphaDOSpecialAttributes?: string[] | null;
-  alphaDOAvailability?: string[] | null;
-  alphaARGeographies?: string[] | null;
-  alphaARAreaRange?: string[] | null;
-  alphaARHeightLimit?: string[] | null;
-  alphaARActivityStatus?: string[] | null;
-  alphaARAquisitionBudget?: string[] | null;
-  alphaARAquisitionRate?: string[] | null;
-  alphaARClosingTime?: string[] | null;
-  alphaARSpecialAttributes?: string[] | null;
-  alphaARLandUse?: string[] | null;
 }
 
 /**

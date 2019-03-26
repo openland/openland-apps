@@ -724,8 +724,8 @@ public enum MediaStreamState: RawRepresentable, Equatable, Hashable, Apollo.JSON
 public struct UpdateOrganizationProfileInput: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
 
-  public init(name: Swift.Optional<String?> = nil, photoRef: Swift.Optional<ImageRefInput?> = nil, website: Swift.Optional<String?> = nil, websiteTitle: Swift.Optional<String?> = nil, about: Swift.Optional<String?> = nil, twitter: Swift.Optional<String?> = nil, facebook: Swift.Optional<String?> = nil, linkedin: Swift.Optional<String?> = nil, location: Swift.Optional<String?> = nil, contacts: Swift.Optional<[ContactPersonInput]?> = nil, alphaPublished: Swift.Optional<Bool?> = nil, alphaEditorial: Swift.Optional<Bool?> = nil, alphaFeatured: Swift.Optional<Bool?> = nil, alphaLocations: Swift.Optional<[String]?> = nil, alphaInterests: Swift.Optional<[String]?> = nil, alphaOrganizationType: Swift.Optional<[String]?> = nil, alphaPotentialSites: Swift.Optional<[RangeInput?]?> = nil, alphaSiteSizes: Swift.Optional<[RangeInput?]?> = nil, alphaDevelopmentModels: Swift.Optional<[String?]?> = nil, alphaAvailability: Swift.Optional<[String?]?> = nil, alphaLandUse: Swift.Optional<[String?]?> = nil, alphaGoodFor: Swift.Optional<[String?]?> = nil, alphaSpecialAttributes: Swift.Optional<[String?]?> = nil, alphaLookingFor: Swift.Optional<[String]?> = nil, alphaGeographies: Swift.Optional<[String]?> = nil, alphaDoShapeAndForm: Swift.Optional<[String]?> = nil, alphaDoCurrentUse: Swift.Optional<[String]?> = nil, alphaDoGoodFitFor: Swift.Optional<[String]?> = nil, alphaDoSpecialAttributes: Swift.Optional<[String]?> = nil, alphaDoAvailability: Swift.Optional<[String]?> = nil, alphaArGeographies: Swift.Optional<[String]?> = nil, alphaArAreaRange: Swift.Optional<[String]?> = nil, alphaArHeightLimit: Swift.Optional<[String]?> = nil, alphaArActivityStatus: Swift.Optional<[String]?> = nil, alphaArAquisitionBudget: Swift.Optional<[String]?> = nil, alphaArAquisitionRate: Swift.Optional<[String]?> = nil, alphaArClosingTime: Swift.Optional<[String]?> = nil, alphaArSpecialAttributes: Swift.Optional<[String]?> = nil, alphaArLandUse: Swift.Optional<[String]?> = nil) {
-    graphQLMap = ["name": name, "photoRef": photoRef, "website": website, "websiteTitle": websiteTitle, "about": about, "twitter": twitter, "facebook": facebook, "linkedin": linkedin, "location": location, "contacts": contacts, "alphaPublished": alphaPublished, "alphaEditorial": alphaEditorial, "alphaFeatured": alphaFeatured, "alphaLocations": alphaLocations, "alphaInterests": alphaInterests, "alphaOrganizationType": alphaOrganizationType, "alphaPotentialSites": alphaPotentialSites, "alphaSiteSizes": alphaSiteSizes, "alphaDevelopmentModels": alphaDevelopmentModels, "alphaAvailability": alphaAvailability, "alphaLandUse": alphaLandUse, "alphaGoodFor": alphaGoodFor, "alphaSpecialAttributes": alphaSpecialAttributes, "alphaLookingFor": alphaLookingFor, "alphaGeographies": alphaGeographies, "alphaDOShapeAndForm": alphaDoShapeAndForm, "alphaDOCurrentUse": alphaDoCurrentUse, "alphaDOGoodFitFor": alphaDoGoodFitFor, "alphaDOSpecialAttributes": alphaDoSpecialAttributes, "alphaDOAvailability": alphaDoAvailability, "alphaARGeographies": alphaArGeographies, "alphaARAreaRange": alphaArAreaRange, "alphaARHeightLimit": alphaArHeightLimit, "alphaARActivityStatus": alphaArActivityStatus, "alphaARAquisitionBudget": alphaArAquisitionBudget, "alphaARAquisitionRate": alphaArAquisitionRate, "alphaARClosingTime": alphaArClosingTime, "alphaARSpecialAttributes": alphaArSpecialAttributes, "alphaARLandUse": alphaArLandUse]
+  public init(name: Swift.Optional<String?> = nil, photoRef: Swift.Optional<ImageRefInput?> = nil, website: Swift.Optional<String?> = nil, websiteTitle: Swift.Optional<String?> = nil, about: Swift.Optional<String?> = nil, twitter: Swift.Optional<String?> = nil, facebook: Swift.Optional<String?> = nil, linkedin: Swift.Optional<String?> = nil, location: Swift.Optional<String?> = nil, contacts: Swift.Optional<[ContactPersonInput]?> = nil, alphaPublished: Swift.Optional<Bool?> = nil, alphaEditorial: Swift.Optional<Bool?> = nil, alphaFeatured: Swift.Optional<Bool?> = nil) {
+    graphQLMap = ["name": name, "photoRef": photoRef, "website": website, "websiteTitle": websiteTitle, "about": about, "twitter": twitter, "facebook": facebook, "linkedin": linkedin, "location": location, "contacts": contacts, "alphaPublished": alphaPublished, "alphaEditorial": alphaEditorial, "alphaFeatured": alphaFeatured]
   }
 
   public var name: Swift.Optional<String?> {
@@ -844,240 +844,6 @@ public struct UpdateOrganizationProfileInput: GraphQLMapConvertible {
       graphQLMap.updateValue(newValue, forKey: "alphaFeatured")
     }
   }
-
-  public var alphaLocations: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaLocations"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaLocations")
-    }
-  }
-
-  public var alphaInterests: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaInterests"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaInterests")
-    }
-  }
-
-  public var alphaOrganizationType: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaOrganizationType"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaOrganizationType")
-    }
-  }
-
-  public var alphaPotentialSites: Swift.Optional<[RangeInput?]?> {
-    get {
-      return graphQLMap["alphaPotentialSites"] as! Swift.Optional<[RangeInput?]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaPotentialSites")
-    }
-  }
-
-  public var alphaSiteSizes: Swift.Optional<[RangeInput?]?> {
-    get {
-      return graphQLMap["alphaSiteSizes"] as! Swift.Optional<[RangeInput?]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaSiteSizes")
-    }
-  }
-
-  public var alphaDevelopmentModels: Swift.Optional<[String?]?> {
-    get {
-      return graphQLMap["alphaDevelopmentModels"] as! Swift.Optional<[String?]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaDevelopmentModels")
-    }
-  }
-
-  public var alphaAvailability: Swift.Optional<[String?]?> {
-    get {
-      return graphQLMap["alphaAvailability"] as! Swift.Optional<[String?]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaAvailability")
-    }
-  }
-
-  public var alphaLandUse: Swift.Optional<[String?]?> {
-    get {
-      return graphQLMap["alphaLandUse"] as! Swift.Optional<[String?]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaLandUse")
-    }
-  }
-
-  public var alphaGoodFor: Swift.Optional<[String?]?> {
-    get {
-      return graphQLMap["alphaGoodFor"] as! Swift.Optional<[String?]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaGoodFor")
-    }
-  }
-
-  public var alphaSpecialAttributes: Swift.Optional<[String?]?> {
-    get {
-      return graphQLMap["alphaSpecialAttributes"] as! Swift.Optional<[String?]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaSpecialAttributes")
-    }
-  }
-
-  public var alphaLookingFor: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaLookingFor"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaLookingFor")
-    }
-  }
-
-  public var alphaGeographies: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaGeographies"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaGeographies")
-    }
-  }
-
-  public var alphaDoShapeAndForm: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaDOShapeAndForm"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaDOShapeAndForm")
-    }
-  }
-
-  public var alphaDoCurrentUse: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaDOCurrentUse"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaDOCurrentUse")
-    }
-  }
-
-  public var alphaDoGoodFitFor: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaDOGoodFitFor"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaDOGoodFitFor")
-    }
-  }
-
-  public var alphaDoSpecialAttributes: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaDOSpecialAttributes"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaDOSpecialAttributes")
-    }
-  }
-
-  public var alphaDoAvailability: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaDOAvailability"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaDOAvailability")
-    }
-  }
-
-  public var alphaArGeographies: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaARGeographies"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaARGeographies")
-    }
-  }
-
-  public var alphaArAreaRange: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaARAreaRange"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaARAreaRange")
-    }
-  }
-
-  public var alphaArHeightLimit: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaARHeightLimit"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaARHeightLimit")
-    }
-  }
-
-  public var alphaArActivityStatus: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaARActivityStatus"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaARActivityStatus")
-    }
-  }
-
-  public var alphaArAquisitionBudget: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaARAquisitionBudget"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaARAquisitionBudget")
-    }
-  }
-
-  public var alphaArAquisitionRate: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaARAquisitionRate"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaARAquisitionRate")
-    }
-  }
-
-  public var alphaArClosingTime: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaARClosingTime"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaARClosingTime")
-    }
-  }
-
-  public var alphaArSpecialAttributes: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaARSpecialAttributes"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaARSpecialAttributes")
-    }
-  }
-
-  public var alphaArLandUse: Swift.Optional<[String]?> {
-    get {
-      return graphQLMap["alphaARLandUse"] as! Swift.Optional<[String]?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "alphaARLandUse")
-    }
-  }
 }
 
 public struct ContactPersonInput: GraphQLMapConvertible {
@@ -1147,32 +913,6 @@ public struct ContactPersonInput: GraphQLMapConvertible {
     }
     set {
       graphQLMap.updateValue(newValue, forKey: "twitter")
-    }
-  }
-}
-
-public struct RangeInput: GraphQLMapConvertible {
-  public var graphQLMap: GraphQLMap
-
-  public init(from: Swift.Optional<Int?> = nil, to: Swift.Optional<Int?> = nil) {
-    graphQLMap = ["from": from, "to": to]
-  }
-
-  public var from: Swift.Optional<Int?> {
-    get {
-      return graphQLMap["from"] as! Swift.Optional<Int?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "from")
-    }
-  }
-
-  public var to: Swift.Optional<Int?> {
-    get {
-      return graphQLMap["to"] as! Swift.Optional<Int?>
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "to")
     }
   }
 }
@@ -6390,15 +6130,15 @@ public final class GlobalCounterQuery: GraphQLQuery {
 
 public final class ChatHistoryQuery: GraphQLQuery {
   public let operationDefinition =
-    "query ChatHistory($chatId: ID!, $before: ID, $first: Int = 15) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n}"
+    "query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(FullMessage.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
 
   public var chatId: GraphQLID
   public var before: GraphQLID?
-  public var first: Int?
+  public var first: Int
 
-  public init(chatId: GraphQLID, before: GraphQLID? = nil, first: Int? = nil) {
+  public init(chatId: GraphQLID, before: GraphQLID? = nil, first: Int) {
     self.chatId = chatId
     self.before = before
     self.first = first
@@ -7655,9 +7395,9 @@ public final class RoomSearchTextQuery: GraphQLQuery {
 
 public final class RoomSearchQuery: GraphQLQuery {
   public let operationDefinition =
-    "query RoomSearch($query: String, $sort: String, $page: Int) {\n  items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...RoomFull\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}"
+    "query RoomSearch($query: String, $sort: String, $page: Int) {\n  items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...RoomShort\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(RoomShort.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
 
   public var query: String?
   public var sort: String?
@@ -7796,7 +7536,7 @@ public final class RoomSearchQuery: GraphQLQuery {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(RoomFull.self),
+            GraphQLFragmentSpread(RoomShort.self),
           ]
 
           public private(set) var resultMap: ResultMap
@@ -7830,9 +7570,9 @@ public final class RoomSearchQuery: GraphQLQuery {
               self.resultMap = unsafeResultMap
             }
 
-            public var roomFull: RoomFull {
+            public var roomShort: RoomShort {
               get {
-                return RoomFull(unsafeResultMap: resultMap)
+                return RoomShort(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
