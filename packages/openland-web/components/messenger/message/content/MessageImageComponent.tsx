@@ -47,9 +47,8 @@ const ImageWrapperRadius = css`
     border-radius: 3px;
 `;
 
-const ImageRadiusShadowClassName = css`
+const ImageRadiusClassName = css`
     border-radius: 3px;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 `;
 
 interface MessageImageComponentProps {
@@ -165,7 +164,7 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
                         height={dimensions.height}
                         className={
                             ImageClassName +
-                            (radiusForImages ? ' ' + ImageRadiusShadowClassName : undefined)
+                            (radiusForImages ? ' ' + ImageRadiusClassName : undefined)
                         }
                     />
                 </div>

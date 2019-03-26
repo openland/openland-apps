@@ -170,13 +170,13 @@ class ImagesView extends React.PureComponent<
                 <XVertical separator={9}>
                     <GroupTitle>Image display in chat</GroupTitle>
                     <XRadioItem
-                        label="Default: No radius and shadow."
+                        label="Default: No radius."
                         checked={!images}
                         onChange={this.handleOff}
                     />
                     <XRadioItem
                         label={
-                            '"We made the buttons on the screen look so good you\'ll want to lick them." © Steve Jobs'
+                            'Alternative: With radius.'
                         }
                         checked={images}
                         onChange={this.handleOn}
