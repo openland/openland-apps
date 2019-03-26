@@ -1,0 +1,22 @@
+diff --git a/node_modules/next/dist/bin/next b/node_modules/next/dist/bin/next
+index 09396fe..0b37535 100755
+--- a/node_modules/next/dist/bin/next
++++ b/node_modules/next/dist/bin/next
+@@ -1,4 +1,5 @@
+-#!/usr/bin/env node
++#!/usr/bin/env node --nouse-idle-notification --max-old-space-size=4096
++
+ "use strict";
+ var __importDefault = (this && this.__importDefault) || function (mod) {
+     return (mod && mod.__esModule) ? mod : { "default": mod };
+diff --git a/node_modules/next/dist/bin/next-build b/node_modules/next/dist/bin/next-build
+index a6f84a3..8a03499 100755
+--- a/node_modules/next/dist/bin/next-build
++++ b/node_modules/next/dist/bin/next-build
+@@ -1,4 +1,5 @@
+-#!/usr/bin/env node
++#!/usr/bin/env node --nouse-idle-notification --max-old-space-size=4096
++
+ "use strict";
+ var __importDefault = (this && this.__importDefault) || function (mod) {
+     return (mod && mod.__esModule) ? mod : { "default": mod };
