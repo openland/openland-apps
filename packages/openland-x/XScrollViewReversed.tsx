@@ -13,11 +13,12 @@ interface Dimensions {
 interface XScrollViewReversedProps extends XFlexStyles {
     getScrollElement?: Function;
     scrollPosition?: (data: number) => void;
+    children?: any;
 }
 
 type XScrollViewReversedInnerProps = XScrollViewReversedProps & { isActive: boolean | null };
 
-class XScrollViewReversedInner extends React.PureComponent<
+export class XScrollViewReversedInner extends React.PureComponent<
     XScrollViewReversedInnerProps,
     {
         inited: boolean;
@@ -153,8 +154,10 @@ class XScrollViewReversedInner extends React.PureComponent<
     }
 }
 
-export const XScrollViewReversed = (props: XScrollViewReversedProps) => {
-    const isActive = React.useContext(IsActiveContext);
+export const XScrollViewReversed = React.forwardRef<any, XScrollViewReversedProps>(
+    (props: XScrollViewReversedProps, ref) => {
+        const isActive = React.useContext(IsActiveContext);
 
-    return <XScrollViewReversedInner {...props} isActive={isActive} />;
-};
+        return <XScrollViewReversedInner {...props} isActive={isActive} ref={ref} />;
+    },
+);

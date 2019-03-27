@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { MessageComponent } from '../message/MessageComponent';
-import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
+import { XScrollViewReversed, XScrollViewReversedInner } from 'openland-x/XScrollViewReversed';
 import {
     ConversationEngine,
     DataSourceMessageItem,
@@ -94,7 +94,7 @@ const LoadingWrapper = glamorous.div({
 });
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
-    private scroller = React.createRef<XScrollViewReversed>();
+    private scroller = React.createRef<XScrollViewReversedInner>();
     unshifted = false;
 
     scrollToBottom = () => {
