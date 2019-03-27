@@ -54,7 +54,7 @@ const CreateRoomButton = withCreateChannel(props => {
                         members: [...typedProps.members],
                         organizationId: typedProps.organizationId || '',
                         photoRef: photoRef,
-                        channel: true,
+                        channel: false,
                     },
                 }).then((data: any) => {
                     const roomId: string = data.data.room.id as string;
