@@ -15,7 +15,7 @@ import { withRouter } from 'openland-x-routing/withRouter';
 
 const Root = Glamorous.div({
     display: 'flex',
-    height: '100vh',
+    minHeight: '100vh',
     width: '100%',
     backgroundColor: '#ffffff',
     flexDirection: 'column',
