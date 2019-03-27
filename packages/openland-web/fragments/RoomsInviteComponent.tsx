@@ -48,9 +48,11 @@ const Close = Glamorous(XLink)({
     width: 32,
     height: 32,
     borderRadius: 50,
-    backgroundColor: 'rgba(188, 195, 204, 0.14)',
     '&:hover': {
         backgroundColor: '#ecedf0',
+    },
+    '& svg path': {
+        fill: '#CCCCCC',
     },
 });
 
@@ -228,14 +230,37 @@ export const RoomsInviteComponent = ({
 
     return (
         <Root>
-            {!noLogin && (
-                <XView position="absolute" right={0} zIndex={100} hoverCursor="pointer">
-                    <Close onClick={() => (canUseDOM ? window.history.back() : null)}>
-                        <CloseIcon />
-                    </Close>
-                </XView>
-            )}
-            <XView flexDirection="column">
+            <XView
+                flexDirection="row"
+                justifyContent={isMobile ? 'space-between' : 'flex-end'}
+                alignItems="center"
+            >
+                {isMobile && (
+                    <XView
+                        fontSize={20}
+                        fontWeight="600"
+                        color="rgba(0, 0, 0, 0.9)"
+                        marginLeft={20}
+                    >
+                        Group invitation
+                    </XView>
+                )}
+                {!noLogin && (
+                    <XView
+                        zIndex={100}
+                        hoverCursor="pointer"
+                        height={52}
+                        flexDirection="row"
+                        marginRight={16}
+                        alignItems="center"
+                    >
+                        <Close path="/mail/">
+                            <CloseIcon />
+                        </Close>
+                    </XView>
+                )}
+            </XView>
+            <XView flexDirection="column" paddingHorizontal={20}>
                 {invite && invite.invitedByUser ? (
                     <UserInfoWrapper separator={6} justifyContent="center" alignItems="center">
                         <XAvatar2
@@ -247,8 +272,8 @@ export const RoomsInviteComponent = ({
                         <Text>{invite.invitedByUser.name} invites you to join group</Text>
                     </UserInfoWrapper>
                 ) : (
-                        <div style={{ height: 50 }} />
-                    )}
+                    <div style={{ height: 50 }} />
+                )}
                 <XView marginTop={111} alignSelf="center" alignItems="center" maxWidth={428}>
                     <RoomAvatar
                         src={room.photo || undefined}
@@ -259,33 +284,34 @@ export const RoomsInviteComponent = ({
                     <XView marginTop={28} lineHeight={1} fontSize={24} fontWeight={'600'}>
                         {room.title}
                     </XView>
-                    {room.membersCount && room.membersCount > 10 && (
-                        <XView
-                            marginTop={12}
-                            paddingBottom={6}
-                            paddingTop={6}
-                            paddingLeft={12}
-                            paddingRight={12}
-                            height={23}
-                            borderRadius={16}
-                            backgroundColor={'rgba(23, 144, 255, 0.1)'}
-                            justifyContent="center"
-                        >
+                    {room.membersCount &&
+                        room.membersCount > 10 && (
                             <XView
-                                flexDirection="row"
-                                fontSize={13}
-                                fontWeight={'600'}
-                                color={'#1790ff'}
-                                lineHeight={1.23}
+                                marginTop={12}
+                                paddingBottom={6}
+                                paddingTop={6}
+                                paddingLeft={12}
+                                paddingRight={12}
+                                height={23}
+                                borderRadius={16}
+                                backgroundColor={'rgba(23, 144, 255, 0.1)'}
+                                justifyContent="center"
                             >
-                                <XView marginTop={1} marginRight={4}>
-                                    <ProfileIcon />
-                                </XView>
+                                <XView
+                                    flexDirection="row"
+                                    fontSize={13}
+                                    fontWeight={'600'}
+                                    color={'#1790ff'}
+                                    lineHeight={1.23}
+                                >
+                                    <XView marginTop={1} marginRight={4}>
+                                        <ProfileIcon />
+                                    </XView>
 
-                                {`${room.membersCount} members`}
+                                    {`${room.membersCount} members`}
+                                </XView>
                             </XView>
-                        </XView>
-                    )}
+                        )}
                     {room.description && (
                         <XView lineHeight={1.5} marginTop={20}>
                             <div className={textAlignCenter}>{room.description}</div>
@@ -294,35 +320,38 @@ export const RoomsInviteComponent = ({
                     {!signup && <XView marginTop={36}>{button}</XView>}
                 </XView>
             </XView>
-            <ImageWrapper hasFooter={isMobile || !!noLogin}>
-                <Image />
-            </ImageWrapper>
-            {(isMobile || !!noLogin) && (
-                <XView
-                    justifyContent="center"
-                    alignItems="center"
-                    flexDirection="row"
-                    width="100%"
-                    bottom={0}
-                    position="absolute"
-                    height={60}
-                    backgroundColor={'#f9f9f9'}
-                >
-                    <XView marginTop={-10}>
-                        <LogoWithName />
-                    </XView>
-                    <XView
-                        marginLeft={8}
-                        borderRadius={2}
-                        width={4}
-                        height={4}
-                        backgroundColor={'#d8d8d8'}
-                    />
-                    <XView marginLeft={8} fontSize={13} color={'rgba(0, 0, 0, 0.5)'}>
-                        Professional messenger for project collaboration
-                    </XView>
-                </XView>
+            {!isMobile && (
+                <ImageWrapper hasFooter={!!noLogin}>
+                    <Image />
+                </ImageWrapper>
             )}
+            {isMobile &&
+                noLogin && (
+                    <XView
+                        justifyContent="center"
+                        alignItems="center"
+                        flexDirection="row"
+                        width="100%"
+                        bottom={0}
+                        position="absolute"
+                        height={60}
+                        backgroundColor={'#f9f9f9'}
+                    >
+                        <XView marginTop={-10}>
+                            <LogoWithName />
+                        </XView>
+                        <XView
+                            marginLeft={8}
+                            borderRadius={2}
+                            width={4}
+                            height={4}
+                            backgroundColor={'#d8d8d8'}
+                        />
+                        <XView marginLeft={8} fontSize={13} color={'rgba(0, 0, 0, 0.5)'}>
+                            Professional messenger for project collaboration
+                        </XView>
+                    </XView>
+                )}
             {signup && (
                 <MainContent>
                     <XButton
