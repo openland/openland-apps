@@ -159,7 +159,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         this.role = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.role || null;
         this.canEdit = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canEdit || false;
-        this.canSendMessage = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canSendMessage || false;
+        this.canSendMessage = initialChat.room && initialChat.room.__typename === 'SharedRoom' ? initialChat.room.canSendMessage : true;
 
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
