@@ -21,6 +21,15 @@ export const reactionsImagesMap = {
     'ANGRY': require('assets/reactions/ic-reaction-angry.png')
 }
 
+export let reactionMap = {
+    'LIKE': '❤️',
+    'THUMB_UP': '👍',
+    'JOY': '😂',
+    'SCREAM': '😱',
+    'CRYING': '😢',
+    'ANGRY': '🤬',
+};
+
 export const AsyncMessageReactionsView = React.memo<{ message: DataSourceMessageItem }>((props) => {
     let theme = React.useContext(ThemeContext);
     let sw = new Stopwatch('reactions');
