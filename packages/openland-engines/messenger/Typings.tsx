@@ -2,6 +2,7 @@ import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { TypingsWatchSubscription } from 'openland-api';
 import { TypingsWatch } from 'openland-api/Types';
+import { forever } from 'openland-engines/utils/forever';
 
 interface TypingsUser {
     userName: string;
@@ -35,44 +36,42 @@ export class TypingsWatcher {
     }
 
     private start(currentuserId: string) {
-        (async () => {
-            while (true) {
-                let event = await this.subscription.get();
-                if (event) {
-                    if (event.typings.user.id === currentuserId) {
-                        continue;
-                    }
-                    let cId: string = event.typings.conversation.id;
-                    let type: string = event.typings.conversation.__typename;
-
-                    // add new typings
-                    let existing = this.typings[cId] || {};
-
-                    if (!event.typings.cancel) {
-                        existing[event.typings.user.id] = {
-                            userName: event.typings.user.name,
-                            userPic: event.typings.user.photo,
-                            userId: event.typings.user.id
-                        };
-                        this.typings[cId] = existing;
-
-                        this.onChange(cId, this.renderTypings(cId, type));
-                    }
-
-                    // clear scehduled typing clear
-                    let existingTimeouts = this.timeouts[cId] || {};
-                    clearTimeout(existingTimeouts[event.typings.user.id]);
-                    // schedule typing clear
-                    existingTimeouts[event.typings.user.id] = window.setTimeout(
-                        () => {
-                            existing[event.typings.user.id] = undefined;
-                            this.onChange(cId, this.renderTypings(cId));
-                        },
-                        event.typings.cancel ? 0 : 4000);
-                    this.timeouts[cId] = existingTimeouts;
+        forever(async () => {
+            let event = await this.subscription.get();
+            if (event) {
+                if (event.typings.user.id === currentuserId) {
+                    return;
                 }
+                let cId: string = event.typings.conversation.id;
+                let type: string = event.typings.conversation.__typename;
+
+                // add new typings
+                let existing = this.typings[cId] || {};
+
+                if (!event.typings.cancel) {
+                    existing[event.typings.user.id] = {
+                        userName: event.typings.user.name,
+                        userPic: event.typings.user.photo,
+                        userId: event.typings.user.id
+                    };
+                    this.typings[cId] = existing;
+
+                    this.onChange(cId, this.renderTypings(cId, type));
+                }
+
+                // clear scehduled typing clear
+                let existingTimeouts = this.timeouts[cId] || {};
+                clearTimeout(existingTimeouts[event.typings.user.id]);
+                // schedule typing clear
+                existingTimeouts[event.typings.user.id] = window.setTimeout(
+                    () => {
+                        existing[event.typings.user.id] = undefined;
+                        this.onChange(cId, this.renderTypings(cId));
+                    },
+                    event.typings.cancel ? 0 : 4000);
+                this.timeouts[cId] = existingTimeouts;
             }
-        })();
+        });
     }
 
     renderTypings = (cId: string, type?: string) => {

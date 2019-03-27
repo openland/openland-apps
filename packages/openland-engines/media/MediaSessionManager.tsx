@@ -135,10 +135,14 @@ export class MediaSessionManager {
 
         (async () => {
             while (!this.destroyed) {
-                let state = (await subscription.get()).media;
-                let streams = state.streams;
-                this.streamConfigs = streams;
-                this.handleState();
+                try {
+                    let state = (await subscription.get()).media;
+                    let streams = state.streams;
+                    this.streamConfigs = streams;
+                    this.handleState();
+                } catch (e) {
+                    console.warn(e);
+                }
             }
         })();
     }
