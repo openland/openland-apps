@@ -20,7 +20,7 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 const CreateGroupComponent = (props: PageProps) => {
     const ref = React.createRef<ZForm>();
 
-    let isChannel = props.router.params.isChannel;
+    let isChannel = !!props.router.params.isChannel;
     let chatTypeString = isChannel ? 'Channel' : 'Group'
 
     let organizations = getClient().useMyOrganizations().myOrganizations;
