@@ -14,6 +14,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import LockIcon from 'openland-icons/ic-group.svg';
+import ChanneSecretIcon from 'openland-icons/ic-channel-dialog.svg';
 
 export let iconClass = css`
     display: inline-block;
@@ -32,6 +33,27 @@ export let iconActiveClass = css`
 
     path {
         fill: rgba(255, 255, 255, 0.9);
+    }
+`;
+
+export let channelIconClass = css`
+    margin: 0px 0px -2px 0px ;
+    path {
+        fill: rgba(0, 0, 0, 1);
+    }
+`;
+
+export let channelSecretIconClass = css`
+    margin: 0px 0px -2px 0px ;
+    path {
+        fill: rgba(0, 0, 0, 1);
+    }
+`;
+
+export let channelIconActiveClass = css`
+    margin: 0px 0px -2px 0px ;
+    path {
+        fill: rgba(255, 255, 255, 1);
     }
 `;
 
@@ -66,8 +88,8 @@ export const DialogView = XMemo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{emojifyMessage(dialog.sender)}: </>
     ) : (
-        ''
-    );
+                    ''
+                );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
 
@@ -205,6 +227,18 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                                 <LockIcon className={GroupIconClass} />
                             </XView>
                         )}
+                        {
+                            dialog.isChannel && (
+                                <XViewSelectedContext.Consumer>
+                                    {active => (
+                                        <XView alignSelf="stretch" justifyContent="center" marginRight={2}>
+                                            <ChanneSecretIcon className={active ? channelIconActiveClass : (dialog.kind === 'GROUP' && highlightSecretChat) ? channelSecretIconClass : channelIconClass} />
+                                        </XView>
+
+                                    )}
+                                </XViewSelectedContext.Consumer>
+                            )
+                        }
                         <span>
                             {emoji({
                                 src: dialog.title,

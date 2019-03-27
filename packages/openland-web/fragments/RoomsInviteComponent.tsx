@@ -242,6 +242,8 @@ export const RoomsInviteComponent = ({
         </>
     );
 
+    let chatTypeStr = room.isChannel ? 'Channel' : 'Group';
+
     return (
         <div className={RootClassName}>
             <XView
@@ -257,7 +259,7 @@ export const RoomsInviteComponent = ({
                             color="rgba(0, 0, 0, 0.9)"
                             marginLeft={20}
                         >
-                            Group invitation
+                            {`${chatTypeStr} invitation`}
                         </XView>
                     )}
                 {!noLogin && (
@@ -284,11 +286,11 @@ export const RoomsInviteComponent = ({
                             id={invite.invitedByUser.id}
                             size={24}
                         />
-                        <Text>{invite.invitedByUser.name} invites you to join group</Text>
+                        <Text>{invite.invitedByUser.name} {`invites you to join ${chatTypeStr.toLowerCase()}`}</Text>
                     </UserInfoWrapper>
                 ) : (
-                    <div style={{ height: 50 }} />
-                )}
+                        <div style={{ height: 50 }} />
+                    )}
                 <XView marginTop={111} alignSelf="center" alignItems="center" maxWidth={428}>
                     <RoomAvatar
                         src={room.photo || undefined}
