@@ -79,9 +79,9 @@ export const ChatWatchSubscription = gql`
                 ...RoomShort
             }
         }
-        # ... on ConversationLostAccess {
-        #    lostAccess
-        # }
+        ... on ChatLostAccess {
+           lostAccess
+        }
     }
     ${FullMessage}
     ${UserTiny}

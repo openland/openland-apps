@@ -39,8 +39,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
         ).start();
     }
 
-    onConversationLostAccess = () => {
-        console.warn('onConversationLostAccess');
+    onChatLostAccess = () => {
+        console.warn('onChatLostAccess');
     };
 
     componentWillMount() {

@@ -4660,8 +4660,8 @@ public final class ChatWatchSubscription: GraphQLSubscription {
             self.resultMap = unsafeResultMap
           }
 
-          public static func makeChatLostAccess() -> Update {
-            return Update(unsafeResultMap: ["__typename": "ChatLostAccess"])
+          public static func makeChatLostAccess(lostAccess: Bool) -> Update {
+            return Update(unsafeResultMap: ["__typename": "ChatLostAccess", "lostAccess": lostAccess])
           }
 
           public var __typename: String {
@@ -4792,8 +4792,8 @@ public final class ChatWatchSubscription: GraphQLSubscription {
             self.resultMap = unsafeResultMap
           }
 
-          public static func makeChatLostAccess() -> Update {
-            return Update(unsafeResultMap: ["__typename": "ChatLostAccess"])
+          public static func makeChatLostAccess(lostAccess: Bool) -> Update {
+            return Update(unsafeResultMap: ["__typename": "ChatLostAccess", "lostAccess": lostAccess])
           }
 
           public var __typename: String {
@@ -28906,13 +28906,13 @@ public struct UserTiny: GraphQLFragment {
 
 public struct ChatUpdateFragment: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment ChatUpdateFragment on ChatUpdate {\n  __typename\n  ... on ChatMessageReceived {\n    message {\n      __typename\n      ...FullMessage\n    }\n    repeatKey\n  }\n  ... on ChatMessageUpdated {\n    message {\n      __typename\n      ...FullMessage\n    }\n  }\n  ... on ChatMessageDeleted {\n    message {\n      __typename\n      id\n    }\n  }\n  ... on ChatUpdated {\n    chat {\n      __typename\n      ...RoomShort\n    }\n  }\n}"
+    "fragment ChatUpdateFragment on ChatUpdate {\n  __typename\n  ... on ChatMessageReceived {\n    message {\n      __typename\n      ...FullMessage\n    }\n    repeatKey\n  }\n  ... on ChatMessageUpdated {\n    message {\n      __typename\n      ...FullMessage\n    }\n  }\n  ... on ChatMessageDeleted {\n    message {\n      __typename\n      id\n    }\n  }\n  ... on ChatUpdated {\n    chat {\n      __typename\n      ...RoomShort\n    }\n  }\n  ... on ChatLostAccess {\n    lostAccess\n  }\n}"
 
   public static let possibleTypes = ["ChatUpdated", "ChatMessageReceived", "ChatMessageUpdated", "ChatMessageDeleted", "ChatLostAccess"]
 
   public static let selections: [GraphQLSelection] = [
     GraphQLTypeCase(
-      variants: ["ChatMessageReceived": AsChatMessageReceived.selections, "ChatMessageUpdated": AsChatMessageUpdated.selections, "ChatMessageDeleted": AsChatMessageDeleted.selections, "ChatUpdated": AsChatUpdated.selections],
+      variants: ["ChatMessageReceived": AsChatMessageReceived.selections, "ChatMessageUpdated": AsChatMessageUpdated.selections, "ChatMessageDeleted": AsChatMessageDeleted.selections, "ChatUpdated": AsChatUpdated.selections, "ChatLostAccess": AsChatLostAccess.selections],
       default: [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       ]
@@ -28923,10 +28923,6 @@ public struct ChatUpdateFragment: GraphQLFragment {
 
   public init(unsafeResultMap: ResultMap) {
     self.resultMap = unsafeResultMap
-  }
-
-  public static func makeChatLostAccess() -> ChatUpdateFragment {
-    return ChatUpdateFragment(unsafeResultMap: ["__typename": "ChatLostAccess"])
   }
 
   public static func makeChatMessageReceived(message: AsChatMessageReceived.Message, repeatKey: String? = nil) -> ChatUpdateFragment {
@@ -28943,6 +28939,10 @@ public struct ChatUpdateFragment: GraphQLFragment {
 
   public static func makeChatUpdated(chat: AsChatUpdated.Chat) -> ChatUpdateFragment {
     return ChatUpdateFragment(unsafeResultMap: ["__typename": "ChatUpdated", "chat": chat.resultMap])
+  }
+
+  public static func makeChatLostAccess(lostAccess: Bool) -> ChatUpdateFragment {
+    return ChatUpdateFragment(unsafeResultMap: ["__typename": "ChatLostAccess", "lostAccess": lostAccess])
   }
 
   public var __typename: String {
@@ -29344,6 +29344,54 @@ public struct ChatUpdateFragment: GraphQLFragment {
             resultMap += newValue.resultMap
           }
         }
+      }
+    }
+  }
+
+  public var asChatLostAccess: AsChatLostAccess? {
+    get {
+      if !AsChatLostAccess.possibleTypes.contains(__typename) { return nil }
+      return AsChatLostAccess(unsafeResultMap: resultMap)
+    }
+    set {
+      guard let newValue = newValue else { return }
+      resultMap = newValue.resultMap
+    }
+  }
+
+  public struct AsChatLostAccess: GraphQLSelectionSet {
+    public static let possibleTypes = ["ChatLostAccess"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("lostAccess", type: .nonNull(.scalar(Bool.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(lostAccess: Bool) {
+      self.init(unsafeResultMap: ["__typename": "ChatLostAccess", "lostAccess": lostAccess])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var lostAccess: Bool {
+      get {
+        return resultMap["lostAccess"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "lostAccess")
       }
     }
   }

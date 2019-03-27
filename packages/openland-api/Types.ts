@@ -885,10 +885,6 @@ export interface DialogsVariables {
 // GraphQL subscription operation: ChatWatch
 // ====================================================
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatLostAccess {
-  __typename: "ChatLostAccess";
-}
-
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
@@ -3290,17 +3286,18 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated {
   chat: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update = ChatWatch_event_ChatUpdateSingle_update_ChatLostAccess | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated | ChatWatch_event_ChatUpdateSingle_update_ChatMessageDeleted | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated;
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatLostAccess {
+  __typename: "ChatLostAccess";
+  lostAccess: boolean;
+}
+
+export type ChatWatch_event_ChatUpdateSingle_update = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated | ChatWatch_event_ChatUpdateSingle_update_ChatMessageDeleted | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated | ChatWatch_event_ChatUpdateSingle_update_ChatLostAccess;
 
 export interface ChatWatch_event_ChatUpdateSingle {
   __typename: "ChatUpdateSingle";
   seq: number;
   state: string;
   update: ChatWatch_event_ChatUpdateSingle_update;
-}
-
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatLostAccess {
-  __typename: "ChatLostAccess";
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization {
@@ -5704,7 +5701,12 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated {
   chat: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates = ChatWatch_event_ChatUpdateBatch_updates_ChatLostAccess | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageDeleted | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated;
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatLostAccess {
+  __typename: "ChatLostAccess";
+  lostAccess: boolean;
+}
+
+export type ChatWatch_event_ChatUpdateBatch_updates = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageDeleted | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated | ChatWatch_event_ChatUpdateBatch_updates_ChatLostAccess;
 
 export interface ChatWatch_event_ChatUpdateBatch {
   __typename: "ChatUpdateBatch";
@@ -27091,10 +27093,6 @@ export interface UserTiny {
 // GraphQL fragment: ChatUpdateFragment
 // ====================================================
 
-export interface ChatUpdateFragment_ChatLostAccess {
-  __typename: "ChatLostAccess";
-}
-
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
@@ -29496,7 +29494,12 @@ export interface ChatUpdateFragment_ChatUpdated {
   chat: ChatUpdateFragment_ChatUpdated_chat;
 }
 
-export type ChatUpdateFragment = ChatUpdateFragment_ChatLostAccess | ChatUpdateFragment_ChatMessageReceived | ChatUpdateFragment_ChatMessageUpdated | ChatUpdateFragment_ChatMessageDeleted | ChatUpdateFragment_ChatUpdated;
+export interface ChatUpdateFragment_ChatLostAccess {
+  __typename: "ChatLostAccess";
+  lostAccess: boolean;
+}
+
+export type ChatUpdateFragment = ChatUpdateFragment_ChatMessageReceived | ChatUpdateFragment_ChatMessageUpdated | ChatUpdateFragment_ChatMessageDeleted | ChatUpdateFragment_ChatUpdated | ChatUpdateFragment_ChatLostAccess;
 
 /* tslint:disable */
 /* eslint-disable */
