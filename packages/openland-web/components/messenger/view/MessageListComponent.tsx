@@ -64,6 +64,7 @@ interface MessageListProps {
     conversationId: string;
     editPostHandler?: (data: EditPostProps) => void;
     scrollPosition?: (data: number) => void;
+    isActive: boolean;
 }
 
 const getScrollElement = (src: any) => {

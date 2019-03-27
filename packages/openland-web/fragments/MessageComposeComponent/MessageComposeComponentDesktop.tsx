@@ -29,7 +29,7 @@ import { useMentions } from './useMentions';
 import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
 import { UploadContext } from './FileUploading/UploadContext';
-import { IsActiveContext } from '../../pages/main/mail/components/Components';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { useClient } from 'openland-web/utils/useClient';
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';

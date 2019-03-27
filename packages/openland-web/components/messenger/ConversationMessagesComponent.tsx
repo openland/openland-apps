@@ -68,6 +68,7 @@ export class ConversationMessagesComponent extends React.PureComponent<
                     conversationId={this.props.conversationId}
                     editPostHandler={this.props.editPostHandler}
                     scrollPosition={this.props.scrollPosition}
+                    isActive={this.props.isActive}
                 />
                 {this.props.loading && <XLoader loading={this.props.loading} />}
                 <TypingComponent chatId={this.props.conversationId} />

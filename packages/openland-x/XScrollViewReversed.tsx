@@ -1,7 +1,9 @@
 import * as React from 'react';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { XScrollView } from './XScrollView';
 import { XFlexStyles } from './basics/Flex';
 import throttle from 'lodash/throttle';
+
 interface Dimensions {
     scrollTop: number;
     scrollHeight: number;
@@ -13,8 +15,10 @@ interface XScrollViewReversedProps extends XFlexStyles {
     scrollPosition?: (data: number) => void;
 }
 
-export class XScrollViewReversed extends React.PureComponent<
-    XScrollViewReversedProps,
+type XScrollViewReversedInnerProps = XScrollViewReversedProps & { isActive: boolean | null };
+
+class XScrollViewReversedInner extends React.PureComponent<
+    XScrollViewReversedInnerProps,
     {
         inited: boolean;
     }
@@ -107,8 +111,12 @@ export class XScrollViewReversed extends React.PureComponent<
         };
     };
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(props: XScrollViewReversedInnerProps) {
         this.updateDimensions();
+
+        if (this.props.isActive === false && props.isActive === true) {
+            this.scrollToBottom();
+        }
     }
 
     componentDidMount() {
@@ -144,3 +152,9 @@ export class XScrollViewReversed extends React.PureComponent<
         );
     }
 }
+
+export const XScrollViewReversed = (props: XScrollViewReversedProps) => {
+    const isActive = React.useContext(IsActiveContext);
+
+    return <XScrollViewReversedInner {...props} isActive={isActive} />;
+};
