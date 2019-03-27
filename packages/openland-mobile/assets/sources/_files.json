@@ -394,7 +394,15 @@
             "sizes": [
                 13,
                 16,
-                18
+                18,
+                24
+            ]
+        },
+        {
+            "name": "ic-cell-channel",
+            "src": "ic-cell-channel.svg",
+            "sizes": [
+                24
             ]
         }
     ]

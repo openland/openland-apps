@@ -5,6 +5,7 @@ import { XPopper } from 'openland-x/XPopper';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XMemo } from 'openland-y-utils/XMemo';
 import CreateRoomIcon from 'openland-icons/ic-create-room.svg';
+import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
 import CreateCommunityIcon from 'openland-icons/ic-create-community.svg';
 
 export const PopperOptionsButton = XMemo(
@@ -28,39 +29,43 @@ export const PopperOptionsButton = XMemo(
                 marginRight={-5}
                 arrow={null}
                 onClickOutside={closer}
-                content={
-                    content !== undefined ? (
-                        content
-                    ) : (
-                        <>
-                            <XMenuItem
-                                style="gray"
-                                path="/mail/create"
-                                icon={
-                                    <XView marginRight={14} marginTop={-4}>
-                                        <CreateRoomIcon />
-                                    </XView>
-                                }
-                            >
-                                New group
-                            </XMenuItem>
-                            <XMenuItem
-                                style="gray"
-                                icon={
-                                    <XView marginRight={14} marginTop={-4}>
-                                        <CreateCommunityIcon />
-                                    </XView>
-                                }
-                                query={{
-                                    field: 'createOrganization',
-                                    value: 'community',
-                                }}
-                            >
-                                New community
-                            </XMenuItem>
-                        </>
-                    )
-                }
+                content={content !== undefined ? (content) : (
+                    <>
+                        <XMenuItem
+                            style="gray"
+                            path="/mail/create"
+                            icon={
+                                <XView marginRight={14} marginTop={-4}>
+                                    <CreateRoomIcon />
+                                </XView>}
+                        >
+                            New group
+                        </XMenuItem>
+                        <XMenuItem
+                            style="gray"
+                            path="/mail/create?channel=true"
+                            icon={
+                                <XView marginRight={14} marginTop={-4}>
+                                    <CreateChannelIcon />
+                                </XView>}
+                        >
+                            New channel
+                        </XMenuItem>
+                        <XMenuItem
+                            style="gray"
+                            icon={
+                                <XView marginRight={14} marginTop={-4}>
+                                    <CreateCommunityIcon />
+                                </XView>}
+                            query={{
+                                field: 'createOrganization',
+                                value: 'community',
+                            }}
+                        >
+                            New community
+                        </XMenuItem>
+                    </>
+                )}
             >
                 <XButton
                     onClick={toggle}
