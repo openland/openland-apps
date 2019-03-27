@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
+import { XView, XViewSelectedContext } from 'react-mental';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { DialogDataSourceItem, emojifyMessage } from 'openland-engines/messenger/DialogListEngine';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from 'openland-icons/ic-photo.svg';
@@ -7,7 +9,6 @@ import FileIcon from 'openland-icons/ic-file-2.svg';
 import ForwardIcon from 'openland-icons/ic-reply-2.svg';
 import MentionIcon from 'openland-icons/ic-mention-2.svg';
 import { XCounter } from 'openland-x/XCounter';
-import { XView, XViewSelectedContext } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { emoji } from 'openland-y-utils/emoji';
 import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
@@ -49,6 +50,7 @@ export interface DialogViewProps {
     handleRef?: any;
     onSelect?: (id: string) => void;
     onClick?: () => void;
+    selected?: boolean;
 }
 
 export const DialogView = XMemo<DialogViewProps>(props => {
@@ -68,6 +70,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
     );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
+
     if (dialog.typing) {
         message = <>{emojifyMessage(dialog.typing)}</>;
     } else {
@@ -141,6 +144,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
 
     return (
         <XView
+            selected={props.selected}
             as="a"
             ref={props.handleRef}
             path={'/mail/' + dialog.key}
@@ -196,12 +200,11 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
                     >
-                        {highlightSecretChat &&
-                            dialog.kind === 'GROUP' && (
-                                <XView>
-                                    <LockIcon className={GroupIconClass} />
-                                </XView>
-                            )}
+                        {highlightSecretChat && dialog.kind === 'GROUP' && (
+                            <XView>
+                                <LockIcon className={GroupIconClass} />
+                            </XView>
+                        )}
                         <span>
                             {emoji({
                                 src: dialog.title,

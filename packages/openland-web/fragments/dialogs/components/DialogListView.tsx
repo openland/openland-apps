@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { XViewRouterContext, XViewRouteContext } from 'react-mental';
+import { XViewRouterContext, XViewRouteContext, XViewRoute } from 'react-mental';
 import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import { DialogSearchInput } from './DialogSearchInput';
@@ -39,6 +39,18 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     let router = React.useContext(XViewRouterContext);
     let route = React.useContext(XViewRouteContext);
 
+    let conversationId: null | string = null;
+    if (route) {
+        const typedFixedRoute = route as XViewRoute & { routeQuery?: any };
+
+        if (typedFixedRoute.routeQuery) {
+            conversationId =
+                typedFixedRoute.routeQuery && typedFixedRoute.routeQuery.conversationId
+                    ? typedFixedRoute.routeQuery.conversationId
+                    : null;
+        }
+    }
+
     const renderLoading = React.useMemo(() => {
         return () => {
             return (
@@ -48,12 +60,19 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             );
         };
     }, []);
-    const renderDialog = React.useMemo(
-        () => {
-            return (item: DialogDataSourceItem) => <DialogView item={item} />;
-        },
-        [props.onDialogClick],
-    );
+
+    const renderDialog = React.useMemo(() => {
+        return (item: DialogDataSourceItem) => {
+            let selected = false;
+            if (
+                conversationId &&
+                (conversationId === item.key || conversationId === item.flexibleId)
+            ) {
+                selected = true;
+            }
+            return <DialogView item={item} selected={selected} />;
+        };
+    }, [props.onDialogClick, conversationId]);
 
     const getCurrentConversationId = () => {
         return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
