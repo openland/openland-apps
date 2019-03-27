@@ -19,7 +19,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
-import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { ASSafeAreaContext, ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { ConversationTheme, ConversationThemeResolver, DefaultConversationTheme } from './themes/ConversationThemeResolver';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
@@ -344,7 +344,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 </ASSafeAreaContext.Consumer>
 
                             )}
-                            <ConversationView engine={this.engine} theme={this.state.theme} />
+                            <ConversationView engine={this.engine} theme={this.state.theme} messagesPaddingBottom={sharedRoom && !sharedRoom.canSendMessage ? 50 : undefined} />
                             {(!sharedRoom || sharedRoom.canSendMessage) && <MessageInputBar
                                 onAttachPress={this.handleAttach}
                                 onSubmitPress={this.handleSubmit}
