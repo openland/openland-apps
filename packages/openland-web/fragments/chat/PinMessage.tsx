@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
+import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XModal, XModalCloser } from 'openland-x-modal/XModal';
@@ -19,15 +20,32 @@ import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import IconFile from 'openland-icons/ic-pinfile-doc.svg';
 import IconImage from 'openland-icons/ic-pinfile-photo.svg';
+import ForwardIcon from 'openland-icons/ic-reply-2.svg';
 import PinIcon from 'openland-icons/ic-pinned-message.svg';
 import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
 import AttachIcon from 'openland-icons/ic-attach-doc-blue.svg';
+import { MessageReplyComponent } from 'openland-web/components/messenger/message/content/MessageReplyComponent';
 
 interface UnpinButtonProps {
     variables: {
         chatId: string;
     };
 }
+
+const ReplyMessageWrapper = Glamorous.div({
+    position: 'relative',
+    '&::before': {
+        display: 'block',
+        content: ' ',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        bottom: 4,
+        width: 3,
+        borderRadius: 3,
+        backgroundColor: '#1790ff',
+    },
+});
 
 const ImageClassName = css`
     max-height: 40vh;
@@ -87,6 +105,34 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
         pinMessage.attachments[0].__typename === 'MessageAttachmentFile'
     ) {
         attachment = pinMessage.attachments[0] as attachmentType;
+    }
+
+    let quotedMessages = [];
+
+    if (pinMessage.quotedMessages && pinMessage.quotedMessages!.length > 0) {
+        quotedMessages.push(
+            <ReplyMessageWrapper key={'reply_message' + pinMessage.id}>
+                {pinMessage.quotedMessages!.map((item, index, array) => {
+                    let isCompact =
+                        index > 0 ? array[index - 1].sender.id === item.sender.id : false;
+
+                    return (
+                        <MessageReplyComponent
+                            spans={pinMessage.spans}
+                            sender={item.sender}
+                            date={item.date}
+                            message={item.message}
+                            id={item.id}
+                            key={'reply_message' + item.id + index}
+                            edited={false}
+                            // attach={fileAttach}
+                            startSelected={false}
+                            compact={isCompact || undefined}
+                        />
+                    );
+                })}
+            </ReplyMessageWrapper>,
+        );
     }
 
     const body = (
@@ -224,6 +270,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                             </XView>
                         </XView>
                     )}
+                {quotedMessages}
             </XView>
         </XView>
     );
@@ -236,6 +283,12 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
 
     return <XModal body={body} target={target} footer={null} />;
 });
+
+const ForwardIconClassName = css`
+    path {
+        fill: rgba(0, 0, 0, 0.2);
+    }
+`;
 
 export const PinMessageComponent = React.memo((props: PinMessageComponentProps) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
@@ -309,9 +362,20 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
                                     spans={pinMessage.spans}
                                     message={pinMessage.message}
                                     isEdited={false}
+                                    asPinMessage={true}
                                     shouldCrop
                                 />
                             )}
+                            {pinMessage.quotedMessages &&
+                                pinMessage.quotedMessages!.length > 0 &&
+                                !pinMessage.message && (
+                                    <XView flexDirection="row" alignItems="center">
+                                        <XView marginRight={6}>
+                                            <ForwardIcon className={ForwardIconClassName} />
+                                        </XView>
+                                        <XView>Forward</XView>
+                                    </XView>
+                                )}
                             {attach &&
                                 attach.__typename === 'MessageAttachmentFile' && (
                                     <>

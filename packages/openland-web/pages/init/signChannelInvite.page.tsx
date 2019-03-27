@@ -72,11 +72,12 @@ export const InviteInfoInner = (props: any) => {
                                     signup={'/signup?redirect=' + encodeURIComponent(redirect)}
                                 />
                             )}
-                            {!data.invite && !loading && (
-                                <MessagePageContent title="Join">
-                                    <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
-                                </MessagePageContent>
-                            )}
+                            {!data.invite &&
+                                !loading && (
+                                    <MessagePageContent title="Join">
+                                        <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
+                                    </MessagePageContent>
+                                )}
                             {!data.invite && loading && <XLoader loading={true} />}
                         </Content>
                     </Root>
