@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
 const styleInner = css`
     display: flex;
@@ -39,13 +40,13 @@ type MessagesContainerProps = {
 };
 
 export const MessagesContainer = ({ children, conversationId }: MessagesContainerProps) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
     return (
         <XView
             flexDirection="column"
             flexGrow={1}
             flexShrink={1}
-            paddingLeft={16}
-            paddingRight={16}
+            paddingHorizontal={isMobile ? 6 : 16}
             overflow="hidden"
         >
             <div className={`${getMessagesWrapperClassName(conversationId)} ` + styleInner}>
