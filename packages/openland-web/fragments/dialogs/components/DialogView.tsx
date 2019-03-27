@@ -39,21 +39,21 @@ export let iconActiveClass = css`
 export let channelIconClass = css`
     margin: 0px 0px -2px 0px ;
     path {
-        fill: rgba(0, 0, 0, 1);
+        fill: black;
     }
 `;
 
 export let channelSecretIconClass = css`
     margin: 0px 0px -2px 0px ;
     path {
-        fill: rgba(0, 0, 0, 1);
+        fill: #129f25;
     }
 `;
 
 export let channelIconActiveClass = css`
     margin: 0px 0px -2px 0px ;
     path {
-        fill: rgba(255, 255, 255, 1);
+        fill: white;
     }
 `;
 
@@ -222,7 +222,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
                     >
-                        {highlightSecretChat && dialog.kind === 'GROUP' && (
+                        {highlightSecretChat && !dialog.isChannel && dialog.kind === 'GROUP' && (
                             <XView>
                                 <LockIcon className={GroupIconClass} />
                             </XView>
@@ -232,7 +232,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                                 <XViewSelectedContext.Consumer>
                                     {active => (
                                         <XView alignSelf="stretch" justifyContent="center" marginRight={2}>
-                                            <ChanneSecretIcon className={active ? channelIconActiveClass : (dialog.kind === 'GROUP' && highlightSecretChat) ? channelSecretIconClass : channelIconClass} />
+                                            <ChanneSecretIcon className={active ? channelIconActiveClass : ((dialog.kind === 'GROUP' && highlightSecretChat) ? channelSecretIconClass : channelIconClass)} />
                                         </XView>
 
                                     )}
