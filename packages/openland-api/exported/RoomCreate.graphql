@@ -1,0 +1,6 @@
+mutation RoomCreate($channel: Boolean!, $description: String, $kind: SharedRoomKind!, $members: [ID!]!, $message: String, $organizationId: ID, $photoRef: ImageRefInput, $title: String) {
+  room: betaRoomCreate(channel: $channel, description: $description, kind: $kind, members: $members, message: $message, organizationId: $organizationId, photoRef: $photoRef, title: $title) {
+    __typename
+    id
+  }
+}

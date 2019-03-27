@@ -62,7 +62,7 @@ function buildReader(name: string, v: TypeNode): string {
 }
 
 function buildSchemaListReader(name: string, v: any): string {
-    console.log(v);
+    // console.log(v);
     if (v.kind === 'SCALAR') {
         if (v.name === 'String' || v.name === 'ID') {
             return 'readStringList(src, "' + name + '")'
@@ -88,7 +88,7 @@ function buildSchemaListReader(name: string, v: any): string {
 }
 
 function buildSchemaReader(name: string, v: any): string {
-    console.log(v);
+    // console.log(v);
     if (v.kind === 'SCALAR') {
         if (v.name === 'String' || v.name === 'ID') {
             return 'readString(src, "' + name + '")'
@@ -113,7 +113,7 @@ function buildSchemaReader(name: string, v: any): string {
 }
 
 export function generateNativeApi() {
-    let manifestPath = path.resolve(__dirname + '/../../queries.json');
+    let manifestPath = path.resolve(__dirname + '/../openland-api/queries.json');
     let manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8")) as { operations: { source: string }[] };
     let schemaPath = path.resolve(__dirname + '/../../schema.json');
     let schema = JSON.parse(fs.readFileSync(schemaPath, "utf-8")) as { __schema: { types: { kind: string, name: string, inputFields: { name: string, type: any }[] }[] } };

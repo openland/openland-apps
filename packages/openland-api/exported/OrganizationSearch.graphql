@@ -1,0 +1,20 @@
+fragment OrganizationSearch on Organization {
+  __typename
+  about
+  featured: alphaFeatured
+  members: alphaOrganizationMembers {
+    __typename
+    user {
+      __typename
+      id
+      name
+      photo
+    }
+  }
+  id
+  isMine
+  name
+  photo
+  status
+  superAccountId
+}

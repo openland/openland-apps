@@ -1,0 +1,3 @@
+mutation MarkSequenceRead($seq: Int!) {
+  alphaGlobalRead(toSeq: $seq)
+}

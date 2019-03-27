@@ -1,0 +1,8 @@
+mutation FeatureFlagAdd($key: String!, $title: String!) {
+  featureFlagAdd(key: $key, title: $title) {
+    __typename
+    id
+    key
+    title
+  }
+}

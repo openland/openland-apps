@@ -1,0 +1,12 @@
+query FeedHome {
+  homeFeed: alphaHomeFeed {
+    __typename
+    by: alphaBy {
+      __typename
+      ...UserShort
+    }
+    date
+    id
+    text
+  }
+}

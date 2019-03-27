@@ -1,0 +1,7 @@
+query GlobalCounter {
+  counter: alphaNotificationCounter {
+    __typename
+    id
+    unreadCount
+  }
+}

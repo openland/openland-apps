@@ -5540,9 +5540,6 @@ public final class PinMessageMutation: GraphQLMutation {
       self.init(unsafeResultMap: ["__typename": "Mutation", "pinMessage": pinMessage])
     }
 
-    /// modernSendMessage(room: ID!, message: String, repeatKey: String,
-    /// forwardMessages: [ID!], spans: [MessageSpanInput!], attachments:
-    /// [MessageAttachmentInput!]): Boolean!
     public var pinMessage: Bool {
       get {
         return resultMap["pinMessage"]! as! Bool
@@ -19800,7 +19797,7 @@ public struct FullMessage: GraphQLFragment {
   }
 
   public struct Span: GraphQLSelectionSet {
-    public static let possibleTypes = ["MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+    public static let possibleTypes = ["MessageBoldText", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
 
     public static let selections: [GraphQLSelection] = [
       GraphQLTypeCase(
@@ -19817,6 +19814,10 @@ public struct FullMessage: GraphQLFragment {
 
     public init(unsafeResultMap: ResultMap) {
       self.resultMap = unsafeResultMap
+    }
+
+    public static func makeMessageBoldText(offset: Int, length: Int) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageBoldText", "offset": offset, "length": length])
     }
 
     public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -21526,7 +21527,7 @@ public struct FullMessage: GraphQLFragment {
       }
 
       public struct Span: GraphQLSelectionSet {
-        public static let possibleTypes = ["MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+        public static let possibleTypes = ["MessageBoldText", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
 
         public static let selections: [GraphQLSelection] = [
           GraphQLTypeCase(
@@ -21543,6 +21544,10 @@ public struct FullMessage: GraphQLFragment {
 
         public init(unsafeResultMap: ResultMap) {
           self.resultMap = unsafeResultMap
+        }
+
+        public static func makeMessageBoldText(offset: Int, length: Int) -> Span {
+          return Span(unsafeResultMap: ["__typename": "MessageBoldText", "offset": offset, "length": length])
         }
 
         public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -22331,7 +22336,7 @@ public struct FullMessage: GraphQLFragment {
         }
 
         public struct Span: GraphQLSelectionSet {
-          public static let possibleTypes = ["MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+          public static let possibleTypes = ["MessageBoldText", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
 
           public static let selections: [GraphQLSelection] = [
             GraphQLTypeCase(
@@ -22348,6 +22353,10 @@ public struct FullMessage: GraphQLFragment {
 
           public init(unsafeResultMap: ResultMap) {
             self.resultMap = unsafeResultMap
+          }
+
+          public static func makeMessageBoldText(offset: Int, length: Int) -> Span {
+            return Span(unsafeResultMap: ["__typename": "MessageBoldText", "offset": offset, "length": length])
           }
 
           public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -23697,7 +23706,7 @@ public struct FullMessage: GraphQLFragment {
     }
 
     public struct Span: GraphQLSelectionSet {
-      public static let possibleTypes = ["MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+      public static let possibleTypes = ["MessageBoldText", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
 
       public static let selections: [GraphQLSelection] = [
         GraphQLTypeCase(
@@ -23714,6 +23723,10 @@ public struct FullMessage: GraphQLFragment {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
+      }
+
+      public static func makeMessageBoldText(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageBoldText", "offset": offset, "length": length])
       }
 
       public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -24500,7 +24513,7 @@ public struct FullMessage: GraphQLFragment {
     }
 
     public struct Span: GraphQLSelectionSet {
-      public static let possibleTypes = ["MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+      public static let possibleTypes = ["MessageBoldText", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
 
       public static let selections: [GraphQLSelection] = [
         GraphQLTypeCase(
@@ -24517,6 +24530,10 @@ public struct FullMessage: GraphQLFragment {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
+      }
+
+      public static func makeMessageBoldText(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageBoldText", "offset": offset, "length": length])
       }
 
       public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {

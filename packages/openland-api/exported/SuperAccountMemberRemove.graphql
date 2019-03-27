@@ -1,0 +1,10 @@
+mutation SuperAccountMemberRemove($accountId: ID!, $userId: ID!) {
+  superAccountMemberRemove(id: $accountId, userId: $userId) {
+    __typename
+    id
+    members {
+      __typename
+      ...UserShort
+    }
+  }
+}

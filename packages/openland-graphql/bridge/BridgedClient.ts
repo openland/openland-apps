@@ -1,4 +1,4 @@
-import { GraphqlClient, GraphqlQuery, GraphqlQueryWatch, OperationParameters, GraphqlSubscription, GraphqlActiveSubscription, GraphqlMutation } from 'openland-graphql/GraphqlClient';
+import { GraphqlClient, GraphqlQuery, GraphqlQueryWatch, OperationParameters, GraphqlSubscription, GraphqlActiveSubscription, GraphqlMutation, GraphqlFragment } from 'openland-graphql/GraphqlClient';
 import { Queue } from 'openland-graphql/utils/Queue';
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { randomKey } from 'openland-graphql/utils/randomKey';
@@ -164,6 +164,13 @@ export abstract class BridgedClient implements GraphqlClient {
         await res;
     }
 
+    async writeFragment<TFragment>(data: TFragment, fragment: GraphqlFragment<TFragment>): Promise<void> {
+        let id = this.nextKey();
+        let res = this.registerPromiseHandler<void>(id);
+        this.postWriteFragment(id, data, fragment);
+        await res;
+    }
+
     //
     // Implementation
     //
@@ -193,6 +200,8 @@ export abstract class BridgedClient implements GraphqlClient {
 
     protected abstract postReadQuery<TQuery, TVars>(id: string, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): void
     protected abstract postWriteQuery<TQuery, TVars>(id: string, data: any, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): void
+
+    protected abstract postWriteFragment<TFragment>(id: string, data: any, query: GraphqlFragment<TFragment>): void
 
     private nextKey() {
         return randomKey();

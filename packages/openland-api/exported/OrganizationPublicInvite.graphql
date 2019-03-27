@@ -1,0 +1,8 @@
+query OrganizationPublicInvite($organizationId: ID) {
+  publicInvite: alphaOrganizationInviteLink(organizationId: $organizationId) {
+    __typename
+    id
+    key
+    ttl
+  }
+}

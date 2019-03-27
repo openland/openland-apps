@@ -1,0 +1,7 @@
+mutation SuperAccountSuspend($accountId: ID!) {
+  superAccountSuspend(id: $accountId) {
+    __typename
+    id
+    state
+  }
+}

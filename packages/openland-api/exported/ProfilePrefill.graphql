@@ -1,0 +1,8 @@
+query ProfilePrefill {
+  prefill: myProfilePrefill {
+    __typename
+    firstName
+    lastName
+    picture
+  }
+}

@@ -1,0 +1,3 @@
+mutation OrganizationActivateByInvite($inviteKey: String!) {
+  joinAppInvite(key: $inviteKey)
+}

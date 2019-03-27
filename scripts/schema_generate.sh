@@ -1,28 +1,45 @@
 #!/bin/sh
 set -e
 
+#
+# Exporting
+#
+
+# Folders
+rimraf ./packages/openland-api/exported
+mkdir -p ./packages/openland-api/exported
+
 # Export manifest
-yarn apollo client:extract
+yarn apollo client:extract ./packages/openland-api/manifest.json
 
-# Generate types index
-rimraf ./node_modules/apollo/node_modules/graphql
-yarn apollo codegen:generate --target=typescript --outputFlat=./packages/openland-api/Types.ts --addTypename --tagName=gql
+# Export .graphql files
+./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/exportQueries.ts
 
-# Generate openland types wrappers
-./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generator.ts
+# Export queries.json
+yarn apollo codegen:generate --queries="$(find . -name './packages/openland-api/exported/*.graphql')" --target json ./packages/openland-api/queries.json
 
 # Export fragments for fragment matcher
 node ./fetch-fragments.js
+
+#
+# Generate Types
+#
+rimraf ./node_modules/apollo/node_modules/graphql
+yarn apollo codegen:generate --target=typescript --outputFlat=./packages/openland-api/Types.ts --addTypename --tagName=gql
+./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateTypes.ts
+
+#
+# Native
+#
 
 # Android Schemas
 rimraf ./android/app/src/main/graphql
 mkdir -p ./android/app/src/main/graphql/com/openland/api
 cp ./schema.json ./android/app/src/main/graphql/com/openland/api/
-./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/exportQueries.ts
+cp ./packages/openland-api/exported/*.graphql ./android/app/src/main/graphql/com/openland/api/
 
 # iOS Schemas
-yarn apollo codegen:generate --queries="$(find . -name './android/app/src/main/graphql/com/openland/api/*.graphql')" --target swift ./ios/API.swift
-yarn apollo codegen:generate --queries="$(find . -name './android/app/src/main/graphql/com/openland/api/*.graphql')" --target json ./queries.json
+yarn apollo codegen:generate --queries="$(find . -name './packages/openland-api/exported/*.graphql')" --target swift ./ios/API.swift
 
-# Generate Native
+# Native Bindings
 ./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateNativeApi.ts

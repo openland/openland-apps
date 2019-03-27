@@ -19,6 +19,8 @@ const NativeGraphQL = NativeModules.RNGraphQL as {
 
     read: (key: string, id: string, query: string, vars: any) => void;
     write: (key: string, id: string, data: any, query: string, vars: any) => void;
+    
+    writeFragment: (key: string, id: string, data: any, fragment: string) => void;
 }
 
 const RNGraphQLEmitter = new NativeEventEmitter(NativeModules.RNGraphQL);
@@ -99,5 +101,11 @@ export class NativeApolloClient extends BridgedClient {
         console.log('postWriteQuery');
         let name = query.document.definitions[0].name.value;
         NativeGraphQL.write(this.key, id, data, name, vars ? vars : {});
+    }
+
+    protected postWriteFragment(id: string, data: any, fragment: any) {
+        console.log('postWriteFragment');
+        let name = fragment.document.definitions[0].name.value;
+        NativeGraphQL.writeFragment(this.key, id, data, name);
     }
 }

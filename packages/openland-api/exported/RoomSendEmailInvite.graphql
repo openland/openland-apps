@@ -1,0 +1,3 @@
+mutation RoomSendEmailInvite($inviteRequests: [RoomInviteEmailRequest!]!, $roomId: ID!) {
+  betaRoomInviteLinkSendEmail(inviteRequests: $inviteRequests, roomId: $roomId)
+}

@@ -189,6 +189,22 @@ class RNGraphqlClient: WebSocketTransportDelegate {
     }
   }
   
+  func writeFragment(id: String, data: NSDictionary, fragment: String) {
+    if !self.live {
+      return
+    }
+//    self.factory.writeQuery(store: self.store, data: data, name: query, src: arguments) { (res, err) in
+//      if !self.live {
+//        return
+//      }
+//      if err != nil {
+//        self.handleError(id: id, err: err!)
+//      } else {
+//        self.module.reportResult(key: self.key, id: id, result: nil)
+//      }
+//    }
+  }
+  
   func watch(id: String, query: String, arguments: NSDictionary, parameters: NSDictionary) {
     if !self.live {
       return

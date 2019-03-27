@@ -1,0 +1,31 @@
+fragment TinyMessage on ModernMessage {
+  __typename
+  date
+  fallback
+  id
+  message
+  sender {
+    __typename
+    ...UserTiny
+  }
+  ... on GeneralMessage {
+    attachments {
+      __typename
+      fallback
+      id
+      ... on MessageAttachmentFile {
+        fileId
+        fileMetadata {
+          __typename
+          imageFormat
+          isImage
+        }
+        filePreview
+      }
+    }
+    quotedMessages {
+      __typename
+      id
+    }
+  }
+}

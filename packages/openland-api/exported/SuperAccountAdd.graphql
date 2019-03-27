@@ -1,0 +1,6 @@
+mutation SuperAccountAdd($title: String!) {
+  superAccountAdd(title: $title) {
+    __typename
+    id
+  }
+}

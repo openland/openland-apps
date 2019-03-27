@@ -1,0 +1,10 @@
+fragment UserTiny on User {
+  __typename
+  firstName
+  id
+  isYou
+  lastName
+  name
+  photo
+  shortname
+}

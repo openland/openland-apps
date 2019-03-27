@@ -1,4 +1,4 @@
-import { GraphqlTypedQuery, GraphqlTypedMutation, GraphqlTypedSubscription } from 'openland-y-graphql/typed';
+import { GraphqlTypedQuery, GraphqlTypedMutation, GraphqlTypedSubscription, GraphqlTypedFragment } from 'openland-y-graphql/typed';
 
 export interface InvalidField {
     key: string;
@@ -27,6 +27,7 @@ export class UnknownError extends Error {
 export type GraphqlQuery<Q, V> = GraphqlTypedQuery<Q, V>;
 export type GraphqlMutation<M, V> = GraphqlTypedMutation<M, V>;
 export type GraphqlSubscription<M, V> = GraphqlTypedSubscription<M, V>;
+export type GraphqlFragment<F> = GraphqlTypedFragment<F>;
 
 export type GraphqlQueryResult<Q> = { data?: Q, error?: Error };
 
@@ -55,4 +56,6 @@ export interface GraphqlClient {
     updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean>
     readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null>;
     writeQuery<TQuery, TVars>(data: TQuery, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<void>;
+
+    writeFragment<TFragment>(data: TFragment, fragment: GraphqlFragment<TFragment>): Promise<void>;
 }
