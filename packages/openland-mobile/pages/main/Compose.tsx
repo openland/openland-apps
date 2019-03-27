@@ -56,7 +56,7 @@ const ComposeComponent = XMemo<PageProps>((props) => {
                     <SScrollView keyboardDismissMode="interactive">
                         <ZListItemGroup divider={false}>
                             <ZListItem leftIcon={require('assets/ic-room-24.png')} text="Create group" path="CreateGroupAttrs" />
-                            {/* <ZListItem leftIcon={require('assets/ic-room-24.png')} text="Create channel" path="CreateGroupAttrs" pathParams={{ isChannel: true }} /> */}
+                            <ZListItem leftIcon={require('assets/ic-channel-16.png')} text="Create channel" path="CreateGroupAttrs" pathParams={{ isChannel: true }} />
                             <ZListItem leftIcon={require('assets/ic-community-24.png')} text="Create community" path="NewOrganization" pathParams={{ isCommunity: true }} />
                         </ZListItemGroup>
                         <View height={15} />

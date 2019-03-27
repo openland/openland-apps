@@ -4140,7 +4140,7 @@ public final class AddAppToChatMutation: GraphQLMutation {
 
 public final class DialogsQuery: GraphQLQuery {
   public let operationDefinition =
-    "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      cid\n      fid\n      kind\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...TinyMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}"
+    "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      cid\n      fid\n      kind\n      isChannel\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...TinyMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(TinyMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
 
@@ -4254,6 +4254,7 @@ public final class DialogsQuery: GraphQLQuery {
           GraphQLField("cid", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("fid", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("kind", type: .nonNull(.scalar(DialogKind.self))),
+          GraphQLField("isChannel", type: .nonNull(.scalar(Bool.self))),
           GraphQLField("title", type: .nonNull(.scalar(String.self))),
           GraphQLField("photo", type: .nonNull(.scalar(String.self))),
           GraphQLField("unreadCount", type: .nonNull(.scalar(Int.self))),
@@ -4268,8 +4269,8 @@ public final class DialogsQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public init(cid: GraphQLID, fid: GraphQLID, kind: DialogKind, title: String, photo: String, unreadCount: Int, isMuted: Bool, haveMention: Bool, topMessage: TopMessage? = nil) {
-          self.init(unsafeResultMap: ["__typename": "Dialog", "cid": cid, "fid": fid, "kind": kind, "title": title, "photo": photo, "unreadCount": unreadCount, "isMuted": isMuted, "haveMention": haveMention, "topMessage": topMessage.flatMap { (value: TopMessage) -> ResultMap in value.resultMap }])
+        public init(cid: GraphQLID, fid: GraphQLID, kind: DialogKind, isChannel: Bool, title: String, photo: String, unreadCount: Int, isMuted: Bool, haveMention: Bool, topMessage: TopMessage? = nil) {
+          self.init(unsafeResultMap: ["__typename": "Dialog", "cid": cid, "fid": fid, "kind": kind, "isChannel": isChannel, "title": title, "photo": photo, "unreadCount": unreadCount, "isMuted": isMuted, "haveMention": haveMention, "topMessage": topMessage.flatMap { (value: TopMessage) -> ResultMap in value.resultMap }])
         }
 
         public var __typename: String {
@@ -4305,6 +4306,15 @@ public final class DialogsQuery: GraphQLQuery {
           }
           set {
             resultMap.updateValue(newValue, forKey: "kind")
+          }
+        }
+
+        public var isChannel: Bool {
+          get {
+            return resultMap["isChannel"]! as! Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "isChannel")
           }
         }
 

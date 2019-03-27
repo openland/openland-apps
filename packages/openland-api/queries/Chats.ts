@@ -14,6 +14,7 @@ export const DialogsQuery = gql`
                 cid
                 fid
                 kind
+                isChannel
                 title
                 photo
                 unreadCount

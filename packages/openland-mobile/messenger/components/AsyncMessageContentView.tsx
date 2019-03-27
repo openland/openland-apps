@@ -94,7 +94,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     }
 
     if (!props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument) {
-        topContnet.unshift(<ASText fontSize={13} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{props.message.senderName}</ASText>);
+        topContnet.unshift(<ASText fontSize={13} onPress={() => props.onUserPress(props.message.senderId)} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{props.message.senderName}</ASText>);
     }
 
     return {

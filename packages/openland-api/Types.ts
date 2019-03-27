@@ -842,6 +842,7 @@ export interface Dialogs_dialogs_items {
   cid: string;
   fid: string;
   kind: DialogKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   unreadCount: number;

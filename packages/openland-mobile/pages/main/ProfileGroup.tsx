@@ -112,7 +112,8 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
         .sort((a, b) => a.user.name.localeCompare(b.user.name))
         .sort((a, b) => (isAdmin(a) && isMember(b) ? -1 : 1));
 
-    const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member';
+    // const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member';
+    const subtitle = room.isChannel ? 'channel' : 'nope';
 
     const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 
@@ -121,7 +122,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             {room.canEdit && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
 
             <ZListItemHeader
-                titleIcon={room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
+                titleIcon={room.isChannel ? require('assets/ic-channel-18.png') : room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
                 titleColor={room.kind === 'GROUP' ? '#129f25' : undefined}
                 title={room.title}
                 subtitle={subtitle}

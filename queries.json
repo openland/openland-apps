@@ -1402,7 +1402,7 @@
 					"type": "String"
 				}
 			],
-			"source": "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      cid\n      fid\n      kind\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...TinyMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}",
+			"source": "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      cid\n      fid\n      kind\n      isChannel\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...TinyMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}",
 			"fields": [
 				{
 					"responseName": "dialogs",
@@ -1463,6 +1463,13 @@
 									"responseName": "kind",
 									"fieldName": "kind",
 									"type": "DialogKind!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "isChannel",
+									"fieldName": "isChannel",
+									"type": "Boolean!",
 									"isConditional": false,
 									"isDeprecated": false
 								},
@@ -1597,8 +1604,8 @@
 				"TinyMessage",
 				"UserTiny"
 			],
-			"sourceWithFragments": "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      cid\n      fid\n      kind\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...TinyMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}\nfragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}",
-			"operationId": "f48be215bc270612dea59db40a79018f1ce64bd34cf2dea6c00237c9f0d54ae2"
+			"sourceWithFragments": "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      cid\n      fid\n      kind\n      isChannel\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...TinyMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}\nfragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}",
+			"operationId": "40993d40c973d53e402469c74d7682bbb76ca77e643d1b0756772addd32b1aa5"
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",

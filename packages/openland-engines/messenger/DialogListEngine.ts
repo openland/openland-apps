@@ -26,6 +26,7 @@ export interface DialogDataSourceItem {
 
     title: string;
     kind: 'PRIVATE' | 'INTERNAL' | 'PUBLIC' | 'GROUP';
+    isChannel?: boolean;
     photo?: string;
 
     isOrganization?: boolean;
@@ -87,6 +88,7 @@ export const extractDialog = (
         cid,
         fid,
         kind,
+        isChannel,
         title,
         photo,
         unreadCount,
@@ -109,6 +111,7 @@ export const extractDialog = (
         haveMention,
         isMuted,
         kind,
+        isChannel,
         title,
         photo,
         key: cid,
@@ -254,7 +257,7 @@ export class DialogListEngine {
 
         if (existing && existing.messageId === mid) {
             this.dataSource.updateItem(extractDialog({
-                cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
+                cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, isChannel: !!existing.isChannel, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
             }, uid));
         }
     };
@@ -356,6 +359,7 @@ export class DialogListEngine {
                     haveMention: event.message.haveMention,
                     flexibleId: privateRoom ? privateRoom.user.id : room.id,
                     kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
+                    isChannel: sharedRoom ? sharedRoom.isChannel : false,
                     title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
                     photo:
                         (sharedRoom
