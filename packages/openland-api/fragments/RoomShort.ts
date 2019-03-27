@@ -12,11 +12,13 @@ export const RoomShort = gql`
         ... on SharedRoom {
             id
             kind
+            isChannel
             title
             photo
             membership
             role
             canEdit
+            canSendMessage
             membersCount
             pinnedMessage {
                 ...FullMessage

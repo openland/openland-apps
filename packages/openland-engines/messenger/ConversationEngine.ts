@@ -13,7 +13,7 @@ import * as Types from 'openland-api/Types';
 export interface ConversationStateHandler {
     onConversationUpdated(state: ConversationState): void;
     onMessageSend(): void;
-    onConversationLostAccess(): void;
+    onChatLostAccess(): void;
 }
 
 const CONVERSATION_PAGE_SIZE = 15;
@@ -526,9 +526,9 @@ export class ConversationEngine implements MessageSendHandler {
             conv.attachTop = old ? (old as DataSourceMessageItem).attachTop : conv.attachTop;
             conv.attachBottom = old ? (old as DataSourceMessageItem).attachBottom : conv.attachBottom;
             this.dataSource.updateItem(conv);
-        } else if (event.__typename === 'ConversationLostAccess') {
+        } else if (event.__typename === 'ChatLostAccess') {
             for (let l of this.listeners) {
-                l.onConversationLostAccess();
+                l.onChatLostAccess();
             }
         } else {
             console.warn('Received unknown message');

@@ -9,7 +9,9 @@ fragment RoomShort on Room {
   }
   ... on SharedRoom {
     canEdit
+    canSendMessage
     id
+    isChannel
     kind
     membersCount
     membership

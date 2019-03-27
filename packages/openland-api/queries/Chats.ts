@@ -79,9 +79,9 @@ export const ChatWatchSubscription = gql`
                 ...RoomShort
             }
         }
-        # ... on ConversationLostAccess {
-        #    lostAccess
-        # }
+        ... on ChatLostAccess {
+           lostAccess
+        }
     }
     ${FullMessage}
     ${UserTiny}
@@ -165,6 +165,15 @@ export const DialogsWatchSubscription = gql`
             cid
             globalUnread
         }
+        ... on DialogBump {
+            cid
+            globalUnread
+            unread
+            topMessage {
+                ...TinyMessage
+            }
+        }
+        
     }
     ${UserTiny}
     ${TinyMessage}
@@ -372,6 +381,7 @@ export const RoomCreateMutation = gql`
         $description: String
         $photoRef: ImageRefInput
         $organizationId: ID
+        $channel: Boolean!
     ) {
         room: betaRoomCreate(
             kind: $kind
@@ -381,6 +391,7 @@ export const RoomCreateMutation = gql`
             description: $description
             photoRef: $photoRef
             organizationId: $organizationId
+            channel: $channel
         ) {
             id
         }

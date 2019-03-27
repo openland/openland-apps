@@ -1753,7 +1753,8 @@ class ApiFactory: ApiFactoryBase {
       let description = readString(src, "description")
       let photoRef = readImageRefInput(src, "photoRef")
       let organizationId = readString(src, "organizationId")
-      let requestBody = RoomCreateMutation(kind: kind, members: members, message: message, title: title, description: description, photoRef: photoRef, organizationId: organizationId)
+      let channel = notNull(readBool(src, "channel"))
+      let requestBody = RoomCreateMutation(kind: kind, members: members, message: message, title: title, description: description, photoRef: photoRef, organizationId: organizationId, channel: channel)
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)

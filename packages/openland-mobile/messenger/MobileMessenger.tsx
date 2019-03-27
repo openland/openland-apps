@@ -19,7 +19,7 @@ import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, SharedRoomMembershipStatus, RoomMemberRole } from 'openland-api/Types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
-import { reactionsImagesMap, defaultReactions } from './components/AsyncMessageReactionsView';
+import { reactionsImagesMap, defaultReactions, reactionMap } from './components/AsyncMessageReactionsView';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -99,9 +99,9 @@ export class MobileMessenger {
         try {
             let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
             if (remove) {
-                this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
+                this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: reactionMap[r] });
             } else {
-                this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: r });
+                this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: reactionMap[r] });
             }
         } catch (e) {
             Alert.alert(e.message);
@@ -112,22 +112,13 @@ export class MobileMessenger {
     private handleMessageLongPress = (message: DataSourceMessageItem) => {
         let builder = new ActionSheetBuilder();
 
-        let reactionMap = {
-            'LIKE': '❤️',
-            'THUMB_UP': '👍',
-            'JOY': '😂',
-            'SCREAM': '😱',
-            'CRYING': '😢',
-            'ANGRY': '🤬',
-        }
-
         builder.view((ctx: ZModalController) => (
             <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={Platform.OS === 'android' ? 62 : 56} paddingHorizontal={10}>
                 {defaultReactions.map(r => (
                     <TouchableOpacity
                         onPress={() => {
                             ctx.hide();
-                            this.handleReactionSetUnset(message, reactionMap[r]);
+                            this.handleReactionSetUnset(message, r);
                         }}
                     >
                         <Image source={reactionsImagesMap[r]} />

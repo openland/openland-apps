@@ -49,7 +49,7 @@ export interface EditPostProps {
 }
 
 interface MessagesComponentProps {
-    onConversationLostAccess?: Function;
+    onChatLostAccess?: Function;
     isActive: boolean;
     organizationId: string | null;
     conversationId: string;
@@ -171,11 +171,11 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         }
     };
 
-    onConversationLostAccess = () => {
-        if (this.props.onConversationLostAccess) {
+    onChatLostAccess = () => {
+        if (this.props.onChatLostAccess) {
             this.unsubscribe();
             this.props.messenger.removeConversation(this.props.conversationId);
-            this.props.onConversationLostAccess();
+            this.props.onChatLostAccess();
         }
     };
 
@@ -345,7 +345,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 }
 
 interface MessengerRootComponentProps {
-    onConversationLostAccess?: Function;
+    onChatLostAccess?: Function;
     isActive: boolean;
     organizationId: string | null;
     conversationId: string;
@@ -362,7 +362,7 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     // console.log('MessengerRootComponent', props.isActive);
     return (
         <MessagesComponent
-            onConversationLostAccess={props.onConversationLostAccess}
+            onChatLostAccess={props.onChatLostAccess}
             isActive={props.isActive}
             me={messenger.user}
             loading={false}

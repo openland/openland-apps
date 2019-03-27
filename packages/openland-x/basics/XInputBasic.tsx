@@ -589,22 +589,25 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     lineHeight={this.props.lineHeight}
                     fontWeight={this.props.fontWeight}
                 />
-                {placeholder && (!v || v === '') && (
-                    <InputPlaceholder
-                        className="input-placeholder"
-                        icon={icon}
-                        format={size}
-                        color={color}
-                        invalid={invalid}
-                        fontSize={this.props.fontSize}
-                        padding={this.props.padding}
-                        lineHeight={this.props.lineHeight}
-                        fontWeight={this.props.fontWeight}
-                    >
-                        <span>{placeholder}</span>
-                        {required && <RequireElement className="required-star">*</RequireElement>}
-                    </InputPlaceholder>
-                )}
+                {placeholder &&
+                    (!v || v === '') && (
+                        <InputPlaceholder
+                            className="input-placeholder"
+                            icon={icon}
+                            format={size}
+                            color={color}
+                            invalid={invalid}
+                            fontSize={this.props.fontSize}
+                            padding={this.props.padding}
+                            lineHeight={this.props.lineHeight}
+                            fontWeight={this.props.fontWeight}
+                        >
+                            <span>{placeholder}</span>
+                            {required && (
+                                <RequireElement className="required-star">*</RequireElement>
+                            )}
+                        </InputPlaceholder>
+                    )}
                 {tooltipContent && (
                     <XPopper placement="bottom" content={tooltipContent} showOnHover={true}>
                         <PopperPlaceholder>
@@ -612,15 +615,16 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                         </PopperPlaceholder>
                     </XPopper>
                 )}
-                {cleanable && v !== '' && (
-                    <ClearButton
-                        onClick={() => {
-                            this.handleClear();
-                        }}
-                    >
-                        <ClearIcon />
-                    </ClearButton>
-                )}
+                {cleanable &&
+                    v !== '' && (
+                        <ClearButton
+                            onClick={() => {
+                                this.handleClear();
+                            }}
+                        >
+                            <ClearIcon />
+                        </ClearButton>
+                    )}
             </RootContainer>
         );
     }

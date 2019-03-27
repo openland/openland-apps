@@ -885,10 +885,6 @@ export interface DialogsVariables {
 // GraphQL subscription operation: ChatWatch
 // ====================================================
 
-export interface ChatWatch_event_ChatUpdateSingle_update_ChatLostAccess {
-  __typename: "ChatLostAccess";
-}
-
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
@@ -3271,11 +3267,13 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_organization | null;
@@ -3288,17 +3286,18 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated {
   chat: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat;
 }
 
-export type ChatWatch_event_ChatUpdateSingle_update = ChatWatch_event_ChatUpdateSingle_update_ChatLostAccess | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated | ChatWatch_event_ChatUpdateSingle_update_ChatMessageDeleted | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated;
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatLostAccess {
+  __typename: "ChatLostAccess";
+  lostAccess: boolean;
+}
+
+export type ChatWatch_event_ChatUpdateSingle_update = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated | ChatWatch_event_ChatUpdateSingle_update_ChatMessageDeleted | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated | ChatWatch_event_ChatUpdateSingle_update_ChatLostAccess;
 
 export interface ChatWatch_event_ChatUpdateSingle {
   __typename: "ChatUpdateSingle";
   seq: number;
   state: string;
   update: ChatWatch_event_ChatUpdateSingle_update;
-}
-
-export interface ChatWatch_event_ChatUpdateBatch_updates_ChatLostAccess {
-  __typename: "ChatLostAccess";
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization {
@@ -5683,11 +5682,13 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_organization | null;
@@ -5700,7 +5701,12 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated {
   chat: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat;
 }
 
-export type ChatWatch_event_ChatUpdateBatch_updates = ChatWatch_event_ChatUpdateBatch_updates_ChatLostAccess | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageDeleted | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated;
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatLostAccess {
+  __typename: "ChatLostAccess";
+  lostAccess: boolean;
+}
+
+export type ChatWatch_event_ChatUpdateBatch_updates = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageDeleted | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated | ChatWatch_event_ChatUpdateBatch_updates_ChatLostAccess;
 
 export interface ChatWatch_event_ChatUpdateBatch {
   __typename: "ChatUpdateBatch";
@@ -6137,7 +6143,102 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted {
   globalUnread: number;
 }
 
-export type DialogsWatch_event_DialogUpdateSingle_update = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead | DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted;
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage = DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage | DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump {
+  __typename: "DialogBump";
+  cid: string;
+  globalUnread: number;
+  unread: number;
+  topMessage: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage | null;
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead | DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogBump;
 
 export interface DialogsWatch_event_DialogUpdateSingle {
   __typename: "DialogUpdateSingle";
@@ -6554,7 +6655,102 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted {
   globalUnread: number;
 }
 
-export type DialogsWatch_event_DialogUpdateBatch_updates = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead | DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted;
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments = DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost | DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments[];
+  quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_quotedMessages[];
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage = DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage | DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump {
+  __typename: "DialogBump";
+  cid: string;
+  globalUnread: number;
+  unread: number;
+  topMessage: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage | null;
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead | DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogBump;
 
 export interface DialogsWatch_event_DialogUpdateBatch {
   __typename: "DialogUpdateBatch";
@@ -7523,6 +7719,7 @@ export interface Room_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -7535,6 +7732,7 @@ export interface Room_room_SharedRoom {
   requests: Room_room_SharedRoom_requests[] | null;
   settings: Room_room_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: Room_room_SharedRoom_welcomeMessage | null;
   pinnedMessage: Room_room_SharedRoom_pinnedMessage | null;
 }
@@ -8371,11 +8569,13 @@ export interface RoomTiny_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: RoomTiny_room_SharedRoom_pinnedMessage | null;
   organization: RoomTiny_room_SharedRoom_organization | null;
@@ -9528,6 +9728,7 @@ export interface RoomCreateVariables {
   description?: string | null;
   photoRef?: ImageRefInput | null;
   organizationId?: string | null;
+  channel: boolean;
 }
 
 /* tslint:disable */
@@ -10549,6 +10750,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -10561,6 +10763,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom {
   requests: RoomAddMember_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMember_betaRoomInvite_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomAddMember_betaRoomInvite_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage | null;
 }
@@ -11528,6 +11731,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -11540,6 +11744,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom {
   requests: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests[] | null;
   settings: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage | null;
 }
@@ -12504,6 +12709,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -12516,6 +12722,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom {
   requests: RoomAddMembers_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMembers_betaRoomInvite_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomAddMembers_betaRoomInvite_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage | null;
 }
@@ -13483,6 +13690,7 @@ export interface RoomKick_betaRoomKick_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -13495,6 +13703,7 @@ export interface RoomKick_betaRoomKick_SharedRoom {
   requests: RoomKick_betaRoomKick_SharedRoom_requests[] | null;
   settings: RoomKick_betaRoomKick_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomKick_betaRoomKick_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomKick_betaRoomKick_SharedRoom_pinnedMessage | null;
 }
@@ -14459,6 +14668,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -14471,6 +14681,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom {
   requests: RoomLeave_betaRoomLeave_SharedRoom_requests[] | null;
   settings: RoomLeave_betaRoomLeave_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomLeave_betaRoomLeave_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage | null;
 }
@@ -15302,11 +15513,13 @@ export interface RoomSearch_items_edges_node {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: RoomSearch_items_edges_node_pinnedMessage | null;
   organization: RoomSearch_items_edges_node_organization | null;
@@ -16443,6 +16656,7 @@ export interface RoomJoin_join_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -16455,6 +16669,7 @@ export interface RoomJoin_join_SharedRoom {
   requests: RoomJoin_join_SharedRoom_requests[] | null;
   settings: RoomJoin_join_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomJoin_join_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomJoin_join_SharedRoom_pinnedMessage | null;
 }
@@ -17438,6 +17653,7 @@ export interface RoomJoinInviteLink_join_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -17450,6 +17666,7 @@ export interface RoomJoinInviteLink_join_SharedRoom {
   requests: RoomJoinInviteLink_join_SharedRoom_requests[] | null;
   settings: RoomJoinInviteLink_join_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomJoinInviteLink_join_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomJoinInviteLink_join_SharedRoom_pinnedMessage | null;
 }
@@ -19671,11 +19888,13 @@ export interface Organization_organization_rooms {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: Organization_organization_rooms_pinnedMessage | null;
   organization: Organization_organization_rooms_organization | null;
@@ -20811,11 +21030,13 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage | null;
   organization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_organization | null;
@@ -22838,11 +23059,13 @@ export interface ResolveShortName_item_Organization_rooms {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: ResolveShortName_item_Organization_rooms_pinnedMessage | null;
   organization: ResolveShortName_item_Organization_rooms_organization | null;
@@ -24745,11 +24968,13 @@ export interface OrganizationFull_rooms {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: OrganizationFull_rooms_pinnedMessage | null;
   organization: OrganizationFull_rooms_organization | null;
@@ -25874,6 +26099,7 @@ export interface RoomFull_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
@@ -25886,6 +26112,7 @@ export interface RoomFull_SharedRoom {
   requests: RoomFull_SharedRoom_requests[] | null;
   settings: RoomFull_SharedRoom_settings;
   canEdit: boolean;
+  canSendMessage: boolean;
   welcomeMessage: RoomFull_SharedRoom_welcomeMessage | null;
   pinnedMessage: RoomFull_SharedRoom_pinnedMessage | null;
 }
@@ -26714,11 +26941,13 @@ export interface RoomShort_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: RoomShort_SharedRoom_pinnedMessage | null;
   organization: RoomShort_SharedRoom_organization | null;
@@ -26863,10 +27092,6 @@ export interface UserTiny {
 // ====================================================
 // GraphQL fragment: ChatUpdateFragment
 // ====================================================
-
-export interface ChatUpdateFragment_ChatLostAccess {
-  __typename: "ChatLostAccess";
-}
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization {
   __typename: "Organization";
@@ -29250,11 +29475,13 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   membership: SharedRoomMembershipStatus;
   role: RoomMemberRole;
   canEdit: boolean;
+  canSendMessage: boolean;
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_organization | null;
@@ -29267,7 +29494,12 @@ export interface ChatUpdateFragment_ChatUpdated {
   chat: ChatUpdateFragment_ChatUpdated_chat;
 }
 
-export type ChatUpdateFragment = ChatUpdateFragment_ChatLostAccess | ChatUpdateFragment_ChatMessageReceived | ChatUpdateFragment_ChatMessageUpdated | ChatUpdateFragment_ChatMessageDeleted | ChatUpdateFragment_ChatUpdated;
+export interface ChatUpdateFragment_ChatLostAccess {
+  __typename: "ChatLostAccess";
+  lostAccess: boolean;
+}
+
+export type ChatUpdateFragment = ChatUpdateFragment_ChatMessageReceived | ChatUpdateFragment_ChatMessageUpdated | ChatUpdateFragment_ChatMessageDeleted | ChatUpdateFragment_ChatUpdated | ChatUpdateFragment_ChatLostAccess;
 
 /* tslint:disable */
 /* eslint-disable */
@@ -29685,7 +29917,102 @@ export interface DialogUpdateFragment_DialogDeleted {
   globalUnread: number;
 }
 
-export type DialogUpdateFragment = DialogUpdateFragment_DialogMessageReceived | DialogUpdateFragment_DialogMessageUpdated | DialogUpdateFragment_DialogMessageDeleted | DialogUpdateFragment_DialogMessageRead | DialogUpdateFragment_DialogTitleUpdated | DialogUpdateFragment_DialogMuteChanged | DialogUpdateFragment_DialogMentionedChanged | DialogUpdateFragment_DialogPhotoUpdated | DialogUpdateFragment_DialogDeleted;
+export interface DialogUpdateFragment_DialogBump_topMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogBump_topMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments = DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost | DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments[];
+  quotedMessages: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_quotedMessages[];
+}
+
+export type DialogUpdateFragment_DialogBump_topMessage = DialogUpdateFragment_DialogBump_topMessage_ServiceMessage | DialogUpdateFragment_DialogBump_topMessage_GeneralMessage;
+
+export interface DialogUpdateFragment_DialogBump {
+  __typename: "DialogBump";
+  cid: string;
+  globalUnread: number;
+  unread: number;
+  topMessage: DialogUpdateFragment_DialogBump_topMessage | null;
+}
+
+export type DialogUpdateFragment = DialogUpdateFragment_DialogMessageReceived | DialogUpdateFragment_DialogMessageUpdated | DialogUpdateFragment_DialogMessageDeleted | DialogUpdateFragment_DialogMessageRead | DialogUpdateFragment_DialogTitleUpdated | DialogUpdateFragment_DialogMuteChanged | DialogUpdateFragment_DialogMentionedChanged | DialogUpdateFragment_DialogPhotoUpdated | DialogUpdateFragment_DialogDeleted | DialogUpdateFragment_DialogBump;
 
 /* tslint:disable */
 /* eslint-disable */

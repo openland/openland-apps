@@ -38,7 +38,7 @@ interface MessengerComponentLoaderProps {
 class MessagengerFragmentInner extends React.PureComponent<
     MessengerComponentLoaderProps & { apollo: OpenApolloClient }
 > {
-    onConversationLostAccess = () => {
+    onChatLostAccess = () => {
         this.props.apollo.client.reFetchObservableQueries();
     };
 
@@ -84,7 +84,7 @@ class MessagengerFragmentInner extends React.PureComponent<
                     <TalkBarComponent conversationId={data.room.id} />
                     <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
                         <MessengerRootComponent
-                            onConversationLostAccess={this.onConversationLostAccess}
+                            onChatLostAccess={this.onChatLostAccess}
                             isActive={isActive}
                             objectName={title}
                             objectId={

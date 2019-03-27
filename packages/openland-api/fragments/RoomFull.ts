@@ -16,6 +16,7 @@ export const RoomFull = gql`
         ... on SharedRoom {
             id
             kind
+            isChannel
             title
             photo
             socialImage
@@ -44,6 +45,7 @@ export const RoomFull = gql`
                 mute
             }
             canEdit
+            canSendMessage
             welcomeMessage {
                 isOn
                 sender {

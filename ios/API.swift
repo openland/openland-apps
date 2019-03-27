@@ -4660,8 +4660,8 @@ public final class ChatWatchSubscription: GraphQLSubscription {
             self.resultMap = unsafeResultMap
           }
 
-          public static func makeChatLostAccess() -> Update {
-            return Update(unsafeResultMap: ["__typename": "ChatLostAccess"])
+          public static func makeChatLostAccess(lostAccess: Bool) -> Update {
+            return Update(unsafeResultMap: ["__typename": "ChatLostAccess", "lostAccess": lostAccess])
           }
 
           public var __typename: String {
@@ -4792,8 +4792,8 @@ public final class ChatWatchSubscription: GraphQLSubscription {
             self.resultMap = unsafeResultMap
           }
 
-          public static func makeChatLostAccess() -> Update {
-            return Update(unsafeResultMap: ["__typename": "ChatLostAccess"])
+          public static func makeChatLostAccess(lostAccess: Bool) -> Update {
+            return Update(unsafeResultMap: ["__typename": "ChatLostAccess", "lostAccess": lostAccess])
           }
 
           public var __typename: String {
@@ -4981,7 +4981,7 @@ public final class DialogsWatchSubscription: GraphQLSubscription {
         }
 
         public struct Update: GraphQLSelectionSet {
-          public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged"]
+          public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged", "DialogBump"]
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
@@ -5133,7 +5133,7 @@ public final class DialogsWatchSubscription: GraphQLSubscription {
         }
 
         public struct Update: GraphQLSelectionSet {
-          public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged"]
+          public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged", "DialogBump"]
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
@@ -6524,7 +6524,7 @@ public final class ChatSearchGroupQuery: GraphQLQuery {
 
 public final class RoomCreateMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation RoomCreate($kind: SharedRoomKind!, $members: [ID!]!, $message: String, $title: String, $description: String, $photoRef: ImageRefInput, $organizationId: ID) {\n  room: betaRoomCreate(kind: $kind, members: $members, message: $message, title: $title, description: $description, photoRef: $photoRef, organizationId: $organizationId) {\n    __typename\n    id\n  }\n}"
+    "mutation RoomCreate($kind: SharedRoomKind!, $members: [ID!]!, $message: String, $title: String, $description: String, $photoRef: ImageRefInput, $organizationId: ID, $channel: Boolean!) {\n  room: betaRoomCreate(kind: $kind, members: $members, message: $message, title: $title, description: $description, photoRef: $photoRef, organizationId: $organizationId, channel: $channel) {\n    __typename\n    id\n  }\n}"
 
   public var kind: SharedRoomKind
   public var members: [GraphQLID]
@@ -6533,8 +6533,9 @@ public final class RoomCreateMutation: GraphQLMutation {
   public var description: String?
   public var photoRef: ImageRefInput?
   public var organizationId: GraphQLID?
+  public var channel: Bool
 
-  public init(kind: SharedRoomKind, members: [GraphQLID], message: String? = nil, title: String? = nil, description: String? = nil, photoRef: ImageRefInput? = nil, organizationId: GraphQLID? = nil) {
+  public init(kind: SharedRoomKind, members: [GraphQLID], message: String? = nil, title: String? = nil, description: String? = nil, photoRef: ImageRefInput? = nil, organizationId: GraphQLID? = nil, channel: Bool) {
     self.kind = kind
     self.members = members
     self.message = message
@@ -6542,17 +6543,18 @@ public final class RoomCreateMutation: GraphQLMutation {
     self.description = description
     self.photoRef = photoRef
     self.organizationId = organizationId
+    self.channel = channel
   }
 
   public var variables: GraphQLMap? {
-    return ["kind": kind, "members": members, "message": message, "title": title, "description": description, "photoRef": photoRef, "organizationId": organizationId]
+    return ["kind": kind, "members": members, "message": message, "title": title, "description": description, "photoRef": photoRef, "organizationId": organizationId, "channel": channel]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("betaRoomCreate", alias: "room", arguments: ["kind": GraphQLVariable("kind"), "members": GraphQLVariable("members"), "message": GraphQLVariable("message"), "title": GraphQLVariable("title"), "description": GraphQLVariable("description"), "photoRef": GraphQLVariable("photoRef"), "organizationId": GraphQLVariable("organizationId")], type: .nonNull(.object(Room.selections))),
+      GraphQLField("betaRoomCreate", alias: "room", arguments: ["kind": GraphQLVariable("kind"), "members": GraphQLVariable("members"), "message": GraphQLVariable("message"), "title": GraphQLVariable("title"), "description": GraphQLVariable("description"), "photoRef": GraphQLVariable("photoRef"), "organizationId": GraphQLVariable("organizationId"), "channel": GraphQLVariable("channel")], type: .nonNull(.object(Room.selections))),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -26849,7 +26851,7 @@ public struct OrganizationShort: GraphQLFragment {
 
 public struct RoomFull: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment RoomFull on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    title\n    photo\n    socialImage\n    description\n    organization {\n      __typename\n      ...OrganizationMedium\n    }\n    membership\n    role\n    membersCount\n    members {\n      __typename\n      role\n      membership\n      user {\n        __typename\n        ...UserShort\n      }\n      canKick\n    }\n    requests {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n    canEdit\n    welcomeMessage {\n      __typename\n      isOn\n      sender {\n        __typename\n        id\n        name\n      }\n      message\n    }\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n  }\n}"
+    "fragment RoomFull on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    socialImage\n    description\n    organization {\n      __typename\n      ...OrganizationMedium\n    }\n    membership\n    role\n    membersCount\n    members {\n      __typename\n      role\n      membership\n      user {\n        __typename\n        ...UserShort\n      }\n      canKick\n    }\n    requests {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n    canEdit\n    canSendMessage\n    welcomeMessage {\n      __typename\n      isOn\n      sender {\n        __typename\n        id\n        name\n      }\n      message\n    }\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n  }\n}"
 
   public static let possibleTypes = ["PrivateRoom", "SharedRoom"]
 
@@ -26872,8 +26874,8 @@ public struct RoomFull: GraphQLFragment {
     return RoomFull(unsafeResultMap: ["__typename": "PrivateRoom", "id": id, "user": user.resultMap, "settings": settings.resultMap])
   }
 
-  public static func makeSharedRoom(id: GraphQLID, kind: SharedRoomKind, title: String, photo: String, socialImage: String? = nil, description: String? = nil, organization: AsSharedRoom.Organization? = nil, membership: SharedRoomMembershipStatus, role: RoomMemberRole, membersCount: Int? = nil, members: [AsSharedRoom.Member], requests: [AsSharedRoom.Request]? = nil, settings: AsSharedRoom.Setting, canEdit: Bool, welcomeMessage: AsSharedRoom.WelcomeMessage? = nil, pinnedMessage: AsSharedRoom.PinnedMessage? = nil) -> RoomFull {
-    return RoomFull(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "photo": photo, "socialImage": socialImage, "description": description, "organization": organization.flatMap { (value: AsSharedRoom.Organization) -> ResultMap in value.resultMap }, "membership": membership, "role": role, "membersCount": membersCount, "members": members.map { (value: AsSharedRoom.Member) -> ResultMap in value.resultMap }, "requests": requests.flatMap { (value: [AsSharedRoom.Request]) -> [ResultMap] in value.map { (value: AsSharedRoom.Request) -> ResultMap in value.resultMap } }, "settings": settings.resultMap, "canEdit": canEdit, "welcomeMessage": welcomeMessage.flatMap { (value: AsSharedRoom.WelcomeMessage) -> ResultMap in value.resultMap }, "pinnedMessage": pinnedMessage.flatMap { (value: AsSharedRoom.PinnedMessage) -> ResultMap in value.resultMap }])
+  public static func makeSharedRoom(id: GraphQLID, kind: SharedRoomKind, isChannel: Bool, title: String, photo: String, socialImage: String? = nil, description: String? = nil, organization: AsSharedRoom.Organization? = nil, membership: SharedRoomMembershipStatus, role: RoomMemberRole, membersCount: Int? = nil, members: [AsSharedRoom.Member], requests: [AsSharedRoom.Request]? = nil, settings: AsSharedRoom.Setting, canEdit: Bool, canSendMessage: Bool, welcomeMessage: AsSharedRoom.WelcomeMessage? = nil, pinnedMessage: AsSharedRoom.PinnedMessage? = nil) -> RoomFull {
+    return RoomFull(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "isChannel": isChannel, "title": title, "photo": photo, "socialImage": socialImage, "description": description, "organization": organization.flatMap { (value: AsSharedRoom.Organization) -> ResultMap in value.resultMap }, "membership": membership, "role": role, "membersCount": membersCount, "members": members.map { (value: AsSharedRoom.Member) -> ResultMap in value.resultMap }, "requests": requests.flatMap { (value: [AsSharedRoom.Request]) -> [ResultMap] in value.map { (value: AsSharedRoom.Request) -> ResultMap in value.resultMap } }, "settings": settings.resultMap, "canEdit": canEdit, "canSendMessage": canSendMessage, "welcomeMessage": welcomeMessage.flatMap { (value: AsSharedRoom.WelcomeMessage) -> ResultMap in value.resultMap }, "pinnedMessage": pinnedMessage.flatMap { (value: AsSharedRoom.PinnedMessage) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -27068,6 +27070,7 @@ public struct RoomFull: GraphQLFragment {
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
       GraphQLField("kind", type: .nonNull(.scalar(SharedRoomKind.self))),
+      GraphQLField("isChannel", type: .nonNull(.scalar(Bool.self))),
       GraphQLField("title", type: .nonNull(.scalar(String.self))),
       GraphQLField("photo", type: .nonNull(.scalar(String.self))),
       GraphQLField("socialImage", type: .scalar(String.self)),
@@ -27080,6 +27083,7 @@ public struct RoomFull: GraphQLFragment {
       GraphQLField("requests", type: .list(.nonNull(.object(Request.selections)))),
       GraphQLField("settings", type: .nonNull(.object(Setting.selections))),
       GraphQLField("canEdit", type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("canSendMessage", type: .nonNull(.scalar(Bool.self))),
       GraphQLField("welcomeMessage", type: .object(WelcomeMessage.selections)),
       GraphQLField("pinnedMessage", type: .object(PinnedMessage.selections)),
     ]
@@ -27090,8 +27094,8 @@ public struct RoomFull: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, kind: SharedRoomKind, title: String, photo: String, socialImage: String? = nil, description: String? = nil, organization: Organization? = nil, membership: SharedRoomMembershipStatus, role: RoomMemberRole, membersCount: Int? = nil, members: [Member], requests: [Request]? = nil, settings: Setting, canEdit: Bool, welcomeMessage: WelcomeMessage? = nil, pinnedMessage: PinnedMessage? = nil) {
-      self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "photo": photo, "socialImage": socialImage, "description": description, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }, "membership": membership, "role": role, "membersCount": membersCount, "members": members.map { (value: Member) -> ResultMap in value.resultMap }, "requests": requests.flatMap { (value: [Request]) -> [ResultMap] in value.map { (value: Request) -> ResultMap in value.resultMap } }, "settings": settings.resultMap, "canEdit": canEdit, "welcomeMessage": welcomeMessage.flatMap { (value: WelcomeMessage) -> ResultMap in value.resultMap }, "pinnedMessage": pinnedMessage.flatMap { (value: PinnedMessage) -> ResultMap in value.resultMap }])
+    public init(id: GraphQLID, kind: SharedRoomKind, isChannel: Bool, title: String, photo: String, socialImage: String? = nil, description: String? = nil, organization: Organization? = nil, membership: SharedRoomMembershipStatus, role: RoomMemberRole, membersCount: Int? = nil, members: [Member], requests: [Request]? = nil, settings: Setting, canEdit: Bool, canSendMessage: Bool, welcomeMessage: WelcomeMessage? = nil, pinnedMessage: PinnedMessage? = nil) {
+      self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "isChannel": isChannel, "title": title, "photo": photo, "socialImage": socialImage, "description": description, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }, "membership": membership, "role": role, "membersCount": membersCount, "members": members.map { (value: Member) -> ResultMap in value.resultMap }, "requests": requests.flatMap { (value: [Request]) -> [ResultMap] in value.map { (value: Request) -> ResultMap in value.resultMap } }, "settings": settings.resultMap, "canEdit": canEdit, "canSendMessage": canSendMessage, "welcomeMessage": welcomeMessage.flatMap { (value: WelcomeMessage) -> ResultMap in value.resultMap }, "pinnedMessage": pinnedMessage.flatMap { (value: PinnedMessage) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -27118,6 +27122,15 @@ public struct RoomFull: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "kind")
+      }
+    }
+
+    public var isChannel: Bool {
+      get {
+        return resultMap["isChannel"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isChannel")
       }
     }
 
@@ -27226,6 +27239,15 @@ public struct RoomFull: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "canEdit")
+      }
+    }
+
+    public var canSendMessage: Bool {
+      get {
+        return resultMap["canSendMessage"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "canSendMessage")
       }
     }
 
@@ -27706,7 +27728,7 @@ public struct RoomFull: GraphQLFragment {
 
 public struct RoomShort: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment RoomShort on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    title\n    photo\n    membership\n    role\n    canEdit\n    membersCount\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n    organization {\n      __typename\n      ...OrganizationShort\n    }\n  }\n}"
+    "fragment RoomShort on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    membership\n    role\n    canEdit\n    canSendMessage\n    membersCount\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n    organization {\n      __typename\n      ...OrganizationShort\n    }\n  }\n}"
 
   public static let possibleTypes = ["PrivateRoom", "SharedRoom"]
 
@@ -27729,8 +27751,8 @@ public struct RoomShort: GraphQLFragment {
     return RoomShort(unsafeResultMap: ["__typename": "PrivateRoom", "id": id, "user": user.resultMap])
   }
 
-  public static func makeSharedRoom(id: GraphQLID, kind: SharedRoomKind, title: String, photo: String, membership: SharedRoomMembershipStatus, role: RoomMemberRole, canEdit: Bool, membersCount: Int? = nil, pinnedMessage: AsSharedRoom.PinnedMessage? = nil, organization: AsSharedRoom.Organization? = nil) -> RoomShort {
-    return RoomShort(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "photo": photo, "membership": membership, "role": role, "canEdit": canEdit, "membersCount": membersCount, "pinnedMessage": pinnedMessage.flatMap { (value: AsSharedRoom.PinnedMessage) -> ResultMap in value.resultMap }, "organization": organization.flatMap { (value: AsSharedRoom.Organization) -> ResultMap in value.resultMap }])
+  public static func makeSharedRoom(id: GraphQLID, kind: SharedRoomKind, isChannel: Bool, title: String, photo: String, membership: SharedRoomMembershipStatus, role: RoomMemberRole, canEdit: Bool, canSendMessage: Bool, membersCount: Int? = nil, pinnedMessage: AsSharedRoom.PinnedMessage? = nil, organization: AsSharedRoom.Organization? = nil) -> RoomShort {
+    return RoomShort(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "isChannel": isChannel, "title": title, "photo": photo, "membership": membership, "role": role, "canEdit": canEdit, "canSendMessage": canSendMessage, "membersCount": membersCount, "pinnedMessage": pinnedMessage.flatMap { (value: AsSharedRoom.PinnedMessage) -> ResultMap in value.resultMap }, "organization": organization.flatMap { (value: AsSharedRoom.Organization) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -27868,11 +27890,13 @@ public struct RoomShort: GraphQLFragment {
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
       GraphQLField("kind", type: .nonNull(.scalar(SharedRoomKind.self))),
+      GraphQLField("isChannel", type: .nonNull(.scalar(Bool.self))),
       GraphQLField("title", type: .nonNull(.scalar(String.self))),
       GraphQLField("photo", type: .nonNull(.scalar(String.self))),
       GraphQLField("membership", type: .nonNull(.scalar(SharedRoomMembershipStatus.self))),
       GraphQLField("role", type: .nonNull(.scalar(RoomMemberRole.self))),
       GraphQLField("canEdit", type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("canSendMessage", type: .nonNull(.scalar(Bool.self))),
       GraphQLField("membersCount", type: .scalar(Int.self)),
       GraphQLField("pinnedMessage", type: .object(PinnedMessage.selections)),
       GraphQLField("organization", type: .object(Organization.selections)),
@@ -27884,8 +27908,8 @@ public struct RoomShort: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, kind: SharedRoomKind, title: String, photo: String, membership: SharedRoomMembershipStatus, role: RoomMemberRole, canEdit: Bool, membersCount: Int? = nil, pinnedMessage: PinnedMessage? = nil, organization: Organization? = nil) {
-      self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "photo": photo, "membership": membership, "role": role, "canEdit": canEdit, "membersCount": membersCount, "pinnedMessage": pinnedMessage.flatMap { (value: PinnedMessage) -> ResultMap in value.resultMap }, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }])
+    public init(id: GraphQLID, kind: SharedRoomKind, isChannel: Bool, title: String, photo: String, membership: SharedRoomMembershipStatus, role: RoomMemberRole, canEdit: Bool, canSendMessage: Bool, membersCount: Int? = nil, pinnedMessage: PinnedMessage? = nil, organization: Organization? = nil) {
+      self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "isChannel": isChannel, "title": title, "photo": photo, "membership": membership, "role": role, "canEdit": canEdit, "canSendMessage": canSendMessage, "membersCount": membersCount, "pinnedMessage": pinnedMessage.flatMap { (value: PinnedMessage) -> ResultMap in value.resultMap }, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -27912,6 +27936,15 @@ public struct RoomShort: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "kind")
+      }
+    }
+
+    public var isChannel: Bool {
+      get {
+        return resultMap["isChannel"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "isChannel")
       }
     }
 
@@ -27957,6 +27990,15 @@ public struct RoomShort: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "canEdit")
+      }
+    }
+
+    public var canSendMessage: Bool {
+      get {
+        return resultMap["canSendMessage"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "canSendMessage")
       }
     }
 
@@ -28864,13 +28906,13 @@ public struct UserTiny: GraphQLFragment {
 
 public struct ChatUpdateFragment: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment ChatUpdateFragment on ChatUpdate {\n  __typename\n  ... on ChatMessageReceived {\n    message {\n      __typename\n      ...FullMessage\n    }\n    repeatKey\n  }\n  ... on ChatMessageUpdated {\n    message {\n      __typename\n      ...FullMessage\n    }\n  }\n  ... on ChatMessageDeleted {\n    message {\n      __typename\n      id\n    }\n  }\n  ... on ChatUpdated {\n    chat {\n      __typename\n      ...RoomShort\n    }\n  }\n}"
+    "fragment ChatUpdateFragment on ChatUpdate {\n  __typename\n  ... on ChatMessageReceived {\n    message {\n      __typename\n      ...FullMessage\n    }\n    repeatKey\n  }\n  ... on ChatMessageUpdated {\n    message {\n      __typename\n      ...FullMessage\n    }\n  }\n  ... on ChatMessageDeleted {\n    message {\n      __typename\n      id\n    }\n  }\n  ... on ChatUpdated {\n    chat {\n      __typename\n      ...RoomShort\n    }\n  }\n  ... on ChatLostAccess {\n    lostAccess\n  }\n}"
 
   public static let possibleTypes = ["ChatUpdated", "ChatMessageReceived", "ChatMessageUpdated", "ChatMessageDeleted", "ChatLostAccess"]
 
   public static let selections: [GraphQLSelection] = [
     GraphQLTypeCase(
-      variants: ["ChatMessageReceived": AsChatMessageReceived.selections, "ChatMessageUpdated": AsChatMessageUpdated.selections, "ChatMessageDeleted": AsChatMessageDeleted.selections, "ChatUpdated": AsChatUpdated.selections],
+      variants: ["ChatMessageReceived": AsChatMessageReceived.selections, "ChatMessageUpdated": AsChatMessageUpdated.selections, "ChatMessageDeleted": AsChatMessageDeleted.selections, "ChatUpdated": AsChatUpdated.selections, "ChatLostAccess": AsChatLostAccess.selections],
       default: [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       ]
@@ -28881,10 +28923,6 @@ public struct ChatUpdateFragment: GraphQLFragment {
 
   public init(unsafeResultMap: ResultMap) {
     self.resultMap = unsafeResultMap
-  }
-
-  public static func makeChatLostAccess() -> ChatUpdateFragment {
-    return ChatUpdateFragment(unsafeResultMap: ["__typename": "ChatLostAccess"])
   }
 
   public static func makeChatMessageReceived(message: AsChatMessageReceived.Message, repeatKey: String? = nil) -> ChatUpdateFragment {
@@ -28901,6 +28939,10 @@ public struct ChatUpdateFragment: GraphQLFragment {
 
   public static func makeChatUpdated(chat: AsChatUpdated.Chat) -> ChatUpdateFragment {
     return ChatUpdateFragment(unsafeResultMap: ["__typename": "ChatUpdated", "chat": chat.resultMap])
+  }
+
+  public static func makeChatLostAccess(lostAccess: Bool) -> ChatUpdateFragment {
+    return ChatUpdateFragment(unsafeResultMap: ["__typename": "ChatLostAccess", "lostAccess": lostAccess])
   }
 
   public var __typename: String {
@@ -29305,17 +29347,65 @@ public struct ChatUpdateFragment: GraphQLFragment {
       }
     }
   }
+
+  public var asChatLostAccess: AsChatLostAccess? {
+    get {
+      if !AsChatLostAccess.possibleTypes.contains(__typename) { return nil }
+      return AsChatLostAccess(unsafeResultMap: resultMap)
+    }
+    set {
+      guard let newValue = newValue else { return }
+      resultMap = newValue.resultMap
+    }
+  }
+
+  public struct AsChatLostAccess: GraphQLSelectionSet {
+    public static let possibleTypes = ["ChatLostAccess"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("lostAccess", type: .nonNull(.scalar(Bool.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(lostAccess: Bool) {
+      self.init(unsafeResultMap: ["__typename": "ChatLostAccess", "lostAccess": lostAccess])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var lostAccess: Bool {
+      get {
+        return resultMap["lostAccess"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "lostAccess")
+      }
+    }
+  }
 }
 
 public struct DialogUpdateFragment: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogTitleUpdated {\n    cid\n    title\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogMentionedChanged {\n    cid\n    haveMention\n  }\n  ... on DialogPhotoUpdated {\n    cid\n    photo\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n}"
+    "fragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n  }\n  ... on DialogTitleUpdated {\n    cid\n    title\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogMentionedChanged {\n    cid\n    haveMention\n  }\n  ... on DialogPhotoUpdated {\n    cid\n    photo\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n  ... on DialogBump {\n    cid\n    globalUnread\n    unread\n    topMessage {\n      __typename\n      ...TinyMessage\n    }\n  }\n}"
 
-  public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged"]
+  public static let possibleTypes = ["DialogMessageReceived", "DialogMessageUpdated", "DialogMessageDeleted", "DialogMessageRead", "DialogTitleUpdated", "DialogDeleted", "DialogPhotoUpdated", "DialogMuteChanged", "DialogMentionedChanged", "DialogBump"]
 
   public static let selections: [GraphQLSelection] = [
     GraphQLTypeCase(
-      variants: ["DialogMessageReceived": AsDialogMessageReceived.selections, "DialogMessageUpdated": AsDialogMessageUpdated.selections, "DialogMessageDeleted": AsDialogMessageDeleted.selections, "DialogMessageRead": AsDialogMessageRead.selections, "DialogTitleUpdated": AsDialogTitleUpdated.selections, "DialogMuteChanged": AsDialogMuteChanged.selections, "DialogMentionedChanged": AsDialogMentionedChanged.selections, "DialogPhotoUpdated": AsDialogPhotoUpdated.selections, "DialogDeleted": AsDialogDeleted.selections],
+      variants: ["DialogMessageReceived": AsDialogMessageReceived.selections, "DialogMessageUpdated": AsDialogMessageUpdated.selections, "DialogMessageDeleted": AsDialogMessageDeleted.selections, "DialogMessageRead": AsDialogMessageRead.selections, "DialogTitleUpdated": AsDialogTitleUpdated.selections, "DialogMuteChanged": AsDialogMuteChanged.selections, "DialogMentionedChanged": AsDialogMentionedChanged.selections, "DialogPhotoUpdated": AsDialogPhotoUpdated.selections, "DialogDeleted": AsDialogDeleted.selections, "DialogBump": AsDialogBump.selections],
       default: [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       ]
@@ -29362,6 +29452,10 @@ public struct DialogUpdateFragment: GraphQLFragment {
 
   public static func makeDialogDeleted(cid: GraphQLID, globalUnread: Int) -> DialogUpdateFragment {
     return DialogUpdateFragment(unsafeResultMap: ["__typename": "DialogDeleted", "cid": cid, "globalUnread": globalUnread])
+  }
+
+  public static func makeDialogBump(cid: GraphQLID, globalUnread: Int, unread: Int, topMessage: AsDialogBump.TopMessage? = nil) -> DialogUpdateFragment {
+    return DialogUpdateFragment(unsafeResultMap: ["__typename": "DialogBump", "cid": cid, "globalUnread": globalUnread, "unread": unread, "topMessage": topMessage.flatMap { (value: AsDialogBump.TopMessage) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -30154,6 +30248,134 @@ public struct DialogUpdateFragment: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "globalUnread")
+      }
+    }
+  }
+
+  public var asDialogBump: AsDialogBump? {
+    get {
+      if !AsDialogBump.possibleTypes.contains(__typename) { return nil }
+      return AsDialogBump(unsafeResultMap: resultMap)
+    }
+    set {
+      guard let newValue = newValue else { return }
+      resultMap = newValue.resultMap
+    }
+  }
+
+  public struct AsDialogBump: GraphQLSelectionSet {
+    public static let possibleTypes = ["DialogBump"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("cid", type: .nonNull(.scalar(GraphQLID.self))),
+      GraphQLField("globalUnread", type: .nonNull(.scalar(Int.self))),
+      GraphQLField("unread", type: .nonNull(.scalar(Int.self))),
+      GraphQLField("topMessage", type: .object(TopMessage.selections)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(cid: GraphQLID, globalUnread: Int, unread: Int, topMessage: TopMessage? = nil) {
+      self.init(unsafeResultMap: ["__typename": "DialogBump", "cid": cid, "globalUnread": globalUnread, "unread": unread, "topMessage": topMessage.flatMap { (value: TopMessage) -> ResultMap in value.resultMap }])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var cid: GraphQLID {
+      get {
+        return resultMap["cid"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "cid")
+      }
+    }
+
+    public var globalUnread: Int {
+      get {
+        return resultMap["globalUnread"]! as! Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "globalUnread")
+      }
+    }
+
+    public var unread: Int {
+      get {
+        return resultMap["unread"]! as! Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "unread")
+      }
+    }
+
+    public var topMessage: TopMessage? {
+      get {
+        return (resultMap["topMessage"] as? ResultMap).flatMap { TopMessage(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "topMessage")
+      }
+    }
+
+    public struct TopMessage: GraphQLSelectionSet {
+      public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(TinyMessage.self),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var tinyMessage: TinyMessage {
+          get {
+            return TinyMessage(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
       }
     }
   }

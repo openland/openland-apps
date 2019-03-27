@@ -134,8 +134,8 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
         }
     };
 
-    onConversationLostAccess = () => {
-        console.log('onConversationLostAccess');
+    onChatLostAccess = () => {
+        console.log('onChatLostAccess');
     };
 
     onConversationUpdated = (state: ConversationState) => {
@@ -267,6 +267,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
                     message: msg,
                     title: this.state.values.map(v => v.label).join(', '),
                     members: this.state.values.map(v => v.value as string),
+                    channel: false
                 });
                 Router.replaceRoute('/mail/' + res.room.id);
             }

@@ -155,6 +155,18 @@ export class GlobalStateEngine {
             console.warn('new title ', event);
             this.engine.dialogList.handleTitleUpdated(event.cid, event.title);
             this.engine.getConversation(event.cid).handleTitleUpdated(event.title)
+        } else if (event.__typename === 'DialogBump') {
+            let visible = this.visibleConversations.has(event.cid);
+            // Global counter
+            await this.writeGlobalCounter(event.globalUnread, visible);
+
+            // Notifications
+            let res = this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
+
+            // Dialogs List
+            let res2 = this.engine.dialogList.handleNewMessage({ ...event, message: event.topMessage }, visible);
+            await res;
+            await res2;
         } else if (event.__typename === 'DialogMuteChanged') {
             console.warn('new mute ', event);
             this.engine.dialogList.handleMuteUpdated(event.cid, event.mute);

@@ -20,6 +20,9 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 const CreateGroupComponent = (props: PageProps) => {
     const ref = React.createRef<ZForm>();
 
+    let isChannel = !!props.router.params.isChannel;
+    let chatTypeString = isChannel ? 'Channel' : 'Group'
+
     let organizations = getClient().useMyOrganizations().myOrganizations;
 
     const [selectedKind, setSelectedKind] = React.useState<SharedRoomKind.GROUP | SharedRoomKind.PUBLIC>(SharedRoomKind.GROUP);
@@ -27,11 +30,11 @@ const CreateGroupComponent = (props: PageProps) => {
     const handleKindPress = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
-        builder.action('Secret group', () => {
+        builder.action(`Secret ${chatTypeString.toLowerCase()}`, () => {
             setSelectedKind(SharedRoomKind.GROUP);
         }, false, Platform.OS === 'android' ? require('assets/ic-secret-24.png') : undefined);
 
-        builder.action('Shared group', () => {
+        builder.action(`Shared ${chatTypeString.toLowerCase()}`, () => {
             setSelectedKind(SharedRoomKind.PUBLIC);
         }, false, Platform.OS === 'android' ? require('assets/ic-community-24.png') : undefined);
 
@@ -42,13 +45,13 @@ const CreateGroupComponent = (props: PageProps) => {
 
     return (
         <>
-            <SHeader title="Create group" />
+            <SHeader title={`Create ${chatTypeString.toLowerCase()}`} />
             <SHeaderButton title="Next" onPress={() => { ref.current!.submitForm(); }} />
             <ZForm
                 ref={ref}
                 action={async (src) => {
                     if (!src.title) {
-                        Alert.builder().title('Please enter a name for this group').button('GOT IT!').show();
+                        Alert.builder().title(`Please enter a name for this ${chatTypeString.toLowerCase()}`).button('GOT IT!').show();
 
                         throw new SilentError();
                     }
@@ -62,8 +65,9 @@ const CreateGroupComponent = (props: PageProps) => {
                         photoRef: src.photoRef,
                         members: [],
                         organizationId: orgId,
+                        channel: isChannel,
                     });
-                                
+
                     if (orgId) {
                         await getClient().refetchOrganization({ organizationId: orgId });
                     }
@@ -109,7 +113,7 @@ const CreateGroupComponent = (props: PageProps) => {
             >
                 <ZAvatarPickerInputsGroup avatarField="photoRef">
                     <ZTextInput
-                        placeholder="Group name"
+                        placeholder={`${chatTypeString} name`}
                         field="title"
                         autoFocus={true}
                     />
@@ -117,17 +121,17 @@ const CreateGroupComponent = (props: PageProps) => {
 
                 {!orgIdFromRouter && (
                     <View marginTop={20}>
-                        <ZListItemGroup footer={selectedKind === SharedRoomKind.GROUP ? 'Secret group is a place that people can view and join only by invite from a group member.' : undefined}>
+                        <ZListItemGroup footer={selectedKind === SharedRoomKind.GROUP ? `Secret ${chatTypeString} is a place that people can view and join only by invite from a ${chatTypeString} member.` : undefined}>
                             <ZListItem
                                 onPress={handleKindPress}
-                                text="Group type"
+                                text={`${chatTypeString} type`}
                                 description={selectedKind === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
                                 descriptionColor={selectedKind === SharedRoomKind.GROUP ? '#129f25' : undefined}
                                 descriptionIcon={selectedKind === SharedRoomKind.GROUP ? require('assets/ic-secret-20.png') : undefined}
                                 navigationIcon={true}
                             />
                         </ZListItemGroup>
-        
+
                         {selectedKind === SharedRoomKind.PUBLIC && (
                             <View marginTop={20}>
                                 {organizations.map(org => (

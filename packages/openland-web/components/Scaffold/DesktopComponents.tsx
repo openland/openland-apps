@@ -435,7 +435,7 @@ const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization
                 />
             )}
         </Query>
-        <InvitesToOrganizationModal targetQuery="invite" target={null} />
+        <InvitesToOrganizationModal targetQuery="invite" target={null} isCommunity={false} />
         <InvitesGlobalModal targetQuery="invite_global" target={null} />
     </XVertical>
 ));
