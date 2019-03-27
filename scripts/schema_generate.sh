@@ -27,6 +27,7 @@ node ./fetch-fragments.js
 rimraf ./node_modules/apollo/node_modules/graphql
 yarn apollo codegen:generate --target=typescript --outputFlat=./packages/openland-api/Types.ts --addTypename --tagName=gql
 ./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateTypes.ts
+./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateApi.ts
 
 #
 # Native

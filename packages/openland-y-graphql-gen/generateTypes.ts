@@ -85,7 +85,6 @@ function generateTypes() {
 
     // resContent += processed.map((v) => v.contents).join('\n');
     fs.writeFileSync(path.resolve(__dirname + '/../openland-api/index.ts'), resContent);
-    // generateApi();
 }
 
 generateTypes();
