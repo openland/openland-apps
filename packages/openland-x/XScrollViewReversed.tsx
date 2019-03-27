@@ -48,7 +48,9 @@ export class XScrollViewReversedInner extends React.PureComponent<
     scrollToBottom = () => {
         if (this.scroller) {
             this.lastDimensions = null;
-            this.scroller.scrollTop = this.scroller.scrollHeight;
+            if (this.scroller.scrollTop !== this.scroller.scrollHeight) {
+                this.scroller.scrollTop = this.scroller.scrollHeight;
+            }
         }
     };
 

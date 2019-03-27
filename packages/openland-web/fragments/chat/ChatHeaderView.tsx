@@ -17,7 +17,6 @@ import { HeaderMenu } from './components/HeaderMenu';
 import CloseChatIcon from 'openland-icons/ic-chat-back.svg';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { HideOnDesktop } from 'openland-web/components/Adaptive';
-import { withRoom } from 'openland-web/api/withRoom';
 import { UserInfoContext, withUserInfo } from 'openland-web/components/UserInfo';
 import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
 import { XLoader } from 'openland-x/XLoader';
@@ -27,6 +26,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { InviteMembersModal } from 'openland-web/fragments/inviteMembersModal';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
+import { useClient } from 'openland-web/utils/useClient';
 
 const inviteButtonClass = css`
     & svg > g > path {
@@ -218,14 +218,18 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
 
         modals = (
             <>
-                {sharedRoom.welcomeMessage && <AdvancedSettingsModal
-                    roomId={sharedRoom.id}
-                    socialImage={sharedRoom.socialImage}
-                    canChangeAdvancedSettingsMembersUsers={canChangeAdvancedSettingsMembersUsers}
-                    welcomeMessageText={sharedRoom.welcomeMessage!!.message}
-                    welcomeMessageSender={sharedRoom.welcomeMessage!!.sender}
-                    welcomeMessageIsOn={sharedRoom.welcomeMessage!!.isOn}
-                />}
+                {sharedRoom.welcomeMessage && (
+                    <AdvancedSettingsModal
+                        roomId={sharedRoom.id}
+                        socialImage={sharedRoom.socialImage}
+                        canChangeAdvancedSettingsMembersUsers={
+                            canChangeAdvancedSettingsMembersUsers
+                        }
+                        welcomeMessageText={sharedRoom.welcomeMessage!!.message}
+                        welcomeMessageSender={sharedRoom.welcomeMessage!!.sender}
+                        welcomeMessageIsOn={sharedRoom.welcomeMessage!!.isOn}
+                    />
+                )}
                 <RoomEditModal
                     title={sharedRoom.title}
                     description={sharedRoom.description}
@@ -290,30 +294,6 @@ interface MessengerComponentLoaderProps {
     data: Room;
 }
 
-const ChatHeaderViewLoaderInner = withRoom(withUserInfo(
-    ({ user, data }: MessengerComponentLoaderProps) => {
-        if (!data || !data.room) {
-            return <XLoader loading={true} />;
-        }
-
-        return (
-            <XView
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="center"
-                height={55}
-                paddingLeft={20}
-                paddingRight={20}
-            >
-                <ChatHeaderView room={data.room} me={user} />
-            </XView>
-        );
-    },
-) as any) as React.ComponentType<{
-    variables: { id: string };
-    state?: MessagesStateContextProps;
-}>;
-
 class ErrorBoundary extends React.Component<any, { error: any }> {
     static getDerivedStateFromError(error: any) {
         return { error };
@@ -350,13 +330,28 @@ export const ChatHeaderViewLoader = (props: {
     if (!canUseDOM || !props.variables.id) {
         return <XLoader loading={true} />;
     }
+    const client = useClient();
+
+    let room = client.useWithoutLoaderRoom({ id: props.variables.id })!!;
+    let ctx = React.useContext(UserInfoContext);
+    const user = ctx!!.user!!;
+
+    if (!room || !room.room) {
+        return <XLoader loading={true} />;
+    }
+
     return (
         <ErrorBoundary>
-            <ChatHeaderViewLoaderInner
-                variables={{
-                    id: props.variables.id,
-                }}
-            />
+            <XView
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+                height={55}
+                paddingLeft={20}
+                paddingRight={20}
+            >
+                <ChatHeaderView room={room.room} me={user} />
+            </XView>
         </ErrorBoundary>
     );
 };
