@@ -114,7 +114,25 @@ function buildSchemaReader(name: string, v: any): string {
 
 export function generateNativeApi() {
     let manifestPath = path.resolve(__dirname + '/../openland-api/queries.json');
-    let manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8")) as { operations: { source: string }[] };
+    let manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8")) as {
+        operations: {
+            source: string,
+            filePath: string,
+            operationName: string,
+            operationType: 'query' | 'mutation' | 'subscription',
+            variables: any[]
+        }[],
+        fragments: {
+            fragmentName: string,
+            filePath: string,
+            fields: {
+                responseName: string,
+                fieldName: string,
+                type: string,
+                isConditional: boolean
+            }[]
+        }[]
+    };
     let schemaPath = path.resolve(__dirname + '/../../schema.json');
     let schema = JSON.parse(fs.readFileSync(schemaPath, "utf-8")) as { __schema: { types: { kind: string, name: string, inputFields: { name: string, type: any }[] }[] } };
     // let gqlroot = path.resolve(__dirname + '/../../android/app/src/main/graphql/com/openland/api/')
@@ -131,6 +149,7 @@ export function generateNativeApi() {
     let runQuery = '  func runQuery(client: ApolloClient, name: String, src: NSDictionary, cachePolicy: CachePolicy, handler: @escaping ResponseHandler) {\n';
     let readQuery = '  func readQuery(store: ApolloStore, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n';
     let writeQuery = '  func writeQuery(store: ApolloStore, data: NSDictionary, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n';
+    let writeFragment = '  func writeFragment(store: ApolloStore, data: NSDictionary, name: String, handler: @escaping ResponseHandler) {\n';
     let runMutation = '  func runMutation(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) {\n';
     let watchQuery = '  func watchQuery(client: ApolloClient, name: String, src: NSDictionary, cachePolicy: CachePolicy, handler: @escaping ResponseHandler) -> WatchCancel {\n';
     let runSubscription = '  func runSubscription(client: ApolloClient, name: String, src: NSDictionary, handler: @escaping ResponseHandler) -> WatchCancel {\n'
@@ -362,6 +381,22 @@ export function generateNativeApi() {
         }
     }
 
+    for (let f of manifest.fragments) {
+        let id = f.fields.find((v) => v.fieldName === 'id' && !v.isConditional);
+        let typename = f.fields.find((v) => v.fieldName === '__typename' && !v.isConditional);
+        if (id && typename) {
+            writeFragment += '    if name == "' + f.fragmentName + '" {\n'
+            writeFragment += '      let data = ' + f.fragmentName + '(unsafeResultMap: self.convertData(src: data))\n';
+            writeFragment += '      let key = data.id + ":" + data.__typename\n'
+            writeFragment += '      store.withinReadWriteTransaction { (tx) in\n';
+            writeFragment += '        try tx.write(object: data, withKey: key)\n';
+            writeFragment += '        handler(nil, nil)\n';
+            writeFragment += '      }\n';
+            writeFragment += '      return\n';
+            writeFragment += '    }\n'
+        }
+    }
+
     // else if (def.kind === 'InputObjectTypeDefinition') {
     //     inputTypes += 'read' + def.name.value + '(_ src: NSDictionary, _ name: String) {\n'
     //     for (let v of def.fields!) {
@@ -383,6 +418,8 @@ export function generateNativeApi() {
     readQuery += '  }\n';
     writeQuery += '    fatalError()\n';
     writeQuery += '  }\n';
+    writeFragment += '    fatalError()\n';
+    writeFragment += '  }\n';
 
     map += runQuery;
     map += '\n';
@@ -395,6 +432,8 @@ export function generateNativeApi() {
     map += readQuery;
     map += '\n';
     map += writeQuery;
+    map += '\n';
+    map += writeFragment;
     map += '\n';
 
     map += inputTypes;

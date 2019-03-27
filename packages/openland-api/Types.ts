@@ -27612,6 +27612,21 @@ export interface UserFull {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: UserOnline
+// ====================================================
+
+export interface UserOnline {
+  __typename: "User";
+  id: string;
+  online: boolean;
+  lastSeen: string | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: UserShort
 // ====================================================
 

@@ -31,6 +31,7 @@ import * as RoomShort from './fragments/RoomShort';
 import * as SessionStateFull from './fragments/SessionStateFull';
 import * as SettingsFragment from './fragments/SettingsFragment';
 import * as UserFull from './fragments/UserFull';
+import * as UserOnline from './fragments/UserOnline';
 import * as UserShort from './fragments/UserShort';
 import * as UserTiny from './fragments/UserTiny';
 
@@ -192,6 +193,7 @@ export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomSh
 export const SessionStateFullFragment = typedFragment<Types.SessionStateFull>(SessionStateFull.SessionStateFull);
 export const SettingsFullFragment = typedFragment<Types.SettingsFull>(SettingsFragment.SettingsFull);
 export const UserFullFragment = typedFragment<Types.UserFull>(UserFull.UserFull);
+export const UserOnlineFragment = typedFragment<Types.UserOnline>(UserOnline.UserOnline);
 export const UserShortFragment = typedFragment<Types.UserShort>(UserShort.UserShort);
 export const UserTinyFragment = typedFragment<Types.UserTiny>(UserTiny.UserTiny);
 export const ChatUpdateFragmentFragment = typedFragment<Types.ChatUpdateFragment>(Chats.ChatUpdateFragment);

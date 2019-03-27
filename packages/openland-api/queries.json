@@ -16366,6 +16366,46 @@
 			"possibleTypes": [
 				"User"
 			],
+			"fragmentName": "UserOnline",
+			"filePath": "file:///Users/steve/Develop/openland-apps/packages/openland-api/fragments/UserOnline.ts",
+			"source": "fragment UserOnline on User {\n  __typename\n  id\n  online\n  lastSeen\n}",
+			"fields": [
+				{
+					"responseName": "__typename",
+					"fieldName": "__typename",
+					"type": "String!",
+					"isConditional": false
+				},
+				{
+					"responseName": "id",
+					"fieldName": "id",
+					"type": "ID!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "online",
+					"fieldName": "online",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "lastSeen",
+					"fieldName": "lastSeen",
+					"type": "String",
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": []
+		},
+		{
+			"typeCondition": "User",
+			"possibleTypes": [
+				"User"
+			],
 			"fragmentName": "UserShort",
 			"filePath": "file:///Users/steve/Develop/openland-apps/packages/openland-api/fragments/UserShort.ts",
 			"source": "fragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
