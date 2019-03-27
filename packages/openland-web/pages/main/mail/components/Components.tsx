@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
+import ReactDOM from 'react-dom';
 import { css, cx } from 'linaria';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
@@ -19,6 +20,7 @@ import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { Menu } from 'openland-web/components/MainLayout';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { XButton } from 'openland-x/XButton';
+
 import { RoomInviteFromLink } from './RoomInviteFromLink';
 import { tabs } from '../tabs';
 
@@ -103,6 +105,14 @@ const DisplayNone = ({
 
 const SIZE_OF_CACHE = 20;
 
+const maybeRequestIdleCallback = (cb: Function) => {
+    if (window && (window as any).requestIdleCallback) {
+        (window as any).requestIdleCallback(cb);
+    } else {
+        cb();
+    }
+};
+
 const CacheComponent = ({
     Component,
     activeChat,
@@ -137,21 +147,25 @@ const CacheComponent = ({
                     cachedPropsArray[0].chatId !== activeChat &&
                     cachedPropsArray[1].chatId !== activeChat
                 ) {
-                    setCachedProps(cachedPropsArray.slice(2));
+                    maybeRequestIdleCallback(() => {
+                        setCachedProps(cachedPropsArray.slice(2));
+                    });
                 } else {
-                    setCachedProps(cachedPropsArray.slice(1));
+                    maybeRequestIdleCallback(() => {
+                        setCachedProps(cachedPropsArray.slice(1));
+                    });
                 }
             }
         }
     }, [activeChat]);
 
-    if (true) {
-        return (
-            <IsActiveContext.Provider value={true}>
-                {activeChat && <Component {...componentProps} isActive={true} />}{' '}
-            </IsActiveContext.Provider>
-        );
-    }
+    // if (true) {
+    //     return (
+    //         <IsActiveContext.Provider value={true}>
+    //             {activeChat && <Component {...componentProps} isActive={true} />}{' '}
+    //         </IsActiveContext.Provider>
+    //     );
+    // }
 
     const renderedElements = [];
 
