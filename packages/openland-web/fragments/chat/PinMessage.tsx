@@ -24,7 +24,9 @@ import ForwardIcon from 'openland-icons/ic-reply-2.svg';
 import PinIcon from 'openland-icons/ic-pinned-message.svg';
 import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
 import AttachIcon from 'openland-icons/ic-attach-doc-blue.svg';
+import CloseIcon from 'openland-icons/ic-close.svg';
 import { MessageReplyComponent } from 'openland-web/components/messenger/message/content/MessageReplyComponent';
+import { XLink } from '../../../openland-x/XLink';
 
 interface UnpinButtonProps {
     variables: {
@@ -44,6 +46,21 @@ const ReplyMessageWrapper = Glamorous.div({
         width: 3,
         borderRadius: 3,
         backgroundColor: '#1790ff',
+    },
+});
+
+const Close = Glamorous(XLink)({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 32,
+    height: 32,
+    borderRadius: 50,
+    '&:hover': {
+        backgroundColor: '#ecedf0',
+    },
+    '& svg path': {
+        fill: '#CCCCCC',
     },
 });
 
@@ -76,6 +93,7 @@ export interface PinMessageComponentProps {
 }
 
 const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
     const { room } = props;
     const { pinMessage } = props;
     const { sender, message } = pinMessage;
@@ -136,7 +154,28 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
     }
 
     const body = (
-        <XView paddingHorizontal={32} paddingVertical={30} flexDirection="column">
+        <XView
+            paddingHorizontal={32}
+            paddingTop={isMobile ? 0 : 30}
+            paddingBottom={30}
+            flexDirection="column"
+        >
+            {isMobile && (
+                <XView
+                    height={52}
+                    marginBottom={8}
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                >
+                    <XView color="rgba(0, 0, 0, 0.9)" fontSize={20} fontWeight="600">
+                        Pinned message
+                    </XView>
+                    <Close autoClose={true}>
+                        <CloseIcon />
+                    </Close>
+                </XView>
+            )}
             <XView flexDirection="row" alignItems="center" justifyContent="space-between">
                 <XView flexDirection="row" alignItems="center" flexGrow={1}>
                     <XView flexDirection="row" alignItems="center" marginRight={12}>
@@ -185,7 +224,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                                 {canMeUnpinMessage && (
                                     <UnpinButton variables={{ chatId: props.chatId }} />
                                 )}
-                                <XModalCloser autoClose={true} />
+                                {!isMobile && <XModalCloser autoClose={true} />}
                             </XView>
                         </XView>
                         <XView
