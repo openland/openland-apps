@@ -136,7 +136,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
     }
 
     const body = (
-        <XView padding={32} flexDirection="column">
+        <XView paddingHorizontal={32} paddingVertical={30} flexDirection="column">
             <XView flexDirection="row" alignItems="center" justifyContent="space-between">
                 <XView flexDirection="row" alignItems="center" flexGrow={1}>
                     <XView flexDirection="row" alignItems="center" marginRight={12}>
@@ -145,6 +145,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                             src={sender.photo || undefined}
                             objectId={sender.id}
                             objectName={sender.name}
+                            online={false}
                         />
                     </XView>
                     <XView flexDirection="column" flexGrow={1}>
@@ -174,6 +175,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                                         fontWeight="600"
                                         fontSize={12}
                                         marginLeft={8}
+                                        marginBottom={-2}
                                     >
                                         {sender.primaryOrganization.name}
                                     </XView>
@@ -193,7 +195,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                             fontWeight="600"
                             fontSize={12}
                         >
-                            <XDate value={pinMessage.date} format="humanize" />
+                            <XDate value={pinMessage.date} format="datetime_short" />
                             <XView
                                 width={3}
                                 height={3}
@@ -329,7 +331,7 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
                     >
                         <PinIcon />
                     </XView>
-                    <XView flexDirection="column" maxWidth="70%">
+                    <XView flexDirection="column" maxWidth="calc(100% - 70px)">
                         <XView flexDirection="row" maxWidth="100%">
                             <XView
                                 as="a"
