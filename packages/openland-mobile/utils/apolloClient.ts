@@ -32,8 +32,8 @@ export function getClient(): OpenlandClient {
 
 export function buildNativeClient(storage: string, token: string) {
 
-    return new OpenlandClient(createWorkerClient(token));
-    // return new OpenlandClient(new NativeApolloClient(storage, token));
+    // return new OpenlandClient(createWorkerClient(token));
+    return new OpenlandClient(new NativeApolloClient(storage, token));
 
     // if (Platform.OS === 'ios') {
     //     return new OpenlandClient(new NativeApolloClient(storage, token));

@@ -87,7 +87,7 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
                     <View flexDirection="row">
                         {showMembersCount && (<Image source={require('assets/ic-members-16.png')} style={styles.membersIcon} />)}
                         <Text style={styles.members}>
-                            {showMembersCount ? (room.membersCount + ' members') : 'New group'}
+                            {showMembersCount ? (room.membersCount + ' members') : 'New ' + (room.isChannel ? 'channel' : 'group')}
                         </Text>
                     </View>
 
@@ -123,9 +123,11 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
 
 class GroupInviteComponent extends React.Component<PageProps> {
     render() {
+        let invite: RoomInviteInfo_invite = this.props.router.params.invite;
+        let room = invite.room;
         return (
             <>
-                <SHeader title="Group invitation" />
+                <SHeader title={(room.isChannel ? 'Group' : 'Channel') + ' invitation'} />
                 <GroupInviteContent {...this.props} />
             </>
         );

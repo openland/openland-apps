@@ -620,6 +620,7 @@ export const RoomInviteInfoQuery = gql`
                 ... on SharedRoom {
                     id
                     kind
+                    isChannel
                     title
                     photo
                     socialImage

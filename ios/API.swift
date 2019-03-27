@@ -8565,7 +8565,7 @@ public final class RoomInviteLinkQuery: GraphQLQuery {
 
 public final class RoomInviteInfoQuery: GraphQLQuery {
   public let operationDefinition =
-    "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}"
+    "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(OrganizationShort.fragmentDefinition).appending(UserShort.fragmentDefinition) }
 
@@ -8668,6 +8668,7 @@ public final class RoomInviteInfoQuery: GraphQLQuery {
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("kind", type: .nonNull(.scalar(SharedRoomKind.self))),
+          GraphQLField("isChannel", type: .nonNull(.scalar(Bool.self))),
           GraphQLField("title", type: .nonNull(.scalar(String.self))),
           GraphQLField("photo", type: .nonNull(.scalar(String.self))),
           GraphQLField("socialImage", type: .scalar(String.self)),
@@ -8683,8 +8684,8 @@ public final class RoomInviteInfoQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public init(id: GraphQLID, kind: SharedRoomKind, title: String, photo: String, socialImage: String? = nil, description: String? = nil, organization: Organization? = nil, membership: SharedRoomMembershipStatus, membersCount: Int? = nil) {
-          self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "photo": photo, "socialImage": socialImage, "description": description, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }, "membership": membership, "membersCount": membersCount])
+        public init(id: GraphQLID, kind: SharedRoomKind, isChannel: Bool, title: String, photo: String, socialImage: String? = nil, description: String? = nil, organization: Organization? = nil, membership: SharedRoomMembershipStatus, membersCount: Int? = nil) {
+          self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "isChannel": isChannel, "title": title, "photo": photo, "socialImage": socialImage, "description": description, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }, "membership": membership, "membersCount": membersCount])
         }
 
         public var __typename: String {
@@ -8711,6 +8712,15 @@ public final class RoomInviteInfoQuery: GraphQLQuery {
           }
           set {
             resultMap.updateValue(newValue, forKey: "kind")
+          }
+        }
+
+        public var isChannel: Bool {
+          get {
+            return resultMap["isChannel"]! as! Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "isChannel")
           }
         }
 

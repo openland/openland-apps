@@ -11,6 +11,7 @@ query RoomInviteInfo($invite: String!) {
       ... on SharedRoom {
         description
         id
+        isChannel
         kind
         membersCount
         membership

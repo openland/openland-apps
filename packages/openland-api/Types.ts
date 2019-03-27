@@ -17734,6 +17734,7 @@ export interface RoomInviteInfo_invite_room {
   __typename: "SharedRoom";
   id: string;
   kind: SharedRoomKind;
+  isChannel: boolean;
   title: string;
   photo: string;
   socialImage: string | null;
