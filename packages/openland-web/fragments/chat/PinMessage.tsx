@@ -139,7 +139,12 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                     let isCompact =
                         index > 0 ? array[index - 1].sender.id === item.sender.id : false;
 
-                    if (item && (item as any).attachments[0]) {
+                    if (
+                        item &&
+                        (item as any).attachments[0] &&
+                        !(item as any).attachments[0].title &&
+                        !(item as any).attachments[0].titleLink
+                    ) {
                         attachments = {
                             __typename: (item as any).attachments[0].__typename,
                             fallback: (item as any).attachments[0].fallback,

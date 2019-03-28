@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XScrollView } from 'openland-x/XScrollView';
@@ -30,6 +30,11 @@ const RootClassName = css`
     -webkit-overflow-scrolling: touch;
 `;
 
+const RootMobileNologinClassName = css`
+    overflow: auto;
+    height: auto;
+`;
+
 const Root = Glamorous(XScrollView)({
     position: 'relative',
     display: 'flex',
@@ -41,16 +46,17 @@ const Root = Glamorous(XScrollView)({
     flexGrow: 1,
 });
 
-const MainContent = Glamorous.div({
+const MainContent = Glamorous.div<{ isMobile: boolean }>(props => ({
     zIndex: 1,
     display: 'flex',
     flexDirection: 'column',
     flexShrink: 0,
     padding: 28,
+    marginBottom: props.isMobile ? 100 : 0,
     '& > *': {
         zIndex: 2,
     },
-});
+}));
 
 const Close = Glamorous(XLink)({
     display: 'flex',
@@ -101,7 +107,8 @@ const ImageWrapper = Glamorous.div<{ hasFooter: boolean }>(({ hasFooter }) => {
         bottom: hasFooter ? 60 : 18,
         left: 0,
         overflow: 'hidden',
-        'z-index': '-1!important',
+        pointerEvents: 'none',
+        'z-index': '0 !important',
         '@media (max-height: 800px)': {
             height: 250,
         },
@@ -245,7 +252,7 @@ export const RoomsInviteComponent = ({
     let chatTypeStr = room.isChannel ? 'Channel' : 'Group';
 
     return (
-        <div className={RootClassName}>
+        <div className={cx(RootClassName, isMobile && noLogin && RootMobileNologinClassName)}>
             <XView
                 flexDirection="row"
                 justifyContent={isMobile ? 'space-between' : 'flex-end'}
@@ -277,7 +284,7 @@ export const RoomsInviteComponent = ({
                     </XView>
                 )}
             </XView>
-            <XView flexDirection="column" paddingHorizontal={20}>
+            <XView flexDirection="column" paddingHorizontal={20} zIndex={1}>
                 {invite && invite.invitedByUser ? (
                     <UserInfoWrapper separator={6} justifyContent="center" alignItems="center">
                         <XAvatar2
@@ -286,11 +293,14 @@ export const RoomsInviteComponent = ({
                             id={invite.invitedByUser.id}
                             size={24}
                         />
-                        <Text>{invite.invitedByUser.name} {`invites you to join ${chatTypeStr.toLowerCase()}`}</Text>
+                        <Text>
+                            {invite.invitedByUser.name}{' '}
+                            {`invites you to join ${chatTypeStr.toLowerCase()}`}
+                        </Text>
                     </UserInfoWrapper>
                 ) : (
-                        <div style={{ height: 50 }} />
-                    )}
+                    <div style={{ height: 50 }} />
+                )}
                 <XView marginTop={111} alignSelf="center" alignItems="center" maxWidth={428}>
                     <RoomAvatar
                         src={room.photo || undefined}
@@ -335,7 +345,7 @@ export const RoomsInviteComponent = ({
                         </XView>
                     )}
                     {!signup && (
-                        <XView marginTop={36} marginBottom={40}>
+                        <XView marginTop={36} marginBottom={isMobile ? 90 : 40}>
                             {button}
                         </XView>
                     )}
@@ -347,7 +357,7 @@ export const RoomsInviteComponent = ({
                 </ImageWrapper>
             )}
             {signup && (
-                <MainContent>
+                <MainContent isMobile={isMobile || true}>
                     <XButton
                         style="primary"
                         size="large"
