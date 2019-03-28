@@ -3876,15 +3876,6 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
-    if name == "InlinedConferenceFull" {
-      let data = InlinedConferenceFull(unsafeResultMap: self.convertData(src: data))
-      let key = data.id + ":" + data.__typename
-      store.withinReadWriteTransaction { (tx) in
-        try tx.write(object: data, withKey: key)
-        handler(nil, nil)
-      }
-      return
-    }
     if name == "TinyMessage" {
       let data = TinyMessage(unsafeResultMap: self.convertData(src: data))
       let key = data.id + ":" + data.__typename
