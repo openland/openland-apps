@@ -9003,14 +9003,14 @@ export interface GetDraftMessageVariables {
 // GraphQL query operation: GlobalCounter
 // ====================================================
 
-export interface GlobalCounter_counter {
+export interface GlobalCounter_alphaNotificationCounter {
   __typename: "NotificationCounter";
   id: string;
   unreadCount: number;
 }
 
 export interface GlobalCounter {
-  counter: GlobalCounter_counter;
+  alphaNotificationCounter: GlobalCounter_alphaNotificationCounter;
 }
 
 /* tslint:disable */
@@ -23704,6 +23704,66 @@ export interface ConferenceFull {
   id: string;
   peers: ConferenceFull_peers[];
   iceServers: ConferenceFull_iceServers[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: InlinedConferenceFull
+// ====================================================
+
+export interface InlinedConferenceFull_peers_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface InlinedConferenceFull_peers_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: InlinedConferenceFull_peers_user_primaryOrganization | null;
+}
+
+export interface InlinedConferenceFull_peers_connection {
+  __typename: "ConferencePeerConnection";
+  state: ConferencePeerConnectionState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface InlinedConferenceFull_peers {
+  __typename: "ConferencePeer";
+  id: string;
+  user: InlinedConferenceFull_peers_user;
+  connection: InlinedConferenceFull_peers_connection | null;
+}
+
+export interface InlinedConferenceFull_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
+export interface InlinedConferenceFull {
+  __typename: "Conference";
+  id: string;
+  peers: InlinedConferenceFull_peers[];
+  iceServers: InlinedConferenceFull_iceServers[];
 }
 
 /* tslint:disable */

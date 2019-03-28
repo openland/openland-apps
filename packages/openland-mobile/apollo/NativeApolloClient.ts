@@ -19,7 +19,7 @@ const NativeGraphQL = NativeModules.RNGraphQL as {
 
     read: (key: string, id: string, query: string, vars: any) => void;
     write: (key: string, id: string, data: any, query: string, vars: any) => void;
-    
+
     writeFragment: (key: string, id: string, data: any, fragment: string) => void;
 }
 
@@ -36,7 +36,7 @@ export class NativeApolloClient extends BridgedClient {
             RNGraphQLEmitter.addListener('apollo_client', (src) => {
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
-                        this.operationFailed(src.id, src.data);
+                        this.operationFailed(src.id, src.data || {});
                     } else if (src.type === 'response') {
                         this.operationUpdated(src.id, src.data);
                     }
@@ -46,10 +46,8 @@ export class NativeApolloClient extends BridgedClient {
             DeviceEventEmitter.addListener('apollo_client', (src) => {
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
-                        // console.log(src);
-                        this.operationFailed(src.id, src.data);
+                        this.operationFailed(src.id, src.data || {});
                     } else if (src.type === 'response') {
-                        // console.log(src);
                         this.operationUpdated(src.id, src.data);
                     }
                 }

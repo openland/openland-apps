@@ -275,8 +275,8 @@
       }
     },
     {
-      "signature": "882b8f60bd2de69e1b2631a1649a3267181e03e526f474d7e99ff766bc65e781",
-      "document": "query GlobalCounter{counter:alphaNotificationCounter{__typename id unreadCount}}",
+      "signature": "99c2b5cd2b8b4c236fc748237c33a4c86aa7065007c6389de14d3c870b6f340f",
+      "document": "query GlobalCounter{alphaNotificationCounter{__typename id unreadCount}}",
       "metadata": {
         "engineSignature": "query GlobalCounter{alphaNotificationCounter{__typename id unreadCount}}"
       }

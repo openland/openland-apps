@@ -6,6 +6,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XModal, XModalCloser } from 'openland-x-modal/XModal';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import {
+    FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     Room_room_PrivateRoom,
     Room_room_SharedRoom,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
@@ -26,7 +27,7 @@ import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
 import AttachIcon from 'openland-icons/ic-attach-doc-blue.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { MessageReplyComponent } from 'openland-web/components/messenger/message/content/MessageReplyComponent';
-import { XLink } from '../../../openland-x/XLink';
+import { XLink } from 'openland-x/XLink';
 
 interface UnpinButtonProps {
     variables: {
@@ -131,8 +132,23 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
         quotedMessages.push(
             <ReplyMessageWrapper key={'reply_message' + pinMessage.id}>
                 {pinMessage.quotedMessages!.map((item, index, array) => {
+                    let attachments:
+                        | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
+                        | undefined = undefined;
+
                     let isCompact =
                         index > 0 ? array[index - 1].sender.id === item.sender.id : false;
+
+                    if (item && (item as any).attachments[0]) {
+                        attachments = {
+                            __typename: (item as any).attachments[0].__typename,
+                            fallback: (item as any).attachments[0].fallback,
+                            id: (item as any).attachments[0].fileId,
+                            fileId: (item as any).attachments[0].fileId,
+                            fileMetadata: (item as any).attachments[0].fileMetadata,
+                            filePreview: (item as any).attachments[0].filePreview,
+                        };
+                    }
 
                     return (
                         <MessageReplyComponent
@@ -143,7 +159,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                             id={item.id}
                             key={'reply_message' + item.id + index}
                             edited={false}
-                            // attach={fileAttach}
+                            attach={attachments}
                             startSelected={false}
                             compact={isCompact || undefined}
                         />
@@ -412,7 +428,7 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
                                         <XView marginRight={6}>
                                             <ForwardIcon className={ForwardIconClassName} />
                                         </XView>
-                                        <XView>Forward</XView>
+                                        <XView color="rgba(0, 0, 0, 0.5)">Forward</XView>
                                     </XView>
                                 )}
                             {attach && attach.__typename === 'MessageAttachmentFile' && (

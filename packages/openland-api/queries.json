@@ -2748,10 +2748,10 @@
 			"operationType": "query",
 			"rootType": "Query",
 			"variables": [],
-			"source": "query GlobalCounter {\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}",
+			"source": "query GlobalCounter {\n  alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}",
 			"fields": [
 				{
-					"responseName": "counter",
+					"responseName": "alphaNotificationCounter",
 					"fieldName": "alphaNotificationCounter",
 					"type": "NotificationCounter!",
 					"isConditional": false,
@@ -2785,8 +2785,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "query GlobalCounter {\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}",
-			"operationId": "cdd1eae295f4ab5447e56ac7cf7936005ba5a05b353e8f05baaaa8d5927899c2"
+			"sourceWithFragments": "query GlobalCounter {\n  alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}",
+			"operationId": "ba2ff26fcac56656eedb1e52d5625334b42a9f5142da25fc00ec6c10f030d5b3"
 		},
 		{
 			"filePath": "file:///Users/steve/Develop/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -11607,6 +11607,271 @@
 							"fragmentSpreads": [
 								"UserShort"
 							],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "connection",
+							"fieldName": "connection",
+							"type": "ConferencePeerConnection",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "state",
+									"fieldName": "state",
+									"type": "ConferencePeerConnectionState!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "sdp",
+									"fieldName": "sdp",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "ice",
+									"fieldName": "ice",
+									"type": "[String!]!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				},
+				{
+					"responseName": "iceServers",
+					"fieldName": "iceServers",
+					"type": "[ICEServer!]!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "urls",
+							"fieldName": "urls",
+							"type": "[String!]!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "username",
+							"fieldName": "username",
+							"type": "String",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "credential",
+							"fieldName": "credential",
+							"type": "String",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": []
+		},
+		{
+			"typeCondition": "Conference",
+			"possibleTypes": [
+				"Conference"
+			],
+			"fragmentName": "InlinedConferenceFull",
+			"filePath": "file:///Users/steve/Develop/openland-apps/packages/openland-api/fragments/InlinedConferenceFull.ts",
+			"source": "fragment InlinedConferenceFull on Conference {\n  __typename\n  id\n  peers {\n    __typename\n    id\n    user {\n      __typename\n      id\n      name\n      firstName\n      lastName\n      photo\n      email\n      online\n      lastSeen\n      isYou\n      isBot\n      shortname\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n        isCommunity: alphaIsCommunity\n      }\n    }\n    connection {\n      __typename\n      state\n      sdp\n      ice\n    }\n  }\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}",
+			"fields": [
+				{
+					"responseName": "__typename",
+					"fieldName": "__typename",
+					"type": "String!",
+					"isConditional": false
+				},
+				{
+					"responseName": "id",
+					"fieldName": "id",
+					"type": "ID!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "peers",
+					"fieldName": "peers",
+					"type": "[ConferencePeer!]!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "user",
+							"fieldName": "user",
+							"type": "User!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "name",
+									"fieldName": "name",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "firstName",
+									"fieldName": "firstName",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "lastName",
+									"fieldName": "lastName",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "photo",
+									"fieldName": "photo",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "email",
+									"fieldName": "email",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "online",
+									"fieldName": "online",
+									"type": "Boolean!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "lastSeen",
+									"fieldName": "lastSeen",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "isYou",
+									"fieldName": "isYou",
+									"type": "Boolean!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "isBot",
+									"fieldName": "isBot",
+									"type": "Boolean!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "shortname",
+									"fieldName": "shortname",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "primaryOrganization",
+									"fieldName": "primaryOrganization",
+									"type": "Organization",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "name",
+											"fieldName": "name",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "photo",
+											"fieldName": "photo",
+											"type": "String",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "isCommunity",
+											"fieldName": "alphaIsCommunity",
+											"type": "Boolean!",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": [],
 							"inlineFragments": []
 						},
 						{

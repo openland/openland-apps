@@ -26,14 +26,13 @@ export class OnlineWatcher {
             //     continue;
             // }
             let evData = event.alphaSubscribeChatOnline;
+
             let userId = evData.user.id;
 
             this.onlinesData.set(userId, evData.user.online);
             this.singleChangeListeners.forEach(l => l(userId, evData.user.online));
 
             this.listeners.forEach(l => l(this.onlinesData));
-
-            await this.client.writeUserOnline(evData.user);
         });
     }
 
@@ -63,5 +62,5 @@ export class OnlineWatcher {
         if (this.sub) {
             this.sub.destroy();
         }
-    }
+    };
 }
