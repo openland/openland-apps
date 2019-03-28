@@ -13,6 +13,7 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from '../components/messenger/MessagesStateContext';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
@@ -35,8 +36,18 @@ interface MessengerComponentLoaderProps {
     data: Room;
 }
 
+const DocumentHeadTitleUpdater = ({ title }: { title: string }) => {
+    const isActive = React.useContext(IsActiveContext);
+
+    if (isActive === false) {
+        return null;
+    }
+
+    return <XDocumentHead title={title} />;
+};
+
 class MessagengerFragmentInner extends React.PureComponent<
-    MessengerComponentLoaderProps & { apollo: OpenApolloClient }
+    MessengerComponentLoaderProps & { apollo: OpenApolloClient; id: string }
 > {
     onChatLostAccess = () => {
         this.props.apollo.client.reFetchObservableQueries();
@@ -70,7 +81,7 @@ class MessagengerFragmentInner extends React.PureComponent<
 
         return (
             <>
-                <XDocumentHead title={title} />
+                <DocumentHeadTitleUpdater title={title} />
                 <XView
                     flexGrow={1}
                     flexShrink={1}
@@ -124,6 +135,7 @@ export const MessengerFragment = (props: { id: string; isActive: boolean }) => {
 
     return (
         <MessagengerFragmentInner
+            id={props.id}
             isActive={props.isActive}
             state={state}
             user={user}
