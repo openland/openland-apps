@@ -29,7 +29,7 @@ let isAdmin = (a: Organization_organization_members) => {
 
 function ProfileOrganizationContent(props: PageProps) {
     let settings = getClient().useAccountSettings();
-    let organization = getClient().useOrganization({ organizationId: props.router.params.id }).organization;
+    let organization = getClient().useOrganization({ organizationId: props.router.params.id }, { fetchPolicy: 'cache-and-network' }).organization;
     let handleAddMember = React.useCallback(() => {
         Modals.showUserMuptiplePicker(props.router, {
             title: 'Add',
