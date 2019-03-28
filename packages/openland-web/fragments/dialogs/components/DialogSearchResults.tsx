@@ -72,6 +72,7 @@ export const DialogSearchResults = withGlobalSearch(props => {
                         title: i.title,
                         fallback: i.title,
                         photo: i.roomPhoto,
+                        isChannel: i.isChannel,
                         unread: 0,
                     };
                 } else if (i.__typename === 'Organization') {

@@ -5,6 +5,7 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 // import { createWorkerClient } from 'openland-mobile/apollo/createWorkerClient';
 // import { createDumbBridgeClient } from 'openland-graphql/proxy/DumbBridgeClient';
 import { NativeApolloClient } from 'openland-mobile/apollo/NativeApolloClient';
+import { createWorkerClient } from 'openland-mobile/apollo/createWorkerClient';
 // import { Platform } from 'react-native';
 // import { Platform } from 'react-native';
 
@@ -31,6 +32,7 @@ export function getClient(): OpenlandClient {
 
 export function buildNativeClient(storage: string, token: string) {
 
+    // return new OpenlandClient(createWorkerClient(token));
     return new OpenlandClient(new NativeApolloClient(storage, token));
 
     // if (Platform.OS === 'ios') {

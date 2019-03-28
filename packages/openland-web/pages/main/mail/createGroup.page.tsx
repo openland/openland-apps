@@ -26,6 +26,8 @@ import AddPhotoIcon from 'openland-icons/ic-photo-create-room.svg';
 import CheckIcon from 'openland-icons/check-form.svg';
 import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
 import { Query } from 'react-apollo';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XRouter } from 'openland-x-routing/XRouter';
 
 interface CreateRoomButtonProps {
     title: string;
@@ -33,6 +35,8 @@ interface CreateRoomButtonProps {
     members: string[];
     organizationId: string | null;
     imageUuid: string | null;
+    isChannel: boolean;
+
 }
 
 const CreateRoomButton = withCreateChannel(props => {
@@ -54,7 +58,7 @@ const CreateRoomButton = withCreateChannel(props => {
                         members: [...typedProps.members],
                         organizationId: typedProps.organizationId || '',
                         photoRef: photoRef,
-                        channel: true,
+                        channel: (props as any).isChannel,
                     },
                 }).then((data: any) => {
                     const roomId: string = data.data.room.id as string;
@@ -67,8 +71,9 @@ const CreateRoomButton = withCreateChannel(props => {
     );
 }) as React.ComponentType<CreateRoomButtonProps>;
 
-const MainWrapper = (props: { back: boolean; onBackClick: () => void; children: any }) => (
-    <XView flexGrow={1} flexDirection="column" backgroundColor="#fff" maxHeight="100vh">
+const MainWrapper = (props: { back: boolean; onBackClick: () => void; children: any, isChannel: boolean }) => {
+    let chatTypeStr = props.isChannel ? 'channel' : 'group';
+    return <XView flexGrow={1} flexDirection="column" backgroundColor="#fff" maxHeight="100vh">
         <XView
             flexDirection="row"
             alignItems="center"
@@ -92,12 +97,12 @@ const MainWrapper = (props: { back: boolean; onBackClick: () => void; children: 
                 </XView>
             )}
             <XModal
-                title="Leave and delete group"
+                title={`Leave and delete ${chatTypeStr}`}
                 width={380}
                 body={
                     <XModalBody>
                         <XView paddingBottom={30}>
-                            If you leave now, this group will be deleted.
+                            {`If you leave now, this ${chatTypeStr} will be deleted.`}
                         </XView>
                     </XModalBody>
                 }
@@ -136,7 +141,7 @@ const MainWrapper = (props: { back: boolean; onBackClick: () => void; children: 
             </XView>
         </XView>
     </XView>
-);
+};
 
 const CoverWrapperClassName = css`
     width: 120px;
@@ -543,6 +548,7 @@ const SearchPeopleInputClassName = css`
 interface CreateGroupInnerProps {
     myId: string;
     myOrgId: string;
+    isChannel: boolean;
 }
 
 interface CreateGroupInnerState {
@@ -558,7 +564,7 @@ interface CreateGroupInnerState {
 }
 
 class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGroupInnerState> {
-    constructor(props: { myId: string; myOrgId: string }) {
+    constructor(props: CreateGroupInnerProps) {
         super(props);
 
         this.state = {
@@ -679,7 +685,9 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
             selectedUsers,
         } = this.state;
 
-        const { myId, myOrgId } = this.props;
+        const { myId, myOrgId, isChannel } = this.props;
+
+        let chatTypeStr = isChannel ? 'Channel' : 'Group';
 
         let options: { label: string; value: string }[] = [];
         let membersIds: string[] = [];
@@ -695,7 +703,7 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
             });
         }
         return (
-            <MainWrapper back={!settingsPage} onBackClick={this.handleBackClick}>
+            <MainWrapper back={!settingsPage} onBackClick={this.handleBackClick} isChannel={this.props.isChannel}>
                 {settingsPage && (
                     <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
                         <XView
@@ -707,7 +715,7 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                             paddingHorizontal={16}
                         >
                             <XView fontSize={32} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
-                                New group
+                                {`New ${chatTypeStr.toLocaleLowerCase()}`}
                             </XView>
                             <XButton style="primary" text="Next" onClick={this.handleAddMembers} />
                         </XView>
@@ -725,7 +733,7 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                             >
                                 <XView flexGrow={1} flexShrink={0} marginBottom={16}>
                                     <XInput
-                                        title="Group name"
+                                        title={`${chatTypeStr} name`}
                                         onChange={this.handleTitleChange}
                                         value={title}
                                         invalid={titleError}
@@ -742,7 +750,7 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                                             marginTop={8}
                                             fontSize={12}
                                         >
-                                            Please enter a name for this group
+                                            {`Please enter a name for this ${chatTypeStr.toLocaleLowerCase()}`}
                                         </XView>
                                     )}
                                 </XView>
@@ -758,15 +766,15 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                                         options={[
                                             {
                                                 value: SharedRoomKind.GROUP,
-                                                label: 'Secret group',
+                                                label: `Secret ${chatTypeStr.toLocaleLowerCase()}`,
                                                 subtitle:
-                                                    'People can view and join only by invite from a group member',
+                                                    `People can view and join only by invite from a ${chatTypeStr.toLocaleLowerCase()} member`,
                                             },
                                             {
                                                 value: SharedRoomKind.PUBLIC,
-                                                label: 'Shared group',
+                                                label: `Shared ${chatTypeStr.toLocaleLowerCase()}`,
                                                 subtitle:
-                                                    'Group where your organization or community members communicate',
+                                                    `${chatTypeStr} where your organization or community members communicate`,
                                             },
                                         ]}
                                     />
@@ -781,7 +789,7 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                                     >
                                         <XView flexDirection="column" marginTop={-3}>
                                             <XView color="#1488f3" fontSize={12}>
-                                                Group type
+                                                {`${chatTypeStr} type`}
                                             </XView>
                                             <XView fontSize={14} color="#000" marginTop={-4}>
                                                 {type === SharedRoomKind.GROUP
@@ -837,6 +845,7 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                                         members={[myId]}
                                         organizationId={selectedOrg ? selectedOrg : myOrgId}
                                         imageUuid={coverSrc}
+                                        isChannel={isChannel}
                                     >
                                         <XButton style="ghost" text="Skip" />
                                     </CreateRoomButton>
@@ -847,6 +856,7 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                                     members={membersIds}
                                     organizationId={selectedOrg ? selectedOrg : myOrgId}
                                     imageUuid={coverSrc}
+                                    isChannel={isChannel}
                                 >
                                     <XButton style="primary" text="Add" />
                                 </CreateRoomButton>
@@ -875,13 +885,16 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
 export default withApp(
     'Create Room',
     'viewer',
-    withUserInfo(props => (
-        <>
+    withUserInfo(props => {
+        const router = React.useContext(XRouterContext) as XRouter;
+
+        return <>
             <XDocumentHead title="Create Room" />
             <CreateGroupInner
                 myId={props.user ? props.user.id : ''}
                 myOrgId={props.organization ? props.organization.id : ''}
+                isChannel={router.routeQuery.channel === 'true'}
             />
         </>
-    )),
+    }),
 );

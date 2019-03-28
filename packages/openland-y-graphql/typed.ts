@@ -8,6 +8,14 @@ export class GraphqlTypedQuery<QUERY, VARIABLES> {
     }
 }
 
+export class GraphqlTypedFragment<FRAGMENT> {
+    document: any;
+    ____query?: FRAGMENT;
+    constructor(document: FRAGMENT) {
+        this.document = document;
+    }
+}
+
 export class GraphqlTypedSubscription<SUBSCRIPTION, VARIABLES> {
     document: any;
     ____vars?: VARIABLES;
@@ -48,6 +56,6 @@ export function typedSubscription<SUBSCRIPTION, VARIABLES>(subscription: SUBSCRI
     return new GraphqlTypedSubscription<SUBSCRIPTION, VARIABLES>(subscription);
 }
 
-export function typedTask<MUTATION, VARIABLES, RESULT>(mutation: MUTATION) {
-    return new GraphqlTypedTask<MUTATION, VARIABLES, RESULT>(mutation);
+export function typedFragment<FRAGMENT>(fragment: FRAGMENT) {
+    return new GraphqlTypedFragment<FRAGMENT>(fragment);
 }

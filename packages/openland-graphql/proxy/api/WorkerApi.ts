@@ -6,8 +6,6 @@ export type WorkerRequest = {
     id: string;
 } & (
         { type: 'query', body: any, variables: any, params?: OperationParameters } |
-        { type: 'read', body: any, variables: any } |
-        { type: 'write', body: any, variables: any, data: any } |
         { type: 'mutate', body: any, variables: any } |
         
         { type: 'watch', body: any, variables: any, params?: OperationParameters } |
@@ -15,7 +13,12 @@ export type WorkerRequest = {
         
         { type: 'subscribe', body: any, variables: any } |
         { type: 'subscribe-update', variables: any } |
-        { type: 'subscribe-destroy' }
+        { type: 'subscribe-destroy' } |
+
+        { type: 'read', body: any, variables: any } |
+        { type: 'write', body: any, variables: any, data: any } |
+
+        { type: 'write-fragment', body: any, data: any }
     );
 
 export type WorkerResponseType = 'result' | 'error';

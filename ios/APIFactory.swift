@@ -3683,6 +3683,136 @@ class ApiFactory: ApiFactoryBase {
     fatalError()
   }
 
+  func writeFragment(store: ApolloStore, data: NSDictionary, name: String, handler: @escaping ResponseHandler) {
+    if name == "AppFull" {
+      let data = AppFull(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "ConferenceFull" {
+      let data = ConferenceFull(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "TinyMessage" {
+      let data = TinyMessage(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "FullMessage" {
+      let data = FullMessage(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "OrganizationFull" {
+      let data = OrganizationFull(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "OrganizationMedium" {
+      let data = OrganizationMedium(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "OrganizationProfileFull" {
+      let data = OrganizationProfileFull(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "OrganizationSearch" {
+      let data = OrganizationSearch(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "OrganizationShort" {
+      let data = OrganizationShort(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "SettingsFull" {
+      let data = SettingsFull(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "UserFull" {
+      let data = UserFull(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "UserOnline" {
+      let data = UserOnline(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "UserShort" {
+      let data = UserShort(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "UserTiny" {
+      let data = UserTiny(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    fatalError()
+  }
+
   func readNotificationMessages(_ src: NSDictionary, _ name: String) -> NotificationMessages? {
     let v = self.readString(src, name);
     if v != nil && !(v is NSNull) {

@@ -1,0 +1,7 @@
+fragment OrganizationShort on Organization {
+  __typename
+  isCommunity: alphaIsCommunity
+  id
+  name
+  photo
+}

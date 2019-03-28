@@ -41,6 +41,12 @@ export class WorkerApolloHost {
             }).catch((v) => {
                 this.postError(msg.id, v);
             });
+        } else if (msg.type === 'write-fragment') {
+            this.client.writeFragment(msg.data, msg.body).then((v) => {
+                this.postResult(msg.id, v);
+            }).catch((v) => {
+                this.postError(msg.id, v);
+            })
         } else if (msg.type === 'watch') {
             let id = msg.id;
             let watch = this.client.queryWatch(msg.body, msg.variables, msg.params);

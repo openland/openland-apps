@@ -1,0 +1,24 @@
+fragment ConferenceFull on Conference {
+  __typename
+  iceServers {
+    __typename
+    credential
+    urls
+    username
+  }
+  id
+  peers {
+    __typename
+    connection {
+      __typename
+      ice
+      sdp
+      state
+    }
+    id
+    user {
+      __typename
+      ...UserShort
+    }
+  }
+}

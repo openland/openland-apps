@@ -121,7 +121,7 @@ const CreateGroupComponent = (props: PageProps) => {
 
                 {!orgIdFromRouter && (
                     <View marginTop={20}>
-                        <ZListItemGroup footer={selectedKind === SharedRoomKind.GROUP ? `Secret ${chatTypeString} is a place that people can view and join only by invite from a ${chatTypeString} member.` : undefined}>
+                        <ZListItemGroup footer={selectedKind === SharedRoomKind.GROUP ? `Secret ${chatTypeString.toLowerCase()} is a place that people can view and join only by invite from a ${chatTypeString.toLowerCase()} member.` : undefined}>
                             <ZListItem
                                 onPress={handleKindPress}
                                 text={`${chatTypeString} type`}

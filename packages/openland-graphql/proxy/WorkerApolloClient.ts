@@ -45,6 +45,9 @@ export class WorkerApolloClient extends BridgedClient {
     protected postWriteQuery(id: string, data: any, query: any, vars: any) {
         this.postMessage({ type: 'write', id, body: query, variables: vars, data });
     }
+    protected postWriteFragment(id: string, data: any, fragment: any) {
+        this.postMessage({ type: 'write-fragment', id, body: fragment, data });
+    }
 
     private handleMessage(msg: WorkerResponse) {
         if (msg.type === 'result') {

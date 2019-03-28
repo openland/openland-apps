@@ -1,0 +1,24 @@
+fragment OrganizationProfileFull on OrganizationProfile {
+  __typename
+  about
+  featured: alphaFeatured
+  facebook
+  id
+  linkedin
+  name
+  photoRef {
+    __typename
+    crop {
+      __typename
+      h
+      w
+      x
+      y
+    }
+    uuid
+  }
+  shortname
+  twitter
+  website
+  websiteTitle
+}

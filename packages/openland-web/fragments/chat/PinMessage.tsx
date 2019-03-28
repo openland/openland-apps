@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
+import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XModal, XModalCloser } from 'openland-x-modal/XModal';
@@ -19,15 +20,49 @@ import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import IconFile from 'openland-icons/ic-pinfile-doc.svg';
 import IconImage from 'openland-icons/ic-pinfile-photo.svg';
+import ForwardIcon from 'openland-icons/ic-reply-2.svg';
 import PinIcon from 'openland-icons/ic-pinned-message.svg';
 import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
 import AttachIcon from 'openland-icons/ic-attach-doc-blue.svg';
+import CloseIcon from 'openland-icons/ic-close.svg';
+import { MessageReplyComponent } from 'openland-web/components/messenger/message/content/MessageReplyComponent';
+import { XLink } from '../../../openland-x/XLink';
 
 interface UnpinButtonProps {
     variables: {
         chatId: string;
     };
 }
+
+const ReplyMessageWrapper = Glamorous.div({
+    position: 'relative',
+    '&::before': {
+        display: 'block',
+        content: ' ',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        bottom: 4,
+        width: 3,
+        borderRadius: 3,
+        backgroundColor: '#1790ff',
+    },
+});
+
+const Close = Glamorous(XLink)({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 32,
+    height: 32,
+    borderRadius: 50,
+    '&:hover': {
+        backgroundColor: '#ecedf0',
+    },
+    '& svg path': {
+        fill: '#CCCCCC',
+    },
+});
 
 const ImageClassName = css`
     max-height: 40vh;
@@ -58,6 +93,7 @@ export interface PinMessageComponentProps {
 }
 
 const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
+    const isMobile = React.useContext(IsMobileContext);
     const { room } = props;
     const { pinMessage } = props;
     const { sender, message } = pinMessage;
@@ -89,8 +125,57 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
         attachment = pinMessage.attachments[0] as attachmentType;
     }
 
+    let quotedMessages = [];
+
+    if (pinMessage.quotedMessages && pinMessage.quotedMessages!.length > 0) {
+        quotedMessages.push(
+            <ReplyMessageWrapper key={'reply_message' + pinMessage.id}>
+                {pinMessage.quotedMessages!.map((item, index, array) => {
+                    let isCompact =
+                        index > 0 ? array[index - 1].sender.id === item.sender.id : false;
+
+                    return (
+                        <MessageReplyComponent
+                            spans={pinMessage.spans}
+                            sender={item.sender}
+                            date={item.date}
+                            message={item.message}
+                            id={item.id}
+                            key={'reply_message' + item.id + index}
+                            edited={false}
+                            // attach={fileAttach}
+                            startSelected={false}
+                            compact={isCompact || undefined}
+                        />
+                    );
+                })}
+            </ReplyMessageWrapper>,
+        );
+    }
+
     const body = (
-        <XView padding={32} flexDirection="column">
+        <XView
+            paddingHorizontal={32}
+            paddingTop={isMobile ? 0 : 30}
+            paddingBottom={30}
+            flexDirection="column"
+        >
+            {isMobile && (
+                <XView
+                    height={52}
+                    marginBottom={8}
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                >
+                    <XView color="rgba(0, 0, 0, 0.9)" fontSize={20} fontWeight="600">
+                        Pinned message
+                    </XView>
+                    <Close autoClose={true}>
+                        <CloseIcon />
+                    </Close>
+                </XView>
+            )}
             <XView flexDirection="row" alignItems="center" justifyContent="space-between">
                 <XView flexDirection="row" alignItems="center" flexGrow={1}>
                     <XView flexDirection="row" alignItems="center" marginRight={12}>
@@ -99,6 +184,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                             src={sender.photo || undefined}
                             objectId={sender.id}
                             objectName={sender.name}
+                            online={false}
                         />
                     </XView>
                     <XView flexDirection="column" flexGrow={1}>
@@ -128,6 +214,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                                         fontWeight="600"
                                         fontSize={12}
                                         marginLeft={8}
+                                        marginBottom={-2}
                                     >
                                         {sender.primaryOrganization.name}
                                     </XView>
@@ -137,7 +224,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                                 {canMeUnpinMessage && (
                                     <UnpinButton variables={{ chatId: props.chatId }} />
                                 )}
-                                <XModalCloser autoClose={true} />
+                                {!isMobile && <XModalCloser autoClose={true} />}
                             </XView>
                         </XView>
                         <XView
@@ -147,7 +234,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                             fontWeight="600"
                             fontSize={12}
                         >
-                            <XDate value={pinMessage.date} format="humanize" />
+                            <XDate value={pinMessage.date} format="datetime_short" />
                             <XView
                                 width={3}
                                 height={3}
@@ -170,60 +257,59 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                         isEdited={false}
                     />
                 )}
-                {attachment &&
-                    attachment.fileMetadata.isImage && (
-                        <img
-                            src={'https://ucarecdn.com/' + attachment.fileId + '/'}
-                            className={ImageClassName}
+                {attachment && attachment.fileMetadata.isImage && (
+                    <img
+                        src={'https://ucarecdn.com/' + attachment.fileId + '/'}
+                        className={ImageClassName}
+                    />
+                )}
+                {attachment && !attachment.fileMetadata.isImage && (
+                    <XView flexDirection="column">
+                        <XView
+                            height={1}
+                            backgroundColor="#ececec"
+                            width="100%"
+                            flexShrink={0}
+                            marginBottom={12}
                         />
-                    )}
-                {attachment &&
-                    !attachment.fileMetadata.isImage && (
-                        <XView flexDirection="column">
+                        <XView
+                            flexDirection="row"
+                            alignItems="center"
+                            as="a"
+                            hoverTextDecoration="none"
+                            href={`https://ucarecdn.com/${attachment.fileId}/${
+                                attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
+                            }`}
+                        >
                             <XView
-                                height={1}
-                                backgroundColor="#ececec"
-                                width="100%"
-                                flexShrink={0}
-                                marginBottom={12}
-                            />
-                            <XView
-                                flexDirection="row"
                                 alignItems="center"
-                                as="a"
-                                hoverTextDecoration="none"
-                                href={`https://ucarecdn.com/${attachment.fileId}/${
-                                    attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
-                                }`}
+                                flexDirection="row"
+                                flexShrink={0}
+                                marginRight={8}
                             >
-                                <XView
-                                    alignItems="center"
-                                    flexDirection="row"
-                                    flexShrink={0}
-                                    marginRight={8}
-                                >
-                                    <AttachIcon />
+                                <AttachIcon />
+                            </XView>
+                            <XView flexDirection="row" alignItems="center">
+                                <XView fontSize={13} color="#1790ff">
+                                    {attachment.fileMetadata.name}
                                 </XView>
-                                <XView flexDirection="row" alignItems="center">
-                                    <XView fontSize={13} color="#1790ff">
-                                        {attachment.fileMetadata.name}
-                                    </XView>
-                                    <XView
-                                        width={3}
-                                        height={3}
-                                        opacity={0.3}
-                                        backgroundColor="#000"
-                                        borderRadius="100%"
-                                        flexShrink={0}
-                                        marginHorizontal={5}
-                                    />
-                                    <XView fontSize={13} color="rgba(0, 0, 0, 0.5)">
-                                        {niceBytes(Number(attachment.fileMetadata.size))}
-                                    </XView>
+                                <XView
+                                    width={3}
+                                    height={3}
+                                    opacity={0.3}
+                                    backgroundColor="#000"
+                                    borderRadius="100%"
+                                    flexShrink={0}
+                                    marginHorizontal={5}
+                                />
+                                <XView fontSize={13} color="rgba(0, 0, 0, 0.5)">
+                                    {niceBytes(Number(attachment.fileMetadata.size))}
                                 </XView>
                             </XView>
                         </XView>
-                    )}
+                    </XView>
+                )}
+                {quotedMessages}
             </XView>
         </XView>
     );
@@ -236,6 +322,12 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
 
     return <XModal body={body} target={target} footer={null} />;
 });
+
+const ForwardIconClassName = css`
+    path {
+        fill: rgba(0, 0, 0, 0.2);
+    }
+`;
 
 export const PinMessageComponent = React.memo((props: PinMessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
@@ -257,7 +349,7 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
                 height={60}
                 flexShrink={0}
                 flexGrow={1}
-                paddingHorizontal={isMobile ? 34 : 74}
+                paddingHorizontal={isMobile ? 20 : 74}
                 alignItems="center"
                 flexDirection="row"
                 justifyContent="space-between"
@@ -276,7 +368,7 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
                     >
                         <PinIcon />
                     </XView>
-                    <XView flexDirection="column" maxWidth="70%">
+                    <XView flexDirection="column" maxWidth="calc(100% - 70px)">
                         <XView flexDirection="row" maxWidth="100%">
                             <XView
                                 as="a"
@@ -309,30 +401,40 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
                                     spans={pinMessage.spans}
                                     message={pinMessage.message}
                                     isEdited={false}
+                                    asPinMessage={true}
                                     shouldCrop
                                 />
                             )}
-                            {attach &&
-                                attach.__typename === 'MessageAttachmentFile' && (
-                                    <>
-                                        {attach.fileMetadata.isImage && (
-                                            <XView flexDirection="row" alignItems="center">
-                                                <XView marginRight={6}>
-                                                    <IconImage />
-                                                </XView>
-                                                <XView>Image</XView>
-                                            </XView>
-                                        )}
-                                        {!attach.fileMetadata.isImage && (
-                                            <XView flexDirection="row" alignItems="center">
-                                                <XView marginRight={6}>
-                                                    <IconFile />
-                                                </XView>
-                                                <XView>Document</XView>
-                                            </XView>
-                                        )}
-                                    </>
+                            {pinMessage.quotedMessages &&
+                                pinMessage.quotedMessages!.length > 0 &&
+                                !pinMessage.message && (
+                                    <XView flexDirection="row" alignItems="center">
+                                        <XView marginRight={6}>
+                                            <ForwardIcon className={ForwardIconClassName} />
+                                        </XView>
+                                        <XView>Forward</XView>
+                                    </XView>
                                 )}
+                            {attach && attach.__typename === 'MessageAttachmentFile' && (
+                                <>
+                                    {attach.fileMetadata.isImage && (
+                                        <XView flexDirection="row" alignItems="center">
+                                            <XView marginRight={6}>
+                                                <IconImage />
+                                            </XView>
+                                            <XView>Image</XView>
+                                        </XView>
+                                    )}
+                                    {!attach.fileMetadata.isImage && (
+                                        <XView flexDirection="row" alignItems="center">
+                                            <XView marginRight={6}>
+                                                <IconFile />
+                                            </XView>
+                                            <XView>Document</XView>
+                                        </XView>
+                                    )}
+                                </>
+                            )}
                         </XView>
                     </XView>
                 </XView>

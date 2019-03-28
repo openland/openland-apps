@@ -26,6 +26,7 @@ export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, comp
     let item = props.item;
     let isUser = item.kind === 'PRIVATE';
     let isGroup = item.kind === 'GROUP';
+    let isChannel = item.isChannel;
     let height = props.compact ? 48 : 80;
     let avatarSize = props.compact ? 30 : 60;
     let theme = React.useContext(ThemeContext);
@@ -56,7 +57,8 @@ export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, comp
             </ASFlex>
             <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                 <ASFlex height={Platform.OS === 'android' ? 22 : 18} marginTop={Platform.OS === 'android' ? -4 : 0}>
-                    {isGroup && <ASFlex height={22} alignItems="flex-end" marginRight={1}><ASImage tintColor={theme.dialogTitleSecureColor} width={13} height={13} source={require('assets/ic-lock-13.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
+                    {isGroup && !isChannel && <ASFlex height={22} alignItems="flex-end" marginRight={1}><ASImage tintColor={theme.dialogTitleSecureColor} width={13} height={13} source={require('assets/ic-lock-13.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
+                    {isChannel && <ASFlex height={22} alignItems="flex-end" marginRight={1}><ASImage tintColor={isGroup ? theme.dialogTitleSecureColor : '#000'} width={13} height={13} source={require('assets/ic-channel-13.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
                     <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={isGroup ? theme.dialogTitleSecureColor : theme.dialogTitleColor} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
                     {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color={theme.dialogDateColor}>{formatDate(item.date)}</ASText>}
                 </ASFlex>

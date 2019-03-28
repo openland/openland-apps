@@ -316,7 +316,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     scrollPosition={this.onMessageListScroll}
                 />
 
-                {!this.state.hideInput && (
+                {!this.state.hideInput && this.conversation.canSendMessage && (
                     <UploadContextProvider>
                         <MessageComposeHandler
                             isActive={this.props.isActive}

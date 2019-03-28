@@ -1,0 +1,11 @@
+query SuperAdmins {
+  superAdmins {
+    __typename
+    email
+    role
+    user {
+      __typename
+      ...UserShort
+    }
+  }
+}

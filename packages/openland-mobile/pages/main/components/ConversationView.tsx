@@ -12,6 +12,7 @@ import { ConversationTheme } from '../themes/ConversationThemeResolver';
 export interface MessagesListProps {
     engine: ConversationEngine;
     theme: ConversationTheme;
+    messagesPaddingBottom?: number;
 }
 export const androidMessageInputListOverlap = 50;
 
@@ -96,6 +97,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                 </Animated.View>}
                 <ConversationMessagesView
                     // ref={this.listRef}
+                    paddingBottom={this.props.messagesPaddingBottom}
                     loaded={this.state.conversation.historyFullyLoaded}
                     engine={this.props.engine}
                 />

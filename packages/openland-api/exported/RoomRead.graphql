@@ -1,0 +1,3 @@
+mutation RoomRead($id: ID!, $mid: ID!) {
+  roomRead(id: $id, mid: $mid)
+}

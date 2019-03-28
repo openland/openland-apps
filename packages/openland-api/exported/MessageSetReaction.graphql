@@ -1,0 +1,3 @@
+mutation MessageSetReaction($messageId: ID!, $reaction: String!) {
+  betaReactionSet(mid: $messageId, reaction: $reaction)
+}

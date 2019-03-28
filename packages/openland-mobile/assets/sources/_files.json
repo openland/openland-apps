@@ -1,223 +1,409 @@
 {
-    "icons": [{
-        "name": "ic-status-read",
-        "src": "ic-status-read.svg",
-        "sizes": [13]
-    }, {
-        "name": "ic-status-sending",
-        "src": "ic-status-sending.svg",
-        "sizes": [13]
-    }, {
-        "name": "ic-status-sent",
-        "src": "ic-status-sent.svg",
-        "sizes": [13]
-    }, {
-        "name": "ic-status-read",
-        "src": "ic-status-read.svg",
-        "sizes": [10]
-    }, {
-        "name": "ic-status-sending",
-        "src": "ic-status-sending.svg",
-        "sizes": [10]
-    }, {
-        "name": "ic-status-sent",
-        "src": "ic-status-sent.svg",
-        "sizes": [10]
-    }, {
-        "name": "ic-compose",
-        "src": "ic-compose-ios.svg",
-        "sizes": [26]
-    }, {
-        "name": "ic-link",
-        "src": "ic-link.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-leave",
-        "src": "ic-leave.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-leave",
-        "src": "ic-leave.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-lock",
-        "src": "ic-lock.svg",
-        "sizes": [13, 18, 24]
-    }, {
-        "name": "ic-call",
-        "src": "ic-call.svg",
-        "sizes": [24, 20]
-    }, {
-        "name": "ic-appearance-fill",
-        "src": "ic-appearance.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-appearance",
-        "src": "ic-appearance-outline.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-call-end",
-        "src": "ic-end.svg",
-        "sizes": [36]
-    }, {
-        "name": "ic-call-end",
-        "suffix": "android",
-        "src": "ic-end-android.svg",
-        "sizes": [36]
-    }, {
-        "name": "ic-help",
-        "src": "ic-notifications-copy.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-help-fill",
-        "src": "ic-ask.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-browse-fill",
-        "src": "ic-rooms-ios.svg",
-        "sizes": [30]
-    }, {
-        "name": "ic-rate",
-        "src": "ic-rate.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-rate-fill",
-        "src": "ic-rate-fill.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-star",
-        "src": "ic-star-admin.svg",
-        "sizes": [24, 13, 16]
-    }, {
-        "name": "ic-group",
-        "src": "ic-group.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-rooms",
-        "src": "ic-rooms.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-info",
-        "src": "ic-info.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-invite-fill",
-        "src": "ic-invite.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-link-fill",
-        "src": "ic-cell-link-ios.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-speaker",
-        "src": "ic-speaker.svg",
-        "sizes": [30]
-    }, {
-        "name": "ic-speaker",
-        "suffix": "android",
-        "src": "ic-speaker-android.svg",
-        "sizes": [30]
-    }, {
-        "name": "ic-mic-on",
-        "src": "ic-micro-on.svg",
-        "sizes": [30]
-    }, {
-        "name": "ic-mic-on",
-        "suffix": "android",
-        "src": "ic-micro-on-android.svg",
-        "sizes": [30]
-    }, {
-        "name": "ic-mic-off",
-        "src": "ic-micro-off.svg",
-        "sizes": [30]
-    }, {
-        "name": "ic-mic-off",
-        "suffix": "android",
-        "src": "ic-micro-off-android.svg",
-        "sizes": [30]
-    }, {
-        "name": "ic-add",
-        "src": "ic-add.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-message",
-        "src": "ic-message.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-message-fill",
-        "src": "ic-cell-message-ios.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-edit-text",
-        "src": "ic-name.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-edit-text-fill",
-        "src": "ic-cell-name-ios.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-notifications",
-        "src": "ic-notifications.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-notifications-fill",
-        "src": "ic-cell-notif-ios.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-photo",
-        "src": "ic-photo.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-camera",
-        "src": "ic-camera.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-video",
-        "src": "ic-video.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-gallery",
-        "src": "ic-photos.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-gallery-video",
-        "src": "ic-videos.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-document",
-        "src": "ic-document.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-photo-fill",
-        "src": "ic-cell-photo-ios.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-clear",
-        "src": "ic-clear.svg",
-        "sizes": [16]
-    }, {
-        "name": "ic-community",
-        "src": "ic-community.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-room",
-        "src": "ic-room.svg",
-        "sizes": [24]
-    }, {
-        "name": "ic-secret",
-        "src": "ic-secret.svg",
-        "sizes": [20, 24]
-    }, {
-        "name": "ic-attachment",
-        "src": "ic-attachment.svg",
-        "sizes": [11]
-    }, {
-        "name": "ic-members",
-        "src": "ic-members.svg",
-        "sizes": [16]
-    }, {
-        "name": "ic-more-android",
-        "src": "ic-more-android.svg",
-        "sizes": [24]
-    }]
+    "icons": [
+        {
+            "name": "ic-status-read",
+            "src": "ic-status-read.svg",
+            "sizes": [
+                13
+            ]
+        },
+        {
+            "name": "ic-status-sending",
+            "src": "ic-status-sending.svg",
+            "sizes": [
+                13
+            ]
+        },
+        {
+            "name": "ic-status-sent",
+            "src": "ic-status-sent.svg",
+            "sizes": [
+                13
+            ]
+        },
+        {
+            "name": "ic-status-read",
+            "src": "ic-status-read.svg",
+            "sizes": [
+                10
+            ]
+        },
+        {
+            "name": "ic-status-sending",
+            "src": "ic-status-sending.svg",
+            "sizes": [
+                10
+            ]
+        },
+        {
+            "name": "ic-status-sent",
+            "src": "ic-status-sent.svg",
+            "sizes": [
+                10
+            ]
+        },
+        {
+            "name": "ic-compose",
+            "src": "ic-compose-ios.svg",
+            "sizes": [
+                26
+            ]
+        },
+        {
+            "name": "ic-link",
+            "src": "ic-link.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-leave",
+            "src": "ic-leave.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-leave",
+            "src": "ic-leave.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-lock",
+            "src": "ic-lock.svg",
+            "sizes": [
+                13,
+                18,
+                24
+            ]
+        },
+        {
+            "name": "ic-call",
+            "src": "ic-call.svg",
+            "sizes": [
+                24,
+                20
+            ]
+        },
+        {
+            "name": "ic-appearance-fill",
+            "src": "ic-appearance.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-appearance",
+            "src": "ic-appearance-outline.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-call-end",
+            "src": "ic-end.svg",
+            "sizes": [
+                36
+            ]
+        },
+        {
+            "name": "ic-call-end",
+            "suffix": "android",
+            "src": "ic-end-android.svg",
+            "sizes": [
+                36
+            ]
+        },
+        {
+            "name": "ic-help",
+            "src": "ic-notifications-copy.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-help-fill",
+            "src": "ic-ask.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-browse-fill",
+            "src": "ic-rooms-ios.svg",
+            "sizes": [
+                30
+            ]
+        },
+        {
+            "name": "ic-rate",
+            "src": "ic-rate.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-rate-fill",
+            "src": "ic-rate-fill.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-star",
+            "src": "ic-star-admin.svg",
+            "sizes": [
+                24,
+                13,
+                16
+            ]
+        },
+        {
+            "name": "ic-group",
+            "src": "ic-group.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-rooms",
+            "src": "ic-rooms.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-info",
+            "src": "ic-info.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-invite-fill",
+            "src": "ic-invite.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-link-fill",
+            "src": "ic-cell-link-ios.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-speaker",
+            "src": "ic-speaker.svg",
+            "sizes": [
+                30
+            ]
+        },
+        {
+            "name": "ic-speaker",
+            "suffix": "android",
+            "src": "ic-speaker-android.svg",
+            "sizes": [
+                30
+            ]
+        },
+        {
+            "name": "ic-mic-on",
+            "src": "ic-micro-on.svg",
+            "sizes": [
+                30
+            ]
+        },
+        {
+            "name": "ic-mic-on",
+            "suffix": "android",
+            "src": "ic-micro-on-android.svg",
+            "sizes": [
+                30
+            ]
+        },
+        {
+            "name": "ic-mic-off",
+            "src": "ic-micro-off.svg",
+            "sizes": [
+                30
+            ]
+        },
+        {
+            "name": "ic-mic-off",
+            "suffix": "android",
+            "src": "ic-micro-off-android.svg",
+            "sizes": [
+                30
+            ]
+        },
+        {
+            "name": "ic-add",
+            "src": "ic-add.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-message",
+            "src": "ic-message.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-message-fill",
+            "src": "ic-cell-message-ios.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-edit-text",
+            "src": "ic-name.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-edit-text-fill",
+            "src": "ic-cell-name-ios.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-notifications",
+            "src": "ic-notifications.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-notifications-fill",
+            "src": "ic-cell-notif-ios.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-photo",
+            "src": "ic-photo.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-camera",
+            "src": "ic-camera.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-video",
+            "src": "ic-video.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-gallery",
+            "src": "ic-photos.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-gallery-video",
+            "src": "ic-videos.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-document",
+            "src": "ic-document.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-photo-fill",
+            "src": "ic-cell-photo-ios.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-clear",
+            "src": "ic-clear.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-community",
+            "src": "ic-community.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-room",
+            "src": "ic-room.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-secret",
+            "src": "ic-secret.svg",
+            "sizes": [
+                20,
+                24
+            ]
+        },
+        {
+            "name": "ic-attachment",
+            "src": "ic-attachment.svg",
+            "sizes": [
+                11
+            ]
+        },
+        {
+            "name": "ic-members",
+            "src": "ic-members.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-more-android",
+            "src": "ic-more-android.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-channel",
+            "src": "ic-channel.svg",
+            "sizes": [
+                13,
+                16,
+                18,
+                24
+            ]
+        },
+        {
+            "name": "ic-cell-channel",
+            "src": "ic-cell-channel.svg",
+            "sizes": [
+                24
+            ]
+        }
+    ]
 }

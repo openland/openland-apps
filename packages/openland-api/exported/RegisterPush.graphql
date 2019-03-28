@@ -1,0 +1,3 @@
+mutation RegisterPush($endpoint: String!, $type: PushType!) {
+  registerPush(endpoint: $endpoint, type: $type)
+}

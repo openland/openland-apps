@@ -1,0 +1,3 @@
+mutation RegisterWebPush($endpoint: String!) {
+  registerWebPush(endpoint: $endpoint)
+}

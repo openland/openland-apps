@@ -80,6 +80,12 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         }
     }
 
+    onTitleClick = async () => {
+        if (this.props.attach.titleLink) {
+            (await resolveInternalLink(this.props.attach.titleLink, () => Linking.openURL(this.props.attach.titleLink!)))();
+        }
+    }
+
     render() {
         let out = this.props.message.isOut;
         let link = this.props.attach!.titleLink || '';
@@ -190,10 +196,10 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             letterSpacing={-0.3}
                             fontSize={14}
                             marginTop={Platform.OS === 'android' ? -4 : -1}
-                            numberOfLines={1}
+                            numberOfLines={this.imageCompact ? (subTitle ? 1 : 2) : 3}
                             marginBottom={4}
                             fontWeight={TextStyles.weight.medium}
-
+                            onPress={this.onTitleClick}
                         >
                             {this.props.attach.title}
                             {this.props.padded && !subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)}
@@ -221,7 +227,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     marginTop={this.imageCompact && imgLayout ? (subTitle ? 4 : -19) : 0}
                     marginBottom={4}
                     lineHeight={19}
-                    numberOfLines={10}
+                    numberOfLines={5}
                     fontWeight={TextStyles.weight.regular}
                 >
                     {!subTitle && this.imageCompact && imgLayout && paddedTextPrfix}

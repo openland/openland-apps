@@ -1,0 +1,6 @@
+subscription ConferenceWatch($id: ID!) {
+  alphaConferenceWatch(id: $id) {
+    __typename
+    ...ConferenceFull
+  }
+}

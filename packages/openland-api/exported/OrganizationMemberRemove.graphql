@@ -1,0 +1,6 @@
+mutation OrganizationMemberRemove($organizationId: ID!, $userId: ID!) {
+  betaOrganizationMemberRemove(organizationId: $organizationId, userId: $userId) {
+    __typename
+    id
+  }
+}

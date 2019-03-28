@@ -35,7 +35,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
                         if (info.invite.room.membership === 'MEMBER') {
                             getMessenger().history.navigationManager.pushAndReset('Conversation', { id: info.invite.room.id });
                         } else {
-                            getMessenger().history.navigationManager.pushAndReset('GroupInvite', { invite: info.invite, inviteId: match.invite });
+                            getMessenger().history.navigationManager.push('GroupInvite', { invite: info.invite, inviteId: match.invite });
                         }
                     } else {
                         Alert.alert('Invite not found');

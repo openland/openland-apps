@@ -1,29 +1,12 @@
 import * as React from 'react';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-import { ConferenceFull } from 'openland-api/fragments/ConferenceFull';
-import { UserShort } from 'openland-api/fragments/UserShort';
-import { ConferenceWatchSubscription } from 'openland-api';
+import { useClient } from 'openland-web/utils/useClient';
 
-export class TalkWatchComponent extends React.Component<{
-    apollo: OpenApolloClient;
-    id: string;
-}> {
-    private subs: any = null;
-
-    componentDidMount() {
-        this.subs = this.props.apollo.client
-            .subscribe({
-                query: ConferenceWatchSubscription.document,
-                variables: { id: this.props.id },
-            })
-            .subscribe({});
-    }
-
-    componentWillUnmount() {
-        this.subs.unsubscribe();
-    }
-
-    render() {
-        return null;
-    }
-}
+export const TalkWatchComponent = React.memo<{ id: string }>((props) => {
+    let client = useClient();
+    React.useEffect(() => {
+        let watch = client.subscribeConferenceWatch({ id: props.id });
+        // TODO: Merge data
+        return () => watch.destroy();
+    }, [props.id]);
+    return null;
+});

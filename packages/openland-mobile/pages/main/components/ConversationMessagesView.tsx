@@ -10,6 +10,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 export interface ConversationMessagesViewProps {
     loaded: boolean;
     engine: ConversationEngine;
+    paddingBottom?: number;
 }
 
 export const ConversationMessagesView = React.memo<ConversationMessagesViewProps>((props) => {
@@ -22,7 +23,7 @@ export const ConversationMessagesView = React.memo<ConversationMessagesViewProps
                 dataView={getMessenger().getConversation(props.engine.conversationId)}
                 inverted={true}
                 contentPaddingTop={safeArea.top + (Platform.OS === 'ios' ? 500 : 0)}
-                contentPaddingBottom={0}
+                contentPaddingBottom={props.paddingBottom || 0}
                 style={{ flexGrow: 1 }}
                 headerPadding={Platform.select({ ios: 6, android: androidMessageInputListOverlap })}
                 overflowColor={theme.backgroundColor}

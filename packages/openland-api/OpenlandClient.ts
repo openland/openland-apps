@@ -2,6 +2,7 @@ import * as Source from './index';
 import * as Types from './Types'
 import { GraphqlClient, GraphqlActiveSubscription, OperationParameters } from 'openland-graphql/GraphqlClient'
 import { BaseApiClient } from 'openland-graphql/BaseApiClient'
+
 export class OpenlandClient extends BaseApiClient {
     constructor(client: GraphqlClient) {
         super(client);
@@ -875,5 +876,65 @@ export class OpenlandClient extends BaseApiClient {
     }
     subscribeOnlineWatch(variables: Types.OnlineWatchVariables): GraphqlActiveSubscription<Types.OnlineWatch, Types.OnlineWatchVariables> {
         return this.client.subscribe(Source.OnlineWatchSubscription, variables);
+    }
+    writeAppChat(data: Types.AppChat) {
+      return this.client.writeFragment(data, Source.AppChatFragment);
+    }
+    writeAppFull(data: Types.AppFull) {
+      return this.client.writeFragment(data, Source.AppFullFragment);
+    }
+    writeConferenceFull(data: Types.ConferenceFull) {
+      return this.client.writeFragment(data, Source.ConferenceFullFragment);
+    }
+    writeTinyMessage(data: Types.TinyMessage) {
+      return this.client.writeFragment(data, Source.TinyMessageFragment);
+    }
+    writeFullMessage(data: Types.FullMessage) {
+      return this.client.writeFragment(data, Source.FullMessageFragment);
+    }
+    writeOrganizationFull(data: Types.OrganizationFull) {
+      return this.client.writeFragment(data, Source.OrganizationFullFragment);
+    }
+    writeOrganizationMedium(data: Types.OrganizationMedium) {
+      return this.client.writeFragment(data, Source.OrganizationMediumFragment);
+    }
+    writeOrganizationProfileFull(data: Types.OrganizationProfileFull) {
+      return this.client.writeFragment(data, Source.OrganizationProfileFullFragment);
+    }
+    writeOrganizationSearch(data: Types.OrganizationSearch) {
+      return this.client.writeFragment(data, Source.OrganizationSearchFragment);
+    }
+    writeOrganizationShort(data: Types.OrganizationShort) {
+      return this.client.writeFragment(data, Source.OrganizationShortFragment);
+    }
+    writeRoomFull(data: Types.RoomFull) {
+      return this.client.writeFragment(data, Source.RoomFullFragment);
+    }
+    writeRoomShort(data: Types.RoomShort) {
+      return this.client.writeFragment(data, Source.RoomShortFragment);
+    }
+    writeSessionStateFull(data: Types.SessionStateFull) {
+      return this.client.writeFragment(data, Source.SessionStateFullFragment);
+    }
+    writeSettingsFull(data: Types.SettingsFull) {
+      return this.client.writeFragment(data, Source.SettingsFullFragment);
+    }
+    writeUserFull(data: Types.UserFull) {
+      return this.client.writeFragment(data, Source.UserFullFragment);
+    }
+    writeUserOnline(data: Types.UserOnline) {
+      return this.client.writeFragment(data, Source.UserOnlineFragment);
+    }
+    writeUserShort(data: Types.UserShort) {
+      return this.client.writeFragment(data, Source.UserShortFragment);
+    }
+    writeUserTiny(data: Types.UserTiny) {
+      return this.client.writeFragment(data, Source.UserTinyFragment);
+    }
+    writeChatUpdateFragment(data: Types.ChatUpdateFragment) {
+      return this.client.writeFragment(data, Source.ChatUpdateFragmentFragment);
+    }
+    writeDialogUpdateFragment(data: Types.DialogUpdateFragment) {
+      return this.client.writeFragment(data, Source.DialogUpdateFragmentFragment);
     }
 }

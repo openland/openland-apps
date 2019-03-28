@@ -1,0 +1,8 @@
+query Users($query: String!) {
+  items: users(query: $query) {
+    __typename
+    subtitle: email
+    id
+    title: name
+  }
+}

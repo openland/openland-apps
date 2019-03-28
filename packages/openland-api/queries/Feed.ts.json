@@ -1,6 +1,0 @@
-{
-    "operations": [
-        { "name": "FeedHomeQuery", "type": "query", "hasVariables": false },
-        { "name": "FeedPostMutation", "type": "mutation", "hasVariables": true }
-    ]
-}

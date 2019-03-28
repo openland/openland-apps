@@ -1,0 +1,69 @@
+fragment RoomFull on Room {
+  __typename
+  ... on PrivateRoom {
+    id
+    settings {
+      __typename
+      id
+      mute
+    }
+    user {
+      __typename
+      ...UserShort
+    }
+  }
+  ... on SharedRoom {
+    canEdit
+    canSendMessage
+    description
+    id
+    isChannel
+    kind
+    members {
+      __typename
+      canKick
+      membership
+      role
+      user {
+        __typename
+        ...UserShort
+      }
+    }
+    membersCount
+    membership
+    organization {
+      __typename
+      ...OrganizationMedium
+    }
+    photo
+    pinnedMessage {
+      __typename
+      ...FullMessage
+    }
+    requests {
+      __typename
+      user {
+        __typename
+        ...UserShort
+      }
+    }
+    role
+    settings {
+      __typename
+      id
+      mute
+    }
+    socialImage
+    title
+    welcomeMessage {
+      __typename
+      isOn
+      message
+      sender {
+        __typename
+        id
+        name
+      }
+    }
+  }
+}

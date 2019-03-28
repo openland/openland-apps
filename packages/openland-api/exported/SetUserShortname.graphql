@@ -1,0 +1,3 @@
+mutation SetUserShortname($shortname: String!) {
+  alphaSetUserShortName(shortname: $shortname)
+}

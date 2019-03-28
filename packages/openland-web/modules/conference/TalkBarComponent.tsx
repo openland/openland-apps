@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ConferenceQuery } from 'openland-api';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -9,7 +8,6 @@ import { XView } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 export const TalkBarComponent = (props: { conversationId: string }) => {
-    const apollo = React.useContext(YApolloContext)!;
     let calls = React.useContext(MessengerContext).calls;
     let callState = calls.useState();
     return (
@@ -22,12 +20,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
 
                     if (data.data!.conference.peers.length === 0) {
                         return (
-                            <>
-                                <TalkWatchComponent
-                                    apollo={apollo!}
-                                    id={data.data!.conference.id}
-                                />
-                            </>
+                            <TalkWatchComponent id={data.data!.conference.id} />
                         );
                     }
                     return (
@@ -94,7 +87,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                 )}
                             </XView>
                             )}
-                            <TalkWatchComponent apollo={apollo!} id={data.data!.conference.id} />
+                            <TalkWatchComponent id={data.data!.conference.id} />
                         </>
                     );
                 }}

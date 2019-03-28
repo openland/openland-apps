@@ -15,7 +15,7 @@ import { withRouter } from 'openland-x-routing/withRouter';
 
 const Root = Glamorous.div({
     display: 'flex',
-    height: '100vh',
+    minHeight: '100vh',
     width: '100%',
     backgroundColor: '#ffffff',
     flexDirection: 'column',
@@ -72,11 +72,12 @@ export const InviteInfoInner = (props: any) => {
                                     signup={'/signup?redirect=' + encodeURIComponent(redirect)}
                                 />
                             )}
-                            {!data.invite && !loading && (
-                                <MessagePageContent title="Join">
-                                    <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
-                                </MessagePageContent>
-                            )}
+                            {!data.invite &&
+                                !loading && (
+                                    <MessagePageContent title="Join">
+                                        <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
+                                    </MessagePageContent>
+                                )}
                             {!data.invite && loading && <XLoader loading={true} />}
                         </Content>
                     </Root>

@@ -1,0 +1,3 @@
+query RoomInviteLink($roomId: ID!) {
+  link: betaRoomInviteLink(roomId: $roomId)
+}

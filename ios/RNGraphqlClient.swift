@@ -76,6 +76,8 @@ class ActiveSubscription {
 
 var sqlCaches: [String: NormalizedCache] = [:]
 
+let CLIENT_VERSION = 1
+
 class RNGraphqlClient: WebSocketTransportDelegate {
   
   let key: String
@@ -111,7 +113,7 @@ class RNGraphqlClient: WebSocketTransportDelegate {
           let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
           let url = URL(fileURLWithPath: s + ".sqlite", relativeTo: path)
           print("Loading storage: \(storage) at \(url.absoluteURL)")
-          let c = try SQLiteNormalizedCache(fileURL: URL(fileURLWithPath: s + ".sqlite", relativeTo: path))
+          let c = try SQLiteNormalizedCache(fileURL: URL(fileURLWithPath: s + "-\(CLIENT_VERSION).sqlite", relativeTo: path))
           sqlCaches[s] = c
           cache = c
         }
@@ -119,6 +121,13 @@ class RNGraphqlClient: WebSocketTransportDelegate {
         cache = InMemoryNormalizedCache()
       }
       self.store = ApolloStore(cache: cache)
+      self.store.cacheKeyForObject =  { it in
+        if let id = it["id"], let typename = it["__typename"] {
+          return (typename as! String) + ":" + (id as! String)
+        } else {
+          return nil
+        }
+      }
       self.client = ApolloClient(networkTransport: transport, store: self.store)
       self.ws.delegate = self
     } catch {
@@ -178,6 +187,22 @@ class RNGraphqlClient: WebSocketTransportDelegate {
       return
     }
     self.factory.writeQuery(store: self.store, data: data, name: query, src: arguments) { (res, err) in
+      if !self.live {
+        return
+      }
+      if err != nil {
+        self.handleError(id: id, err: err!)
+      } else {
+        self.module.reportResult(key: self.key, id: id, result: nil)
+      }
+    }
+  }
+  
+  func writeFragment(id: String, data: NSDictionary, fragment: String) {
+    if !self.live {
+      return
+    }
+    self.factory.writeFragment(store: self.store, data: data, name: fragment) { (res, err) in
       if !self.live {
         return
       }

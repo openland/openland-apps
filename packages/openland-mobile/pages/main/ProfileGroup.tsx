@@ -34,12 +34,14 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
 
     const room = client.useRoom({ id: props.id }).room as Room_room_SharedRoom;
 
+    const chatTypeStr = room.isChannel ? 'channel' : 'group';
+
     const handleSend = React.useCallback(() => {
         props.router.pushAndReset('Conversation', { 'flexibleId': props.router.params.id });
     }, [props.router.params.id]);
 
     const handleLeave = React.useCallback(() => {
-        Alert.builder().title(`Are you sure you want to leave group? You may not be able to join it again.`)
+        Alert.builder().title(`Are you sure you want to leave ${chatTypeStr}? You may not be able to join it again.`)
             .button('Cancel', 'cancel')
             .action('Leave and delete', 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId: props.router.params.id });
@@ -121,7 +123,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             {room.canEdit && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
 
             <ZListItemHeader
-                titleIcon={room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
+                titleIcon={room.isChannel ? require('assets/ic-channel-18.png') : room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
                 titleColor={room.kind === 'GROUP' ? '#129f25' : undefined}
                 title={room.title}
                 subtitle={subtitle}
@@ -170,7 +172,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
                 {(room.role === 'ADMIN' || room.role === 'OWNER' || room.role === 'MEMBER') &&
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
-                        text="Invite to group with a link"
+                        text={`Invite to ${chatTypeStr} with a link`}
                         onPress={() => props.router.present('ProfileGroupLink', { id: room!.id })}
                         navigationIcon={false}
                     />}

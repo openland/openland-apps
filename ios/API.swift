@@ -4140,7 +4140,7 @@ public final class AddAppToChatMutation: GraphQLMutation {
 
 public final class DialogsQuery: GraphQLQuery {
   public let operationDefinition =
-    "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      cid\n      fid\n      kind\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...TinyMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}"
+    "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      cid\n      fid\n      kind\n      isChannel\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...TinyMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(TinyMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
 
@@ -4254,6 +4254,7 @@ public final class DialogsQuery: GraphQLQuery {
           GraphQLField("cid", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("fid", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("kind", type: .nonNull(.scalar(DialogKind.self))),
+          GraphQLField("isChannel", type: .nonNull(.scalar(Bool.self))),
           GraphQLField("title", type: .nonNull(.scalar(String.self))),
           GraphQLField("photo", type: .nonNull(.scalar(String.self))),
           GraphQLField("unreadCount", type: .nonNull(.scalar(Int.self))),
@@ -4268,8 +4269,8 @@ public final class DialogsQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public init(cid: GraphQLID, fid: GraphQLID, kind: DialogKind, title: String, photo: String, unreadCount: Int, isMuted: Bool, haveMention: Bool, topMessage: TopMessage? = nil) {
-          self.init(unsafeResultMap: ["__typename": "Dialog", "cid": cid, "fid": fid, "kind": kind, "title": title, "photo": photo, "unreadCount": unreadCount, "isMuted": isMuted, "haveMention": haveMention, "topMessage": topMessage.flatMap { (value: TopMessage) -> ResultMap in value.resultMap }])
+        public init(cid: GraphQLID, fid: GraphQLID, kind: DialogKind, isChannel: Bool, title: String, photo: String, unreadCount: Int, isMuted: Bool, haveMention: Bool, topMessage: TopMessage? = nil) {
+          self.init(unsafeResultMap: ["__typename": "Dialog", "cid": cid, "fid": fid, "kind": kind, "isChannel": isChannel, "title": title, "photo": photo, "unreadCount": unreadCount, "isMuted": isMuted, "haveMention": haveMention, "topMessage": topMessage.flatMap { (value: TopMessage) -> ResultMap in value.resultMap }])
         }
 
         public var __typename: String {
@@ -4305,6 +4306,15 @@ public final class DialogsQuery: GraphQLQuery {
           }
           set {
             resultMap.updateValue(newValue, forKey: "kind")
+          }
+        }
+
+        public var isChannel: Bool {
+          get {
+            return resultMap["isChannel"]! as! Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "isChannel")
           }
         }
 
@@ -5530,9 +5540,6 @@ public final class PinMessageMutation: GraphQLMutation {
       self.init(unsafeResultMap: ["__typename": "Mutation", "pinMessage": pinMessage])
     }
 
-    /// modernSendMessage(room: ID!, message: String, repeatKey: String,
-    /// forwardMessages: [ID!], spans: [MessageSpanInput!], attachments:
-    /// [MessageAttachmentInput!]): Boolean!
     public var pinMessage: Bool {
       get {
         return resultMap["pinMessage"]! as! Bool
@@ -8555,7 +8562,7 @@ public final class RoomInviteLinkQuery: GraphQLQuery {
 
 public final class RoomInviteInfoQuery: GraphQLQuery {
   public let operationDefinition =
-    "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}"
+    "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(OrganizationShort.fragmentDefinition).appending(UserShort.fragmentDefinition) }
 
@@ -8658,6 +8665,7 @@ public final class RoomInviteInfoQuery: GraphQLQuery {
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("kind", type: .nonNull(.scalar(SharedRoomKind.self))),
+          GraphQLField("isChannel", type: .nonNull(.scalar(Bool.self))),
           GraphQLField("title", type: .nonNull(.scalar(String.self))),
           GraphQLField("photo", type: .nonNull(.scalar(String.self))),
           GraphQLField("socialImage", type: .scalar(String.self)),
@@ -8673,8 +8681,8 @@ public final class RoomInviteInfoQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public init(id: GraphQLID, kind: SharedRoomKind, title: String, photo: String, socialImage: String? = nil, description: String? = nil, organization: Organization? = nil, membership: SharedRoomMembershipStatus, membersCount: Int? = nil) {
-          self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "photo": photo, "socialImage": socialImage, "description": description, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }, "membership": membership, "membersCount": membersCount])
+        public init(id: GraphQLID, kind: SharedRoomKind, isChannel: Bool, title: String, photo: String, socialImage: String? = nil, description: String? = nil, organization: Organization? = nil, membership: SharedRoomMembershipStatus, membersCount: Int? = nil) {
+          self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "isChannel": isChannel, "title": title, "photo": photo, "socialImage": socialImage, "description": description, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }, "membership": membership, "membersCount": membersCount])
         }
 
         public var __typename: String {
@@ -8701,6 +8709,15 @@ public final class RoomInviteInfoQuery: GraphQLQuery {
           }
           set {
             resultMap.updateValue(newValue, forKey: "kind")
+          }
+        }
+
+        public var isChannel: Bool {
+          get {
+            return resultMap["isChannel"]! as! Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "isChannel")
           }
         }
 
@@ -19780,7 +19797,7 @@ public struct FullMessage: GraphQLFragment {
   }
 
   public struct Span: GraphQLSelectionSet {
-    public static let possibleTypes = ["MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+    public static let possibleTypes = ["MessageBoldText", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
 
     public static let selections: [GraphQLSelection] = [
       GraphQLTypeCase(
@@ -19797,6 +19814,10 @@ public struct FullMessage: GraphQLFragment {
 
     public init(unsafeResultMap: ResultMap) {
       self.resultMap = unsafeResultMap
+    }
+
+    public static func makeMessageBoldText(offset: Int, length: Int) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageBoldText", "offset": offset, "length": length])
     }
 
     public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -21506,7 +21527,7 @@ public struct FullMessage: GraphQLFragment {
       }
 
       public struct Span: GraphQLSelectionSet {
-        public static let possibleTypes = ["MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+        public static let possibleTypes = ["MessageBoldText", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
 
         public static let selections: [GraphQLSelection] = [
           GraphQLTypeCase(
@@ -21523,6 +21544,10 @@ public struct FullMessage: GraphQLFragment {
 
         public init(unsafeResultMap: ResultMap) {
           self.resultMap = unsafeResultMap
+        }
+
+        public static func makeMessageBoldText(offset: Int, length: Int) -> Span {
+          return Span(unsafeResultMap: ["__typename": "MessageBoldText", "offset": offset, "length": length])
         }
 
         public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -22311,7 +22336,7 @@ public struct FullMessage: GraphQLFragment {
         }
 
         public struct Span: GraphQLSelectionSet {
-          public static let possibleTypes = ["MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+          public static let possibleTypes = ["MessageBoldText", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
 
           public static let selections: [GraphQLSelection] = [
             GraphQLTypeCase(
@@ -22328,6 +22353,10 @@ public struct FullMessage: GraphQLFragment {
 
           public init(unsafeResultMap: ResultMap) {
             self.resultMap = unsafeResultMap
+          }
+
+          public static func makeMessageBoldText(offset: Int, length: Int) -> Span {
+            return Span(unsafeResultMap: ["__typename": "MessageBoldText", "offset": offset, "length": length])
           }
 
           public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -23677,7 +23706,7 @@ public struct FullMessage: GraphQLFragment {
     }
 
     public struct Span: GraphQLSelectionSet {
-      public static let possibleTypes = ["MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+      public static let possibleTypes = ["MessageBoldText", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
 
       public static let selections: [GraphQLSelection] = [
         GraphQLTypeCase(
@@ -23694,6 +23723,10 @@ public struct FullMessage: GraphQLFragment {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
+      }
+
+      public static func makeMessageBoldText(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageBoldText", "offset": offset, "length": length])
       }
 
       public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -24480,7 +24513,7 @@ public struct FullMessage: GraphQLFragment {
     }
 
     public struct Span: GraphQLSelectionSet {
-      public static let possibleTypes = ["MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
+      public static let possibleTypes = ["MessageBoldText", "MessageSpanLink", "MessageSpanMultiUserMention", "MessageSpanRoomMention", "MessageSpanUserMention"]
 
       public static let selections: [GraphQLSelection] = [
         GraphQLTypeCase(
@@ -24497,6 +24530,10 @@ public struct FullMessage: GraphQLFragment {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
+      }
+
+      public static func makeMessageBoldText(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageBoldText", "offset": offset, "length": length])
       }
 
       public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
@@ -28596,6 +28633,66 @@ public struct UserFull: GraphQLFragment {
           resultMap += newValue.resultMap
         }
       }
+    }
+  }
+}
+
+public struct UserOnline: GraphQLFragment {
+  public static let fragmentDefinition =
+    "fragment UserOnline on User {\n  __typename\n  id\n  online\n  lastSeen\n}"
+
+  public static let possibleTypes = ["User"]
+
+  public static let selections: [GraphQLSelection] = [
+    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+    GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+    GraphQLField("online", type: .nonNull(.scalar(Bool.self))),
+    GraphQLField("lastSeen", type: .scalar(String.self)),
+  ]
+
+  public private(set) var resultMap: ResultMap
+
+  public init(unsafeResultMap: ResultMap) {
+    self.resultMap = unsafeResultMap
+  }
+
+  public init(id: GraphQLID, online: Bool, lastSeen: String? = nil) {
+    self.init(unsafeResultMap: ["__typename": "User", "id": id, "online": online, "lastSeen": lastSeen])
+  }
+
+  public var __typename: String {
+    get {
+      return resultMap["__typename"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  public var id: GraphQLID {
+    get {
+      return resultMap["id"]! as! GraphQLID
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  public var online: Bool {
+    get {
+      return resultMap["online"]! as! Bool
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "online")
+    }
+  }
+
+  public var lastSeen: String? {
+    get {
+      return resultMap["lastSeen"] as? String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "lastSeen")
     }
   }
 }

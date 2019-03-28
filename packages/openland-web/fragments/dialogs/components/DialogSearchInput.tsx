@@ -4,7 +4,7 @@ import { XInputProps, XInput } from 'openland-x/XInput';
 import SearchIcon from 'openland-icons/ic-search-small.svg';
 
 let searchStyle = css`
-    border-color: transparent;
+    border-color: transparent !important;
     margin-left: 16px;
     margin-right: 16px;
     margin-top: 5px;

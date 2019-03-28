@@ -83,26 +83,36 @@ function emojiChecker(messageText: string) {
     return true;
 }
 
-const SpansMessageTextPreprocess = ({ text, isEdited }: { text: string; isEdited?: boolean }) => {
-    let messageText = text;
-    const isOnlyEmoji = emojiChecker(messageText);
-    const isRotating = messageText.startsWith('🔄') && messageText.endsWith('🔄');
-    const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
-    const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
-    const isBig =
+const SpansMessageTextPreprocess = ({
+    text,
+    isEdited,
+    asPinMessage,
+}: {
+    text: string;
+    isEdited?: boolean;
+    asPinMessage?: boolean;
+}) => {
+    const isOnlyEmoji = emojiChecker(text);
+    const isRotating = text.startsWith('🔄') && text.endsWith('🔄');
+    const isInsane = text.startsWith('🌈') && text.endsWith('🌈');
+    const isMouthpiece = text.startsWith('📣') && text.endsWith('📣');
+    let isBig =
         isOnlyEmoji ||
         isInsane ||
         isRotating ||
         isMouthpiece ||
-        (messageText.length <= 302 && messageText.startsWith(':') && messageText.endsWith(':'));
+        (text.length <= 302 && text.startsWith(':') && text.endsWith(':'));
     const isTextSticker = !isOnlyEmoji && isBig;
     if (isInsane || isMouthpiece || isRotating) {
-        messageText = messageText
+        text = text
             .replace(/🌈/g, '')
             .replace(/📣/g, '')
             .replace(/🔄/g, '');
     } else if (isTextSticker) {
-        messageText = messageText.slice(1, messageText.length - 1);
+        text = text.slice(1, text.length - 1);
+    }
+    if (asPinMessage) {
+        isBig = false;
     }
     let smileSize: 38 | 16 = isBig ? 38 : 16;
     return (
@@ -116,7 +126,7 @@ const SpansMessageTextPreprocess = ({ text, isEdited }: { text: string; isEdited
             )}
         >
             {emoji({
-                src: messageText,
+                src: text,
                 size: smileSize,
             })}
             {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
@@ -126,12 +136,15 @@ const SpansMessageTextPreprocess = ({ text, isEdited }: { text: string; isEdited
 
 const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserShort; text: string; isYou: boolean }) => {
-        const userNameEmojified = React.useMemo(() => {
-            return emoji({
-                src: text,
-                size: 16,
-            });
-        }, [text]);
+        const userNameEmojified = React.useMemo(
+            () => {
+                return emoji({
+                    src: text,
+                    size: 16,
+                });
+            },
+            [text],
+        );
 
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
@@ -166,10 +179,12 @@ export const SpansMessage = ({
     message,
     spans,
     isEdited,
+    asPinMessage,
 }: {
     message: string;
     spans?: FullMessage_ServiceMessage_spans[];
     isEdited?: boolean;
+    asPinMessage?: boolean;
 }) => {
     let res: any[] = [];
 
@@ -220,7 +235,6 @@ export const SpansMessage = ({
                 );
                 lastOffset = span.offset + span.length;
             } else if (span.__typename === 'MessageSpanLink') {
- 
                 res.push(
                     <span key={'link-' + i} className={LinkText}>
                         <XView
@@ -278,7 +292,13 @@ export const SpansMessage = ({
             );
         }
     } else {
-        return <SpansMessageTextPreprocess text={message} isEdited={isEdited} />;
+        return (
+            <SpansMessageTextPreprocess
+                text={message}
+                isEdited={isEdited}
+                asPinMessage={asPinMessage}
+            />
+        );
     }
 
     return <>{res}</>;

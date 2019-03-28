@@ -1,0 +1,6 @@
+mutation RoomJoin($roomId: ID!) {
+  join: betaRoomJoin(roomId: $roomId) {
+    __typename
+    ...RoomFull
+  }
+}

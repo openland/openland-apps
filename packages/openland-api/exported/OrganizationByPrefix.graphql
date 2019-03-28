@@ -1,0 +1,6 @@
+query OrganizationByPrefix($query: String!) {
+  organizationByPrefix: alphaOrganizationByPrefix(query: $query) {
+    __typename
+    ...OrganizationSearch
+  }
+}

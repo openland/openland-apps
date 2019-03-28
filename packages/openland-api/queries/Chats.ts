@@ -14,6 +14,7 @@ export const DialogsQuery = gql`
                 cid
                 fid
                 kind
+                isChannel
                 title
                 photo
                 unreadCount
@@ -37,26 +38,7 @@ export const DialogsQuery = gql`
     ${TinyMessage}
 `;
 
-export const ChatWatchSubscription = gql`
-    subscription ChatWatch($chatId: ID!, $state: String) {
-        event: chatUpdates(chatId: $chatId, fromState: $state) {
-            ... on ChatUpdateSingle {
-                seq
-                state
-                update {
-                    ...ChatUpdateFragment
-                }
-            }
-            ... on ChatUpdateBatch {
-                fromSeq
-                seq
-                state
-                updates {
-                    ...ChatUpdateFragment
-                }
-            }
-        }
-    }
+export const ChatUpdateFragment = gql`
     fragment ChatUpdateFragment on ChatUpdate {
         ... on ChatMessageReceived {
             message {
@@ -83,32 +65,36 @@ export const ChatWatchSubscription = gql`
            lostAccess
         }
     }
+`;
+
+export const ChatWatchSubscription = gql`
+    subscription ChatWatch($chatId: ID!, $state: String) {
+        event: chatUpdates(chatId: $chatId, fromState: $state) {
+            ... on ChatUpdateSingle {
+                seq
+                state
+                update {
+                    ...ChatUpdateFragment
+                }
+            }
+            ... on ChatUpdateBatch {
+                fromSeq
+                seq
+                state
+                updates {
+                    ...ChatUpdateFragment
+                }
+            }
+        }
+    }
+    ${ChatUpdateFragment}
     ${FullMessage}
     ${UserTiny}
     ${UserShort}
     ${RoomShort}
 `;
 
-export const DialogsWatchSubscription = gql`
-    subscription DialogsWatch($state: String) {
-        event: dialogsUpdates(fromState: $state) {
-            ... on DialogUpdateSingle {
-                seq
-                state
-                update {
-                    ...DialogUpdateFragment
-                }
-            }
-            ... on DialogUpdateBatch {
-                fromSeq
-                seq
-                state
-                updates {
-                    ...DialogUpdateFragment
-                }
-            }
-        }
-    }
+export const DialogUpdateFragment = gql`
     fragment DialogUpdateFragment on DialogUpdate {
         ... on DialogMessageReceived {
             cid
@@ -175,6 +161,29 @@ export const DialogsWatchSubscription = gql`
         }
         
     }
+`;
+
+export const DialogsWatchSubscription = gql`
+    subscription DialogsWatch($state: String) {
+        event: dialogsUpdates(fromState: $state) {
+            ... on DialogUpdateSingle {
+                seq
+                state
+                update {
+                    ...DialogUpdateFragment
+                }
+            }
+            ... on DialogUpdateBatch {
+                fromSeq
+                seq
+                state
+                updates {
+                    ...DialogUpdateFragment
+                }
+            }
+        }
+    }
+    ${DialogUpdateFragment}
     ${UserTiny}
     ${TinyMessage}
     ${RoomShort}
@@ -619,6 +628,7 @@ export const RoomInviteInfoQuery = gql`
                 ... on SharedRoom {
                     id
                     kind
+                    isChannel
                     title
                     photo
                     socialImage

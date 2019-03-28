@@ -1,0 +1,6 @@
+mutation RoomAddMember($roomId: ID!, $userId: ID!) {
+  betaRoomInvite(invites: [{userId: $userId, role: MEMBER}], roomId: $roomId) {
+    __typename
+    ...RoomFull
+  }
+}

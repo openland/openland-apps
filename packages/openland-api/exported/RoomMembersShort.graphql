@@ -1,0 +1,9 @@
+query RoomMembersShort($roomId: ID!) {
+  members: roomMembers(roomId: $roomId) {
+    __typename
+    user {
+      __typename
+      id
+    }
+  }
+}

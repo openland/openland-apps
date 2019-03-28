@@ -1,0 +1,31 @@
+fragment ChatUpdateFragment on ChatUpdate {
+  __typename
+  ... on ChatMessageReceived {
+    message {
+      __typename
+      ...FullMessage
+    }
+    repeatKey
+  }
+  ... on ChatMessageUpdated {
+    message {
+      __typename
+      ...FullMessage
+    }
+  }
+  ... on ChatMessageDeleted {
+    message {
+      __typename
+      id
+    }
+  }
+  ... on ChatUpdated {
+    chat {
+      __typename
+      ...RoomShort
+    }
+  }
+  ... on ChatLostAccess {
+    lostAccess
+  }
+}

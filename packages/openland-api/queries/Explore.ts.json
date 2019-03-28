@@ -1,6 +1,0 @@
-{
-    "operations": [
-        { "name": "AvailableRoomsQuery", "type": "query", "hasVariables": false },
-        { "name": "GlobalSearchQuery", "type": "query", "hasVariables": true }
-    ]
-}

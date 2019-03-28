@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XScrollView } from 'openland-x/XScrollView';
@@ -9,14 +10,25 @@ import CloseIcon from 'openland-icons/ic-close.svg';
 import ProfileIcon from 'openland-icons/ic-profile.svg';
 import { withChannelJoinInviteLink } from '../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { Room_room_SharedRoom } from 'openland-api/Types';
-import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { isMobileUserAgent } from 'openland-web/utils/isMobileUserAgent';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
-import LogoWithName from 'openland-icons/logo.svg';
 import { useClient } from 'openland-web/utils/useClient';
+import { useIsMobile } from 'openland-web/hooks';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
+
+const RootClassName = css`
+    position: relative;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    flex-grow: 1;
+    background-color: #fff;
+    min-width: 100%;
+    height: 100vh;
+    -webkit-overflow-scrolling: touch;
+`;
 
 const Root = Glamorous(XScrollView)({
     position: 'relative',
@@ -35,7 +47,6 @@ const MainContent = Glamorous.div({
     flexDirection: 'column',
     flexShrink: 0,
     padding: 28,
-
     '& > *': {
         zIndex: 2,
     },
@@ -57,7 +68,6 @@ const Close = Glamorous(XLink)({
 });
 
 const UserInfoWrapper = Glamorous(XHorizontal)({
-    margin: 'auto',
     marginTop: 50,
     flexShrink: 0,
 });
@@ -183,7 +193,11 @@ export const RoomsInviteComponent = ({
     noLogin,
     signup,
 }: RoomsInviteComponentProps) => {
-    const isMobile = React.useContext(IsMobileContext);
+    if (!canUseDOM) {
+        return null;
+    }
+
+    const [isMobile] = useIsMobile();
 
     const button = (
         <>
@@ -228,23 +242,26 @@ export const RoomsInviteComponent = ({
         </>
     );
 
+    let chatTypeStr = room.isChannel ? 'Channel' : 'Group';
+
     return (
-        <Root>
+        <div className={RootClassName}>
             <XView
                 flexDirection="row"
                 justifyContent={isMobile ? 'space-between' : 'flex-end'}
                 alignItems="center"
             >
-                {isMobile && (
-                    <XView
-                        fontSize={20}
-                        fontWeight="600"
-                        color="rgba(0, 0, 0, 0.9)"
-                        marginLeft={20}
-                    >
-                        Group invitation
-                    </XView>
-                )}
+                {isMobile &&
+                    !noLogin && (
+                        <XView
+                            fontSize={20}
+                            fontWeight="600"
+                            color="rgba(0, 0, 0, 0.9)"
+                            marginLeft={20}
+                        >
+                            {`${chatTypeStr} invitation`}
+                        </XView>
+                    )}
                 {!noLogin && (
                     <XView
                         zIndex={100}
@@ -269,11 +286,11 @@ export const RoomsInviteComponent = ({
                             id={invite.invitedByUser.id}
                             size={24}
                         />
-                        <Text>{invite.invitedByUser.name} invites you to join group</Text>
+                        <Text>{invite.invitedByUser.name} {`invites you to join ${chatTypeStr.toLowerCase()}`}</Text>
                     </UserInfoWrapper>
                 ) : (
-                    <div style={{ height: 50 }} />
-                )}
+                        <div style={{ height: 50 }} />
+                    )}
                 <XView marginTop={111} alignSelf="center" alignItems="center" maxWidth={428}>
                     <RoomAvatar
                         src={room.photo || undefined}
@@ -317,7 +334,11 @@ export const RoomsInviteComponent = ({
                             <div className={textAlignCenter}>{room.description}</div>
                         </XView>
                     )}
-                    {!signup && <XView marginTop={36}>{button}</XView>}
+                    {!signup && (
+                        <XView marginTop={36} marginBottom={40}>
+                            {button}
+                        </XView>
+                    )}
                 </XView>
             </XView>
             {!isMobile && (
@@ -325,33 +346,6 @@ export const RoomsInviteComponent = ({
                     <Image />
                 </ImageWrapper>
             )}
-            {isMobile &&
-                noLogin && (
-                    <XView
-                        justifyContent="center"
-                        alignItems="center"
-                        flexDirection="row"
-                        width="100%"
-                        bottom={0}
-                        position="absolute"
-                        height={60}
-                        backgroundColor={'#f9f9f9'}
-                    >
-                        <XView marginTop={-10}>
-                            <LogoWithName />
-                        </XView>
-                        <XView
-                            marginLeft={8}
-                            borderRadius={2}
-                            width={4}
-                            height={4}
-                            backgroundColor={'#d8d8d8'}
-                        />
-                        <XView marginLeft={8} fontSize={13} color={'rgba(0, 0, 0, 0.5)'}>
-                            Professional messenger for project collaboration
-                        </XView>
-                    </XView>
-                )}
             {signup && (
                 <MainContent>
                     <XButton
@@ -369,6 +363,6 @@ export const RoomsInviteComponent = ({
                     />
                 </MainContent>
             )}
-        </Root>
+        </div>
     );
 };

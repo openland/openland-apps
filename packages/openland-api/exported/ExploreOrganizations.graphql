@@ -1,0 +1,22 @@
+query ExploreOrganizations($after: String, $all: Boolean, $page: Int, $prefix: String, $query: String, $sort: String) {
+  items: alphaOrganizations(after: $after, all: $all, first: 25, page: $page, prefix: $prefix, query: $query, sort: $sort) {
+    __typename
+    edges {
+      __typename
+      cursor
+      node {
+        __typename
+        ...OrganizationSearch
+      }
+    }
+    pageInfo {
+      __typename
+      currentPage
+      hasNextPage
+      hasPreviousPage
+      itemsCount
+      openEnded
+      pagesCount
+    }
+  }
+}

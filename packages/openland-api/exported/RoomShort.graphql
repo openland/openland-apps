@@ -1,0 +1,30 @@
+fragment RoomShort on Room {
+  __typename
+  ... on PrivateRoom {
+    id
+    user {
+      __typename
+      ...UserShort
+    }
+  }
+  ... on SharedRoom {
+    canEdit
+    canSendMessage
+    id
+    isChannel
+    kind
+    membersCount
+    membership
+    organization {
+      __typename
+      ...OrganizationShort
+    }
+    photo
+    pinnedMessage {
+      __typename
+      ...FullMessage
+    }
+    role
+    title
+  }
+}
