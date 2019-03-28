@@ -886,6 +886,9 @@ export class OpenlandClient extends BaseApiClient {
     writeConferenceFull(data: Types.ConferenceFull) {
       return this.client.writeFragment(data, Source.ConferenceFullFragment);
     }
+    writeInlinedConferenceFull(data: Types.InlinedConferenceFull) {
+      return this.client.writeFragment(data, Source.InlinedConferenceFullFragment);
+    }
     writeTinyMessage(data: Types.TinyMessage) {
       return this.client.writeFragment(data, Source.TinyMessageFragment);
     }
