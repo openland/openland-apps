@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-
+import { UserShort } from './UserShort';
 export const ConferenceFull = gql`
     fragment ConferenceFull on Conference {
         id
@@ -20,4 +20,5 @@ export const ConferenceFull = gql`
             credential
         }
     }
+    ${UserShort}
 `;

@@ -19100,6 +19100,451 @@ public struct ConferenceFull: GraphQLFragment {
   }
 }
 
+public struct InlinedConferenceFull: GraphQLFragment {
+  public static let fragmentDefinition =
+    "fragment InlinedConferenceFull on Conference {\n  __typename\n  id\n  peers {\n    __typename\n    id\n    user {\n      __typename\n      id\n      name\n      firstName\n      lastName\n      photo\n      email\n      online\n      lastSeen\n      isYou\n      isBot\n      shortname\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n        isCommunity: alphaIsCommunity\n      }\n    }\n    connection {\n      __typename\n      state\n      sdp\n      ice\n    }\n  }\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}"
+
+  public static let possibleTypes = ["Conference"]
+
+  public static let selections: [GraphQLSelection] = [
+    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+    GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+    GraphQLField("peers", type: .nonNull(.list(.nonNull(.object(Peer.selections))))),
+    GraphQLField("iceServers", type: .nonNull(.list(.nonNull(.object(IceServer.selections))))),
+  ]
+
+  public private(set) var resultMap: ResultMap
+
+  public init(unsafeResultMap: ResultMap) {
+    self.resultMap = unsafeResultMap
+  }
+
+  public init(id: GraphQLID, peers: [Peer], iceServers: [IceServer]) {
+    self.init(unsafeResultMap: ["__typename": "Conference", "id": id, "peers": peers.map { (value: Peer) -> ResultMap in value.resultMap }, "iceServers": iceServers.map { (value: IceServer) -> ResultMap in value.resultMap }])
+  }
+
+  public var __typename: String {
+    get {
+      return resultMap["__typename"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  public var id: GraphQLID {
+    get {
+      return resultMap["id"]! as! GraphQLID
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  public var peers: [Peer] {
+    get {
+      return (resultMap["peers"] as! [ResultMap]).map { (value: ResultMap) -> Peer in Peer(unsafeResultMap: value) }
+    }
+    set {
+      resultMap.updateValue(newValue.map { (value: Peer) -> ResultMap in value.resultMap }, forKey: "peers")
+    }
+  }
+
+  public var iceServers: [IceServer] {
+    get {
+      return (resultMap["iceServers"] as! [ResultMap]).map { (value: ResultMap) -> IceServer in IceServer(unsafeResultMap: value) }
+    }
+    set {
+      resultMap.updateValue(newValue.map { (value: IceServer) -> ResultMap in value.resultMap }, forKey: "iceServers")
+    }
+  }
+
+  public struct Peer: GraphQLSelectionSet {
+    public static let possibleTypes = ["ConferencePeer"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+      GraphQLField("user", type: .nonNull(.object(User.selections))),
+      GraphQLField("connection", type: .object(Connection.selections)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: GraphQLID, user: User, connection: Connection? = nil) {
+      self.init(unsafeResultMap: ["__typename": "ConferencePeer", "id": id, "user": user.resultMap, "connection": connection.flatMap { (value: Connection) -> ResultMap in value.resultMap }])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    public var user: User {
+      get {
+        return User(unsafeResultMap: resultMap["user"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "user")
+      }
+    }
+
+    public var connection: Connection? {
+      get {
+        return (resultMap["connection"] as? ResultMap).flatMap { Connection(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "connection")
+      }
+    }
+
+    public struct User: GraphQLSelectionSet {
+      public static let possibleTypes = ["User"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("name", type: .nonNull(.scalar(String.self))),
+        GraphQLField("firstName", type: .nonNull(.scalar(String.self))),
+        GraphQLField("lastName", type: .scalar(String.self)),
+        GraphQLField("photo", type: .scalar(String.self)),
+        GraphQLField("email", type: .scalar(String.self)),
+        GraphQLField("online", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("lastSeen", type: .scalar(String.self)),
+        GraphQLField("isYou", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("isBot", type: .nonNull(.scalar(Bool.self))),
+        GraphQLField("shortname", type: .scalar(String.self)),
+        GraphQLField("primaryOrganization", type: .object(PrimaryOrganization.selections)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, email: String? = nil, online: Bool, lastSeen: String? = nil, isYou: Bool, isBot: Bool, shortname: String? = nil, primaryOrganization: PrimaryOrganization? = nil) {
+        self.init(unsafeResultMap: ["__typename": "User", "id": id, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "email": email, "online": online, "lastSeen": lastSeen, "isYou": isYou, "isBot": isBot, "shortname": shortname, "primaryOrganization": primaryOrganization.flatMap { (value: PrimaryOrganization) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var name: String {
+        get {
+          return resultMap["name"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "name")
+        }
+      }
+
+      public var firstName: String {
+        get {
+          return resultMap["firstName"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "firstName")
+        }
+      }
+
+      public var lastName: String? {
+        get {
+          return resultMap["lastName"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "lastName")
+        }
+      }
+
+      public var photo: String? {
+        get {
+          return resultMap["photo"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "photo")
+        }
+      }
+
+      public var email: String? {
+        get {
+          return resultMap["email"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "email")
+        }
+      }
+
+      public var online: Bool {
+        get {
+          return resultMap["online"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "online")
+        }
+      }
+
+      public var lastSeen: String? {
+        get {
+          return resultMap["lastSeen"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "lastSeen")
+        }
+      }
+
+      public var isYou: Bool {
+        get {
+          return resultMap["isYou"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "isYou")
+        }
+      }
+
+      public var isBot: Bool {
+        get {
+          return resultMap["isBot"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "isBot")
+        }
+      }
+
+      public var shortname: String? {
+        get {
+          return resultMap["shortname"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "shortname")
+        }
+      }
+
+      public var primaryOrganization: PrimaryOrganization? {
+        get {
+          return (resultMap["primaryOrganization"] as? ResultMap).flatMap { PrimaryOrganization(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "primaryOrganization")
+        }
+      }
+
+      public struct PrimaryOrganization: GraphQLSelectionSet {
+        public static let possibleTypes = ["Organization"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("name", type: .nonNull(.scalar(String.self))),
+          GraphQLField("photo", type: .scalar(String.self)),
+          GraphQLField("alphaIsCommunity", alias: "isCommunity", type: .nonNull(.scalar(Bool.self))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: GraphQLID, name: String, photo: String? = nil, isCommunity: Bool) {
+          self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "name": name, "photo": photo, "isCommunity": isCommunity])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        public var name: String {
+          get {
+            return resultMap["name"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "name")
+          }
+        }
+
+        public var photo: String? {
+          get {
+            return resultMap["photo"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "photo")
+          }
+        }
+
+        public var isCommunity: Bool {
+          get {
+            return resultMap["isCommunity"]! as! Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "isCommunity")
+          }
+        }
+      }
+    }
+
+    public struct Connection: GraphQLSelectionSet {
+      public static let possibleTypes = ["ConferencePeerConnection"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("state", type: .nonNull(.scalar(ConferencePeerConnectionState.self))),
+        GraphQLField("sdp", type: .scalar(String.self)),
+        GraphQLField("ice", type: .nonNull(.list(.nonNull(.scalar(String.self))))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(state: ConferencePeerConnectionState, sdp: String? = nil, ice: [String]) {
+        self.init(unsafeResultMap: ["__typename": "ConferencePeerConnection", "state": state, "sdp": sdp, "ice": ice])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var state: ConferencePeerConnectionState {
+        get {
+          return resultMap["state"]! as! ConferencePeerConnectionState
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "state")
+        }
+      }
+
+      public var sdp: String? {
+        get {
+          return resultMap["sdp"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "sdp")
+        }
+      }
+
+      public var ice: [String] {
+        get {
+          return resultMap["ice"]! as! [String]
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "ice")
+        }
+      }
+    }
+  }
+
+  public struct IceServer: GraphQLSelectionSet {
+    public static let possibleTypes = ["ICEServer"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("urls", type: .nonNull(.list(.nonNull(.scalar(String.self))))),
+      GraphQLField("username", type: .scalar(String.self)),
+      GraphQLField("credential", type: .scalar(String.self)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(urls: [String], username: String? = nil, credential: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "ICEServer", "urls": urls, "username": username, "credential": credential])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var urls: [String] {
+      get {
+        return resultMap["urls"]! as! [String]
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "urls")
+      }
+    }
+
+    public var username: String? {
+      get {
+        return resultMap["username"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "username")
+      }
+    }
+
+    public var credential: String? {
+      get {
+        return resultMap["credential"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "credential")
+      }
+    }
+  }
+}
+
 public struct TinyMessage: GraphQLFragment {
   public static let fragmentDefinition =
     "fragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}"

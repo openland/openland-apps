@@ -20,6 +20,7 @@ import * as User from './queries/User';
 import * as AppChat from './fragments/AppChat';
 import * as AppFull from './fragments/AppFull';
 import * as ConferenceFull from './fragments/ConferenceFull';
+import * as InlinedConferenceFull from './fragments/InlinedConferenceFull';
 import * as Message from './fragments/Message';
 import * as OrganizationFull from './fragments/OrganizationFull';
 import * as OrganizationMedium from './fragments/OrganizationMedium';
@@ -181,6 +182,7 @@ export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.Re
 export const AppChatFragment = typedFragment<Types.AppChat>(AppChat.AppChat);
 export const AppFullFragment = typedFragment<Types.AppFull>(AppFull.AppFull);
 export const ConferenceFullFragment = typedFragment<Types.ConferenceFull>(ConferenceFull.ConferenceFull);
+export const InlinedConferenceFullFragment = typedFragment<Types.InlinedConferenceFull>(InlinedConferenceFull.InlinedConferenceFull);
 export const TinyMessageFragment = typedFragment<Types.TinyMessage>(Message.TinyMessage);
 export const FullMessageFragment = typedFragment<Types.FullMessage>(Message.FullMessage);
 export const OrganizationFullFragment = typedFragment<Types.OrganizationFull>(OrganizationFull.OrganizationFull);
