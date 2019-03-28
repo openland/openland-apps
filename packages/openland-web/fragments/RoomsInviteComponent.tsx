@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XScrollView } from 'openland-x/XScrollView';
@@ -28,6 +28,11 @@ const RootClassName = css`
     min-width: 100%;
     height: 100vh;
     -webkit-overflow-scrolling: touch;
+`;
+
+const RootMobileNologinClassName = css`
+    overflow: auto;
+    height: auto;
 `;
 
 const Root = Glamorous(XScrollView)({
@@ -247,7 +252,7 @@ export const RoomsInviteComponent = ({
     let chatTypeStr = room.isChannel ? 'Channel' : 'Group';
 
     return (
-        <div className={RootClassName}>
+        <div className={cx(RootClassName, isMobile && noLogin && RootMobileNologinClassName)}>
             <XView
                 flexDirection="row"
                 justifyContent={isMobile ? 'space-between' : 'flex-end'}
