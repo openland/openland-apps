@@ -19746,7 +19746,7 @@ public struct TinyMessage: GraphQLFragment {
 
 public struct FullMessage: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}"
+    "fragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}"
 
   public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
 
@@ -19899,7 +19899,7 @@ public struct FullMessage: GraphQLFragment {
 
     public static let selections: [GraphQLSelection] = [
       GraphQLTypeCase(
-        variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanBold": AsMessageSpanBold.selections],
+        variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanLink": AsMessageSpanLink.selections, "MessageSpanBold": AsMessageSpanBold.selections],
         default: [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
@@ -19914,10 +19914,6 @@ public struct FullMessage: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public static func makeMessageSpanLink(offset: Int, length: Int) -> Span {
-      return Span(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length])
-    }
-
     public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
       return Span(unsafeResultMap: ["__typename": "MessageSpanUserMention", "offset": offset, "length": length, "user": user.resultMap])
     }
@@ -19928,6 +19924,10 @@ public struct FullMessage: GraphQLFragment {
 
     public static func makeMessageSpanRoomMention(offset: Int, length: Int, room: AsMessageSpanRoomMention.Room) -> Span {
       return Span(unsafeResultMap: ["__typename": "MessageSpanRoomMention", "offset": offset, "length": length, "room": room.resultMap])
+    }
+
+    public static func makeMessageSpanLink(offset: Int, length: Int, url: String) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length, "url": url])
     }
 
     public static func makeMessageSpanBold(offset: Int, length: Int) -> Span {
@@ -20468,6 +20468,74 @@ public struct FullMessage: GraphQLFragment {
               resultMap.updateValue(newValue, forKey: "title")
             }
           }
+        }
+      }
+    }
+
+    public var asMessageSpanLink: AsMessageSpanLink? {
+      get {
+        if !AsMessageSpanLink.possibleTypes.contains(__typename) { return nil }
+        return AsMessageSpanLink(unsafeResultMap: resultMap)
+      }
+      set {
+        guard let newValue = newValue else { return }
+        resultMap = newValue.resultMap
+      }
+    }
+
+    public struct AsMessageSpanLink: GraphQLSelectionSet {
+      public static let possibleTypes = ["MessageSpanLink"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
+        GraphQLField("length", type: .nonNull(.scalar(Int.self))),
+        GraphQLField("url", type: .nonNull(.scalar(String.self))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(offset: Int, length: Int, url: String) {
+        self.init(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length, "url": url])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var offset: Int {
+        get {
+          return resultMap["offset"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "offset")
+        }
+      }
+
+      public var length: Int {
+        get {
+          return resultMap["length"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "length")
+        }
+      }
+
+      public var url: String {
+        get {
+          return resultMap["url"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "url")
         }
       }
     }
@@ -23800,7 +23868,7 @@ public struct FullMessage: GraphQLFragment {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLTypeCase(
-          variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanBold": AsMessageSpanBold.selections],
+          variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanLink": AsMessageSpanLink.selections, "MessageSpanBold": AsMessageSpanBold.selections],
           default: [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
@@ -23815,10 +23883,6 @@ public struct FullMessage: GraphQLFragment {
         self.resultMap = unsafeResultMap
       }
 
-      public static func makeMessageSpanLink(offset: Int, length: Int) -> Span {
-        return Span(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length])
-      }
-
       public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
         return Span(unsafeResultMap: ["__typename": "MessageSpanUserMention", "offset": offset, "length": length, "user": user.resultMap])
       }
@@ -23829,6 +23893,10 @@ public struct FullMessage: GraphQLFragment {
 
       public static func makeMessageSpanRoomMention(offset: Int, length: Int, room: AsMessageSpanRoomMention.Room) -> Span {
         return Span(unsafeResultMap: ["__typename": "MessageSpanRoomMention", "offset": offset, "length": length, "room": room.resultMap])
+      }
+
+      public static func makeMessageSpanLink(offset: Int, length: Int, url: String) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length, "url": url])
       }
 
       public static func makeMessageSpanBold(offset: Int, length: Int) -> Span {
@@ -24369,6 +24437,74 @@ public struct FullMessage: GraphQLFragment {
                 resultMap.updateValue(newValue, forKey: "title")
               }
             }
+          }
+        }
+      }
+
+      public var asMessageSpanLink: AsMessageSpanLink? {
+        get {
+          if !AsMessageSpanLink.possibleTypes.contains(__typename) { return nil }
+          return AsMessageSpanLink(unsafeResultMap: resultMap)
+        }
+        set {
+          guard let newValue = newValue else { return }
+          resultMap = newValue.resultMap
+        }
+      }
+
+      public struct AsMessageSpanLink: GraphQLSelectionSet {
+        public static let possibleTypes = ["MessageSpanLink"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
+          GraphQLField("length", type: .nonNull(.scalar(Int.self))),
+          GraphQLField("url", type: .nonNull(.scalar(String.self))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(offset: Int, length: Int, url: String) {
+          self.init(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length, "url": url])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var offset: Int {
+          get {
+            return resultMap["offset"]! as! Int
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "offset")
+          }
+        }
+
+        public var length: Int {
+          get {
+            return resultMap["length"]! as! Int
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "length")
+          }
+        }
+
+        public var url: String {
+          get {
+            return resultMap["url"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "url")
           }
         }
       }
@@ -24599,7 +24735,7 @@ public struct FullMessage: GraphQLFragment {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLTypeCase(
-          variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanBold": AsMessageSpanBold.selections],
+          variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanLink": AsMessageSpanLink.selections, "MessageSpanBold": AsMessageSpanBold.selections],
           default: [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
@@ -24614,10 +24750,6 @@ public struct FullMessage: GraphQLFragment {
         self.resultMap = unsafeResultMap
       }
 
-      public static func makeMessageSpanLink(offset: Int, length: Int) -> Span {
-        return Span(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length])
-      }
-
       public static func makeMessageSpanUserMention(offset: Int, length: Int, user: AsMessageSpanUserMention.User) -> Span {
         return Span(unsafeResultMap: ["__typename": "MessageSpanUserMention", "offset": offset, "length": length, "user": user.resultMap])
       }
@@ -24628,6 +24760,10 @@ public struct FullMessage: GraphQLFragment {
 
       public static func makeMessageSpanRoomMention(offset: Int, length: Int, room: AsMessageSpanRoomMention.Room) -> Span {
         return Span(unsafeResultMap: ["__typename": "MessageSpanRoomMention", "offset": offset, "length": length, "room": room.resultMap])
+      }
+
+      public static func makeMessageSpanLink(offset: Int, length: Int, url: String) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length, "url": url])
       }
 
       public static func makeMessageSpanBold(offset: Int, length: Int) -> Span {
@@ -25168,6 +25304,74 @@ public struct FullMessage: GraphQLFragment {
                 resultMap.updateValue(newValue, forKey: "title")
               }
             }
+          }
+        }
+      }
+
+      public var asMessageSpanLink: AsMessageSpanLink? {
+        get {
+          if !AsMessageSpanLink.possibleTypes.contains(__typename) { return nil }
+          return AsMessageSpanLink(unsafeResultMap: resultMap)
+        }
+        set {
+          guard let newValue = newValue else { return }
+          resultMap = newValue.resultMap
+        }
+      }
+
+      public struct AsMessageSpanLink: GraphQLSelectionSet {
+        public static let possibleTypes = ["MessageSpanLink"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
+          GraphQLField("length", type: .nonNull(.scalar(Int.self))),
+          GraphQLField("url", type: .nonNull(.scalar(String.self))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(offset: Int, length: Int, url: String) {
+          self.init(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length, "url": url])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var offset: Int {
+          get {
+            return resultMap["offset"]! as! Int
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "offset")
+          }
+        }
+
+        public var length: Int {
+          get {
+            return resultMap["length"]! as! Int
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "length")
+          }
+        }
+
+        public var url: String {
+          get {
+            return resultMap["url"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "url")
           }
         }
       }
