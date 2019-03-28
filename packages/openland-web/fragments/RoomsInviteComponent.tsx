@@ -15,6 +15,7 @@ import { XView } from 'react-mental';
 import { isMobileUserAgent } from 'openland-web/utils/isMobileUserAgent';
 import { useClient } from 'openland-web/utils/useClient';
 import { useIsMobile } from 'openland-web/hooks';
+import LogoWithName from 'openland-icons/logo.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const RootClassName = css`
@@ -107,7 +108,7 @@ const ImageWrapper = Glamorous.div<{ hasFooter: boolean }>(({ hasFooter }) => {
         height: 367,
         position: 'absolute',
         right: 0,
-        bottom: hasFooter ? 60 : 18,
+        bottom: hasFooter ? 60 : 88,
         left: 0,
         overflow: 'hidden',
         pointerEvents: 'none',
@@ -382,6 +383,33 @@ export const RoomsInviteComponent = ({
                     />
                 </MainContent>
             )}
+            {!isMobile &&
+                !!noLogin && (
+                    <XView
+                        justifyContent="center"
+                        alignItems="center"
+                        flexDirection="row"
+                        width="100%"
+                        bottom={0}
+                        position="absolute"
+                        height={60}
+                        backgroundColor={'#f9f9f9'}
+                    >
+                        <XView marginTop={-10}>
+                            <LogoWithName />
+                        </XView>
+                        <XView
+                            marginLeft={8}
+                            borderRadius={2}
+                            width={4}
+                            height={4}
+                            backgroundColor={'#d8d8d8'}
+                        />
+                        <XView marginLeft={8} fontSize={13} color={'rgba(0, 0, 0, 0.5)'}>
+                            Professional messenger for project collaboration
+                        </XView>
+                    </XView>
+                )}
         </div>
     );
 };
