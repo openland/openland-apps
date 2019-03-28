@@ -13,6 +13,9 @@ let searchStyle = css`
     & svg > path {
         fill: #c8c8c8;
     }
+    &:focus-within, &:focus {
+        box-shadow: none !important;
+    }
     &:focus-within svg > path {
         fill: rgba(23, 144, 255, 0.5);
     }
