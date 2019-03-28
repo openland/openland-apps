@@ -14,7 +14,7 @@ import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/C
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members_user, UserShort } from 'openland-api/Types';
+import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members_user, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { SDeferred } from 'react-native-s/SDeferred';
@@ -345,7 +345,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
                             )}
                             <ConversationView engine={this.engine} theme={this.state.theme} messagesPaddingBottom={sharedRoom && !sharedRoom.canSendMessage ? 50 : undefined} />
-                            {(!sharedRoom || sharedRoom.canSendMessage) && <MessageInputBar
+                            {(!sharedRoom || sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage) && <MessageInputBar
                                 onAttachPress={this.handleAttach}
                                 onSubmitPress={this.handleSubmit}
                                 onChangeText={this.handleTextChange}
