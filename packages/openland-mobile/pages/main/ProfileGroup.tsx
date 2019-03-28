@@ -32,7 +32,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
     const theme = React.useContext(ThemeContext);
     const client = useClient();
 
-    const room = client.useRoom({ id: props.id }).room as Room_room_SharedRoom;
+    const room = client.useRoom({ id: props.id }, { fetchPolicy: 'cache-and-network' }).room as Room_room_SharedRoom;
 
     const chatTypeStr = room.isChannel ? 'channel' : 'group';
 

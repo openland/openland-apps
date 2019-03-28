@@ -13,7 +13,7 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 
 let SettingsContent = ((props: PageProps) => {
 
-    let resp = getClient().useAccountSettings();
+    let resp = getClient().useAccountSettings({ fetchPolicy: 'cache-and-network' });
     let primary = resp.me!.primaryOrganization;
     let secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id));
     secondary.sort((a, b) => a.name.localeCompare(b.name));

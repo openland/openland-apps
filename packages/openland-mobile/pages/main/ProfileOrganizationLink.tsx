@@ -14,7 +14,7 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
-    let invite = getClient().useOrganizationPublicInvite({ organizationId: props.router.params.id }).publicInvite!;
+    let invite = getClient().useOrganizationPublicInvite({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).publicInvite!;
     return (
         <>
             <ZListItemGroup footer="People can join organization by following this link. You can renew the link at any time">

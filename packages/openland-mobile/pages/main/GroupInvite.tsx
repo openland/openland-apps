@@ -4,7 +4,7 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { RoomInviteInfo_invite } from 'openland-api/Types';
-import { Text, TextStyle, View, StyleSheet, Image, ImageStyle, Platform, Dimensions } from 'react-native';
+import { Text, TextStyle, View, StyleSheet, Image, ImageStyle, Dimensions } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
@@ -12,7 +12,6 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { SDevice } from 'react-native-s/SDevice';
 
 const styles = StyleSheet.create({
     label: {
