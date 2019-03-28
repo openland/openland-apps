@@ -313,7 +313,7 @@ export const GetDraftMessageQuery = gql`
 
 export const GlobalCounterQuery = gql`
     query GlobalCounter {
-        counter: alphaNotificationCounter {
+        alphaNotificationCounter {
             id
             unreadCount
         }

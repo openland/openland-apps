@@ -2748,10 +2748,10 @@
 			"operationType": "query",
 			"rootType": "Query",
 			"variables": [],
-			"source": "query GlobalCounter {\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}",
+			"source": "query GlobalCounter {\n  alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}",
 			"fields": [
 				{
-					"responseName": "counter",
+					"responseName": "alphaNotificationCounter",
 					"fieldName": "alphaNotificationCounter",
 					"type": "NotificationCounter!",
 					"isConditional": false,
@@ -2785,8 +2785,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "query GlobalCounter {\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}",
-			"operationId": "cdd1eae295f4ab5447e56ac7cf7936005ba5a05b353e8f05baaaa8d5927899c2"
+			"sourceWithFragments": "query GlobalCounter {\n  alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}",
+			"operationId": "ba2ff26fcac56656eedb1e52d5625334b42a9f5142da25fc00ec6c10f030d5b3"
 		},
 		{
 			"filePath": "file:///Users/steve/Develop/openland-apps/packages/openland-api/queries/Chats.ts",

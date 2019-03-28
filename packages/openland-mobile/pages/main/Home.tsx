@@ -58,7 +58,7 @@ export const Home = XMemo<PageProps>((props) => {
                         title="Messages"
                         icon={Platform.OS === 'android' ? require('assets/ic-messages.png') : require('assets/ic-messages-ios.png')}
                         selected={tab === 1}
-                        counter={counter && counter.counter.unreadCount || undefined}
+                        counter={counter && counter.alphaNotificationCounter.unreadCount || undefined}
                         onPress={() => setTab(1)}
                     />
                     <AppBarBottomItem

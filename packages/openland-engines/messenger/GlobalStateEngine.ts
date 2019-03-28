@@ -29,12 +29,17 @@ export class GlobalStateEngine {
         });
         this.engine.client.querySettings({ fetchPolicy: 'network-only' });
 
+        let counter = backoff(async () => {
+            await this.engine.client.queryGlobalCounter({ fetchPolicy: 'cache-first' });
+        })
+
         // Loading initial chat state
         let start = Date.now();
         let res = (await backoff(async () => {
             return await this.engine.client.queryDialogs({}, { fetchPolicy: 'network-only' });
         }));
         await settings;
+        await counter;
         console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
         this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
@@ -222,11 +227,11 @@ export class GlobalStateEngine {
 
         await this.engine.client.client.updateQuery((data) => {
             if (visible) {
-                if (data.counter.unreadCount < counter) {
+                if (data.alphaNotificationCounter.unreadCount < counter) {
                     return null;
                 }
             }
-            data.counter.unreadCount = counter;
+            data.alphaNotificationCounter.unreadCount = counter;
             return data;
         }, GlobalCounterQuery);
 

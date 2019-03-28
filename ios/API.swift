@@ -6055,7 +6055,7 @@ public final class GetDraftMessageQuery: GraphQLQuery {
 
 public final class GlobalCounterQuery: GraphQLQuery {
   public let operationDefinition =
-    "query GlobalCounter {\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}"
+    "query GlobalCounter {\n  alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}"
 
   public init() {
   }
@@ -6064,7 +6064,7 @@ public final class GlobalCounterQuery: GraphQLQuery {
     public static let possibleTypes = ["Query"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("alphaNotificationCounter", alias: "counter", type: .nonNull(.object(Counter.selections))),
+      GraphQLField("alphaNotificationCounter", type: .nonNull(.object(AlphaNotificationCounter.selections))),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -6073,20 +6073,20 @@ public final class GlobalCounterQuery: GraphQLQuery {
       self.resultMap = unsafeResultMap
     }
 
-    public init(counter: Counter) {
-      self.init(unsafeResultMap: ["__typename": "Query", "counter": counter.resultMap])
+    public init(alphaNotificationCounter: AlphaNotificationCounter) {
+      self.init(unsafeResultMap: ["__typename": "Query", "alphaNotificationCounter": alphaNotificationCounter.resultMap])
     }
 
-    public var counter: Counter {
+    public var alphaNotificationCounter: AlphaNotificationCounter {
       get {
-        return Counter(unsafeResultMap: resultMap["counter"]! as! ResultMap)
+        return AlphaNotificationCounter(unsafeResultMap: resultMap["alphaNotificationCounter"]! as! ResultMap)
       }
       set {
-        resultMap.updateValue(newValue.resultMap, forKey: "counter")
+        resultMap.updateValue(newValue.resultMap, forKey: "alphaNotificationCounter")
       }
     }
 
-    public struct Counter: GraphQLSelectionSet {
+    public struct AlphaNotificationCounter: GraphQLSelectionSet {
       public static let possibleTypes = ["NotificationCounter"]
 
       public static let selections: [GraphQLSelection] = [

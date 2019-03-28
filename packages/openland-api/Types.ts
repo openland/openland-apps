@@ -9003,14 +9003,14 @@ export interface GetDraftMessageVariables {
 // GraphQL query operation: GlobalCounter
 // ====================================================
 
-export interface GlobalCounter_counter {
+export interface GlobalCounter_alphaNotificationCounter {
   __typename: "NotificationCounter";
   id: string;
   unreadCount: number;
 }
 
 export interface GlobalCounter {
-  counter: GlobalCounter_counter;
+  alphaNotificationCounter: GlobalCounter_alphaNotificationCounter;
 }
 
 /* tslint:disable */

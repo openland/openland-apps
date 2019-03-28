@@ -108,8 +108,8 @@ const NotificationCounter = () => {
     const client = useClient();
     const data = client.useWithoutLoaderGlobalCounter();
     return (<>
-        {data && data.counter && data.counter.unreadCount > 0 && (
-            <CounterWrapper count={data.counter.unreadCount} />
+        {data && data.alphaNotificationCounter && data.alphaNotificationCounter.unreadCount > 0 && (
+            <CounterWrapper count={data.alphaNotificationCounter.unreadCount} />
         )}
     </>)
 };
