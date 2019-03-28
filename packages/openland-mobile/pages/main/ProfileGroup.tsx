@@ -195,7 +195,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
 
                 {sortedMembers.map((v) => (
                     <UserView
-                        isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
+                        isAdmin={v.role === 'OWNER' ? 'owner' : v.role === 'ADMIN' ? 'admin' : undefined}
                         key={v.user.id}
                         user={v.user}
                         onLongPress={() => handleMemberLongPress(v, v.canKick, room.canEdit)}
