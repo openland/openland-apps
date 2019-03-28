@@ -33,8 +33,6 @@ export class OnlineWatcher {
             this.singleChangeListeners.forEach(l => l(userId, evData.user.online));
 
             this.listeners.forEach(l => l(this.onlinesData));
-
-            await this.client.writeUserOnline(evData.user);
         });
     }
 

@@ -40,7 +40,7 @@ export class DirectApolloSubscription<TSubscription, TVars> implements GraphqlAc
             return;
         }
         console.log('trying to start');
-        this.source = this.client.client.client.subscribe({ query: this.subscription, variables: this.vars, fetchPolicy: 'no-cache' });
+        this.source = this.client.client.client.subscribe({ query: this.subscription, variables: this.vars });
         this.sourceSubscription = this.source.subscribe({
             next: this.handleNext,
             error: this.handleError,
