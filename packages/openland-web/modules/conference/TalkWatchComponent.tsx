@@ -6,15 +6,6 @@ export const TalkWatchComponent = React.memo<{ id: string }>(props => {
     React.useEffect(() => {
         let watch = client.subscribeConferenceWatch({ id: props.id });
 
-        (async () => {
-            while (true) {
-                let { alphaConferenceWatch } = await watch.get();
-
-                await client.writeInlinedConferenceFull(alphaConferenceWatch);
-            }
-        })();
-
-        // TODO: Merge data
         return () => watch.destroy();
     }, [props.id]);
     return null;
