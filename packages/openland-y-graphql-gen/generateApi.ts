@@ -18,7 +18,7 @@ function generateApi() {
     let output = '';
     output += 'import * as Source from \'./index\';\n';
     output += 'import * as Types from \'./Types\'\n';
-    output += 'import { GraphqlClient, GraphqlActiveSubscription, OperationParameters } from \'openland-graphql/GraphqlClient\'\n';
+    output += 'import { GraphqlClient, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from \'openland-graphql/GraphqlClient\'\n';
     output += 'import { BaseApiClient } from \'openland-graphql/BaseApiClient\'\n';
     output += '\n';
     output += 'export class OpenlandClient extends BaseApiClient {\n';
@@ -40,8 +40,8 @@ function generateApi() {
                 output += '    async refetch' + name + '(variables: Types.' + name + 'Variables): Promise<Types.' + name + '> {\n';
                 output += '        return this.refetch(Source.' + op.operationName + 'Query, variables);\n';
                 output += '    }\n';
-                output += '    use' + name + '(variables: Types.' + name + 'Variables): Types.' + name + ' {\n';
-                output += '        return this.useQuerySuspense(Source.' + op.operationName + 'Query, variables);\n';
+                output += '    use' + name + '(variables: Types.' + name + 'Variables, opts?: QueryWatchParameters): Types.' + name + ' {\n';
+                output += '        return this.useQuerySuspense(Source.' + op.operationName + 'Query, variables, opts);\n';
                 output += '    }\n';
                 output += '    useWithoutLoader' + name + '(variables: Types.' + name + 'Variables): Types.' + name + ' | null {\n';
                 output += '        return this.useQuery(Source.' + op.operationName + 'Query, variables);\n';
@@ -53,11 +53,11 @@ function generateApi() {
                 output += '    async refetch' + name + '(): Promise<Types.' + name + '> {\n';
                 output += '        return this.refetch(Source.' + op.operationName + 'Query);\n';
                 output += '    }\n';
-                output += '    use' + name + '(): Types.' + name + ' {\n';
-                output += '        return this.useQuerySuspense(Source.' + op.operationName + 'Query);\n';
+                output += '    use' + name + '(opts?: QueryWatchParameters): Types.' + name + ' {\n';
+                output += '        return this.useQuerySuspense(Source.' + op.operationName + 'Query, undefined, opts);\n';
                 output += '    }\n';
-                output += '    useWithoutLoader' + name + '(): Types.' + name + ' | null {\n';
-                output += '        return this.useQuery(Source.' + op.operationName + 'Query);\n';
+                output += '    useWithoutLoader' + name + '(opts?: QueryWatchParameters): Types.' + name + ' | null {\n';
+                output += '        return this.useQuery(Source.' + op.operationName + 'Query, undefined, opts);\n';
                 output += '    }\n';
             }
         }

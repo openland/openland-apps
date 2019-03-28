@@ -48,6 +48,10 @@ export interface OperationParameters {
     fetchPolicy?: 'cache-first' | 'network-only' | 'cache-and-network' | 'no-cache'
 }
 
+export interface QueryWatchParameters {
+    fetchPolicy?: 'cache-first' | 'network-only' | 'cache-and-network'
+}
+
 export interface GraphqlClient {
     query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): Promise<TQuery>;
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery>;
