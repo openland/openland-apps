@@ -89,6 +89,7 @@ export const RoomAddMemberMutation = typedMutation<Types.RoomAddMember, Types.Ro
 export const RoomDeclineJoinReuestMutation = typedMutation<Types.RoomDeclineJoinReuest, Types.RoomDeclineJoinReuestVariables>(Chats.RoomDeclineJoinReuestMutation);
 export const RoomAddMembersMutation = typedMutation<Types.RoomAddMembers, Types.RoomAddMembersVariables>(Chats.RoomAddMembersMutation);
 export const RoomKickMutation = typedMutation<Types.RoomKick, Types.RoomKickVariables>(Chats.RoomKickMutation);
+export const RoomChangeRoleMutation = typedMutation<Types.RoomChangeRole, Types.RoomChangeRoleVariables>(Chats.RoomChangeRoleMutation);
 export const RoomLeaveMutation = typedMutation<Types.RoomLeave, Types.RoomLeaveVariables>(Chats.RoomLeaveMutation);
 export const RoomSearchTextQuery = typedQuery<Types.RoomSearchText, Types.RoomSearchTextVariables>(Chats.RoomSearchTextQuery);
 export const RoomSearchQuery = typedQuery<Types.RoomSearch, Types.RoomSearchVariables>(Chats.RoomSearchQuery);

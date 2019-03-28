@@ -694,6 +694,9 @@ export class OpenlandClient extends BaseApiClient {
     async mutateRoomKick(variables: Types.RoomKickVariables): Promise<Types.RoomKick> {
         return this.client.mutate(Source.RoomKickMutation, variables);
     }
+    async mutateRoomChangeRole(variables: Types.RoomChangeRoleVariables): Promise<Types.RoomChangeRole> {
+        return this.client.mutate(Source.RoomChangeRoleMutation, variables);
+    }
     async mutateRoomLeave(variables: Types.RoomLeaveVariables): Promise<Types.RoomLeave> {
         return this.client.mutate(Source.RoomLeaveMutation, variables);
     }

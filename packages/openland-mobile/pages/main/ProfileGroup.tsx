@@ -8,7 +8,7 @@ import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { Room_room_SharedRoom, RoomMemberRole, UserShort, RoomMembers_members } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomMemberRole, UserShort, RoomMembers_members, Room_room_SharedRoom_members } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -59,12 +59,28 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             .show();
     }, []);
 
-    const handleMemberLongPress = React.useCallback<{ (user: UserShort, canKick: boolean): void }>((user, canKick) => {
+    const handleMakeAdmin = React.useCallback<{ (user: UserShort): void }>((user) => {
+        Alert.builder().title(`Are you sure you want to make ${user.name} admin?`)
+            .button('Cancel', 'cancel')
+            .action('Promote', 'destructive', async () => {
+                await client.mutateRoomChangeRole({ userId: user.id, roomId: props.router.params.id, newRole: RoomMemberRole.ADMIN });
+            })
+            .show();
+    }, []);
+
+    const handleMemberLongPress = React.useCallback<{ (member: Room_room_SharedRoom_members, canKick: boolean, canEdit: boolean): void }>((member, canKick, canEdit) => {
         let builder = ActionSheet.builder();
+
+        let user = member.user;
 
         if (user.id !== getMessenger().engine.user.id) {
             builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }));
 
+            if (canEdit) {
+                if (member.role === RoomMemberRole.MEMBER) {
+                    builder.action('Make admin', () => handleMakeAdmin(user));
+                }
+            }
             if (canKick) {
                 builder.action('Kick', () => handleKick(user), true);
             }
@@ -182,7 +198,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
                         isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
                         key={v.user.id}
                         user={v.user}
-                        onLongPress={() => handleMemberLongPress(v.user, v.canKick)}
+                        onLongPress={() => handleMemberLongPress(v, v.canKick, room.canEdit)}
                         onPress={() => props.router.push('ProfileUser', { 'id': v.user.id })}
                     />
                 ))}

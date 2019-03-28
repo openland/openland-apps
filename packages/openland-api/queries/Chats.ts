@@ -481,6 +481,17 @@ export const RoomKickMutation = gql`
     ${RoomFull}
 `;
 
+export const RoomChangeRoleMutation = gql`
+    mutation RoomChangeRole($roomId: ID!, $userId: ID!, $newRole: RoomMemberRole!) {
+        betaRoomChangeRole(roomId: $roomId, userId: $userId, newRole: $newRole) {
+            ...RoomFull
+        }
+    }
+    ${UserShort}
+    ${OrganizationMedium}
+    ${RoomFull}
+`;
+
 export const RoomLeaveMutation = gql`
     mutation RoomLeave($roomId: ID!) {
         betaRoomLeave(roomId: $roomId) {

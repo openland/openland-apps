@@ -7189,6 +7189,104 @@ public final class RoomKickMutation: GraphQLMutation {
   }
 }
 
+public final class RoomChangeRoleMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation RoomChangeRole($roomId: ID!, $userId: ID!, $newRole: RoomMemberRole!) {\n  betaRoomChangeRole(roomId: $roomId, userId: $userId, newRole: $newRole) {\n    __typename\n    ...RoomFull\n  }\n}"
+
+  public var queryDocument: String { return operationDefinition.appending(RoomFull.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(OrganizationMedium.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+
+  public var roomId: GraphQLID
+  public var userId: GraphQLID
+  public var newRole: RoomMemberRole
+
+  public init(roomId: GraphQLID, userId: GraphQLID, newRole: RoomMemberRole) {
+    self.roomId = roomId
+    self.userId = userId
+    self.newRole = newRole
+  }
+
+  public var variables: GraphQLMap? {
+    return ["roomId": roomId, "userId": userId, "newRole": newRole]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("betaRoomChangeRole", arguments: ["roomId": GraphQLVariable("roomId"), "userId": GraphQLVariable("userId"), "newRole": GraphQLVariable("newRole")], type: .nonNull(.object(BetaRoomChangeRole.selections))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(betaRoomChangeRole: BetaRoomChangeRole) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "betaRoomChangeRole": betaRoomChangeRole.resultMap])
+    }
+
+    public var betaRoomChangeRole: BetaRoomChangeRole {
+      get {
+        return BetaRoomChangeRole(unsafeResultMap: resultMap["betaRoomChangeRole"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "betaRoomChangeRole")
+      }
+    }
+
+    public struct BetaRoomChangeRole: GraphQLSelectionSet {
+      public static let possibleTypes = ["PrivateRoom", "SharedRoom"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(RoomFull.self),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var roomFull: RoomFull {
+          get {
+            return RoomFull(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class RoomLeaveMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomLeave($roomId: ID!) {\n  betaRoomLeave(roomId: $roomId) {\n    __typename\n    ...RoomFull\n  }\n}"
