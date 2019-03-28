@@ -1,0 +1,6 @@
+mutation RoomChangeRole($newRole: RoomMemberRole!, $roomId: ID!, $userId: ID!) {
+  betaRoomChangeRole(newRole: $newRole, roomId: $roomId, userId: $userId) {
+    __typename
+    ...RoomFull
+  }
+}

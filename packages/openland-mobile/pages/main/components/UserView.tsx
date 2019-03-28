@@ -8,7 +8,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface UserViewProps {
     user: UserShort;
-    isAdmin?: boolean;
+    isAdmin?: 'admin' | 'owner' | undefined;
     role?: string;
     enabled?: boolean;
     onPress: () => void;
@@ -27,7 +27,7 @@ export const UserView = (props: UserViewProps) => {
             </View>
             <View alignSelf="center" flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column" opacity={props.enabled === false ? 0.5 : 1} paddingRight={props.paddingRight}>
                 <View flexDirection="row">
-                    {props.isAdmin && <Image source={require('assets/ic-star-16.png')} style={{ tintColor: '#fbc139', alignSelf: 'center', marginRight: 2, marginBottom: 4 }} />}
+                    {props.isAdmin && <Image source={require('assets/ic-star-16.png')} style={{ tintColor: props.isAdmin === 'owner' ? '#fbc139' : '#c0c0c0', alignSelf: 'center', marginRight: 2, marginBottom: 4 }} />}
                     <Text numberOfLines={1} style={{ fontSize: 16, fontWeight: '500', color: theme.textColor, height: 22, marginBottom: 0 }}>{props.user.name}{props.user.primaryOrganization && <Text style={{ fontSize: 15, color: '#99a2b0' }}>  {props.user.primaryOrganization.name}</Text>}</Text>
                 </View>
                 {props.subtitle ? <Text style={{ fontSize: 14, marginTop: 4, color: '#99a2b0' }}>{props.subtitle}</Text> : <PresenceComponent isBot={props.user.isBot} uid={props.user.id} lastSeen={props.user.lastSeen} online={props.user.online} style={{ fontSize: 14, color: '#99a2b0', height: 20, marginBottom: -4 }} onlineStyle={{ color: '#0084fe' }} />}

@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { GraphqlQuery, GraphqlClient, GraphqlQueryWatch, GraphqlQueryResult } from './GraphqlClient';
+import { GraphqlQuery, GraphqlClient, GraphqlQueryWatch, GraphqlQueryResult, QueryWatchParameters } from './GraphqlClient';
 import { keyFromObject } from './utils/keyFromObject';
+import { ClientCache, ClientCacheContext } from './ClientCache';
 
 export class BaseApiClient {
     readonly client: GraphqlClient;
@@ -14,8 +15,8 @@ export class BaseApiClient {
         return this.client.query(query, vars, { fetchPolicy: 'network-only' });
     }
 
-    protected useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
-        const [observableQuery, currentResult] = this.useObservableQuery(query, vars);
+    protected useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): TQuery | null {
+        const [observableQuery, currentResult] = this.useObservableQuery(query, vars, opts);
         if (currentResult && currentResult.error) {
             throw currentResult.error!!;
         } else if (currentResult && currentResult.data) {
@@ -25,8 +26,8 @@ export class BaseApiClient {
         }
     }
 
-    protected useQuerySuspense<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
-        const [observableQuery, currentResult] = this.useObservableQuery(query, vars);
+    protected useQuerySuspense<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): TQuery {
+        const [observableQuery, currentResult] = this.useObservableQuery(query, vars, opts);
         if (currentResult && currentResult.error) {
             throw currentResult.error!!;
         } else if (currentResult && currentResult.data) {
@@ -36,19 +37,29 @@ export class BaseApiClient {
         }
     }
 
-    private getQueryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): GraphqlQueryWatch<TQuery> {
-        let key = query.document.definitions[0].name.value + '$' + keyFromObject(vars);
-        if (this.queries.has(key)) {
-            return this.queries.get(key)!! as GraphqlQueryWatch<TQuery>
+    private getQueryWatch<TQuery, TVars>(cache: Map<String, GraphqlQueryWatch<{}>>, query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): GraphqlQueryWatch<TQuery> {
+        let shouldBeScoped = opts && opts.fetchPolicy && (opts.fetchPolicy === 'cache-and-network' || opts.fetchPolicy === 'network-only');
+        let cacheKey = (opts && opts.fetchPolicy && opts.fetchPolicy) || 'cache-first'
+        let q = cache;
+        if (shouldBeScoped) {
+            q = this.queries;
+        }
+        let key = query.document.definitions[0].name.value + '$' + keyFromObject(vars) + '$' + cacheKey;
+        if (q.has(key)) {
+            return q.get(key)!! as GraphqlQueryWatch<TQuery>
         } else {
-            let res = this.client.queryWatch(query, vars);
-            this.queries.set(key, res);
+            let res = this.client.queryWatch(query, vars, opts);
+            q.set(key, res);
             return res;
         }
     }
 
-    private useObservableQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): [GraphqlQueryWatch<TQuery>, GraphqlQueryResult<TQuery> | undefined] {
-        const observableQuery = this.getQueryWatch(query, vars);
+    private useObservableQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): [GraphqlQueryWatch<TQuery>, GraphqlQueryResult<TQuery> | undefined] {
+        const clientCache = React.useContext(ClientCacheContext)
+        if (!clientCache && (opts && opts.fetchPolicy && (opts.fetchPolicy === 'cache-and-network' || opts.fetchPolicy === 'network-only'))) {
+            throw Error('Unable to use cache-and-network or network-only fetch policy outside of cache context')
+        }
+        const observableQuery = this.getQueryWatch(clientCache ? clientCache.queries : this.queries, query, vars, opts);
 
         // Value Holder
         const [responseId, setResponseId] = React.useState(0);

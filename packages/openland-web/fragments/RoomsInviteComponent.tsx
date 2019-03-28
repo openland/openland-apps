@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XScrollView } from 'openland-x/XScrollView';
@@ -15,6 +15,7 @@ import { XView } from 'react-mental';
 import { isMobileUserAgent } from 'openland-web/utils/isMobileUserAgent';
 import { useClient } from 'openland-web/utils/useClient';
 import { useIsMobile } from 'openland-web/hooks';
+import LogoWithName from 'openland-icons/logo.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const RootClassName = css`
@@ -28,6 +29,15 @@ const RootClassName = css`
     min-width: 100%;
     height: 100vh;
     -webkit-overflow-scrolling: touch;
+`;
+
+const RootMobileNologinClassName = css`
+    overflow: auto;
+    height: auto;
+`;
+
+const RootMobileLoginClassName = css`
+    padding-bottom: 160px;
 `;
 
 const Root = Glamorous(XScrollView)({
@@ -98,10 +108,11 @@ const ImageWrapper = Glamorous.div<{ hasFooter: boolean }>(({ hasFooter }) => {
         height: 367,
         position: 'absolute',
         right: 0,
-        bottom: hasFooter ? 60 : 18,
+        bottom: hasFooter ? 60 : 88,
         left: 0,
         overflow: 'hidden',
-        'z-index': '-1!important',
+        pointerEvents: 'none',
+        'z-index': '0 !important',
         '@media (max-height: 800px)': {
             height: 250,
         },
@@ -245,7 +256,13 @@ export const RoomsInviteComponent = ({
     let chatTypeStr = room.isChannel ? 'Channel' : 'Group';
 
     return (
-        <div className={RootClassName}>
+        <div
+            className={cx(
+                RootClassName,
+                isMobile && noLogin && RootMobileNologinClassName,
+                isMobile && !noLogin && RootMobileLoginClassName,
+            )}
+        >
             <XView
                 flexDirection="row"
                 justifyContent={isMobile ? 'space-between' : 'flex-end'}
@@ -277,7 +294,7 @@ export const RoomsInviteComponent = ({
                     </XView>
                 )}
             </XView>
-            <XView flexDirection="column" paddingHorizontal={20}>
+            <XView flexDirection="column" paddingHorizontal={20} zIndex={1}>
                 {invite && invite.invitedByUser ? (
                     <UserInfoWrapper separator={6} justifyContent="center" alignItems="center">
                         <XAvatar2
@@ -286,11 +303,14 @@ export const RoomsInviteComponent = ({
                             id={invite.invitedByUser.id}
                             size={24}
                         />
-                        <Text>{invite.invitedByUser.name} {`invites you to join ${chatTypeStr.toLowerCase()}`}</Text>
+                        <Text>
+                            {invite.invitedByUser.name}{' '}
+                            {`invites you to join ${chatTypeStr.toLowerCase()}`}
+                        </Text>
                     </UserInfoWrapper>
                 ) : (
-                        <div style={{ height: 50 }} />
-                    )}
+                    <div style={{ height: 50 }} />
+                )}
                 <XView marginTop={111} alignSelf="center" alignItems="center" maxWidth={428}>
                     <RoomAvatar
                         src={room.photo || undefined}
@@ -342,7 +362,7 @@ export const RoomsInviteComponent = ({
                 </XView>
             </XView>
             {!isMobile && (
-                <ImageWrapper hasFooter={!!noLogin}>
+                <ImageWrapper hasFooter={!noLogin}>
                     <Image />
                 </ImageWrapper>
             )}
@@ -363,6 +383,33 @@ export const RoomsInviteComponent = ({
                     />
                 </MainContent>
             )}
+            {!isMobile &&
+                !!noLogin && (
+                    <XView
+                        justifyContent="center"
+                        alignItems="center"
+                        flexDirection="row"
+                        width="100%"
+                        bottom={0}
+                        position="absolute"
+                        height={60}
+                        backgroundColor={'#f9f9f9'}
+                    >
+                        <XView marginTop={-10}>
+                            <LogoWithName />
+                        </XView>
+                        <XView
+                            marginLeft={8}
+                            borderRadius={2}
+                            width={4}
+                            height={4}
+                            backgroundColor={'#d8d8d8'}
+                        />
+                        <XView marginLeft={8} fontSize={13} color={'rgba(0, 0, 0, 0.5)'}>
+                            Professional messenger for project collaboration
+                        </XView>
+                    </XView>
+                )}
         </div>
     );
 };

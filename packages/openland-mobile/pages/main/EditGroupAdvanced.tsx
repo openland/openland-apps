@@ -41,11 +41,11 @@ const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
 
 const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
-    let rawGroup = getClient().useRoom({ id: props.router.params.id }).room;
+    let rawGroup = getClient().useRoom({ id: props.router.params.id }, { fetchPolicy: 'network-only' }).room;
     let group = (rawGroup && rawGroup.__typename === 'SharedRoom') ? rawGroup : undefined;
 
-    const [ welcomeMessageEnabled, setWelcomeMessageEnabled ] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.isOn : false);
-    const [ welcomeMessageSender, setWelcomeMessageSender ] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.sender : undefined);
+    const [welcomeMessageEnabled, setWelcomeMessageEnabled] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.isOn : false);
+    const [welcomeMessageSender, setWelcomeMessageSender] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.sender : undefined);
 
     if (group) {
         let currentSocialImage = group.socialImage;
@@ -60,13 +60,13 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                         if (welcomeMessageEnabled) {
                             if (!welcomeMessageSender) {
                                 Alert.builder().title('Please choose who will send the Welcome message').button('GOT IT!').show();
-        
+
                                 throw new SilentError();
                             }
 
                             if (typeof src.input.welcomeMessageText !== 'string' || src.input.welcomeMessageText === '') {
                                 Alert.builder().title('Please enter the Welcome message text').button('GOT IT!').show();
-        
+
                                 throw new SilentError();
                             }
                         }

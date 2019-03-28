@@ -16,7 +16,7 @@ const SettingsNotificationsContent = XMemo<PageProps>((props) => {
             ref.current.submitForm();
         }
     }, []);
-    let settings = getClient().useSettings().settings;
+    let settings = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
 
     return (
         <>

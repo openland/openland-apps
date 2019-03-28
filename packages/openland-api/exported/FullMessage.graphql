@@ -44,6 +44,10 @@ fragment FullMessage on ModernMessage {
     ... on MessageSpanLink {
       url
     }
+    ... on MessageSpanBold {
+      length
+      offset
+    }
   }
   ... on GeneralMessage {
     attachments {

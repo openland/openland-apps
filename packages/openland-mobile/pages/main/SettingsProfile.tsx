@@ -14,8 +14,8 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
 
 const SettingsProfileContent = XMemo<PageProps>((props) => {
-    let profile = getClient().useProfile().profile;
-    let me = getClient().useAccount().me;
+    let profile = getClient().useProfile({ fetchPolicy: 'network-only' }).profile;
+    let me = getClient().useAccount({ fetchPolicy: 'network-only' }).me;
     let ref = React.useRef<ZForm | null>(null);
     let handleSave = React.useCallback(() => {
         if (ref.current) {
@@ -30,7 +30,6 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                 action={async args => {
                     await getClient().mutateProfileUpdate(args);
                     await getClient().refetchAccount();
-                    await getClient().refetchProfile();
                 }}
                 onSuccess={() => props.router.back()}
                 ref={ref}

@@ -31,7 +31,7 @@ class GroupsList extends React.PureComponent<{ groups: (Organization_organizatio
 }
 
 const ProfileOrganizationGroupsComponent = XMemo<PageProps>((props) => {
-    let organization = getClient().useOrganization({ organizationId: props.router.params.organizationId }).organization;
+    let organization = getClient().useOrganization({ organizationId: props.router.params.organizationId }, { fetchPolicy: 'cache-and-network' }).organization;
     return (
         <>
             <SHeader title={props.router.params.title || 'Groups'} />

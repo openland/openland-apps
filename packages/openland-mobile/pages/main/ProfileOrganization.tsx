@@ -29,7 +29,7 @@ let isAdmin = (a: Organization_organization_members) => {
 
 function ProfileOrganizationContent(props: PageProps) {
     let settings = getClient().useAccountSettings();
-    let organization = getClient().useOrganization({ organizationId: props.router.params.id }).organization;
+    let organization = getClient().useOrganization({ organizationId: props.router.params.id }, { fetchPolicy: 'cache-and-network' }).organization;
     let handleAddMember = React.useCallback(() => {
         Modals.showUserMuptiplePicker(props.router, {
             title: 'Add',
@@ -178,7 +178,7 @@ function ProfileOrganizationContent(props: PageProps) {
                 {sortedMembers.map((v) => (
                     <UserView
                         user={v.user}
-                        isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
+                        isAdmin={v.role === 'OWNER' ? 'owner' : v.role === 'ADMIN' ? 'admin' : undefined}
 
                         onPress={() => props.router.push('ProfileUser', { id: v.user.id, })}
                         onLongPress={v.user.id === getMessenger().engine.user.id || (organization.isOwner || organization.isAdmin) ?

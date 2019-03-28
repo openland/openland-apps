@@ -1,6 +1,6 @@
 import * as Source from './index';
 import * as Types from './Types'
-import { GraphqlClient, GraphqlActiveSubscription, OperationParameters } from 'openland-graphql/GraphqlClient'
+import { GraphqlClient, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from 'openland-graphql/GraphqlClient'
 import { BaseApiClient } from 'openland-graphql/BaseApiClient'
 
 export class OpenlandClient extends BaseApiClient {
@@ -13,11 +13,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchAccount(): Promise<Types.Account> {
         return this.refetch(Source.AccountQuery);
     }
-    useAccount(): Types.Account {
-        return this.useQuerySuspense(Source.AccountQuery);
+    useAccount(opts?: QueryWatchParameters): Types.Account {
+        return this.useQuerySuspense(Source.AccountQuery, undefined, opts);
     }
-    useWithoutLoaderAccount(): Types.Account | null {
-        return this.useQuery(Source.AccountQuery);
+    useWithoutLoaderAccount(opts?: QueryWatchParameters): Types.Account | null {
+        return this.useQuery(Source.AccountQuery, undefined, opts);
     }
     async queryAccountSettings(opts?: OperationParameters): Promise<Types.AccountSettings> {
         return this.client.query(Source.AccountSettingsQuery, undefined, opts);
@@ -25,11 +25,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchAccountSettings(): Promise<Types.AccountSettings> {
         return this.refetch(Source.AccountSettingsQuery);
     }
-    useAccountSettings(): Types.AccountSettings {
-        return this.useQuerySuspense(Source.AccountSettingsQuery);
+    useAccountSettings(opts?: QueryWatchParameters): Types.AccountSettings {
+        return this.useQuerySuspense(Source.AccountSettingsQuery, undefined, opts);
     }
-    useWithoutLoaderAccountSettings(): Types.AccountSettings | null {
-        return this.useQuery(Source.AccountSettingsQuery);
+    useWithoutLoaderAccountSettings(opts?: QueryWatchParameters): Types.AccountSettings | null {
+        return this.useQuery(Source.AccountSettingsQuery, undefined, opts);
     }
     async queryAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: OperationParameters): Promise<Types.AccountInviteInfo> {
         return this.client.query(Source.AccountInviteInfoQuery, variables, opts);
@@ -37,8 +37,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchAccountInviteInfo(variables: Types.AccountInviteInfoVariables): Promise<Types.AccountInviteInfo> {
         return this.refetch(Source.AccountInviteInfoQuery, variables);
     }
-    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables): Types.AccountInviteInfo {
-        return this.useQuerySuspense(Source.AccountInviteInfoQuery, variables);
+    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: QueryWatchParameters): Types.AccountInviteInfo {
+        return this.useQuerySuspense(Source.AccountInviteInfoQuery, variables, opts);
     }
     useWithoutLoaderAccountInviteInfo(variables: Types.AccountInviteInfoVariables): Types.AccountInviteInfo | null {
         return this.useQuery(Source.AccountInviteInfoQuery, variables);
@@ -49,8 +49,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables): Promise<Types.AccountAppInviteInfo> {
         return this.refetch(Source.AccountAppInviteInfoQuery, variables);
     }
-    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables): Types.AccountAppInviteInfo {
-        return this.useQuerySuspense(Source.AccountAppInviteInfoQuery, variables);
+    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: QueryWatchParameters): Types.AccountAppInviteInfo {
+        return this.useQuerySuspense(Source.AccountAppInviteInfoQuery, variables, opts);
     }
     useWithoutLoaderAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables): Types.AccountAppInviteInfo | null {
         return this.useQuery(Source.AccountAppInviteInfoQuery, variables);
@@ -61,11 +61,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchAccountAppInvite(): Promise<Types.AccountAppInvite> {
         return this.refetch(Source.AccountAppInviteQuery);
     }
-    useAccountAppInvite(): Types.AccountAppInvite {
-        return this.useQuerySuspense(Source.AccountAppInviteQuery);
+    useAccountAppInvite(opts?: QueryWatchParameters): Types.AccountAppInvite {
+        return this.useQuerySuspense(Source.AccountAppInviteQuery, undefined, opts);
     }
-    useWithoutLoaderAccountAppInvite(): Types.AccountAppInvite | null {
-        return this.useQuery(Source.AccountAppInviteQuery);
+    useWithoutLoaderAccountAppInvite(opts?: QueryWatchParameters): Types.AccountAppInvite | null {
+        return this.useQuery(Source.AccountAppInviteQuery, undefined, opts);
     }
     async queryAccountInvites(opts?: OperationParameters): Promise<Types.AccountInvites> {
         return this.client.query(Source.AccountInvitesQuery, undefined, opts);
@@ -73,11 +73,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchAccountInvites(): Promise<Types.AccountInvites> {
         return this.refetch(Source.AccountInvitesQuery);
     }
-    useAccountInvites(): Types.AccountInvites {
-        return this.useQuerySuspense(Source.AccountInvitesQuery);
+    useAccountInvites(opts?: QueryWatchParameters): Types.AccountInvites {
+        return this.useQuerySuspense(Source.AccountInvitesQuery, undefined, opts);
     }
-    useWithoutLoaderAccountInvites(): Types.AccountInvites | null {
-        return this.useQuery(Source.AccountInvitesQuery);
+    useWithoutLoaderAccountInvites(opts?: QueryWatchParameters): Types.AccountInvites | null {
+        return this.useQuery(Source.AccountInvitesQuery, undefined, opts);
     }
     async queryAccountInvitesHistory(opts?: OperationParameters): Promise<Types.AccountInvitesHistory> {
         return this.client.query(Source.AccountInvitesHistoryQuery, undefined, opts);
@@ -85,11 +85,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchAccountInvitesHistory(): Promise<Types.AccountInvitesHistory> {
         return this.refetch(Source.AccountInvitesHistoryQuery);
     }
-    useAccountInvitesHistory(): Types.AccountInvitesHistory {
-        return this.useQuerySuspense(Source.AccountInvitesHistoryQuery);
+    useAccountInvitesHistory(opts?: QueryWatchParameters): Types.AccountInvitesHistory {
+        return this.useQuerySuspense(Source.AccountInvitesHistoryQuery, undefined, opts);
     }
-    useWithoutLoaderAccountInvitesHistory(): Types.AccountInvitesHistory | null {
-        return this.useQuery(Source.AccountInvitesHistoryQuery);
+    useWithoutLoaderAccountInvitesHistory(opts?: QueryWatchParameters): Types.AccountInvitesHistory | null {
+        return this.useQuery(Source.AccountInvitesHistoryQuery, undefined, opts);
     }
     async queryProfilePrefill(opts?: OperationParameters): Promise<Types.ProfilePrefill> {
         return this.client.query(Source.ProfilePrefillQuery, undefined, opts);
@@ -97,11 +97,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchProfilePrefill(): Promise<Types.ProfilePrefill> {
         return this.refetch(Source.ProfilePrefillQuery);
     }
-    useProfilePrefill(): Types.ProfilePrefill {
-        return this.useQuerySuspense(Source.ProfilePrefillQuery);
+    useProfilePrefill(opts?: QueryWatchParameters): Types.ProfilePrefill {
+        return this.useQuerySuspense(Source.ProfilePrefillQuery, undefined, opts);
     }
-    useWithoutLoaderProfilePrefill(): Types.ProfilePrefill | null {
-        return this.useQuery(Source.ProfilePrefillQuery);
+    useWithoutLoaderProfilePrefill(opts?: QueryWatchParameters): Types.ProfilePrefill | null {
+        return this.useQuery(Source.ProfilePrefillQuery, undefined, opts);
     }
     async queryFetchPushSettings(opts?: OperationParameters): Promise<Types.FetchPushSettings> {
         return this.client.query(Source.FetchPushSettingsQuery, undefined, opts);
@@ -109,11 +109,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchFetchPushSettings(): Promise<Types.FetchPushSettings> {
         return this.refetch(Source.FetchPushSettingsQuery);
     }
-    useFetchPushSettings(): Types.FetchPushSettings {
-        return this.useQuerySuspense(Source.FetchPushSettingsQuery);
+    useFetchPushSettings(opts?: QueryWatchParameters): Types.FetchPushSettings {
+        return this.useQuerySuspense(Source.FetchPushSettingsQuery, undefined, opts);
     }
-    useWithoutLoaderFetchPushSettings(): Types.FetchPushSettings | null {
-        return this.useQuery(Source.FetchPushSettingsQuery);
+    useWithoutLoaderFetchPushSettings(opts?: QueryWatchParameters): Types.FetchPushSettings | null {
+        return this.useQuery(Source.FetchPushSettingsQuery, undefined, opts);
     }
     async queryMyApps(opts?: OperationParameters): Promise<Types.MyApps> {
         return this.client.query(Source.MyAppsQuery, undefined, opts);
@@ -121,11 +121,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchMyApps(): Promise<Types.MyApps> {
         return this.refetch(Source.MyAppsQuery);
     }
-    useMyApps(): Types.MyApps {
-        return this.useQuerySuspense(Source.MyAppsQuery);
+    useMyApps(opts?: QueryWatchParameters): Types.MyApps {
+        return this.useQuerySuspense(Source.MyAppsQuery, undefined, opts);
     }
-    useWithoutLoaderMyApps(): Types.MyApps | null {
-        return this.useQuery(Source.MyAppsQuery);
+    useWithoutLoaderMyApps(opts?: QueryWatchParameters): Types.MyApps | null {
+        return this.useQuery(Source.MyAppsQuery, undefined, opts);
     }
     async queryDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
         return this.client.query(Source.DialogsQuery, variables, opts);
@@ -133,8 +133,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchDialogs(variables: Types.DialogsVariables): Promise<Types.Dialogs> {
         return this.refetch(Source.DialogsQuery, variables);
     }
-    useDialogs(variables: Types.DialogsVariables): Types.Dialogs {
-        return this.useQuerySuspense(Source.DialogsQuery, variables);
+    useDialogs(variables: Types.DialogsVariables, opts?: QueryWatchParameters): Types.Dialogs {
+        return this.useQuerySuspense(Source.DialogsQuery, variables, opts);
     }
     useWithoutLoaderDialogs(variables: Types.DialogsVariables): Types.Dialogs | null {
         return this.useQuery(Source.DialogsQuery, variables);
@@ -145,8 +145,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchRoom(variables: Types.RoomVariables): Promise<Types.Room> {
         return this.refetch(Source.RoomQuery, variables);
     }
-    useRoom(variables: Types.RoomVariables): Types.Room {
-        return this.useQuerySuspense(Source.RoomQuery, variables);
+    useRoom(variables: Types.RoomVariables, opts?: QueryWatchParameters): Types.Room {
+        return this.useQuerySuspense(Source.RoomQuery, variables, opts);
     }
     useWithoutLoaderRoom(variables: Types.RoomVariables): Types.Room | null {
         return this.useQuery(Source.RoomQuery, variables);
@@ -157,8 +157,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchRoomTiny(variables: Types.RoomTinyVariables): Promise<Types.RoomTiny> {
         return this.refetch(Source.RoomTinyQuery, variables);
     }
-    useRoomTiny(variables: Types.RoomTinyVariables): Types.RoomTiny {
-        return this.useQuerySuspense(Source.RoomTinyQuery, variables);
+    useRoomTiny(variables: Types.RoomTinyVariables, opts?: QueryWatchParameters): Types.RoomTiny {
+        return this.useQuerySuspense(Source.RoomTinyQuery, variables, opts);
     }
     useWithoutLoaderRoomTiny(variables: Types.RoomTinyVariables): Types.RoomTiny | null {
         return this.useQuery(Source.RoomTinyQuery, variables);
@@ -169,8 +169,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchRoomSuper(variables: Types.RoomSuperVariables): Promise<Types.RoomSuper> {
         return this.refetch(Source.RoomSuperQuery, variables);
     }
-    useRoomSuper(variables: Types.RoomSuperVariables): Types.RoomSuper {
-        return this.useQuerySuspense(Source.RoomSuperQuery, variables);
+    useRoomSuper(variables: Types.RoomSuperVariables, opts?: QueryWatchParameters): Types.RoomSuper {
+        return this.useQuerySuspense(Source.RoomSuperQuery, variables, opts);
     }
     useWithoutLoaderRoomSuper(variables: Types.RoomSuperVariables): Types.RoomSuper | null {
         return this.useQuery(Source.RoomSuperQuery, variables);
@@ -181,8 +181,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchGetDraftMessage(variables: Types.GetDraftMessageVariables): Promise<Types.GetDraftMessage> {
         return this.refetch(Source.GetDraftMessageQuery, variables);
     }
-    useGetDraftMessage(variables: Types.GetDraftMessageVariables): Types.GetDraftMessage {
-        return this.useQuerySuspense(Source.GetDraftMessageQuery, variables);
+    useGetDraftMessage(variables: Types.GetDraftMessageVariables, opts?: QueryWatchParameters): Types.GetDraftMessage {
+        return this.useQuerySuspense(Source.GetDraftMessageQuery, variables, opts);
     }
     useWithoutLoaderGetDraftMessage(variables: Types.GetDraftMessageVariables): Types.GetDraftMessage | null {
         return this.useQuery(Source.GetDraftMessageQuery, variables);
@@ -193,11 +193,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchGlobalCounter(): Promise<Types.GlobalCounter> {
         return this.refetch(Source.GlobalCounterQuery);
     }
-    useGlobalCounter(): Types.GlobalCounter {
-        return this.useQuerySuspense(Source.GlobalCounterQuery);
+    useGlobalCounter(opts?: QueryWatchParameters): Types.GlobalCounter {
+        return this.useQuerySuspense(Source.GlobalCounterQuery, undefined, opts);
     }
-    useWithoutLoaderGlobalCounter(): Types.GlobalCounter | null {
-        return this.useQuery(Source.GlobalCounterQuery);
+    useWithoutLoaderGlobalCounter(opts?: QueryWatchParameters): Types.GlobalCounter | null {
+        return this.useQuery(Source.GlobalCounterQuery, undefined, opts);
     }
     async queryChatHistory(variables: Types.ChatHistoryVariables, opts?: OperationParameters): Promise<Types.ChatHistory> {
         return this.client.query(Source.ChatHistoryQuery, variables, opts);
@@ -205,8 +205,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchChatHistory(variables: Types.ChatHistoryVariables): Promise<Types.ChatHistory> {
         return this.refetch(Source.ChatHistoryQuery, variables);
     }
-    useChatHistory(variables: Types.ChatHistoryVariables): Types.ChatHistory {
-        return this.useQuerySuspense(Source.ChatHistoryQuery, variables);
+    useChatHistory(variables: Types.ChatHistoryVariables, opts?: QueryWatchParameters): Types.ChatHistory {
+        return this.useQuerySuspense(Source.ChatHistoryQuery, variables, opts);
     }
     useWithoutLoaderChatHistory(variables: Types.ChatHistoryVariables): Types.ChatHistory | null {
         return this.useQuery(Source.ChatHistoryQuery, variables);
@@ -217,8 +217,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchChatSearchGroup(variables: Types.ChatSearchGroupVariables): Promise<Types.ChatSearchGroup> {
         return this.refetch(Source.ChatSearchGroupQuery, variables);
     }
-    useChatSearchGroup(variables: Types.ChatSearchGroupVariables): Types.ChatSearchGroup {
-        return this.useQuerySuspense(Source.ChatSearchGroupQuery, variables);
+    useChatSearchGroup(variables: Types.ChatSearchGroupVariables, opts?: QueryWatchParameters): Types.ChatSearchGroup {
+        return this.useQuerySuspense(Source.ChatSearchGroupQuery, variables, opts);
     }
     useWithoutLoaderChatSearchGroup(variables: Types.ChatSearchGroupVariables): Types.ChatSearchGroup | null {
         return this.useQuery(Source.ChatSearchGroupQuery, variables);
@@ -229,8 +229,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchRoomSearchText(variables: Types.RoomSearchTextVariables): Promise<Types.RoomSearchText> {
         return this.refetch(Source.RoomSearchTextQuery, variables);
     }
-    useRoomSearchText(variables: Types.RoomSearchTextVariables): Types.RoomSearchText {
-        return this.useQuerySuspense(Source.RoomSearchTextQuery, variables);
+    useRoomSearchText(variables: Types.RoomSearchTextVariables, opts?: QueryWatchParameters): Types.RoomSearchText {
+        return this.useQuerySuspense(Source.RoomSearchTextQuery, variables, opts);
     }
     useWithoutLoaderRoomSearchText(variables: Types.RoomSearchTextVariables): Types.RoomSearchText | null {
         return this.useQuery(Source.RoomSearchTextQuery, variables);
@@ -241,8 +241,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchRoomSearch(variables: Types.RoomSearchVariables): Promise<Types.RoomSearch> {
         return this.refetch(Source.RoomSearchQuery, variables);
     }
-    useRoomSearch(variables: Types.RoomSearchVariables): Types.RoomSearch {
-        return this.useQuerySuspense(Source.RoomSearchQuery, variables);
+    useRoomSearch(variables: Types.RoomSearchVariables, opts?: QueryWatchParameters): Types.RoomSearch {
+        return this.useQuerySuspense(Source.RoomSearchQuery, variables, opts);
     }
     useWithoutLoaderRoomSearch(variables: Types.RoomSearchVariables): Types.RoomSearch | null {
         return this.useQuery(Source.RoomSearchQuery, variables);
@@ -253,8 +253,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchRoomMembersShort(variables: Types.RoomMembersShortVariables): Promise<Types.RoomMembersShort> {
         return this.refetch(Source.RoomMembersShortQuery, variables);
     }
-    useRoomMembersShort(variables: Types.RoomMembersShortVariables): Types.RoomMembersShort {
-        return this.useQuerySuspense(Source.RoomMembersShortQuery, variables);
+    useRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: QueryWatchParameters): Types.RoomMembersShort {
+        return this.useQuerySuspense(Source.RoomMembersShortQuery, variables, opts);
     }
     useWithoutLoaderRoomMembersShort(variables: Types.RoomMembersShortVariables): Types.RoomMembersShort | null {
         return this.useQuery(Source.RoomMembersShortQuery, variables);
@@ -265,8 +265,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchRoomMembers(variables: Types.RoomMembersVariables): Promise<Types.RoomMembers> {
         return this.refetch(Source.RoomMembersQuery, variables);
     }
-    useRoomMembers(variables: Types.RoomMembersVariables): Types.RoomMembers {
-        return this.useQuerySuspense(Source.RoomMembersQuery, variables);
+    useRoomMembers(variables: Types.RoomMembersVariables, opts?: QueryWatchParameters): Types.RoomMembers {
+        return this.useQuerySuspense(Source.RoomMembersQuery, variables, opts);
     }
     useWithoutLoaderRoomMembers(variables: Types.RoomMembersVariables): Types.RoomMembers | null {
         return this.useQuery(Source.RoomMembersQuery, variables);
@@ -277,8 +277,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchRoomInviteLink(variables: Types.RoomInviteLinkVariables): Promise<Types.RoomInviteLink> {
         return this.refetch(Source.RoomInviteLinkQuery, variables);
     }
-    useRoomInviteLink(variables: Types.RoomInviteLinkVariables): Types.RoomInviteLink {
-        return this.useQuerySuspense(Source.RoomInviteLinkQuery, variables);
+    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: QueryWatchParameters): Types.RoomInviteLink {
+        return this.useQuerySuspense(Source.RoomInviteLinkQuery, variables, opts);
     }
     useWithoutLoaderRoomInviteLink(variables: Types.RoomInviteLinkVariables): Types.RoomInviteLink | null {
         return this.useQuery(Source.RoomInviteLinkQuery, variables);
@@ -289,8 +289,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchRoomInviteInfo(variables: Types.RoomInviteInfoVariables): Promise<Types.RoomInviteInfo> {
         return this.refetch(Source.RoomInviteInfoQuery, variables);
     }
-    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables): Types.RoomInviteInfo {
-        return this.useQuerySuspense(Source.RoomInviteInfoQuery, variables);
+    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: QueryWatchParameters): Types.RoomInviteInfo {
+        return this.useQuerySuspense(Source.RoomInviteInfoQuery, variables, opts);
     }
     useWithoutLoaderRoomInviteInfo(variables: Types.RoomInviteInfoVariables): Types.RoomInviteInfo | null {
         return this.useQuery(Source.RoomInviteInfoQuery, variables);
@@ -301,8 +301,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchConference(variables: Types.ConferenceVariables): Promise<Types.Conference> {
         return this.refetch(Source.ConferenceQuery, variables);
     }
-    useConference(variables: Types.ConferenceVariables): Types.Conference {
-        return this.useQuerySuspense(Source.ConferenceQuery, variables);
+    useConference(variables: Types.ConferenceVariables, opts?: QueryWatchParameters): Types.Conference {
+        return this.useQuerySuspense(Source.ConferenceQuery, variables, opts);
     }
     useWithoutLoaderConference(variables: Types.ConferenceVariables): Types.Conference | null {
         return this.useQuery(Source.ConferenceQuery, variables);
@@ -313,8 +313,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchConferenceMedia(variables: Types.ConferenceMediaVariables): Promise<Types.ConferenceMedia> {
         return this.refetch(Source.ConferenceMediaQuery, variables);
     }
-    useConferenceMedia(variables: Types.ConferenceMediaVariables): Types.ConferenceMedia {
-        return this.useQuerySuspense(Source.ConferenceMediaQuery, variables);
+    useConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: QueryWatchParameters): Types.ConferenceMedia {
+        return this.useQuerySuspense(Source.ConferenceMediaQuery, variables, opts);
     }
     useWithoutLoaderConferenceMedia(variables: Types.ConferenceMediaVariables): Types.ConferenceMedia | null {
         return this.useQuery(Source.ConferenceMediaQuery, variables);
@@ -325,11 +325,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchAvailableRooms(): Promise<Types.AvailableRooms> {
         return this.refetch(Source.AvailableRoomsQuery);
     }
-    useAvailableRooms(): Types.AvailableRooms {
-        return this.useQuerySuspense(Source.AvailableRoomsQuery);
+    useAvailableRooms(opts?: QueryWatchParameters): Types.AvailableRooms {
+        return this.useQuerySuspense(Source.AvailableRoomsQuery, undefined, opts);
     }
-    useWithoutLoaderAvailableRooms(): Types.AvailableRooms | null {
-        return this.useQuery(Source.AvailableRoomsQuery);
+    useWithoutLoaderAvailableRooms(opts?: QueryWatchParameters): Types.AvailableRooms | null {
+        return this.useQuery(Source.AvailableRoomsQuery, undefined, opts);
     }
     async queryGlobalSearch(variables: Types.GlobalSearchVariables, opts?: OperationParameters): Promise<Types.GlobalSearch> {
         return this.client.query(Source.GlobalSearchQuery, variables, opts);
@@ -337,8 +337,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchGlobalSearch(variables: Types.GlobalSearchVariables): Promise<Types.GlobalSearch> {
         return this.refetch(Source.GlobalSearchQuery, variables);
     }
-    useGlobalSearch(variables: Types.GlobalSearchVariables): Types.GlobalSearch {
-        return this.useQuerySuspense(Source.GlobalSearchQuery, variables);
+    useGlobalSearch(variables: Types.GlobalSearchVariables, opts?: QueryWatchParameters): Types.GlobalSearch {
+        return this.useQuerySuspense(Source.GlobalSearchQuery, variables, opts);
     }
     useWithoutLoaderGlobalSearch(variables: Types.GlobalSearchVariables): Types.GlobalSearch | null {
         return this.useQuery(Source.GlobalSearchQuery, variables);
@@ -349,11 +349,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchFeatureFlags(): Promise<Types.FeatureFlags> {
         return this.refetch(Source.FeatureFlagsQuery);
     }
-    useFeatureFlags(): Types.FeatureFlags {
-        return this.useQuerySuspense(Source.FeatureFlagsQuery);
+    useFeatureFlags(opts?: QueryWatchParameters): Types.FeatureFlags {
+        return this.useQuerySuspense(Source.FeatureFlagsQuery, undefined, opts);
     }
-    useWithoutLoaderFeatureFlags(): Types.FeatureFlags | null {
-        return this.useQuery(Source.FeatureFlagsQuery);
+    useWithoutLoaderFeatureFlags(opts?: QueryWatchParameters): Types.FeatureFlags | null {
+        return this.useQuery(Source.FeatureFlagsQuery, undefined, opts);
     }
     async queryFeedHome(opts?: OperationParameters): Promise<Types.FeedHome> {
         return this.client.query(Source.FeedHomeQuery, undefined, opts);
@@ -361,11 +361,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchFeedHome(): Promise<Types.FeedHome> {
         return this.refetch(Source.FeedHomeQuery);
     }
-    useFeedHome(): Types.FeedHome {
-        return this.useQuerySuspense(Source.FeedHomeQuery);
+    useFeedHome(opts?: QueryWatchParameters): Types.FeedHome {
+        return this.useQuerySuspense(Source.FeedHomeQuery, undefined, opts);
     }
-    useWithoutLoaderFeedHome(): Types.FeedHome | null {
-        return this.useQuery(Source.FeedHomeQuery);
+    useWithoutLoaderFeedHome(opts?: QueryWatchParameters): Types.FeedHome | null {
+        return this.useQuery(Source.FeedHomeQuery, undefined, opts);
     }
     async queryMyOrganizations(opts?: OperationParameters): Promise<Types.MyOrganizations> {
         return this.client.query(Source.MyOrganizationsQuery, undefined, opts);
@@ -373,11 +373,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchMyOrganizations(): Promise<Types.MyOrganizations> {
         return this.refetch(Source.MyOrganizationsQuery);
     }
-    useMyOrganizations(): Types.MyOrganizations {
-        return this.useQuerySuspense(Source.MyOrganizationsQuery);
+    useMyOrganizations(opts?: QueryWatchParameters): Types.MyOrganizations {
+        return this.useQuerySuspense(Source.MyOrganizationsQuery, undefined, opts);
     }
-    useWithoutLoaderMyOrganizations(): Types.MyOrganizations | null {
-        return this.useQuery(Source.MyOrganizationsQuery);
+    useWithoutLoaderMyOrganizations(opts?: QueryWatchParameters): Types.MyOrganizations | null {
+        return this.useQuery(Source.MyOrganizationsQuery, undefined, opts);
     }
     async queryOrganization(variables: Types.OrganizationVariables, opts?: OperationParameters): Promise<Types.Organization> {
         return this.client.query(Source.OrganizationQuery, variables, opts);
@@ -385,8 +385,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchOrganization(variables: Types.OrganizationVariables): Promise<Types.Organization> {
         return this.refetch(Source.OrganizationQuery, variables);
     }
-    useOrganization(variables: Types.OrganizationVariables): Types.Organization {
-        return this.useQuerySuspense(Source.OrganizationQuery, variables);
+    useOrganization(variables: Types.OrganizationVariables, opts?: QueryWatchParameters): Types.Organization {
+        return this.useQuerySuspense(Source.OrganizationQuery, variables, opts);
     }
     useWithoutLoaderOrganization(variables: Types.OrganizationVariables): Types.Organization | null {
         return this.useQuery(Source.OrganizationQuery, variables);
@@ -397,8 +397,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Promise<Types.OrganizationMembersShort> {
         return this.refetch(Source.OrganizationMembersShortQuery, variables);
     }
-    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Types.OrganizationMembersShort {
-        return this.useQuerySuspense(Source.OrganizationMembersShortQuery, variables);
+    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: QueryWatchParameters): Types.OrganizationMembersShort {
+        return this.useQuerySuspense(Source.OrganizationMembersShortQuery, variables, opts);
     }
     useWithoutLoaderOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Types.OrganizationMembersShort | null {
         return this.useQuery(Source.OrganizationMembersShortQuery, variables);
@@ -409,8 +409,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchOrganizationProfile(variables: Types.OrganizationProfileVariables): Promise<Types.OrganizationProfile> {
         return this.refetch(Source.OrganizationProfileQuery, variables);
     }
-    useOrganizationProfile(variables: Types.OrganizationProfileVariables): Types.OrganizationProfile {
-        return this.useQuerySuspense(Source.OrganizationProfileQuery, variables);
+    useOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: QueryWatchParameters): Types.OrganizationProfile {
+        return this.useQuerySuspense(Source.OrganizationProfileQuery, variables, opts);
     }
     useWithoutLoaderOrganizationProfile(variables: Types.OrganizationProfileVariables): Types.OrganizationProfile | null {
         return this.useQuery(Source.OrganizationProfileQuery, variables);
@@ -421,8 +421,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchExploreOrganizations(variables: Types.ExploreOrganizationsVariables): Promise<Types.ExploreOrganizations> {
         return this.refetch(Source.ExploreOrganizationsQuery, variables);
     }
-    useExploreOrganizations(variables: Types.ExploreOrganizationsVariables): Types.ExploreOrganizations {
-        return this.useQuerySuspense(Source.ExploreOrganizationsQuery, variables);
+    useExploreOrganizations(variables: Types.ExploreOrganizationsVariables, opts?: QueryWatchParameters): Types.ExploreOrganizations {
+        return this.useQuerySuspense(Source.ExploreOrganizationsQuery, variables, opts);
     }
     useWithoutLoaderExploreOrganizations(variables: Types.ExploreOrganizationsVariables): Types.ExploreOrganizations | null {
         return this.useQuery(Source.ExploreOrganizationsQuery, variables);
@@ -433,8 +433,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchExploreComunity(variables: Types.ExploreComunityVariables): Promise<Types.ExploreComunity> {
         return this.refetch(Source.ExploreComunityQuery, variables);
     }
-    useExploreComunity(variables: Types.ExploreComunityVariables): Types.ExploreComunity {
-        return this.useQuerySuspense(Source.ExploreComunityQuery, variables);
+    useExploreComunity(variables: Types.ExploreComunityVariables, opts?: QueryWatchParameters): Types.ExploreComunity {
+        return this.useQuerySuspense(Source.ExploreComunityQuery, variables, opts);
     }
     useWithoutLoaderExploreComunity(variables: Types.ExploreComunityVariables): Types.ExploreComunity | null {
         return this.useQuery(Source.ExploreComunityQuery, variables);
@@ -445,8 +445,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables): Promise<Types.OrganizationPublicInvite> {
         return this.refetch(Source.OrganizationPublicInviteQuery, variables);
     }
-    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables): Types.OrganizationPublicInvite {
-        return this.useQuerySuspense(Source.OrganizationPublicInviteQuery, variables);
+    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: QueryWatchParameters): Types.OrganizationPublicInvite {
+        return this.useQuerySuspense(Source.OrganizationPublicInviteQuery, variables, opts);
     }
     useWithoutLoaderOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables): Types.OrganizationPublicInvite | null {
         return this.useQuery(Source.OrganizationPublicInviteQuery, variables);
@@ -457,8 +457,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables): Promise<Types.OrganizationByPrefix> {
         return this.refetch(Source.OrganizationByPrefixQuery, variables);
     }
-    useOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables): Types.OrganizationByPrefix {
-        return this.useQuerySuspense(Source.OrganizationByPrefixQuery, variables);
+    useOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, opts?: QueryWatchParameters): Types.OrganizationByPrefix {
+        return this.useQuerySuspense(Source.OrganizationByPrefixQuery, variables, opts);
     }
     useWithoutLoaderOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables): Types.OrganizationByPrefix | null {
         return this.useQuery(Source.OrganizationByPrefixQuery, variables);
@@ -469,11 +469,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchPermissions(): Promise<Types.Permissions> {
         return this.refetch(Source.PermissionsQuery);
     }
-    usePermissions(): Types.Permissions {
-        return this.useQuerySuspense(Source.PermissionsQuery);
+    usePermissions(opts?: QueryWatchParameters): Types.Permissions {
+        return this.useQuerySuspense(Source.PermissionsQuery, undefined, opts);
     }
-    useWithoutLoaderPermissions(): Types.Permissions | null {
-        return this.useQuery(Source.PermissionsQuery);
+    useWithoutLoaderPermissions(opts?: QueryWatchParameters): Types.Permissions | null {
+        return this.useQuery(Source.PermissionsQuery, undefined, opts);
     }
     async querySuperAdmins(opts?: OperationParameters): Promise<Types.SuperAdmins> {
         return this.client.query(Source.SuperAdminsQuery, undefined, opts);
@@ -481,11 +481,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchSuperAdmins(): Promise<Types.SuperAdmins> {
         return this.refetch(Source.SuperAdminsQuery);
     }
-    useSuperAdmins(): Types.SuperAdmins {
-        return this.useQuerySuspense(Source.SuperAdminsQuery);
+    useSuperAdmins(opts?: QueryWatchParameters): Types.SuperAdmins {
+        return this.useQuerySuspense(Source.SuperAdminsQuery, undefined, opts);
     }
-    useWithoutLoaderSuperAdmins(): Types.SuperAdmins | null {
-        return this.useQuery(Source.SuperAdminsQuery);
+    useWithoutLoaderSuperAdmins(opts?: QueryWatchParameters): Types.SuperAdmins | null {
+        return this.useQuery(Source.SuperAdminsQuery, undefined, opts);
     }
     async querySuperAccounts(opts?: OperationParameters): Promise<Types.SuperAccounts> {
         return this.client.query(Source.SuperAccountsQuery, undefined, opts);
@@ -493,11 +493,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchSuperAccounts(): Promise<Types.SuperAccounts> {
         return this.refetch(Source.SuperAccountsQuery);
     }
-    useSuperAccounts(): Types.SuperAccounts {
-        return this.useQuerySuspense(Source.SuperAccountsQuery);
+    useSuperAccounts(opts?: QueryWatchParameters): Types.SuperAccounts {
+        return this.useQuerySuspense(Source.SuperAccountsQuery, undefined, opts);
     }
-    useWithoutLoaderSuperAccounts(): Types.SuperAccounts | null {
-        return this.useQuery(Source.SuperAccountsQuery);
+    useWithoutLoaderSuperAccounts(opts?: QueryWatchParameters): Types.SuperAccounts | null {
+        return this.useQuery(Source.SuperAccountsQuery, undefined, opts);
     }
     async querySuperAccount(variables: Types.SuperAccountVariables, opts?: OperationParameters): Promise<Types.SuperAccount> {
         return this.client.query(Source.SuperAccountQuery, variables, opts);
@@ -505,8 +505,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchSuperAccount(variables: Types.SuperAccountVariables): Promise<Types.SuperAccount> {
         return this.refetch(Source.SuperAccountQuery, variables);
     }
-    useSuperAccount(variables: Types.SuperAccountVariables): Types.SuperAccount {
-        return this.useQuerySuspense(Source.SuperAccountQuery, variables);
+    useSuperAccount(variables: Types.SuperAccountVariables, opts?: QueryWatchParameters): Types.SuperAccount {
+        return this.useQuerySuspense(Source.SuperAccountQuery, variables, opts);
     }
     useWithoutLoaderSuperAccount(variables: Types.SuperAccountVariables): Types.SuperAccount | null {
         return this.useQuery(Source.SuperAccountQuery, variables);
@@ -517,11 +517,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchProfile(): Promise<Types.Profile> {
         return this.refetch(Source.ProfileQuery);
     }
-    useProfile(): Types.Profile {
-        return this.useQuerySuspense(Source.ProfileQuery);
+    useProfile(opts?: QueryWatchParameters): Types.Profile {
+        return this.useQuerySuspense(Source.ProfileQuery, undefined, opts);
     }
-    useWithoutLoaderProfile(): Types.Profile | null {
-        return this.useQuery(Source.ProfileQuery);
+    useWithoutLoaderProfile(opts?: QueryWatchParameters): Types.Profile | null {
+        return this.useQuery(Source.ProfileQuery, undefined, opts);
     }
     async querySettings(opts?: OperationParameters): Promise<Types.Settings> {
         return this.client.query(Source.SettingsQuery, undefined, opts);
@@ -529,11 +529,11 @@ export class OpenlandClient extends BaseApiClient {
     async refetchSettings(): Promise<Types.Settings> {
         return this.refetch(Source.SettingsQuery);
     }
-    useSettings(): Types.Settings {
-        return this.useQuerySuspense(Source.SettingsQuery);
+    useSettings(opts?: QueryWatchParameters): Types.Settings {
+        return this.useQuerySuspense(Source.SettingsQuery, undefined, opts);
     }
-    useWithoutLoaderSettings(): Types.Settings | null {
-        return this.useQuery(Source.SettingsQuery);
+    useWithoutLoaderSettings(opts?: QueryWatchParameters): Types.Settings | null {
+        return this.useQuery(Source.SettingsQuery, undefined, opts);
     }
     async queryUsers(variables: Types.UsersVariables, opts?: OperationParameters): Promise<Types.Users> {
         return this.client.query(Source.UsersQuery, variables, opts);
@@ -541,8 +541,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchUsers(variables: Types.UsersVariables): Promise<Types.Users> {
         return this.refetch(Source.UsersQuery, variables);
     }
-    useUsers(variables: Types.UsersVariables): Types.Users {
-        return this.useQuerySuspense(Source.UsersQuery, variables);
+    useUsers(variables: Types.UsersVariables, opts?: QueryWatchParameters): Types.Users {
+        return this.useQuerySuspense(Source.UsersQuery, variables, opts);
     }
     useWithoutLoaderUsers(variables: Types.UsersVariables): Types.Users | null {
         return this.useQuery(Source.UsersQuery, variables);
@@ -553,8 +553,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchUser(variables: Types.UserVariables): Promise<Types.User> {
         return this.refetch(Source.UserQuery, variables);
     }
-    useUser(variables: Types.UserVariables): Types.User {
-        return this.useQuerySuspense(Source.UserQuery, variables);
+    useUser(variables: Types.UserVariables, opts?: QueryWatchParameters): Types.User {
+        return this.useQuerySuspense(Source.UserQuery, variables, opts);
     }
     useWithoutLoaderUser(variables: Types.UserVariables): Types.User | null {
         return this.useQuery(Source.UserQuery, variables);
@@ -565,8 +565,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchOnline(variables: Types.OnlineVariables): Promise<Types.Online> {
         return this.refetch(Source.OnlineQuery, variables);
     }
-    useOnline(variables: Types.OnlineVariables): Types.Online {
-        return this.useQuerySuspense(Source.OnlineQuery, variables);
+    useOnline(variables: Types.OnlineVariables, opts?: QueryWatchParameters): Types.Online {
+        return this.useQuerySuspense(Source.OnlineQuery, variables, opts);
     }
     useWithoutLoaderOnline(variables: Types.OnlineVariables): Types.Online | null {
         return this.useQuery(Source.OnlineQuery, variables);
@@ -577,8 +577,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchExplorePeople(variables: Types.ExplorePeopleVariables): Promise<Types.ExplorePeople> {
         return this.refetch(Source.ExplorePeopleQuery, variables);
     }
-    useExplorePeople(variables: Types.ExplorePeopleVariables): Types.ExplorePeople {
-        return this.useQuerySuspense(Source.ExplorePeopleQuery, variables);
+    useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: QueryWatchParameters): Types.ExplorePeople {
+        return this.useQuerySuspense(Source.ExplorePeopleQuery, variables, opts);
     }
     useWithoutLoaderExplorePeople(variables: Types.ExplorePeopleVariables): Types.ExplorePeople | null {
         return this.useQuery(Source.ExplorePeopleQuery, variables);
@@ -589,8 +589,8 @@ export class OpenlandClient extends BaseApiClient {
     async refetchResolveShortName(variables: Types.ResolveShortNameVariables): Promise<Types.ResolveShortName> {
         return this.refetch(Source.ResolveShortNameQuery, variables);
     }
-    useResolveShortName(variables: Types.ResolveShortNameVariables): Types.ResolveShortName {
-        return this.useQuerySuspense(Source.ResolveShortNameQuery, variables);
+    useResolveShortName(variables: Types.ResolveShortNameVariables, opts?: QueryWatchParameters): Types.ResolveShortName {
+        return this.useQuerySuspense(Source.ResolveShortNameQuery, variables, opts);
     }
     useWithoutLoaderResolveShortName(variables: Types.ResolveShortNameVariables): Types.ResolveShortName | null {
         return this.useQuery(Source.ResolveShortNameQuery, variables);
@@ -693,6 +693,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateRoomKick(variables: Types.RoomKickVariables): Promise<Types.RoomKick> {
         return this.client.mutate(Source.RoomKickMutation, variables);
+    }
+    async mutateRoomChangeRole(variables: Types.RoomChangeRoleVariables): Promise<Types.RoomChangeRole> {
+        return this.client.mutate(Source.RoomChangeRoleMutation, variables);
     }
     async mutateRoomLeave(variables: Types.RoomLeaveVariables): Promise<Types.RoomLeave> {
         return this.client.mutate(Source.RoomLeaveMutation, variables);

@@ -76,6 +76,10 @@ export class DirectApollolClient implements GraphqlClient {
                     return ({ data: res.data as TQuery })
                 }
             },
+            destroy: () => {
+                // Nothing to do
+                // this.postQueryWatchEnd(id);
+            }
         }
     }
 

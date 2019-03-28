@@ -75,7 +75,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To upload a photo or video, allow Openland access to your camera.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>For sharing geolication, allow Openland access to your location.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>For sharing geolication, allow Openland access to your location.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>For voice calls, allow Openland access to your microphone.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

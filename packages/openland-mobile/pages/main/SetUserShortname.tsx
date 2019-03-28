@@ -62,7 +62,7 @@ export const validateShortname = (shortname: string | null, min: number, max: nu
 }
 
 const SetUserShortnameContent = XMemo<PageProps>((props) => {
-    let account = getClient().useAccount();
+    let account = getClient().useAccount({ fetchPolicy: 'network-only' });
     let me = account.me;
 
     const [shortname, setShortname] = React.useState(me!.shortname);
@@ -107,11 +107,11 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                     header={null}
                     footer={{
                         text: 'You can choose a username in Openland.' + '\n' +
-                              'Other people will be able to find you by this username, and mention you with this username in groups.' + '\n\n' +
-                              'You can use a-z, 0-9 and underscores.' + '\n' +
-                              'Minimum length is ' + minLength + ' characters.' + '\n\n' +
-                              'This link opens a chat with you:' + '\n' +
-                              'openland.com/' + (shortname ? shortname : ' username'),
+                            'Other people will be able to find you by this username, and mention you with this username in groups.' + '\n\n' +
+                            'You can use a-z, 0-9 and underscores.' + '\n' +
+                            'Minimum length is ' + minLength + ' characters.' + '\n\n' +
+                            'This link opens a chat with you:' + '\n' +
+                            'openland.com/' + (shortname ? shortname : ' username'),
                         onPress: (link: string) => {
                             if (me!.shortname) {
                                 ActionSheet.builder().action('Copy', () => Clipboard.setString(link)).show();

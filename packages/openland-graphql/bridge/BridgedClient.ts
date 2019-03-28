@@ -87,11 +87,9 @@ export abstract class BridgedClient implements GraphqlClient {
             result: () => {
                 return promise;
             },
-            // destroy: () => {
-            //     this.queryWatches.delete(id);
-            //     this.handlers.delete(id);
-            //     this.postQueryWatchEnd(id);
-            // }
+            destroy: () => {
+                this.postQueryWatchEnd(id);
+            }
         }
     }
 

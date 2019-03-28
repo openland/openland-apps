@@ -12,7 +12,7 @@ import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 
 const EditGroupComponent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
-    let group = getClient().useRoom({ id: props.router.params.id }).room;
+    let group = getClient().useRoom({ id: props.router.params.id }, { fetchPolicy: 'network-only' }).room;
 
     if (group && group.__typename === 'SharedRoom') {
         let currentPhoto = group.photo.startsWith('ph://') ? undefined : group.photo;

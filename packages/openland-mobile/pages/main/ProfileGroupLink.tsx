@@ -7,13 +7,12 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZListItem } from '../../components/ZListItem';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
-import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
-    let link = getClient().useRoomInviteLink({ roomId: props.router.params.id }).link;
+    let link = getClient().useRoomInviteLink({ roomId: props.router.params.id }, { fetchPolicy: 'network-only' }).link;
     return (
         <>
             <ZListItemGroup header={null} footer="Anyone with link can join as group member">

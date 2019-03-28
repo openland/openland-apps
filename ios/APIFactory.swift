@@ -1954,6 +1954,24 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "RoomChangeRole") {
+      let roomId = notNull(readString(src, "roomId"))
+      let userId = notNull(readString(src, "userId"))
+      let newRole = notNull(readRoomMemberRole(src, "newRole"))
+      let requestBody = RoomChangeRoleMutation(roomId: roomId, userId: userId, newRole: newRole)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "RoomLeave") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomLeaveMutation(roomId: roomId)

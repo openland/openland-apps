@@ -18,6 +18,10 @@ const EmojiSpaceStyle = css`
     }
 `;
 
+const boldTextClassName = css`
+    font-weight: bold;
+`;
+
 const EditLabelStyle = css`
     display: inline-block;
     vertical-align: baseline;
@@ -136,15 +140,12 @@ const SpansMessageTextPreprocess = ({
 
 const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserShort; text: string; isYou: boolean }) => {
-        const userNameEmojified = React.useMemo(
-            () => {
-                return emoji({
-                    src: text,
-                    size: 16,
-                });
-            },
-            [text],
-        );
+        const userNameEmojified = React.useMemo(() => {
+            return emoji({
+                src: text,
+                size: 16,
+            });
+        }, [text]);
 
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
@@ -175,6 +176,16 @@ const SpansMessageText = ({ text }: { text: string }) => {
         </>
     );
 };
+
+const cropEmailSymbolIfAny = (message: string) => {
+    let finalMessage = message;
+
+    if (finalMessage.startsWith('@')) {
+        finalMessage = finalMessage.slice(1);
+    }
+    return finalMessage;
+};
+
 export const SpansMessage = ({
     message,
     spans,
@@ -226,12 +237,12 @@ export const SpansMessage = ({
                 );
                 lastOffset = span.offset + span.length;
             } else if (span.__typename === 'MessageSpanRoomMention') {
+                let finalMessage = cropEmailSymbolIfAny(
+                    message.slice(span.offset, span.offset + span.length),
+                );
+
                 res.push(
-                    <LinkToRoom
-                        key={'room-' + i}
-                        text={message.slice(span.offset + 1, span.offset + span.length)}
-                        roomId={span.room.id}
-                    />,
+                    <LinkToRoom key={'room-' + i} text={finalMessage} roomId={span.room.id} />,
                 );
                 lastOffset = span.offset + span.length;
             } else if (span.__typename === 'MessageSpanLink') {
@@ -249,11 +260,9 @@ export const SpansMessage = ({
                 );
                 lastOffset = span.offset + span.length;
             } else if (span.__typename === 'MessageSpanUserMention') {
-                let finalMessage = message.slice(span.offset, span.offset + span.length);
-
-                if (finalMessage.startsWith('@')) {
-                    finalMessage = finalMessage.slice(1);
-                }
+                let finalMessage = cropEmailSymbolIfAny(
+                    message.slice(span.offset, span.offset + span.length),
+                );
 
                 res.push(
                     <MentionedUser
@@ -276,6 +285,13 @@ export const SpansMessage = ({
                             primaryOrganization: null,
                         }}
                     />,
+                );
+                lastOffset = span.offset + span.length;
+            } else if (span.__typename === 'MessageSpanBold') {
+                res.push(
+                    <span key={'link-' + i} className={boldTextClassName}>
+                        {message.slice(span.offset, span.offset + span.length)}
+                    </span>,
                 );
                 lastOffset = span.offset + span.length;
             }

@@ -16,8 +16,8 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const EditOrganizationComponent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
-    let organization = getClient().useOrganization({ organizationId: props.router.params.id }).organization;
-    let profile = getClient().useOrganizationProfile({ organizationId: props.router.params.id }).organizationProfile;
+    let organization = getClient().useOrganization({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organization;
+    let profile = getClient().useOrganizationProfile({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organizationProfile;
     return (
         <>
             <SHeader title="Edit organization" />

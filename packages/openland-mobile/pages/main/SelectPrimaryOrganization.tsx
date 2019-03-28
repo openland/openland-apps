@@ -10,7 +10,7 @@ import { Platform, View } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 
 const SelectPrimaryOrganizationComponent = (props: PageProps) => {
-    let organizations = getClient().useMyOrganizations().myOrganizations;
+    let organizations = getClient().useMyOrganizations({ fetchPolicy: 'network-only' }).myOrganizations;
 
     return (
         <>
@@ -31,9 +31,11 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
                             onPress={org.isPrimary ? undefined : async () => {
                                 startLoader();
 
-                                await getClient().mutateProfileUpdate({ input: {
-                                    alphaPrimaryOrganizationId: org.id
-                                }})
+                                await getClient().mutateProfileUpdate({
+                                    input: {
+                                        alphaPrimaryOrganizationId: org.id
+                                    }
+                                })
 
                                 await getClient().refetchMyOrganizations();
                                 await getClient().refetchAccount();

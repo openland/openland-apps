@@ -16,7 +16,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const ProfileUserContent = XMemo<PageProps>((props) => {
-    let userQuery = getClient().useUser({ userId: props.router.params.id });
+    let userQuery = getClient().useUser({ userId: props.router.params.id }, { fetchPolicy: 'cache-and-network' });
     let user = userQuery.user;
     let conversation = userQuery.conversation;
 
