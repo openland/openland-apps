@@ -28,7 +28,9 @@ class ApiFactoryBase {
       } else if v is Bool {
         r[k] = v as! Bool
       } else {
-        r[k] = convertData(src: v as! NSDictionary)
+        if let d2 = v as? NSDictionary {
+          r[k] = convertData(src: d2)
+        }
       }
     }
     return r
