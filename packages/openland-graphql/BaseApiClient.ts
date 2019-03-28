@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { GraphqlQuery, GraphqlClient, GraphqlQueryWatch, GraphqlQueryResult } from './GraphqlClient';
 import { keyFromObject } from './utils/keyFromObject';
+import { ClientCache, ClientCacheContext } from './ClientCache';
 
 export class BaseApiClient {
     readonly client: GraphqlClient;
@@ -36,19 +37,20 @@ export class BaseApiClient {
         }
     }
 
-    private getQueryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): GraphqlQueryWatch<TQuery> {
+    private getQueryWatch<TQuery, TVars>(cache: Map<String, GraphqlQueryWatch<{}>>, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): GraphqlQueryWatch<TQuery> {
         let key = query.document.definitions[0].name.value + '$' + keyFromObject(vars);
-        if (this.queries.has(key)) {
-            return this.queries.get(key)!! as GraphqlQueryWatch<TQuery>
+        if (cache.has(key)) {
+            return cache.get(key)!! as GraphqlQueryWatch<TQuery>
         } else {
             let res = this.client.queryWatch(query, vars);
-            this.queries.set(key, res);
+            cache.set(key, res);
             return res;
         }
     }
 
     private useObservableQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): [GraphqlQueryWatch<TQuery>, GraphqlQueryResult<TQuery> | undefined] {
-        const observableQuery = this.getQueryWatch(query, vars);
+        const clientCache = React.useContext(ClientCacheContext)
+        const observableQuery = this.getQueryWatch(clientCache ? clientCache.queries : this.queries, query, vars);
 
         // Value Holder
         const [responseId, setResponseId] = React.useState(0);
