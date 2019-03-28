@@ -91,22 +91,22 @@ function buildSchemaReader(name: string, v: any): string {
     // console.log(v);
     if (v.kind === 'SCALAR') {
         if (v.name === 'String' || v.name === 'ID') {
-            return 'readString(src, "' + name + '")'
+            return 'readOptionalString(src, "' + name + '")'
         } else if (v.name === 'Boolean') {
-            return 'readBool(src, "' + name + '")'
+            return 'readOptionalBool(src, "' + name + '")'
         } else if (v.name === 'Int') {
-            return 'readInt(src, "' + name + '")'
+            return 'readOptionalInt(src, "' + name + '")'
         } else if (v.name === 'Float') {
-            return 'readFloat(src, "' + name + '")'
+            return 'readOptionalFloat(src, "' + name + '")'
         } else {
             throw Error('Unknown scalar type: ' + v.name.value);
         }
     } else if (v.kind === 'INPUT_OBJECT' || v.kind === 'ENUM') {
-        return 'read' + v.name + '(src, "' + name + '")'
+        return 'read' + v.name + 'Optional(src, "' + name + '")'
     } else if (v.kind === 'LIST') {
         return buildSchemaListReader(name, v.ofType);
     } else if (v.kind === 'NON_NULL') {
-        return 'notNull(' + buildSchemaReader(name, v.ofType) + ')';
+        return 'optionalNotNull(' + buildSchemaReader(name, v.ofType) + ')';
     } else {
         throw Error();
     }
@@ -286,6 +286,8 @@ export function generateNativeApi() {
                     runMutation += '      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in\n'
                     runMutation += '          if e != nil {\n'
                     runMutation += '            handler(nil, e)\n'
+                    runMutation += '          } else if (r != nil && r!.errors != nil) {\n'
+                    runMutation += '            handler(nil, NativeGraphqlError(src: r!.errors!))\n'
                     runMutation += '          } else if (r != nil && r!.data != nil) {\n'
                     runMutation += '            handler(r!.data!.resultMap, nil)\n'
                     runMutation += '          } else {\n'
@@ -349,6 +351,18 @@ export function generateNativeApi() {
             inputTypes += '      return nil\n'
             inputTypes += '    }\n'
             inputTypes += '  }\n'
+            inputTypes += '  func read' + type.name + 'Optional(_ src: NSDictionary, _ name: String) -> Optional<' + type.name + '?> {\n'
+            inputTypes += '    let v = src[name]\n'
+            inputTypes += '    if v != nil {\n'
+            inputTypes += '      if (v is NSNull) {'
+            inputTypes += '        return Optional.some(nil)'
+            inputTypes += '      } else {\n'
+            inputTypes += '        return Optional.some(self.parse' + type.name + '(v as! NSDictionary))\n'
+            inputTypes += '      }\n'
+            inputTypes += '    } else {\n'
+            inputTypes += '      return Optional.none\n'
+            inputTypes += '    }\n'
+            inputTypes += '  }\n'
 
             inputTypes += '  func read' + type.name + 'List(_ src: NSDictionary, _ name: String) -> [' + type.name + '?]? {\n'
             inputTypes += '    let v = src[name]\n'
@@ -376,6 +390,18 @@ export function generateNativeApi() {
             inputTypes += '      return ' + type.name + '.init(rawValue: v!)\n'
             inputTypes += '     } else {\n'
             inputTypes += '       return nil\n'
+            inputTypes += '     }\n'
+            inputTypes += '  }\n';
+            inputTypes += '  func read' + type.name + 'Optional(_ src: NSDictionary, _ name: String) -> Optional<' + type.name + '?> {\n'
+            inputTypes += '    let v = self.readString(src, name);\n'
+            inputTypes += '    if v != nil {\n'
+            inputTypes += '      if (v is NSNull) {\n'
+            inputTypes += '        return Optional.some(nil)\n'
+            inputTypes += '      } else {\n'
+            inputTypes += '        return Optional.some(' + type.name + '.init(rawValue: v!))\n'
+            inputTypes += '      }\n'
+            inputTypes += '     } else {\n'
+            inputTypes += '       return Optional.none\n'
             inputTypes += '     }\n'
             inputTypes += '  }\n';
         }

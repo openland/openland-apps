@@ -303,7 +303,11 @@ class RNGraphqlClient: WebSocketTransportDelegate {
     if !self.live {
       return
     }
-    print(err.localizedDescription)
+    if let n = err as? NativeGraphqlError {
+      for g in n.src {
+        print(g.message)
+      }
+    }
     self.module.reportError(key: self.key, id: id)
   }
   

@@ -30,6 +30,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                 action={async args => {
                     await getClient().mutateProfileUpdate(args);
                     await getClient().refetchAccount();
+                    await getClient().refetchProfile();
                 }}
                 onSuccess={() => props.router.back()}
                 ref={ref}

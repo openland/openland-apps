@@ -1383,6 +1383,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1397,6 +1399,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1410,6 +1414,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1424,6 +1430,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1439,6 +1447,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1454,6 +1464,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1469,6 +1481,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1483,6 +1497,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1500,6 +1516,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1515,6 +1533,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1529,6 +1549,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1544,6 +1566,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1559,6 +1583,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1573,6 +1599,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1588,6 +1616,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1604,6 +1634,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1619,6 +1651,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1637,6 +1671,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1655,6 +1691,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1671,6 +1709,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1686,6 +1726,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1705,6 +1747,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1722,6 +1766,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1737,6 +1783,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1758,6 +1806,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1775,6 +1825,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1792,6 +1844,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1806,6 +1860,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1820,6 +1876,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1835,6 +1893,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1850,6 +1910,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1865,6 +1927,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1880,6 +1944,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1894,6 +1960,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1909,6 +1977,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1924,6 +1994,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1939,6 +2011,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1953,6 +2027,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1968,6 +2044,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1982,6 +2060,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -1996,6 +2076,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2011,6 +2093,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2025,6 +2109,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2039,6 +2125,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2053,6 +2141,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2071,6 +2161,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2085,6 +2177,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2102,6 +2196,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2116,6 +2212,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2131,6 +2229,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2146,6 +2246,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2163,6 +2265,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2180,6 +2284,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2197,6 +2303,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2213,6 +2321,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2229,6 +2339,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2245,6 +2357,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2260,6 +2374,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2275,6 +2391,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2290,6 +2408,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2304,6 +2424,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2319,6 +2441,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2334,6 +2458,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2350,6 +2476,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2365,6 +2493,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2380,6 +2510,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2395,6 +2527,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2410,6 +2544,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2424,6 +2560,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2439,6 +2577,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2453,6 +2593,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2468,6 +2610,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2482,6 +2626,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2497,6 +2643,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2511,6 +2659,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2525,6 +2675,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2539,6 +2691,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2553,6 +2707,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2568,6 +2724,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2583,6 +2741,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2598,6 +2758,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2612,6 +2774,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2627,6 +2791,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2641,6 +2807,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2655,6 +2823,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2669,6 +2839,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -2684,6 +2856,8 @@ class ApiFactory: ApiFactoryBase {
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
           } else if (r != nil && r!.data != nil) {
             handler(r!.data!.resultMap, nil)
           } else {
@@ -3830,12 +4004,36 @@ class ApiFactory: ApiFactoryBase {
        return nil
      }
   }
+  func readNotificationMessagesOptional(_ src: NSDictionary, _ name: String) -> Optional<NotificationMessages?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(NotificationMessages.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
+     }
+  }
   func readOrganizationMemberRole(_ src: NSDictionary, _ name: String) -> OrganizationMemberRole? {
     let v = self.readString(src, name);
     if v != nil && !(v is NSNull) {
       return OrganizationMemberRole.init(rawValue: v!)
      } else {
        return nil
+     }
+  }
+  func readOrganizationMemberRoleOptional(_ src: NSDictionary, _ name: String) -> Optional<OrganizationMemberRole?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(OrganizationMemberRole.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
      }
   }
   func readSharedRoomKind(_ src: NSDictionary, _ name: String) -> SharedRoomKind? {
@@ -3846,12 +4044,36 @@ class ApiFactory: ApiFactoryBase {
        return nil
      }
   }
+  func readSharedRoomKindOptional(_ src: NSDictionary, _ name: String) -> Optional<SharedRoomKind?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(SharedRoomKind.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
+     }
+  }
   func readRoomMemberRole(_ src: NSDictionary, _ name: String) -> RoomMemberRole? {
     let v = self.readString(src, name);
     if v != nil && !(v is NSNull) {
       return RoomMemberRole.init(rawValue: v!)
      } else {
        return nil
+     }
+  }
+  func readRoomMemberRoleOptional(_ src: NSDictionary, _ name: String) -> Optional<RoomMemberRole?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(RoomMemberRole.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
      }
   }
   func readPostMessageType(_ src: NSDictionary, _ name: String) -> PostMessageType? {
@@ -3862,12 +4084,36 @@ class ApiFactory: ApiFactoryBase {
        return nil
      }
   }
+  func readPostMessageTypeOptional(_ src: NSDictionary, _ name: String) -> Optional<PostMessageType?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(PostMessageType.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
+     }
+  }
   func readEmailFrequency(_ src: NSDictionary, _ name: String) -> EmailFrequency? {
     let v = self.readString(src, name);
     if v != nil && !(v is NSNull) {
       return EmailFrequency.init(rawValue: v!)
      } else {
        return nil
+     }
+  }
+  func readEmailFrequencyOptional(_ src: NSDictionary, _ name: String) -> Optional<EmailFrequency?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(EmailFrequency.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
      }
   }
   func readNotificationsDelay(_ src: NSDictionary, _ name: String) -> NotificationsDelay? {
@@ -3878,6 +4124,18 @@ class ApiFactory: ApiFactoryBase {
        return nil
      }
   }
+  func readNotificationsDelayOptional(_ src: NSDictionary, _ name: String) -> Optional<NotificationsDelay?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(NotificationsDelay.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
+     }
+  }
   func readSuperAdminRole(_ src: NSDictionary, _ name: String) -> SuperAdminRole? {
     let v = self.readString(src, name);
     if v != nil && !(v is NSNull) {
@@ -3886,9 +4144,21 @@ class ApiFactory: ApiFactoryBase {
        return nil
      }
   }
+  func readSuperAdminRoleOptional(_ src: NSDictionary, _ name: String) -> Optional<SuperAdminRole?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(SuperAdminRole.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
+     }
+  }
   func parseImageRefInput(_ src: NSDictionary) -> ImageRefInput {
-    let uuid = notNull(readString(src, "uuid"))
-    let crop = readImageCropInput(src, "crop")
+    let uuid = optionalNotNull(readOptionalString(src, "uuid"))
+    let crop = readImageCropInputOptional(src, "crop")
     return ImageRefInput(uuid: uuid, crop: crop)
   }
   func readImageRefInput(_ src: NSDictionary, _ name: String) -> ImageRefInput? {
@@ -3897,6 +4167,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseImageRefInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readImageRefInputOptional(_ src: NSDictionary, _ name: String) -> Optional<ImageRefInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseImageRefInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readImageRefInputList(_ src: NSDictionary, _ name: String) -> [ImageRefInput?]? {
@@ -3918,10 +4198,10 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseImageCropInput(_ src: NSDictionary) -> ImageCropInput {
-    let x = notNull(readInt(src, "x"))
-    let y = notNull(readInt(src, "y"))
-    let w = notNull(readInt(src, "w"))
-    let h = notNull(readInt(src, "h"))
+    let x = optionalNotNull(readOptionalInt(src, "x"))
+    let y = optionalNotNull(readOptionalInt(src, "y"))
+    let w = optionalNotNull(readOptionalInt(src, "w"))
+    let h = optionalNotNull(readOptionalInt(src, "h"))
     return ImageCropInput(x: x, y: y, w: w, h: h)
   }
   func readImageCropInput(_ src: NSDictionary, _ name: String) -> ImageCropInput? {
@@ -3930,6 +4210,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseImageCropInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readImageCropInputOptional(_ src: NSDictionary, _ name: String) -> Optional<ImageCropInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseImageCropInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readImageCropInputList(_ src: NSDictionary, _ name: String) -> [ImageCropInput?]? {
@@ -3951,17 +4241,17 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseProfileInput(_ src: NSDictionary) -> ProfileInput {
-    let firstName = readString(src, "firstName")
-    let lastName = readString(src, "lastName")
-    let photoRef = readImageRefInput(src, "photoRef")
-    let phone = readString(src, "phone")
-    let email = readString(src, "email")
-    let website = readString(src, "website")
-    let about = readString(src, "about")
-    let location = readString(src, "location")
-    let linkedin = readString(src, "linkedin")
-    let twitter = readString(src, "twitter")
-    let primaryOrganization = readString(src, "primaryOrganization")
+    let firstName = readOptionalString(src, "firstName")
+    let lastName = readOptionalString(src, "lastName")
+    let photoRef = readImageRefInputOptional(src, "photoRef")
+    let phone = readOptionalString(src, "phone")
+    let email = readOptionalString(src, "email")
+    let website = readOptionalString(src, "website")
+    let about = readOptionalString(src, "about")
+    let location = readOptionalString(src, "location")
+    let linkedin = readOptionalString(src, "linkedin")
+    let twitter = readOptionalString(src, "twitter")
+    let primaryOrganization = readOptionalString(src, "primaryOrganization")
     return ProfileInput(firstName: firstName, lastName: lastName, photoRef: photoRef, phone: phone, email: email, website: website, about: about, location: location, linkedin: linkedin, twitter: twitter, primaryOrganization: primaryOrganization)
   }
   func readProfileInput(_ src: NSDictionary, _ name: String) -> ProfileInput? {
@@ -3970,6 +4260,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseProfileInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readProfileInputOptional(_ src: NSDictionary, _ name: String) -> Optional<ProfileInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseProfileInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readProfileInputList(_ src: NSDictionary, _ name: String) -> [ProfileInput?]? {
@@ -3991,17 +4291,17 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseCreateProfileInput(_ src: NSDictionary) -> CreateProfileInput {
-    let firstName = notNull(readString(src, "firstName"))
-    let lastName = readString(src, "lastName")
-    let photoRef = readImageRefInput(src, "photoRef")
-    let phone = readString(src, "phone")
-    let email = readString(src, "email")
-    let about = readString(src, "about")
-    let location = readString(src, "location")
-    let website = readString(src, "website")
-    let linkedin = readString(src, "linkedin")
-    let twitter = readString(src, "twitter")
-    let primaryOrganization = readString(src, "primaryOrganization")
+    let firstName = optionalNotNull(readOptionalString(src, "firstName"))
+    let lastName = readOptionalString(src, "lastName")
+    let photoRef = readImageRefInputOptional(src, "photoRef")
+    let phone = readOptionalString(src, "phone")
+    let email = readOptionalString(src, "email")
+    let about = readOptionalString(src, "about")
+    let location = readOptionalString(src, "location")
+    let website = readOptionalString(src, "website")
+    let linkedin = readOptionalString(src, "linkedin")
+    let twitter = readOptionalString(src, "twitter")
+    let primaryOrganization = readOptionalString(src, "primaryOrganization")
     return CreateProfileInput(firstName: firstName, lastName: lastName, photoRef: photoRef, phone: phone, email: email, about: about, location: location, website: website, linkedin: linkedin, twitter: twitter, primaryOrganization: primaryOrganization)
   }
   func readCreateProfileInput(_ src: NSDictionary, _ name: String) -> CreateProfileInput? {
@@ -4010,6 +4310,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseCreateProfileInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readCreateProfileInputOptional(_ src: NSDictionary, _ name: String) -> Optional<CreateProfileInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseCreateProfileInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readCreateProfileInputList(_ src: NSDictionary, _ name: String) -> [CreateProfileInput?]? {
@@ -4031,22 +4341,22 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseUpdateProfileInput(_ src: NSDictionary) -> UpdateProfileInput {
-    let firstName = readString(src, "firstName")
-    let lastName = readString(src, "lastName")
-    let photoRef = readImageRefInput(src, "photoRef")
-    let phone = readString(src, "phone")
-    let email = readString(src, "email")
-    let website = readString(src, "website")
-    let about = readString(src, "about")
-    let location = readString(src, "location")
-    let linkedin = readString(src, "linkedin")
-    let twitter = readString(src, "twitter")
-    let primaryOrganization = readString(src, "primaryOrganization")
-    let alphaRole = readString(src, "alphaRole")
+    let firstName = readOptionalString(src, "firstName")
+    let lastName = readOptionalString(src, "lastName")
+    let photoRef = readImageRefInputOptional(src, "photoRef")
+    let phone = readOptionalString(src, "phone")
+    let email = readOptionalString(src, "email")
+    let website = readOptionalString(src, "website")
+    let about = readOptionalString(src, "about")
+    let location = readOptionalString(src, "location")
+    let linkedin = readOptionalString(src, "linkedin")
+    let twitter = readOptionalString(src, "twitter")
+    let primaryOrganization = readOptionalString(src, "primaryOrganization")
+    let alphaRole = readOptionalString(src, "alphaRole")
     let alphaLocations = notNullListItems(readStringList(src, "alphaLocations"))
-    let alphaLinkedin = readString(src, "alphaLinkedin")
-    let alphaTwitter = readString(src, "alphaTwitter")
-    let alphaPrimaryOrganizationId = readString(src, "alphaPrimaryOrganizationId")
+    let alphaLinkedin = readOptionalString(src, "alphaLinkedin")
+    let alphaTwitter = readOptionalString(src, "alphaTwitter")
+    let alphaPrimaryOrganizationId = readOptionalString(src, "alphaPrimaryOrganizationId")
     return UpdateProfileInput(firstName: firstName, lastName: lastName, photoRef: photoRef, phone: phone, email: email, website: website, about: about, location: location, linkedin: linkedin, twitter: twitter, primaryOrganization: primaryOrganization, alphaRole: alphaRole, alphaLocations: alphaLocations, alphaLinkedin: alphaLinkedin, alphaTwitter: alphaTwitter, alphaPrimaryOrganizationId: alphaPrimaryOrganizationId)
   }
   func readUpdateProfileInput(_ src: NSDictionary, _ name: String) -> UpdateProfileInput? {
@@ -4055,6 +4365,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseUpdateProfileInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readUpdateProfileInputOptional(_ src: NSDictionary, _ name: String) -> Optional<UpdateProfileInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseUpdateProfileInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readUpdateProfileInputList(_ src: NSDictionary, _ name: String) -> [UpdateProfileInput?]? {
@@ -4076,13 +4396,13 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseCreateOrganizationInput(_ src: NSDictionary) -> CreateOrganizationInput {
-    let id = readString(src, "id")
-    let name = notNull(readString(src, "name"))
-    let website = readString(src, "website")
-    let personal = notNull(readBool(src, "personal"))
-    let photoRef = readImageRefInput(src, "photoRef")
-    let about = readString(src, "about")
-    let isCommunity = readBool(src, "isCommunity")
+    let id = readOptionalString(src, "id")
+    let name = optionalNotNull(readOptionalString(src, "name"))
+    let website = readOptionalString(src, "website")
+    let personal = optionalNotNull(readOptionalBool(src, "personal"))
+    let photoRef = readImageRefInputOptional(src, "photoRef")
+    let about = readOptionalString(src, "about")
+    let isCommunity = readOptionalBool(src, "isCommunity")
     return CreateOrganizationInput(id: id, name: name, website: website, personal: personal, photoRef: photoRef, about: about, isCommunity: isCommunity)
   }
   func readCreateOrganizationInput(_ src: NSDictionary, _ name: String) -> CreateOrganizationInput? {
@@ -4091,6 +4411,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseCreateOrganizationInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readCreateOrganizationInputOptional(_ src: NSDictionary, _ name: String) -> Optional<CreateOrganizationInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseCreateOrganizationInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readCreateOrganizationInputList(_ src: NSDictionary, _ name: String) -> [CreateOrganizationInput?]? {
@@ -4119,14 +4449,26 @@ class ApiFactory: ApiFactoryBase {
        return nil
      }
   }
+  func readDebugEmailTypeOptional(_ src: NSDictionary, _ name: String) -> Optional<DebugEmailType?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(DebugEmailType.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
+     }
+  }
   func parseUpdateSettingsInput(_ src: NSDictionary) -> UpdateSettingsInput {
-    let emailFrequency = readEmailFrequency(src, "emailFrequency")
-    let desktopNotifications = readNotificationMessages(src, "desktopNotifications")
-    let mobileNotifications = readNotificationMessages(src, "mobileNotifications")
-    let mobileAlert = readBool(src, "mobileAlert")
-    let mobileIncludeText = readBool(src, "mobileIncludeText")
-    let mute = readBool(src, "mute")
-    let notificationsDelay = readNotificationsDelay(src, "notificationsDelay")
+    let emailFrequency = readEmailFrequencyOptional(src, "emailFrequency")
+    let desktopNotifications = readNotificationMessagesOptional(src, "desktopNotifications")
+    let mobileNotifications = readNotificationMessagesOptional(src, "mobileNotifications")
+    let mobileAlert = readOptionalBool(src, "mobileAlert")
+    let mobileIncludeText = readOptionalBool(src, "mobileIncludeText")
+    let mute = readOptionalBool(src, "mute")
+    let notificationsDelay = readNotificationsDelayOptional(src, "notificationsDelay")
     return UpdateSettingsInput(emailFrequency: emailFrequency, desktopNotifications: desktopNotifications, mobileNotifications: mobileNotifications, mobileAlert: mobileAlert, mobileIncludeText: mobileIncludeText, mute: mute, notificationsDelay: notificationsDelay)
   }
   func readUpdateSettingsInput(_ src: NSDictionary, _ name: String) -> UpdateSettingsInput? {
@@ -4135,6 +4477,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseUpdateSettingsInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readUpdateSettingsInputOptional(_ src: NSDictionary, _ name: String) -> Optional<UpdateSettingsInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseUpdateSettingsInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readUpdateSettingsInputList(_ src: NSDictionary, _ name: String) -> [UpdateSettingsInput?]? {
@@ -4156,11 +4508,11 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseInviteRequest(_ src: NSDictionary) -> InviteRequest {
-    let email = notNull(readString(src, "email"))
-    let emailText = readString(src, "emailText")
-    let role = notNull(readOrganizationMemberRole(src, "role"))
-    let firstName = readString(src, "firstName")
-    let lastName = readString(src, "lastName")
+    let email = optionalNotNull(readOptionalString(src, "email"))
+    let emailText = readOptionalString(src, "emailText")
+    let role = optionalNotNull(readOrganizationMemberRoleOptional(src, "role"))
+    let firstName = readOptionalString(src, "firstName")
+    let lastName = readOptionalString(src, "lastName")
     return InviteRequest(email: email, emailText: emailText, role: role, firstName: firstName, lastName: lastName)
   }
   func readInviteRequest(_ src: NSDictionary, _ name: String) -> InviteRequest? {
@@ -4169,6 +4521,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseInviteRequest(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readInviteRequestOptional(_ src: NSDictionary, _ name: String) -> Optional<InviteRequest?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseInviteRequest(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readInviteRequestList(_ src: NSDictionary, _ name: String) -> [InviteRequest?]? {
@@ -4190,9 +4552,9 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseEvent(_ src: NSDictionary) -> Event {
-    let id = notNull(readString(src, "id"))
-    let event = notNull(readString(src, "event"))
-    let params = readString(src, "params")
+    let id = optionalNotNull(readOptionalString(src, "id"))
+    let event = optionalNotNull(readOptionalString(src, "event"))
+    let params = readOptionalString(src, "params")
     return Event(id: id, event: event, params: params)
   }
   func readEvent(_ src: NSDictionary, _ name: String) -> Event? {
@@ -4201,6 +4563,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseEvent(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readEventOptional(_ src: NSDictionary, _ name: String) -> Optional<Event?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseEvent(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readEventList(_ src: NSDictionary, _ name: String) -> [Event?]? {
@@ -4222,10 +4594,10 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseAppProfileInput(_ src: NSDictionary) -> AppProfileInput {
-    let name = readString(src, "name")
-    let shortname = readString(src, "shortname")
-    let photoRef = readImageRefInput(src, "photoRef")
-    let about = readString(src, "about")
+    let name = readOptionalString(src, "name")
+    let shortname = readOptionalString(src, "shortname")
+    let photoRef = readImageRefInputOptional(src, "photoRef")
+    let about = readOptionalString(src, "about")
     return AppProfileInput(name: name, shortname: shortname, photoRef: photoRef, about: about)
   }
   func readAppProfileInput(_ src: NSDictionary, _ name: String) -> AppProfileInput? {
@@ -4234,6 +4606,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseAppProfileInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readAppProfileInputOptional(_ src: NSDictionary, _ name: String) -> Optional<AppProfileInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseAppProfileInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readAppProfileInputList(_ src: NSDictionary, _ name: String) -> [AppProfileInput?]? {
@@ -4255,19 +4637,19 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseUpdateOrganizationProfileInput(_ src: NSDictionary) -> UpdateOrganizationProfileInput {
-    let name = readString(src, "name")
-    let photoRef = readImageRefInput(src, "photoRef")
-    let website = readString(src, "website")
-    let websiteTitle = readString(src, "websiteTitle")
-    let about = readString(src, "about")
-    let twitter = readString(src, "twitter")
-    let facebook = readString(src, "facebook")
-    let linkedin = readString(src, "linkedin")
-    let location = readString(src, "location")
+    let name = readOptionalString(src, "name")
+    let photoRef = readImageRefInputOptional(src, "photoRef")
+    let website = readOptionalString(src, "website")
+    let websiteTitle = readOptionalString(src, "websiteTitle")
+    let about = readOptionalString(src, "about")
+    let twitter = readOptionalString(src, "twitter")
+    let facebook = readOptionalString(src, "facebook")
+    let linkedin = readOptionalString(src, "linkedin")
+    let location = readOptionalString(src, "location")
     let contacts = notNullListItems(readContactPersonInputList(src, "contacts"))
-    let alphaPublished = readBool(src, "alphaPublished")
-    let alphaEditorial = readBool(src, "alphaEditorial")
-    let alphaFeatured = readBool(src, "alphaFeatured")
+    let alphaPublished = readOptionalBool(src, "alphaPublished")
+    let alphaEditorial = readOptionalBool(src, "alphaEditorial")
+    let alphaFeatured = readOptionalBool(src, "alphaFeatured")
     return UpdateOrganizationProfileInput(name: name, photoRef: photoRef, website: website, websiteTitle: websiteTitle, about: about, twitter: twitter, facebook: facebook, linkedin: linkedin, location: location, contacts: contacts, alphaPublished: alphaPublished, alphaEditorial: alphaEditorial, alphaFeatured: alphaFeatured)
   }
   func readUpdateOrganizationProfileInput(_ src: NSDictionary, _ name: String) -> UpdateOrganizationProfileInput? {
@@ -4276,6 +4658,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseUpdateOrganizationProfileInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readUpdateOrganizationProfileInputOptional(_ src: NSDictionary, _ name: String) -> Optional<UpdateOrganizationProfileInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseUpdateOrganizationProfileInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readUpdateOrganizationProfileInputList(_ src: NSDictionary, _ name: String) -> [UpdateOrganizationProfileInput?]? {
@@ -4297,13 +4689,13 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseContactPersonInput(_ src: NSDictionary) -> ContactPersonInput {
-    let name = notNull(readString(src, "name"))
-    let photoRef = readImageRefInput(src, "photoRef")
-    let position = readString(src, "position")
-    let email = readString(src, "email")
-    let phone = readString(src, "phone")
-    let link = readString(src, "link")
-    let twitter = readString(src, "twitter")
+    let name = optionalNotNull(readOptionalString(src, "name"))
+    let photoRef = readImageRefInputOptional(src, "photoRef")
+    let position = readOptionalString(src, "position")
+    let email = readOptionalString(src, "email")
+    let phone = readOptionalString(src, "phone")
+    let link = readOptionalString(src, "link")
+    let twitter = readOptionalString(src, "twitter")
     return ContactPersonInput(name: name, photoRef: photoRef, position: position, email: email, phone: phone, link: link, twitter: twitter)
   }
   func readContactPersonInput(_ src: NSDictionary, _ name: String) -> ContactPersonInput? {
@@ -4312,6 +4704,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseContactPersonInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readContactPersonInputOptional(_ src: NSDictionary, _ name: String) -> Optional<ContactPersonInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseContactPersonInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readContactPersonInputList(_ src: NSDictionary, _ name: String) -> [ContactPersonInput?]? {
@@ -4340,12 +4742,24 @@ class ApiFactory: ApiFactoryBase {
        return nil
      }
   }
+  func readPushTypeOptional(_ src: NSDictionary, _ name: String) -> Optional<PushType?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(PushType.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
+     }
+  }
   func parseRoomUpdateInput(_ src: NSDictionary) -> RoomUpdateInput {
-    let title = readString(src, "title")
-    let photoRef = readImageRefInput(src, "photoRef")
-    let description = readString(src, "description")
-    let socialImageRef = readImageRefInput(src, "socialImageRef")
-    let kind = readSharedRoomKind(src, "kind")
+    let title = readOptionalString(src, "title")
+    let photoRef = readImageRefInputOptional(src, "photoRef")
+    let description = readOptionalString(src, "description")
+    let socialImageRef = readImageRefInputOptional(src, "socialImageRef")
+    let kind = readSharedRoomKindOptional(src, "kind")
     return RoomUpdateInput(title: title, photoRef: photoRef, description: description, socialImageRef: socialImageRef, kind: kind)
   }
   func readRoomUpdateInput(_ src: NSDictionary, _ name: String) -> RoomUpdateInput? {
@@ -4354,6 +4768,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseRoomUpdateInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readRoomUpdateInputOptional(_ src: NSDictionary, _ name: String) -> Optional<RoomUpdateInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseRoomUpdateInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readRoomUpdateInputList(_ src: NSDictionary, _ name: String) -> [RoomUpdateInput?]? {
@@ -4375,8 +4799,8 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseRoomInviteInput(_ src: NSDictionary) -> RoomInviteInput {
-    let userId = notNull(readString(src, "userId"))
-    let role = notNull(readRoomMemberRole(src, "role"))
+    let userId = optionalNotNull(readOptionalString(src, "userId"))
+    let role = optionalNotNull(readRoomMemberRoleOptional(src, "role"))
     return RoomInviteInput(userId: userId, role: role)
   }
   func readRoomInviteInput(_ src: NSDictionary, _ name: String) -> RoomInviteInput? {
@@ -4385,6 +4809,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseRoomInviteInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readRoomInviteInputOptional(_ src: NSDictionary, _ name: String) -> Optional<RoomInviteInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseRoomInviteInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readRoomInviteInputList(_ src: NSDictionary, _ name: String) -> [RoomInviteInput?]? {
@@ -4406,10 +4840,10 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseRoomInviteEmailRequest(_ src: NSDictionary) -> RoomInviteEmailRequest {
-    let email = notNull(readString(src, "email"))
-    let emailText = readString(src, "emailText")
-    let firstName = readString(src, "firstName")
-    let lastName = readString(src, "lastName")
+    let email = optionalNotNull(readOptionalString(src, "email"))
+    let emailText = readOptionalString(src, "emailText")
+    let firstName = readOptionalString(src, "firstName")
+    let lastName = readOptionalString(src, "lastName")
     return RoomInviteEmailRequest(email: email, emailText: emailText, firstName: firstName, lastName: lastName)
   }
   func readRoomInviteEmailRequest(_ src: NSDictionary, _ name: String) -> RoomInviteEmailRequest? {
@@ -4418,6 +4852,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseRoomInviteEmailRequest(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readRoomInviteEmailRequestOptional(_ src: NSDictionary, _ name: String) -> Optional<RoomInviteEmailRequest?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseRoomInviteEmailRequest(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readRoomInviteEmailRequestList(_ src: NSDictionary, _ name: String) -> [RoomInviteEmailRequest?]? {
@@ -4439,7 +4883,7 @@ class ApiFactory: ApiFactoryBase {
     }
   }
   func parseRoomUserNotificaionSettingsInput(_ src: NSDictionary) -> RoomUserNotificaionSettingsInput {
-    let mute = readBool(src, "mute")
+    let mute = readOptionalBool(src, "mute")
     return RoomUserNotificaionSettingsInput(mute: mute)
   }
   func readRoomUserNotificaionSettingsInput(_ src: NSDictionary, _ name: String) -> RoomUserNotificaionSettingsInput? {
@@ -4448,6 +4892,16 @@ class ApiFactory: ApiFactoryBase {
       return self.parseRoomUserNotificaionSettingsInput(v as! NSDictionary)
     } else {
       return nil
+    }
+  }
+  func readRoomUserNotificaionSettingsInputOptional(_ src: NSDictionary, _ name: String) -> Optional<RoomUserNotificaionSettingsInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseRoomUserNotificaionSettingsInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
     }
   }
   func readRoomUserNotificaionSettingsInputList(_ src: NSDictionary, _ name: String) -> [RoomUserNotificaionSettingsInput?]? {

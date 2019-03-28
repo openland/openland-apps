@@ -96,7 +96,7 @@ class RNGraphQL: RCTEventEmitter {
     var dict:[String:Any] = [:]
     dict["key"] = key
     dict["id"] = id
-    dict["type"] = "error"
+    dict["type"] = "failure"
     self.sendEvent(withName: "apollo_client", body: dict)
   }
   

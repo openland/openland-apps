@@ -9,6 +9,13 @@
 import Foundation
 import Apollo
 
+class NativeGraphqlError: Error {
+  let src: [GraphQLError]
+  init(src: [GraphQLError]) {
+    self.src = src
+  }
+}
+
 typealias ResponseHandler = (_ result: ResultMap?, _ error: Error?) -> Void
 typealias WatchCancel = () -> Void
 
@@ -44,9 +51,17 @@ class ApiFactoryBase {
     return nil
   }
   
-//  func readFloat(_ src: NSDictionary, _ name: String) -> Bool? {
-//    return nil
-//  }
+  func readOptionalInt(_ src: NSDictionary, _ name: String) -> Optional<Int?> {
+    let res = src[name]
+    if res != nil {
+      if res is NSNull {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(res as! Int)
+      }
+    }
+    return Optional.none
+  }
   
   func readString(_ src: NSDictionary, _ name: String) -> String? {
     let res = src[name]
@@ -56,12 +71,36 @@ class ApiFactoryBase {
     return nil
   }
   
+  func readOptionalString(_ src: NSDictionary, _ name: String) -> Optional<String?> {
+    let res = src[name]
+    if res != nil {
+      if res is NSNull {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(res as! String)
+      }
+    }
+    return Optional.none
+  }
+  
   func readBool(_ src: NSDictionary, _ name: String) -> Bool? {
     let res = src[name]
     if res != nil && !(res is NSNull) {
       return res as! Bool
     }
     return nil
+  }
+  
+  func readOptionalBool(_ src: NSDictionary, _ name: String) -> Optional<Bool?> {
+    let res = src[name]
+    if res != nil {
+      if res is NSNull {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(res as! Bool)
+      }
+    }
+    return Optional.none
   }
   
   func readStringList(_ src: NSDictionary, _ name: String) -> [String?]? {
@@ -90,6 +129,16 @@ class ApiFactoryBase {
       fatalError()
     }
     return v!
+  }
+  
+  func optionalNotNull<T>(_ v: Optional<T?>) -> T {
+    if v == nil {
+      fatalError()
+    }
+    switch v! {
+      case .some(let value): return value
+      case .none: fatalError()
+    }
   }
   
   func notNullListItems<T>(_ v:[T?]?) -> [T]? {
