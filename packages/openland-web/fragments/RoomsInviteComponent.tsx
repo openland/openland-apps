@@ -35,6 +35,10 @@ const RootMobileNologinClassName = css`
     height: auto;
 `;
 
+const RootMobileLoginClassName = css`
+    padding-bottom: 160px;
+`;
+
 const Root = Glamorous(XScrollView)({
     position: 'relative',
     display: 'flex',
@@ -46,17 +50,16 @@ const Root = Glamorous(XScrollView)({
     flexGrow: 1,
 });
 
-const MainContent = Glamorous.div<{ isMobile: boolean }>(props => ({
+const MainContent = Glamorous.div({
     zIndex: 1,
     display: 'flex',
     flexDirection: 'column',
     flexShrink: 0,
     padding: 28,
-    marginBottom: props.isMobile ? 100 : 0,
     '& > *': {
         zIndex: 2,
     },
-}));
+});
 
 const Close = Glamorous(XLink)({
     display: 'flex',
@@ -252,7 +255,13 @@ export const RoomsInviteComponent = ({
     let chatTypeStr = room.isChannel ? 'Channel' : 'Group';
 
     return (
-        <div className={cx(RootClassName, isMobile && noLogin && RootMobileNologinClassName)}>
+        <div
+            className={cx(
+                RootClassName,
+                isMobile && noLogin && RootMobileNologinClassName,
+                isMobile && !noLogin && RootMobileLoginClassName,
+            )}
+        >
             <XView
                 flexDirection="row"
                 justifyContent={isMobile ? 'space-between' : 'flex-end'}
@@ -345,19 +354,19 @@ export const RoomsInviteComponent = ({
                         </XView>
                     )}
                     {!signup && (
-                        <XView marginTop={36} marginBottom={isMobile ? 90 : 40}>
+                        <XView marginTop={36} marginBottom={40}>
                             {button}
                         </XView>
                     )}
                 </XView>
             </XView>
             {!isMobile && (
-                <ImageWrapper hasFooter={!!noLogin}>
+                <ImageWrapper hasFooter={!noLogin}>
                     <Image />
                 </ImageWrapper>
             )}
             {signup && (
-                <MainContent isMobile={isMobile || true}>
+                <MainContent>
                     <XButton
                         style="primary"
                         size="large"
