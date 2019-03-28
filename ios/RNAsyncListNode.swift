@@ -582,7 +582,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
             overflow.style.height = ASDimension(unit: ASDimensionUnit.points, value: 10001)
             overflow.clipsToBounds = false
             
-            let insets = UIEdgeInsets(top: 0, left: 0, bottom: CGFloat(padding - 10000), right: 0)
+            let insets = UIEdgeInsets(top: self.node.inverted ? 0 : CGFloat(padding - 10000), left: 0, bottom: self.node.inverted ? CGFloat(padding - 10000): 0, right: 0)
             let container = ASInsetLayoutSpec(insets: insets, child: overflow)
             res.setChild(container, at: 0)
           }

@@ -196,7 +196,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             letterSpacing={-0.3}
                             fontSize={14}
                             marginTop={Platform.OS === 'android' ? -4 : -1}
-                            numberOfLines={this.imageCompact ? (subTitle ? 1 : 2) : 3}
+                            numberOfLines={this.imageCompact ? 1 : 3}
                             marginBottom={4}
                             fontWeight={TextStyles.weight.medium}
                             onPress={this.onTitleClick}

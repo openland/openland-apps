@@ -339,7 +339,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 </ASSafeAreaContext.Consumer>
 
                             )}
-                            <ConversationView engine={this.engine} theme={this.state.theme} messagesPaddingBottom={sharedRoom && !sharedRoom.canSendMessage ? 50 : undefined} />
+                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} messagesPaddingBottom={sharedRoom && !sharedRoom.canSendMessage ? 50 : undefined} />
                             {(!sharedRoom || sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage) && <MessageInputBar
                                 onAttachPress={this.handleAttach}
                                 onSubmitPress={this.handleSubmit}

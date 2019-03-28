@@ -11,6 +11,7 @@ export interface ConversationMessagesViewProps {
     loaded: boolean;
     engine: ConversationEngine;
     paddingBottom?: number;
+    inverted: boolean
 }
 
 export const ConversationMessagesView = React.memo<ConversationMessagesViewProps>((props) => {
@@ -21,7 +22,7 @@ export const ConversationMessagesView = React.memo<ConversationMessagesViewProps
         <View marginTop={Platform.OS === 'ios' ? -500 : 0} justifyContent="flex-start" alignItems="stretch" flexGrow={1}>
             <ASListView
                 dataView={getMessenger().getConversation(props.engine.conversationId)}
-                inverted={true}
+                inverted={props.inverted}
                 contentPaddingTop={safeArea.top + (Platform.OS === 'ios' ? 500 : 0)}
                 contentPaddingBottom={props.paddingBottom || 0}
                 style={{ flexGrow: 1 }}
