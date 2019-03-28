@@ -18,6 +18,10 @@ const EmojiSpaceStyle = css`
     }
 `;
 
+const boldTextClassName = css`
+    font-weight: bold;
+`;
+
 const EditLabelStyle = css`
     display: inline-block;
     vertical-align: baseline;
@@ -136,15 +140,12 @@ const SpansMessageTextPreprocess = ({
 
 const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserShort; text: string; isYou: boolean }) => {
-        const userNameEmojified = React.useMemo(
-            () => {
-                return emoji({
-                    src: text,
-                    size: 16,
-                });
-            },
-            [text],
-        );
+        const userNameEmojified = React.useMemo(() => {
+            return emoji({
+                src: text,
+                size: 16,
+            });
+        }, [text]);
 
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
@@ -186,6 +187,8 @@ export const SpansMessage = ({
     isEdited?: boolean;
     asPinMessage?: boolean;
 }) => {
+    console.log(message);
+    console.log(spans);
     let res: any[] = [];
 
     let lastOffset = 0;
@@ -276,6 +279,15 @@ export const SpansMessage = ({
                             primaryOrganization: null,
                         }}
                     />,
+                );
+                lastOffset = span.offset + span.length;
+            } else if (span.__typename === 'MessageSpanBold') {
+                let finalMessage = message.slice(span.offset, span.offset + span.length);
+
+                res.push(
+                    <span key={'link-' + i} className={boldTextClassName}>
+                        {message.slice(span.offset, span.offset + span.length)}
+                    </span>,
                 );
                 lastOffset = span.offset + span.length;
             }

@@ -15,9 +15,9 @@ export const TinyMessage = gql`
             attachments {
                 id
                 fallback
-                ...on MessageAttachmentFile {
+                ... on MessageAttachmentFile {
                     fileId
-                    fileMetadata{
+                    fileMetadata {
                         isImage
                         imageFormat
                     }
@@ -41,15 +41,15 @@ export const FullMessage = gql`
         }
         message
         fallback
-        
-        ... on GeneralMessage{
+
+        ... on GeneralMessage {
             edited
-            attachments{
+            attachments {
                 fallback
-                ...on MessageAttachmentFile{
+                ... on MessageAttachmentFile {
                     id
                     fileId
-                    fileMetadata{
+                    fileMetadata {
                         name
                         mimeType
                         size
@@ -61,15 +61,15 @@ export const FullMessage = gql`
                     filePreview
                 }
 
-                ...on MessageRichAttachment{
+                ... on MessageRichAttachment {
                     title
                     subTitle
                     titleLink
                     titleLinkHostname
                     text
-                    icon{
+                    icon {
                         url
-                        metadata{
+                        metadata {
                             name
                             mimeType
                             size
@@ -79,9 +79,9 @@ export const FullMessage = gql`
                             imageFormat
                         }
                     }
-                    image{
+                    image {
                         url
-                        metadata{
+                        metadata {
                             name
                             mimeType
                             size
@@ -91,8 +91,8 @@ export const FullMessage = gql`
                             imageFormat
                         }
                     }
-                    keyboard{
-                        buttons{
+                    keyboard {
+                        buttons {
                             title
                             style
                             url
@@ -101,7 +101,7 @@ export const FullMessage = gql`
                     fallback
                 }
             }
-            quotedMessages{
+            quotedMessages {
                 id
                 date
                 message
@@ -110,46 +110,46 @@ export const FullMessage = gql`
                 }
                 message
                 fallback
-                spans{
+                spans {
                     offset
                     length
-                    ...on MessageSpanUserMention{
-                        user{
+                    ... on MessageSpanUserMention {
+                        user {
                             ...UserShort
                         }
                     }
-                    ...on MessageSpanMultiUserMention{
-                        users{
+                    ... on MessageSpanMultiUserMention {
+                        users {
                             ...UserShort
                         }
                     }
-                    ...on MessageSpanRoomMention{
-                        room{
+                    ... on MessageSpanRoomMention {
+                        room {
                             ... on PrivateRoom {
                                 id
                                 user {
                                     id
                                     name
                                 }
-                            } 
+                            }
                             ... on SharedRoom {
                                 id
                                 title
                             }
                         }
                     }
-                    ...on MessageSpanLink{
+                    ... on MessageSpanLink {
                         url
                     }
                 }
 
-                ...on GeneralMessage{
+                ... on GeneralMessage {
                     edited
-                    attachments{
+                    attachments {
                         fallback
-                        ...on MessageAttachmentFile{
+                        ... on MessageAttachmentFile {
                             fileId
-                            fileMetadata{
+                            fileMetadata {
                                 name
                                 mimeType
                                 size
@@ -161,15 +161,15 @@ export const FullMessage = gql`
                             filePreview
                         }
 
-                        ...on MessageRichAttachment{
+                        ... on MessageRichAttachment {
                             title
                             subTitle
                             titleLink
                             titleLinkHostname
                             text
-                            icon{
+                            icon {
                                 url
-                                metadata{
+                                metadata {
                                     name
                                     mimeType
                                     size
@@ -179,9 +179,9 @@ export const FullMessage = gql`
                                     imageFormat
                                 }
                             }
-                            image{
+                            image {
                                 url
-                                metadata{
+                                metadata {
                                     name
                                     mimeType
                                     size
@@ -197,78 +197,77 @@ export const FullMessage = gql`
                 }
             }
 
-            reactions{
-                user{
-                    ... UserShort
+            reactions {
+                user {
+                    ...UserShort
                 }
                 reaction
             }
-
         }
 
-       
-        spans{
+        spans {
             offset
             length
-            ...on MessageSpanUserMention{
-                user{
+            ... on MessageSpanUserMention {
+                user {
                     ...UserTiny
                 }
             }
-            ...on MessageSpanMultiUserMention{
-                users{
+            ... on MessageSpanMultiUserMention {
+                users {
                     ...UserTiny
                 }
             }
-            ...on MessageSpanRoomMention{
-                room{
+            ... on MessageSpanRoomMention {
+                room {
                     ... on PrivateRoom {
                         id
                         user {
                             id
                             name
                         }
-                    } 
+                    }
                     ... on SharedRoom {
                         id
                         title
                     }
                 }
             }
-            ...on MessageSpanLink{
-                url
+            ... on MessageSpanBold {
+                offset
+                length
             }
         }
 
-        ... on ServiceMessage{
-            serviceMetadata{
-                ...on InviteServiceMetadata {
-                    users{
+        ... on ServiceMessage {
+            serviceMetadata {
+                ... on InviteServiceMetadata {
+                    users {
                         ...UserTiny
                     }
-                    invitedBy{
-                        ...UserTiny
-                    }
-                }
-
-                ...on KickServiceMetadata {
-                    user{
-                        ...UserTiny
-                    }
-                    kickedBy{
+                    invitedBy {
                         ...UserTiny
                     }
                 }
 
-                ...on TitleChangeServiceMetadata {
+                ... on KickServiceMetadata {
+                    user {
+                        ...UserTiny
+                    }
+                    kickedBy {
+                        ...UserTiny
+                    }
+                }
+
+                ... on TitleChangeServiceMetadata {
                     title
                 }
 
-                ...on PhotoChangeServiceMetadata {
+                ... on PhotoChangeServiceMetadata {
                     photo
                 }
 
-                ...on PostRespondServiceMetadata {
+                ... on PostRespondServiceMetadata {
                     respondType
                 }
             }
