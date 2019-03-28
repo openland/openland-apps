@@ -187,8 +187,6 @@ export const SpansMessage = ({
     isEdited?: boolean;
     asPinMessage?: boolean;
 }) => {
-    console.log(message);
-    console.log(spans);
     let res: any[] = [];
 
     let lastOffset = 0;
