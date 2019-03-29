@@ -48,6 +48,7 @@ interface XHorizontalProps extends XFlexStyles {
     onClick?: () => void;
     onMouseLeave?: React.MouseEventHandler<any>;
     onMouseEnter?: React.MouseEventHandler<any>;
+    key?: string;
 }
 
 export class XHorizontal extends React.Component<XHorizontalProps> {

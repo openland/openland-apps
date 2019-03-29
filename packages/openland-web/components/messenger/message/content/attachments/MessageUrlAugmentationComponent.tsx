@@ -19,6 +19,7 @@ import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import DeleteIcon from 'openland-icons/ic-close.svg';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
 const LinkContentWrapperClassName = css`
     width: 100%;
@@ -106,7 +107,7 @@ const KeyboardItem = ({ title, path, href, key }: KeyboardItemProps) => {
             href={href}
             path={path}
             target="_blank"
-            width="100%"
+            flexGrow={1}
             backgroundColor="#F7F7F7"
             hoverBackgroundColor="#E8F4FF"
             selectedBackgroundColor="#EDEDED"
@@ -136,7 +137,7 @@ const Keyboard = React.memo(
             <>
                 {!!keyboard &&
                     keyboard.buttons.map((line, i) => (
-                        <XView key={i + ''} flexDirection="row" maxWidth={696} alignSelf="stretch">
+                        <XHorizontal key={i + ''} alignSelf="stretch" separator={4}>
                             {!!line &&
                                 line.map((button, j) => {
                                     let href: string | undefined = button.url || undefined;
@@ -156,7 +157,7 @@ const Keyboard = React.memo(
                                         />
                                     );
                                 })}
-                        </XView>
+                        </XHorizontal>
                     ))}
             </>
         );
@@ -220,7 +221,7 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
     );
 };
 
-const CardWithKeyboard = ({
+const JoinChannelCard = ({
     card,
     keyboard,
 }: {
@@ -228,7 +229,7 @@ const CardWithKeyboard = ({
     keyboard?: FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }) => {
     return (
-        <XView marginTop={12}>
+        <XView marginTop={12} maxWidth={696}>
             <Card {...card} />
             {keyboard && (
                 <XView marginTop={8}>
@@ -250,8 +251,12 @@ const DomainNameClassName = css`
     overflow: hidden;
 `;
 
+interface MessageUrlAugmentationComponentInnerProps extends MessageUrlAugmentationComponentProps {
+    isMobile: boolean;
+}
+
 const MessageUrlAugmentationComponentInner = React.memo(
-    (props: MessageUrlAugmentationComponentProps & { isMobile: boolean }) => {
+    (props: MessageUrlAugmentationComponentInnerProps) => {
         let {
             isMobile,
             subTitle,
@@ -265,8 +270,6 @@ const MessageUrlAugmentationComponentInner = React.memo(
             messageId,
             keyboard,
         } = props;
-
-        // console.log(props);
 
         let href: string | undefined = props.titleLink || undefined;
         let path: string | undefined = undefined;
@@ -315,7 +318,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
 
         if (titleLink && titleLink.indexOf('joinChannel') !== -1) {
             return (
-                <CardWithKeyboard
+                <JoinChannelCard
                     card={{
                         imageUrl: image ? image.url : undefined,
                         title: title!!,
@@ -327,18 +330,22 @@ const MessageUrlAugmentationComponentInner = React.memo(
             );
         }
 
-        let hideButton = false;
+        let openlandLink = false;
         let isUserLink = false;
         let isOrgLink = false;
         let objectId = '';
 
         if (titleLink && titleLink.match('openland.com')) {
+            openlandLink = true;
             if (titleLink.match('/u/')) {
                 isUserLink = true;
                 objectId = titleLink.substring(titleLink.search('/u/') + 3, titleLink.length);
             } else if (titleLink.match('/o/')) {
                 isOrgLink = true;
                 objectId = titleLink.substring(titleLink.search('/o/') + 3, titleLink.length);
+            } else if (titleLink.match('/c/')) {
+                isOrgLink = true;
+                objectId = titleLink.substring(titleLink.search('/c/') + 3, titleLink.length);
             } else {
                 const numberOfSlashes =
                     titleLink
@@ -349,16 +356,8 @@ const MessageUrlAugmentationComponentInner = React.memo(
                         .split('/').length - 1;
                 if (numberOfSlashes === 1) {
                     isUserLink = true;
-                    hideButton = true;
                 }
             }
-            if (titleLink.match('/mail/') && !isUserLink && !isOrgLink) {
-                hideButton = true;
-            }
-        }
-
-        if (titleLink && !titleLink.match('openland.com')) {
-            hideButton = true;
         }
 
         return (
@@ -424,6 +423,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             color="rgba(0, 0, 0, 0.4)"
                                             flexDirection="row"
                                             alignItems="center"
+                                            marginBottom={4}
                                         >
                                             {icon && <img src={icon.url} className={Favicon} />}
                                             {!icon && (
@@ -442,9 +442,8 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                         </XView>
                                     )}
                                 {title &&
-                                    !hideButton &&
-                                    !isOrgLink && (
-                                        <XView fontSize={16} fontWeight="600" marginTop={4}>
+                                    keyboard && (
+                                        <XView fontSize={16} fontWeight="600">
                                             <span
                                                 className={cx(
                                                     SplitTextClassName,
@@ -459,7 +458,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                         </XView>
                                     )}
                                 {title &&
-                                    (hideButton || isOrgLink) && (
+                                    !keyboard && (
                                         <XView
                                             as="a"
                                             href={href}
@@ -485,19 +484,18 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             </span>
                                         </XView>
                                     )}
-                                {subTitle &&
-                                    (isUserLink || isOrgLink) && (
-                                        <XView
-                                            fontSize={13}
-                                            fontWeight="600"
-                                            color="rgba(0, 0, 0, 0.4)"
-                                            flexDirection="row"
-                                            alignItems="center"
-                                        >
-                                            <span>{subTitle}</span>
-                                        </XView>
-                                    )}
-                                {parts &&
+                                {subTitle && (
+                                    <XView
+                                        fontSize={13}
+                                        fontWeight="600"
+                                        color="rgba(0, 0, 0, 0.4)"
+                                        flexDirection="row"
+                                        alignItems="center"
+                                    >
+                                        <span>{subTitle}</span>
+                                    </XView>
+                                )}
+                                {parts.length > 0 &&
                                     !isOrgLink &&
                                     !isUserLink && (
                                         <XView
@@ -513,7 +511,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                             </XView>
                         )}
                     </XView>
-                    {parts &&
+                    {parts.length > 0 &&
                         (isOrgLink || isUserLink) && (
                             <XView
                                 flexShrink={1}
@@ -526,8 +524,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                             </XView>
                         )}
                     {isMe &&
-                        !isUserLink &&
-                        !isOrgLink && (
+                        !openlandLink && (
                             <DeleteButton
                                 query={{
                                     field: 'deleteUrlAugmentation',
@@ -539,31 +536,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                             </DeleteButton>
                         )}
                 </div>
-                {!keyboard &&
-                    !hideButton &&
-                    !isUserLink &&
-                    !isOrgLink && <KeyboardItem href={href} path={path} title="Open link" />}
-                {!keyboard &&
-                    !hideButton &&
-                    isUserLink && (
-                        <XView flexDirection="row" justifyContent="space-between">
-                            <XView width="calc(50% - 4px)">
-                                <KeyboardItem
-                                    href={href}
-                                    path={`/mail/${objectId}`}
-                                    title="Message"
-                                />
-                            </XView>
-                            <XView width="calc(50% - 4px)">
-                                <KeyboardItem
-                                    href={href}
-                                    path={`/mail/u/${objectId}`}
-                                    title="View profile"
-                                />
-                            </XView>
-                        </XView>
-                    )}
-                {keyboard && !hideButton && <Keyboard keyboard={keyboard} />}
+                {keyboard && <Keyboard keyboard={keyboard} />}
             </XView>
         );
     },
