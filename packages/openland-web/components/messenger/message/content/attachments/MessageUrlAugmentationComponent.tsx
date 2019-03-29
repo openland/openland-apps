@@ -32,6 +32,41 @@ interface MessageUrlAugmentationComponentProps
     isMe: boolean;
 }
 
+interface KeyboardItemProps {
+    title: string;
+    path: string | undefined;
+    href: string | undefined;
+    key?: string;
+}
+
+const KeyboardItem = ({ title, path, href, key }: KeyboardItemProps) => {
+    return (
+        <XView
+            as="a"
+            key={key}
+            href={href}
+            path={path}
+            target="_blank"
+            width="100%"
+            backgroundColor="#F7F7F7"
+            hoverBackgroundColor="#E8F4FF"
+            selectedBackgroundColor="#EDEDED"
+            borderRadius={10}
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            color="#1790ff"
+            fontSize={14}
+            fontWeight={'600'}
+            height={41}
+            marginTop={8}
+            hoverTextDecoration="none"
+        >
+            {title}
+        </XView>
+    );
+};
+
 const Keyboard = React.memo(
     ({
         keyboard,
@@ -42,7 +77,7 @@ const Keyboard = React.memo(
             <>
                 {!!keyboard &&
                     keyboard.buttons.map((line, i) => (
-                        <XView key={i + ''} flexDirection="row" maxWidth={540} alignSelf="stretch">
+                        <XView key={i + ''} flexDirection="row" maxWidth={696} alignSelf="stretch">
                             {!!line &&
                                 line.map((button, j) => {
                                     let href: string | undefined = button.url || undefined;
@@ -54,31 +89,41 @@ const Keyboard = React.memo(
                                     }
 
                                     return (
-                                        <XView
-                                            as="a"
+                                        <KeyboardItem
                                             key={'button-' + i + '-' + j}
-                                            backgroundColor="rgba(244, 244, 244, 0.7)"
-                                            borderRadius={10}
-                                            alignItems="center"
-                                            justifyContent="center"
-                                            height={41}
-                                            flexGrow={1}
-                                            hoverCursor="pointer"
-                                            target="_blank"
                                             href={href}
                                             path={path}
-                                        >
-                                            <XView
-                                                flexDirection="column"
-                                                justifyContent="center"
-                                                color={'#1790ff'}
-                                                fontSize={14}
-                                                fontWeight={'600'}
-                                            >
-                                                {button.title}
-                                            </XView>
-                                        </XView>
+                                            title={button.title}
+                                        />
                                     );
+
+                                    // return (
+                                    //     <XView
+                                    //         as="a"
+                                    //         key={'button-' + i + '-' + j}
+                                    //         backgroundColor="rgba(244, 244, 244, 0.7)"
+                                    //         borderRadius={10}
+                                    //         alignItems="center"
+                                    //         justifyContent="center"
+                                    //         height={41}
+                                    //         flexGrow={1}
+                                    //         cursor="pointer"
+                                    //         target="_blank"
+                                    //         href={href}
+                                    //         path={path}
+                                    //         hoverTextDecoration="none"
+                                    //     >
+                                    //         <XView
+                                    //             flexDirection="column"
+                                    //             justifyContent="center"
+                                    //             color={'#1790ff'}
+                                    //             fontSize={14}
+                                    //             fontWeight={'600'}
+                                    //         >
+                                    //             {button.title}
+                                    //         </XView>
+                                    //     </XView>
+                                    // );
                                 })}
                         </XView>
                     ))}
@@ -98,7 +143,7 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
     return (
         <>
             <XView
-                maxWidth={540}
+                maxWidth={696}
                 paddingTop={16}
                 paddingBottom={16}
                 paddingLeft={20}
@@ -190,6 +235,8 @@ const MessageUrlAugmentationComponentInner = React.memo(
             keyboard,
         } = props;
 
+        // console.log(props);
+
         let href: string | undefined = props.titleLink || undefined;
         let path: string | undefined = undefined;
 
@@ -270,10 +317,10 @@ const MessageUrlAugmentationComponentInner = React.memo(
         }
 
         return (
-            <XView width="100%" flexDirection="column" maxWidth={540}>
+            <XView width="100%" flexDirection="column" maxWidth={696}>
                 <XView
                     width="100%"
-                    backgroundColor="rgba(244, 244, 244, 0.7)"
+                    backgroundColor="#F7F7F7"
                     borderRadius={10}
                     paddingVertical={16}
                     paddingHorizontal={20}
@@ -281,51 +328,54 @@ const MessageUrlAugmentationComponentInner = React.memo(
                     marginTop={10}
                 >
                     <XView flexDirection="row">
-                        {image && dimensions && !isOrgLink && !isUserLink && (
-                            <XView
-                                marginRight={20}
-                                flexDirection="row"
-                                alignItems="flex-start"
-                                maxWidth="60%"
-                            >
+                        {image &&
+                            dimensions &&
+                            !isOrgLink &&
+                            !isUserLink && (
                                 <XView
+                                    marginRight={20}
                                     flexDirection="row"
-                                    justifyContent="center"
-                                    borderRadius={4}
-                                    overflow="hidden"
-                                    alignSelf="flex-start"
-                                    maxWidth="100%"
+                                    alignItems="flex-start"
+                                    maxWidth="60%"
                                 >
-                                    <XCloudImage
-                                        srcCloud={image.url}
-                                        resize="fill"
-                                        width={dimensions.width}
-                                        height={dimensions.height}
-                                        className={ImageClassName}
-                                    />
-                                </XView>
-                            </XView>
-                        )}
-                        {image && (isUserLink || isOrgLink) && (
-                            <XView marginRight={12} flexShrink={0}>
-                                {image.url ? (
                                     <XView
-                                        as="img"
-                                        width={40}
-                                        height={40}
-                                        borderRadius={20}
-                                        src={image.url}
-                                    />
-                                ) : (
-                                    <ImgThn />
-                                )}
-                            </XView>
-                        )}
-                        {!image && (isUserLink || isOrgLink) && (
-                            <XView marginRight={12} flexShrink={0}>
-                                <XAvatar2 id={objectId} title={title || ''} />
-                            </XView>
-                        )}
+                                        flexDirection="row"
+                                        justifyContent="center"
+                                        borderRadius={4}
+                                        overflow="hidden"
+                                        alignSelf="flex-start"
+                                        maxWidth="100%"
+                                    >
+                                        <XCloudImage
+                                            srcCloud={image.url}
+                                            resize="fill"
+                                            width={dimensions.width}
+                                            height={dimensions.height}
+                                            className={ImageClassName}
+                                        />
+                                    </XView>
+                                </XView>
+                            )}
+                        {image &&
+                            (isUserLink || isOrgLink) && (
+                                <XView marginRight={12} flexShrink={0}>
+                                    {image.url ? (
+                                        <XAvatar2
+                                            id={objectId}
+                                            title={title || ''}
+                                            src={image.url}
+                                        />
+                                    ) : (
+                                        <ImgThn />
+                                    )}
+                                </XView>
+                            )}
+                        {!image &&
+                            (isUserLink || isOrgLink) && (
+                                <XView marginRight={12} flexShrink={0}>
+                                    <XAvatar2 id={objectId} title={title || ''} />
+                                </XView>
+                            )}
                         {(title || titleLinkHostname || subTitle) && (
                             <XView flexDirection="column" flexGrow={1} flexShrink={1}>
                                 {title && (
@@ -336,82 +386,85 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                         })}
                                     </XView>
                                 )}
-                                {titleLinkHostname && !isUserLink && !isOrgLink && (
-                                    <XView
-                                        fontSize={13}
-                                        fontWeight="600"
-                                        color="rgba(0, 0, 0, 0.4)"
-                                        flexDirection="row"
-                                        alignItems="center"
-                                    >
-                                        {icon && <img src={icon.url} className={Favicon} />}
-                                        {!icon && (
-                                            <XView
-                                                flexShrink={0}
-                                                marginTop={-1}
-                                                marginRight={5}
-                                                marginBottom={-1}
-                                            >
-                                                <WebsiteIcon />
-                                            </XView>
-                                        )}
-                                        <span className={DomainNameClassName}>
-                                            {titleLinkHostname}
-                                        </span>
-                                    </XView>
-                                )}
-                                {subTitle && isUserLink && (
-                                    <XView
-                                        fontSize={13}
-                                        fontWeight="600"
-                                        color="rgba(0, 0, 0, 0.4)"
-                                        flexDirection="row"
-                                        alignItems="center"
-                                    >
-                                        <span>{subTitle}</span>
-                                    </XView>
-                                )}
+                                {titleLinkHostname &&
+                                    !isUserLink &&
+                                    !isOrgLink && (
+                                        <XView
+                                            fontSize={13}
+                                            fontWeight="600"
+                                            color="rgba(0, 0, 0, 0.4)"
+                                            flexDirection="row"
+                                            alignItems="center"
+                                        >
+                                            {icon && <img src={icon.url} className={Favicon} />}
+                                            {!icon && (
+                                                <XView
+                                                    flexShrink={0}
+                                                    marginTop={-1}
+                                                    marginRight={5}
+                                                    marginBottom={-1}
+                                                >
+                                                    <WebsiteIcon />
+                                                </XView>
+                                            )}
+                                            <span className={DomainNameClassName}>
+                                                {titleLinkHostname}
+                                            </span>
+                                        </XView>
+                                    )}
+                                {subTitle &&
+                                    isUserLink && (
+                                        <XView
+                                            fontSize={13}
+                                            fontWeight="600"
+                                            color="rgba(0, 0, 0, 0.4)"
+                                            flexDirection="row"
+                                            alignItems="center"
+                                        >
+                                            <span>{subTitle}</span>
+                                        </XView>
+                                    )}
                             </XView>
                         )}
                     </XView>
-                    {parts && !isUserLink && (
-                        <XView
-                            flexShrink={1}
-                            fontSize={14}
-                            color="#121e2b"
-                            opacity={0.9}
-                            marginTop={8}
-                        >
-                            {parts}
+                    {parts &&
+                        !isUserLink && (
+                            <XView
+                                flexShrink={1}
+                                fontSize={14}
+                                color="#121e2b"
+                                opacity={0.9}
+                                marginTop={8}
+                            >
+                                {parts}
+                            </XView>
+                        )}
+                </XView>
+                {!keyboard &&
+                    !hideButton &&
+                    !isUserLink &&
+                    !isOrgLink && <KeyboardItem href={href} path={path} title="Open link" />}
+                {!keyboard &&
+                    !hideButton &&
+                    isUserLink && (
+                        <XView flexDirection="row" justifyContent="space-between">
+                            <XView width="calc(50% - 4px)">
+                                <KeyboardItem
+                                    href={href}
+                                    path={`/mail/${objectId}`}
+                                    title="Message"
+                                />
+                            </XView>
+                            <XView width="calc(50% - 4px)">
+                                <KeyboardItem
+                                    href={href}
+                                    path={`/mail/u/${objectId}`}
+                                    title="View profile"
+                                />
+                            </XView>
                         </XView>
                     )}
-                </XView>
-                {!keyboard && !hideButton && (
-                    <XView
-                        width="100%"
-                        backgroundColor="rgba(244, 244, 244, 0.7)"
-                        borderRadius={10}
-                        flexDirection="row"
-                        justifyContent="center"
-                        alignItems="center"
-                        color={'#1790ff'}
-                        fontSize={14}
-                        fontWeight={'600'}
-                        as="a"
-                        href={href}
-                        path={isUserLink ? `/mail/${objectId}` : path}
-                        target="_blank"
-                        height={41}
-                        marginTop={8}
-                    >
-                        {isUserLink ? 'Message' : 'Open link'}
-                    </XView>
-                )}
-                {keyboard && !hideButton && (
-                    <XView marginTop={8}>
-                        <Keyboard keyboard={keyboard} />
-                    </XView>
-                )}
+                {keyboard && !hideButton && <Keyboard keyboard={keyboard} />}
             </XView>
         );
     },
