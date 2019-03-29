@@ -91,6 +91,8 @@ const getScrollView = (conversationId: string) => {
 
 const LoadingWrapper = glamorous.div({
     height: 50,
+    display: 'flex',
+    justifyContent: 'center',
 });
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
