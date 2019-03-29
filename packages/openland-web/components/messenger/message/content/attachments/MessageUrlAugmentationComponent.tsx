@@ -347,11 +347,16 @@ const MessageUrlAugmentationComponentInner = React.memo(
                         .split('/').length - 1;
                 if (numberOfSlashes === 1) {
                     isUserLink = true;
+                    hideButton = true;
                 }
             }
             if (titleLink.match('/mail/') && !isUserLink && !isOrgLink) {
                 hideButton = true;
             }
+        }
+
+        if (titleLink && !titleLink.match('openland.com')) {
+            hideButton = true;
         }
 
         return (
@@ -434,16 +439,49 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             </span>
                                         </XView>
                                     )}
-                                {title && (
-                                    <XView fontSize={16} fontWeight="600" marginTop={4}>
-                                        <span className={cx(SplitTextClassName, SplitTitleClassName)}>
-                                            {emoji({
-                                                src: title,
-                                                size: 18,
-                                            })}
-                                        </span>
-                                    </XView>
-                                )}
+                                {title &&
+                                    !hideButton && (
+                                        <XView fontSize={16} fontWeight="600" marginTop={4}>
+                                            <span
+                                                className={cx(
+                                                    SplitTextClassName,
+                                                    SplitTitleClassName,
+                                                )}
+                                            >
+                                                {emoji({
+                                                    src: title,
+                                                    size: 18,
+                                                })}
+                                            </span>
+                                        </XView>
+                                    )}
+                                {title &&
+                                    hideButton && (
+                                        <XView
+                                            as="a"
+                                            href={href}
+                                            path={path}
+                                            target="_blank"
+                                            fontSize={16}
+                                            fontWeight="600"
+                                            marginTop={4}
+                                            color="#000"
+                                            hoverColor="#1790ff"
+                                            hoverTextDecoration="none"
+                                        >
+                                            <span
+                                                className={cx(
+                                                    SplitTextClassName,
+                                                    SplitTitleClassName,
+                                                )}
+                                            >
+                                                {emoji({
+                                                    src: title,
+                                                    size: 18,
+                                                })}
+                                            </span>
+                                        </XView>
+                                    )}
                                 {subTitle &&
                                     isUserLink && (
                                         <XView
