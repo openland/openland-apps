@@ -483,7 +483,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                         </XView>
                                     )}
                                 {subTitle &&
-                                    isUserLink && (
+                                    (isUserLink || isOrgLink) && (
                                         <XView
                                             fontSize={13}
                                             fontWeight="600"
