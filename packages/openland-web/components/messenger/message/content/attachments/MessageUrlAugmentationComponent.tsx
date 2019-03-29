@@ -37,6 +37,16 @@ const LinkContentWrapperClassName = css`
     }
 `;
 
+const SplitTextClassName = css`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    max-height: 40px;
+`;
+
 const DeleteButton = makeNavigable(
     Glamorous.div<NavigableChildProps>(props => ({
         position: 'absolute',
@@ -140,34 +150,6 @@ const Keyboard = React.memo(
                                             title={button.title}
                                         />
                                     );
-
-                                    // return (
-                                    //     <XView
-                                    //         as="a"
-                                    //         key={'button-' + i + '-' + j}
-                                    //         backgroundColor="rgba(244, 244, 244, 0.7)"
-                                    //         borderRadius={10}
-                                    //         alignItems="center"
-                                    //         justifyContent="center"
-                                    //         height={41}
-                                    //         flexGrow={1}
-                                    //         cursor="pointer"
-                                    //         target="_blank"
-                                    //         href={href}
-                                    //         path={path}
-                                    //         hoverTextDecoration="none"
-                                    //     >
-                                    //         <XView
-                                    //             flexDirection="column"
-                                    //             justifyContent="center"
-                                    //             color={'#1790ff'}
-                                    //             fontSize={14}
-                                    //             fontWeight={'600'}
-                                    //         >
-                                    //             {button.title}
-                                    //         </XView>
-                                    //     </XView>
-                                    // );
                                 })}
                         </XView>
                     ))}
@@ -440,10 +422,12 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                     )}
                                 {title && (
                                     <XView fontSize={16} fontWeight="600" marginTop={4}>
-                                        {emoji({
-                                            src: title,
-                                            size: 18,
-                                        })}
+                                        <span className={SplitTextClassName}>
+                                            {emoji({
+                                                src: title,
+                                                size: 18,
+                                            })}
+                                        </span>
                                     </XView>
                                 )}
                                 {subTitle &&
@@ -468,7 +452,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             opacity={0.9}
                                             marginTop={4}
                                         >
-                                            {parts}
+                                            <span className={SplitTextClassName}>{parts}</span>
                                         </XView>
                                     )}
                             </XView>
