@@ -485,6 +485,13 @@
       }
     },
     {
+      "signature": "101f003bd256d9ad3d513ca112a165b174e7a83632a2299378ef06b7c8f60352",
+      "document": "query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename...on InviteInfo{id}...on AppInvite{inviter{__typename id}}...on RoomInvite{id}}}",
+      "metadata": {
+        "engineSignature": "query ResolvedInvite($key:String!){alphaResolveInvite(key:$key){__typename...on InviteInfo{id}...on AppInvite{inviter{__typename id}}...on RoomInvite{id}}}"
+      }
+    },
+    {
       "signature": "5e164fc8a53d72890564c00a77e8744b7ff43c22c0edd55efc22e87c677ad0b7",
       "document": "mutation RoomUpdate($input:RoomUpdateInput!,$roomId:ID!){betaRoomUpdate(input:$input,roomId:$roomId){__typename...on PrivateRoom{id}...on SharedRoom{description id photo title}}}",
       "metadata": {

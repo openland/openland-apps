@@ -5051,6 +5051,137 @@
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"operationName": "ResolvedInvite",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "key",
+					"type": "String!"
+				}
+			],
+			"source": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      id\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        id\n      }\n    }\n    ... on RoomInvite {\n      id\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "invite",
+					"fieldName": "alphaResolveInvite",
+					"type": "ResolveInviteEntry",
+					"args": [
+						{
+							"name": "key",
+							"value": {
+								"kind": "Variable",
+								"variableName": "key"
+							},
+							"type": "String!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": [
+						{
+							"typeCondition": "InviteInfo",
+							"possibleTypes": [
+								"InviteInfo"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "AppInvite",
+							"possibleTypes": [
+								"AppInvite"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "inviter",
+									"fieldName": "inviter",
+									"type": "User!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "RoomInvite",
+							"possibleTypes": [
+								"RoomInvite"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": []
+						}
+					]
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      id\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        id\n      }\n    }\n    ... on RoomInvite {\n      id\n    }\n  }\n}",
+			"operationId": "bef50272ce2ec0db69d7f438044d2134c4af5498deab9b4cb21bad431b182bab"
+		},
+		{
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomUpdate",
 			"operationType": "mutation",
 			"rootType": "Mutation",

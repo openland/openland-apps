@@ -295,6 +295,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderRoomInviteInfo(variables: Types.RoomInviteInfoVariables): Types.RoomInviteInfo | null {
         return this.useQuery(Source.RoomInviteInfoQuery, variables);
     }
+    async queryResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: OperationParameters): Promise<Types.ResolvedInvite> {
+        return this.client.query(Source.ResolvedInviteQuery, variables, opts);
+    }
+    async refetchResolvedInvite(variables: Types.ResolvedInviteVariables): Promise<Types.ResolvedInvite> {
+        return this.refetch(Source.ResolvedInviteQuery, variables);
+    }
+    useResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: QueryWatchParameters): Types.ResolvedInvite {
+        return this.useQuerySuspense(Source.ResolvedInviteQuery, variables, opts);
+    }
+    useWithoutLoaderResolvedInvite(variables: Types.ResolvedInviteVariables): Types.ResolvedInvite | null {
+        return this.useQuery(Source.ResolvedInviteQuery, variables);
+    }
     async queryConference(variables: Types.ConferenceVariables, opts?: OperationParameters): Promise<Types.Conference> {
         return this.client.query(Source.ConferenceQuery, variables, opts);
     }

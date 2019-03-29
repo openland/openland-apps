@@ -332,6 +332,20 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "ResolvedInvite") {
+      let key = notNull(readString(src, "key"))
+      let requestBody = ResolvedInviteQuery(key: key)
+      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "Conference") {
       let id = notNull(readString(src, "id"))
       let requestBody = ConferenceQuery(id: id)
@@ -1009,6 +1023,20 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomInviteInfo") {
       let invite = notNull(readString(src, "invite"))
       let requestBody = RoomInviteInfoQuery(invite: invite)
+      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
+    if (name == "ResolvedInvite") {
+      let key = notNull(readString(src, "key"))
+      let requestBody = ResolvedInviteQuery(key: key)
       let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -3177,6 +3205,14 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "ResolvedInvite") {
+      let key = notNull(readString(src, "key"))
+      let requestBody = ResolvedInviteQuery(key: key)
+      store.withinReadTransaction { (tx) in
+        handler((try tx.read(query: requestBody)).resultMap, nil)
+      }
+      return
+    }
     if (name == "Conference") {
       let id = notNull(readString(src, "id"))
       let requestBody = ConferenceQuery(id: id)
@@ -3613,6 +3649,16 @@ class ApiFactory: ApiFactoryBase {
       let invite = notNull(readString(src, "invite"))
       let requestBody = RoomInviteInfoQuery(invite: invite)
       let data = RoomInviteInfoQuery.Data(unsafeResultMap: self.convertData(src: data))
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(data: data, forQuery: requestBody)
+        handler(nil, nil)
+      }
+      return
+    }
+    if (name == "ResolvedInvite") {
+      let key = notNull(readString(src, "key"))
+      let requestBody = ResolvedInviteQuery(key: key)
+      let data = ResolvedInviteQuery.Data(unsafeResultMap: self.convertData(src: data))
       store.withinReadWriteTransaction { (tx) in
         try tx.write(data: data, forQuery: requestBody)
         handler(nil, nil)

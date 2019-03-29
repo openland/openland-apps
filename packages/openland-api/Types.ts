@@ -19194,6 +19194,44 @@ export interface RoomInviteInfoVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: ResolvedInvite
+// ====================================================
+
+export interface ResolvedInvite_invite_InviteInfo {
+  __typename: "InviteInfo";
+  id: string;
+}
+
+export interface ResolvedInvite_invite_AppInvite_inviter {
+  __typename: "User";
+  id: string;
+}
+
+export interface ResolvedInvite_invite_AppInvite {
+  __typename: "AppInvite";
+  inviter: ResolvedInvite_invite_AppInvite_inviter;
+}
+
+export interface ResolvedInvite_invite_RoomInvite {
+  __typename: "RoomInvite";
+  id: string;
+}
+
+export type ResolvedInvite_invite = ResolvedInvite_invite_InviteInfo | ResolvedInvite_invite_AppInvite | ResolvedInvite_invite_RoomInvite;
+
+export interface ResolvedInvite {
+  invite: ResolvedInvite_invite | null;
+}
+
+export interface ResolvedInviteVariables {
+  key: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: RoomUpdate
 // ====================================================
 

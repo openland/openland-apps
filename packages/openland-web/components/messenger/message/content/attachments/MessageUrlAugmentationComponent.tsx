@@ -14,7 +14,6 @@ import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRel
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { emoji } from 'openland-y-utils/emoji';
 import { XView } from 'react-mental';
-import ImgThn from 'openland-icons/img-thn.svg';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import DeleteIcon from 'openland-icons/ic-close.svg';
@@ -194,7 +193,7 @@ const Card = ({ imageUrl, title, subTitle, description }: CardT) => {
                                 src={imageUrl}
                             />
                         ) : (
-                            <ImgThn />
+                            <img width={40} height={40} src="/static/img/img-thn@3x.png" />
                         )}
                     </XView>
                     <XView flexDirection="column" justifyContent="space-between" height={40}>
@@ -386,7 +385,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             src={image.url}
                                         />
                                     ) : (
-                                        <ImgThn />
+                                        <img width={40} height={40} src="/static/img/img-thn@3x.png" />
                                     )}
                                 </XView>
                             )}

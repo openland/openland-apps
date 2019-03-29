@@ -8990,6 +8990,269 @@ public final class RoomInviteInfoQuery: GraphQLQuery {
   }
 }
 
+public final class ResolvedInviteQuery: GraphQLQuery {
+  public let operationDefinition =
+    "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      id\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        id\n      }\n    }\n    ... on RoomInvite {\n      id\n    }\n  }\n}"
+
+  public var key: String
+
+  public init(key: String) {
+    self.key = key
+  }
+
+  public var variables: GraphQLMap? {
+    return ["key": key]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("alphaResolveInvite", alias: "invite", arguments: ["key": GraphQLVariable("key")], type: .object(Invite.selections)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(invite: Invite? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "invite": invite.flatMap { (value: Invite) -> ResultMap in value.resultMap }])
+    }
+
+    public var invite: Invite? {
+      get {
+        return (resultMap["invite"] as? ResultMap).flatMap { Invite(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "invite")
+      }
+    }
+
+    public struct Invite: GraphQLSelectionSet {
+      public static let possibleTypes = ["InviteInfo", "AppInvite", "RoomInvite"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLTypeCase(
+          variants: ["InviteInfo": AsInviteInfo.selections, "AppInvite": AsAppInvite.selections, "RoomInvite": AsRoomInvite.selections],
+          default: [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          ]
+        )
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public static func makeInviteInfo(id: GraphQLID) -> Invite {
+        return Invite(unsafeResultMap: ["__typename": "InviteInfo", "id": id])
+      }
+
+      public static func makeAppInvite(inviter: AsAppInvite.Inviter) -> Invite {
+        return Invite(unsafeResultMap: ["__typename": "AppInvite", "inviter": inviter.resultMap])
+      }
+
+      public static func makeRoomInvite(id: GraphQLID) -> Invite {
+        return Invite(unsafeResultMap: ["__typename": "RoomInvite", "id": id])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var asInviteInfo: AsInviteInfo? {
+        get {
+          if !AsInviteInfo.possibleTypes.contains(__typename) { return nil }
+          return AsInviteInfo(unsafeResultMap: resultMap)
+        }
+        set {
+          guard let newValue = newValue else { return }
+          resultMap = newValue.resultMap
+        }
+      }
+
+      public struct AsInviteInfo: GraphQLSelectionSet {
+        public static let possibleTypes = ["InviteInfo"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: GraphQLID) {
+          self.init(unsafeResultMap: ["__typename": "InviteInfo", "id": id])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+      }
+
+      public var asAppInvite: AsAppInvite? {
+        get {
+          if !AsAppInvite.possibleTypes.contains(__typename) { return nil }
+          return AsAppInvite(unsafeResultMap: resultMap)
+        }
+        set {
+          guard let newValue = newValue else { return }
+          resultMap = newValue.resultMap
+        }
+      }
+
+      public struct AsAppInvite: GraphQLSelectionSet {
+        public static let possibleTypes = ["AppInvite"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("inviter", type: .nonNull(.object(Inviter.selections))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(inviter: Inviter) {
+          self.init(unsafeResultMap: ["__typename": "AppInvite", "inviter": inviter.resultMap])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var inviter: Inviter {
+          get {
+            return Inviter(unsafeResultMap: resultMap["inviter"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "inviter")
+          }
+        }
+
+        public struct Inviter: GraphQLSelectionSet {
+          public static let possibleTypes = ["User"]
+
+          public static let selections: [GraphQLSelection] = [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          ]
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(id: GraphQLID) {
+            self.init(unsafeResultMap: ["__typename": "User", "id": id])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var id: GraphQLID {
+            get {
+              return resultMap["id"]! as! GraphQLID
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "id")
+            }
+          }
+        }
+      }
+
+      public var asRoomInvite: AsRoomInvite? {
+        get {
+          if !AsRoomInvite.possibleTypes.contains(__typename) { return nil }
+          return AsRoomInvite(unsafeResultMap: resultMap)
+        }
+        set {
+          guard let newValue = newValue else { return }
+          resultMap = newValue.resultMap
+        }
+      }
+
+      public struct AsRoomInvite: GraphQLSelectionSet {
+        public static let possibleTypes = ["RoomInvite"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: GraphQLID) {
+          self.init(unsafeResultMap: ["__typename": "RoomInvite", "id": id])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class RoomUpdateMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {\n  betaRoomUpdate(roomId: $roomId, input: $input) {\n    __typename\n    ... on PrivateRoom {\n      id\n    }\n    ... on SharedRoom {\n      id\n      title\n      photo\n      description\n    }\n  }\n}"

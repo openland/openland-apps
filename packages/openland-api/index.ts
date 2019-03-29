@@ -104,6 +104,7 @@ export const RoomJoinInviteLinkMutation = typedMutation<Types.RoomJoinInviteLink
 export const RoomRenewInviteLinkMutation = typedMutation<Types.RoomRenewInviteLink, Types.RoomRenewInviteLinkVariables>(Chats.RoomRenewInviteLinkMutation);
 export const RoomInviteLinkQuery = typedQuery<Types.RoomInviteLink, Types.RoomInviteLinkVariables>(Chats.RoomInviteLinkQuery);
 export const RoomInviteInfoQuery = typedQuery<Types.RoomInviteInfo, Types.RoomInviteInfoVariables>(Chats.RoomInviteInfoQuery);
+export const ResolvedInviteQuery = typedQuery<Types.ResolvedInvite, Types.ResolvedInviteVariables>(Chats.ResolvedInviteQuery);
 export const RoomUpdateMutation = typedMutation<Types.RoomUpdate, Types.RoomUpdateVariables>(Chats.RoomUpdateMutation);
 export const RoomDeleteMessageMutation = typedMutation<Types.RoomDeleteMessage, Types.RoomDeleteMessageVariables>(Chats.RoomDeleteMessageMutation);
 export const RoomDeleteMessagesMutation = typedMutation<Types.RoomDeleteMessages, Types.RoomDeleteMessagesVariables>(Chats.RoomDeleteMessagesMutation);
