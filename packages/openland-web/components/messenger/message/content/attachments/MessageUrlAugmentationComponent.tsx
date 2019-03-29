@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
+import Glamorous from 'glamorous';
 import { preprocessText } from 'openland-web/utils/TextProcessor';
 import SiteIcon from 'openland-icons/website-2.svg';
 import {
@@ -16,6 +17,49 @@ import { XView } from 'react-mental';
 import ImgThn from 'openland-icons/img-thn.svg';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import DeleteIcon from 'openland-icons/ic-close.svg';
+import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
+
+const LinkContentWrapperClassName = css`
+    width: 100%;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    position: relative;
+    & .delete-button {
+        opacity: 0;
+    }
+    &:hover .delete-button {
+        opacity: 1;
+    }
+`;
+
+const DeleteButton = makeNavigable(
+    Glamorous.div<NavigableChildProps>(props => ({
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        width: 32,
+        height: 32,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        '& > svg': {
+            width: 15,
+            height: 15,
+        },
+        '& > svg > path': {
+            fill: 'rgba(0, 0, 0, 0.3)',
+        },
+        '&:hover & > svg > path': {
+            fill: 'rgba(0, 0, 0, 0.4)',
+        },
+    })),
+);
 
 const Favicon = css`
     width: 14px;
@@ -235,8 +279,6 @@ const MessageUrlAugmentationComponentInner = React.memo(
             keyboard,
         } = props;
 
-        // console.log(props);
-
         let href: string | undefined = props.titleLink || undefined;
         let path: string | undefined = undefined;
 
@@ -318,15 +360,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
 
         return (
             <XView width="100%" flexDirection="column" maxWidth={696}>
-                <XView
-                    width="100%"
-                    backgroundColor="#F7F7F7"
-                    borderRadius={10}
-                    paddingVertical={16}
-                    paddingHorizontal={20}
-                    flexDirection="column"
-                    marginTop={10}
-                >
+                <div className={LinkContentWrapperClassName}>
                     <XView flexDirection="row">
                         {image &&
                             dimensions &&
@@ -426,7 +460,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                     )}
                                 {parts &&
                                     !isOrgLink &&
-                                    !isOrgLink && (
+                                    !isUserLink && (
                                         <XView
                                             flexShrink={1}
                                             fontSize={14}
@@ -441,7 +475,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                         )}
                     </XView>
                     {parts &&
-                        (isOrgLink || isOrgLink) && (
+                        (isOrgLink || isUserLink) && (
                             <XView
                                 flexShrink={1}
                                 fontSize={14}
@@ -452,7 +486,20 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                 {parts}
                             </XView>
                         )}
-                </XView>
+                    {isMe &&
+                        !isUserLink &&
+                        !isOrgLink && (
+                            <DeleteButton
+                                query={{
+                                    field: 'deleteUrlAugmentation',
+                                    value: messageId,
+                                }}
+                                className="delete-button"
+                            >
+                                <DeleteIcon />
+                            </DeleteButton>
+                        )}
+                </div>
                 {!keyboard &&
                     !hideButton &&
                     !isUserLink &&

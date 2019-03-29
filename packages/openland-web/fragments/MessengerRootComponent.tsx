@@ -95,15 +95,15 @@ const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation(props => {
     let id = props.router.query.deleteUrlAugmentation;
     return (
         <XModalForm
-            title="Delete link preview"
+            title="Remove attachment"
             targetQuery="deleteUrlAugmentation"
-            submitBtnText="Delete"
+            submitBtnText="Remove"
             defaultAction={data => {
                 props.deleteUrlAugmentation({ variables: { messageId: id } });
             }}
-            submitProps={{ successText: 'Deleted!', style: 'danger' }}
+            submitProps={{ successText: 'Removed!', style: 'danger' }}
         >
-            <XText>Are you sure you want to delete this url preview? This cannot be undone.</XText>
+            <XText>Remove this attachment from the message?</XText>
         </XModalForm>
     );
 });
@@ -317,26 +317,27 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     scrollPosition={this.onMessageListScroll}
                 />
 
-                {!this.state.hideInput && this.conversation.canSendMessage && (
-                    <UploadContextProvider>
-                        <MessageComposeHandler
-                            isActive={this.props.isActive}
-                            getMessages={this.getMessages}
-                            conversation={this.conversation}
-                            onChange={this.handleChange}
-                            onSend={this.handleSend}
-                            onSendFile={this.handleSendFile}
-                            enabled={true}
-                            conversationType={this.props.conversationType}
-                            conversationId={this.props.conversationId}
-                            variables={{
-                                roomId: this.props.conversationId,
-                                conversationId: this.props.conversationId,
-                                organizationId: this.props.organizationId,
-                            }}
-                        />
-                    </UploadContextProvider>
-                )}
+                {!this.state.hideInput &&
+                    this.conversation.canSendMessage && (
+                        <UploadContextProvider>
+                            <MessageComposeHandler
+                                isActive={this.props.isActive}
+                                getMessages={this.getMessages}
+                                conversation={this.conversation}
+                                onChange={this.handleChange}
+                                onSend={this.handleSend}
+                                onSendFile={this.handleSendFile}
+                                enabled={true}
+                                conversationType={this.props.conversationType}
+                                conversationId={this.props.conversationId}
+                                variables={{
+                                    roomId: this.props.conversationId,
+                                    conversationId: this.props.conversationId,
+                                    organizationId: this.props.organizationId,
+                                }}
+                            />
+                        </UploadContextProvider>
+                    )}
                 <DeleteUrlAugmentationComponent />
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
