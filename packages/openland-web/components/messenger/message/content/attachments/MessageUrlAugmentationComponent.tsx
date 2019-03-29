@@ -231,11 +231,7 @@ const JoinChannelCard = ({
     return (
         <XView marginTop={12} maxWidth={696}>
             <Card {...card} />
-            {keyboard && (
-                <XView marginTop={8}>
-                    <Keyboard keyboard={keyboard} />
-                </XView>
-            )}
+            {keyboard && <Keyboard keyboard={keyboard} />}
         </XView>
     );
 };
