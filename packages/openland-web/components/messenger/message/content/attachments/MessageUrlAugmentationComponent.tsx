@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import { preprocessText } from 'openland-web/utils/TextProcessor';
 import SiteIcon from 'openland-icons/website-2.svg';
@@ -45,6 +45,11 @@ const SplitTextClassName = css`
     overflow: hidden;
     -webkit-box-orient: vertical;
     max-height: 40px;
+`;
+
+const SplitTitleClassName = css`
+    -webkit-line-clamp: 1;
+    max-height: 20px;
 `;
 
 const DeleteButton = makeNavigable(
@@ -422,7 +427,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                     )}
                                 {title && (
                                     <XView fontSize={16} fontWeight="600" marginTop={4}>
-                                        <span className={SplitTextClassName}>
+                                        <span className={cx(SplitTextClassName, SplitTitleClassName)}>
                                             {emoji({
                                                 src: title,
                                                 size: 18,
