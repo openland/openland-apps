@@ -266,6 +266,8 @@ const MessageUrlAugmentationComponentInner = React.memo(
             keyboard,
         } = props;
 
+        // console.log(props);
+
         let href: string | undefined = props.titleLink || undefined;
         let path: string | undefined = undefined;
 
@@ -440,7 +442,8 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                         </XView>
                                     )}
                                 {title &&
-                                    !hideButton && (
+                                    !hideButton &&
+                                    !isOrgLink && (
                                         <XView fontSize={16} fontWeight="600" marginTop={4}>
                                             <span
                                                 className={cx(
@@ -456,7 +459,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                         </XView>
                                     )}
                                 {title &&
-                                    hideButton && (
+                                    (hideButton || isOrgLink) && (
                                         <XView
                                             as="a"
                                             href={href}
