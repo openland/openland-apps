@@ -1,3 +1,3 @@
 export let isInternalLink = (url: string) => {
-    return url.includes('//openland.com/');
+    return url.match('openland.com');
 };

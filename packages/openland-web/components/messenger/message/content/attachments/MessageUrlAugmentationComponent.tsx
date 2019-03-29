@@ -274,7 +274,9 @@ const MessageUrlAugmentationComponentInner = React.memo(
         let href: string | undefined = props.titleLink || undefined;
         let path: string | undefined = undefined;
 
-        if (isInternalLink(href || '')) {
+        let internalLink = isInternalLink(href || '');
+
+        if (internalLink) {
             path = makeInternalLinkRelative(href || '');
             href = undefined;
         }
@@ -330,34 +332,21 @@ const MessageUrlAugmentationComponentInner = React.memo(
             );
         }
 
-        let openlandLink = false;
-        let isUserLink = false;
-        let isOrgLink = false;
+        let openlandLink: boolean = !!internalLink;
         let objectId = '';
 
         if (titleLink && titleLink.match('openland.com')) {
-            openlandLink = true;
             if (titleLink.match('/u/')) {
-                isUserLink = true;
                 objectId = titleLink.substring(titleLink.search('/u/') + 3, titleLink.length);
             } else if (titleLink.match('/o/')) {
-                isOrgLink = true;
                 objectId = titleLink.substring(titleLink.search('/o/') + 3, titleLink.length);
             } else if (titleLink.match('/c/')) {
-                isOrgLink = true;
                 objectId = titleLink.substring(titleLink.search('/c/') + 3, titleLink.length);
-            } else {
-                const numberOfSlashes =
-                    titleLink
-                        .substring(
-                            titleLink.search('openland.com') + 'openland.com'.length,
-                            titleLink.length,
-                        )
-                        .split('/').length - 1;
-                if (numberOfSlashes === 1) {
-                    isUserLink = true;
-                }
             }
+        }
+
+        if (text && text.match('Openland is a professional messenger designed')) {
+            openlandLink = false;
         }
 
         return (
@@ -366,8 +355,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                     <XView flexDirection="row">
                         {image &&
                             dimensions &&
-                            !isOrgLink &&
-                            !isUserLink && (
+                            !openlandLink && (
                                 <XView
                                     marginRight={20}
                                     flexDirection="row"
@@ -393,7 +381,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                 </XView>
                             )}
                         {image &&
-                            (isUserLink || isOrgLink) && (
+                            openlandLink && (
                                 <XView marginRight={12} flexShrink={0}>
                                     {image.url ? (
                                         <XAvatar2
@@ -407,7 +395,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                 </XView>
                             )}
                         {!image &&
-                            (isUserLink || isOrgLink) && (
+                            openlandLink && (
                                 <XView marginRight={12} flexShrink={0}>
                                     <XAvatar2 id={objectId} title={title || ''} />
                                 </XView>
@@ -415,8 +403,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                         {(title || titleLinkHostname || subTitle || parts) && (
                             <XView flexDirection="column" flexGrow={1} flexShrink={1}>
                                 {titleLinkHostname &&
-                                    !isUserLink &&
-                                    !isOrgLink && (
+                                    !keyboard && (
                                         <XView
                                             fontSize={13}
                                             fontWeight="600"
@@ -466,7 +453,6 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             target="_blank"
                                             fontSize={16}
                                             fontWeight="600"
-                                            marginTop={4}
                                             color="#000"
                                             hoverColor="#1790ff"
                                             hoverTextDecoration="none"
@@ -491,13 +477,13 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                         color="rgba(0, 0, 0, 0.4)"
                                         flexDirection="row"
                                         alignItems="center"
+                                        marginTop={4}
                                     >
                                         <span>{subTitle}</span>
                                     </XView>
                                 )}
                                 {parts.length > 0 &&
-                                    !isOrgLink &&
-                                    !isUserLink && (
+                                    !openlandLink && (
                                         <XView
                                             flexShrink={1}
                                             fontSize={14}
@@ -512,7 +498,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                         )}
                     </XView>
                     {parts.length > 0 &&
-                        (isOrgLink || isUserLink) && (
+                        openlandLink && (
                             <XView
                                 flexShrink={1}
                                 fontSize={14}
