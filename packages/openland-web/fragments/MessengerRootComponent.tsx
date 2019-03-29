@@ -32,6 +32,7 @@ import { PinMessageComponent } from 'openland-web/fragments/chat/PinMessage';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 export interface File {
     uuid: string;
@@ -359,11 +360,12 @@ interface MessengerRootComponentProps {
 
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
-    // console.log('MessengerRootComponent', props.isActive);
+    let isActive = React.useContext(IsActiveContext);
+
     return (
         <MessagesComponent
             onChatLostAccess={props.onChatLostAccess}
-            isActive={props.isActive}
+            isActive={!!isActive}
             me={messenger.user}
             loading={false}
             organizationId={props.organizationId}
