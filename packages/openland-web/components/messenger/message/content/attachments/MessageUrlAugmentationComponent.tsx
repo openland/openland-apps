@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { preprocessText } from 'openland-web/utils/TextProcessor';
-import WebsiteIcon from 'openland-icons/website-2.svg';
+import SiteIcon from 'openland-icons/website-2.svg';
 import {
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard,
@@ -376,16 +376,8 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                     <XAvatar2 id={objectId} title={title || ''} />
                                 </XView>
                             )}
-                        {(title || titleLinkHostname || subTitle) && (
+                        {(title || titleLinkHostname || subTitle || parts) && (
                             <XView flexDirection="column" flexGrow={1} flexShrink={1}>
-                                {title && (
-                                    <XView fontSize={16} fontWeight="600" marginBottom={4}>
-                                        {emoji({
-                                            src: title,
-                                            size: 18,
-                                        })}
-                                    </XView>
-                                )}
                                 {titleLinkHostname &&
                                     !isUserLink &&
                                     !isOrgLink && (
@@ -404,7 +396,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                                     marginRight={5}
                                                     marginBottom={-1}
                                                 >
-                                                    <WebsiteIcon />
+                                                    <SiteIcon />
                                                 </XView>
                                             )}
                                             <span className={DomainNameClassName}>
@@ -412,6 +404,14 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             </span>
                                         </XView>
                                     )}
+                                {title && (
+                                    <XView fontSize={16} fontWeight="600" marginTop={4}>
+                                        {emoji({
+                                            src: title,
+                                            size: 18,
+                                        })}
+                                    </XView>
+                                )}
                                 {subTitle &&
                                     isUserLink && (
                                         <XView
@@ -424,11 +424,24 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             <span>{subTitle}</span>
                                         </XView>
                                     )}
+                                {parts &&
+                                    !isOrgLink &&
+                                    !isOrgLink && (
+                                        <XView
+                                            flexShrink={1}
+                                            fontSize={14}
+                                            color="#121e2b"
+                                            opacity={0.9}
+                                            marginTop={4}
+                                        >
+                                            {parts}
+                                        </XView>
+                                    )}
                             </XView>
                         )}
                     </XView>
                     {parts &&
-                        !isUserLink && (
+                        (isOrgLink || isOrgLink) && (
                             <XView
                                 flexShrink={1}
                                 fontSize={14}
