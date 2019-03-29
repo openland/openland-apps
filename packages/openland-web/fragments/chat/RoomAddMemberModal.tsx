@@ -120,7 +120,7 @@ interface InviteModalState {
     selectedUsers: Map<string, string> | null;
 }
 
-class RoomAddMemberModalInner extends React.PureComponent<
+class RoomAddMemberModalInner extends React.Component<
     InviteModalProps & { isMobile: boolean },
     InviteModalState
 > {
