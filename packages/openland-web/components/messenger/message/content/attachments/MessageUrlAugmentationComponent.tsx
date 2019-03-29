@@ -329,11 +329,20 @@ const MessageUrlAugmentationComponentInner = React.memo(
             if (titleLink.match('/u/')) {
                 isUserLink = true;
                 objectId = titleLink.substring(titleLink.search('/u/') + 3, titleLink.length);
-            }
-
-            if (titleLink.match('/o/')) {
+            } else if (titleLink.match('/o/')) {
                 isOrgLink = true;
                 objectId = titleLink.substring(titleLink.search('/o/') + 3, titleLink.length);
+            } else {
+                const numberOfSlashes =
+                    titleLink
+                        .substring(
+                            titleLink.search('openland.com') + 'openland.com'.length,
+                            titleLink.length,
+                        )
+                        .split('/').length - 1;
+                if (numberOfSlashes === 1) {
+                    isUserLink = true;
+                }
             }
             if (titleLink.match('/mail/') && !isUserLink && !isOrgLink) {
                 hideButton = true;
