@@ -1,13 +1,11 @@
-// import { buildClient } from 'openland-y-graphql/apolloClient';
 import { Track } from 'openland-engines/Tracking';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-// import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
-// import { createWorkerClient } from 'openland-mobile/apollo/createWorkerClient';
-// import { createDumbBridgeClient } from 'openland-graphql/proxy/DumbBridgeClient';
-import { NativeApolloClient } from 'openland-mobile/apollo/NativeApolloClient';
+import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 import { createWorkerClient } from 'openland-mobile/apollo/createWorkerClient';
-// import { Platform } from 'react-native';
-// import { Platform } from 'react-native';
+import { createDumbBridgeClient } from 'openland-graphql/proxy/DumbBridgeClient';
+import { NativeApolloClient } from 'openland-mobile/apollo/NativeApolloClient';
+import { Platform } from 'react-native';
+import { buildClient } from 'openland-y-graphql/apolloClient';
 
 let cachedClient: OpenlandClient | null;
 
@@ -33,25 +31,25 @@ export function getClient(): OpenlandClient {
 export function buildNativeClient(storage: string, token: string) {
 
     // return new OpenlandClient(createWorkerClient(token));
-    return new OpenlandClient(new NativeApolloClient(storage, token));
+    // return new OpenlandClient(new NativeApolloClient(storage, token));
 
-    // if (Platform.OS === 'ios') {
-    //     return new OpenlandClient(new NativeApolloClient(storage, token));
-    // }
+    if (Platform.OS === 'ios') {
+        return new OpenlandClient(new NativeApolloClient(storage, token));
+    }
 
     // if (Platform.OS === 'android') {
     //     return new OpenlandClient(new NativeApolloClient(token));
     // }
 
-    // if (__DEV__) {
-    //     return new OpenlandClient(createDumbBridgeClient(new DirectApollolClient(buildClient({
-    //         token: token,
-    //         endpoint: 'https://api.openland.com/api',
-    //         wsEndpoint: 'wss://api.openland.com/api'
-    //     }))));
-    // } else {
-    //     return new OpenlandClient(createWorkerClient(token));
-    // }
+    if (__DEV__) {
+        return new OpenlandClient(createDumbBridgeClient(new DirectApollolClient(buildClient({
+            token: token,
+            endpoint: 'https://api.openland.com/api',
+            wsEndpoint: 'wss://api.openland.com/api'
+        }))));
+    } else {
+        return new OpenlandClient(createWorkerClient(token));
+    }
 
     // return new OpenlandClient(createWorkerClient(token));
 
