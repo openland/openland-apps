@@ -84,14 +84,25 @@ const ExplorePeople = withExplorePeople(props => {
                             />
                         )}
                     {typedProps.data.items.edges.map(i => {
-                        if (
-                            (typedProps.selectedUsers && typedProps.selectedUsers.has(i.node.id)) ||
-                            (typedProps.roomUsers &&
-                                typedProps.roomUsers.find(
-                                    (j: RoomMembersShort_members) => j.user.id === i.node.id,
-                                ))
-                        ) {
+                        if (typedProps.selectedUsers && typedProps.selectedUsers.has(i.node.id)) {
                             return null;
+                        }
+                        if (
+                            typedProps.roomUsers &&
+                            typedProps.roomUsers.find(
+                                (j: RoomMembersShort_members) => j.user.id === i.node.id,
+                            )
+                        ) {
+                            return (
+                                <XView key={i.node.id}>
+                                    <XUserCard
+                                        user={i.node}
+                                        noPath={true}
+                                        customButton={null}
+                                        disable={true}
+                                    />
+                                </XView>
+                            );
                         }
                         return (
                             <XView
@@ -158,11 +169,12 @@ class RoomAddMemberModalInner extends React.Component<
         });
     };
 
-    private onClosed = () =>
+    private onClosed = () => {
         this.setState({
             selectedUsers: null,
             searchQuery: '',
         });
+    };
 
     render() {
         const { props } = this;
@@ -183,9 +195,13 @@ class RoomAddMemberModalInner extends React.Component<
         }
         return (
             <XModalForm
+                autoClose={1500}
                 title="Add members"
                 target={props.target}
                 submitBtnText="Add"
+                submitProps={{
+                    successText: 'Done!',
+                }}
                 width={props.isMobile ? undefined : 520}
                 flexGrow={props.isMobile ? 1 : undefined}
                 useTopCloser={true}
