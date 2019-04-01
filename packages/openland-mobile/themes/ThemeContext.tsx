@@ -22,7 +22,7 @@ export const ThemeProvider = (props: { children?: any }) => {
             setTheme(r);
         })
     }, [])
-    console.log('render theme: ' + theme.backgroundColor);
+    // console.log('render theme: ' + theme.backgroundColor);
 
     return (
         <ThemeContext.Provider value={theme}>

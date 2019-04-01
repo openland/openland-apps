@@ -2,6 +2,8 @@ import { GraphqlClient, GraphqlQuery, GraphqlQueryWatch, OperationParameters, Gr
 import { Queue } from 'openland-graphql/utils/Queue';
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { randomKey } from 'openland-graphql/utils/randomKey';
+import { createLogger } from 'mental-log';
+import { getQueryName } from 'openland-graphql/utils/getQueryName';
 
 class BridgedQueryWatch {
 
@@ -10,6 +12,8 @@ class BridgedQueryWatch {
     value?: any;
     error?: Error;
 }
+
+const log = createLogger('GraphQL');
 
 export abstract class BridgedClient implements GraphqlClient {
 
@@ -21,6 +25,9 @@ export abstract class BridgedClient implements GraphqlClient {
     //
 
     async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): Promise<TQuery> {
+        if (__DEV__) {
+            log.log('Query ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
+        }
         let id = this.nextKey();
         let res = this.registerPromiseHandler<TQuery>(id);
         this.postQuery(id, query, vars, params);
@@ -28,6 +35,9 @@ export abstract class BridgedClient implements GraphqlClient {
     }
 
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
+        if (__DEV__) {
+            log.log('Query Watch ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
+        }
         let id = this.nextKey();
         let watch = new BridgedQueryWatch();
         let callbacks = new Map<string, (args: { data?: TQuery, error?: Error }) => void>();
@@ -98,6 +108,9 @@ export abstract class BridgedClient implements GraphqlClient {
     //
 
     async mutate<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
+        if (__DEV__) {
+            log.log('Mutate ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ')');
+        }
         let id = this.nextKey();
         let res = this.registerPromiseHandler<TQuery>(id);
         this.postMutation(id, query, vars);

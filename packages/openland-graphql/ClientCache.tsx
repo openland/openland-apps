@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { GraphqlQueryWatch } from './GraphqlClient';
+import { randomKey } from './utils/randomKey';
 
 export class ClientCache {
+    readonly key: string = randomKey();
     queries = new Map<String, GraphqlQueryWatch<{}>>();
 
     cleanup = () => {
