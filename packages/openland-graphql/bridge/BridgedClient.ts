@@ -53,6 +53,7 @@ export abstract class BridgedClient implements GraphqlClient {
             log.log('Query Watch ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
         }
         let id = this.nextKey();
+        let currentId = id;
         let watch = new BridgedQueryWatch();
         let callbacks = new Map<string, (args: { data?: TQuery, error?: Error }) => void>();
         let resolved = false;
@@ -63,7 +64,27 @@ export abstract class BridgedClient implements GraphqlClient {
             reject = rj;
         });
         this.queryWatches.set(id, watch);
+        this.handlersMap.set(currentId, id);
         this.handlers.set(id, (data, error) => {
+
+            // Special retry action
+            if (error) {
+                if (!(error instanceof ApiError)) {
+                    log.warn('Received unknown error: retrying watch');
+
+                    // Stop old watch
+                    this.handlersMap.delete(currentId);
+                    this.postQueryWatchEnd(currentId);
+
+                    // Launch new watch
+                    currentId = this.nextKey();
+                    this.handlersMap.set(currentId, id);
+                    this.postQueryWatch(currentId, query, vars, params);
+
+                    return;
+                }
+            }
+
             if (error) {
                 watch.hasError = true;
                 watch.hasValue = false;
@@ -212,13 +233,21 @@ export abstract class BridgedClient implements GraphqlClient {
     //
 
     protected operationUpdated(id: string, data: any) {
-        let handler = this.handlers.get(id);
+        let realId = this.handlersMap.get(id);
+        if (!realId) {
+            return;
+        }
+        let handler = this.handlers.get(realId);
         if (handler) {
             handler(data, undefined);
         }
     }
     protected operationFailed(id: string, err: Error) {
-        let handler = this.handlers.get(id);
+        let realId = this.handlersMap.get(id);
+        if (!realId) {
+            return;
+        }
+        let handler = this.handlers.get(realId);
         if (handler) {
             handler(undefined, err);
         }
