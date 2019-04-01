@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Apollo
 
 let GraphQLQueue = DispatchQueue(label: "gql", qos: DispatchQoS.background)
 
@@ -97,6 +98,28 @@ class RNGraphQL: RCTEventEmitter {
     dict["key"] = key
     dict["id"] = id
     dict["type"] = "failure"
+    dict["kind"] = "network"
+    self.sendEvent(withName: "apollo_client", body: dict)
+  }
+  
+  func reportGraphqlError(key: String, id: String, errors: [GraphQLError]) {
+    var dict:[String:Any] = [:]
+    dict["key"] = key
+    dict["id"] = id
+    dict["type"] = "failure"
+    dict["kind"] = "graphql"
+    var convertedErrors: [[String:Any]] = []
+    for e in errors {
+      var err: [String:Any] = [:]
+      err["message"] = e.message ?? "Unknown error"
+      err["uuid"] = e["uuid"]
+      err["shouldRetry"] = e["shouldRetry"] ?? false
+      if let f = e["invalidFields"] {
+        err["invalidFields"] = f as! [[String:Any]]
+      }
+      convertedErrors.append(err)
+    }
+    dict["data"] = convertedErrors
     self.sendEvent(withName: "apollo_client", body: dict)
   }
   

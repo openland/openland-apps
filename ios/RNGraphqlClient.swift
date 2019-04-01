@@ -304,11 +304,14 @@ class RNGraphqlClient: WebSocketTransportDelegate {
       return
     }
     if let n = err as? NativeGraphqlError {
-      for g in n.src {
-        print(g.message)
+      if n.src.count > 0 {
+        self.module.reportGraphqlError(key: self.key, id: id, errors: n.src)
+      } else {
+        self.module.reportError(key: self.key, id: id)
       }
+    } else {
+      self.module.reportError(key: self.key, id: id)
     }
-    self.module.reportError(key: self.key, id: id)
   }
   
   func webSocketTransportDidConnect(_ webSocketTransport: WebSocketTransport) {

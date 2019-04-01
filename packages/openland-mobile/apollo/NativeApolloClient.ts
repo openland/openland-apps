@@ -3,6 +3,7 @@ import { OperationParameters } from 'openland-graphql/GraphqlClient';
 import { NativeModules, DeviceEventEmitter, NativeEventEmitter, Platform } from 'react-native';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import { createLogger } from 'mental-log';
+import { convertError } from 'openland-graphql/direct/convertError';
 
 const NativeGraphQL = NativeModules.RNGraphQL as {
     createClient: (key: string, endpoint: string, token?: string, storage?: string) => void
@@ -38,7 +39,13 @@ export class NativeApolloClient extends BridgedClient {
             RNGraphQLEmitter.addListener('apollo_client', (src) => {
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
-                        this.operationFailed(src.id, src.data || {});
+                        log.warn('Received failure');
+                        log.warn(src.data);
+                        if (src.kind === 'graphql') {
+                            this.operationFailed(src.id, convertError(src.data));
+                        } else {
+                            this.operationFailed(src.id, Error('Unknown error'));
+                        }
                     } else if (src.type === 'response') {
                         this.operationUpdated(src.id, src.data);
                     }
@@ -48,7 +55,13 @@ export class NativeApolloClient extends BridgedClient {
             DeviceEventEmitter.addListener('apollo_client', (src) => {
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
-                        this.operationFailed(src.id, src.data || {});
+                        log.warn('Received failure');
+                        log.warn(src.data);
+                        if (src.data && src.data.__api) {
+                            this.operationFailed(src.id, convertError(src.data));
+                        } else {
+                            this.operationFailed(src.id, Error('Unknown error'));
+                        }
                     } else if (src.type === 'response') {
                         this.operationUpdated(src.id, src.data);
                     }
