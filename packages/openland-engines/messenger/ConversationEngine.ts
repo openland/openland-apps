@@ -9,6 +9,9 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import * as Types from 'openland-api/Types';
+import { createLogger } from 'mental-log';
+
+const log = createLogger('Engine-Messages');
 
 export interface ConversationStateHandler {
     onConversationUpdated(state: ConversationState): void;
@@ -140,14 +143,14 @@ export class ConversationEngine implements MessageSendHandler {
             throw Error('ConversationEngine already started!');
         }
         this.isStarted = true;
-        console.info('Loading initial state for ' + this.conversationId);
+        log.log('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
                 let room = await this.engine.client.client.query(RoomTinyQuery, { id: this.conversationId });
                 let history = await this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, first: 15 }, { fetchPolicy: 'network-only' });
                 return { ...history, ...room };
             } catch (e) {
-                console.warn(e);
+                log.warn(e);
                 throw e;
             }
         });
@@ -163,7 +166,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
-        console.info('Initial state for ' + this.conversationId);
+        log.log('Initial state for ' + this.conversationId);
         this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: initialChat.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
         this.onMessagesUpdated();
 
@@ -387,7 +390,7 @@ export class ConversationEngine implements MessageSendHandler {
         return () => {
             let index = this.listeners.indexOf(listener);
             if (index < 0) {
-                console.warn('Double unsubscribe detected!');
+                log.warn('Double unsubscribe detected!');
             } else {
                 this.listeners.splice(index, 1);
             }
@@ -435,7 +438,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private onMessagesUpdated = () => {
-        console.log('Messages updated');
+        log.log('Messages updated');
         if (this.isOpen) {
             this.markReadIfNeeded();
         }
@@ -468,7 +471,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         if (event.__typename === 'ChatMessageReceived') {
             // Handle message
-            console.info('Received new message');
+            log.log('Received new message');
 
             // Write message to store
             let local = false;
@@ -499,7 +502,7 @@ export class ConversationEngine implements MessageSendHandler {
             this.appendMessage({ ...event.message, repeatKey: local ? event.repeatKey : undefined });
         } else if (event.__typename === 'ChatMessageDeleted') {
             // Handle message
-            console.info('Received delete message');
+            log.log('Received delete message');
             this.messages = this.messages.filter((m: any) => m.id !== event.message.id);
 
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
@@ -513,7 +516,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         } else if (event.__typename === 'ChatMessageUpdated') {
             // Handle message
-            console.info('Received edit message');
+            log.log('Received edit message');
 
             // Write message to store
             this.messages = this.messages.map((m: any) => m.id !== event.message.id ? m : event.message);
@@ -533,7 +536,7 @@ export class ConversationEngine implements MessageSendHandler {
                 l.onChatLostAccess();
             }
         } else {
-            console.warn('Received unknown message');
+            log.warn('Received unknown message');
         }
         return undefined;
     }
