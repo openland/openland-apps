@@ -6,14 +6,26 @@ import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { XButton } from 'openland-x/XButton';
-import { switchOrganization } from '../../utils/switchOrganization';
+import { InviteLandingComponent } from '../../fragments/InviteLandingComponent';
 import { InitTexts } from './_text';
 import { css } from 'linaria';
+import Glamorous from 'glamorous';
 
 const InfoText = css`
     margin-bottom: 15px;
 `;
+
+const Root = Glamorous.div({
+    display: 'flex',
+    minHeight: '100vh',
+    width: '100%',
+    backgroundColor: '#ffffff',
+    flexDirection: 'column',
+});
+
+const Content = Glamorous.div({
+    flex: 1,
+});
 
 export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
     const client = useClient();
@@ -33,38 +45,28 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                 titleSocial={InitTexts.socialPageTitle}
             />
             <XTrack event="Join" />
-            <MessagePage>
-                {data.invite && (
-                    <MessagePageContent title={InitTexts.join.title}>
-                        <div className={InfoText}>{data.invite.title}</div>
-                        {data.invite.joined && (
-                            <XButton
-                                text={InitTexts.join.goButton}
-                                onClick={() => switchOrganization(data.invite!!.orgId)}
-                                style="primary"
-                            />
-                        )}
-                        {!data.invite.joined && (
-                            <XButton
-                                text={InitTexts.join.joinButton}
-                                action={async () => {
-                                    await client.mutateAccountInviteJoin({
-                                        inviteKey,
-                                    });
-                                    switchOrganization(data.invite!!.orgId);
-                                }}
-                                style="primary"
-                            />
-                        )}
-                        {/* <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" /> */}
-                    </MessagePageContent>
-                )}
-                {!data.invite && (
-                    <MessagePageContent title="Join">
-                        <div className={InfoText}>{InitTexts.join.unableToFindInvite}</div>
-                    </MessagePageContent>
-                )}
-            </MessagePage>
+
+            <Root>
+                <Content>
+                    {data.invite && (
+                        <InviteLandingComponent
+                            noLogin={true}
+                            organization={{
+                                photo: data.invite.photo,
+                                title: data.invite.title,
+                                id: data.invite.id,
+                                membersCount: 0,
+                                description: '',
+                            }}
+                        />
+                    )}
+                    {!data.invite && (
+                        <MessagePageContent title="Join">
+                            <div className={InfoText}>{InitTexts.join.unableToFindInvite}</div>
+                        </MessagePageContent>
+                    )}
+                </Content>
+            </Root>
         </>
     );
 };

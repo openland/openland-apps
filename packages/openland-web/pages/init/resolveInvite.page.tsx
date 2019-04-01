@@ -39,10 +39,10 @@ export default withAppBase('Join', () => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const { invite } = router.routeQuery;
+    const { inviteKey } = router.routeQuery;
 
     const resolvedInvite = client.useWithoutLoaderResolvedInvite({
-        key: invite,
+        key: inviteKey,
     });
 
     let typeOfInvite: typeOfInviteT = null;
@@ -58,8 +58,9 @@ export default withAppBase('Join', () => {
 
     return (
         <AuthRouter>
-            <InviteComponent inviteKey={invite} typeOfInvite={typeOfInvite} />
-            {/* <XView>
+            <InviteComponent inviteKey={inviteKey} typeOfInvite={typeOfInvite} />
+            {/* <XView flexDirection="column">
+                <XView>
                     <a href="/resolveInvite/HaBFFH">AppInvite /resolveInvite/HaBFFH</a>
                 </XView>
                 <XView>
@@ -67,7 +68,8 @@ export default withAppBase('Join', () => {
                 </XView>
                 <XView>
                     <a href="/resolveInvite/FtpkMi">InviteInfo /resolveInvite/FtpkMi</a>
-                </XView> */}
+                </XView>
+            </XView> */}
         </AuthRouter>
     );
 });

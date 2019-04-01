@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withChannelInviteInfo } from 'openland-web/api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { RoomsInviteComponent } from 'openland-web/fragments/RoomsInviteComponent';
+import { InviteLandingComponent } from 'openland-web/fragments/InviteLandingComponent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 export const RoomInviteFromLink = withChannelInviteInfo(
@@ -29,7 +29,7 @@ export const RoomInviteFromLink = withChannelInviteInfo(
                                         : undefined
                                 }
                             />
-                            <RoomsInviteComponent
+                            <InviteLandingComponent
                                 inviteLink={invite}
                                 room={data.invite.room as any}
                                 invite={data.invite}

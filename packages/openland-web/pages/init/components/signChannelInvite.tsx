@@ -5,7 +5,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from '../_text';
 import { useClient } from 'openland-web/utils/useClient';
-import { RoomsInviteComponent } from '../../../fragments/RoomsInviteComponent';
+import { InviteLandingComponent } from 'openland-web/fragments/InviteLandingComponent';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import * as Cookie from 'js-cookie';
 import { XLoader } from 'openland-x/XLoader';
@@ -71,7 +71,7 @@ export const InviteInfoInner = (props: any) => {
                     <Root>
                         <Content>
                             {data.invite && (
-                                <RoomsInviteComponent
+                                <InviteLandingComponent
                                     noLogin={true}
                                     room={data.invite.room as any}
                                     invite={data.invite}
