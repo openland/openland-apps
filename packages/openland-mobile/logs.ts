@@ -5,6 +5,7 @@ disableTag('Throttler');
 disableTag('API');
 disableTag('NavigationManager');
 disableTag('GraphQL-Native');
+disableTag('SAnimated');
 
 //
 // Disable all in production

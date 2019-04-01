@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { AppTheme } from 'openland-mobile/themes/themes';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 
 let months = [
     'January',
@@ -19,7 +20,7 @@ let months = [
 ];
 
 export const AsyncDateSeparator = React.memo<{ year: number, month: number, date: number }>((props) => {
-    let theme = React.useContext(ThemeContext);
+    let theme = useThemeGlobal();
     let now = new Date();
     let date = 'Today';
     if (now.getFullYear() === props.year) {

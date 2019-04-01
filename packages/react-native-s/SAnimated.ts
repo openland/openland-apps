@@ -3,6 +3,9 @@ import { NativeModules, NativeEventEmitter, Platform, DeviceEventEmitter, Animat
 import UUID from 'uuid/v4';
 import { SAnimatedProperty } from './SAnimatedProperty';
 import { randomKey } from './utils/randomKey';
+import { createLogger } from 'mental-log';
+
+const log = createLogger('SAnimated');
 
 const RNSAnimatedViewManager = NativeModules.RNSAnimatedViewManager as {
     animate: (config: string) => void,
@@ -83,7 +86,7 @@ class SAnimatedImpl {
     private _dynamic = new Map<string, SAnimatedDynamic>();
 
     constructor() {
-        console.log('RNAnimatedView: Register SAnimated')
+        log.log('Register SAnimated')
         if (Platform.OS === 'ios') {
             RNSAnimatedEventEmitter.addListener('onAnimationCompleted', (args: { key: string }) => {
                 let clb = this._callbacks.get(args.key);
@@ -96,7 +99,7 @@ class SAnimatedImpl {
             });
         } else if (Platform.OS === 'android') {
             DeviceEventEmitter.addListener('react_s_animation_completed', (args: { key: string }) => {
-                console.log('RNAnimatedView: Completed received: ' + args.key);
+                log.log('Completed received: ' + args.key);
                 let clb = this._callbacks.get(args.key);
                 if (clb) {
                     this._callbacks.delete(args.key);
@@ -104,7 +107,7 @@ class SAnimatedImpl {
                         c();
                     }
                 } else {
-                    console.log('RNAnimatedView: No callbacks for ' + args.key);
+                    log.log('No callbacks for ' + args.key);
                 }
             });
         }
@@ -264,7 +267,7 @@ class SAnimatedImpl {
             callback();
         }
 
-        console.log('RNAnimatedView: Await completion: ' + this._transactionKey);
+        log.log('Await completion: ' + this._transactionKey);
 
         if (this._callbacks.has(this._transactionKey!)) {
             this._callbacks.get(this._transactionKey!)!.push(callback);

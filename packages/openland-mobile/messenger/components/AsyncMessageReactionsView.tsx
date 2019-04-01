@@ -4,11 +4,10 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { getMessenger } from '../../utils/messenger';
 import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { Platform } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Stopwatch } from 'openland-y-utils/stopwatch';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASImage } from 'react-native-async-view/ASImage';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 export const defaultReactions = ['LIKE', 'THUMB_UP', 'JOY', 'SCREAM', 'CRYING', 'ANGRY'];
 
@@ -30,8 +29,8 @@ export let reactionMap = {
     'ANGRY': '🤬',
 };
 
-export const AsyncMessageReactionsView = React.memo<{ message: DataSourceMessageItem }>((props) => {
-    let theme = React.useContext(ThemeContext);
+export const AsyncMessageReactionsView = React.memo<{ message: DataSourceMessageItem, theme: AppTheme }>((props) => {
+    let theme = props.theme;
     let sw = new Stopwatch('reactions');
     sw.next('reaction');
     if (!props.message.reactions || props.message.reactions!.length === 0) {

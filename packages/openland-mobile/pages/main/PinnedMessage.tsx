@@ -23,8 +23,10 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { delay } from 'openland-y-utils/timer';
 import { SDeferred } from 'react-native-s/SDeferred';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const PinnedMessageComponent = XMemo<PageProps>((props) => {
+    const theme = React.useContext(ThemeContext);
     let id = props.router.params.flexibleId || props.router.params.id;
     let messenger = getMessenger();
     let engine = messenger.engine.getConversation(id);
@@ -67,6 +69,7 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
                 onDocumentPress: messenger.handleDocumentClick,
                 onMediaPress: messenger.handleMediaClick,
                 onUserPress: messenger.handleAvatarClick,
+                theme: theme,
             }, Dimensions.get('screen').width - 16);
             return (
                 <ASFlex flexGrow={1} flexDirection="column" alignItems="stretch" marginLeft={8} marginRight={8}>

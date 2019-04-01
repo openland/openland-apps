@@ -30,3 +30,15 @@ export const ThemeProvider = (props: { children?: any }) => {
         </ThemeContext.Provider>
     )
 };
+
+export const useThemeGlobal = () => {
+    let [theme, setTheme] = React.useState(resolveTheme(ThemeController.theme));
+    React.useEffect(() => {
+        return ThemeController.watch((t) => {
+            let r = resolveTheme(t);
+            SStatusBar.setBarStyle(r.statusBar);
+            setTheme(r);
+        })
+    }, [])
+    return theme;
+}
