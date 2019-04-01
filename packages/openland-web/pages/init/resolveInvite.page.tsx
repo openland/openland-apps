@@ -4,9 +4,9 @@ import { AuthRouter } from '../root/AuthRouter';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { SignInInvite } from './signChannelInvite.page';
+import { SignInInvite } from './components/signChannelInvite';
 import { JoinComponent } from './join.page';
-import { AppJoinComponent } from './invite.page';
+import { AppJoinComponent } from './components/AppJoinComponent';
 
 type typeOfInviteT = null | 'AppInvite' | 'RoomInvite' | 'InviteInfo';
 const InviteComponent = ({

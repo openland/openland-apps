@@ -1,16 +1,14 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { MessagePageContent } from '../../components/MessagePageContent';
-import { withAppBase } from '../../components/withAppBase';
+import { MessagePageContent } from '../../../components/MessagePageContent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
-import { InitTexts } from './_text';
+import { InitTexts } from '../_text';
 import { useClient } from 'openland-web/utils/useClient';
-import { RoomsInviteComponent } from '../../fragments/RoomsInviteComponent';
+import { RoomsInviteComponent } from '../../../fragments/RoomsInviteComponent';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import * as Cookie from 'js-cookie';
 import { XLoader } from 'openland-x/XLoader';
-import { withRouter } from 'openland-x-routing/withRouter';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const Root = Glamorous.div({
@@ -120,12 +118,3 @@ export const SignInInvite = ({ invite }: { invite: string }) => {
         </>
     );
 };
-
-export default withAppBase(
-    'Join Room',
-    withRouter(props => {
-        let invite = props.router.routeQuery.invite;
-
-        return <SignInInvite invite={invite} />;
-    }),
-);

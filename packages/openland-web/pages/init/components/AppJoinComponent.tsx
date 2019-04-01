@@ -1,13 +1,9 @@
 import * as React from 'react';
-import { MessagePage } from '../../components/MessagePage';
-import { MessagePageContent } from '../../components/MessagePageContent';
-import { withAppBase } from '../../components/withAppBase';
+import { MessagePage } from '../../../components/MessagePage';
+import { MessagePageContent } from '../../../components/MessagePageContent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { AuthRouter } from '../root/AuthRouter';
-import { InitTexts } from './_text';
+import { InitTexts } from '../_text';
 import { useClient } from 'openland-web/utils/useClient';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { withInviteActivation } from '../../api/withInviteActivation';
 import { XLoader } from 'openland-x/XLoader';
 import { css } from 'linaria';
 
@@ -61,15 +57,3 @@ export const AppJoinComponent = ({ inviteKey }: { inviteKey: string }) => {
         </>
     );
 };
-
-export default withAppBase('Invite', () => {
-    let router = React.useContext(XRouterContext)!;
-
-    const { inviteKey } = router.routeQuery;
-
-    return (
-        <AuthRouter>
-            <AppJoinComponent inviteKey={inviteKey} />
-        </AuthRouter>
-    );
-});

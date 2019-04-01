@@ -24,10 +24,6 @@ routes.add('/signin', '/init/signin');
 routes.add('/signin/', '/init/signin');
 routes.add('/signin/invite', '/init/signin');
 routes.add('/signin/invite/', '/init/signin');
-routes.add('/signin/channel', '/init/signChannelInvite');
-routes.add('/signin/channel/', '/init/signChannelInvite');
-routes.add('/signin/joinChannel/:inviteKey', '/init/resolveInvite');
-routes.add('/signin/joinChannel/:inviteKey/', '/init/resolveInvite');
 routes.add('/activation', '/init/activation');
 routes.add('/activation/', '/init/activation');
 routes.add('/need_info', '/init/need_info');
@@ -40,14 +36,6 @@ routes.add('/createProfile', '/init/createProfile');
 routes.add('/createProfile/', '/init/createProfile');
 routes.add('/createOrganization', '/init/createOrganization');
 routes.add('/createOrganization/', '/init/createOrganization');
-routes.add('/join/:inviteKey', '/init/resolveInvite');
-routes.add('/join/:inviteKey/', '/init/resolveInvite');
-routes.add('/invite/:inviteKey', '/init/resolveInvite');
-routes.add('/invite/:inviteKey/', '/init/resolveInvite');
-routes.add('/acceptChannelInvite/:inviteKey', '/init/resolveInvite');
-routes.add('/acceptChannelInvite/:inviteKey/', '/init/resolveInvite');
-routes.add('/resolveInvite/:inviteKey', '/init/resolveInvite');
-routes.add('/resolveInvite/:inviteKey/', '/init/resolveInvite');
 routes.add('/404', '/404');
 
 //
@@ -126,6 +114,25 @@ routes.add('/marketplace/', '/main/marketplace/main');
 routes.add('/marketplace/organization/:organizationId', '/main/marketplace/organization');
 routes.add('/marketplace/organization/:organizationId/', '/main/marketplace/organization');
 
+///
+/// Invites
+///
+
+routes.add('/join/:inviteKey', '/init/resolveInvite');
+routes.add('/join/:inviteKey/', '/init/resolveInvite');
+routes.add('/invite/:inviteKey', '/init/resolveInvite');
+routes.add('/invite/:inviteKey/', '/init/resolveInvite');
+routes.add('/acceptChannelInvite/:inviteKey', '/init/resolveInvite');
+routes.add('/acceptChannelInvite/:inviteKey/', '/init/resolveInvite');
+routes.add('/resolveInvite/:inviteKey', '/init/resolveInvite');
+routes.add('/resolveInvite/:inviteKey/', '/init/resolveInvite');
+routes.add('/joinChannel/:inviteKey', '/init/resolveInvite');
+routes.add('/joinChannel/:inviteKey/', '/init/resolveInvite');
+routes.add('/signin/channel', '/init/resolveInvite');
+routes.add('/signin/channel/', '/init/resolveInvite');
+routes.add('/signin/joinChannel/:inviteKey', '/init/resolveInvite');
+routes.add('/signin/joinChannel/:inviteKey/', '/init/resolveInvite');
+
 //
 // Mail
 //
@@ -149,8 +156,6 @@ routes.add('/mail/p/:conversationId/', '/main/mail/root');
 routes.add('/mail/u/:userId', '/main/mail/root');
 routes.add('/mail/u/:userId/', '/main/mail/root');
 
-routes.add('/joinChannel/:inviteKey', '/init/signChannelInvite');
-routes.add('/joinChannel/:inviteKey/', '/init/signChannelInvite');
 routes.add('/support/:conversationId', '/main/mail/support');
 routes.add('/support/:conversationId/', '/main/mail/support');
 
