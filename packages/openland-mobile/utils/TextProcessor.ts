@@ -61,8 +61,8 @@ function preprocessRawText(text: string, spans?: (FullMessage_GeneralMessage_spa
 }
 
 function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
-    let sw = new Stopwatch('preprocessMentions');
-    sw.next('preprocessMentions');
+    // let sw = new Stopwatch('preprocessMentions');
+    // sw.next('preprocessMentions');
     let res: Span[] = [];
     spans = spans.sort((a, b) => a.offset - b.offset);
 
@@ -95,7 +95,7 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
     let rawLast = text.substr(offset, text.length - offset);
     res.push(...preprocessRawText(rawLast));
 
-    sw.next();
+    // sw.next();
     return res;
 }
 
