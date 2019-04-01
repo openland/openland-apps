@@ -225,7 +225,7 @@ class RoomAddMemberModalInner extends React.Component<
                     flexGrow={1}
                     marginHorizontal={-24}
                     marginTop={props.isMobile ? undefined : -6}
-                    marginBottom={-24}
+                    marginBottom={props.isMobile ? undefined : -24}
                 >
                     <XView paddingHorizontal={16}>
                         <SearchBox
