@@ -11,7 +11,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ASDataView } from 'react-native-async-view/ASDataView';
-import { ThemeProvider } from '../../themes/ThemeContext';
+import { ThemeProvider, useThemeGlobal } from '../../themes/ThemeContext';
 import { DialogItemViewAsync } from 'openland-mobile/messenger/components/DialogItemViewAsync';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
@@ -41,9 +41,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
 
     let dialogs = props.router.params.share ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
         return (
-            <ThemeProvider>
-                <DialogItemViewAsync item={item} onPress={handleShareDialogClick} />
-            </ThemeProvider>
+            <DialogItemViewAsync item={item} onPress={handleShareDialogClick} />
         );
     }) : undefined;
     return (

@@ -90,6 +90,7 @@ interface XUserCardProps {
     isAdmin?: boolean;
     isOwner?: boolean;
     hideOrganization?: boolean;
+    disable?: boolean;
 }
 
 const userNameClassname = css`
@@ -110,6 +111,7 @@ export const XUserCard = ({
     hideOrganization,
     isOwner,
     onClick,
+    disable,
 }: XUserCardProps) => {
     const [isHovered, setIsHovered] = React.useState(false);
     const isMobile = React.useContext(IsMobileContext);
@@ -147,29 +149,30 @@ export const XUserCard = ({
             customMenu
         );
 
-    const organizationElem = !hideOrganization && user.primaryOrganization && (
-        <XView
-            fontSize={12}
-            lineHeight="22px"
-            fontWeight="600"
-            color="rgba(0, 0, 0, 0.4)"
-            marginTop={1}
-            marginBottom={-1}
-        >
-            {user.primaryOrganization.name}
-        </XView>
-    );
+    const organizationElem = !hideOrganization &&
+        user.primaryOrganization && (
+            <XView
+                fontSize={12}
+                lineHeight="22px"
+                fontWeight="600"
+                color="rgba(0, 0, 0, 0.4)"
+                marginTop={1}
+                marginBottom={-1}
+            >
+                {user.primaryOrganization.name}
+            </XView>
+        );
 
     let cardPath: string | undefined = path || '/directory/u/' + user.id;
 
-    if (noPath === true) {
+    if (noPath) {
         cardPath = undefined;
     }
 
     return (
         <XView
             onClick={onClick}
-            cursor="pointer"
+            cursor={disable ? undefined : 'pointer'}
             backgroundColor="#ffffff"
             paddingVertical={12}
             paddingHorizontal={16}
@@ -180,6 +183,7 @@ export const XUserCard = ({
             path={cardPath}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            opacity={disable ? 0.4 : undefined}
         >
             <XView
                 flexDirection="row"
@@ -221,9 +225,10 @@ export const XUserCard = ({
                             </XView>
                             {!isMobile && organizationElem}
                         </XView>
-                        {!isMobile && user.id && (
-                            <UserStatus variables={{ userId: user.id }} isBot={!!user.isBot} />
-                        )}
+                        {!isMobile &&
+                            user.id && (
+                                <UserStatus variables={{ userId: user.id }} isBot={!!user.isBot} />
+                            )}
                         {isMobile && organizationElem}
                     </XView>
                     <XView flexShrink={0} flexDirection="row" alignItems="center">

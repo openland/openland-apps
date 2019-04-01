@@ -396,9 +396,9 @@ export class DialogListEngine {
             let res = await backoff(async () => {
                 try {
                     return await backoff(async () => {
-                        return await this.engine.client.client.query(DialogsQuery, {
-                            ...(this.next !== undefined ? { after: this.next } : {}),
-                        });
+                        return await this.engine.client.queryDialogs({
+                            ...(this.next !== undefined ? { after: this.next } : {})
+                        }, { fetchPolicy: 'network-only' });
                     });
                 } catch (e) {
                     console.warn(e);

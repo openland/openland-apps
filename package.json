@@ -108,6 +108,7 @@
         "mapbox-gl": "^0.43.0",
         "markdown-it": "^8.4.0",
         "marked": "^0.3.7",
+        "mental-log": "^1.4.16",
         "mixpanel-browser": "^2.19.0",
         "moment": "^2.22.2",
         "moment-timezone": "^0.5.21",

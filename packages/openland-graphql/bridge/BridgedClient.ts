@@ -1,7 +1,9 @@
-import { GraphqlClient, GraphqlQuery, GraphqlQueryWatch, OperationParameters, GraphqlSubscription, GraphqlActiveSubscription, GraphqlMutation, GraphqlFragment } from 'openland-graphql/GraphqlClient';
+import { GraphqlClient, GraphqlQuery, GraphqlQueryWatch, OperationParameters, GraphqlSubscription, GraphqlActiveSubscription, GraphqlMutation, GraphqlFragment, ApiError } from 'openland-graphql/GraphqlClient';
 import { Queue } from 'openland-graphql/utils/Queue';
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { randomKey } from 'openland-graphql/utils/randomKey';
+import { createLogger } from 'mental-log';
+import { getQueryName } from 'openland-graphql/utils/getQueryName';
 
 class BridgedQueryWatch {
 
@@ -11,8 +13,11 @@ class BridgedQueryWatch {
     error?: Error;
 }
 
+const log = createLogger('GraphQL');
+
 export abstract class BridgedClient implements GraphqlClient {
 
+    private handlersMap = new Map<string, string>();
     private handlers = new Map<string, (data?: any, error?: Error) => void>();
     private queryWatches = new Map<string, BridgedQueryWatch>();
 
@@ -21,14 +26,34 @@ export abstract class BridgedClient implements GraphqlClient {
     //
 
     async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): Promise<TQuery> {
-        let id = this.nextKey();
-        let res = this.registerPromiseHandler<TQuery>(id);
-        this.postQuery(id, query, vars, params);
-        return await res;
+        if (__DEV__) {
+            log.log('Query ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
+        }
+
+        // Retry logic
+        while (true) {
+            try {
+                let id = this.nextKey();
+                let res = this.registerPromiseHandler<TQuery>(id);
+                this.postQuery(id, query, vars, params);
+                return await res;
+            } catch (e) {
+                if (e instanceof ApiError) {
+                    throw e;
+                } else {
+                    log.warn('Unknown error during query');
+                    log.warn(e);
+                }
+            }
+        }
     }
 
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
+        if (__DEV__) {
+            log.log('Query Watch ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
+        }
         let id = this.nextKey();
+        let currentId = id;
         let watch = new BridgedQueryWatch();
         let callbacks = new Map<string, (args: { data?: TQuery, error?: Error }) => void>();
         let resolved = false;
@@ -39,7 +64,27 @@ export abstract class BridgedClient implements GraphqlClient {
             reject = rj;
         });
         this.queryWatches.set(id, watch);
+        this.handlersMap.set(currentId, id);
         this.handlers.set(id, (data, error) => {
+
+            // Special retry action
+            if (error) {
+                if (!(error instanceof ApiError)) {
+                    log.warn('Received unknown error: retrying watch');
+
+                    // Stop old watch
+                    this.handlersMap.delete(currentId);
+                    this.postQueryWatchEnd(currentId);
+
+                    // Launch new watch
+                    currentId = this.nextKey();
+                    this.handlersMap.set(currentId, id);
+                    this.postQueryWatch(currentId, query, vars, params);
+
+                    return;
+                }
+            }
+
             if (error) {
                 watch.hasError = true;
                 watch.hasValue = false;
@@ -98,10 +143,24 @@ export abstract class BridgedClient implements GraphqlClient {
     //
 
     async mutate<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
-        let id = this.nextKey();
-        let res = this.registerPromiseHandler<TQuery>(id);
-        this.postMutation(id, query, vars);
-        return await res;
+        if (__DEV__) {
+            log.log('Mutate ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ')');
+        }
+        while (true) {
+            try {
+                let id = this.nextKey();
+                let res = this.registerPromiseHandler<TQuery>(id);
+                this.postMutation(id, query, vars);
+                return await res;
+            } catch (e) {
+                if (e instanceof ApiError) {
+                    throw e;
+                } else {
+                    log.warn('Unknown error during mutation');
+                    log.warn(e);
+                }
+            }
+        }
     }
 
     //
@@ -174,13 +233,21 @@ export abstract class BridgedClient implements GraphqlClient {
     //
 
     protected operationUpdated(id: string, data: any) {
-        let handler = this.handlers.get(id);
+        let realId = this.handlersMap.get(id);
+        if (!realId) {
+            return;
+        }
+        let handler = this.handlers.get(realId);
         if (handler) {
             handler(data, undefined);
         }
     }
     protected operationFailed(id: string, err: Error) {
-        let handler = this.handlers.get(id);
+        let realId = this.handlersMap.get(id);
+        if (!realId) {
+            return;
+        }
+        let handler = this.handlers.get(realId);
         if (handler) {
             handler(undefined, err);
         }
@@ -207,6 +274,7 @@ export abstract class BridgedClient implements GraphqlClient {
 
     private registerPromiseHandler<T>(id: string): Promise<T> {
         return new Promise<T>((resolve, reject) => {
+            this.handlersMap.set(id, id);
             this.handlers.set(id, (data, error) => {
                 this.handlers.delete(id);
                 if (error) {

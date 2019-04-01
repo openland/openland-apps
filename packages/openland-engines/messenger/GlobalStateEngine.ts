@@ -1,9 +1,7 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { backoff } from 'openland-y-utils/timer';
-import { GlobalCounterQuery, ChatSearchGroupQuery, DialogsWatchSubscription, SettingsWatchSubscription } from 'openland-api';
-import { SettingsQuery } from 'openland-api';
+import { GlobalCounterQuery, ChatSearchGroupQuery } from 'openland-api';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
-import { DialogsQuery } from 'openland-api';
 import { RoomQuery } from 'openland-api';
 import { MarkSequenceReadMutation } from 'openland-api';
 import * as Types from 'openland-api/Types';

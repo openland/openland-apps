@@ -10,9 +10,9 @@ import { AsyncBubbleView } from './AsyncBubbleView';
 import { TextContent } from './content/TextContent';
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
 import { ASText } from 'react-native-async-view/ASText';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { Platform } from 'react-native';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -26,18 +26,19 @@ export interface AsyncMessageViewProps {
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
+    let theme = useThemeGlobal();
+
     let handleAvatarPress = () => {
         props.onAvatarPress(props.message.senderId);
     }
     let handleLongPress = () => {
         props.onMessageLongPress(props.message);
     }
-    let theme = React.useContext(ThemeContext);
 
     let res;
     if ((props.message.text || props.message.reply || (props.message.attachments && props.message.attachments.length))) {
         res =
-            <AsyncMessageContentView key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onAvatarPress} />;
+            <AsyncMessageContentView theme={theme} key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onAvatarPress} />;
     }
     if (!res) {
         res =
@@ -86,7 +87,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
                 </ASFlex>
 
-                {props.message.reactions && <AsyncMessageReactionsView message={props.message} />}
+                {props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
                 <ASFlex backgroundColor={theme.backgroundColor} height={50} marginBottom={-50} />
 
             </ASFlex>

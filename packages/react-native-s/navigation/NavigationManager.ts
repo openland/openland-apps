@@ -4,6 +4,9 @@ import { NavigationPage } from './NavigationPage';
 import { SRoutes } from '../SRoutes';
 import { PresentationManager } from './PresentationManager';
 import { randomKey } from '../utils/randomKey';
+import { createLogger } from 'mental-log';
+
+const log = createLogger('NavigationManager');
 
 export interface NavigationManagerListener {
     onPushed(page: NavigationPage, state: NavigationState): void;
@@ -92,15 +95,15 @@ export class NavigationManager {
     }
 
     push = (route: string, params?: any) => {
-        console.log('push');
+        log.log('push');
         if (this.customHandler) {
             if (this.customHandler(route, params)) {
-                console.log('RNNavigation: Custom handler');
+                log.log('RNNavigation: Custom handler');
                 return;
             }
         }
         if (this.locksCount > 0) {
-            console.log('RNNavigation: lock still active');
+            log.log('RNNavigation: lock still active');
             return;
         }
         let record = new NavigationPage(this, this.state.history.length, route, params, this.state.history[this.state.history.length - 1].key);
@@ -142,14 +145,14 @@ export class NavigationManager {
 
     watch(watcher: NavigationManagerListener): WatchSubscription {
         this.watchers.push(watcher);
-        console.info('RNNavigation: Watch Add (' + this.watchers.length + ')');
+        log.log('RNNavigation: Watch Add (' + this.watchers.length + ')');
         return () => {
             let index = this.watchers.indexOf(watcher);
             if (index < 0) {
-                console.warn('RNNavigation: Double unsubscribe detected!');
+                log.warn('RNNavigation: Double unsubscribe detected!');
             } else {
                 this.watchers.splice(index, 1);
-                console.info('RNNavigation: Watch Remove (' + this.watchers.length + ')');
+                log.log('RNNavigation: Watch Remove (' + this.watchers.length + ')');
             }
         };
     }
@@ -157,12 +160,12 @@ export class NavigationManager {
     beginLock = () => {
         var locked = true;
         this.locksCount++;
-        console.log('RNNavigation: Lock (' + this.locksCount + ')');
+        log.log('RNNavigation: Lock (' + this.locksCount + ')');
         return () => {
             if (locked) {
                 locked = false;
                 this.locksCount--;
-                console.log('RNNavigation: Unlock (' + this.locksCount + ')');
+                log.log('RNNavigation: Unlock (' + this.locksCount + ')');
             }
         };
     }

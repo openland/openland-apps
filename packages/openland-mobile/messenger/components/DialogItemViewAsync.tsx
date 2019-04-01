@@ -3,14 +3,14 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { Platform } from 'react-native';
 import { ASAvatar } from './ASAvatar';
-import { ZStyles } from 'openland-mobile/components/ZStyles';
-import { TextStyles, AppStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { formatDate } from 'openland-mobile/utils/formatDate';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { UserAvatar } from './UserAvatar';
 import { ASImage } from 'react-native-async-view/ASImage';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { DataSourceItem } from 'openland-y-utils/DataSource';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 function ASCounter(props: { value: number | string, muted?: boolean }) {
     return (
@@ -22,14 +22,14 @@ function ASCounter(props: { value: number | string, muted?: boolean }) {
     );
 }
 
-export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, compact?: boolean, onPress: (id: string, item: DataSourceItem) => void }>((props) => {
+const DialogItemViewAsyncRender = React.memo<{ theme: AppTheme, item: DialogDataSourceItem, compact?: boolean, onPress: (id: string, item: DataSourceItem) => void }>((props) => {
     let item = props.item;
     let isUser = item.kind === 'PRIVATE';
     let isGroup = item.kind === 'GROUP';
     let isChannel = item.isChannel;
     let height = props.compact ? 48 : 80;
     let avatarSize = props.compact ? 30 : 60;
-    let theme = React.useContext(ThemeContext);
+    let theme = props.theme;
     return (
         <ASFlex
             height={height}
@@ -84,4 +84,9 @@ export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, comp
             </ASFlex> */}
         </ASFlex>
     );
+});
+
+export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, compact?: boolean, onPress: (id: string, item: DataSourceItem) => void }>((props) => {
+    let theme = useThemeGlobal();
+    return (<DialogItemViewAsyncRender theme={theme} {...props} />);
 });

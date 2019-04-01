@@ -15,7 +15,7 @@ import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { Prompt } from '../components/Prompt';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
-import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
+import { ThemeProvider, useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, SharedRoomMembershipStatus, RoomMemberRole } from 'openland-api/Types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
@@ -32,9 +32,7 @@ export class MobileMessenger {
         this.history = history;
         this.dialogs = new ASDataView(engine.dialogList.dataSource, (item) => {
             return (
-                <ThemeProvider>
-                    <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
-                </ThemeProvider>
+                <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
             );
         });
     }
@@ -45,12 +43,12 @@ export class MobileMessenger {
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
                     if (item.serviceMetaData || item.isService) {
-                        return (<ThemeProvider><ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} /></ThemeProvider>);
+                        return (<ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} />);
                     } else {
-                        return (<ThemeProvider><AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} /></ThemeProvider>);
+                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} />);
                     }
                 } else {
-                    return (<ThemeProvider><AsyncDateSeparator year={item.year} month={item.month} date={item.date} /></ThemeProvider>);
+                    return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
                 }
             }));
         }

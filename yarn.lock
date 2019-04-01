@@ -10290,6 +10290,11 @@ memory-fs@^0.4.0, memory-fs@^0.4.1, memory-fs@~0.4.1:
     errno "^0.1.3"
     readable-stream "^2.0.1"
 
+mental-log@^1.4.16:
+  version "1.4.16"
+  resolved "https://registry.yarnpkg.com/mental-log/-/mental-log-1.4.16.tgz#f55742ea153222145bc50bd8fac0ccb7dd093561"
+  integrity sha512-R8qjT7NdIZCLUbQaBkXtNsDewvg/D+PcvfO7UGFQHs6vF7z7r0N1oKh9+vvxTZk6Bt0f+YSsgmy/e0KW0D43vA==
+
 mental-styles@^1.4.14:
   version "1.4.14"
   resolved "https://registry.yarnpkg.com/mental-styles/-/mental-styles-1.4.14.tgz#515258bf5c20e83495e267bf8a829c1a6fbcba14"

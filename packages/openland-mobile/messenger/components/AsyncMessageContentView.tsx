@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Platform, Linking, Image, PixelRatio } from 'react-native';
+import { Platform, Linking } from 'react-native';
 import { DataSourceMessageItem, ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ASText } from 'react-native-async-view/ASText';
-import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from './AsyncBubbleView';
+import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { formatTime } from '../../utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
@@ -17,14 +17,15 @@ import { Span } from 'openland-mobile/utils/TextProcessor';
 import { RichAttachContent, ricjAttachImageShouldBeCompact } from './content/RichAttachContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { OthersUsersWrapper } from './service/views/OthersUsersWrapper';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 export const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
 export const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</ASText>;
 
 interface AsyncMessageTextViewProps {
+    theme: AppTheme;
     engine: ConversationEngine;
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
@@ -113,7 +114,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 }
 
 export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((props) => {
-    let theme = React.useContext(ThemeContext);
+    let theme = props.theme;
 
     let { hasDocument,
         hasImage,
