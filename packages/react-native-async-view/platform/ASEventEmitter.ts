@@ -12,7 +12,7 @@ export class ASEventEmitterHolder {
         if (Platform.OS === 'ios') {
             ASNativeEmitter.addListener('onPress', (args: ASPressEvent) => {
                 let p = this.onPress.get(args.key);
-                console.warn('press', args);
+                // console.warn('press', args);
                 if (p) {
                     p(args);
                 }

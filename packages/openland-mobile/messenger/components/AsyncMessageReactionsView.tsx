@@ -67,7 +67,7 @@ export const AsyncMessageReactionsView = React.memo<{ message: DataSourceMessage
             <ASFlex flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 14 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={5}>
                 {[...reactionsSorted].map((i) =>
                     (
-                        <ASImage marginLeft={3} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
+                        <ASImage key={'k' + i.reaction} marginLeft={3} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
                     )
                 )}
 

@@ -6,6 +6,7 @@ disableTag('API');
 disableTag('NavigationManager');
 disableTag('GraphQL-Native');
 disableTag('SAnimated');
+disableTag('reactions');
 
 //
 // Disable all in production

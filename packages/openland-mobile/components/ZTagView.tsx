@@ -90,7 +90,7 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
 
     render() {
         return (
-            <ScrollView keyboardShouldPersistTaps={true}>
+            <ScrollView keyboardShouldPersistTaps="always">
                 <View style={{ paddingHorizontal: 15, paddingVertical: 8 }}>
                     <TouchableWithoutFeedback onPress={() => this.handleTouchOutside()}>
                         <View flexWrap="wrap" flexDirection="row">

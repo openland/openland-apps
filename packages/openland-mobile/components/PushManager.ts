@@ -3,11 +3,11 @@ import DeviceInfo from 'react-native-device-info';
 import { Platform } from 'react-native';
 import { backoff } from 'openland-y-utils/timer';
 import { AppNotifications } from 'openland-y-runtime-native/AppNotifications';
-import { logger } from 'openland-y-utils/logger';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { PushType } from 'openland-api/Types';
+import { createLogger } from 'mental-log';
 
-const log = logger('push');
+const log = createLogger('Engine-Push');
 
 class PushRegistrator {
     private client: OpenlandClient;

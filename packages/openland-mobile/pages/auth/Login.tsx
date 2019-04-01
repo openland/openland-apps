@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ViewStyle, TextStyle, TouchableOpacity, ActivityIndicator, Dimensions, Platform } from 'react-native';
-import { Auth0Client } from '../../index';
 import RNRestart from 'react-native-restart';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
@@ -8,6 +7,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SDevice } from 'react-native-s/SDevice';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
+import { Auth0Client } from 'openland-mobile/utils/auth0Client';
 
 const styles = StyleSheet.create({
     container: {
