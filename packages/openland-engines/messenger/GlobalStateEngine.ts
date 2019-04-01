@@ -5,6 +5,9 @@ import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatch
 import { RoomQuery } from 'openland-api';
 import { MarkSequenceReadMutation } from 'openland-api';
 import * as Types from 'openland-api/Types';
+import { createLogger } from 'mental-log';
+
+const log = createLogger('Engine-Global');
 
 export class GlobalStateEngine {
     readonly engine: MessengerEngine;
@@ -19,7 +22,7 @@ export class GlobalStateEngine {
     }
 
     start = async () => {
-        console.info('[global] Loading initial state');
+        log.log('Loading initial state');
 
         // Loading settings
         let settings = backoff(async () => {
@@ -38,7 +41,7 @@ export class GlobalStateEngine {
         }));
         await settings;
         await counter;
-        console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
+        log.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
         this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
         this.engine.dialogList.handleInitialDialogs((res as any).dialogs.items, (res as any).dialogs.cursor);
@@ -51,7 +54,7 @@ export class GlobalStateEngine {
         (async () => {
             while (true) {
                 await settingsSubscription.get();
-                console.info('New settings received');
+                log.log('New settings received');
             }
         })();
     }
@@ -155,7 +158,7 @@ export class GlobalStateEngine {
 
             this.engine.dialogList.handleMessageDeleted(event.cid, event.message.id, event.prevMessage, event.unread, event.haveMention, this.engine.user.id);
         } else if (event.__typename === 'DialogTitleUpdated') {
-            console.warn('new title ', event);
+            log.warn('new title ' + event);
             this.engine.dialogList.handleTitleUpdated(event.cid, event.title);
             this.engine.getConversation(event.cid).handleTitleUpdated(event.title)
         } else if (event.__typename === 'DialogBump') {
@@ -171,15 +174,15 @@ export class GlobalStateEngine {
             await res;
             await res2;
         } else if (event.__typename === 'DialogMuteChanged') {
-            console.warn('new mute ', event);
+            log.warn('new mute ' + event);
             this.engine.dialogList.handleMuteUpdated(event.cid, event.mute);
-            console.log(event.cid);
+            log.log(event.cid);
             this.engine.getConversation(event.cid).handleMuteUpdated(event.mute)
         } else if (event.__typename === 'DialogMentionedChanged') {
-            console.warn('new haveMention ', event);
+            log.warn('new haveMention ' + event);
             this.engine.dialogList.handleHaveMentionUpdated(event.cid, event.haveMention);
         } else if (event.__typename === 'DialogPhotoUpdated') {
-            console.warn('new photo ', event);
+            log.warn('new photo ' + event);
             this.engine.dialogList.handlePhotoUpdated(event.cid, event.photo);
             this.engine.getConversation(event.cid).handlePhotoUpdated(event.photo)
         } else if (event.__typename === 'DialogMessageUpdated') {
@@ -198,7 +201,7 @@ export class GlobalStateEngine {
             // Remove dialog from lust
             this.engine.dialogList.handleDialogDeleted(event);
         } else {
-            console.log('Unhandled update: ' + event.__typename);
+            log.log('Unhandled update: ' + event.__typename);
         }
     }
 
@@ -210,7 +213,7 @@ export class GlobalStateEngine {
         return () => {
             let index = this.counterListeners.indexOf(listener);
             if (index < 0) {
-                console.warn('Double unsubscribe detected!');
+                log.warn('Double unsubscribe detected!');
             } else {
                 this.counterListeners.splice(index, 1);
             }

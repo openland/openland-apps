@@ -277,9 +277,9 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                             <CallButton room={room} />
                         </XView>
                     )}
-                    {!isMobile && inviteButton}
+                    {inviteButton}
                     <HeaderMuteButton settings={room.settings} roomId={room.id} />
-                    {!isMobile && threeDots}
+                    {threeDots}
                 </RowWithSeparators>
             }
         />

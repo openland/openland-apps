@@ -22,7 +22,7 @@ export class SScrollView extends React.Component<SScrollViewProps> {
                     {area => {
                         return (
                             <Animated.ScrollView
-                                keyboardShouldPersistTaps={true}
+                                keyboardShouldPersistTaps="always"
                                 keyboardDismissMode="interactive"
                                 {...other}
                                 style={[other.style, {

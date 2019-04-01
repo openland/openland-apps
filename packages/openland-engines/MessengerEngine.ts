@@ -11,6 +11,9 @@ import { DialogListEngine } from './messenger/DialogListEngine';
 import { OnlineReportEngine } from './OnlineReportEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { CallsEngine } from './CallsEngine';
+import { createLogger } from 'mental-log';
+
+const log = createLogger('Engine');
 
 export class MessengerEngine {
     readonly client: OpenlandClient;
@@ -62,7 +65,7 @@ export class MessengerEngine {
 
         // Starting
         this.loadingPromise = this.loadingSequence();
-        console.info('MessengerEngine started');
+        log.log('MessengerEngine started');
     }
 
     private loadingSequence = async () => {

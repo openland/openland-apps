@@ -377,7 +377,6 @@ class InviteMembersModalRaw extends React.Component<
                     this.props.channelTitle && <ChannelName>{this.props.channelTitle}</ChannelName>
                 }
                 useTopCloser={true}
-                scrollableContent={true}
                 size={this.state.showLink !== true ? 'large' : 'default'}
                 customFooter={footer}
                 defaultData={{

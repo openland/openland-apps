@@ -29,7 +29,7 @@ export const MentionsRender = (props: RenderMentionsProps) => {
             mentionsWrapper = (
                 <>
                     {isAndroid && <View height={0.5} backgroundColor={AppStyles.separatorColor} />}
-                    <ScrollView keyboardShouldPersistTaps={true} maxHeight={186}>
+                    <ScrollView keyboardShouldPersistTaps="always" maxHeight={186}>
                         <View height={6} />
                         {mentionedUsers.map((member, index) => {
                             let user = member.user;

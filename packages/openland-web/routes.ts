@@ -139,8 +139,6 @@ routes.add('/signin/joinChannel/:inviteKey/', '/init/resolveInvite');
 
 routes.add('/mail', '/main/mail/root');
 routes.add('/mail/', '/main/mail/root');
-routes.add('/mail/new', '/main/mail/root');
-routes.add('/mail/new/', '/main/mail/root');
 routes.add('/mail/create', '/main/mail/createGroup');
 routes.add('/mail/create/', '/main/mail/createGroup');
 routes.add('/mail/:conversationId', '/main/mail/root');

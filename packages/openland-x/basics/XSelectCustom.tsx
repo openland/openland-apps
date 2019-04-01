@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import { XFlexStyles, applyFlex } from 'openland-x/basics/Flex';
 import { XTag } from '../XTag';
@@ -8,8 +9,31 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XPopper } from '../XPopper';
 import { MultiplePicker } from '../XMultiplePicker';
 import { UserPicker } from '../XUserPicker';
-import { delay } from 'openland-y-utils/timer';
 import { isNumber } from 'util';
+
+const SearchPeopleInputClassName = css`
+    padding-top: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+    min-height: 52px;
+    border-color: transparent !important;
+    border-radius: 8px !important;
+    background-color: #f2f3f4 !important;
+    &:focus-within {
+        border-color: transparent !important;
+        border-bottom: 1px solid #1790ff !important;
+        box-shadow: none !important;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+    & > div {
+        background-color: #1790ff;
+        color: #fff;
+        & svg > path {
+            fill: #98ceff;
+        }
+    }
+`;
 
 const Container = Glamorous(XHorizontal)<{ rounded?: boolean } & XFlexStyles>([
     props => ({
@@ -467,6 +491,7 @@ export class XSelectCustomUsersRender extends React.Component<
                 zIndex={zIndex}
                 opacity={opacity}
                 rounded={rounded}
+                className={SearchPeopleInputClassName}
             >
                 {((this.state.lastValue as Option<string>[]) || []).map(v => (
                     <XTag

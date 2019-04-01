@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
-import ReactDOM from 'react-dom';
 import { css, cx } from 'linaria';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
@@ -9,7 +8,6 @@ import { Scaffold } from 'openland-web/components/Scaffold';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
-import { ComposeFragment } from 'openland-web/fragments/ComposeFragment';
 import { RoomsExploreComponent } from 'openland-web/fragments/RoomsExploreComponent';
 import { MessengerEmptyFragment } from 'openland-web/fragments/MessengerEmptyFragment';
 import { OrganizationProfile } from '../../profile/components/OrganizationProfileComponent';
@@ -18,11 +16,12 @@ import { UserProfile } from '../../profile/components/UserProfileComponent';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { Menu } from 'openland-web/components/MainLayout';
-import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { XButton } from 'openland-x/XButton';
-
 import { RoomInviteFromLink } from './RoomInviteFromLink';
 import { tabs } from '../tabs';
+import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
+import NewChatIcon from 'openland-icons/ic-new-chat.svg';
+import { TextDirectory } from 'openland-text/TextDirectory';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
@@ -136,28 +135,31 @@ const CacheComponent = ({
         }
     }
 
-    React.useEffect(() => {
-        if (activeChat) {
-            if (
-                cachedPropsArray.length > SIZE_OF_CACHE &&
-                cachedPropsArray[0].chatId !== activeChat
-            ) {
+    React.useEffect(
+        () => {
+            if (activeChat) {
                 if (
-                    cachedPropsArray.length - 1 > SIZE_OF_CACHE &&
-                    cachedPropsArray[0].chatId !== activeChat &&
-                    cachedPropsArray[1].chatId !== activeChat
+                    cachedPropsArray.length > SIZE_OF_CACHE &&
+                    cachedPropsArray[0].chatId !== activeChat
                 ) {
-                    maybeRequestIdleCallback(() => {
-                        setCachedProps(cachedPropsArray.slice(2));
-                    });
-                } else {
-                    maybeRequestIdleCallback(() => {
-                        setCachedProps(cachedPropsArray.slice(1));
-                    });
+                    if (
+                        cachedPropsArray.length - 1 > SIZE_OF_CACHE &&
+                        cachedPropsArray[0].chatId !== activeChat &&
+                        cachedPropsArray[1].chatId !== activeChat
+                    ) {
+                        maybeRequestIdleCallback(() => {
+                            setCachedProps(cachedPropsArray.slice(2));
+                        });
+                    } else {
+                        maybeRequestIdleCallback(() => {
+                            setCachedProps(cachedPropsArray.slice(1));
+                        });
+                    }
                 }
             }
-        }
-    }, [activeChat]);
+        },
+        [activeChat],
+    );
 
     // if (true) {
     //     return (
@@ -225,25 +227,27 @@ export const ConversationContainerWrapper = ({
                     }}
                 />
 
-                {tab === tabs.compose && <ComposeFragment />}
                 {tab === tabs.empty && <MessengerEmptyFragment />}
                 {tab === tabs.rooms && <RoomsExploreComponent />}
                 {tab === tabs.invite && <RoomInviteFromLink />}
-                {tab === tabs.organization && oid && (
-                    <OrganizationProfileContainer>
-                        <OrganizationProfile organizationId={oid} />
-                    </OrganizationProfileContainer>
-                )}
-                {tab === tabs.user && uid && (
-                    <OrganizationProfileContainer>
-                        <UserProfile userId={uid} />
-                    </OrganizationProfileContainer>
-                )}
-                {tab === tabs.roomProfile && cid && (
-                    <OrganizationProfileContainer>
-                        <RoomProfile conversationId={cid} />
-                    </OrganizationProfileContainer>
-                )}
+                {tab === tabs.organization &&
+                    oid && (
+                        <OrganizationProfileContainer>
+                            <OrganizationProfile organizationId={oid} />
+                        </OrganizationProfileContainer>
+                    )}
+                {tab === tabs.user &&
+                    uid && (
+                        <OrganizationProfileContainer>
+                            <UserProfile userId={uid} />
+                        </OrganizationProfileContainer>
+                    )}
+                {tab === tabs.roomProfile &&
+                    cid && (
+                        <OrganizationProfileContainer>
+                            <RoomProfile conversationId={cid} />
+                        </OrganizationProfileContainer>
+                    )}
             </ConversationContainerInner>
         </>
     );
@@ -295,12 +299,9 @@ const DesktopPageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps
                 <Menu
                     title={'Messages'}
                     rightContent={
-                        <AddButton
-                            style="light"
-                            path="/mail/new"
-                            text="New"
-                            icon={<PlusIcon />}
-                            size="small"
+                        <PopperOptionsButton
+                            icon={<NewChatIcon />}
+                            title={TextDirectory.create.title}
                         />
                     }
                 />
@@ -332,12 +333,9 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps)
                     <Menu
                         title={'Messages'}
                         rightContent={
-                            <AddButton
-                                style="light"
-                                path="/mail/new"
-                                text="New"
-                                icon={<PlusIcon />}
-                                size="small"
+                            <PopperOptionsButton
+                                icon={<NewChatIcon />}
+                                title={TextDirectory.create.title}
                             />
                         }
                     />
