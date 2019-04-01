@@ -26,7 +26,7 @@ import {
     InvitesToOrganizationModal,
     InvitesGlobalModal,
 } from '../../pages/main/settings/components/invites';
-import { CreateOrganization, CreateRoom } from './Modals';
+import { CreateOrganization } from './Modals';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PromoBanner } from './PromoBanner';
 
@@ -558,7 +558,6 @@ export const DesktopScaffold = ({
                 {menuView}
 
                 <CreateOrganization />
-                <CreateRoom />
             </XView>
         </XView>
     );

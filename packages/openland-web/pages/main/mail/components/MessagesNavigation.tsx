@@ -51,7 +51,7 @@ export const MessagesNavigation = XMemo(
     ({ path, cid, oid, uid }: { cid?: string; oid?: string; uid?: string; path?: any }) => {
         let tab: tabsT = tabs.empty;
 
-        let isCompose = path.endsWith('/new');
+        // let isCompose = path.endsWith('/new');
 
         let isRooms = path.endsWith('/channels');
         let isCall = path.endsWith('/call');
@@ -61,15 +61,11 @@ export const MessagesNavigation = XMemo(
 
         const chatId = !path.includes('/mail/new') && getId(path, '/mail/');
 
-        if (isCompose) {
-            tab = tabs.compose;
-        }
-
-        if (!isCompose && !cid) {
+        if (!cid) {
             tab = tabs.empty;
         }
 
-        if (!isCompose && cid) {
+        if (cid) {
             tab = tabs.conversation;
         }
 

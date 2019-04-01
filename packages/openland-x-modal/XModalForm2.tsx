@@ -6,12 +6,14 @@ import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XFormSubmit, XFormSubmitProps } from 'openland-x-forms/XFormSubmit';
 import { applyFlex, extractFlexProps, XFlexStyles } from 'openland-x/basics/Flex';
+import { useIsMobile } from 'openland-web/hooks';
 
 export interface XModalFormProps extends XFormProps, XModalProps {
     submitProps?: XFormSubmitProps;
     customFooter?: any;
     submitBtnText?: string;
     alsoUseBottomCloser?: boolean;
+    children: any;
 }
 
 const BodyPadding = Glamorous.div<XFlexStyles>(
@@ -27,21 +29,21 @@ const BodyPadding = Glamorous.div<XFlexStyles>(
     applyFlex,
 );
 
-const ModalBodyContainer = Glamorous.div<XFlexStyles>(
+const ModalBodyContainer = Glamorous.div<{ isMobile?: boolean | null } & XFlexStyles>(
     [
-        {
+        props => ({
             paddingTop: 0,
             paddingBottom: 0,
-            maxHeight: '60vh',
+            maxHeight: props.isMobile ? undefined : '60vh',
             overflowY: 'scroll',
             marginBottom: 0,
             flexGrow: 1,
-        },
+        }),
     ],
     applyFlex,
 );
 
-export class XModalForm extends React.Component<XModalFormProps & XFlexStyles> {
+export class XModalFormInner extends React.Component<XModalFormProps & XFlexStyles> {
     render() {
         let {
             defaultData,
@@ -55,7 +57,11 @@ export class XModalForm extends React.Component<XModalFormProps & XFlexStyles> {
 
         let body = <BodyPadding>{this.props.children}</BodyPadding>;
         if (scrollableContent) {
-            body = <ModalBodyContainer {...extractFlexProps(other)}>{body}</ModalBodyContainer>;
+            body = (
+                <ModalBodyContainer isMobile={this.props.isMobile} {...extractFlexProps(other)}>
+                    {body}
+                </ModalBodyContainer>
+            );
         }
         let footer =
             this.props.customFooter === null
@@ -76,9 +82,10 @@ export class XModalForm extends React.Component<XModalFormProps & XFlexStyles> {
                                   {...submitProps}
                                   keyDownSubmit={true}
                               />
-                              {!this.props.useTopCloser && !this.props.alsoUseBottomCloser && (
-                                  <XButton text="Cancel" style="ghost" autoClose={true} />
-                              )}
+                              {!this.props.useTopCloser &&
+                                  !this.props.alsoUseBottomCloser && (
+                                      <XButton text="Cancel" style="ghost" autoClose={true} />
+                                  )}
                           </XHorizontal>
                       </XModalFooter>
                   );
@@ -104,3 +111,9 @@ export class XModalForm extends React.Component<XModalFormProps & XFlexStyles> {
         );
     }
 }
+
+export const XModalForm = (props: XModalFormProps & XFlexStyles) => {
+    const [isMobile] = useIsMobile();
+
+    return <XModalFormInner {...props} children={props.children} isMobile={isMobile} />;
+};

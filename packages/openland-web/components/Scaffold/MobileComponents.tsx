@@ -10,6 +10,7 @@ import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSid
 import { InvitesGlobalModal } from '../../pages/main/settings/components/invites';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { CreateOrganization } from './Modals';
 
 const CloseBannerIconClassName = css`
     & > g > path:last-child {
@@ -277,6 +278,7 @@ const MobileSidebar = ({ topItems, menu }: { topItems: any; menu: any }) => {
                 <XView width="100%">
                     <MobileNavigationContainer>
                         <InvitesGlobalModal targetQuery="invite_global" target={null} />
+                        <CreateOrganization isMobile={true} />
                         <MobileUserProfile onClick={close} />
                         {topItems}
                         <XView

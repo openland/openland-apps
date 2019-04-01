@@ -7,60 +7,12 @@ import { delayForewer, delay } from 'openland-y-utils/timer';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
-import { SharedRoomKind } from 'openland-api/Types';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { withCreateOrganization } from '../../api/withCreateOrganization';
 import { InitTexts } from '../../pages/init/_text';
-import { withCreateChannel } from 'openland-web/api/withCreateChannel';
-
-export const CreateRoom = withCreateChannel(props => {
-    return (
-        <XModalForm
-            {...props}
-            useTopCloser={true}
-            title="Create room"
-            targetQuery="createRoom"
-            defaultAction={async data => {
-                let oid = props.router.query.createRoom;
-                let room = (await props.createChannel({
-                    variables: {
-                        title: data.input.name,
-                        description: data.input.description,
-                        organizationId: oid !== 'true' ? oid : undefined,
-                        members: [],
-                        kind: SharedRoomKind.PUBLIC,
-                    },
-                })) as any;
-                delay(0).then(() => {
-                    props.router.push('/mail/' + room.data.room.id);
-                });
-            }}
-            defaultData={{
-                input: {
-                    name: '',
-                },
-            }}
-            submitBtnText="Create room"
-        >
-            <XVertical separator={8}>
-                <XInput
-                    flexGrow={1}
-                    size="large"
-                    placeholder="Room title"
-                    field="input.name"
-                    autofocus={true}
-                />
-                <XTextArea
-                    placeholder="Description"
-                    resize={false}
-                    valueStoreKey="fields.input.description"
-                />
-            </XVertical>
-        </XModalForm>
-    );
-});
 
 export const CreateOrganization = withCreateOrganization(props => {
+    const typedProps = props as typeof props & {isMobile?: boolean}
     let community = props.router.query.createOrganization === 'community';
     let texts = community
         ? InitTexts.create_community_popper
@@ -96,8 +48,8 @@ export const CreateOrganization = withCreateOrganization(props => {
                 },
             }}
         >
-            <XVertical separator="large">
-                <XFormLoadingContent>
+            <XVertical separator="large" flexGrow={typedProps.isMobile ? 1 : undefined}>
+                <XFormLoadingContent flexGrow={typedProps.isMobile ? 1 : undefined}>
                     <XHorizontal>
                         <XVertical separator={8} flexGrow={1}>
                             <XInput
@@ -125,4 +77,4 @@ export const CreateOrganization = withCreateOrganization(props => {
             </XVertical>
         </XModalForm>
     );
-});
+}) as React.ComponentType<{isMobile?: boolean}>;

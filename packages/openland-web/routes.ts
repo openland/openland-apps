@@ -130,8 +130,6 @@ routes.add('/marketplace/organization/:organizationId/', '/main/marketplace/orga
 
 routes.add('/mail', '/main/mail/root');
 routes.add('/mail/', '/main/mail/root');
-routes.add('/mail/new', '/main/mail/root');
-routes.add('/mail/new/', '/main/mail/root');
 routes.add('/mail/create', '/main/mail/createGroup');
 routes.add('/mail/create/', '/main/mail/createGroup');
 routes.add('/mail/:conversationId', '/main/mail/root');

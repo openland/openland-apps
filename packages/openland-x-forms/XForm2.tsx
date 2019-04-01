@@ -24,6 +24,7 @@ export interface XFormProps {
     className?: string;
     defaultLayout?: boolean;
     autoClose?: boolean | number;
+    isMobile?: boolean | null;
 }
 
 interface XFormControllerProps {
@@ -34,14 +35,15 @@ interface XFormControllerProps {
     className?: string;
     defaultLayout?: boolean;
     resetAfterSubmit?: boolean;
+    isMobile?: boolean | null;
 }
 
 const FormContainer = Glamorous.form<XFlexStyles>([
+    props => applyFlex(props),
     {
         display: 'flex',
         flexDirection: 'column',
     },
-    applyFlex,
 ]);
 
 type XFormControllerState = {
@@ -221,15 +223,25 @@ class XFormController extends React.PureComponent<
         if (LOGGING) {
             console.warn(this.state);
         }
+        const { isMobile } = this.props;
+        const flexProps = {
+            flexGrow: isMobile ? 1 : undefined,
+            ...this.props,
+        };
         return (
             <XFormContext.Provider value={{ ...this.contextValue, submited: this.state.submited }}>
                 {this.props.defaultLayout !== false && (
                     <FormContainer
                         className={this.props.className}
-                        {...extractFlexProps(this.props)}
+                        flexGrow={isMobile ? 1 : undefined}
+                        {...extractFlexProps(flexProps)}
                     >
-                        <XFormLoadingContent {...this.props}>
-                            <XVertical separator="none" {...this.props}>
+                        <XFormLoadingContent {...this.props} flexGrow={isMobile ? 1 : undefined}>
+                            <XVertical
+                                separator="none"
+                                {...this.props}
+                                flexGrow={isMobile ? 1 : undefined}
+                            >
                                 <XFormError />
                                 {this.props.children}
                             </XVertical>
@@ -240,7 +252,8 @@ class XFormController extends React.PureComponent<
                     <FormContainer
                         className={this.props.className}
                         onSubmit={this.onSubmit}
-                        {...extractFlexProps(this.props)}
+                        flexGrow={isMobile ? 1 : undefined}
+                        {...extractFlexProps(flexProps)}
                     >
                         {this.props.children}
                     </FormContainer>
