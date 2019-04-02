@@ -205,7 +205,7 @@ class RoomAddMemberModalInner extends React.Component<
                 flexGrow={props.isMobile ? 1 : undefined}
                 useTopCloser={true}
                 targetQuery="inviteMembers"
-                defaultAction={async data => {
+                defaultAction={async () => {
                     await props.addMembers({
                         variables: {
                             roomId: this.props.roomId,

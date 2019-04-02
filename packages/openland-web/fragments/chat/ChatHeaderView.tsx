@@ -208,7 +208,10 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                             roomId: room.id,
                         }}
                     />
-                    <InviteMembersModal roomId={room.id} />
+                    <InviteMembersModal
+                        roomId={room.id}
+                        isChannel={(room as Room_room_SharedRoom).isChannel}
+                    />
                 </>
             );
         }
@@ -285,14 +288,6 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
         />
     );
 });
-
-interface MessengerComponentLoaderProps {
-    variables: { id: string };
-    state?: MessagesStateContextProps;
-    user: UserShort;
-    loading: boolean;
-    data: Room;
-}
 
 class ErrorBoundary extends React.Component<any, { error: any }> {
     static getDerivedStateFromError(error: any) {

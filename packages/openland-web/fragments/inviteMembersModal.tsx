@@ -39,7 +39,9 @@ const LinkHolder = Glamorous(XVertical)({
     },
 });
 
-class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRouter> {
+class OwnerLinkComponent extends React.Component<
+    { invite: string; isChannel: boolean } & XWithRouter
+> {
     input?: any;
 
     handleRef = (e: any) => {
@@ -57,6 +59,7 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
     };
 
     render() {
+        let invitePath = this.props.isChannel ? '/joinChannel/' : '/invite/';
         return (
             <XVertical width="100%" flexGrow={1} separator={2}>
                 {this.props.invite && (
@@ -65,7 +68,7 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
                             size="large"
                             flexGrow={1}
                             ref={this.handleRef}
-                            value={'https://openland.com' + '/joinChannel/' + this.props.invite}
+                            value={'https://openland.com' + invitePath + this.props.invite}
                         />
                         <InviteText>Anyone with link can join as group member</InviteText>
                     </LinkHolder>
@@ -75,14 +78,16 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
     }
 }
 
-type OwnerLinkT = { innerRef: any; variables: { roomId: string } };
+type OwnerLinkT = { innerRef: any; variables: { roomId: string }; isChannel: boolean };
 
 const OwnerLink = withChannelnviteLink(props => {
+    const typedProps = props as typeof props & OwnerLinkT;
     return (
         <OwnerLinkComponent
-            ref={(props as any).innerRef}
+            ref={typedProps.innerRef}
             invite={props.data.link}
             router={props.router}
+            isChannel={typedProps.isChannel}
         />
     );
 }) as React.ComponentType<OwnerLinkT>;
@@ -120,11 +125,10 @@ const RenewInviteLinkButton = withChannelnviteLink(props => (
 interface InviteMembersModalRawProps {
     channelTitle?: string;
     roomId: string;
+    isChannel: boolean;
 }
 
-export class InviteMembersModal extends React.Component<
-    InviteMembersModalRawProps
-> {
+export class InviteMembersModal extends React.Component<InviteMembersModalRawProps> {
     linkComponent?: any;
 
     constructor(props: any) {
@@ -174,6 +178,7 @@ export class InviteMembersModal extends React.Component<
                 <OwnerLink
                     innerRef={this.handleLinkComponentRef}
                     variables={{ roomId: this.props.roomId }}
+                    isChannel={this.props.isChannel}
                 />
             </XModalForm>
         );
