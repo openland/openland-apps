@@ -1,4 +1,4 @@
-import { UserShort, FullMessage, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
+import { FullMessage, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 
 export interface PendingMessage {
     isService?: false,
@@ -10,7 +10,7 @@ export interface PendingMessage {
     file: string | null;
     uri?: string;
     fileSize?: number;
-    isImage?: boolean;
+    isImage: boolean;
     imageSize?: { width: number, height: number };
     failed?: boolean;
 }

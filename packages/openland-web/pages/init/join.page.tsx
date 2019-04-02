@@ -1,61 +1,90 @@
 import * as React from 'react';
-import { MessagePage } from '../../components/MessagePage';
+import { useClient } from 'openland-web/utils/useClient';
 import { MessagePageContent } from '../../components/MessagePageContent';
 import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
-import { AuthRouter } from '../root/AuthRouter';
-import { withInviteInfo } from '../../api/withInviteInfo';
-import { XButton } from 'openland-x/XButton';
-import { switchOrganization } from '../../utils/switchOrganization';
+import { withRouter } from 'openland-x-routing/withRouter';
+import { InviteLandingComponent } from '../../fragments/InviteLandingComponent';
 import { InitTexts } from './_text';
 import { css } from 'linaria';
+import Glamorous from 'glamorous';
 
 const InfoText = css`
     margin-bottom: 15px;
 `;
 
-export default withAppBase(
-    'Join',
-    withInviteInfo(props => {
-        return (
-            <AuthRouter>
-                <XDocumentHead
-                    title={InitTexts.join.pageTitle}
-                    titleSocial={InitTexts.socialPageTitle}
-                />
-                <XTrack event="Join" />
-                <MessagePage>
-                    {props.data.invite && (
-                        <MessagePageContent title={InitTexts.join.title}>
-                            <div className={InfoText}>{props.data.invite.title}</div>
-                            {props.data.invite.joined && (
-                                <XButton
-                                    text={InitTexts.join.goButton}
-                                    onClick={() => switchOrganization(props.data.invite!!.orgId)}
-                                    style="primary"
-                                />
-                            )}
-                            {!props.data.invite.joined && (
-                                <XButton
-                                    text={InitTexts.join.joinButton}
-                                    action={async () => {
-                                        await props.doJoin({});
-                                        switchOrganization(props.data.invite!!.orgId);
-                                    }}
-                                    style="primary"
-                                />
-                            )}
-                            {/* <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" /> */}
-                        </MessagePageContent>
+const Root = Glamorous.div({
+    display: 'flex',
+    minHeight: '100vh',
+    width: '100%',
+    backgroundColor: '#ffffff',
+    flexDirection: 'column',
+});
+
+const Content = Glamorous.div({
+    flex: 1,
+});
+
+export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
+    const client = useClient();
+
+    const data = client.useWithoutLoaderAccountInviteInfo({
+        inviteKey,
+    });
+
+    if (data === null) {
+        return null;
+    }
+
+    let invitedByUser = undefined;
+    if (data.invite && data.invite.creator) {
+        invitedByUser = {
+            id: data.invite.creator.id,
+            name: data.invite.creator.name,
+            photo: data.invite.creator.photo,
+        };
+    }
+
+    return (
+        <>
+            <XDocumentHead
+                title={InitTexts.join.pageTitle}
+                titleSocial={InitTexts.socialPageTitle}
+            />
+            <XTrack event="Join" />
+
+            <Root>
+                <Content>
+                    {data.invite && (
+                        <InviteLandingComponent
+                            noLogin={true}
+                            organization={{
+                                photo: data.invite.photo,
+                                title: data.invite.title,
+                                id: data.invite.id,
+                                membersCount: data.invite.membersCount,
+                                description: '',
+                            }}
+                            invite={invitedByUser ? { invitedByUser } : undefined}
+                        />
                     )}
-                    {!props.data.invite && (
+                    {!data.invite && (
                         <MessagePageContent title="Join">
                             <div className={InfoText}>{InitTexts.join.unableToFindInvite}</div>
                         </MessagePageContent>
                     )}
-                </MessagePage>
-            </AuthRouter>
-        );
+                </Content>
+            </Root>
+        </>
+    );
+};
+
+export default withAppBase(
+    'Join',
+    withRouter(props => {
+        let inviteKey = props.router.routeQuery.inviteKey;
+
+        return <JoinComponent inviteKey={inviteKey} />;
     }),
 );

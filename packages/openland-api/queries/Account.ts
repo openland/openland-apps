@@ -66,6 +66,7 @@ export const AccountInviteInfoQuery = gql`
             }
             forEmail
             forName
+            membersCount
         }
     }
     ${UserShort}
@@ -148,7 +149,10 @@ export const ProfilePrefillQuery = gql`
 `;
 
 export const CreateUserProfileAndOrganizationMutation = gql`
-    mutation CreateUserProfileAndOrganization($user: ProfileInput!, $organization: CreateOrganizationInput!) {
+    mutation CreateUserProfileAndOrganization(
+        $user: ProfileInput!
+        $organization: CreateOrganizationInput!
+    ) {
         alphaCreateUserProfileAndOrganization(user: $user, organization: $organization) {
             user {
                 ...UserFull

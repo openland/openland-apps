@@ -75,6 +75,8 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
     }
 }
 
+type OwnerLinkT = { innerRef: any; variables: { roomId: string } };
+
 const OwnerLink = withChannelnviteLink(props => {
     return (
         <OwnerLinkComponent
@@ -83,7 +85,7 @@ const OwnerLink = withChannelnviteLink(props => {
             router={props.router}
         />
     );
-}) as React.ComponentType<{ innerRef: any; variables: { roomId: string } }>;
+}) as React.ComponentType<OwnerLinkT>;
 
 const RenewButton = Glamorous(XButton)({
     color: 'rgba(51,69,98, 0.45)',

@@ -1,17 +1,15 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { MessagePageContent } from '../../components/MessagePageContent';
-import { withAppBase } from '../../components/withAppBase';
+import { MessagePageContent } from '../../../components/MessagePageContent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
-import { InitTexts } from './_text';
-import { withChannelInviteInfo } from '../../api/withChannelInviteInfo';
-import { RoomsInviteComponent } from '../../fragments/RoomsInviteComponent';
+import { InitTexts } from '../_text';
+import { useClient } from 'openland-web/utils/useClient';
+import { InviteLandingComponent } from 'openland-web/fragments/InviteLandingComponent';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { withUserInfo } from '../../components/UserInfo';
 import * as Cookie from 'js-cookie';
 import { XLoader } from 'openland-x/XLoader';
-import { withRouter } from 'openland-x-routing/withRouter';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const Root = Glamorous.div({
     display: 'flex',
@@ -29,7 +27,7 @@ const InfoText = Glamorous.div({
     marginBottom: 15,
 });
 
-type InviteInfoInner = {
+type InviteInfoInnerT = {
     variables: { invite: string };
     redirect: string;
     instantRedirect?: string;
@@ -37,12 +35,21 @@ type InviteInfoInner = {
 
 export const InviteInfoInner = (props: any) => {
     const {
-        data,
         variables,
         instantRedirect,
         redirect,
         loading,
-    }: InviteInfoInner & { data: any; loading: any } = props;
+    }: InviteInfoInnerT & { data: any; loading: any } = props;
+    const client = useClient();
+
+    const data = client.useWithoutLoaderRoomInviteInfo({
+        invite: props.variables.invite,
+    });
+
+    if (data === null) {
+        return null;
+    }
+
     return (
         <>
             <XDocumentHead
@@ -64,7 +71,7 @@ export const InviteInfoInner = (props: any) => {
                     <Root>
                         <Content>
                             {data.invite && (
-                                <RoomsInviteComponent
+                                <InviteLandingComponent
                                     noLogin={true}
                                     room={data.invite.room as any}
                                     invite={data.invite}
@@ -72,12 +79,11 @@ export const InviteInfoInner = (props: any) => {
                                     signup={'/signup?redirect=' + encodeURIComponent(redirect)}
                                 />
                             )}
-                            {!data.invite &&
-                                !loading && (
-                                    <MessagePageContent title="Join">
-                                        <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
-                                    </MessagePageContent>
-                                )}
+                            {!data.invite && !loading && (
+                                <MessagePageContent title="Join">
+                                    <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
+                                </MessagePageContent>
+                            )}
                             {!data.invite && loading && <XLoader loading={true} />}
                         </Content>
                     </Root>
@@ -87,39 +93,28 @@ export const InviteInfoInner = (props: any) => {
     );
 };
 
-export const InviteInfo = withChannelInviteInfo(InviteInfoInner) as React.ComponentType<
-    InviteInfoInner
->;
+export const SignInInvite = ({ invite }: { invite: string }) => {
+    Cookie.set('x-openland-invite', invite, { path: '/' });
 
-export default withAppBase(
-    'Join Room',
-    withRouter(
-        withUserInfo(props => {
-            let invite = props.router.routeQuery.invite;
+    let userCtx = React.useContext(UserInfoContext)!!;
 
-            Cookie.set('x-openland-invite', invite, { path: '/' });
+    const instantRedirect = userCtx.isLoggedIn
+        ? (userCtx.isCompleted ? '/mail/invite/' : '/acceptChannelInvite/') + invite
+        : undefined;
 
-            return (
-                <>
-                    <XDocumentHead
-                        title={InitTexts.invite.pageTitle}
-                        titleSocial={InitTexts.socialPageTitle}
-                    />
-                    <XTrack event="Invite">
-                        <InviteInfo
-                            variables={{ invite: invite }}
-                            redirect={'/acceptChannelInvite/' + invite}
-                            instantRedirect={
-                                props.isLoggedIn
-                                    ? (props.isCompleted
-                                          ? '/mail/joinChannel/'
-                                          : '/acceptChannelInvite/') + invite
-                                    : undefined
-                            }
-                        />
-                    </XTrack>
-                </>
-            );
-        }),
-    ),
-);
+    return (
+        <>
+            <XDocumentHead
+                title={InitTexts.invite.pageTitle}
+                titleSocial={InitTexts.socialPageTitle}
+            />
+            <XTrack event="Invite">
+                <InviteInfoInner
+                    variables={{ invite }}
+                    redirect={`/acceptChannelInvite/${invite}`}
+                    instantRedirect={instantRedirect}
+                />
+            </XTrack>
+        </>
+    );
+};

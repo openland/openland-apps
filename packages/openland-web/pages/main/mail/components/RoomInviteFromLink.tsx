@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { RoomsInviteComponent } from 'openland-web/fragments/RoomsInviteComponent';
+import { InviteLandingComponent } from 'openland-web/fragments/InviteLandingComponent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
@@ -10,10 +10,10 @@ import { XRouter } from 'openland-x-routing/XRouter';
 export const RoomInviteFromLink = () => {
     const api = useClient();
     const {
-        routeQuery: { invite },
+        routeQuery: { inviteKey },
     } = React.useContext(XRouterContext) as XRouter;
 
-    const data = api.useWithoutLoaderRoomInviteInfo({ invite });
+    const data = api.useWithoutLoaderRoomInviteInfo({ invite: inviteKey });
 
     return (
         <>
@@ -32,8 +32,8 @@ export const RoomInviteFromLink = () => {
                                     : undefined
                             }
                         />
-                        <RoomsInviteComponent
-                            inviteLink={invite}
+                        <InviteLandingComponent
+                            inviteLink={inviteKey}
                             room={data.invite.room as any}
                             invite={data.invite}
                         />

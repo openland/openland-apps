@@ -55,7 +55,7 @@ export const MessagesNavigation = XMemo(
 
         let isRooms = path.endsWith('/channels');
         let isCall = path.endsWith('/call');
-        let isInvite = path.includes('joinChannel');
+        let isInvite = path.includes('joinChannel') || path.includes('invite');
         let isChat = path.includes('/mail');
         let isRoomProfile = path.includes('/mail/p/');
 
