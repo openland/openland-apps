@@ -7,7 +7,6 @@ export class ClientCache {
     queries = new Map<String, GraphqlQueryWatch<{}>>();
 
     cleanup = () => {
-        console.log('cleanup');
         for (let k of this.queries.keys()) {
             this.queries.get(k)!.destroy();
         }

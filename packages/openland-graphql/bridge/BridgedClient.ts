@@ -183,6 +183,7 @@ export abstract class BridgedClient implements GraphqlClient {
     subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
         let id = this.nextKey();
         let queue = new Queue();
+        this.handlersMap.set(id, id);
         this.handlers.set(id, (data, error) => {
             if (error) {
                 throwFatalError('Subscriptions can\'t throw errors');

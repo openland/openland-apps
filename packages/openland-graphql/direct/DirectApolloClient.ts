@@ -38,6 +38,12 @@ export class DirectApollolClient implements GraphqlClient {
                 // callback = handler
                 let subscription = source.subscribe({
                     next: (v) => {
+                        if (v.loading) {
+                            return;
+                        }
+                        // if (v.stale) {
+                        //     return;
+                        // }
                         if (v.errors) {
                             handler({ error: convertError([...v.errors]) })
                         } else {
