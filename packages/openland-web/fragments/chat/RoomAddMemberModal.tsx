@@ -35,7 +35,6 @@ const SearchBox = (props: SearchBoxProps) => (
             <XSelectCustomUsersRender
                 popper={false}
                 placeholder="Search"
-                rounded={true}
                 onInputChange={props.onInputChange}
                 onChange={data => props.onChange(data as any)}
                 options={props.value || []}

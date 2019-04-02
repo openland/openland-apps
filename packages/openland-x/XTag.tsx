@@ -6,7 +6,7 @@ import { XFlexStyles } from './basics/Flex';
 import CloseIcon from 'openland-icons/ic-close-1.svg';
 
 type XTagSizeType = 'large' | 'default' | 'small';
-type XTagStyleType = 'default' | 'primary' | 'green' | 'ghost';
+type XTagStyleType = 'default' | 'primary' | 'green' | 'blue' | 'ghost';
 type XTagIconPositionType = 'left' | 'right';
 
 interface XTagProps extends XFlexStyles {
@@ -110,6 +110,10 @@ let colorStyles = styleResolver({
         backgroundColor: 'rgba(105, 208, 109, 0.18)',
         color: '#66b969',
     },
+    'blue': {
+        backgroundColor: '#1790ff',
+        color: '#fff'
+    },
     'ghost': {
         backgroundColor: '#fff',
         color: '#334562',
@@ -141,6 +145,14 @@ let crossColorStyles = styleResolver({
 
         '& svg *': {
             fill: 'rgba(110, 197, 113, 0.5)'
+        }
+    },
+    'blue': {
+        color: 'rgba(110, 197, 113, 0.5)',
+        opacity: 1,
+
+        '& svg *': {
+            fill: '#98ceff'
         }
     },
     'ghost': {
@@ -263,7 +275,7 @@ export class XTag extends React.Component<XTagProps> {
                 {this.props.iconLeft && (
                     <XTagIconWrapper
                         onClick={this.props.onIconClick}
-                        touchable={this.props.onIconClick ? true : false}
+                        touchable={!!this.props.onIconClick}
                         tagColor={this.props.style}
                     >
                         {this.isCustomIcon(this.props.iconLeft) && (
@@ -287,7 +299,7 @@ export class XTag extends React.Component<XTagProps> {
                 {this.props.icon && (
                     <XTagIconWrapper
                         onClick={this.props.onIconClick}
-                        touchable={this.props.onIconClick ? true : false}
+                        touchable={!!this.props.onIconClick}
                         tagColor={this.props.style}
                     >
                         {this.isCustomIcon(this.props.icon) && (
