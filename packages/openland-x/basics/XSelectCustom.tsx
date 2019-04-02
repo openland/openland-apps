@@ -48,11 +48,10 @@ const Input = Glamorous.input({
     paddingLeft: 8,
     paddingRight: 8,
     fontSize: 14,
-    letterSpacing: -0.2,
-    color: '#334562',
+    color: '#000',
     outline: 'none',
     '&::placeholder': {
-        color: '#9d9d9d',
+        color: '#696c6e',
     },
 });
 
