@@ -529,34 +529,6 @@ const SelectGroupTypeClassName = css`
     }
 `;
 
-const SearchPeopleInputClassName = css`
-    padding: 0 16px;
-    flex-shrink: 0;
-    & > div {
-        padding-top: 8px;
-        padding-left: 10px;
-        padding-right: 10px;
-        min-height: 52px;
-        border-color: transparent !important;
-        border-radius: 8px !important;
-        background-color: #f2f3f4 !important;
-        &:focus-within {
-            border-color: transparent !important;
-            border-bottom: 1px solid #1790ff !important;
-            box-shadow: none !important;
-            border-bottom-left-radius: 0 !important;
-            border-bottom-right-radius: 0 !important;
-        }
-        & > div {
-            background-color: #1790ff;
-            color: #fff;
-            & svg > path {
-                fill: #98ceff;
-            }
-        }
-    }
-`;
-
 interface CreateGroupInnerProps {
     myId: string;
     myOrgId: string;
@@ -876,13 +848,13 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                                 </CreateRoomButton>
                             </XView>
                         </XView>
-                        <div className={SearchPeopleInputClassName}>
+                        <XView paddingHorizontal={16} flexShrink={0}>
                             <SearchPeopleBox
                                 onInputChange={this.onSearchPeopleInputChange}
                                 value={options}
                                 onChange={this.handleSearchPeopleInputChange}
                             />
-                        </div>
+                        </XView>
                         <ExplorePeople
                             variables={{ query: searchPeopleQuery }}
                             searchQuery={searchPeopleQuery}

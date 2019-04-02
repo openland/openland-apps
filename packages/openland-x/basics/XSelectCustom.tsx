@@ -12,10 +12,10 @@ import { UserPicker } from '../XUserPicker';
 import { isNumber } from 'util';
 
 const SearchPeopleInputClassName = css`
-    padding-top: 8px;
-    padding-left: 10px;
-    padding-right: 10px;
-    min-height: 52px;
+    padding-top: 8px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    min-height: 52px !important;
     border-color: transparent !important;
     border-radius: 8px !important;
     background-color: #f2f3f4 !important;
