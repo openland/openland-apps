@@ -123,7 +123,7 @@ export const XModalTitle = Glamorous.div({
 
 export const XModalHeader = Glamorous(XHorizontal)({
     paddingLeft: 24,
-    paddingRight: 24,
+    paddingRight: 14,
     height: 64,
 });
 
