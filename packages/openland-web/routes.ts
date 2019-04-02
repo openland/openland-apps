@@ -147,6 +147,8 @@ routes.add('/mail/channels', '/main/mail/root');
 routes.add('/mail/channels/', '/main/mail/root');
 routes.add('/mail/joinChannel/:inviteKey', '/main/mail/root');
 routes.add('/mail/joinChannel/:inviteKey/', '/main/mail/root');
+routes.add('/mail/invite/:inviteKey', '/main/mail/root');
+routes.add('/mail/invite/:inviteKey/', '/main/mail/root');
 routes.add('/mail/o/:organizationId', '/main/mail/root');
 routes.add('/mail/o/:organizationId/', '/main/mail/root');
 routes.add('/mail/p/:conversationId', '/main/mail/root');
@@ -220,8 +222,6 @@ routes.add('/ui/messenger/MessageComponent', '/dev/ui/messenger/MessageComponent
 routes.add('/ui/messenger/MessageComponent/', '/dev/ui/messenger/MessageComponent');
 routes.add('/ui/messenger/MessageReplyComponent', '/dev/ui/messenger/MessageReplyComponent');
 routes.add('/ui/messenger/MessageReplyComponent/', '/dev/ui/messenger/MessageReplyComponent');
-routes.add('/ui/messenger/MessageTextComponent', '/dev/ui/messenger/MessageTextComponent');
-routes.add('/ui/messenger/MessageTextComponent/', '/dev/ui/messenger/MessageTextComponent');
 routes.add(
     '/ui/messenger/MessageWithMentionsTextComponent',
     '/dev/ui/messenger/MessageWithMentionsTextComponent',

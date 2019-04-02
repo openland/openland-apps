@@ -99,7 +99,7 @@ export const SignInInvite = ({ invite }: { invite: string }) => {
     let userCtx = React.useContext(UserInfoContext)!!;
 
     const instantRedirect = userCtx.isLoggedIn
-        ? (userCtx.isCompleted ? '/mail/joinChannel/' : '/acceptChannelInvite/') + invite
+        ? (userCtx.isCompleted ? '/mail/invite/' : '/acceptChannelInvite/') + invite
         : undefined;
 
     return (
