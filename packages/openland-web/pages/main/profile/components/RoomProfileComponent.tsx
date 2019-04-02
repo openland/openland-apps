@@ -65,18 +65,20 @@ const HeaderMembers = (props: { online?: boolean; children?: any }) => (
 export const AdminTools = withRoomAdminTools(
     withQueryLoader(props => (
         <>
-            {props.data && props.data.roomSuper && (
-                <RoomSetFeatured
-                    val={props.data.roomSuper!.featured}
-                    roomId={props.data.roomSuper.id}
-                />
-            )}
-            {props.data && props.data.roomSuper && (
-                <RoomSetHidden
-                    val={props.data.roomSuper!.listed}
-                    roomId={props.data.roomSuper.id}
-                />
-            )}
+            {props.data &&
+                props.data.roomSuper && (
+                    <RoomSetFeatured
+                        val={props.data.roomSuper!.featured}
+                        roomId={props.data.roomSuper.id}
+                    />
+                )}
+            {props.data &&
+                props.data.roomSuper && (
+                    <RoomSetHidden
+                        val={props.data.roomSuper!.listed}
+                        roomId={props.data.roomSuper.id}
+                    />
+                )}
         </>
     )),
 ) as React.ComponentType<{ id: string; variables: { id: string } }>;
@@ -159,16 +161,18 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                 }
                             />
                             <LeaveChatComponent />
-                            {chat.welcomeMessage && <AdvancedSettingsModal
-                                roomId={chat.id}
-                                socialImage={chat.socialImage}
-                                canChangeAdvancedSettingsMembersUsers={
-                                    canChangeAdvancedSettingsMembersUsers
-                                }
-                                welcomeMessageText={chat.welcomeMessage!!.message}
-                                welcomeMessageSender={chat.welcomeMessage!!.sender}
-                                welcomeMessageIsOn={chat.welcomeMessage!!.isOn}
-                            />}
+                            {chat.welcomeMessage && (
+                                <AdvancedSettingsModal
+                                    roomId={chat.id}
+                                    socialImage={chat.socialImage}
+                                    canChangeAdvancedSettingsMembersUsers={
+                                        canChangeAdvancedSettingsMembersUsers
+                                    }
+                                    welcomeMessageText={chat.welcomeMessage!!.message}
+                                    welcomeMessageSender={chat.welcomeMessage!!.sender}
+                                    welcomeMessageIsOn={chat.welcomeMessage!!.isOn}
+                                />
+                            )}
                             <RoomEditModal
                                 roomId={chat.id}
                                 title={chat.title}
@@ -184,11 +188,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     );
 };
 
-const AboutPlaceholder = (props: {
-    target: any;
-    description: string | null;
-    roomId: string;
-}) => {
+const AboutPlaceholder = (props: { target: any; description: string | null; roomId: string }) => {
     let client = useClient();
     let editDescription = (props as any).description;
     return (
@@ -322,6 +322,7 @@ interface MembersProviderProps {
     isOwner: boolean;
     chatTitle: string;
     onDirectory?: boolean;
+    isChannel: boolean;
 }
 
 const MembersProvider = ({
@@ -332,6 +333,7 @@ const MembersProvider = ({
     chatTitle,
     chatId,
     onDirectory,
+    isChannel,
 }: MembersProviderProps & XWithRouter) => {
     if (members && members.length > 0) {
         let tab: tabsT =
@@ -340,19 +342,20 @@ const MembersProvider = ({
                 : tabs.members;
         return (
             <Section separator={0}>
-                {isOwner && (requests || []).length > 0 && (
-                    <XSwitcher style="button">
-                        <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
-                            Members
-                        </XSwitcher.Item>
-                        <XSwitcher.Item
-                            query={{ field: 'requests', value: '1' }}
-                            counter={requests!.length}
-                        >
-                            Requests
-                        </XSwitcher.Item>
-                    </XSwitcher>
-                )}
+                {isOwner &&
+                    (requests || []).length > 0 && (
+                        <XSwitcher style="button">
+                            <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
+                                Members
+                            </XSwitcher.Item>
+                            <XSwitcher.Item
+                                query={{ field: 'requests', value: '1' }}
+                                counter={requests!.length}
+                            >
+                                Requests
+                            </XSwitcher.Item>
+                        </XSwitcher>
+                    )}
                 {((requests || []).length === 0 || !isOwner) && (
                     <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
                 )}
@@ -375,7 +378,7 @@ const MembersProvider = ({
                                 text="Add members"
                                 query={{ field: 'inviteMembers', value: 'true' }}
                             />
-                            <InviteMembersModal roomId={chatId} />
+                            <InviteMembersModal roomId={chatId} isChannel={isChannel} />
                             {members.map((member, i) => {
                                 return <MemberCard key={i} member={member} />;
                             })}
@@ -425,6 +428,7 @@ const RoomGroupProfileInner = ({
                         isOwner={chat.role === 'OWNER'}
                         chatTitle={chat.title}
                         onDirectory={onDirectory}
+                        isChannel={chat.isChannel}
                     />
                 </XScrollView2>
             </XView>
@@ -443,8 +447,8 @@ const RoomGroupProfileProvider = withRoom(
                 conversationId={(props as any).conversationId}
             />
         ) : (
-                <XLoader loading={true} />
-            );
+            <XLoader loading={true} />
+        );
     }),
 ) as React.ComponentType<{
     variables: { id: string };
