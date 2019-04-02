@@ -399,8 +399,12 @@ export const InviteLandingComponentLayout = ({
                         flexShrink={0}
                         path={signup}
                         onClick={() => {
-                            if (isMobileUserAgent) {
-                                window.location.href = 'openland://deep/joinroom/' + inviteLink;
+                            try {
+                                if (isMobileUserAgent) {
+                                    window.location.href = 'openland://deep/joinroom/' + inviteLink;
+                                }
+                            } catch (err) {
+                                console.log(err)
                             }
                         }}
                     />
