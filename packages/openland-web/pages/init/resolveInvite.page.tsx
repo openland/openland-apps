@@ -17,6 +17,7 @@ const InviteComponent = ({
     inviteKey: string;
     typeOfInvite: typeOfInviteT;
 }) => {
+    console.log('InviteComponent');
     if (typeOfInvite === 'RoomInvite') {
         return <SignInInvite invite={inviteKey} />;
     }
@@ -41,6 +42,8 @@ export default withAppBase('Join', () => {
     let router = React.useContext(XRouterContext)!;
 
     const { inviteKey } = router.routeQuery;
+
+    console.log('Join');
 
     const resolvedInvite = client.useWithoutLoaderResolvedInvite({
         key: inviteKey,

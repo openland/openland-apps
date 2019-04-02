@@ -10,10 +10,10 @@ import { XRouter } from 'openland-x-routing/XRouter';
 export const RoomInviteFromLink = () => {
     const api = useClient();
     const {
-        routeQuery: { invite },
+        routeQuery: { inviteKey },
     } = React.useContext(XRouterContext) as XRouter;
 
-    const data = api.useWithoutLoaderRoomInviteInfo({ invite });
+    const data = api.useWithoutLoaderRoomInviteInfo({ invite: inviteKey });
 
     return (
         <>
@@ -33,7 +33,7 @@ export const RoomInviteFromLink = () => {
                             }
                         />
                         <InviteLandingComponent
-                            inviteLink={invite}
+                            inviteLink={inviteKey}
                             room={data.invite.room as any}
                             invite={data.invite}
                         />
