@@ -10,7 +10,6 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
 
     handleLayout = (event: LayoutChangeEvent) => {
         if (this.props.context) {
-            console.log('JS Keybard height: ' + (event.nativeEvent.layout.height - SDevice.safeArea.bottom));
             if (Platform.OS === 'ios') {
                 this.props.context.updateSize(event.nativeEvent.layout.height - SDevice.safeArea.bottom);
             } else {

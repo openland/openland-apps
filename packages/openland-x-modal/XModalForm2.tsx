@@ -16,15 +16,17 @@ export interface XModalFormProps extends XFormProps, XModalProps {
     children: any;
 }
 
-const BodyPadding = Glamorous.div<XFlexStyles>(
+const BodyPadding = Glamorous.div<XFlexStyles & { isMobile?: boolean | null }>(
     [
-        {
+        props => ({
             paddingLeft: 24,
             paddingRight: 24,
-            paddingTop: 6,
-            paddingBottom: 24,
+            paddingTop: props.isMobile ? undefined : 6,
+            paddingBottom: props.isMobile ? undefined : 24,
             flexGrow: 1,
-        },
+            display: 'flex',
+            flexDirection: 'column',
+        }),
     ],
     applyFlex,
 );
@@ -55,7 +57,7 @@ export class XModalFormInner extends React.Component<XModalFormProps & XFlexStyl
             ...other
         } = this.props;
 
-        let body = <BodyPadding>{this.props.children}</BodyPadding>;
+        let body = <BodyPadding isMobile={this.props.isMobile}>{this.props.children}</BodyPadding>;
         if (scrollableContent) {
             body = (
                 <ModalBodyContainer isMobile={this.props.isMobile} {...extractFlexProps(other)}>

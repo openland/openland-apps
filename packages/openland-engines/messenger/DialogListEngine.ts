@@ -12,6 +12,9 @@ import { backoff } from 'openland-y-utils/timer';
 import { DialogsQuery, RoomQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
+import { createLogger } from 'mental-log';
+
+const log = createLogger('Engine-Dialogs');
 
 export const emojifyMessage = (msg: string) => {
     return emoji({
@@ -401,11 +404,11 @@ export class DialogListEngine {
                         }, { fetchPolicy: 'network-only' });
                     });
                 } catch (e) {
-                    console.warn(e);
+                    log.warn(e);
                     throw e;
                 }
             });
-            console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
+            log.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
             this.next = res.dialogs.cursor;
             this.dialogs = [...this.dialogs, ...res.dialogs.items];

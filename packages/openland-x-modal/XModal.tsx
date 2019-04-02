@@ -73,18 +73,18 @@ const ModalRender = XMemo<ModalRenderProps>(props => {
                     width: isMobile
                         ? '100%'
                         : props.size !== 'x-large'
-                        ? width
-                        : 'calc(100% - 128px)',
+                            ? width
+                            : 'calc(100% - 128px)',
                     top: isMobile
                         ? 0
                         : props.size !== 'x-large' && !props.scrollableContent
-                        ? 96
-                        : 64,
+                            ? 96
+                            : 64,
                     left: isMobile
                         ? 0
                         : props.size !== 'x-large'
-                        ? `calc(50% - ${width / 2}px)`
-                        : 64,
+                            ? `calc(50% - ${width / 2}px)`
+                            : 64,
                     right: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
                     bottom: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
                 },
@@ -140,6 +140,7 @@ export const XModalFooter = Glamorous.div({
     borderBottomRightRadius: 6,
     borderTop: '1px solid',
     borderTopColor: XThemeDefault.separatorColor,
+    flexShrink: 0,
 });
 
 const XModalCloserStyles = Glamorous(XLink)({
@@ -202,22 +203,24 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
         }
         return (
             <Root>
-                {this.props.heading === undefined && (this.props.title || this.props.useTopCloser) && (
-                    <XModalHeader alignItems="center" justifyContent="space-between">
-                        <XHorizontal alignItems="center" separator={4}>
-                            <XModalTitle>{this.props.title}</XModalTitle>
-                            {this.props.titleChildren !== undefined && this.props.titleChildren}
-                        </XHorizontal>
-                        {this.props.useTopCloser && <XModalCloser autoClose={true} />}
-                    </XModalHeader>
-                )}
+                {this.props.heading === undefined &&
+                    (this.props.title || this.props.useTopCloser) && (
+                        <XModalHeader alignItems="center" justifyContent="space-between">
+                            <XHorizontal alignItems="center" separator={4}>
+                                <XModalTitle>{this.props.title}</XModalTitle>
+                                {this.props.titleChildren !== undefined && this.props.titleChildren}
+                            </XHorizontal>
+                            {this.props.useTopCloser && <XModalCloser autoClose={true} />}
+                        </XModalHeader>
+                    )}
                 {this.props.heading !== undefined && this.props.heading}
                 {body}
-                {this.props.footer === undefined && !this.props.useTopCloser && (
-                    <XModalFooter>
-                        <XButton text="Close" autoClose={true} />
-                    </XModalFooter>
-                )}
+                {this.props.footer === undefined &&
+                    !this.props.useTopCloser && (
+                        <XModalFooter>
+                            <XButton text="Close" autoClose={true} />
+                        </XModalFooter>
+                    )}
                 {this.props.footer !== undefined && this.props.footer}
             </Root>
         );

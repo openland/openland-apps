@@ -4,6 +4,7 @@ import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import { createLogger } from 'mental-log';
 import { getQueryName } from 'openland-graphql/utils/getQueryName';
+import { delay } from 'openland-y-utils/timer';
 
 class BridgedQueryWatch {
 
@@ -44,6 +45,7 @@ export abstract class BridgedClient implements GraphqlClient {
                     log.warn('Unknown error during query');
                     log.warn(e);
                 }
+                await delay(1000);
             }
         }
     }
@@ -63,6 +65,7 @@ export abstract class BridgedClient implements GraphqlClient {
             resolve = rl;
             reject = rj;
         });
+        let completed = false;
         this.queryWatches.set(id, watch);
         this.handlersMap.set(currentId, id);
         this.handlers.set(id, (data, error) => {
@@ -79,7 +82,13 @@ export abstract class BridgedClient implements GraphqlClient {
                     // Launch new watch
                     currentId = this.nextKey();
                     this.handlersMap.set(currentId, id);
-                    this.postQueryWatch(currentId, query, vars, params);
+
+                    // Schedule new watch
+                    setTimeout(() => {
+                        if (!completed) {
+                            this.postQueryWatch(currentId, query, vars, params);
+                        }
+                    }, 1000);
 
                     return;
                 }
@@ -133,7 +142,10 @@ export abstract class BridgedClient implements GraphqlClient {
                 return promise;
             },
             destroy: () => {
-                this.postQueryWatchEnd(id);
+                if (!completed) {
+                    this.handlersMap.delete(currentId);
+                    this.postQueryWatchEnd(currentId);
+                }
             }
         }
     }
@@ -159,6 +171,7 @@ export abstract class BridgedClient implements GraphqlClient {
                     log.warn('Unknown error during mutation');
                     log.warn(e);
                 }
+                await delay(1000);
             }
         }
     }

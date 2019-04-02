@@ -36,7 +36,6 @@ interface CreateRoomButtonProps {
     organizationId: string | null;
     imageUuid: string | null;
     isChannel: boolean;
-
 }
 
 const CreateRoomButton = withCreateChannel(props => {
@@ -71,76 +70,89 @@ const CreateRoomButton = withCreateChannel(props => {
     );
 }) as React.ComponentType<CreateRoomButtonProps>;
 
-const MainWrapper = (props: { back: boolean; onBackClick: () => void; children: any, isChannel: boolean }) => {
+const MainWrapper = (props: {
+    back: boolean;
+    onBackClick: () => void;
+    children: any;
+    isChannel: boolean;
+}) => {
     let chatTypeStr = props.isChannel ? 'channel' : 'group';
-    return <XView flexGrow={1} flexDirection="column" backgroundColor="#fff" maxHeight="100vh">
+    return (
         <XView
-            flexDirection="row"
-            alignItems="center"
-            justifyContent={props.back ? 'space-between' : 'flex-end'}
-            marginBottom={30}
-            padding={20}
-        >
-            {props.back && (
-                <XView
-                    onClick={props.onBackClick}
-                    flexDirection="row"
-                    cursor="pointer"
-                    fontSize={14}
-                    fontWeight="600"
-                    color="rgba(0, 0, 0, 0.8)"
-                >
-                    <XView marginRight={3} flexDirection="row" alignItems="center">
-                        <BackIcon />
-                    </XView>
-                    <span>Back</span>
-                </XView>
-            )}
-            <XModal
-                title={`Leave and delete ${chatTypeStr}`}
-                width={380}
-                body={
-                    <XModalBody>
-                        <XView paddingBottom={30}>
-                            {`If you leave now, this ${chatTypeStr} will be deleted.`}
-                        </XView>
-                    </XModalBody>
-                }
-                footer={
-                    <XModalFooter>
-                        <XButton text="Cancel" style="primary" autoClose={true} />
-                        <XView width={12} flexShrink={0} />
-                        <XButton text="Leave and delete" style="ghost" path="/mail" />
-                    </XModalFooter>
-                }
-                target={
-                    <XView
-                        cursor="pointer"
-                        alignItems="center"
-                        justifyContent="center"
-                        padding={8}
-                        width={32}
-                        height={32}
-                        borderRadius={50}
-                        hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
-                    >
-                        <CloseIcon />
-                    </XView>
-                }
-            />
-        </XView>
-        <XView
-            flexDirection="row"
-            justifyContent="center"
             flexGrow={1}
-            overflow="hidden"
-            maxHeight="calc(100% - 102px)"
+            flexDirection="column"
+            backgroundColor="#fff"
+            maxHeight="100vh"
+            width="100%"
         >
-            <XView maxWidth={500} flexGrow={1} flexShrink={0} paddingHorizontal={20}>
-                {props.children}
+            <XView
+                flexDirection="row"
+                alignItems="center"
+                justifyContent={props.back ? 'space-between' : 'flex-end'}
+                marginBottom={30}
+                padding={20}
+            >
+                {props.back && (
+                    <XView
+                        onClick={props.onBackClick}
+                        flexDirection="row"
+                        cursor="pointer"
+                        fontSize={14}
+                        fontWeight="600"
+                        color="rgba(0, 0, 0, 0.8)"
+                    >
+                        <XView marginRight={3} flexDirection="row" alignItems="center">
+                            <BackIcon />
+                        </XView>
+                        <span>Back</span>
+                    </XView>
+                )}
+                <XModal
+                    title={`Leave and delete ${chatTypeStr}`}
+                    width={380}
+                    body={
+                        <XModalBody>
+                            <XView paddingBottom={30}>
+                                {`If you leave now, this ${chatTypeStr} will be deleted.`}
+                            </XView>
+                        </XModalBody>
+                    }
+                    footer={
+                        <XModalFooter>
+                            <XButton text="Cancel" style="primary" autoClose={true} />
+                            <XView width={12} flexShrink={0} />
+                            <XButton text="Leave and delete" style="ghost" path="/mail" />
+                        </XModalFooter>
+                    }
+                    target={
+                        <XView
+                            cursor="pointer"
+                            alignItems="center"
+                            justifyContent="center"
+                            padding={8}
+                            width={32}
+                            height={32}
+                            borderRadius={50}
+                            hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                        >
+                            <CloseIcon />
+                        </XView>
+                    }
+                />
+            </XView>
+            <XView
+                flexDirection="row"
+                justifyContent="center"
+                flexGrow={1}
+                overflow="hidden"
+                maxHeight="calc(100% - 102px)"
+            >
+                <XView maxWidth={500} flexGrow={1} flexShrink={0} paddingHorizontal={20}>
+                    {props.children}
+                </XView>
             </XView>
         </XView>
-    </XView>
+    );
 };
 
 const CoverWrapperClassName = css`
@@ -703,7 +715,11 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
             });
         }
         return (
-            <MainWrapper back={!settingsPage} onBackClick={this.handleBackClick} isChannel={this.props.isChannel}>
+            <MainWrapper
+                back={!settingsPage}
+                onBackClick={this.handleBackClick}
+                isChannel={this.props.isChannel}
+            >
                 {settingsPage && (
                     <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
                         <XView
@@ -767,14 +783,12 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                                             {
                                                 value: SharedRoomKind.GROUP,
                                                 label: `Secret ${chatTypeStr.toLocaleLowerCase()}`,
-                                                subtitle:
-                                                    `People can view and join only by invite from a ${chatTypeStr.toLocaleLowerCase()} member`,
+                                                subtitle: `People can view and join only by invite from a ${chatTypeStr.toLocaleLowerCase()} member`,
                                             },
                                             {
                                                 value: SharedRoomKind.PUBLIC,
                                                 label: `Shared ${chatTypeStr.toLocaleLowerCase()}`,
-                                                subtitle:
-                                                    `${chatTypeStr} where your organization or community members communicate`,
+                                                subtitle: `${chatTypeStr} where your organization or community members communicate`,
                                             },
                                         ]}
                                     />
@@ -888,13 +902,15 @@ export default withApp(
     withUserInfo(props => {
         const router = React.useContext(XRouterContext) as XRouter;
 
-        return <>
-            <XDocumentHead title="Create Room" />
-            <CreateGroupInner
-                myId={props.user ? props.user.id : ''}
-                myOrgId={props.organization ? props.organization.id : ''}
-                isChannel={router.routeQuery.channel === 'true'}
-            />
-        </>
+        return (
+            <>
+                <XDocumentHead title="Create Room" />
+                <CreateGroupInner
+                    myId={props.user ? props.user.id : ''}
+                    myOrgId={props.organization ? props.organization.id : ''}
+                    isChannel={router.routeQuery.channel === 'true'}
+                />
+            </>
+        );
     }),
 );

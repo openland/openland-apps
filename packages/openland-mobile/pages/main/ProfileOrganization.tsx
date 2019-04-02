@@ -177,6 +177,7 @@ function ProfileOrganizationContent(props: PageProps) {
 
                 {sortedMembers.map((v) => (
                     <UserView
+                        key={v.user.id}
                         user={v.user}
                         isAdmin={v.role === 'OWNER' ? 'owner' : v.role === 'ADMIN' ? 'admin' : undefined}
 

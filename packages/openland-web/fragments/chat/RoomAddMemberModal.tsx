@@ -202,7 +202,6 @@ class RoomAddMemberModalInner extends React.Component<
                 submitProps={{
                     successText: 'Done!',
                 }}
-                isMobile={props.isMobile}
                 width={props.isMobile ? undefined : 520}
                 flexGrow={props.isMobile ? 1 : undefined}
                 useTopCloser={true}
@@ -225,8 +224,8 @@ class RoomAddMemberModalInner extends React.Component<
                     height={props.isMobile ? '100%' : '60vh'}
                     flexGrow={1}
                     marginHorizontal={-24}
-                    marginTop={-6}
-                    marginBottom={-24}
+                    marginTop={props.isMobile ? undefined : -6}
+                    marginBottom={props.isMobile ? undefined : -24}
                 >
                     <XView paddingHorizontal={16}>
                         <SearchBox
