@@ -7,6 +7,7 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { SignInInvite } from './components/signChannelInvite';
 import { JoinComponent } from './join.page';
 import { AppJoinComponent } from './components/AppJoinComponent';
+import { XLoader } from 'openland-x/XLoader';
 
 type typeOfInviteT = null | 'AppInvite' | 'RoomInvite' | 'InviteInfo';
 const InviteComponent = ({
@@ -30,7 +31,7 @@ const InviteComponent = ({
 
     return (
         <XView flexDirection="column">
-            <XView>{typeOfInvite ? typeOfInvite : 'not invite'}</XView>
+            <XView>{typeOfInvite ? typeOfInvite : <XLoader loading={true} />}</XView>
         </XView>
     );
 };
