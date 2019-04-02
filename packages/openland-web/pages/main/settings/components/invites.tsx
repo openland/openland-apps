@@ -22,8 +22,8 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import PlusIcon from 'openland-icons/ic-add-small.svg';
 import LinkIcon from 'openland-icons/ic-link.svg';
 import CloseIcon from 'openland-icons/ic-close-1.svg';
-import { withAppInvite } from '../../../../api/withAppInvite';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
+import { useClient } from 'openland-web/utils/useClient';
 
 const AddButtonStyled = Glamorous(XLink)({
     fontSize: 14,
@@ -212,7 +212,7 @@ interface OwnerLinkComponentProps {
     isCommunity: boolean;
 }
 
-class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWithRouter> {
+class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps > {
     input?: any;
     constructor(props: any) {
         super(props);
@@ -280,21 +280,28 @@ const OwnerLink = withPublicInvite(
             ref={(props as any).innerRef}
             invite={props.data ? props.data.publicInvite : null}
             organization={false}
-            router={props.router}
             isCommunity={(props as any).isCommunity}
         />
     )),
 ) as React.ComponentType<{ onBack: () => void; innerRef: any; isCommunity: boolean }>;
 
-const OwnerLinkOrganization = withAppInvite(props => (
-    <OwnerLinkComponent
-        ref={(props as any).innerRef}
-        appInvite={props.data ? props.data.invite : null}
-        organization={true}
-        router={props.router}
-        isCommunity={false}
-    />
-)) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
+const OwnerLinkOrganization = (props => {    
+    const client = useClient()
+    const data = client.useWithoutLoaderAccountAppInvite()
+    
+    if (!data) {
+        return null;
+    }
+
+    return (
+        <OwnerLinkComponent
+            ref={(props as any).innerRef}
+            appInvite={data ? data.invite : null}
+            organization={true}
+            isCommunity={false}
+        />
+    )
+}) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
 
 interface InvitesModalRawProps {
     organizationId: string;

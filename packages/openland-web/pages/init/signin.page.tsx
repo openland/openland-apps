@@ -22,8 +22,6 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { useClient } from 'openland-web/utils/useClient';
-
-import { withAppInviteInfo } from '../../api/withAppInvite';
 import { XView } from 'react-mental';
 import { useIsMobile } from 'openland-web/hooks';
 
