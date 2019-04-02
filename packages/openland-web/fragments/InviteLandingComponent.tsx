@@ -16,6 +16,8 @@ import { useClient } from 'openland-web/utils/useClient';
 import { useIsMobile } from 'openland-web/hooks';
 import LogoWithName from 'openland-icons/logo.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { switchOrganization } from '../utils/switchOrganization';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const RootClassName = css`
     position: relative;
@@ -422,7 +424,7 @@ export const InviteLandingComponent = ({
         photo: string | null;
         title: string;
         id: string;
-        membersCount: number;
+        membersCount: number | null;
         description: string;
     };
     inviteLink?: string;
@@ -436,6 +438,11 @@ export const InviteLandingComponent = ({
         };
     };
 }) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+
+    const { inviteKey } = router.routeQuery;
+
     const button = (
         <>
             {room &&
@@ -475,6 +482,21 @@ export const InviteLandingComponent = ({
                     alignSelf="center"
                     flexShrink={0}
                     path={'/mail/' + room.id}
+                />
+            )}
+            {organization && (
+                <XButton
+                    text={'Accept invite'}
+                    action={async () => {
+                        await client.mutateAccountInviteJoin({
+                            inviteKey,
+                        });
+                        switchOrganization(organization.id);
+                    }}
+                    style="primary"
+                    alignSelf="center"
+                    flexShrink={0}
+                    size="large"
                 />
             )}
         </>

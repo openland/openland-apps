@@ -30,10 +30,10 @@
       }
     },
     {
-      "signature": "ec2bdde0d487b9513f74ba3a583ee430026d811fabbd37d56f744fdcf8c2d5c5",
-      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query AccountInviteInfo($inviteKey:String!){invite:alphaInviteInfo(key:$inviteKey){__typename creator{__typename...UserShort}forEmail forName id joined key orgId photo title}}",
+      "signature": "2034382d130ce2de8f2e47f303f6151bcc921a0a74b3fda82dbe296342c48d65",
+      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query AccountInviteInfo($inviteKey:String!){invite:alphaInviteInfo(key:$inviteKey){__typename creator{__typename...UserShort}forEmail forName id joined key membersCount orgId photo title}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query AccountInviteInfo($inviteKey:String!){alphaInviteInfo(key:$inviteKey){__typename creator{__typename...UserShort}forEmail forName id joined key orgId photo title}}"
+        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query AccountInviteInfo($inviteKey:String!){alphaInviteInfo(key:$inviteKey){__typename creator{__typename...UserShort}forEmail forName id joined key membersCount orgId photo title}}"
       }
     },
     {

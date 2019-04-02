@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useClient } from 'openland-web/utils/useClient';
-import { MessagePage } from '../../components/MessagePage';
 import { MessagePageContent } from '../../components/MessagePageContent';
 import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
@@ -38,6 +37,15 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
         return null;
     }
 
+    let invitedByUser = undefined;
+    if (data.invite && data.invite.creator) {
+        invitedByUser = {
+            id: data.invite.creator.id,
+            name: data.invite.creator.name,
+            photo: data.invite.creator.photo,
+        };
+    }
+
     return (
         <>
             <XDocumentHead
@@ -55,9 +63,10 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                                 photo: data.invite.photo,
                                 title: data.invite.title,
                                 id: data.invite.id,
-                                membersCount: 0,
+                                membersCount: data.invite.membersCount,
                                 description: '',
                             }}
+                            invite={invitedByUser ? { invitedByUser } : undefined}
                         />
                     )}
                     {!data.invite && (

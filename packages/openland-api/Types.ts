@@ -191,6 +191,7 @@ export interface AccountInviteInfo_invite {
   creator: AccountInviteInfo_invite_creator | null;
   forEmail: string | null;
   forName: string | null;
+  membersCount: number | null;
 }
 
 export interface AccountInviteInfo {

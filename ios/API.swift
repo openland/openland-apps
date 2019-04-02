@@ -2312,7 +2312,7 @@ public final class CreateOrganizationMutation: GraphQLMutation {
 
 public final class AccountInviteInfoQuery: GraphQLQuery {
   public let operationDefinition =
-    "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n  }\n}"
+    "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n    membersCount\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
 
@@ -2366,6 +2366,7 @@ public final class AccountInviteInfoQuery: GraphQLQuery {
         GraphQLField("creator", type: .object(Creator.selections)),
         GraphQLField("forEmail", type: .scalar(String.self)),
         GraphQLField("forName", type: .scalar(String.self)),
+        GraphQLField("membersCount", type: .scalar(Int.self)),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -2374,8 +2375,8 @@ public final class AccountInviteInfoQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, key: String, orgId: GraphQLID, title: String, photo: String? = nil, joined: Bool, creator: Creator? = nil, forEmail: String? = nil, forName: String? = nil) {
-        self.init(unsafeResultMap: ["__typename": "InviteInfo", "id": id, "key": key, "orgId": orgId, "title": title, "photo": photo, "joined": joined, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "forEmail": forEmail, "forName": forName])
+      public init(id: GraphQLID, key: String, orgId: GraphQLID, title: String, photo: String? = nil, joined: Bool, creator: Creator? = nil, forEmail: String? = nil, forName: String? = nil, membersCount: Int? = nil) {
+        self.init(unsafeResultMap: ["__typename": "InviteInfo", "id": id, "key": key, "orgId": orgId, "title": title, "photo": photo, "joined": joined, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "forEmail": forEmail, "forName": forName, "membersCount": membersCount])
       }
 
       public var __typename: String {
@@ -2465,6 +2466,15 @@ public final class AccountInviteInfoQuery: GraphQLQuery {
         }
         set {
           resultMap.updateValue(newValue, forKey: "forName")
+        }
+      }
+
+      public var membersCount: Int? {
+        get {
+          return resultMap["membersCount"] as? Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "membersCount")
         }
       }
 

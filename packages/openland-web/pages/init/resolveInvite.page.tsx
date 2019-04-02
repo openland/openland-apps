@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withAppBase } from '../../components/withAppBase';
 import { AuthRouter } from '../root/AuthRouter';
-import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { SignInInvite } from './components/signChannelInvite';
@@ -29,11 +28,7 @@ const InviteComponent = ({
         return <AppJoinComponent inviteKey={inviteKey} />;
     }
 
-    return (
-        <XView flexDirection="column">
-            <XView>{typeOfInvite ? typeOfInvite : <XLoader loading={true} />}</XView>
-        </XView>
-    );
+    return <XLoader loading={true} />;
 };
 
 export default withAppBase('Join', () => {
