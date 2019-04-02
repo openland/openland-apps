@@ -122,8 +122,6 @@ routes.add('/join/:inviteKey', '/init/resolveInvite');
 routes.add('/join/:inviteKey/', '/init/resolveInvite');
 routes.add('/invite/:inviteKey', '/init/resolveInvite');
 routes.add('/invite/:inviteKey/', '/init/resolveInvite');
-routes.add('/acceptChannelInvite/:inviteKey', '/init/resolveInvite');
-routes.add('/acceptChannelInvite/:inviteKey/', '/init/resolveInvite');
 routes.add('/resolveInvite/:inviteKey', '/init/resolveInvite');
 routes.add('/resolveInvite/:inviteKey/', '/init/resolveInvite');
 routes.add('/joinChannel/:inviteKey', '/init/resolveInvite');
@@ -132,6 +130,8 @@ routes.add('/signin/channel', '/init/resolveInvite');
 routes.add('/signin/channel/', '/init/resolveInvite');
 routes.add('/signin/joinChannel/:inviteKey', '/init/resolveInvite');
 routes.add('/signin/joinChannel/:inviteKey/', '/init/resolveInvite');
+routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
+routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
 
 //
 // Mail
