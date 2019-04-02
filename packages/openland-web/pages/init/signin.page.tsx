@@ -21,6 +21,8 @@ import { InitTexts } from './_text';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
+import { useClient } from 'openland-web/utils/useClient';
+
 import { withAppInviteInfo } from '../../api/withAppInvite';
 import { XView } from 'react-mental';
 import { useIsMobile } from 'openland-web/hooks';
@@ -30,11 +32,20 @@ function validateEmail(email: string) {
     return re.test(String(email).toLowerCase());
 }
 
-const InviteInfo = withAppInviteInfo((props: any) => {
+const InviteInfo = ((props: any) => {
+    const client = useClient();
+    const data = client.useWithoutLoaderAccountAppInviteInfo({
+        inviteKey: props.variables.inviteKey
+    })
+
+    if (!data) {
+        return <XLoader loading={true} />;
+    }
+    
     let signPath = '/signup?redirect=' + encodeURIComponent((props as any).redirect);
     let inviter =
-        (props.data.invite && props.data.invite.creator) ||
-        (props.data.appInvite && props.data.appInvite.inviter);
+        (data.invite && data.invite.creator) ||
+        (data.appInvite && data.appInvite.inviter);
 
     if (!inviter) {
         return <XLoader loading={true} />;
