@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessengerRootComponent } from './MessengerRootComponent';
-import { RoomsInviteComponent } from './RoomsInviteComponent';
+import { InviteLandingComponent } from './InviteLandingComponent';
 import {
     Room_room_SharedRoom,
     Room_room_PrivateRoom,
@@ -72,7 +72,7 @@ class MessagengerFragmentInner extends React.PureComponent<
 
         if (sharedRoom && sharedRoom.kind !== 'INTERNAL' && sharedRoom.membership !== 'MEMBER') {
             if (sharedRoom.kind === 'PUBLIC') {
-                return <RoomsInviteComponent room={sharedRoom} />;
+                return <InviteLandingComponent room={sharedRoom} />;
             } else {
                 return <XPageRedirect path="/mail" />;
             }

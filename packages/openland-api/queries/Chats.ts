@@ -62,7 +62,7 @@ export const ChatUpdateFragment = gql`
             }
         }
         ... on ChatLostAccess {
-           lostAccess
+            lostAccess
         }
     }
 `;
@@ -159,7 +159,6 @@ export const DialogUpdateFragment = gql`
                 ...TinyMessage
             }
         }
-        
     }
 `;
 
@@ -658,6 +657,24 @@ export const RoomInviteInfoQuery = gql`
     }
     ${UserShort}
     ${OrganizationShort}
+`;
+
+export const ResolvedInviteQuery = gql`
+    query ResolvedInvite($key: String!) {
+        invite: alphaResolveInvite(key: $key) {
+            ... on InviteInfo {
+                id
+            }
+            ... on AppInvite {
+                inviter {
+                    id
+                }
+            }
+            ... on RoomInvite {
+                id
+            }
+        }
+    }
 `;
 
 export const RoomUpdateMutation = gql`

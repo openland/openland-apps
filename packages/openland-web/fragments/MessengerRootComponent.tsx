@@ -272,6 +272,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
+        
         this.conversation.sendFile(new UplaodCareUploading(file));
     };
 

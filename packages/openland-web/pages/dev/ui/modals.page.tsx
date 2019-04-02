@@ -8,9 +8,6 @@ import { XModal } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
 import Lorem from 'react-lorem-component';
 
-import { XSelect } from 'openland-x/XSelect';
-import { XSelectCustomInputRender } from 'openland-x/basics/XSelectCustom';
-
 class ControlledModal extends React.Component<{}, { show: boolean }> {
     constructor(props: {}) {
         super(props);
@@ -61,38 +58,6 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                     <XTitle>Large Content</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={40} />
-                    </XModal>
-
-                    <XModal target={<XButton text="Custom XSelect" />}>
-                        <XSelect
-                            options={[
-                                { label: 'option1', value: 'option1' },
-                                { label: 'option2', value: 'option2' },
-                                { label: 'option3', value: 'option3' },
-                                { label: 'option4', value: 'option4' },
-                                { label: 'option5', value: 'option5' },
-                                { label: 'option6', value: 'option6' },
-                                { label: 'option7', value: 'option7' },
-                                { label: 'option8', value: 'option8' },
-                                { label: 'option9', value: 'option9' },
-                            ]}
-                            render={<XSelectCustomInputRender popper={true} />}
-                        />
-
-                        <XSelect
-                            options={[
-                                { label: 'option1', value: 'option1' },
-                                { label: 'option2', value: 'option2' },
-                                { label: 'option3', value: 'option3' },
-                                { label: 'option4', value: 'option4' },
-                                { label: 'option5', value: 'option5' },
-                                { label: 'option6', value: 'option6' },
-                                { label: 'option7', value: 'option7' },
-                                { label: 'option8', value: 'option8' },
-                                { label: 'option9', value: 'option9' },
-                            ]}
-                            render={<XSelectCustomInputRender popper={true} />}
-                        />
                     </XModal>
                 </XVertical>
             </XContent>

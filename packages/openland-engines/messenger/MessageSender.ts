@@ -54,6 +54,7 @@ export class MessageSender {
         file: UploadingFile,
         callback: MessageSendHandler
     ) {
+        console.log('MessageSender sendFile');
         let key = UUID();
         (async () => {
             try {
@@ -188,6 +189,7 @@ export class MessageSender {
         (async () => {
             let start = Date.now();
             try {
+                console.log(file);
                 await this.client.mutateSendMessage({
                     repeatKey: key,
                     mentions: mentionsToStrings ? mentionsToStrings.map(({ id }) => id) : null,

@@ -197,6 +197,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
             replyMessages: messages,
             replyMessagesSender: sender,
             forwardMessagesId: new Set(),
+            useForwardHeader: false,
         };
 
         if (!this.checkMixIsSame(this.state, target)) {

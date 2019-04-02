@@ -44,6 +44,7 @@ const ImageClassName = css`
 
 const ImageRadiusClassName = css`
     border-radius: 3px;
+    padding-left: 3px;
 `;
 
 interface MessageImageComponentProps {

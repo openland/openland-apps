@@ -35,7 +35,6 @@ const SearchBox = (props: SearchBoxProps) => (
             <XSelectCustomUsersRender
                 popper={false}
                 placeholder="Search"
-                rounded={true}
                 onInputChange={props.onInputChange}
                 onChange={data => props.onChange(data as any)}
                 options={props.value || []}
@@ -225,7 +224,7 @@ class RoomAddMemberModalInner extends React.Component<
                     flexGrow={1}
                     marginHorizontal={-24}
                     marginTop={props.isMobile ? undefined : -6}
-                    marginBottom={-24}
+                    marginBottom={props.isMobile ? undefined : -24}
                 >
                     <XView paddingHorizontal={16}>
                         <SearchBox

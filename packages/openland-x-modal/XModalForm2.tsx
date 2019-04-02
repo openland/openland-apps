@@ -24,6 +24,8 @@ const BodyPadding = Glamorous.div<XFlexStyles & { isMobile?: boolean | null }>(
             paddingTop: props.isMobile ? undefined : 6,
             paddingBottom: props.isMobile ? undefined : 24,
             flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
         }),
     ],
     applyFlex,

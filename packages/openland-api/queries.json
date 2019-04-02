@@ -246,7 +246,7 @@
 					"type": "String!"
 				}
 			],
-			"source": "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n  }\n}",
+			"source": "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n    membersCount\n  }\n}",
 			"fields": [
 				{
 					"responseName": "invite",
@@ -345,6 +345,13 @@
 							"type": "String",
 							"isConditional": false,
 							"isDeprecated": false
+						},
+						{
+							"responseName": "membersCount",
+							"fieldName": "membersCount",
+							"type": "Int",
+							"isConditional": false,
+							"isDeprecated": false
 						}
 					],
 					"fragmentSpreads": [],
@@ -357,8 +364,8 @@
 				"UserShort",
 				"OrganizationShort"
 			],
-			"sourceWithFragments": "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
-			"operationId": "807353fd09113098519da8201cfd3ee269aa9b8dc0a0b95e61f48620629f6744"
+			"sourceWithFragments": "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n    membersCount\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
+			"operationId": "2da685942fa6de5f940052779d13e0b718e11c0747b9d82896167d6aabd3d69a"
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Account.ts",
@@ -5048,6 +5055,137 @@
 			],
 			"sourceWithFragments": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
 			"operationId": "33a665e30ee69c581b164c8fac1eedee1e207319fee536b78c4d1cd164789fa6"
+		},
+		{
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"operationName": "ResolvedInvite",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "key",
+					"type": "String!"
+				}
+			],
+			"source": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      id\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        id\n      }\n    }\n    ... on RoomInvite {\n      id\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "invite",
+					"fieldName": "alphaResolveInvite",
+					"type": "ResolveInviteEntry",
+					"args": [
+						{
+							"name": "key",
+							"value": {
+								"kind": "Variable",
+								"variableName": "key"
+							},
+							"type": "String!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": [
+						{
+							"typeCondition": "InviteInfo",
+							"possibleTypes": [
+								"InviteInfo"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "AppInvite",
+							"possibleTypes": [
+								"AppInvite"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "inviter",
+									"fieldName": "inviter",
+									"type": "User!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "RoomInvite",
+							"possibleTypes": [
+								"RoomInvite"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": []
+						}
+					]
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      id\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        id\n      }\n    }\n    ... on RoomInvite {\n      id\n    }\n  }\n}",
+			"operationId": "bef50272ce2ec0db69d7f438044d2134c4af5498deab9b4cb21bad431b182bab"
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",

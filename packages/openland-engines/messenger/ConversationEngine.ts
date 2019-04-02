@@ -261,6 +261,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     sendMessage = (text: string, mentions: UserShort[] | null) => {
+        
         if (text.trim().length > 0) {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
@@ -271,7 +272,7 @@ export class ConversationEngine implements MessageSendHandler {
                 callback: this
             });
             let spans = prepareLegacyMentions(message, mentions || []);
-            let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false, spans } as PendingMessage;
+            let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans } as PendingMessage;
             this.messages = [...this.messages, msgs];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
@@ -292,7 +293,19 @@ export class ConversationEngine implements MessageSendHandler {
             let info = await file.fetchInfo();
             let name = info.name || 'image.jpg';
             let date = (new Date().getTime()).toString();
-            let pmsg = { date, key, file: name, uri: info.uri, fileSize: info.fileSize, progress: 0, message: null, failed: false, isImage: info.isImage, imageSize: info.imageSize } as PendingMessage;
+            let pmsg = { 
+                date, 
+                key, 
+                file: name, 
+                uri: info.uri, 
+                fileSize: info.fileSize, 
+                progress: 0, 
+                message: null, 
+                failed: false, 
+                isImage: !!info.isImage, 
+                imageSize: info.imageSize 
+            } as PendingMessage;
+            console.log(pmsg);
             this.messages = [...this.messages, { ...pmsg } as PendingMessage];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
