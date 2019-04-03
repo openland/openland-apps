@@ -66,9 +66,9 @@ fun createOperation(type: String, query: String, arguments: ReadableMap?): Opera
     return parseInputArguments("com.openland.api.$query$type", arguments) as Operation<Operation.Data, Operation.Data, Operation.Variables>
 }
 
-fun createQuery(query: String, arguments: ReadableMap): Query<Operation.Data, Operation.Data, Operation.Variables> {
-    return createOperation("Query", query, arguments) as Query<Operation.Data, Operation.Data, Operation.Variables>
-}
+//fun createQuery(query: String, arguments: ReadableMap): Query<Operation.Data, Operation.Data, Operation.Variables> {
+//    return createOperation("Query", query, arguments) as Query<Operation.Data, Operation.Data, Operation.Variables>
+//}
 
 fun createMutation(query: String, arguments: ReadableMap): Mutation<Operation.Data, Operation.Data, Operation.Variables> {
     return createOperation("Mutation", query, arguments) as Mutation<Operation.Data, Operation.Data, Operation.Variables>

@@ -477,13 +477,13 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     }
 
     fun query(id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
-        this.client.query(createQuery(query, arguments))
+        this.client.query(readQuery(query, arguments))
                 .httpCachePolicy(loadCachePolicy(parameters))
                 .enqueue(JSOperationCallback(id, key, context))
     }
 
     fun watch(id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
-        val w = this.client.query(createQuery(query, arguments))
+        val w = this.client.query(readQuery(query, arguments))
                 .httpCachePolicy(loadCachePolicy(parameters))
                 .watcher()
         this.watches[id] = w
@@ -500,12 +500,12 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     }
 
     fun read(id: String, query: String, arguments: ReadableMap) {
-        this.client.apolloStore().read(createQuery(query, arguments))
+        this.client.apolloStore().read(readQuery(query, arguments))
                 .enqueue(JSStoreOperationCallback(id, key, context))
     }
 
     fun write(id: String, data: ReadableMap, query: String, arguments: ReadableMap) {
-        val query = createQuery(query, arguments)
+        val query = readQuery(query, arguments)
         val variables = query.variables()
         val reader = RealResponseReader<Map<String, Any>>(variables,
                 nativeMapToApolloMap(data),
