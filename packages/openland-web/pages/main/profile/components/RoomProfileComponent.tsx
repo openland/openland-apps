@@ -2,7 +2,8 @@ import * as React from 'react';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
@@ -33,7 +34,6 @@ import {
     RoomFull_SharedRoom_members,
     RoomFull_SharedRoom_requests,
 } from 'openland-api/Types';
-import { withRoom } from 'openland-web/api/withRoom';
 import { MutationFunc } from 'react-apollo';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XMutation } from 'openland-x/XMutation';
@@ -439,25 +439,37 @@ const RoomGroupProfileInner = ({
     );
 };
 
-const RoomGroupProfileProvider = withRoom(
-    withRouter(props => {
-        let chat = props.data.room as Room_room_SharedRoom;
-        return chat ? (
-            <RoomGroupProfileInner
-                chat={chat}
-                router={props.router}
-                onDirectory={(props as any).onDirectory}
-                conversationId={(props as any).conversationId}
-            />
-        ) : (
-            <XLoader loading={true} />
-        );
-    }),
-) as React.ComponentType<{
+const RoomGroupProfileProvider = ({
+    variables,
+    onDirectory,
+    conversationId,
+}: {
     variables: { id: string };
     onDirectory?: boolean;
     conversationId: string;
-}>;
+}) => {
+    let router = React.useContext(XRouterContext)!;
+    const client = useClient();
+
+    const data = client.useWithoutLoaderRoom(variables);
+
+    if (!data) {
+        return <XLoader loading={true} />;
+    }
+
+    let chat = data.room as Room_room_SharedRoom;
+
+    return chat ? (
+        <RoomGroupProfileInner
+            chat={chat}
+            router={router}
+            onDirectory={onDirectory}
+            conversationId={conversationId}
+        />
+    ) : (
+        <XLoader loading={true} />
+    );
+};
 
 export const RoomProfile = (props: { conversationId: string; onDirectory?: boolean }) => (
     <RoomGroupProfileProvider
