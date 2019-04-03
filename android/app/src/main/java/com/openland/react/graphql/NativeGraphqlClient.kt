@@ -283,8 +283,8 @@ class JSStoreOperationCallback(val id: String, val key: String, val context: Rea
 }
 
 
-class JSStoreOperationCallback2(val id: String, val key: String, val context: ReactApplicationContext) : ApolloStoreOperation.Callback<Set<String>> {
-    override fun onSuccess(result: Set<String>) {
+class JSStoreOperationCallback2(val id: String, val key: String, val context: ReactApplicationContext) : ApolloStoreOperation.Callback<Boolean> {
+    override fun onSuccess(result: Boolean) {
         val map = WritableNativeMap()
         map.putString("key", key)
         map.putString("type", "response")
@@ -546,7 +546,14 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 ScalarTypeAdapters(emptyMap()),
                 EmptyResponseDelegate)
         val mapped = query.responseFieldMapper().map(reader)
-        this.client.apolloStore().write(query, mapped)
+        this.client.apolloStore().writeAndPublish(query, mapped)
+                .enqueue(JSStoreOperationCallback2(id, key, context))
+    }
+
+    fun writeFragment(id: String, data: ReadableMap, fragment: String) {
+        val fragment = readFragment(fragment, data)
+        this.client.apolloStore()
+                .writeAndPublish(fragment.second, CacheKey.from(fragment.first), Operation.EMPTY_VARIABLES)
                 .enqueue(JSStoreOperationCallback2(id, key, context))
     }
 
@@ -563,6 +570,6 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     }
 
     fun dispose() {
-        // TODO: Implement
+        this.subscriptions!!.destroy()
     }
 }

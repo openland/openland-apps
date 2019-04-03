@@ -4,6 +4,7 @@ import com.facebook.react.bridge.ReadableMap
 import com.apollographql.apollo.api.*
 import com.openland.api.*
 import com.openland.api.type.*
+import com.openland.api.fragment.*
 
 fun readNotificationMessages(src: ReadableMap, name: String): NotificationMessages? {
     val v = readString(src, name);
@@ -2193,4 +2194,59 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
        return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
     }
     throw Error("Unknown mutation: $name")
+}
+fun readFragment(name: String, src: ReadableMap): Pair<String, GraphqlFragment> {
+    if (name == "AppFull") {
+        val res = AppFull.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "ConferenceFull") {
+        val res = ConferenceFull.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "TinyMessage") {
+        val res = TinyMessage.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "FullMessage") {
+        val res = FullMessage.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "OrganizationFull") {
+        val res = OrganizationFull.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "OrganizationMedium") {
+        val res = OrganizationMedium.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "OrganizationProfileFull") {
+        val res = OrganizationProfileFull.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "OrganizationSearch") {
+        val res = OrganizationSearch.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "OrganizationShort") {
+        val res = OrganizationShort.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "SettingsFull") {
+        val res = SettingsFull.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "UserFull") {
+        val res = UserFull.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "UserShort") {
+        val res = UserShort.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    if (name == "UserTiny") {
+        val res = UserTiny.Mapper().map(responseReader(src))
+        return (res.id() + "$" + res.__typename()) to res
+    }
+    throw Error("Unknown Fragment: $name")
 }

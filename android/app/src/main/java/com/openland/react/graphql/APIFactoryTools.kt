@@ -1,6 +1,11 @@
 package com.openland.react.graphql
 
 import com.apollographql.apollo.api.Input
+import com.apollographql.apollo.api.Operation
+import com.apollographql.apollo.api.ResponseReader
+import com.apollographql.apollo.internal.field.MapFieldValueResolver
+import com.apollographql.apollo.internal.response.RealResponseReader
+import com.apollographql.apollo.response.ScalarTypeAdapters
 import com.facebook.react.bridge.ReadableMap
 
 fun readOptionalString(src: ReadableMap, key: String): Input<String> {
@@ -43,7 +48,7 @@ fun readOptionalStringList(src: ReadableMap, key: String): Input<List<String?>> 
         } else {
             val res = mutableListOf<String?>()
             val arr = src.getArray(key)
-            for(i in 0 until arr.size()) {
+            for (i in 0 until arr.size()) {
                 if (arr.isNull(i)) {
                     res.add(null)
                 } else {
@@ -63,7 +68,7 @@ fun readStringList(src: ReadableMap, key: String): List<String?>? {
         } else {
             val res = mutableListOf<String?>()
             val arr = src.getArray(key)
-            for(i in 0 until arr.size()) {
+            for (i in 0 until arr.size()) {
                 if (arr.isNull(i)) {
                     res.add(null)
                 } else {
@@ -130,4 +135,12 @@ fun <T> notNullListItems(src: Input<List<T?>>): Input<List<T>> {
         }
     }
     return Input.absent()
+}
+
+fun responseReader(src: ReadableMap): RealResponseReader<Map<String, Any>> {
+    return RealResponseReader<Map<String, Any>>(Operation.EMPTY_VARIABLES,
+            nativeMapToApolloMap(src),
+            MapFieldValueResolver(),
+            ScalarTypeAdapters(emptyMap()),
+            EmptyResponseDelegate)
 }

@@ -29188,66 +29188,6 @@ public struct UserFull: GraphQLFragment {
   }
 }
 
-public struct UserOnline: GraphQLFragment {
-  public static let fragmentDefinition =
-    "fragment UserOnline on User {\n  __typename\n  id\n  online\n  lastSeen\n}"
-
-  public static let possibleTypes = ["User"]
-
-  public static let selections: [GraphQLSelection] = [
-    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-    GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-    GraphQLField("online", type: .nonNull(.scalar(Bool.self))),
-    GraphQLField("lastSeen", type: .scalar(String.self)),
-  ]
-
-  public private(set) var resultMap: ResultMap
-
-  public init(unsafeResultMap: ResultMap) {
-    self.resultMap = unsafeResultMap
-  }
-
-  public init(id: GraphQLID, online: Bool, lastSeen: String? = nil) {
-    self.init(unsafeResultMap: ["__typename": "User", "id": id, "online": online, "lastSeen": lastSeen])
-  }
-
-  public var __typename: String {
-    get {
-      return resultMap["__typename"]! as! String
-    }
-    set {
-      resultMap.updateValue(newValue, forKey: "__typename")
-    }
-  }
-
-  public var id: GraphQLID {
-    get {
-      return resultMap["id"]! as! GraphQLID
-    }
-    set {
-      resultMap.updateValue(newValue, forKey: "id")
-    }
-  }
-
-  public var online: Bool {
-    get {
-      return resultMap["online"]! as! Bool
-    }
-    set {
-      resultMap.updateValue(newValue, forKey: "online")
-    }
-  }
-
-  public var lastSeen: String? {
-    get {
-      return resultMap["lastSeen"] as? String
-    }
-    set {
-      resultMap.updateValue(newValue, forKey: "lastSeen")
-    }
-  }
-}
-
 public struct UserShort: GraphQLFragment {
   public static let fragmentDefinition =
     "fragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}"

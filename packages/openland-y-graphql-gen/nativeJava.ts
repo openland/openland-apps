@@ -103,6 +103,7 @@ export function nativeJava(manifest: Manifest, schema: Schema): string {
     src += 'import com.apollographql.apollo.api.*\n';
     src += 'import com.openland.api.*\n';
     src += 'import com.openland.api.type.*\n';
+    src += 'import com.openland.api.fragment.*\n';
     src += '\n';
 
     let identifiers = new Set<string>();
@@ -340,6 +341,22 @@ export function nativeJava(manifest: Manifest, schema: Schema): string {
         }
     }
     src += '    throw Error("Unknown mutation: $name")\n'
+    src += '}\n'
+
+    // Fragments
+
+    src += 'fun readFragment(name: String, src: ReadableMap): Pair<String, GraphqlFragment> {\n';
+    for (let f of manifest.fragments) {
+        let id = f.fields.find((v) => v.fieldName === 'id' && !v.isConditional);
+        let typename = f.fields.find((v) => v.fieldName === '__typename' && !v.isConditional);
+        if (id && typename) {
+            src += '    if (name == "' + f.fragmentName + '") {\n'
+            src += '        val res = ' + f.fragmentName + '.Mapper().map(responseReader(src))\n'
+            src += '        return (res.__typename() + "$" + res.id()) to res\n'
+            src += '    }\n'
+        }
+    }
+    src += '    throw Error("Unknown Fragment: $name")\n'
     src += '}\n'
 
     // let operations = manifest.operations.map((v) => parse(v.source).definitions);

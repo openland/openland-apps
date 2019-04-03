@@ -137,4 +137,11 @@ class SubscriptionManager(val key: String, val client: ApolloClient, val context
 //            }
 //        }
     }
+
+    @Synchronized
+    fun destroy() {
+        this.subscriptions.values.forEach {
+            it.stop()
+        }
+    }
 }

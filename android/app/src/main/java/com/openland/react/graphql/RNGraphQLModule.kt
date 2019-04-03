@@ -104,4 +104,12 @@ class RNGraphQL(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
         }
         this.clients[key]!!.write(id, data, query, arguments)
     }
+
+    @ReactMethod
+    fun writeFragment(key: String, id: String, data: ReadableMap, fragment: String) {
+        if (!this.clients.containsKey(key)) {
+            throw Error("Client with key $key does not exists")
+        }
+        this.clients[key]!!.writeFragment(id, data, fragment)
+    }
 }

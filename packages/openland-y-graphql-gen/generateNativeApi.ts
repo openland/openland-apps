@@ -11,8 +11,8 @@ export function generateNativeApi() {
     let schemaPath = path.resolve(__dirname + '/../../schema.json');
     let schema = JSON.parse(fs.readFileSync(schemaPath, "utf-8")) as Schema;
 
-    // let ios = nativeSwift(manifest, schema);
-    // fs.writeFileSync(path.resolve(__dirname + '/../../ios/APIFactory.swift'), ios, 'utf-8');
+    let ios = nativeSwift(manifest, schema);
+    fs.writeFileSync(path.resolve(__dirname + '/../../ios/APIFactory.swift'), ios, 'utf-8');
 
     let java = nativeJava(manifest, schema);
     fs.writeFileSync(path.resolve(__dirname + '/../../android/app/src/main/java/com/openland/react/graphql/APIFactory.kt'), java, 'utf-8');
