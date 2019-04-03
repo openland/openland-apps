@@ -34,7 +34,7 @@ import {
     RoomFull_SharedRoom_requests,
 } from 'openland-api/Types';
 import { withRoom } from 'openland-web/api/withRoom';
-import { withRoomMembersMgmt } from 'openland-web/api/withRoomRequestsMgmt';
+import { MutationFunc } from 'react-apollo';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XMutation } from 'openland-x/XMutation';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -280,37 +280,44 @@ const MemberCard = ({ member }: { member: RoomFull_SharedRoom_members }) => {
     );
 };
 
-const RequestCard = withRoomMembersMgmt(
-    (props: { member: RoomFull_SharedRoom_requests; meOwner: boolean; roomId: string }) => {
-        return (
-            <XUserCard
-                user={props.member.user}
-                customButton={
-                    <>
-                        <XMutation
-                            mutation={(props as any).accept}
-                            variables={{
-                                roomId: props.roomId,
-                                userId: props.member.user.id,
-                            }}
-                        >
-                            <XButton style="primary" text="Accept" />
-                        </XMutation>
-                        <XMutation
-                            mutation={(props as any).decline}
-                            variables={{
-                                roomId: props.roomId,
-                                userId: props.member.user.id,
-                            }}
-                        >
-                            <XButton text="Decline" />
-                        </XMutation>
-                    </>
-                }
-            />
-        );
-    },
-);
+const RequestCard = ({
+    member,
+    roomId,
+}: {
+    member: RoomFull_SharedRoom_requests;
+    roomId: string;
+}) => {
+    const client = useClient();
+
+    const accept = async () => {
+        await client.mutateRoomAddMember({
+            roomId,
+            userId: member.user.id,
+        });
+    };
+    const decline = async () => {
+        await client.mutateRoomDeclineJoinReuest({
+            roomId,
+            userId: member.user.id,
+        });
+    };
+
+    return (
+        <XUserCard
+            user={member.user}
+            customButton={
+                <>
+                    <XMutation mutation={accept as MutationFunc<{}>}>
+                        <XButton style="primary" text="Accept" />
+                    </XMutation>
+                    <XMutation mutation={decline as MutationFunc<{}>}>
+                        <XButton text="Decline" />
+                    </XMutation>
+                </>
+            }
+        />
+    );
+};
 
 interface MembersProviderProps {
     members: RoomFull_SharedRoom_members[];
@@ -385,7 +392,7 @@ const MembersProvider = ({
                         tab === tabs.requests &&
                         requests &&
                         requests.map((req, i) => (
-                            <RequestCard key={i} member={req} meOwner={isOwner} roomId={chatId} />
+                            <RequestCard key={i} member={req} roomId={chatId} />
                         ))}
                 </SectionContent>
                 <RemoveMemberModal members={members} roomId={chatId} roomTitle={chatTitle} />
