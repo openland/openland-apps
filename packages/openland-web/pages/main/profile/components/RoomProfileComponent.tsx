@@ -34,12 +34,10 @@ import {
     RoomFull_SharedRoom_requests,
 } from 'openland-api/Types';
 import { withRoom } from 'openland-web/api/withRoom';
-import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRoomMembersMgmt } from 'openland-web/api/withRoomRequestsMgmt';
+import { XSwitcher } from 'openland-x/XSwitcher';
 import { XMutation } from 'openland-x/XMutation';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { withRoomAdminTools } from 'openland-web/api/withRoomAdminTools';
-import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
@@ -62,24 +60,25 @@ const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     </XView>
 );
 
-export const AdminTools = withRoomAdminTools(
-    withQueryLoader(props => (
+export const AdminTools = (props: { id: string; variables: { id: string } }) => {
+    let client = useClient();
+    const data = client.useWithoutLoaderRoomSuper(props.variables);
+
+    if (!data) {
+        return <XLoader loading={true} />;
+    }
+
+    return (
         <>
-            {props.data && props.data.roomSuper && (
-                <RoomSetFeatured
-                    val={props.data.roomSuper!.featured}
-                    roomId={props.data.roomSuper.id}
-                />
+            {data && data.roomSuper && (
+                <RoomSetFeatured val={data.roomSuper!.featured} roomId={data.roomSuper.id} />
             )}
-            {props.data && props.data.roomSuper && (
-                <RoomSetHidden
-                    val={props.data.roomSuper!.listed}
-                    roomId={props.data.roomSuper.id}
-                />
+            {data && data.roomSuper && (
+                <RoomSetHidden val={data.roomSuper!.listed} roomId={data.roomSuper.id} />
             )}
         </>
-    )),
-) as React.ComponentType<{ id: string; variables: { id: string } }>;
+    );
+};
 
 const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     let meMember = chat.membership === 'MEMBER';
