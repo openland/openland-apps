@@ -38,6 +38,12 @@ class ActiveSubscription(val manager: SubscriptionManager, val id: String, val q
         val subs = manager.client.subscribe(readSubscription(query, arguments))
         this.subscription = subs
         subs.execute(object : ApolloSubscriptionCall.Callback<Operation.Data> {
+            override fun onTerminated() {
+                if (this@ActiveSubscription.subscription == subs) {
+                    this@ActiveSubscription.onEnded()
+                }
+            }
+
             override fun onFailure(e: ApolloException) {
                 if (this@ActiveSubscription.subscription == subs) {
                     this@ActiveSubscription.onEnded()

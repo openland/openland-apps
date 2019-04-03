@@ -14,6 +14,7 @@ import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
 import com.apollographql.apollo.cache.normalized.sql.ApolloSqlHelper
 import com.apollographql.apollo.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.apollographql.apollo.fetcher.ResponseFetcher
 import com.apollographql.apollo.internal.cache.normalized.ResponseNormalizer
 import com.apollographql.apollo.internal.field.MapFieldValueResolver
@@ -348,16 +349,16 @@ class JSOperationCallback(val id: String, val key: String, val context: ReactApp
     }
 }
 
-fun loadCachePolicy(parameters: ReadableMap): HttpCachePolicy.Policy {
-    var cachePolicy: HttpCachePolicy.Policy = HttpCachePolicy.CACHE_FIRST
+fun loadResponseFetcher(parameters: ReadableMap): ResponseFetcher {
+    var responseFetcher: ResponseFetcher = ApolloResponseFetchers.CACHE_FIRST
     val policy = if (parameters.hasKey("fetchPolicy")) parameters.getString("fetchPolicy") else null
     when (policy) {
-        "cache-first" -> cachePolicy = HttpCachePolicy.CACHE_FIRST
-        "network-only" -> cachePolicy = HttpCachePolicy.NETWORK_ONLY
-        "cache-and-network" -> cachePolicy = HttpCachePolicy.CACHE_FIRST
-        "no-cache" -> cachePolicy = HttpCachePolicy.NETWORK_FIRST
+        "cache-first" -> responseFetcher = ApolloResponseFetchers.CACHE_FIRST
+        "network-only" -> responseFetcher = ApolloResponseFetchers.NETWORK_ONLY
+        "cache-and-network" -> responseFetcher = ApolloResponseFetchers.CACHE_AND_NETWORK
+        "no-cache" -> throw Error("no-cache is unsupported on Android")
     }
-    return cachePolicy
+    return responseFetcher
 }
 
 class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?, storage: String?) {
@@ -466,7 +467,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 .okHttpClient(this.httpClient)
                 .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory("wss:$endpoint", wsFactory))
                 .subscriptionConnectionParams(connParams)
-                .sendOperationIdentifiers(false)
+                .enableAutoPersistedQueries(false)
                 .logger { priority, message, t, args ->
                     Log.d("APOLLO", String.format(message, *args))
                 }
@@ -478,13 +479,13 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
 
     fun query(id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
         this.client.query(readQuery(query, arguments))
-                .httpCachePolicy(loadCachePolicy(parameters))
+                .responseFetcher(loadResponseFetcher(parameters))
                 .enqueue(JSOperationCallback(id, key, context))
     }
 
     fun watch(id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
         val w = this.client.query(readQuery(query, arguments))
-                .httpCachePolicy(loadCachePolicy(parameters))
+                .responseFetcher(loadResponseFetcher(parameters))
                 .watcher()
         this.watches[id] = w
         w.enqueueAndWatch(JSOperationCallback(id, key, context))
