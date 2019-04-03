@@ -276,6 +276,7 @@ class JSStoreOperationCallback(val id: String, val key: String, val context: Rea
         map.putString("key", key)
         map.putString("type", "failure")
         map.putString("id", id)
+        map.putString("kind", "network")
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("apollo_client", map)
     }
@@ -288,7 +289,6 @@ class JSStoreOperationCallback2(val id: String, val key: String, val context: Re
         map.putString("key", key)
         map.putString("type", "response")
         map.putString("id", id)
-
         map.putNull("data")
 
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
@@ -301,6 +301,7 @@ class JSStoreOperationCallback2(val id: String, val key: String, val context: Re
         map.putString("key", key)
         map.putString("type", "failure")
         map.putString("id", id)
+        map.putString("kind", "network")
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("apollo_client", map)
     }
@@ -314,6 +315,7 @@ class JSOperationCallback(val id: String, val key: String, val context: ReactApp
         map.putString("key", key)
         map.putString("type", "failure")
         map.putString("id", id)
+        map.putString("kind", "network")
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("apollo_client", map)
     }
@@ -325,6 +327,36 @@ class JSOperationCallback(val id: String, val key: String, val context: ReactApp
             map.putString("key", key)
             map.putString("type", "failure")
             map.putString("id", id)
+            map.putString("kind", "graphql")
+            val errors = WritableNativeArray()
+            for (i in response.errors()) {
+                val errMap = WritableNativeMap()
+                errMap.putString("message", i.message() ?: "Unknown error")
+                val custom = i.customAttributes()
+                if (custom.containsKey("uuid")) {
+                    errMap.putString("uuid", custom["uuid"] as String)
+                }
+                if (custom.containsKey("shouldRetry")) {
+                    errMap.putBoolean("shouldRetry", custom["shouldRetry"] as Boolean)
+                } else {
+                    errMap.putBoolean("shouldRetry", false)
+                }
+
+                if (custom.containsKey("invalidFields")) {
+                    val errFields = WritableNativeArray()
+                    val errFieldsSrc = custom["invalidFields"] as List<Map<String, Any>>
+                    for (j in errFieldsSrc) {
+                        val errField = WritableNativeMap()
+                        errField.putString("key", j["key"] as String)
+                        errField.putString("message", j["message"] as String)
+                        errFields.pushMap(errField)
+                    }
+                    errMap.putArray("invalidFields", errFields)
+                }
+
+                errors.pushMap(errMap)
+            }
+            map.putArray("data", errors)
             context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                     .emit("apollo_client", map)
             return

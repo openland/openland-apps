@@ -57,7 +57,7 @@ export class NativeApolloClient extends BridgedClient {
                     if (src.type === 'failure') {
                         log.warn('Received failure');
                         log.warn(src.data);
-                        if (src.data && src.data.__api) {
+                        if (src.kind === 'graphql') {
                             this.operationFailed(src.id, convertError(src.data));
                         } else {
                             this.operationFailed(src.id, Error('Unknown error'));
