@@ -49,7 +49,6 @@ import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
 import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
-import { InviteMembersModal } from 'openland-web/fragments/inviteMembersModal';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { useClient } from 'openland-web/utils/useClient';
@@ -368,23 +367,15 @@ const MembersProvider = ({
                         <>
                             <RoomAddMemberModal
                                 roomId={chatId}
+                                isChannel={isChannel}
                                 refetchVars={{
                                     roomId: chatId,
                                 }}
-                                linkInvitePath={
-                                    onDirectory
-                                        ? `/directory/p/${chatId}?inviteByLink=true`
-                                        : `/mail/p/${chatId}?inviteByLink=true`
-                                }
                             />
                             <XCreateCard
                                 text="Add members"
                                 query={{ field: 'inviteMembers', value: 'true' }}
                             />
-                            <InviteMembersModal roomId={chatId} isChannel={isChannel} />
-                            {members.map((member, i) => {
-                                return <MemberCard key={i} member={member} />;
-                            })}
                         </>
                     )}
 
