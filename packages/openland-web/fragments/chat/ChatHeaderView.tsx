@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
-import { Room, Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
+import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { RoomEditModal } from './RoomEditModal';
 import { AdvancedSettingsModal } from './AdvancedSettingsModal';
@@ -17,13 +17,11 @@ import { HeaderMenu } from './components/HeaderMenu';
 import CloseChatIcon from 'openland-icons/ic-chat-back.svg';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { HideOnDesktop } from 'openland-web/components/Adaptive';
-import { UserInfoContext, withUserInfo } from 'openland-web/components/UserInfo';
-import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { InviteMembersModal } from 'openland-web/fragments/inviteMembersModal';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { useClient } from 'openland-web/utils/useClient';
@@ -207,9 +205,6 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                         refetchVars={{
                             roomId: room.id,
                         }}
-                    />
-                    <InviteMembersModal
-                        roomId={room.id}
                         isChannel={(room as Room_room_SharedRoom).isChannel}
                     />
                 </>

@@ -37,21 +37,21 @@ export let iconActiveClass = css`
 `;
 
 export let channelIconClass = css`
-    margin: 0px 0px -2px 0px ;
+    margin: 0px 0px -2px 0px;
     path {
         fill: black;
     }
 `;
 
 export let channelSecretIconClass = css`
-    margin: 0px 0px -2px 0px ;
+    margin: 0px 0px -2px 0px;
     path {
         fill: #129f25;
     }
 `;
 
 export let channelIconActiveClass = css`
-    margin: 0px 0px -2px 0px ;
+    margin: 0px 0px -2px 0px;
     path {
         fill: white;
     }
@@ -88,8 +88,8 @@ export const DialogView = XMemo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{emojifyMessage(dialog.sender)}: </>
     ) : (
-                    ''
-                );
+        ''
+    );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
 
@@ -227,18 +227,27 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                                 <LockIcon className={GroupIconClass} />
                             </XView>
                         )}
-                        {
-                            dialog.isChannel && (
-                                <XViewSelectedContext.Consumer>
-                                    {active => (
-                                        <XView alignSelf="stretch" justifyContent="center" marginRight={2}>
-                                            <ChanneSecretIcon className={active ? channelIconActiveClass : ((dialog.kind === 'GROUP' && highlightSecretChat) ? channelSecretIconClass : channelIconClass)} />
-                                        </XView>
-
-                                    )}
-                                </XViewSelectedContext.Consumer>
-                            )
-                        }
+                        {dialog.isChannel && (
+                            <XViewSelectedContext.Consumer>
+                                {active => (
+                                    <XView
+                                        alignSelf="stretch"
+                                        justifyContent="center"
+                                        marginRight={2}
+                                    >
+                                        <ChanneSecretIcon
+                                            className={
+                                                active
+                                                    ? channelIconActiveClass
+                                                    : dialog.kind === 'GROUP' && highlightSecretChat
+                                                    ? channelSecretIconClass
+                                                    : channelIconClass
+                                            }
+                                        />
+                                    </XView>
+                                )}
+                            </XViewSelectedContext.Consumer>
+                        )}
                         <span>
                             {emoji({
                                 src: dialog.title,

@@ -12,7 +12,7 @@ import { withCreateOrganization } from '../../api/withCreateOrganization';
 import { InitTexts } from '../../pages/init/_text';
 
 export const CreateOrganization = withCreateOrganization(props => {
-    const typedProps = props as typeof props & {isMobile?: boolean}
+    const typedProps = props as typeof props & { isMobile?: boolean };
     let community = props.router.query.createOrganization === 'community';
     let texts = community
         ? InitTexts.create_community_popper
@@ -77,4 +77,4 @@ export const CreateOrganization = withCreateOrganization(props => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{isMobile?: boolean}>;
+}) as React.ComponentType<{ isMobile?: boolean }>;

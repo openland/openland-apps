@@ -11,7 +11,6 @@ import { withChannelJoinInviteLink } from '../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { XView } from 'react-mental';
-// import { isMobileUserAgent } from 'openland-web/utils/isMobileUserAgent';
 import { useClient } from 'openland-web/utils/useClient';
 import { useIsMobile } from 'openland-web/hooks';
 import LogoWithName from 'openland-icons/logo.svg';
@@ -155,9 +154,6 @@ const JoinLinkButton = withChannelJoinInviteLink(props => {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
-                // if (isMobileUserAgent) {
-                //     window.location.href = 'openland://deep/joinroom/' + (props as any).invite;
-                // }
                 await props.join({ variables: { invite: (props as any).invite } });
                 await delayForewer();
             }}
@@ -398,19 +394,10 @@ export const InviteLandingComponentLayout = ({
                         alignSelf="center"
                         flexShrink={0}
                         path={signup}
-                        // onClick={() => {
-                        //     try {
-                        //         if (isMobileUserAgent) {
-                        //             window.location.href = 'openland://deep/joinroom/' + inviteLink;
-                        //         }
-                        //     } catch (err) {
-                        //         console.log(err)
-                        //     }
-                        // }}
                     />
                 </MainContent>
             )}
-            {!isMobile && !!noLogin && <Footer />}
+            {!isMobile && noLogin && <Footer />}
         </div>
     );
 };

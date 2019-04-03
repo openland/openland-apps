@@ -50,15 +50,13 @@ export const DumpSendMessage = ({
             <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
             <SendMessageContent separator={4} alignItems="center">
                 <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                    {closeEditor &&
-                        quoteState &&
-                        quoteState.quoteMessageReply && (
-                            <EditView
-                                message={quoteState.quoteMessageReply}
-                                title={quoteState.quoteMessageSender || 'Edit message'}
-                                onCancel={closeEditor}
-                            />
-                        )}
+                    {closeEditor && quoteState && quoteState.quoteMessageReply && (
+                        <EditView
+                            message={quoteState.quoteMessageReply}
+                            title={quoteState.quoteMessageSender || 'Edit message'}
+                            onCancel={closeEditor}
+                        />
+                    )}
                     <FileUploader />
                     <TextInputComponent
                         placeholder="Write a message..."

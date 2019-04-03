@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { css } from 'linaria';
-import { withUser } from 'openland-web/api/withUserSimple';
+import { useClient } from 'openland-web/utils/useClient';
 import { User_user } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
@@ -258,19 +258,22 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
     );
 };
 
-const UserProvider = withUser(
-    withRouter(props =>
-        props.data.user ? (
-            <UserProfileInner
-                user={props.data.user}
-                router={props.router}
-                onDirectory={(props as any).onDirectory}
-            />
-        ) : (
-            <XLoader loading={true} />
-        ),
-    ),
-) as React.ComponentType<{
+const UserProvider = withRouter(props => {
+    const client = useClient();
+    const data = client.useWithoutLoaderUser({
+        userId: props.variables.userId,
+    });
+
+    return data && data.user ? (
+        <UserProfileInner
+            user={data.user}
+            router={props.router}
+            onDirectory={(props as any).onDirectory}
+        />
+    ) : (
+        <XLoader loading={true} />
+    );
+}) as React.ComponentType<{
     variables: { userId: string };
     onDirectory?: boolean;
 }>;

@@ -2,9 +2,10 @@ import * as React from 'react';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withApp } from '../../components/withApp';
-import { withProfileCreate } from '../../api/withProfileCreate';
+import { CreateProfileInput } from 'openland-api/Types';
 import { InitTexts } from './_text';
 import { delayForewer } from 'openland-y-utils/timer';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import * as Cookie from 'js-cookie';
 import {
     WebSignUpContainer,
@@ -12,22 +13,39 @@ import {
     CreateProfileFormInner,
 } from './components/SignComponents';
 import { useIsMobile } from 'openland-web/hooks';
+import { useClient } from 'openland-web/utils/useClient';
 
-const CreateProfileFormRoot = withProfileCreate((props: any) => {
+const CreateProfileFormRoot = ({ roomView }: { roomView: boolean }) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+
     if (canUseDOM) {
         localStorage.setItem('isnewuser', 'newuser');
     }
-    let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
-    const roomView = props.roomView;
 
-    const router = props.router;
-    const prefill = usePhotoPrefill ? props.data.prefill : null;
-    const createProfile = props.createProfile;
+    let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
+
+    const data = client.useWithoutLoaderProfilePrefill();
+
+    const createProfile = async ({
+        variables,
+    }: {
+        variables: {
+            input: CreateProfileInput;
+        };
+    }) => {
+        await client.mutateProfileCreate(variables);
+        await client.refetchAccount();
+    };
+
     const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
 
-    if (props.loading) {
+    if (!data) {
         return <div />;
     }
+
+    const prefill = usePhotoPrefill ? data.prefill : null;
+
     return (
         <Container pageMode="CreateProfile">
             <CreateProfileFormInner
@@ -35,8 +53,8 @@ const CreateProfileFormRoot = withProfileCreate((props: any) => {
                     roomView,
                     prefill,
 
-                    defaultAction: async (data: any) => {
-                        await createProfile({ variables: data });
+                    defaultAction: async (submitData: { input: CreateProfileInput }) => {
+                        await createProfile({ variables: submitData });
                         let redirect = router.query.redirect;
                         window.location.href = redirect ? redirect : '/';
                         await delayForewer();
@@ -45,10 +63,9 @@ const CreateProfileFormRoot = withProfileCreate((props: any) => {
             />
         </Container>
     );
-});
+};
 
-const CreateProfileForm = (props: any) => {
-    let roomView = props.roomView;
+const CreateProfileForm = ({ roomView }: { roomView: boolean }) => {
     const [isMobile] = useIsMobile();
 
     if (isMobile) {
@@ -58,7 +75,7 @@ const CreateProfileForm = (props: any) => {
     return <CreateProfileFormRoot roomView={roomView} />;
 };
 
-export default withApp('CreateProfile', 'viewer', props => {
+export default withApp('CreateProfile', 'viewer', () => {
     const fromRoom = Cookie.get('x-openland-invite');
     return (
         <>
@@ -66,7 +83,7 @@ export default withApp('CreateProfile', 'viewer', props => {
                 title={InitTexts.create_profile.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <CreateProfileForm roomView={fromRoom} />
+            <CreateProfileForm roomView={!!fromRoom} />
         </>
     );
 });

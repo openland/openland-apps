@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { MutationFunc } from 'react-apollo';
 import {
@@ -7,9 +8,8 @@ import {
     RoomAddMembersVariables,
     RoomMembersShort_members,
 } from 'openland-api/Types';
-import { withRoomAddMembers } from 'openland-web/api/withRoomAddMembers';
 import { withExplorePeople } from 'openland-web/api/withExplorePeople';
-import { withRoomMembersId } from 'openland-web/api/withRoomMembers';
+import { withChannelnviteLink } from 'openland-web/api/withChannelnviteLink';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { XModalProps } from 'openland-x-modal/XModal';
@@ -17,10 +17,167 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-import LinkIcon from 'openland-icons/ic-link.svg';
-import { XCreateCard } from 'openland-x/cards/XCreateCard';
-
+import { useClient } from 'openland-web/utils/useClient';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { XInput } from 'openland-x/XInput';
+import { XMutation } from 'openland-x/XMutation';
+import { XPopper } from 'openland-x/XPopper';
+import RevokeIcon from 'openland-icons/ic-revoke.svg';
+import CopiedIcon from 'openland-icons/ic-content-copy.svg';
+import CheckIcon from 'openland-icons/ic-check.svg';
+
+const RenewInviteLinkButton = withChannelnviteLink(props => (
+    <XMutation mutation={props.renew} onSuccess={(props as any).onClick}>
+        <RevokeIcon />
+    </XMutation>
+)) as React.ComponentType<{
+    variables: { roomId: string };
+    refetchVars: { roomId: string };
+    onClick: () => void;
+}>;
+
+class RenewInviteLinkButtonWrapper extends React.PureComponent {
+    render() {
+        return (
+            <XView position="absolute" right={110} top={12} cursor="pointer">
+                {this.props.children}
+            </XView>
+        );
+    }
+}
+
+const InputClassName = css`
+    border-radius: 8px !important;
+    background: #f2f3f4 !important;
+    border: none !important;
+    &:focus-within {
+        border: none !important;
+        box-shadow: none !important;
+    }
+`;
+
+interface OwnerLinkComponentProps {
+    invite: string;
+    isChannel: boolean;
+    variables: { roomId: string };
+}
+
+class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
+    input?: any;
+
+    state = {
+        copied: false,
+        resetLink: false,
+    };
+
+    private handleRef = (e: any) => {
+        if (e === null) {
+            return;
+        }
+        this.input = e;
+    };
+
+    private copy = (e: any) => {
+        if (this.input && this.input.inputRef) {
+            this.input.inputRef.inputRef.select();
+        }
+        document.execCommand('copy');
+        this.setState({
+            copied: true,
+        });
+    };
+
+    private resetLink = () => {
+        this.setState({
+            copied: false,
+            resetLink: true,
+        });
+    };
+
+    render() {
+        const { props } = this;
+        const { copied, resetLink } = this.state;
+        let invitePath = props.isChannel ? '/joinChannel/' : '/invite/';
+        return (
+            <XVertical width="100%" flexGrow={1} separator={2}>
+                {props.invite && (
+                    <XView flexDirection="column">
+                        <XView fontSize={16} fontWeight="600" marginBottom={12}>
+                            Invitation link
+                        </XView>
+                        <XView flexDirection="row" alignItems="center">
+                            <XInput
+                                size="large"
+                                flexGrow={1}
+                                ref={this.handleRef}
+                                value={'https://openland.com' + invitePath + props.invite}
+                                className={InputClassName}
+                            />
+                            <XPopper
+                                content="Revoke link"
+                                style="dark"
+                                showOnHover={true}
+                                placement="bottom"
+                                zIndex={200}
+                            >
+                                <RenewInviteLinkButtonWrapper>
+                                    <RenewInviteLinkButton
+                                        variables={props.variables}
+                                        refetchVars={props.variables}
+                                        onClick={this.resetLink}
+                                    />
+                                </RenewInviteLinkButtonWrapper>
+                            </XPopper>
+                            <XView
+                                height={40}
+                                borderRadius={8}
+                                paddingLeft={7}
+                                paddingRight={12}
+                                flexDirection="row"
+                                alignItems="center"
+                                fontSize={14}
+                                backgroundColor={copied ? '#69d06d' : '#E8F4FF'}
+                                color={copied ? '#ffffff' : '#1790ff'}
+                                cursor="pointer"
+                                onClick={this.copy}
+                                marginLeft={12}
+                            >
+                                {copied ? <CheckIcon /> : <CopiedIcon />}
+                                <XView marginLeft={copied ? 2 : 6}>
+                                    {copied ? 'Copied' : 'Copy'}
+                                </XView>
+                            </XView>
+                        </XView>
+                        <XView
+                            fontSize={12}
+                            color={resetLink ? '#20a825' : 'rgba(0, 0, 0, 0.5)'}
+                            marginLeft={16}
+                            marginTop={6}
+                        >
+                            {resetLink
+                                ? 'The previous link is revoked and a new one has been created'
+                                : 'Anyone can use this link to join the group'}
+                        </XView>
+                    </XView>
+                )}
+            </XVertical>
+        );
+    }
+}
+
+type OwnerLinkT = { variables: { roomId: string }; isChannel: boolean };
+
+const OwnerLink = withChannelnviteLink(props => {
+    const typedProps = props as typeof props & OwnerLinkT;
+    return (
+        <OwnerLinkComponent
+            invite={props.data.link}
+            isChannel={typedProps.isChannel}
+            variables={typedProps.variables}
+        />
+    );
+}) as React.ComponentType<OwnerLinkT>;
 
 interface SearchBoxProps {
     value: { label: string; value: string }[] | null;
@@ -46,12 +203,9 @@ const SearchBox = (props: SearchBoxProps) => (
 
 interface ExplorePeopleProps {
     variables: { query?: string };
-    searchQuery: string;
-    roomId: string;
     onPick: (label: string, value: string) => void;
     selectedUsers: Map<string, string> | null;
     roomUsers: RoomMembersShort_members[];
-    linkInvitePath?: string;
 }
 
 const ExplorePeople = withExplorePeople(props => {
@@ -64,24 +218,10 @@ const ExplorePeople = withExplorePeople(props => {
         );
     }
 
-    let linkInvitePath = `/mail/${typedProps.roomId}?inviteByLink=true`;
-
-    if (typedProps.linkInvitePath !== undefined) {
-        linkInvitePath = typedProps.linkInvitePath;
-    }
-
     return (
         <XView flexGrow={1} flexShrink={0}>
             <XScrollView2 flexGrow={1} flexShrink={0}>
                 <XView paddingHorizontal={16} flexDirection="column">
-                    {!typedProps.searchQuery &&
-                        (!typedProps.selectedUsers || typedProps.selectedUsers.size === 0) && (
-                            <XCreateCard
-                                text="Invite with a link"
-                                path={linkInvitePath}
-                                icon={<LinkIcon />}
-                            />
-                        )}
                     {typedProps.data.items.edges.map(i => {
                         if (typedProps.selectedUsers && typedProps.selectedUsers.has(i.node.id)) {
                             return null;
@@ -122,7 +262,8 @@ interface InviteModalProps extends XModalProps {
     roomId: string;
     addMembers: MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
     members: RoomMembersShort_members[];
-    linkInvitePath?: string;
+    isMobile: boolean;
+    isChannel: boolean;
 }
 
 interface InviteModalState {
@@ -130,11 +271,8 @@ interface InviteModalState {
     selectedUsers: Map<string, string> | null;
 }
 
-class RoomAddMemberModalInner extends React.Component<
-    InviteModalProps & { isMobile: boolean },
-    InviteModalState
-> {
-    constructor(props: InviteModalProps & { isMobile: boolean }) {
+class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteModalState> {
+    constructor(props: InviteModalProps) {
         super(props);
 
         this.state = { searchQuery: '', selectedUsers: null };
@@ -220,13 +358,22 @@ class RoomAddMemberModalInner extends React.Component<
                 onClosed={this.onClosed}
             >
                 <XView
-                    height={props.isMobile ? '100%' : '60vh'}
+                    height={props.isMobile ? '100%' : '65vh'}
                     flexGrow={1}
                     marginHorizontal={-24}
                     marginTop={props.isMobile ? undefined : -6}
                     marginBottom={props.isMobile ? undefined : -24}
                 >
-                    <XView paddingHorizontal={16}>
+                    <XView paddingHorizontal={24} marginBottom={32}>
+                        <OwnerLink
+                            variables={{ roomId: this.props.roomId }}
+                            isChannel={this.props.isChannel}
+                        />
+                    </XView>
+                    <XView fontSize={16} fontWeight="600" marginBottom={16} marginLeft={24}>
+                        Invitation link
+                    </XView>
+                    <XView paddingHorizontal={24}>
                         <SearchBox
                             onInputChange={this.onInputChange}
                             value={options}
@@ -235,12 +382,9 @@ class RoomAddMemberModalInner extends React.Component<
                     </XView>
                     <ExplorePeople
                         variables={{ query: this.state.searchQuery }}
-                        searchQuery={this.state.searchQuery}
-                        roomId={props.roomId}
                         onPick={this.selectMembers}
                         selectedUsers={selectedUsers}
                         roomUsers={props.members}
-                        linkInvitePath={props.linkInvitePath}
                     />
                 </XView>
             </XModalForm>
@@ -248,52 +392,48 @@ class RoomAddMemberModalInner extends React.Component<
     }
 }
 
-const RoomAddMemberModalRoot = React.memo((props: InviteModalProps) => {
-    const isMobile = React.useContext(IsMobileContext);
-    return (
-        <RoomAddMemberModalInner
-            roomId={props.roomId}
-            addMembers={props.addMembers}
-            members={props.members}
-            linkInvitePath={props.linkInvitePath}
-            isMobile={isMobile}
-        />
-    );
-});
-
-type RoomAddMemberModalUsersT = {
-    variables: { roomId: string };
-    roomId: string;
-    addMembers: MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
-    linkInvitePath?: string;
-};
-
-const RoomAddMemberModalUsers = React.memo(withRoomMembersId(props => {
-    const typedProps = props as typeof props & RoomAddMemberModalUsersT;
-    return (
-        <RoomAddMemberModalRoot
-            addMembers={typedProps.addMembers}
-            roomId={typedProps.roomId}
-            members={typedProps.data.members}
-            linkInvitePath={typedProps.linkInvitePath}
-        />
-    );
-}) as React.ComponentType<RoomAddMemberModalUsersT & XModalProps>);
-
 type RoomAddMemberModalT = {
     roomId: string;
     refetchVars: { roomId: string };
-    linkInvitePath?: string;
+    isChannel: boolean;
 };
 
-export const RoomAddMemberModal = React.memo(withRoomAddMembers(props => {
-    const typedProps = props as typeof props & RoomAddMemberModalT;
-    return (
-        <RoomAddMemberModalUsers
-            roomId={typedProps.roomId}
-            addMembers={typedProps.addMembers}
-            variables={{ roomId: typedProps.roomId }}
-            linkInvitePath={typedProps.linkInvitePath}
-        />
-    );
-}) as React.ComponentType<RoomAddMemberModalT & XModalProps>);
+export const RoomAddMemberModal = React.memo(
+    ({ roomId, isChannel }: RoomAddMemberModalT & XModalProps) => {
+        const isMobile = React.useContext(IsMobileContext);
+        const client = useClient();
+
+        const addMembers = async ({
+            variables,
+        }: {
+            variables: {
+                roomId: string;
+                invites: { userId: string; role: RoomMemberRole }[];
+            };
+        }) => {
+            await client.mutateRoomAddMembers({
+                roomId: variables.roomId,
+                invites: variables.invites,
+            });
+
+            await client.refetchRoomMembersShort({ roomId });
+        };
+
+        // TODO ask steve to add (opts?: QueryWatchParameters) to propagate fetchPolicy: 'network-only',
+        const data = client.useWithoutLoaderRoomMembersShort({ roomId });
+
+        if (!data) {
+            return null;
+        }
+
+        return (
+            <RoomAddMemberModalInner
+                addMembers={addMembers}
+                roomId={roomId}
+                members={data.members}
+                isMobile={isMobile}
+                isChannel={isChannel}
+            />
+        );
+    },
+);

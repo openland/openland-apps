@@ -29,43 +29,50 @@ export const PopperOptionsButton = XMemo(
                 marginRight={-5}
                 arrow={null}
                 onClickOutside={closer}
-                content={content !== undefined ? (content) : (
-                    <>
-                        <XMenuItem
-                            style="gray"
-                            path="/mail/create"
-                            icon={
-                                <XView marginRight={14} marginTop={-4}>
-                                    <CreateRoomIcon />
-                                </XView>}
-                        >
-                            New group
-                        </XMenuItem>
-                        <XMenuItem
-                            style="gray"
-                            path="/mail/create?channel=true"
-                            icon={
-                                <XView marginRight={14} marginTop={-4}>
-                                    <CreateChannelIcon />
-                                </XView>}
-                        >
-                            New channel
-                        </XMenuItem>
-                        <XMenuItem
-                            style="gray"
-                            icon={
-                                <XView marginRight={14} marginTop={-4}>
-                                    <CreateCommunityIcon />
-                                </XView>}
-                            query={{
-                                field: 'createOrganization',
-                                value: 'community',
-                            }}
-                        >
-                            New community
-                        </XMenuItem>
-                    </>
-                )}
+                content={
+                    content !== undefined ? (
+                        content
+                    ) : (
+                        <>
+                            <XMenuItem
+                                style="gray"
+                                path="/mail/create"
+                                icon={
+                                    <XView marginRight={14} marginTop={-4}>
+                                        <CreateRoomIcon />
+                                    </XView>
+                                }
+                            >
+                                New group
+                            </XMenuItem>
+                            <XMenuItem
+                                style="gray"
+                                path="/mail/create?channel=true"
+                                icon={
+                                    <XView marginRight={14} marginTop={-4}>
+                                        <CreateChannelIcon />
+                                    </XView>
+                                }
+                            >
+                                New channel
+                            </XMenuItem>
+                            <XMenuItem
+                                style="gray"
+                                icon={
+                                    <XView marginRight={14} marginTop={-4}>
+                                        <CreateCommunityIcon />
+                                    </XView>
+                                }
+                                query={{
+                                    field: 'createOrganization',
+                                    value: 'community',
+                                }}
+                            >
+                                New community
+                            </XMenuItem>
+                        </>
+                    )
+                }
             >
                 <XButton
                     onClick={toggle}

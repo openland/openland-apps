@@ -19,9 +19,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                     }
 
                     if (data.data!.conference.peers.length === 0) {
-                        return (
-                            <TalkWatchComponent id={data.data!.conference.id} />
-                        );
+                        return <TalkWatchComponent id={data.data!.conference.id} />;
                     }
                     return (
                         <>

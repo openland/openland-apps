@@ -272,7 +272,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
-        
+
         this.conversation.sendFile(new UplaodCareUploading(file));
     };
 
@@ -318,27 +318,26 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     scrollPosition={this.onMessageListScroll}
                 />
 
-                {!this.state.hideInput &&
-                    this.conversation.canSendMessage && (
-                        <UploadContextProvider>
-                            <MessageComposeHandler
-                                isActive={this.props.isActive}
-                                getMessages={this.getMessages}
-                                conversation={this.conversation}
-                                onChange={this.handleChange}
-                                onSend={this.handleSend}
-                                onSendFile={this.handleSendFile}
-                                enabled={true}
-                                conversationType={this.props.conversationType}
-                                conversationId={this.props.conversationId}
-                                variables={{
-                                    roomId: this.props.conversationId,
-                                    conversationId: this.props.conversationId,
-                                    organizationId: this.props.organizationId,
-                                }}
-                            />
-                        </UploadContextProvider>
-                    )}
+                {!this.state.hideInput && this.conversation.canSendMessage && (
+                    <UploadContextProvider>
+                        <MessageComposeHandler
+                            isActive={this.props.isActive}
+                            getMessages={this.getMessages}
+                            conversation={this.conversation}
+                            onChange={this.handleChange}
+                            onSend={this.handleSend}
+                            onSendFile={this.handleSendFile}
+                            enabled={true}
+                            conversationType={this.props.conversationType}
+                            conversationId={this.props.conversationId}
+                            variables={{
+                                roomId: this.props.conversationId,
+                                conversationId: this.props.conversationId,
+                                organizationId: this.props.organizationId,
+                            }}
+                        />
+                    </UploadContextProvider>
+                )}
                 <DeleteUrlAugmentationComponent />
                 <DeleteMessageComponent />
                 <LeaveChatComponent />

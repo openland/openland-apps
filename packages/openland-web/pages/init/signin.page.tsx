@@ -33,17 +33,16 @@ function validateEmail(email: string) {
 const InviteInfo = ((props: any) => {
     const client = useClient();
     const data = client.useWithoutLoaderAccountAppInviteInfo({
-        inviteKey: props.variables.inviteKey
-    })
+        inviteKey: props.variables.inviteKey,
+    });
 
     if (!data) {
         return <XLoader loading={true} />;
     }
-    
+
     let signPath = '/signup?redirect=' + encodeURIComponent((props as any).redirect);
     let inviter =
-        (data.invite && data.invite.creator) ||
-        (data.appInvite && data.appInvite.inviter);
+        (data.invite && data.invite.creator) || (data.appInvite && data.appInvite.inviter);
 
     if (!inviter) {
         return <XLoader loading={true} />;

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { withSuperAccountAdd } from '../../api/withSuperAccountAdd';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
@@ -13,13 +12,24 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XView } from 'react-mental';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { useClient } from 'openland-web/utils/useClient';
+import { MutationFunc } from 'react-apollo';
 
-const AddAccountForm = withSuperAccountAdd(props => {
+const AddAccountForm = () => {
+    const client = useClient();
+
+    const mutate = async ({ variables: { title } }: { variables: { title: string } }) => {
+        await client.mutateSuperAccountAdd({
+            title,
+        });
+
+        await client.refetchSuperAccounts();
+    };
+
     return (
         <XModalForm
             title="Add new organization"
             target={<XButton text="Add organization" />}
-            submitMutation={props.add}
+            submitMutation={mutate as MutationFunc<{}>}
             mutationDirect={true}
             actionName="Add"
         >
@@ -28,15 +38,13 @@ const AddAccountForm = withSuperAccountAdd(props => {
             </XFormField>
         </XModalForm>
     );
-});
+};
 
 export default withApp('Super Organizations', 'super-admin', () => {
     const client = useClient();
     const orgs = client.useSuperAccounts().superAccounts;
     const router = useXRouter();
-    let orgsCurrentTab = orgs.filter(
-        o => o.state === (router.query.orgState || 'ACTIVATED'),
-    );
+    let orgsCurrentTab = orgs.filter(o => o.state === (router.query.orgState || 'ACTIVATED'));
 
     return (
         <DevToolsScaffold title="Organizations">

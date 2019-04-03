@@ -13,7 +13,8 @@ let searchStyle = css`
     & svg > path {
         fill: #c8c8c8;
     }
-    &:focus-within, &:focus {
+    &:focus-within,
+    &:focus {
         box-shadow: none !important;
     }
     &:focus-within svg > path {
@@ -24,7 +25,7 @@ let searchStyle = css`
         padding-left: 33px;
     }
     & input {
-        background-color: #F6F6F6;
+        background-color: #f6f6f6;
         border-radius: 10px;
     }
     > .icon {
