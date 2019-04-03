@@ -9,7 +9,6 @@ import {
 } from 'openland-api/Types';
 import { withRoomAddMembers } from 'openland-web/api/withRoomAddMembers';
 import { withExplorePeople } from 'openland-web/api/withExplorePeople';
-import { withRoomMembersId } from 'openland-web/api/withRoomMembers';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { XModalProps } from 'openland-x-modal/XModal';
@@ -19,7 +18,7 @@ import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import LinkIcon from 'openland-icons/ic-link.svg';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
-
+import { useClient } from 'openland-web/utils/useClient';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
 interface SearchBoxProps {
@@ -268,17 +267,27 @@ type RoomAddMemberModalUsersT = {
     linkInvitePath?: string;
 };
 
-const RoomAddMemberModalUsers = React.memo(withRoomMembersId(props => {
-    const typedProps = props as typeof props & RoomAddMemberModalUsersT;
-    return (
-        <RoomAddMemberModalRoot
-            addMembers={typedProps.addMembers}
-            roomId={typedProps.roomId}
-            members={typedProps.data.members}
-            linkInvitePath={typedProps.linkInvitePath}
-        />
-    );
-}) as React.ComponentType<RoomAddMemberModalUsersT & XModalProps>);
+const RoomAddMemberModalUsers = React.memo(
+    (props: RoomAddMemberModalUsersT & XModalProps & RoomAddMemberModalUsersT) => {
+        const client = useClient();
+
+        // TODO ask steve to add (opts?: QueryWatchParameters) to propagate fetchPolicy: 'network-only',
+        const data = client.useWithoutLoaderRoomMembersShort(props.variables);
+
+        if (!data) {
+            return null;
+        }
+
+        return (
+            <RoomAddMemberModalRoot
+                addMembers={props.addMembers}
+                roomId={props.roomId}
+                members={data.members}
+                linkInvitePath={props.linkInvitePath}
+            />
+        );
+    },
+);
 
 type RoomAddMemberModalT = {
     roomId: string;
