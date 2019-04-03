@@ -4021,15 +4021,6 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
-    if name == "UserOnline" {
-      let data = UserOnline(unsafeResultMap: self.convertData(src: data))
-      let key = data.id + ":" + data.__typename
-      store.withinReadWriteTransaction { (tx) in
-        try tx.write(object: data, withKey: key)
-        handler(nil, nil)
-      }
-      return
-    }
     if name == "UserShort" {
       let data = UserShort(unsafeResultMap: self.convertData(src: data))
       let key = data.id + ":" + data.__typename
