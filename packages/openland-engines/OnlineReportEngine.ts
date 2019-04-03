@@ -42,12 +42,23 @@ export class OnlineReportEngine {
                     }
                 }
 
-                await backoff(async () =>
-                    engine.client.mutateReportOnline({
-                        active: active,
-                        platform: platform,
-                    }),
-                );
+                await backoff(async () => {
+                    if (canUseDOM) {
+                        await engine.client.mutateReportOnline({
+                            active: active,
+                            platform: platform,
+                        });
+                    } else {
+                        if (active) {
+                            await engine.client.mutateReportOnline({
+                                active: true,
+                                platform: platform,
+                            });
+                        } else {
+                            // Do nothing
+                        }
+                    }
+                });
                 if (this.visible !== active) {
                     continue;
                 }
