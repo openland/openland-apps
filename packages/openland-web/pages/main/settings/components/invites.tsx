@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withOrganizationInviteMembers } from '../../../../api/withOrganizationInviteMember';
-import { withPublicInvite } from '../../../../api/withPublicInvite';
 import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
 import { XModalCloser } from 'openland-x-modal/XModal';
 import { XInput, XInputGroup } from 'openland-x/XInput';
@@ -16,7 +15,6 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMutation } from 'openland-x/XMutation';
-import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { TextInvites } from 'openland-text/TextInvites';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import PlusIcon from 'openland-icons/ic-add-small.svg';
@@ -265,25 +263,53 @@ const RenewButton = Glamorous(XButton)({
     color: 'rgba(51,69,98, 0.45)',
 });
 
-const RenewInviteLinkButton = withPublicInvite(props => (
-    <XMutation mutation={props.createPublicInvite}>
-        <RenewButton text="Revoke link" style="link" />
-    </XMutation>
-)) as React.ComponentType<{
+const RenewInviteLinkButton = ({
+    variables,
+    refetchVars,
+}: {
     variables: { organizationId: string };
     refetchVars: { organizationId: string };
-}>;
+}) => {
+    const client = useClient();
 
-const OwnerLink = withPublicInvite(
-    withRouter(props => (
+    const createPublicInvite = async () => {
+        await client.mutateOrganizationCreatePublicInvite(variables);
+
+        await client.refetchOrganizationPublicInvite(refetchVars);
+    };
+
+    return (
+        <XMutation mutation={createPublicInvite}>
+            <RenewButton text="Revoke link" style="link" />
+        </XMutation>
+    );
+};
+
+const OwnerLink = ({
+    innerRef,
+    isCommunity,
+    organizationId,
+}: {
+    onBack: () => void;
+    innerRef: any;
+    isCommunity: boolean;
+    organizationId: string;
+}) => {
+    const client = useClient();
+
+    const data = client.useWithoutLoaderOrganizationPublicInvite({
+        organizationId,
+    });
+
+    return (
         <OwnerLinkComponent
-            ref={(props as any).innerRef}
-            invite={props.data ? props.data.publicInvite : null}
+            ref={innerRef}
+            isCommunity={isCommunity}
+            invite={data ? data.publicInvite : null}
             organization={false}
-            isCommunity={(props as any).isCommunity}
         />
-    )),
-) as React.ComponentType<{ onBack: () => void; innerRef: any; isCommunity: boolean }>;
+    );
+};
 
 const OwnerLinkOrganization = (props => {
     const client = useClient();
@@ -514,6 +540,7 @@ class InvitesModalRaw extends React.Component<
                     )}
                     {this.state.showLink && !this.props.global && (
                         <OwnerLink
+                            organizationId={organizationId}
                             innerRef={this.handleLinkComponentRef}
                             onBack={() => this.setState({ showLink: false })}
                             isCommunity={this.props.isCommunity}
