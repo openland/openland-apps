@@ -7,7 +7,12 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 
-export function withApp(name: string, role: string | string[], WrappedComponent: React.ComponentType<{}>, forceSSR?: boolean) {
+export function withApp(
+    name: string,
+    role: string | string[],
+    WrappedComponent: React.ComponentType<{}>,
+    forceSSR?: boolean,
+) {
     return withAppBase(name, () => {
         let router = React.useContext(XRouterContext)!;
 
@@ -31,13 +36,11 @@ export function withApp(name: string, role: string | string[], WrappedComponent:
                                 }}
                             >
                                 {canUseDOM && (
-                                    <React.Suspense fallback={<XLoader />} >
+                                    <React.Suspense fallback={<XLoader />}>
                                         <WrappedComponent />
                                     </React.Suspense>
                                 )}
-                                {!canUseDOM && (
-                                    <WrappedComponent />
-                                )}
+                                {!canUseDOM && <WrappedComponent />}
                             </XShortcuts>
                         </XShortcutsRoot>
                     </XWithRole>

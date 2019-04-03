@@ -27,12 +27,7 @@ export const FeedListComponent = () => {
                         alignItems="stretch"
                     >
                         <XView flexDirection="row">
-                            <XAvatar2
-                                title={v.by.name}
-                                id={v.by.id}
-                                src={v.by.photo}
-                                size={40}
-                            />
+                            <XAvatar2 title={v.by.name} id={v.by.id} src={v.by.photo} size={40} />
                             <XView paddingLeft={16}>
                                 <XView>{v.by.name}</XView>
                                 <XView>

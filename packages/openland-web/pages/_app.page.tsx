@@ -98,7 +98,11 @@ export default withData(
                                 hostName={this.props.host}
                                 protocol={this.props.protocol}
                             >
-                                <YApolloProvider client={(this.props.apollo.client as DirectApollolClient).client}>
+                                <YApolloProvider
+                                    client={
+                                        (this.props.apollo.client as DirectApollolClient).client
+                                    }
+                                >
                                     <OpenlandApiContext.Provider value={this.props.apollo}>
                                         <RootErrorBoundary>
                                             <AppContainer>

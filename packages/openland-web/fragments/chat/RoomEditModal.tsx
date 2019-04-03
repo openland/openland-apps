@@ -15,7 +15,7 @@ type RoomEditModalT = {
     socialImage: string | null;
     description: string | null;
     roomId: string;
-}
+};
 
 export const RoomEditModal = (props: RoomEditModalT) => {
     let client = useClient();
@@ -42,8 +42,8 @@ export const RoomEditModal = (props: RoomEditModalT) => {
                             : {}),
                         ...(newSocialImage && newSocialImage.uuid !== editSocialImageRef
                             ? {
-                                socialImageRef: sanitizeImageRef(newSocialImage),
-                            }
+                                  socialImageRef: sanitizeImageRef(newSocialImage),
+                              }
                             : {}),
                     },
                 });
@@ -53,9 +53,7 @@ export const RoomEditModal = (props: RoomEditModalT) => {
                     title: props.title || '',
                     description: props.description || '',
                     photoRef: { uuid: props.photo },
-                    socialImageRef: props.socialImage
-                        ? { uuid: props.socialImage }
-                        : undefined,
+                    socialImageRef: props.socialImage ? { uuid: props.socialImage } : undefined,
                 },
             }}
         >

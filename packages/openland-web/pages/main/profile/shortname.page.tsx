@@ -9,18 +9,14 @@ import { ResolveShortName_item_User, ResolveShortName_item_Organization } from '
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 
-export default withApp('Shortname', 'viewer', (props) => {
-
+export default withApp('Shortname', 'viewer', props => {
     let client = useClient();
     let router = useXRouter();
     let shortname = router.routeQuery.shortname as string;
-    let data = client.useResolveShortName({ shortname: shortname }).item
+    let data = client.useResolveShortName({ shortname: shortname }).item;
 
     if (data && data.__typename) {
-        let user =
-            data.__typename === 'User'
-                ? (data as ResolveShortName_item_User)
-                : undefined;
+        let user = data.__typename === 'User' ? (data as ResolveShortName_item_User) : undefined;
         let org =
             data.__typename === 'Organization'
                 ? (data as ResolveShortName_item_Organization)
@@ -30,13 +26,7 @@ export default withApp('Shortname', 'viewer', (props) => {
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
                     <XView flexDirection="column" width="100%" height="100%" flexShrink={0}>
-                        {user && (
-                            <UserProfileInner
-                                router={router}
-                                user={user}
-                                hideBack={true}
-                            />
-                        )}
+                        {user && <UserProfileInner router={router} user={user} hideBack={true} />}
                         {org && (
                             <OrganizationProfileInner
                                 router={router}

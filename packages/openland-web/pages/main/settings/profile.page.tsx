@@ -31,8 +31,8 @@ const CardsWrapper = XMemo<{ children: any }>(props => {
     return isMobile ? (
         <XVertical separator={8}>{props.children}</XVertical>
     ) : (
-            <XHorizontal separator={8}>{props.children}</XHorizontal>
-        );
+        <XHorizontal separator={8}>{props.children}</XHorizontal>
+    );
 });
 
 const CardText = (props: { children?: any }) => (
@@ -112,12 +112,12 @@ export default withApp('Profile', 'viewer', () => {
                                         input: {
                                             firstName: profile.firstName,
                                             lastName: profile.lastName,
-                                            primaryOrganizationId: profile.primaryOrganization && profile.primaryOrganization!!.id,
+                                            primaryOrganizationId:
+                                                profile.primaryOrganization &&
+                                                profile.primaryOrganization!!.id,
                                             role: profile.role,
                                             about: profile.about,
-                                            photoRef: sanitizeImageRef(
-                                                profile.photoRef,
-                                            ),
+                                            photoRef: sanitizeImageRef(profile.photoRef),
                                         },
                                     }}
                                     defaultAction={async data => {
@@ -129,9 +129,7 @@ export default withApp('Profile', 'viewer', () => {
                                                     data.input.primaryOrganizationId,
                                                 alphaRole: data.input.role,
                                                 about: data.input.about,
-                                                photoRef: sanitizeImageRef(
-                                                    data.input.photoRef,
-                                                ),
+                                                photoRef: sanitizeImageRef(data.input.photoRef),
                                             },
                                         });
                                         await client.refetchAccount();
@@ -150,10 +148,7 @@ export default withApp('Profile', 'viewer', () => {
                                                     separator={10}
                                                 >
                                                     <XHorizontal separator={13}>
-                                                        <XVertical
-                                                            flexGrow={1}
-                                                            separator={10}
-                                                        >
+                                                        <XVertical flexGrow={1} separator={10}>
                                                             <XInput
                                                                 title="First name"
                                                                 field="input.firstName"
@@ -187,9 +182,7 @@ export default withApp('Profile', 'viewer', () => {
                                                             }))}
                                                         />
                                                         <XView position="relative">
-                                                            <TextAreaTitle>
-                                                                About
-                                                                    </TextAreaTitle>
+                                                            <TextAreaTitle>About</TextAreaTitle>
                                                             <XTextArea
                                                                 valueStoreKey="fields.input.about"
                                                                 resize={false}
@@ -213,7 +206,9 @@ export default withApp('Profile', 'viewer', () => {
                                         shortname: user.shortname,
                                     }}
                                     defaultAction={async data => {
-                                        await client.mutateSetUserShortname({ shortname: data.shortname });
+                                        await client.mutateSetUserShortname({
+                                            shortname: data.shortname,
+                                        });
                                         await client.refetchAccount();
                                     }}
                                 >
@@ -316,31 +311,22 @@ export default withApp('Profile', 'viewer', () => {
                                 {profile && profile.joinedAt && (
                                     <CardText>
                                         Joined
-                                                <XView fontWeight="600" paddingLeft={4}>
+                                        <XView fontWeight="600" paddingLeft={4}>
                                             {
                                                 <XDate
-                                                    value={String(
-                                                        profile.joinedAt,
-                                                    )}
+                                                    value={String(profile.joinedAt)}
                                                     format="humanize"
                                                 />
                                             }
                                         </XView>
                                     </CardText>
                                 )}
-                                {!profile.invitedBy && (
-                                    <CardText>Self-registered</CardText>
-                                )}
+                                {!profile.invitedBy && <CardText>Self-registered</CardText>}
                                 {profile.invitedBy && (
                                     <CardText>
                                         Invited by
-                                        <XView
-                                            fontWeight="600"
-                                            paddingLeft={4}
-                                            color="#1790ff"
-                                        >
-                                            {profile.invitedBy.name ||
-                                                'First name Last name'}
+                                        <XView fontWeight="600" paddingLeft={4} color="#1790ff">
+                                            {profile.invitedBy.name || 'First name Last name'}
                                         </XView>
                                     </CardText>
                                 )}

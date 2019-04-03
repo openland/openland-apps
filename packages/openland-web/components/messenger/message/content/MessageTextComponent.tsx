@@ -35,7 +35,12 @@ const cropTextStyle = css`
 export const MessageTextComponent = XMemo<MessageTextComponentProps>(
     ({ shouldCrop, message, spans, isEdited, asPinMessage }) => (
         <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
-            <SpansMessage message={message} spans={spans} isEdited={isEdited} asPinMessage={asPinMessage} />
+            <SpansMessage
+                message={message}
+                spans={spans}
+                isEdited={isEdited}
+                asPinMessage={asPinMessage}
+            />
         </div>
     ),
 );

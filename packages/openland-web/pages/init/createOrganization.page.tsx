@@ -27,12 +27,12 @@ const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
                     !props.data || !props.data.items
                         ? []
                         : props.data.items.edges
-                            .filter(({ node }: any) => {
-                                return node.status === 'activated';
-                            })
-                            .map(({ node: { id, name } }: any) => {
-                                return { value: id, label: name };
-                            }),
+                              .filter(({ node }: any) => {
+                                  return node.status === 'activated';
+                              })
+                              .map(({ node: { id, name } }: any) => {
+                                  return { value: id, label: name };
+                              }),
                 loading: false,
             })}
         </>
@@ -50,7 +50,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
     {
         lastLoadedOrganizations: any;
     }
-    > {
+> {
     componentWillReceiveProps(nextProps: any) {
         this.setState({
             lastLoadedOrganizations: nextProps.organizations,
@@ -89,7 +89,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
 class CreateOrganizationPrefixHolderRoot extends React.Component<
     any,
     { organizationPrefix: string; lastLoadedOrganizations: any[] }
-    > {
+> {
     constructor(props: any) {
         super(props);
         this.state = {

@@ -65,20 +65,18 @@ const HeaderMembers = (props: { online?: boolean; children?: any }) => (
 export const AdminTools = withRoomAdminTools(
     withQueryLoader(props => (
         <>
-            {props.data &&
-                props.data.roomSuper && (
-                    <RoomSetFeatured
-                        val={props.data.roomSuper!.featured}
-                        roomId={props.data.roomSuper.id}
-                    />
-                )}
-            {props.data &&
-                props.data.roomSuper && (
-                    <RoomSetHidden
-                        val={props.data.roomSuper!.listed}
-                        roomId={props.data.roomSuper.id}
-                    />
-                )}
+            {props.data && props.data.roomSuper && (
+                <RoomSetFeatured
+                    val={props.data.roomSuper!.featured}
+                    roomId={props.data.roomSuper.id}
+                />
+            )}
+            {props.data && props.data.roomSuper && (
+                <RoomSetHidden
+                    val={props.data.roomSuper!.listed}
+                    roomId={props.data.roomSuper.id}
+                />
+            )}
         </>
     )),
 ) as React.ComponentType<{ id: string; variables: { id: string } }>;
@@ -342,20 +340,19 @@ const MembersProvider = ({
                 : tabs.members;
         return (
             <Section separator={0}>
-                {isOwner &&
-                    (requests || []).length > 0 && (
-                        <XSwitcher style="button">
-                            <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
-                                Members
-                            </XSwitcher.Item>
-                            <XSwitcher.Item
-                                query={{ field: 'requests', value: '1' }}
-                                counter={requests!.length}
-                            >
-                                Requests
-                            </XSwitcher.Item>
-                        </XSwitcher>
-                    )}
+                {isOwner && (requests || []).length > 0 && (
+                    <XSwitcher style="button">
+                        <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
+                            Members
+                        </XSwitcher.Item>
+                        <XSwitcher.Item
+                            query={{ field: 'requests', value: '1' }}
+                            counter={requests!.length}
+                        >
+                            Requests
+                        </XSwitcher.Item>
+                    </XSwitcher>
+                )}
                 {((requests || []).length === 0 || !isOwner) && (
                     <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
                 )}

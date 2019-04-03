@@ -212,7 +212,7 @@ interface OwnerLinkComponentProps {
     isCommunity: boolean;
 }
 
-class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps > {
+class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
     input?: any;
     constructor(props: any) {
         super(props);
@@ -285,10 +285,10 @@ const OwnerLink = withPublicInvite(
     )),
 ) as React.ComponentType<{ onBack: () => void; innerRef: any; isCommunity: boolean }>;
 
-const OwnerLinkOrganization = (props => {    
-    const client = useClient()
-    const data = client.useWithoutLoaderAccountAppInvite()
-    
+const OwnerLinkOrganization = (props => {
+    const client = useClient();
+    const data = client.useWithoutLoaderAccountAppInvite();
+
     if (!data) {
         return null;
     }
@@ -300,7 +300,7 @@ const OwnerLinkOrganization = (props => {
             organization={true}
             isCommunity={false}
         />
-    )
+    );
 }) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
 
 interface InvitesModalRawProps {
@@ -383,13 +383,12 @@ class InvitesModalRaw extends React.Component<
                     )} */}
                 </XHorizontal>
 
-                {this.state.showLink &&
-                    !this.props.global && (
-                        <RenewInviteLinkButton
-                            variables={{ organizationId: this.props.organizationId }}
-                            refetchVars={{ organizationId: this.props.organizationId }}
-                        />
-                    )}
+                {this.state.showLink && !this.props.global && (
+                    <RenewInviteLinkButton
+                        variables={{ organizationId: this.props.organizationId }}
+                        refetchVars={{ organizationId: this.props.organizationId }}
+                    />
+                )}
                 {this.state.showLink && (
                     <XFormSubmit
                         key="link"
@@ -513,21 +512,19 @@ class InvitesModalRaw extends React.Component<
                             )}
                         </XVertical>
                     )}
-                    {this.state.showLink &&
-                        !this.props.global && (
-                            <OwnerLink
-                                innerRef={this.handleLinkComponentRef}
-                                onBack={() => this.setState({ showLink: false })}
-                                isCommunity={this.props.isCommunity}
-                            />
-                        )}
-                    {this.state.showLink &&
-                        this.props.global && (
-                            <OwnerLinkOrganization
-                                innerRef={this.handleLinkComponentRef}
-                                onBack={() => this.setState({ showLink: false })}
-                            />
-                        )}
+                    {this.state.showLink && !this.props.global && (
+                        <OwnerLink
+                            innerRef={this.handleLinkComponentRef}
+                            onBack={() => this.setState({ showLink: false })}
+                            isCommunity={this.props.isCommunity}
+                        />
+                    )}
+                    {this.state.showLink && this.props.global && (
+                        <OwnerLinkOrganization
+                            innerRef={this.handleLinkComponentRef}
+                            onBack={() => this.setState({ showLink: false })}
+                        />
+                    )}
                 </ModalContentWrapper>
             </XModalForm>
         );
