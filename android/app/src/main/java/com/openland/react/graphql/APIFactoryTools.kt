@@ -37,10 +37,42 @@ fun readOptionalBool(src: ReadableMap, key: String): Input<Boolean> {
 }
 
 fun readOptionalStringList(src: ReadableMap, key: String): Input<List<String?>> {
+    if (src.hasKey(key)) {
+        return if (src.isNull(key)) {
+            Input.fromNullable(null)
+        } else {
+            val res = mutableListOf<String?>()
+            val arr = src.getArray(key)
+            for(i in 0 until arr.size()) {
+                if (arr.isNull(i)) {
+                    res.add(null)
+                } else {
+                    res.add(arr.getString(i))
+                }
+            }
+            Input.fromNullable(res)
+        }
+    }
     return Input.absent()
 }
 
 fun readStringList(src: ReadableMap, key: String): List<String?>? {
+    if (src.hasKey(key)) {
+        return if (src.isNull(key)) {
+            return null
+        } else {
+            val res = mutableListOf<String?>()
+            val arr = src.getArray(key)
+            for(i in 0 until arr.size()) {
+                if (arr.isNull(i)) {
+                    res.add(null)
+                } else {
+                    res.add(arr.getString(i))
+                }
+            }
+            return res
+        }
+    }
     return null
 }
 
