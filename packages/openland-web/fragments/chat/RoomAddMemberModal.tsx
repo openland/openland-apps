@@ -7,7 +7,6 @@ import {
     RoomAddMembersVariables,
     RoomMembersShort_members,
 } from 'openland-api/Types';
-import { withRoomAddMembers } from 'openland-web/api/withRoomAddMembers';
 import { withExplorePeople } from 'openland-web/api/withExplorePeople';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
@@ -295,14 +294,33 @@ type RoomAddMemberModalT = {
     linkInvitePath?: string;
 };
 
-export const RoomAddMemberModal = React.memo(withRoomAddMembers(props => {
-    const typedProps = props as typeof props & RoomAddMemberModalT;
-    return (
-        <RoomAddMemberModalUsers
-            roomId={typedProps.roomId}
-            addMembers={typedProps.addMembers}
-            variables={{ roomId: typedProps.roomId }}
-            linkInvitePath={typedProps.linkInvitePath}
-        />
-    );
-}) as React.ComponentType<RoomAddMemberModalT & XModalProps>);
+export const RoomAddMemberModal = React.memo(
+    ({ roomId, linkInvitePath }: RoomAddMemberModalT & XModalProps) => {
+        const client = useClient();
+
+        const addMembers = async ({
+            variables,
+        }: {
+            variables: {
+                roomId: string;
+                invites: { userId: string; role: RoomMemberRole }[];
+            };
+        }) => {
+            await client.mutateRoomAddMembers({
+                roomId: variables.roomId,
+                invites: variables.invites,
+            });
+
+            await client.refetchRoomMembersShort({ roomId });
+        };
+
+        return (
+            <RoomAddMemberModalUsers
+                roomId={roomId}
+                addMembers={addMembers}
+                variables={{ roomId }}
+                linkInvitePath={linkInvitePath}
+            />
+        );
+    },
+);
