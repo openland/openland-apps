@@ -35,7 +35,7 @@ class ActiveSubscription(val manager: SubscriptionManager, val id: String, val q
     }
 
     private fun doStart() {
-        val subs = manager.client.subscribe(createSubscription(query, arguments))
+        val subs = manager.client.subscribe(readSubscription(query, arguments))
         this.subscription = subs
         subs.execute(object : ApolloSubscriptionCall.Callback<Operation.Data> {
             override fun onFailure(e: ApolloException) {

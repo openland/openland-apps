@@ -495,7 +495,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     }
 
     fun mutate(id: String, query: String, arguments: ReadableMap) {
-        this.client.mutate(createMutation(query, arguments))
+        this.client.mutate(readMutation(query, arguments))
                 .enqueue(JSOperationCallback(id, key, context))
     }
 
