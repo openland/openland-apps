@@ -33,7 +33,6 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XInput } from 'openland-x/XInput';
-import { withOrganizationRemoveMember } from 'openland-web/api/withOrganizationRemoveMember';
 import { withOrganizationMemberChangeRole } from 'openland-web/api/withOrganizationMemberChangeRole';
 import { withOrganizationAddMembers } from 'openland-web/api/withOrganizationAddMembers';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
@@ -447,9 +446,12 @@ export const PermissionsModal = withOrganizationMemberChangeRole(
     refetchVars: { orgId: string; organizationId: string };
 }>;
 
-export const RemoveJoinedModal = withOrganizationRemoveMember(props => {
-    let member = (props as any).members.filter(
-        (m: any) => (m.user && m.user.id === props.router.query.remove) || '',
+export const RemoveJoinedModal = (props => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+
+    let member = props.members.filter(
+        (m: any) => (m.user && m.user.id === router.query.remove) || '',
     )[0];
     if (!member) {
         return null;
@@ -460,24 +462,21 @@ export const RemoveJoinedModal = withOrganizationRemoveMember(props => {
                 text: TextProfiles.Organization.members.remove.submit,
                 style: 'danger',
             }}
-            title={TextProfiles.Organization.members.remove.title(
-                member.user.name,
-                (props as any).orgName,
-            )}
+            title={TextProfiles.Organization.members.remove.title(member.user.name, props.orgName)}
             targetQuery="remove"
-            defaultAction={async data => {
-                await props.remove({
-                    variables: {
-                        memberId: member.user.id,
-                        organizationId: (props as any).orgId,
-                    },
+            defaultAction={async () => {
+                await client.mutateOrganizationRemoveMember({
+                    memberId: member.user.id,
+                    organizationId: props.orgId,
                 });
+
+                await client.refetchOrganization({ organizationId: props.orgId });
             }}
         >
             <XText>
                 {TextProfiles.Organization.members.remove.text(
                     member.user.firstName,
-                    (props as any).orgName,
+                    props.orgName,
                 )}
             </XText>
         </XModalForm>
