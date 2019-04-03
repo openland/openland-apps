@@ -33,7 +33,6 @@ import { XOverflow } from '../../../../components/XOverflow';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { withUserProfileUpdate } from 'openland-web/api/withUserProfileUpdate';
 import { XInput } from 'openland-x/XInput';
 import { withOrganizationRemoveMember } from 'openland-web/api/withOrganizationRemoveMember';
 import { withOrganizationMemberChangeRole } from 'openland-web/api/withOrganizationMemberChangeRole';
@@ -59,7 +58,8 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { withExplorePeople } from 'openland-web/api/withExplorePeople';
 import { MutationFunc } from 'react-apollo';
-import { withRoomAddMembers } from '../../../../api/withRoomAddMembers';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { useClient } from 'openland-web/utils/useClient';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -330,8 +330,10 @@ class MemberRequestCard extends React.Component<MemberRequestCardProps, MemberRe
     }
 }
 
-const UpdateUserProfileModal = withUserProfileUpdate(props => {
-    let uid = props.router.query.editUser;
+const UpdateUserProfileModal = (props: { members: any[] }) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+    let uid = router.query.editUser;
     let member = (props as any).members.filter((m: any) => m.user && m.user.id === uid)[0];
     if (!member) {
         return null;
@@ -349,16 +351,17 @@ const UpdateUserProfileModal = withUserProfileUpdate(props => {
                 },
             }}
             defaultAction={async data => {
-                await props.updateProfile({
-                    variables: {
-                        input: {
-                            firstName: data.input.firstName,
-                            lastName: data.input.lastName,
-                            photoRef: sanitizeImageRef(data.input.photoRef),
-                        },
-                        uid: uid,
+                await client.mutateProfileUpdate({
+                    input: {
+                        firstName: data.input.firstName,
+                        lastName: data.input.lastName,
+                        photoRef: sanitizeImageRef(data.input.photoRef),
                     },
+                    uid,
                 });
+
+                await client.refetchAccount();
+                await client.refetchMyOrganizations();
             }}
         >
             <XVertical>
@@ -376,7 +379,7 @@ const UpdateUserProfileModal = withUserProfileUpdate(props => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ members: any[] }>;
+};
 
 export const PermissionsModal = withOrganizationMemberChangeRole(
     withRouter(props => {
