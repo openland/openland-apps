@@ -174,7 +174,7 @@ object LithoTextSpec {
             if (res != null) {
                 return res
             }
-            val res2 = Typeface.createFromAsset(context.androidContext.assets, path)
+            val res2 = Typeface.createFromAsset(context.applicationContext.assets, path)
             fontCache[path] = res2
             return res2
         }

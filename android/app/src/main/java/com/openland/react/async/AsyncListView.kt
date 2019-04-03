@@ -8,6 +8,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.litho.*
 import com.facebook.litho.sections.SectionContext
 import com.facebook.litho.sections.widget.*
+import com.facebook.litho.utils.IncrementalMountUtils
 import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.openland.react.async.views.LithoSection
@@ -89,14 +90,14 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
 
     }
 
-     fun setOverflowColor(value: Int) {
+    fun setOverflowColor(value: Int) {
         this.overflowColor = value
-         updateData()
-     }
+        updateData()
+    }
 
     private fun updateData() {
         val recycler = RecyclerCollectionComponent.create(asyncContext)
-                .backgroundColor(if (this.state.items.isEmpty()) (if (this.overflowColor !== null) this.overflowColor!! else 0x00ffffff) else  0x00ffffff)
+                .backgroundColor(if (this.state.items.isEmpty()) (if (this.overflowColor !== null) this.overflowColor!! else 0x00ffffff) else 0x00ffffff)
                 .clipToPadding(false)
                 .clipChildren(false)
                 .disablePTR(true)
@@ -112,7 +113,16 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                 .onScrollListener(this.scrollListener)
                 .itemAnimator(null)
                 .build()
+//        lithoView.componentTree = ComponentTree.create(lithoView.componentContext, recycler)
+//                // .incrementalMount(false)
+//                .build()
         lithoView.setComponentAsync(recycler)
+        // this.lithoView.performIncrementalMount()
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        // this.lithoView.performIncrementalMount()
     }
 
     fun dispose() {
