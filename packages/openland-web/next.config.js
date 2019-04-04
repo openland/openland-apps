@@ -62,7 +62,7 @@ const config = {
 
         // HACK: Quick fix to resolve the custom babel config in root
         config.module.rules.forEach(rule => {
-            if (rule.use.loader === 'next-babel-loader') {
+            if (rule.use && rule.use.loader === 'next-babel-loader') {
                 rule.use.options.cwd = undefined;
             }
         });
