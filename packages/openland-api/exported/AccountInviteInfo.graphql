@@ -12,6 +12,10 @@ query AccountInviteInfo($inviteKey: String!) {
     key
     membersCount
     orgId
+    organization {
+      __typename
+      isCommunity: alphaIsCommunity
+    }
     photo
     title
   }

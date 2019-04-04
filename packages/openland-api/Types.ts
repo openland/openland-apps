@@ -180,6 +180,11 @@ export interface AccountInviteInfo_invite_creator {
   primaryOrganization: AccountInviteInfo_invite_creator_primaryOrganization | null;
 }
 
+export interface AccountInviteInfo_invite_organization {
+  __typename: "Organization";
+  isCommunity: boolean;
+}
+
 export interface AccountInviteInfo_invite {
   __typename: "InviteInfo";
   id: string;
@@ -192,6 +197,7 @@ export interface AccountInviteInfo_invite {
   forEmail: string | null;
   forName: string | null;
   membersCount: number | null;
+  organization: AccountInviteInfo_invite_organization | null;
 }
 
 export interface AccountInviteInfo {
