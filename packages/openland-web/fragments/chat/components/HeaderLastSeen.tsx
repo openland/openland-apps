@@ -19,12 +19,9 @@ const statusOnline = css`
 
 export const HeaderLastSeen = (props: { variables: { userId: string } }) => {
     const client = useClient();
-    const data = client.useOnline(
-        props.variables,
-        //     {
-        //     fetchPolicy: 'network-only',
-        // }
-    );
+    const data = client.useOnline(props.variables, {
+        fetchPolicy: 'network-only',
+    });
 
     if (!data) {
         return null;

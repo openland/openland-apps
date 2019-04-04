@@ -242,7 +242,11 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     if (privateRoom) {
         headerPath = '/mail/u/' + privateRoom.user.id;
 
-        subtitle = <HeaderLastSeen variables={{ userId: privateRoom.user.id }} />;
+        subtitle = (
+            <React.Suspense fallback={<div />}>
+                <HeaderLastSeen variables={{ userId: privateRoom.user.id }} />
+            </React.Suspense>
+        );
     }
 
     const photo = sharedRoom ? sharedRoom.photo : privateRoom!!.user.photo;

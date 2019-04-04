@@ -220,16 +220,9 @@ interface ExplorePeopleProps {
 const ExplorePeople = (props: ExplorePeopleProps) => {
     const client = useClient();
 
-    const data = client.useExplorePeople(
-        props.variables,
-        //     {
-        //     fetchPolicy: 'network-only',
-        // }
-    );
-
-    if (!data) {
-        return null;
-    }
+    const data = client.useExplorePeople(props.variables, {
+        fetchPolicy: 'network-only',
+    });
 
     if (!data.items) {
         return (
@@ -401,12 +394,14 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                             onChange={this.onChange}
                         />
                     </XView>
-                    <ExplorePeople
-                        variables={{ query: this.state.searchQuery }}
-                        onPick={this.selectMembers}
-                        selectedUsers={selectedUsers}
-                        roomUsers={props.members}
-                    />
+                    <React.Suspense fallback={<XLoader />}>
+                        <ExplorePeople
+                            variables={{ query: this.state.searchQuery }}
+                            onPick={this.selectMembers}
+                            selectedUsers={selectedUsers}
+                            roomUsers={props.members}
+                        />
+                    </React.Suspense>
                 </XView>
             </XModalForm>
         );
@@ -453,13 +448,15 @@ export const RoomAddMemberModal = React.memo(
         }
 
         return (
-            <RoomAddMemberModalInner
-                addMembers={addMembers}
-                roomId={roomId}
-                members={data.members}
-                isMobile={isMobile}
-                isChannel={isChannel}
-            />
+            <React.Suspense fallback={<XLoader />}>
+                <RoomAddMemberModalInner
+                    addMembers={addMembers}
+                    roomId={roomId}
+                    members={data.members}
+                    isMobile={isMobile}
+                    isChannel={isChannel}
+                />
+            </React.Suspense>
         );
     },
 );
