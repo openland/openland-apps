@@ -123,6 +123,22 @@ export default class OpenlandDocument extends Document {
                         name="msapplication-TileImage"
                         content="/static/img/favicon/ms-icon-144x144.png?v=2"
                     />
+
+                    <meta property="og:title" content="test-community" />
+                    <meta property="og:url" content="http://openland.com/joinChannel/2qs9ceT" />
+                    <meta property="og:description" content="fdfdfdfdfdff" />
+                    <meta
+                        property="og:image"
+                        content="https://ucarecdn.com/10dd0be5-2931-4ae9-a5bb-7ae38a7a9c30/-/crop/248x139/175,25/"
+                    />
+                    <meta name="twitter:card" content="summary_large_image" />
+                    <meta name="twitter:site" content="@openland" />
+                    <meta name="twitter:title" content="test-community" />
+                    <meta name="twitter:description" content="fdfdfdfdfdff" />
+                    <meta
+                        name="twitter:image"
+                        content="https://ucarecdn.com/10dd0be5-2931-4ae9-a5bb-7ae38a7a9c30/-/crop/248x139/175,25/"
+                    />
                     <link
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/icon?family=Material+Icons"
