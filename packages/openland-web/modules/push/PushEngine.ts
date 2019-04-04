@@ -5,6 +5,7 @@ import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { backoff } from 'openland-y-utils/timer';
 import { logger } from 'openland-y-utils/logger';
 import { FetchPushSettingsQuery, RegisterWebPushMutation } from 'openland-api';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 const log = logger('push');
 
@@ -24,11 +25,11 @@ export class PushEngine {
         this.notificationsClassicalSupported || this.notiticationServiceWorkerSupported;
     private readonly pushSupported = 'PushManager' in window;
     readonly enablePush: boolean;
-    readonly client: OpenApolloClient;
+    readonly client: OpenlandClient;
     private registration: ServiceWorkerRegistration | null = null;
     private grantedReceived = false;
 
-    constructor(enablePush: boolean, client: OpenApolloClient) {
+    constructor(enablePush: boolean, client: OpenlandClient) {
         this.enablePush = enablePush;
         this.client = client;
         this.startServiceWorker();
@@ -99,13 +100,10 @@ export class PushEngine {
                     //
 
                     log.log('Downloading push settings...');
-                    let settings = await backoff(
-                        async () =>
-                            await this.client.client.query({
-                                query: FetchPushSettingsQuery.document,
-                            }),
+                    let settings = await backoff(async () =>
+                        await this.client.queryFetchPushSettings(),
                     );
-                    let key = (settings.data as any).pushSettings.webPushKey as string | null;
+                    let key = settings.pushSettings.webPushKey as string | null;
                     if (key) {
                         log.log('Settings downloaded');
                     } else {
@@ -196,12 +194,7 @@ export class PushEngine {
         log.log(subscription);
         await backoff(
             async () =>
-                await this.client.client.mutate({
-                    mutation: RegisterWebPushMutation.document,
-                    variables: {
-                        endpoint: JSON.stringify(subscription),
-                    },
-                }),
+                await this.client.mutateRegisterWebPush({ endpoint: JSON.stringify(subscription) })
         );
         log.log('Push registered successfully.');
     }
@@ -209,7 +202,7 @@ export class PushEngine {
 
 let cachedEngine: PushEngine | null = null;
 
-export function initPushEngine(enablePush: boolean, client: OpenApolloClient) {
+export function initPushEngine(enablePush: boolean, client: OpenlandClient) {
     if (cachedEngine) {
         if (cachedEngine.enablePush !== enablePush) {
             console.warn('Insonsistent state');
