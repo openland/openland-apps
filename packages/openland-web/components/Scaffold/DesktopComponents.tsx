@@ -22,10 +22,7 @@ import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import { MyOrganizations_myOrganizations, UserShort_primaryOrganization } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from '../UserInfo';
-import {
-    InvitesToOrganizationModal,
-    InvitesGlobalModal,
-} from '../../pages/main/settings/components/invites';
+import { InvitesGlobalModal } from '../../pages/main/settings/components/invites';
 import { CreateOrganization } from './Modals';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PromoBanner } from './PromoBanner';
@@ -433,7 +430,6 @@ const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization
                 />
             )}
         </Query>
-        <InvitesToOrganizationModal targetQuery="invite" target={null} isCommunity={false} />
         <InvitesGlobalModal targetQuery="invite_global" target={null} />
     </XVertical>
 ));

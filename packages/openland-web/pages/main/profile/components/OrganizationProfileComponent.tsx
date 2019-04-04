@@ -25,7 +25,6 @@ import { XLoader } from 'openland-x/XLoader';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XLink } from 'openland-x/XLink';
-import { InvitesToOrganizationModal } from '../../settings/components/invites';
 import { XOverflow } from '../../../../components/XOverflow';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';

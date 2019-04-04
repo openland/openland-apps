@@ -1,81 +1,12 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
-import { XModalCloser } from 'openland-x-modal/XModal';
-import { XInput, XInputGroup } from 'openland-x/XInput';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XInput } from 'openland-x/XInput';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XFormField } from 'openland-x-forms/XFormField';
-import { XSelect } from 'openland-x/XSelect';
-import { XButton } from 'openland-x/XButton';
-import { XStoreContext } from 'openland-y-store/XStoreContext';
-import { XStoreState } from 'openland-y-store/XStoreState';
-import { XLink, XLinkProps } from 'openland-x/XLink';
-import { XTextArea } from 'openland-x/XTextArea';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { XMutation } from 'openland-x/XMutation';
 import { TextInvites } from 'openland-text/TextInvites';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
-import PlusIcon from 'openland-icons/ic-add-small.svg';
-import LinkIcon from 'openland-icons/ic-link.svg';
-import CloseIcon from 'openland-icons/ic-close-1.svg';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { useClient } from 'openland-web/utils/useClient';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
-
-const AddButtonStyled = Glamorous(XLink)({
-    fontSize: 14,
-    fontWeight: 500,
-    letterSpacing: -0.4,
-    color: '#5c6a81',
-    display: 'flex',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    '&:hover': {
-        color: '#99a2b0',
-    },
-    '& > svg': {
-        marginRight: 10,
-        marginLeft: 4,
-    },
-});
-
-interface InviteButtonStylesProps {
-    marginRight?: number;
-    marginLeft?: number;
-    icon?: any;
-    title: string;
-}
-
-const InviteButtonStyles = Glamorous(XLink)<InviteButtonStylesProps>(props => ({
-    fontSize: 14,
-    fontWeight: 500,
-    letterSpacing: -0.4,
-    color: '#99a2b0',
-    display: 'flex',
-    alignItems: 'center',
-    '&:hover': {
-        color: '#5c6a81',
-    },
-    '& > svg': {
-        marginRight: props.marginRight,
-        marginLeft: props.marginLeft,
-    },
-}));
-
-const AddButton = (props: XLinkProps & { title: string }) => (
-    <AddButtonStyled {...props}>
-        <PlusIcon />
-        <span>{props.title}</span>
-    </AddButtonStyled>
-);
-
-const InviteButton = (props: XLinkProps & InviteButtonStylesProps) => (
-    <InviteButtonStyles {...props}>
-        {props.icon}
-        <span>{props.title}</span>
-    </InviteButtonStyles>
-);
 
 export const FooterWrap = Glamorous.div({
     display: 'flex',
@@ -95,101 +26,12 @@ const ModalContentWrapper = Glamorous(XVertical)<{ bottomOfset?: boolean }>(prop
     paddingBottom: props.bottomOfset ? 60 : undefined,
 }));
 
-interface Invite {
-    email?: string;
-    firstName?: string;
-    lastName?: string;
-    role?: 'OWNER' | 'MEMBER';
-}
-
-interface InviteComponentProps {
-    index: number;
-    invite: Invite;
-    single: boolean;
-    handleRemove: (index: number) => void;
-    useRoles?: boolean;
-    first: boolean;
-}
-
 const InviteText = Glamorous.div({
     fontSize: 12,
     fontWeight: 500,
     letterSpacing: -0.2,
     color: '#99a2b0',
 });
-
-const RemoverInputGroup = Glamorous.div({
-    width: 40,
-    height: 40,
-    flexShrink: 0,
-    flex: 'initial',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '1px solid rgba(220, 222, 228, 0.6)',
-    borderLeft: 'none',
-    borderRadius: '0 10px 10px 0',
-    paddingRight: 1,
-    background: 'rgba(239, 240, 243, 0.2)',
-    cursor: 'pointer',
-    zIndex: 1,
-
-    '&:hover': {
-        background: '#fdf6f6',
-
-        '& svg *': {
-            fill: 'rgba(215, 84, 85, 0.5)',
-        },
-    },
-});
-
-const InviteComponent = (props: InviteComponentProps) => (
-    <XHorizontal separator={6} alignItems="center" flexGrow={1}>
-        <XInputGroup flexGrow={1}>
-            <XInput
-                size="large"
-                autofocus={props.first}
-                required={true}
-                placeholder={TextInvites.emailInputPlaceholder}
-                field={'inviteRequests.' + props.index + '.email'}
-                flexGrow={1}
-            />
-            <XInput
-                size="large"
-                placeholder={TextInvites.firstNamePlaceholder}
-                field={'inviteRequests.' + props.index + '.firstName'}
-                flexGrow={1}
-            />
-            <XInput
-                size="large"
-                placeholder={TextInvites.lastNamePlaceholder}
-                field={'inviteRequests.' + props.index + '.lastName'}
-                flexGrow={1}
-            />
-
-            {props.useRoles !== false && (
-                <XWithRole role="super-admin">
-                    <XSelect
-                        attach="both"
-                        field={'inviteRequests.' + props.index + '.role'}
-                        searchable={false}
-                        clearable={false}
-                        options={[
-                            { label: 'Owner', value: 'OWNER' },
-                            { label: 'Member', value: 'MEMBER' },
-                        ]}
-                    />
-                </XWithRole>
-            )}
-
-            {!props.single && (
-                <RemoverInputGroup onClick={() => props.handleRemove(props.index)}>
-                    <CloseIcon />
-                </RemoverInputGroup>
-            )}
-        </XInputGroup>
-    </XHorizontal>
-);
 
 const LinkHolder = Glamorous(XVertical)({
     '& > div:first-child': {
@@ -259,58 +101,6 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
     }
 }
 
-const RenewButton = Glamorous(XButton)({
-    color: 'rgba(51,69,98, 0.45)',
-});
-
-const RenewInviteLinkButton = ({
-    variables,
-    refetchVars,
-}: {
-    variables: { organizationId: string };
-    refetchVars: { organizationId: string };
-}) => {
-    const client = useClient();
-
-    const createPublicInvite = async () => {
-        await client.mutateOrganizationCreatePublicInvite(variables);
-
-        await client.refetchOrganizationPublicInvite(refetchVars);
-    };
-
-    return (
-        <XMutation mutation={createPublicInvite}>
-            <RenewButton text="Revoke link" style="link" />
-        </XMutation>
-    );
-};
-
-const OwnerLink = ({
-    innerRef,
-    isCommunity,
-    organizationId,
-}: {
-    onBack: () => void;
-    innerRef: any;
-    isCommunity: boolean;
-    organizationId: string;
-}) => {
-    const client = useClient();
-
-    const data = client.useWithoutLoaderOrganizationPublicInvite({
-        organizationId,
-    });
-
-    return (
-        <OwnerLinkComponent
-            ref={innerRef}
-            isCommunity={isCommunity}
-            invite={data ? data.publicInvite : null}
-            organization={false}
-        />
-    );
-};
-
 const OwnerLinkOrganization = (props => {
     const client = useClient();
     const data = client.useWithoutLoaderAccountAppInvite();
@@ -331,11 +121,7 @@ const OwnerLinkOrganization = (props => {
 
 interface InvitesModalRawProps {
     organizationId: string;
-    mutation?: any;
-    useRoles?: boolean;
-    global: boolean;
     isMobile: boolean;
-    isCommunity: boolean;
 }
 
 interface InvitesModalRawState {
@@ -353,24 +139,6 @@ class InvitesModalRaw extends React.Component<
         this.state = { showLink: true };
     }
 
-    handleRemove = (index: number, store?: XStoreState) => {
-        if (!store) {
-            return;
-        }
-        let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
-        invites.splice(index, 1);
-        store.writeValue('fields.inviteRequests', invites);
-    };
-
-    handleAdd = (store?: XStoreState) => {
-        if (!store) {
-            return;
-        }
-        let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
-        invites.push({ role: 'MEMBER' });
-        store.writeValue('fields.inviteRequests', invites);
-    };
-
     handleLinkComponentRef = (ref: any) => {
         this.linkComponent = ref;
     };
@@ -382,226 +150,47 @@ class InvitesModalRaw extends React.Component<
     };
 
     render() {
-        let { mutation, submitProps, organizationId, isMobile, ...modalFormProps } = this.props;
+        let { submitProps, isMobile, ...modalFormProps } = this.props;
 
         let footer = (
             <FooterWrap>
-                <XHorizontal flexGrow={1}>
-                    {!this.state.showLink && (
-                        <XWithRole role={['admin', 'owner']} orgPermission={organizationId}>
-                            <InviteButton
-                                onClick={() => this.setState({ showLink: true })}
-                                icon={<LinkIcon />}
-                                title={TextInvites.getLinkButtonLinkExists}
-                                marginLeft={4}
-                                marginRight={10}
-                            />
-                        </XWithRole>
-                    )}
-                    {/* {this.state.showLink && !this.props.global && (
-                        <InviteButton
-                            onClick={() => this.setState({ showLink: false })}
-                            icon={<EmailIcon />}
-                            marginLeft={4}
-                            marginRight={10}
-                            title={TextInvites.backToEmailInvites}
-                        />
-                    )} */}
-                </XHorizontal>
-
-                {this.state.showLink && !this.props.global && (
-                    <RenewInviteLinkButton
-                        variables={{ organizationId: this.props.organizationId }}
-                        refetchVars={{ organizationId: this.props.organizationId }}
-                    />
-                )}
-                {this.state.showLink && (
-                    <XFormSubmit
-                        key="link"
-                        style="primary"
-                        successText={TextInvites.copied}
-                        {...submitProps}
-                        text={'Copy'}
-                    />
-                )}
-                {!this.state.showLink && (
-                    <XFormSubmit
-                        key="invites"
-                        successText="Invitations sent!"
-                        style="primary"
-                        keyDownSubmit={true}
-                        {...submitProps}
-                    />
-                )}
+                <XFormSubmit
+                    key="link"
+                    style="primary"
+                    successText={TextInvites.copied}
+                    {...submitProps}
+                    text={'Copy'}
+                />
             </FooterWrap>
         );
         return (
             <XModalForm
                 autoClose={1500}
                 useTopCloser={true}
-                size={this.state.showLink !== true ? 'large' : 'default'}
                 flexGrow={isMobile ? 1 : undefined}
                 maxHeight={isMobile ? '100%' : undefined}
-                defaultAction={async data => {
-                    if (!this.state.showLink) {
-                        let invites = data.inviteRequests
-                            .filter(
-                                (invite: any) =>
-                                    invite.email || invite.firstName || invite.lastName,
-                            )
-                            .map((invite: any) => ({
-                                ...invite,
-                                role: this.props.useRoles !== false ? invite.role : undefined,
-                                emailText: this.state.customTextAreaOpen ? data.customText : null,
-                            }));
-                        await this.props.mutation({
-                            variables: {
-                                inviteRequests: invites,
-                            },
-                        });
-                    } else {
-                        this.copyLink();
-                    }
+                defaultAction={async () => {
+                    this.copyLink();
                 }}
                 scrollableContent={true}
-                defaultData={{
-                    inviteRequests: [{ email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }],
-                }}
                 submitProps={submitProps}
                 customFooter={footer}
                 {...modalFormProps}
             >
                 <ModalContentWrapper alignItems="center">
-                    {!this.state.showLink && (
-                        <XVertical flexGrow={1} width={'100%'}>
-                            <XStoreContext.Consumer>
-                                {store => {
-                                    let invites = store
-                                        ? store.readValue('fields.inviteRequests') || []
-                                        : [];
-                                    return (
-                                        <XVertical separator={8}>
-                                            <XVertical separator={8}>
-                                                {invites.map((invite: Invite, i: number) => (
-                                                    <InviteComponent
-                                                        first={i === 0}
-                                                        key={i}
-                                                        index={i}
-                                                        invite={invite}
-                                                        single={invites.length === 1}
-                                                        handleRemove={index =>
-                                                            this.handleRemove(index, store)
-                                                        }
-                                                        useRoles={this.props.useRoles}
-                                                    />
-                                                ))}
-                                            </XVertical>
-                                            <AddButton
-                                                onClick={() => this.handleAdd(store)}
-                                                title={TextInvites.addEmail}
-                                            />
-                                        </XVertical>
-                                    );
-                                }}
-                            </XStoreContext.Consumer>
-                            {!this.state.customTextAreaOpen && (
-                                <AddButton
-                                    onClick={() =>
-                                        this.setState({
-                                            customTextAreaOpen: true,
-                                        })
-                                    }
-                                    title={TextInvites.customMessageButton}
-                                />
-                            )}
-                            {this.state.customTextAreaOpen && (
-                                <XHorizontal flexGrow={1} width="100%" separator={6}>
-                                    <XFormField
-                                        field="customText"
-                                        title={TextInvites.customMessageTitle}
-                                        flexGrow={1}
-                                    >
-                                        <XTextArea
-                                            flexGrow={1}
-                                            valueStoreKey="fields.customText"
-                                            resize={false}
-                                        />
-                                    </XFormField>
-                                    <XModalCloser
-                                        onClick={() =>
-                                            this.setState({
-                                                customTextAreaOpen: false,
-                                            })
-                                        }
-                                    />
-                                </XHorizontal>
-                            )}
-                        </XVertical>
-                    )}
-                    {this.state.showLink && !this.props.global && (
-                        <OwnerLink
-                            organizationId={organizationId}
-                            innerRef={this.handleLinkComponentRef}
-                            onBack={() => this.setState({ showLink: false })}
-                            isCommunity={this.props.isCommunity}
-                        />
-                    )}
-                    {this.state.showLink && this.props.global && (
-                        <OwnerLinkOrganization
-                            innerRef={this.handleLinkComponentRef}
-                            onBack={() => this.setState({ showLink: false })}
-                        />
-                    )}
+                    <OwnerLinkOrganization
+                        innerRef={this.handleLinkComponentRef}
+                        onBack={() => this.setState({ showLink: false })}
+                    />
                 </ModalContentWrapper>
             </XModalForm>
         );
     }
 }
 
-export const InvitesToOrganizationModal = ({
-    targetQuery,
-    target,
-    isCommunity,
-}: {
-    targetQuery?: string;
-    target?: any;
-    isCommunity: boolean;
-}) => {
-    const client = useClient();
-    let router = React.useContext(XRouterContext)!;
-    const isMobile = React.useContext(IsMobileContext);
-
-    const { organizationId } = router.routeQuery;
-
-    const sendInvite = async ({
-        variables,
-    }: {
-        variables: {
-            inviteRequests: any;
-        };
-    }) => {
-        await client.mutateOrganizationInviteMembers(variables);
-    };
-
-    return (
-        <InvitesModalRaw
-            organizationId={organizationId}
-            mutation={sendInvite}
-            targetQuery={targetQuery}
-            target={target}
-            isMobile={isMobile}
-            title={TextInvites.modalTitle}
-            submitProps={{ text: TextInvites.modalAction }}
-            global={false}
-            isCommunity={isCommunity}
-        />
-    );
-};
-
 type InvitesGlobalModalProps = {
     targetQuery?: string;
     target?: any;
-    refetchVars?: { orgId: string };
 };
 
 export const InvitesGlobalModal = (props: InvitesGlobalModalProps) => {
@@ -616,9 +205,6 @@ export const InvitesGlobalModal = (props: InvitesGlobalModalProps) => {
             isMobile={isMobile}
             title={TextInvites.modalGlobalTitle}
             submitProps={{ text: TextInvites.modalGloabalAction }}
-            useRoles={false}
-            global={true}
-            isCommunity={false}
         />
     );
 };
