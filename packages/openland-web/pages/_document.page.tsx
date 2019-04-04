@@ -80,23 +80,25 @@ export default class OpenlandDocument extends Document {
                 inviteKey = originalUrl.slice('/joinChannel/'.length);
             }
 
-            const resolvedInvite = await openland.queryResolvedInvite({
-                key: inviteKey,
-            });
+            if (inviteKey) {
+                const resolvedInvite = await openland.queryResolvedInvite({
+                    key: inviteKey,
+                });
 
-            if (
-                resolvedInvite &&
-                resolvedInvite.invite &&
-                resolvedInvite.invite.__typename === 'RoomInvite'
-            ) {
-                const room = resolvedInvite.invite.room;
+                if (
+                    resolvedInvite &&
+                    resolvedInvite.invite &&
+                    resolvedInvite.invite.__typename === 'RoomInvite'
+                ) {
+                    const room = resolvedInvite.invite.room;
 
-                metaTagsInfo = {
-                    title: room.title,
-                    url: originalUrl,
-                    description: room.description,
-                    image: room.socialImage ? room.socialImage : room.photo,
-                };
+                    metaTagsInfo = {
+                        title: room.title,
+                        url: originalUrl,
+                        description: room.description,
+                        image: room.socialImage ? room.socialImage : room.photo,
+                    };
+                }
             }
         }
 
