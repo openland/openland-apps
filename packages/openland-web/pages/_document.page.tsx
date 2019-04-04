@@ -43,7 +43,12 @@ type MetaTagsInfoT = {
     description?: string;
     image?: string;
 };
-const MetaTags = ({ title, url, description, image }: MetaTagsInfoT) => {
+const MetaTags = ({
+    title = 'Openland',
+    description = 'Openland is a professional messenger designed to support all communication needs of a modern business.',
+    image = 'https://cdn.openland.com/shared/og-messenger-6.png',
+    url,
+}: MetaTagsInfoT) => {
     return (
         <>
             <meta name="msapplication-TileColor" content="#ffffff" />
@@ -51,7 +56,6 @@ const MetaTags = ({ title, url, description, image }: MetaTagsInfoT) => {
                 name="msapplication-TileImage"
                 content="/static/img/favicon/ms-icon-144x144.png?v=2"
             />
-
             <meta property="og:title" content={title} />
             <meta property="og:url" content={url} />
             <meta property="og:description" content={description} />
