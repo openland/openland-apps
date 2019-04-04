@@ -283,10 +283,6 @@ routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
 // Dev Tools
 //
 
-routes.add('/super/debug', '/dev/debug');
-routes.add('/super/debug/', '/dev/debug');
-routes.add('/super/features', '/dev/features');
-routes.add('/super/features/', '/dev/features');
 routes.add('/super/readers', '/dev/readers');
 routes.add('/super/readers/', '/dev/readers');
 routes.add('/super/cities', '/dev/cities');

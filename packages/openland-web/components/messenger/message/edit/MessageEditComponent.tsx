@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withEditMessage } from '../../../../api/withMessageState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XRichTextInput2, XRichTextInput2Props } from 'openland-x/XRichTextInput2';
@@ -12,7 +11,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 import { convertChannelMembersDataToMentionsData } from 'openland-web/fragments/MessageComposeComponent/useMentions';
-import { withChannelMembers } from 'openland-web/api/withChannelMembers';
+import { useClient } from 'openland-web/utils/useClient';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -118,33 +117,31 @@ type EditMessageInlineT = {
     mentionsData: MentionDataT[];
 };
 
-const EditMessageInline = withEditMessage(props => {
-    const typedProps = props as typeof props & EditMessageInlineT;
-    let id = typedProps.id;
+const EditMessageInline = (props: EditMessageInlineT) => {
+    const client = useClient();
 
     return (
         <XForm
             defaultAction={async data => {
-                await props.editMessage({
-                    variables: {
-                        messageId: id,
-                        message: data.message.text,
-                        file: data.message.file,
-                        replyMessages: data.message.replyMessages,
-                        mentions: data.message.mentions.map((mention: any) => mention.id),
-                    },
+                await client.mutateRoomEditMessage({
+                    messageId: props.id,
+                    message: data.message.text,
+                    file: data.message.file,
+                    replyMessages: data.message.replyMessages,
+                    mentions: data.message.mentions.map((mention: any) => mention.id),
                 });
-                typedProps.onClose();
+
+                props.onClose();
             }}
             defaultData={{
-                message: typedProps.message,
+                message: props.message,
             }}
         >
             <TextInputWrapper>
                 <XTextInput
                     valueStoreKey="fields.message"
                     kind="from_store"
-                    mentionsData={typedProps.mentionsData}
+                    mentionsData={props.mentionsData}
                 />
             </TextInputWrapper>
 
@@ -154,13 +151,13 @@ const EditMessageInline = withEditMessage(props => {
                     text="Cancel"
                     size="default"
                     onClick={() => {
-                        typedProps.onClose();
+                        props.onClose();
                     }}
                 />
             </Footer>
         </XForm>
     );
-}) as React.ComponentType<EditMessageInlineT>;
+};
 
 type EditMessageInlineWrapperInnerT = {
     mentionsData: MentionDataT[];
@@ -197,25 +194,25 @@ type EditMessageInlineWrapperT = {
     onClose: any;
 };
 
-export const EditMessageInlineWrapper = withChannelMembers(props => {
-    const typedProps = props as typeof props & EditMessageInlineWrapperT;
+export const EditMessageInlineWrapper = (
+    props: EditMessageInlineWrapperT & {
+        variables: {
+            roomId: string;
+        };
+    },
+) => {
+    const client = useClient();
+
+    const data = client.useRoomMembers(props.variables);
 
     const mentionsData =
-        typedProps.data && typedProps.data.members
-            ? convertChannelMembersDataToMentionsData(typedProps.data.members)
-            : [];
+        data && data.members ? convertChannelMembersDataToMentionsData(data.members) : [];
 
     return (
         <EditMessageInlineWrapperInner
             mentionsData={mentionsData}
-            message={typedProps.message}
-            onClose={typedProps.onClose}
+            message={props.message}
+            onClose={props.onClose}
         />
     );
-}) as React.ComponentType<
-    EditMessageInlineWrapperT & {
-        variables: {
-            roomId: string;
-        };
-    }
->;
+};

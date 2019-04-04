@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { withChatSearchChannels } from '../api/withChatSearchChannels';
-import { XLoader } from 'openland-x/XLoader';
+
 import { EmptyComponent } from './directory/RoomEmptyComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
@@ -8,6 +7,7 @@ import {
     SearchCardsOrShowProfile,
     ComponentWithSort,
 } from 'openland-web/pages/main/directory/components/DirectoryNavigation';
+import { useClient } from 'openland-web/utils/useClient';
 
 interface WithChatSearchRoomsProps {
     customButton?: any;
@@ -20,23 +20,15 @@ interface WithChatSearchRoomsProps {
     tagsCount: (n: number) => void;
 }
 
-export const Rooms = withChatSearchChannels(props => {
-    const {
-        data,
-        error,
-        tagsCount,
-        customMenu,
-        customButton,
-        CustomButtonComponent,
-    } = props as typeof props & WithChatSearchRoomsProps;
-
-    if (!(data && data.items)) {
-        return <XLoader loading={true} />;
-    }
+export const Rooms = (props: WithChatSearchRoomsProps) => {
+    const client = useClient();
+    const { tagsCount, customMenu, customButton, CustomButtonComponent } = props;
+    const data = client.useRoomSearch(props.variables, {
+        fetchPolicy: 'cache-and-network',
+    });
 
     if (
         !(
-            error ||
             data === undefined ||
             data.items === undefined ||
             data.items === null ||
@@ -69,7 +61,7 @@ export const Rooms = withChatSearchChannels(props => {
 
         return <EmptyComponent />;
     }
-}) as React.ComponentType<WithChatSearchRoomsProps>;
+};
 
 export const RoomsWithSort = ComponentWithSort({ Component: Rooms });
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { withOnline } from 'openland-web/api/withOnline';
 import { XDate } from 'openland-x/XDate';
 import { css } from 'linaria';
+import { useClient } from 'openland-web/utils/useClient';
 
 const statusOffline = css`
     color: rgba(0, 0, 0, 0.4);
@@ -17,26 +17,25 @@ const statusOnline = css`
     font-weight: 400;
 `;
 
-export const HeaderLastSeen = withOnline(props => {
-    if (
-        props.data.user &&
-        (props.data.user.lastSeen &&
-            props.data.user.lastSeen !== 'online' &&
-            !props.data.user.online)
-    ) {
+export const HeaderLastSeen = (props: { variables: { userId: string } }) => {
+    const client = useClient();
+    const { user } = client.useOnline(props.variables, {
+        fetchPolicy: 'network-only',
+    });
+    if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
         return (
             <div className={statusOffline}>
                 last seen{' '}
-                {props.data.user.lastSeen === 'never_online' ? (
+                {user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+                    <XDate value={user.lastSeen} format="humanize_cute" />
                 )}
             </div>
         );
-    } else if (props.data.user && props.data.user.online) {
+    } else if (user && user.online) {
         return <div className={statusOnline}>online</div>;
     } else {
         return null;
     }
-}) as React.ComponentType<{ variables: { userId: string } }>;
+};

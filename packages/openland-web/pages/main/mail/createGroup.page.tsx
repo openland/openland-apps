@@ -5,8 +5,6 @@ import UploadCare from 'uploadcare-widget';
 import { getConfig } from '../../../config';
 import { MyOrganizationsQuery } from 'openland-api';
 import { MyOrganizations_myOrganizations, SharedRoomKind } from 'openland-api/Types';
-import { withCreateChannel } from 'openland-web/api/withCreateChannel';
-import { withExplorePeople } from 'openland-web/api/withExplorePeople';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { UserInfoContext, withUserInfo } from 'openland-web/components/UserInfo';
@@ -28,6 +26,7 @@ import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
 import { Query } from 'react-apollo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
+import { useClient } from 'openland-web/utils/useClient';
 
 interface CreateRoomButtonProps {
     title: string;
@@ -36,39 +35,40 @@ interface CreateRoomButtonProps {
     organizationId: string | null;
     imageUuid: string | null;
     isChannel: boolean;
+    children: any;
 }
 
-const CreateRoomButton = withCreateChannel(props => {
-    const typedProps = props as typeof props & CreateRoomButtonProps;
+const CreateRoomButton = (props: CreateRoomButtonProps) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+
     let photoRef: { uuid: string } | null;
     if ((props as any).imageUuid) {
         photoRef = {
             uuid: (props as any).imageUuid,
         };
     }
-    let res = props.createChannel;
+
     return (
         <XMutation
             action={async () => {
-                await res({
-                    variables: {
-                        title: typedProps.title,
-                        kind: typedProps.kind,
-                        members: [...typedProps.members],
-                        organizationId: typedProps.organizationId || '',
-                        photoRef: photoRef,
-                        channel: (props as any).isChannel,
-                    },
-                }).then((data: any) => {
-                    const roomId: string = data.data.room.id as string;
-                    props.router.replace('/mail/' + roomId);
+                const returnedData = await client.mutateRoomCreate({
+                    title: props.title,
+                    kind: props.kind,
+                    members: [...props.members],
+                    organizationId: props.organizationId || '',
+                    photoRef: photoRef,
+                    channel: (props as any).isChannel,
                 });
+
+                const roomId: string = returnedData.room.id as string;
+                router.replace('/mail/' + roomId);
             }}
         >
             {props.children}
         </XMutation>
     );
-}) as React.ComponentType<CreateRoomButtonProps>;
+};
 
 const MainWrapper = (props: {
     back: boolean;
@@ -420,8 +420,14 @@ const UsersPickerWrapperClassName = css`
     -webkit-overflow-scrolling: touch;
 `;
 
-const ExplorePeople = withExplorePeople(props => {
-    if (!props.data.items) {
+const ExplorePeople = (props: ExplorePeopleProps) => {
+    const client = useClient();
+
+    const data = client.useExplorePeople(props.variables, {
+        fetchPolicy: 'network-only',
+    });
+
+    if (!data.items) {
         return (
             <XView flexGrow={1} flexShrink={0}>
                 <XLoader loading={true} />
@@ -432,7 +438,7 @@ const ExplorePeople = withExplorePeople(props => {
     return (
         <XView flexGrow={1} flexShrink={1} paddingHorizontal={16} marginTop={16} overflow="hidden">
             <div className={UsersPickerWrapperClassName}>
-                {props.data.items.edges.map(i => {
+                {data.items.edges.map(i => {
                     if (
                         (props as any).selectedUsers &&
                         (props as any).selectedUsers.has(i.node.id)
@@ -452,7 +458,7 @@ const ExplorePeople = withExplorePeople(props => {
             </div>
         </XView>
     );
-}) as React.ComponentType<ExplorePeopleProps>;
+};
 
 const InputStyledClassName = css`
     height: 52px !important;

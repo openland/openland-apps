@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withExplorePeople } from 'openland-web/api/withExplorePeople';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
 import { UserProfile } from '../profile/components/UserProfileComponent';
@@ -9,12 +8,20 @@ import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNa
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { useClient } from 'openland-web/utils/useClient';
 interface PeopleCardsProps {
     variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
+    error: any;
 }
 
-export const PeopleCards = withExplorePeople(({ data, error, tagsCount }: any) => {
+export const PeopleCards = ({ variables, error, tagsCount }: PeopleCardsProps) => {
+    const client = useClient();
+
+    const data = client.useExplorePeople(variables, {
+        fetchPolicy: 'network-only',
+    });
+
     if (!(data && data.items)) {
         return null;
     }
@@ -44,7 +51,7 @@ export const PeopleCards = withExplorePeople(({ data, error, tagsCount }: any) =
             {noData && <EmptySearchBlock text="No people matches your search" />}
         </>
     );
-}) as React.ComponentType<PeopleCardsProps>;
+};
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {

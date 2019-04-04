@@ -7,7 +7,6 @@ import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import ProfileIcon from 'openland-icons/ic-profile.svg';
-import { withChannelJoinInviteLink } from '../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { XView } from 'react-mental';
@@ -145,25 +144,27 @@ const JoinButton = (props: {
     );
 };
 
-const JoinLinkButton = withChannelJoinInviteLink(props => {
+const JoinLinkButton = (props: {
+    invite: string;
+    refetchVars: { conversationId: string };
+    text: string;
+}) => {
+    const client = useClient();
+
     return (
         <XButton
             style="primary"
             size="large"
-            text={(props as any).text}
+            text={props.text}
             alignSelf="center"
             flexShrink={0}
             action={async () => {
-                await props.join({ variables: { invite: (props as any).invite } });
+                await client.mutateRoomJoinInviteLink({ invite: props.invite });
                 await delayForewer();
             }}
         />
     );
-}) as React.ComponentType<{
-    invite: string;
-    refetchVars: { conversationId: string };
-    text: string;
-}>;
+};
 
 const textAlignCenter = css`
     text-align: center;

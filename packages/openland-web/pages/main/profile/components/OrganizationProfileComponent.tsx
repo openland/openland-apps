@@ -14,7 +14,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XIcon } from 'openland-x/XIcon';
-import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
+import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import {
     RemoveOrganizationModal,
@@ -33,8 +33,6 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XInput } from 'openland-x/XInput';
-import { withOrganizationMemberChangeRole } from 'openland-web/api/withOrganizationMemberChangeRole';
-import { withOrganizationAddMembers } from 'openland-web/api/withOrganizationAddMembers';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XSelect } from 'openland-x/XSelect';
@@ -54,7 +52,6 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
-import { withExplorePeople } from 'openland-web/api/withExplorePeople';
 import { MutationFunc } from 'react-apollo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
@@ -379,72 +376,75 @@ const UpdateUserProfileModal = (props: { members: any[] }) => {
     );
 };
 
-export const PermissionsModal = withOrganizationMemberChangeRole(
-    withRouter(props => {
-        let member = (props as any).members.filter(
-            (m: any) => (m.user && m.user.id === props.router.query.changeRole) || '',
-        )[0];
-
-        if (!member) {
-            return null;
-        }
-        return (
-            <XModalForm
-                title={TextProfiles.Organization.members.changeRole.title(
-                    member.user.name,
-                    (props as any).orgName,
-                )}
-                defaultData={{
-                    role: member.role,
-                }}
-                targetQuery="changeRole"
-                defaultAction={async data => {
-                    await props.changeRole({
-                        variables: {
-                            memberId: member.user.id,
-                            newRole: data.role as OrganizationMemberRole,
-                            organizationId: (props as any).orgId,
-                        },
-                    });
-                }}
-                target={(props as any).target}
-            >
-                <XVertical>
-                    <XSelect
-                        clearable={false}
-                        searchable={false}
-                        field="role"
-                        options={[
-                            {
-                                value: 'ADMIN',
-                                label: TextProfiles.Organization.roles.ADMIN,
-                            },
-                            {
-                                value: 'MEMBER',
-                                label: TextProfiles.Organization.roles.MEMBER,
-                            },
-                        ]}
-                    />
-                    <XStoreContext.Consumer>
-                        {store => {
-                            let role = store ? store.readValue('fields.role') : '';
-                            return (
-                                <XText>
-                                    {TextProfiles.Organization.members.changeRole.hints[role]}
-                                </XText>
-                            );
-                        }}
-                    </XStoreContext.Consumer>
-                </XVertical>
-            </XModalForm>
-        );
-    }),
-) as React.ComponentType<{
+export const PermissionsModal = (props: {
     orgName: string;
     members: any[];
     orgId: string;
     refetchVars: { orgId: string; organizationId: string };
-}>;
+}) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+
+    let member = (props as any).members.filter(
+        (m: any) => (m.user && m.user.id === router.query.changeRole) || '',
+    )[0];
+
+    if (!member) {
+        return null;
+    }
+    return (
+        <XModalForm
+            title={TextProfiles.Organization.members.changeRole.title(
+                member.user.name,
+                (props as any).orgName,
+            )}
+            defaultData={{
+                role: member.role,
+            }}
+            targetQuery="changeRole"
+            defaultAction={async data => {
+                await client.mutateOrganizationChangeMemberRole({
+                    memberId: member.user.id,
+                    newRole: data.role as OrganizationMemberRole,
+                    organizationId: (props as any).orgId,
+                });
+
+                await client.refetchOrganization({
+                    organizationId: (props as any).orgId,
+                });
+            }}
+            target={(props as any).target}
+        >
+            <XVertical>
+                <XSelect
+                    clearable={false}
+                    searchable={false}
+                    field="role"
+                    options={[
+                        {
+                            value: 'ADMIN',
+                            label: TextProfiles.Organization.roles.ADMIN,
+                        },
+                        {
+                            value: 'MEMBER',
+                            label: TextProfiles.Organization.roles.MEMBER,
+                        },
+                    ]}
+                />
+                <XStoreContext.Consumer>
+                    {store => {
+                        let role = store ? store.readValue('fields.role') : '';
+                        return (
+                            <XText>
+                                {TextProfiles.Organization.members.changeRole.hints[role]}
+                            </XText>
+                        );
+                    }}
+                </XStoreContext.Consumer>
+            </XVertical>
+        </XModalForm>
+    );
+};
 
 export const RemoveJoinedModal = (props => {
     const client = useClient();
@@ -709,9 +709,14 @@ interface ExplorePeopleProps {
     linkInvitePath?: string;
 }
 
-const ExplorePeople = withExplorePeople(props => {
-    const typedProps = props as typeof props & ExplorePeopleProps;
-    if (!typedProps.data.items) {
+const ExplorePeople = (props: ExplorePeopleProps) => {
+    const client = useClient();
+
+    const data = client.useExplorePeople(props.variables, {
+        fetchPolicy: 'network-only',
+    });
+
+    if (!data.items) {
         return (
             <XView flexGrow={1} flexShrink={0}>
                 <XLoader loading={true} />
@@ -719,29 +724,29 @@ const ExplorePeople = withExplorePeople(props => {
         );
     }
 
-    let linkInvitePath = `/mail/${typedProps.organizationId}?inviteToOrganizationByLink=true`;
+    let linkInvitePath = `/mail/${props.organizationId}?inviteToOrganizationByLink=true`;
 
-    if (typedProps.linkInvitePath !== undefined) {
-        linkInvitePath = typedProps.linkInvitePath;
+    if (props.linkInvitePath !== undefined) {
+        linkInvitePath = props.linkInvitePath;
     }
 
     return (
         <XView flexGrow={1} flexShrink={0}>
             <XScrollView2 flexGrow={1} flexShrink={0}>
                 <XView paddingHorizontal={16} flexDirection="column">
-                    {!typedProps.searchQuery &&
-                        (!typedProps.selectedUsers || typedProps.selectedUsers.size === 0) && (
+                    {!props.searchQuery &&
+                        (!props.selectedUsers || props.selectedUsers.size === 0) && (
                             <XCreateCard
                                 text="Invite with a link"
                                 path={linkInvitePath}
                                 icon={<LinkIcon />}
                             />
                         )}
-                    {typedProps.data.items.edges.map(i => {
+                    {data.items.edges.map(i => {
                         if (
-                            (typedProps.selectedUsers && typedProps.selectedUsers.has(i.node.id)) ||
-                            (typedProps.organizationUsers &&
-                                typedProps.organizationUsers.find(
+                            (props.selectedUsers && props.selectedUsers.has(i.node.id)) ||
+                            (props.organizationUsers &&
+                                props.organizationUsers.find(
                                     (j: Organization_organization_members) =>
                                         j.user.id === i.node.id,
                                 ))
@@ -751,7 +756,7 @@ const ExplorePeople = withExplorePeople(props => {
                         return (
                             <XView
                                 key={i.node.id}
-                                onClick={() => typedProps.onPick(i.node.name, i.node.id)}
+                                onClick={() => props.onPick(i.node.name, i.node.id)}
                             >
                                 <XUserCard user={i.node} noPath={true} customButton={null} />
                             </XView>
@@ -761,7 +766,7 @@ const ExplorePeople = withExplorePeople(props => {
             </XScrollView2>
         </XView>
     );
-}) as React.ComponentType<ExplorePeopleProps>;
+};
 
 interface InviteModalProps extends XModalProps {
     organizationId: string;
@@ -887,11 +892,6 @@ class OrganizationAddMemberModalInner extends React.Component<
     }
 }
 
-const OrganizationAddMemberModalRoot = (props: InviteModalProps) => {
-    const isMobile = React.useContext(IsMobileContext);
-    return <OrganizationAddMemberModalInner {...props} isMobile={isMobile} />;
-};
-
 type OrganizationAddMemberModalT = {
     organizationId: string;
     refetchVars: { orgId: string; organizationId: string };
@@ -899,18 +899,36 @@ type OrganizationAddMemberModalT = {
     members: Organization_organization_members[];
 };
 
-export const RoomAddMemberModal = withOrganizationAddMembers(props => {
-    const typedProps = props as typeof props & OrganizationAddMemberModalT;
+export const RoomAddMemberModal = (props: OrganizationAddMemberModalT & XModalProps) => {
+    const client = useClient();
+    const isMobile = React.useContext(IsMobileContext);
+
+    const addMembers = async ({
+        variables,
+    }: {
+        variables: {
+            organizationId: string;
+            userIds: any;
+        };
+    }) => {
+        await client.mutateOrganizationAddMember(variables);
+
+        await client.refetchOrganization({
+            organizationId: variables.organizationId,
+        });
+    };
+
     return (
-        <OrganizationAddMemberModalRoot
-            {...typedProps}
-            organizationId={typedProps.organizationId}
-            addMembers={typedProps.addMembers}
-            members={typedProps.members}
-            linkInvitePath={typedProps.linkInvitePath}
+        <OrganizationAddMemberModalInner
+            {...props}
+            organizationId={props.organizationId}
+            addMembers={addMembers}
+            members={props.members}
+            linkInvitePath={props.linkInvitePath}
+            isMobile={isMobile}
         />
     );
-}) as React.ComponentType<OrganizationAddMemberModalT & XModalProps>;
+};
 
 const Members = ({ organization, router, onDirectory }: MembersProps) => {
     let tab: tabsT = tabs.members;

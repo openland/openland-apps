@@ -24,7 +24,6 @@ import {
     Room_room_PrivateRoom,
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
-import { withDeleteUrlAugmentation } from '../api/withDeleteUrlAugmentation';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { UploadContextProvider } from './MessageComposeComponent/FileUploading/UploadContext';
@@ -91,15 +90,16 @@ const DeleteMessageComponent = () => {
     );
 };
 
-const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation(props => {
+const DeleteUrlAugmentationComponent = withRouter(props => {
+    const client = useClient();
     let id = props.router.query.deleteUrlAugmentation;
     return (
         <XModalForm
             title="Remove attachment"
             targetQuery="deleteUrlAugmentation"
             submitBtnText="Remove"
-            defaultAction={data => {
-                props.deleteUrlAugmentation({ variables: { messageId: id } });
+            defaultAction={async () => {
+                await client.mutateRoomDeleteUrlAugmentation({ messageId: id });
             }}
             submitProps={{ successText: 'Removed!', style: 'danger' }}
         >

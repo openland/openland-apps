@@ -1,16 +1,18 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { withAppProfile } from 'openland-web/api/withAppProfile';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XTextArea } from 'openland-x/XTextArea';
 import { TextProfiles } from 'openland-text/TextProfiles';
+import { useClient } from 'openland-web/utils/useClient';
 
 const { App } = TextProfiles;
 
-export const CreateAppModal = withAppProfile(({ createApp }) => {
+export const CreateAppModal = () => {
+    const client = useClient();
+
     return (
         <XModalForm
             useTopCloser={true}
@@ -18,14 +20,14 @@ export const CreateAppModal = withAppProfile(({ createApp }) => {
             title={App.create}
             targetQuery="createApp"
             defaultAction={async ({ input: { name, shortname, photoRef, about } }) => {
-                await createApp({
-                    variables: {
-                        name,
-                        shortname,
-                        photoRef,
-                        about,
-                    },
+                await client.mutateCreateApp({
+                    name,
+                    shortname,
+                    photoRef,
+                    about,
                 });
+
+                await client.refetchMyApps();
             }}
             defaultData={{
                 input: {
@@ -59,4 +61,4 @@ export const CreateAppModal = withAppProfile(({ createApp }) => {
             />
         </XModalForm>
     );
-});
+};

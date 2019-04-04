@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withMyOrganizationProfile } from '../../../../api/withMyOrganizationProfile';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
@@ -9,29 +8,33 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { XInput } from 'openland-x/XInput';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
-import { XViewRouterContext } from 'react-mental';
+import { useClient } from 'openland-web/utils/useClient';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
-export const AboutPlaceholder = withMyOrganizationProfile(props => {
-    if (!(props.data && props.data.organizationProfile)) {
+export const AboutPlaceholder = (props: { target?: any }) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+    const organizationId = router.routeQuery.organizationId;
+    const data = client.useOrganizationProfile({ organizationId });
+
+    if (!(data && data.organizationProfile)) {
         return null;
     }
     return (
         <XModalForm
             defaultData={{
                 input: {
-                    about: props.data.organizationProfile!!.about,
+                    about: data.organizationProfile!!.about,
                 },
             }}
-            defaultAction={async data => {
-                await props.updateOrganizaton({
-                    variables: {
-                        input: {
-                            about: data.input.about,
-                        },
+            defaultAction={async submitData => {
+                await client.mutateUpdateOrganization({
+                    input: {
+                        about: submitData.input.about,
                     },
                 });
             }}
-            target={(props as any).target || <XButton text="About" iconRight="add" />}
+            target={props.target || <XButton text="About" iconRight="add" />}
             title={TextOrganizationProfile.placeholderAboutModalAboutTitle}
             useTopCloser={true}
         >
@@ -44,12 +47,18 @@ export const AboutPlaceholder = withMyOrganizationProfile(props => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ target?: any }>;
+};
 
-export const LeaveOrganizationModal = withMyOrganizationProfile(props => {
-    let router = React.useContext(XViewRouterContext);
+export const LeaveOrganizationModal = () => {
+    const client = useClient();
+
+    let router = React.useContext(XRouterContext)!;
+    const organizationId = router.routeQuery.organizationId;
+
+    const data = client.useOrganizationProfile({ organizationId });
+
     let ctx = React.useContext(UserInfoContext);
-    if (!(props.data && props.data.organizationProfile && !!ctx)) {
+    if (!(data && data.organizationProfile && !!ctx)) {
         return null;
     }
     const { user } = ctx;
@@ -64,18 +73,20 @@ export const LeaveOrganizationModal = withMyOrganizationProfile(props => {
                 text: 'Leave organization',
                 style: 'danger',
             }}
-            title={`Leave ${props.data.organizationProfile.name}`}
+            title={`Leave ${data.organizationProfile.name}`}
             defaultData={{}}
             defaultAction={async () => {
-                await props.organizationMemberRemove({
-                    variables: {
-                        userId: user.id,
-                        organizationId: props.data.organizationProfile.id,
-                    },
+                await client.mutateOrganizationMemberRemove({
+                    userId: user.id,
+                    organizationId: data.organizationProfile.id,
                 });
+
+                await client.refetchMyOrganizations();
+                await client.refetchAccount();
+
                 // hack to navigate after modal closing navigation
                 setTimeout(() => {
-                    router!.navigate('/');
+                    router!.push('/');
                 });
             }}
             targetQuery={'leaveOrganization'}
@@ -84,17 +95,22 @@ export const LeaveOrganizationModal = withMyOrganizationProfile(props => {
             <XFormLoadingContent>
                 <XVertical flexGrow={1} separator={8}>
                     Are you sure you want to leave? You will lose access to all internal chats at{' '}
-                    {props.data.organizationProfile.name}. You can only join{' '}
-                    {props.data.organizationProfile.name} by invitation in the future.
+                    {data.organizationProfile.name}. You can only join{' '}
+                    {data.organizationProfile.name} by invitation in the future.
                 </XVertical>
             </XFormLoadingContent>
         </XModalForm>
     );
-}) as React.ComponentType<{ target?: any }>;
+};
 
-export const RemoveOrganizationModal = withMyOrganizationProfile(props => {
-    let router = React.useContext(XViewRouterContext);
-    if (!(props.data && props.data.organizationProfile)) {
+export const RemoveOrganizationModal = () => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+    const organizationId = router.routeQuery.organizationId;
+
+    const data = client.useOrganizationProfile({ organizationId });
+
+    if (!(data && data.organizationProfile)) {
         return null;
     }
 
@@ -104,17 +120,19 @@ export const RemoveOrganizationModal = withMyOrganizationProfile(props => {
                 text: 'Delete organization',
                 style: 'danger',
             }}
-            title={`Delete ${props.data.organizationProfile.name}`}
+            title={`Delete ${data.organizationProfile.name}`}
             defaultData={{}}
             defaultAction={async () => {
-                await props.deleteOrganization({
-                    variables: {
-                        organizationId: props.data.organizationProfile.id,
-                    },
+                await client.mutateDeleteOrganization({
+                    organizationId: data.organizationProfile.id,
                 });
+
+                await client.refetchMyOrganizations();
+                await client.refetchAccount();
+
                 // hack to navigate after modal closing navigation
                 setTimeout(() => {
-                    router!.navigate('/');
+                    router!.push('/');
                 });
             }}
             targetQuery={'deleteOrganization'}
@@ -122,16 +140,23 @@ export const RemoveOrganizationModal = withMyOrganizationProfile(props => {
         >
             <XFormLoadingContent>
                 <XVertical flexGrow={1} separator={8}>
-                    Are you sure you want to delete {props.data.organizationProfile.name}? This
-                    cannot be undone.
+                    Are you sure you want to delete {data.organizationProfile.name}? This cannot be
+                    undone.
                 </XVertical>
             </XFormLoadingContent>
         </XModalForm>
     );
-}) as React.ComponentType<{ target?: any }>;
+};
 
-export const SocialPlaceholder = withMyOrganizationProfile(props => {
-    if (!(props.data && props.data.organizationProfile)) {
+export const SocialPlaceholder = (props: { target?: any }) => {
+    const client = useClient();
+
+    let router = React.useContext(XRouterContext)!;
+    const organizationId = router.routeQuery.organizationId;
+
+    const data = client.useOrganizationProfile({ organizationId });
+
+    if (!(data && data.organizationProfile)) {
         return null;
     }
     return (
@@ -140,23 +165,23 @@ export const SocialPlaceholder = withMyOrganizationProfile(props => {
             useTopCloser={true}
             defaultData={{
                 input: {
-                    linkedin: props.data.organizationProfile!!.linkedin,
-                    twitter: props.data.organizationProfile!!.twitter,
-                    facebook: props.data.organizationProfile!!.facebook,
+                    linkedin: data.organizationProfile!!.linkedin,
+                    twitter: data.organizationProfile!!.twitter,
+                    facebook: data.organizationProfile!!.facebook,
                 },
             }}
-            defaultAction={async data => {
-                await props.updateOrganizaton({
-                    variables: {
-                        input: {
-                            linkedin: data.input.linkedin,
-                            twitter: data.input.twitter,
-                            facebook: data.input.facebook,
-                        },
+            defaultAction={async submitData => {
+                await client.mutateUpdateOrganization({
+                    input: {
+                        linkedin: submitData.input.linkedin,
+                        twitter: submitData.input.twitter,
+                        facebook: submitData.input.facebook,
                     },
                 });
+
+                await client.refetchOrganization({ organizationId });
             }}
-            target={(props as any).target || <XButton text="Add social links" iconRight="add" />}
+            target={props.target || <XButton text="Add social links" iconRight="add" />}
         >
             <XFormLoadingContent>
                 <XVertical flexGrow={1} separator={8}>
@@ -185,10 +210,17 @@ export const SocialPlaceholder = withMyOrganizationProfile(props => {
             </XFormLoadingContent>
         </XModalForm>
     );
-}) as React.ComponentType<{ target?: any }>;
+};
 
-export const WebsitePlaceholder = withMyOrganizationProfile(props => {
-    if (!(props.data && props.data.organizationProfile)) {
+export const WebsitePlaceholder = (props: { target?: any }) => {
+    const client = useClient();
+
+    let router = React.useContext(XRouterContext)!;
+    const organizationId = router.routeQuery.organizationId;
+
+    const data = client.useOrganizationProfile({ organizationId });
+
+    if (!(data && data.organizationProfile)) {
         return null;
     }
     return (
@@ -197,19 +229,19 @@ export const WebsitePlaceholder = withMyOrganizationProfile(props => {
             useTopCloser={true}
             defaultData={{
                 input: {
-                    website: props.data.organizationProfile!!.website,
+                    website: data.organizationProfile!!.website,
                 },
             }}
-            defaultAction={async data => {
-                await props.updateOrganizaton({
-                    variables: {
-                        input: {
-                            website: data.input.website,
-                        },
+            defaultAction={async submitData => {
+                await client.mutateUpdateOrganization({
+                    input: {
+                        website: submitData.input.website,
                     },
                 });
+
+                await client.refetchOrganization({ organizationId });
             }}
-            target={(props as any).target || <XButton text="Add website" iconRight="add" />}
+            target={props.target || <XButton text="Add website" iconRight="add" />}
         >
             <XFormLoadingContent>
                 <XVertical flexGrow={1} separator={8}>
@@ -224,4 +256,4 @@ export const WebsitePlaceholder = withMyOrganizationProfile(props => {
             </XFormLoadingContent>
         </XModalForm>
     );
-}) as React.ComponentType<{ target?: any }>;
+};

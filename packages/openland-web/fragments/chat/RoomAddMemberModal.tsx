@@ -8,8 +8,6 @@ import {
     RoomAddMembersVariables,
     RoomMembersShort_members,
 } from 'openland-api/Types';
-import { withExplorePeople } from 'openland-web/api/withExplorePeople';
-import { withChannelnviteLink } from 'openland-web/api/withChannelnviteLink';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { XModalProps } from 'openland-x-modal/XModal';
@@ -27,15 +25,23 @@ import RevokeIcon from 'openland-icons/ic-revoke.svg';
 import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import CheckIcon from 'openland-icons/ic-check.svg';
 
-const RenewInviteLinkButton = withChannelnviteLink(props => (
-    <XMutation mutation={props.renew} onSuccess={(props as any).onClick}>
-        <RevokeIcon />
-    </XMutation>
-)) as React.ComponentType<{
+const RenewInviteLinkButton = (props: {
     variables: { roomId: string };
     refetchVars: { roomId: string };
     onClick: () => void;
-}>;
+}) => {
+    const client = useClient();
+    const renew = async () => {
+        await client.mutateRoomRenewInviteLink(props.variables);
+        await client.refetchRoomInviteLink(props.variables);
+    };
+
+    return (
+        <XMutation mutation={renew} onSuccess={(props as any).onClick}>
+            <RevokeIcon />
+        </XMutation>
+    );
+};
 
 class RenewInviteLinkButtonWrapper extends React.PureComponent {
     render() {
@@ -168,16 +174,19 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
 
 type OwnerLinkT = { variables: { roomId: string }; isChannel: boolean };
 
-const OwnerLink = withChannelnviteLink(props => {
-    const typedProps = props as typeof props & OwnerLinkT;
+const OwnerLink = (props: OwnerLinkT) => {
+    const client = useClient();
+
+    const data = client.useRoomInviteLink(props.variables);
+
     return (
         <OwnerLinkComponent
-            invite={props.data.link}
-            isChannel={typedProps.isChannel}
-            variables={typedProps.variables}
+            invite={data.link}
+            isChannel={props.isChannel}
+            variables={props.variables}
         />
     );
-}) as React.ComponentType<OwnerLinkT>;
+};
 
 interface SearchBoxProps {
     value: { label: string; value: string }[] | null;
@@ -208,9 +217,14 @@ interface ExplorePeopleProps {
     roomUsers: RoomMembersShort_members[];
 }
 
-const ExplorePeople = withExplorePeople(props => {
-    const typedProps = props as typeof props & ExplorePeopleProps;
-    if (!typedProps.data.items) {
+const ExplorePeople = (props: ExplorePeopleProps) => {
+    const client = useClient();
+
+    const data = client.useExplorePeople(props.variables, {
+        fetchPolicy: 'network-only',
+    });
+
+    if (!data.items) {
         return (
             <XView flexGrow={1} flexShrink={0}>
                 <XLoader loading={true} />
@@ -222,13 +236,13 @@ const ExplorePeople = withExplorePeople(props => {
         <XView flexGrow={1} flexShrink={0}>
             <XScrollView2 flexGrow={1} flexShrink={0}>
                 <XView paddingHorizontal={16} flexDirection="column">
-                    {typedProps.data.items.edges.map(i => {
-                        if (typedProps.selectedUsers && typedProps.selectedUsers.has(i.node.id)) {
+                    {data.items.edges.map(i => {
+                        if (props.selectedUsers && props.selectedUsers.has(i.node.id)) {
                             return null;
                         }
                         if (
-                            typedProps.roomUsers &&
-                            typedProps.roomUsers.find(
+                            props.roomUsers &&
+                            props.roomUsers.find(
                                 (j: RoomMembersShort_members) => j.user.id === i.node.id,
                             )
                         ) {
@@ -246,7 +260,7 @@ const ExplorePeople = withExplorePeople(props => {
                         return (
                             <XView
                                 key={i.node.id}
-                                onClick={() => typedProps.onPick(i.node.name, i.node.id)}
+                                onClick={() => props.onPick(i.node.name, i.node.id)}
                             >
                                 <XUserCard user={i.node} noPath={true} customButton={null} />
                             </XView>
@@ -256,7 +270,7 @@ const ExplorePeople = withExplorePeople(props => {
             </XScrollView2>
         </XView>
     );
-}) as React.ComponentType<ExplorePeopleProps>;
+};
 
 interface InviteModalProps extends XModalProps {
     roomId: string;

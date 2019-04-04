@@ -4,7 +4,7 @@ import { DialogViewCompact } from './DialogViewCompact';
 import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { withGlobalSearch } from 'openland-web/api/withGlobalSearch';
+import { useClient } from 'openland-web/utils/useClient';
 
 const PlaceholderEmpty = Glamorous(XText)({
     opacity: 0.5,
@@ -33,14 +33,19 @@ type DialogSearchResultsT = {
     variables: { query: string };
 };
 
-export const DialogSearchResults = withGlobalSearch(props => {
-    const typeProps = props as typeof props & DialogSearchResultsT;
-    if (!typeProps.data || !typeProps.data.items) {
+export const DialogSearchResults = (props: DialogSearchResultsT) => {
+    const client = useClient();
+
+    const data = client.useGlobalSearch(props.variables, {
+        fetchPolicy: 'cache-and-network',
+    });
+
+    if (!data || !data.items) {
         return <PlaceholderLoader color="#334562" />;
     }
 
     // Why?
-    let items = typeProps.data.items.reduce(
+    let items = data.items.reduce(
         (p, x) => {
             if (!p.find(c => c.id === x.id)) {
                 p.push(x);
@@ -103,12 +108,12 @@ export const DialogSearchResults = withGlobalSearch(props => {
                 return (
                     <DialogViewCompact
                         key={i.id}
-                        onSelect={typeProps.onSelect}
-                        onClick={typeProps.onClick}
+                        onSelect={props.onSelect}
+                        onClick={props.onClick}
                         item={item}
                     />
                 );
             })}
         </>
     );
-}) as React.ComponentType<DialogSearchResultsT>;
+};

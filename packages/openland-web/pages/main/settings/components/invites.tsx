@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withOrganizationInviteMembers } from '../../../../api/withOrganizationInviteMember';
 import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
 import { XModalCloser } from 'openland-x-modal/XModal';
 import { XInput, XInputGroup } from 'openland-x/XInput';
@@ -22,6 +21,7 @@ import LinkIcon from 'openland-icons/ic-link.svg';
 import CloseIcon from 'openland-icons/ic-close-1.svg';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { useClient } from 'openland-web/utils/useClient';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const AddButtonStyled = Glamorous(XLink)({
     fontSize: 14,
@@ -558,24 +558,30 @@ class InvitesModalRaw extends React.Component<
     }
 }
 
-type InvitesToOrganizationModalProps = {
+export const InvitesToOrganizationModal = ({
+    targetQuery,
+    target,
+    isCommunity,
+}: {
     targetQuery?: string;
     target?: any;
-    refetchVars?: { orgId: string };
     isCommunity: boolean;
-};
-
-export const InvitesToOrganizationModal = withOrganizationInviteMembers(props => {
-    const {
-        sendInvite,
-        targetQuery,
-        target,
-        isCommunity,
-        router: {
-            routeQuery: { organizationId },
-        },
-    } = props as typeof props & InvitesToOrganizationModalProps;
+}) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
     const isMobile = React.useContext(IsMobileContext);
+
+    const { organizationId } = router.routeQuery;
+
+    const sendInvite = async ({
+        variables,
+    }: {
+        variables: {
+            inviteRequests: any;
+        };
+    }) => {
+        await client.mutateOrganizationInviteMembers(variables);
+    };
 
     return (
         <InvitesModalRaw
@@ -590,7 +596,7 @@ export const InvitesToOrganizationModal = withOrganizationInviteMembers(props =>
             isCommunity={isCommunity}
         />
     );
-}) as React.ComponentType<InvitesToOrganizationModalProps>;
+};
 
 type InvitesGlobalModalProps = {
     targetQuery?: string;

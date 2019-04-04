@@ -21,7 +21,6 @@ import {
     extractHostname,
 } from './OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { withOnline } from 'openland-web/api/withOnline';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../../components/XOverflow';
 import { XSocialButton } from 'openland-x/XSocialButton';
@@ -78,32 +77,32 @@ const StatusWrapperOnline = css`
     margin-top: 7px;
 `;
 
-const UserStatus = withOnline(props => {
-    if ((props as any).isBot) {
+const UserStatus = (props: { variables: { userId: string }; isBot: boolean }) => {
+    const client = useClient();
+    const { user } = client.useOnline(props.variables, {
+        fetchPolicy: 'network-only',
+    });
+
+    if (props.isBot) {
         return <div className={StatusWrapperOnline}>bot</div>;
     }
-    if (
-        props.data.user &&
-        (props.data.user.lastSeen &&
-            props.data.user.lastSeen !== 'online' &&
-            !props.data.user.online)
-    ) {
+    if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
         return (
             <div className={StatusWrapperOffline}>
                 {TextProfiles.User.status.lastSeen}{' '}
-                {props.data.user.lastSeen === 'never_online' ? (
+                {user.lastSeen === 'never_online' ? (
                     TextProfiles.User.status.momentsAgo
                 ) : (
-                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+                    <XDate value={user.lastSeen} format="humanize_cute" />
                 )}
             </div>
         );
-    } else if (props.data.user && props.data.user.online) {
+    } else if (user && user.online) {
         return <div className={StatusWrapperOnline}>{TextProfiles.User.status.online}</div>;
     } else {
         return null;
     }
-}) as React.ComponentType<{ variables: { userId: string }; isBot: boolean }>;
+};
 
 const AvatarModal = (props: { photo?: string; userName: string; userId: string }) => {
     return (

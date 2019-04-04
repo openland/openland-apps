@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withExploreCommunities } from 'openland-web/api/withExploreCommunities';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
 import { OrganizationProfile } from '../profile/components/OrganizationProfileComponent';
@@ -10,35 +9,38 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { withApp } from 'openland-web/components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
-
+import { useClient } from 'openland-web/utils/useClient';
 interface CommunitiesCardsProps {
     variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
 }
 
-export const CommunitiesCards = withExploreCommunities(props => {
-    if (!(props.data && props.data.items)) {
+export const CommunitiesCards = (props: CommunitiesCardsProps) => {
+    const client = useClient();
+
+    const data = client.useExploreComunity(props.variables);
+
+    if (!(data && data.items)) {
         return null;
     }
 
     let noData =
-        props.error ||
-        props.data === undefined ||
-        props.data.items === undefined ||
-        props.data.items === null ||
-        props.data.items.edges.length === 0;
+        data === undefined ||
+        data.items === undefined ||
+        data.items === null ||
+        data.items.edges.length === 0;
 
-    (props as any).tagsCount(noData ? 0 : props.data.items.pageInfo.itemsCount);
+    props.tagsCount(noData ? 0 : data.items.pageInfo.itemsCount);
 
     return (
         <>
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
-                    {props.data.items.edges.map((i, j) => (
+                    {data.items.edges.map((i, j) => (
                         <XCommunityCard key={'_org_card_' + i.node.id} community={i.node} />
                     ))}
                     <PagePagination
-                        pageInfo={props.data.items.pageInfo}
+                        pageInfo={data.items.pageInfo}
                         currentRoute="/directory/communities"
                     />
                 </XContentWrapper>
@@ -46,7 +48,7 @@ export const CommunitiesCards = withExploreCommunities(props => {
             {noData && <EmptySearchBlock text="No community matches your search" />}
         </>
     );
-}) as React.ComponentType<CommunitiesCardsProps>;
+};
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {

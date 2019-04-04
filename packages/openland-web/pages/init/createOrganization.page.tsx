@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withApp } from '../../components/withApp';
-import { withCreateOrganization } from '../../api/withCreateOrganization';
 import { withUserInfo } from '../../components/UserInfo';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
@@ -12,21 +11,34 @@ import {
     CreateOrganizationFormInner,
 } from './components/SignComponents';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { withExploreOrganizations } from '../../api/withExploreOrganizations';
 import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks';
 import { withRouter } from 'openland-x-routing/withRouter';
+import { useClient } from 'openland-web/utils/useClient';
 
-const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
+const OrganizationsSelectorOptionsFetcher = (props: {
+    children: any;
+    variables: {
+        all: boolean;
+        prefix: string;
+        sort: string;
+    };
+}) => {
+    const client = useClient();
+
+    const data = client.useExploreOrganizations(props.variables, {
+        fetchPolicy: 'network-only',
+    });
+
     const children = props.children as Function;
 
     return (
         <>
             {children({
                 data:
-                    !props.data || !props.data.items
+                    !data || !data.items
                         ? []
-                        : props.data.items.edges
+                        : data.items.edges
                               .filter(({ node }: any) => {
                                   return node.status === 'activated';
                               })
@@ -37,7 +49,7 @@ const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
             })}
         </>
     );
-});
+};
 
 class OrganizationsSelectorOptionsFetcherInner extends React.Component<
     {
@@ -145,6 +157,7 @@ class CreateOrganizationPrefixHolderRoot extends React.Component<
 }
 
 const CreateOrganizationPrefixHolder = (props: any) => {
+    const client = useClient();
     let roomView = Cookie.get('x-openland-invite') || false;
     const [isMobile] = useIsMobile();
 
@@ -152,12 +165,20 @@ const CreateOrganizationPrefixHolder = (props: any) => {
         roomView = false;
     }
 
-    return <CreateOrganizationPrefixHolderRoot {...props} roomView={roomView} />;
+    const createOrganization = async ({ variables }: { variables: any }) => {
+        await client.mutateCreateOrganization(variables);
+    };
+
+    return (
+        <CreateOrganizationPrefixHolderRoot
+            {...props}
+            roomView={roomView}
+            createOrganization={createOrganization}
+        />
+    );
 };
 
-export const CreateOrganizationForm = withCreateOrganization(
-    withRouter(withUserInfo(CreateOrganizationPrefixHolder)),
-);
+export const CreateOrganizationForm = withRouter(withUserInfo(CreateOrganizationPrefixHolder));
 
 export default withApp('Create Organization', 'viewer', props => {
     if (!canUseDOM) {
