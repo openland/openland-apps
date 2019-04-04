@@ -30,10 +30,10 @@
       }
     },
     {
-      "signature": "59c05fb71424f956caae169ff2f1d8f97c95d4df2bf0a38ae4d6f160c1712291",
-      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query AccountInviteInfo($inviteKey:String!){invite:alphaInviteInfo(key:$inviteKey){__typename creator{__typename...UserShort}forEmail forName id joined key membersCount orgId organization{__typename isCommunity:alphaIsCommunity}photo title}}",
+      "signature": "eaec8787474f250bcd369eaabf12489769442a317d607e1e34f69d388441f9bf",
+      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query AccountInviteInfo($inviteKey:String!){invite:alphaInviteInfo(key:$inviteKey){__typename creator{__typename...UserShort}forEmail forName id joined key membersCount orgId organization{__typename about isCommunity:alphaIsCommunity}photo title}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query AccountInviteInfo($inviteKey:String!){alphaInviteInfo(key:$inviteKey){__typename creator{__typename...UserShort}forEmail forName id joined key membersCount orgId organization{__typename alphaIsCommunity}photo title}}"
+        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query AccountInviteInfo($inviteKey:String!){alphaInviteInfo(key:$inviteKey){__typename creator{__typename...UserShort}forEmail forName id joined key membersCount orgId organization{__typename about alphaIsCommunity}photo title}}"
       }
     },
     {

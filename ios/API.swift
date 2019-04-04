@@ -2338,7 +2338,7 @@ public final class CreateOrganizationMutation: GraphQLMutation {
 
 public final class AccountInviteInfoQuery: GraphQLQuery {
   public let operationDefinition =
-    "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n    membersCount\n    organization {\n      __typename\n      isCommunity: alphaIsCommunity\n    }\n  }\n}"
+    "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n    membersCount\n    organization {\n      __typename\n      isCommunity: alphaIsCommunity\n      about\n    }\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
 
@@ -2570,6 +2570,7 @@ public final class AccountInviteInfoQuery: GraphQLQuery {
         public static let selections: [GraphQLSelection] = [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("alphaIsCommunity", alias: "isCommunity", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("about", type: .scalar(String.self)),
         ]
 
         public private(set) var resultMap: ResultMap
@@ -2578,8 +2579,8 @@ public final class AccountInviteInfoQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public init(isCommunity: Bool) {
-          self.init(unsafeResultMap: ["__typename": "Organization", "isCommunity": isCommunity])
+        public init(isCommunity: Bool, about: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "Organization", "isCommunity": isCommunity, "about": about])
         }
 
         public var __typename: String {
@@ -2597,6 +2598,15 @@ public final class AccountInviteInfoQuery: GraphQLQuery {
           }
           set {
             resultMap.updateValue(newValue, forKey: "isCommunity")
+          }
+        }
+
+        public var about: String? {
+          get {
+            return resultMap["about"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "about")
           }
         }
       }

@@ -183,6 +183,7 @@ export interface AccountInviteInfo_invite_creator {
 export interface AccountInviteInfo_invite_organization {
   __typename: "Organization";
   isCommunity: boolean;
+  about: string | null;
 }
 
 export interface AccountInviteInfo_invite {

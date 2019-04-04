@@ -69,6 +69,7 @@ export const AccountInviteInfoQuery = gql`
             membersCount
             organization {
                 isCommunity: alphaIsCommunity
+                about
             }
         }
     }
