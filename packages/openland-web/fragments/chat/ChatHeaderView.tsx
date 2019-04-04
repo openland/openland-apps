@@ -202,6 +202,8 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                     />
                     <AddMembersModal
                         id={room.id}
+                        isRoom={true}
+                        isOrganization={false}
                         isChannel={(room as Room_room_SharedRoom).isChannel}
                     />
                 </>
