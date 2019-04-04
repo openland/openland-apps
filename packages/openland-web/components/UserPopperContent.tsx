@@ -33,9 +33,18 @@ const Buttons = Glamorous(XHorizontal)({
 
 const Status = (({ variables }) => {
     const client = useClient();
-    const { user } = client.useOnline(variables, {
-        fetchPolicy: 'network-only',
-    });
+    const data = client.useWithoutLoaderOnline(
+        variables,
+        //     {
+        //     fetchPolicy: 'network-only',
+        // }
+    );
+
+    if (!data) {
+        return null;
+    }
+
+    const { user } = data;
 
     if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
         return (

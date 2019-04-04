@@ -712,11 +712,14 @@ interface ExplorePeopleProps {
 const ExplorePeople = (props: ExplorePeopleProps) => {
     const client = useClient();
 
-    const data = client.useExplorePeople(props.variables, {
-        fetchPolicy: 'network-only',
-    });
+    const data = client.useWithoutLoaderExplorePeople(
+        props.variables,
+        //     {
+        //     fetchPolicy: 'network-only',
+        // }
+    );
 
-    if (!data.items) {
+    if (!data || !data.items) {
         return (
             <XView flexGrow={1} flexShrink={0}>
                 <XLoader loading={true} />
@@ -1124,9 +1127,9 @@ const OrganizationProvider = ({
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const data = client.useOrganization(variables);
+    const data = client.useWithoutLoaderOrganization(variables);
 
-    return data.organization ? (
+    return data && data.organization ? (
         <OrganizationProfileInner
             organization={data.organization}
             router={router}

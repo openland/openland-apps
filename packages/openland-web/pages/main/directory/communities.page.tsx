@@ -18,7 +18,7 @@ interface CommunitiesCardsProps {
 export const CommunitiesCards = (props: CommunitiesCardsProps) => {
     const client = useClient();
 
-    const data = client.useExploreComunity(props.variables);
+    const data = client.useWithoutLoaderExploreComunity(props.variables);
 
     if (!(data && data.items)) {
         return null;

@@ -11,12 +11,17 @@ import { TextProfiles } from 'openland-text/TextProfiles';
 import { SettingsNavigation } from './components/SettingsNavigation';
 import { Content } from './components/SettingComponents';
 import { useClient } from 'openland-web/utils/useClient';
+import { XLoader } from 'openland-x/XLoader';
 
 const { App } = TextProfiles;
 
 export default withApp('My Apps', 'feature-non-production', () => {
     const client = useClient();
-    const { apps } = client.useMyApps();
+    const data = client.useWithoutLoaderMyApps();
+    if (!data) {
+        return <XLoader loading={true} />;
+    }
+
     return (
         <SettingsNavigation title="My Apps">
             <Content>
@@ -32,7 +37,7 @@ export default withApp('My Apps', 'feature-non-production', () => {
                     text={App.create}
                 />
 
-                {apps.map(app => (
+                {data.apps.map(app => (
                     <XAppCard
                         key={'app_' + app.id}
                         app={app}
@@ -61,8 +66,8 @@ export default withApp('My Apps', 'feature-non-production', () => {
             </Content>
 
             <CreateAppModal />
-            <AddBotToChat apps={apps} />
-            <EditAppModal apps={apps} />
+            <AddBotToChat apps={data.apps} />
+            <EditAppModal apps={data.apps} />
         </SettingsNavigation>
     );
 });

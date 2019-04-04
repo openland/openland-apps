@@ -9,7 +9,11 @@ export default withApp('Organization profile edit', 'viewer', () => {
     let router = React.useContext(XRouterContext)!;
     const client = useClient();
     let organizationId = router.routeQuery.organizationId;
-    const data = client.useOrganizationProfile({ organizationId });
+    const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
+
+    if (!data) {
+        return <XLoader loading={true} />;
+    }
 
     const updateOrganizaton = async ({ variables: { input } }: { variables: { input: any } }) => {
         await client.mutateUpdateOrganization({ input, organizationId });

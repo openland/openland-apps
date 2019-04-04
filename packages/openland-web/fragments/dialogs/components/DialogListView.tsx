@@ -32,6 +32,7 @@ export interface DialogListViewProps {
 }
 
 export const DialogListView = XMemo<DialogListViewProps>(props => {
+    console.log('render DialogListView');
     const ref = React.createRef<XInput>();
     let messenger = React.useContext(MessengerContext);
     let [query, setQuery] = React.useState('');
@@ -61,21 +62,18 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         };
     }, []);
 
-    const renderDialog = React.useMemo(
-        () => {
-            return (item: DialogDataSourceItem) => {
-                let selected = false;
-                if (
-                    conversationId &&
-                    (conversationId === item.key || conversationId === item.flexibleId)
-                ) {
-                    selected = true;
-                }
-                return <DialogView item={item} selected={selected} />;
-            };
-        },
-        [props.onDialogClick, conversationId],
-    );
+    const renderDialog = React.useMemo(() => {
+        return (item: DialogDataSourceItem) => {
+            let selected = false;
+            if (
+                conversationId &&
+                (conversationId === item.key || conversationId === item.flexibleId)
+            ) {
+                selected = true;
+            }
+            return <DialogView item={item} selected={selected} />;
+        };
+    }, [props.onDialogClick, conversationId]);
 
     const getCurrentConversationId = () => {
         return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;

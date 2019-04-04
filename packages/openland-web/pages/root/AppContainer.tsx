@@ -5,10 +5,17 @@ import { MessengerProvider } from 'openland-web/components/messenger/MessengerPr
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
 import { useClient } from 'openland-web/utils/useClient';
+import { XLoader } from 'openland-x/XLoader';
 
 export const AppContainer = (props: { children: any }) => {
+    console.log('AppContainer');
     const client = useClient();
-    const data = client.useAccount();
+
+    const data = client.useWithoutLoaderAccount();
+
+    if (!data) {
+        return <XLoader loading={true} />;
+    }
 
     let hasMessenger = canUseDOM && !!data.me;
     return (

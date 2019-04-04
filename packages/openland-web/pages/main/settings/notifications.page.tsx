@@ -427,7 +427,11 @@ export default withApp(
             return null;
         }
         const client = useClient();
-        const settings = client.useSettings();
+        const settings = client.useWithoutLoaderSettings();
+
+        if (!settings) {
+            return null;
+        }
         return <NotificationsSettingsPageInner settings={settings.settings} client={client} />;
     },
 

@@ -15,7 +15,7 @@ export const AboutPlaceholder = (props: { target?: any }) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
     const organizationId = router.routeQuery.organizationId;
-    const data = client.useOrganizationProfile({ organizationId });
+    const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
 
     if (!(data && data.organizationProfile)) {
         return null;
@@ -55,7 +55,7 @@ export const LeaveOrganizationModal = () => {
     let router = React.useContext(XRouterContext)!;
     const organizationId = router.routeQuery.organizationId;
 
-    const data = client.useOrganizationProfile({ organizationId });
+    const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
 
     let ctx = React.useContext(UserInfoContext);
     if (!(data && data.organizationProfile && !!ctx)) {
@@ -108,7 +108,7 @@ export const RemoveOrganizationModal = () => {
     let router = React.useContext(XRouterContext)!;
     const organizationId = router.routeQuery.organizationId;
 
-    const data = client.useOrganizationProfile({ organizationId });
+    const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
 
     if (!(data && data.organizationProfile)) {
         return null;
@@ -154,7 +154,7 @@ export const SocialPlaceholder = (props: { target?: any }) => {
     let router = React.useContext(XRouterContext)!;
     const organizationId = router.routeQuery.organizationId;
 
-    const data = client.useOrganizationProfile({ organizationId });
+    const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
 
     if (!(data && data.organizationProfile)) {
         return null;
@@ -218,7 +218,7 @@ export const WebsitePlaceholder = (props: { target?: any }) => {
     let router = React.useContext(XRouterContext)!;
     const organizationId = router.routeQuery.organizationId;
 
-    const data = client.useOrganizationProfile({ organizationId });
+    const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
 
     if (!(data && data.organizationProfile)) {
         return null;

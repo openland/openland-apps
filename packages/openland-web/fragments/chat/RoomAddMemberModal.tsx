@@ -220,9 +220,16 @@ interface ExplorePeopleProps {
 const ExplorePeople = (props: ExplorePeopleProps) => {
     const client = useClient();
 
-    const data = client.useExplorePeople(props.variables, {
-        fetchPolicy: 'network-only',
-    });
+    const data = client.useExplorePeople(
+        props.variables,
+        //     {
+        //     fetchPolicy: 'network-only',
+        // }
+    );
+
+    if (!data) {
+        return null;
+    }
 
     if (!data.items) {
         return (
@@ -434,7 +441,12 @@ export const RoomAddMemberModal = React.memo(
         };
 
         // TODO ask steve to add (opts?: QueryWatchParameters) to propagate fetchPolicy: 'network-only',
-        const data = client.useWithoutLoaderRoomMembersShort({ roomId });
+        const data = client.useWithoutLoaderRoomMembersShort(
+            { roomId },
+            //     {
+            //  fetchPolicy: 'network-only'
+            // }
+        );
 
         if (!data) {
             return null;

@@ -14,7 +14,7 @@ interface RoomsCardsProps {
 
 export const RoomsCards = (props: RoomsCardsProps) => {
     const client = useClient();
-    const data = client.useAvailableRooms();
+    const data = client.useWithoutLoaderAvailableRooms();
     if (!data) {
         return null;
     }
