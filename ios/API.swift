@@ -14297,11 +14297,11 @@ public final class ExploreOrganizationsQuery: GraphQLQuery {
   }
 }
 
-public final class ExploreComunityQuery: GraphQLQuery {
+public final class ExploreCommunityQuery: GraphQLQuery {
   public let operationDefinition =
-    "query ExploreComunity($query: String, $sort: String, $page: Int) {\n  items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...OrganizationSearch\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}"
+    "query ExploreCommunity($query: String, $sort: String, $page: Int) {\n  items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...CommunitySearch\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(OrganizationSearch.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(CommunitySearch.fragmentDefinition) }
 
   public var query: String?
   public var sort: String?
@@ -14440,13 +14440,17 @@ public final class ExploreComunityQuery: GraphQLQuery {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(OrganizationSearch.self),
+            GraphQLFragmentSpread(CommunitySearch.self),
           ]
 
           public private(set) var resultMap: ResultMap
 
           public init(unsafeResultMap: ResultMap) {
             self.resultMap = unsafeResultMap
+          }
+
+          public init(id: GraphQLID, superAccountId: GraphQLID, name: String, photo: String? = nil, isMine: Bool, about: String? = nil, status: String, featured: Bool, membersCount: Int) {
+            self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "superAccountId": superAccountId, "name": name, "photo": photo, "isMine": isMine, "about": about, "status": status, "featured": featured, "membersCount": membersCount])
           }
 
           public var __typename: String {
@@ -14474,9 +14478,9 @@ public final class ExploreComunityQuery: GraphQLQuery {
               self.resultMap = unsafeResultMap
             }
 
-            public var organizationSearch: OrganizationSearch {
+            public var communitySearch: CommunitySearch {
               get {
-                return OrganizationSearch(unsafeResultMap: resultMap)
+                return CommunitySearch(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
@@ -19713,6 +19717,127 @@ public struct AppFull: GraphQLFragment {
       set {
         resultMap.updateValue(newValue, forKey: "salt")
       }
+    }
+  }
+}
+
+public struct CommunitySearch: GraphQLFragment {
+  public static let fragmentDefinition =
+    "fragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n}"
+
+  public static let possibleTypes = ["Organization"]
+
+  public static let selections: [GraphQLSelection] = [
+    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+    GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+    GraphQLField("superAccountId", type: .nonNull(.scalar(GraphQLID.self))),
+    GraphQLField("name", type: .nonNull(.scalar(String.self))),
+    GraphQLField("photo", type: .scalar(String.self)),
+    GraphQLField("isMine", type: .nonNull(.scalar(Bool.self))),
+    GraphQLField("about", type: .scalar(String.self)),
+    GraphQLField("status", type: .nonNull(.scalar(String.self))),
+    GraphQLField("alphaFeatured", alias: "featured", type: .nonNull(.scalar(Bool.self))),
+    GraphQLField("membersCount", type: .nonNull(.scalar(Int.self))),
+  ]
+
+  public private(set) var resultMap: ResultMap
+
+  public init(unsafeResultMap: ResultMap) {
+    self.resultMap = unsafeResultMap
+  }
+
+  public init(id: GraphQLID, superAccountId: GraphQLID, name: String, photo: String? = nil, isMine: Bool, about: String? = nil, status: String, featured: Bool, membersCount: Int) {
+    self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "superAccountId": superAccountId, "name": name, "photo": photo, "isMine": isMine, "about": about, "status": status, "featured": featured, "membersCount": membersCount])
+  }
+
+  public var __typename: String {
+    get {
+      return resultMap["__typename"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  public var id: GraphQLID {
+    get {
+      return resultMap["id"]! as! GraphQLID
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  /// # Refactor?
+  public var superAccountId: GraphQLID {
+    get {
+      return resultMap["superAccountId"]! as! GraphQLID
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "superAccountId")
+    }
+  }
+
+  public var name: String {
+    get {
+      return resultMap["name"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "name")
+    }
+  }
+
+  public var photo: String? {
+    get {
+      return resultMap["photo"] as? String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "photo")
+    }
+  }
+
+  public var isMine: Bool {
+    get {
+      return resultMap["isMine"]! as! Bool
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "isMine")
+    }
+  }
+
+  public var about: String? {
+    get {
+      return resultMap["about"] as? String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "about")
+    }
+  }
+
+  public var status: String {
+    get {
+      return resultMap["status"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "status")
+    }
+  }
+
+  public var featured: Bool {
+    get {
+      return resultMap["featured"]! as! Bool
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "featured")
+    }
+  }
+
+  public var membersCount: Int {
+    get {
+      return resultMap["membersCount"]! as! Int
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "membersCount")
     }
   }
 }
@@ -27681,7 +27806,7 @@ public struct OrganizationProfileFull: GraphQLFragment {
 
 public struct OrganizationSearch: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment OrganizationSearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  members: alphaOrganizationMembers {\n    __typename\n    user {\n      __typename\n      id\n      name\n      photo\n    }\n  }\n}"
+    "fragment OrganizationSearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  membersCount\n  featured: alphaFeatured\n  members: alphaOrganizationMembers {\n    __typename\n    user {\n      __typename\n      id\n      name\n      photo\n    }\n  }\n}"
 
   public static let possibleTypes = ["Organization"]
 
@@ -27694,6 +27819,7 @@ public struct OrganizationSearch: GraphQLFragment {
     GraphQLField("isMine", type: .nonNull(.scalar(Bool.self))),
     GraphQLField("about", type: .scalar(String.self)),
     GraphQLField("status", type: .nonNull(.scalar(String.self))),
+    GraphQLField("membersCount", type: .nonNull(.scalar(Int.self))),
     GraphQLField("alphaFeatured", alias: "featured", type: .nonNull(.scalar(Bool.self))),
     GraphQLField("alphaOrganizationMembers", alias: "members", type: .nonNull(.list(.nonNull(.object(Member.selections))))),
   ]
@@ -27704,8 +27830,8 @@ public struct OrganizationSearch: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(id: GraphQLID, superAccountId: GraphQLID, name: String, photo: String? = nil, isMine: Bool, about: String? = nil, status: String, featured: Bool, members: [Member]) {
-    self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "superAccountId": superAccountId, "name": name, "photo": photo, "isMine": isMine, "about": about, "status": status, "featured": featured, "members": members.map { (value: Member) -> ResultMap in value.resultMap }])
+  public init(id: GraphQLID, superAccountId: GraphQLID, name: String, photo: String? = nil, isMine: Bool, about: String? = nil, status: String, membersCount: Int, featured: Bool, members: [Member]) {
+    self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "superAccountId": superAccountId, "name": name, "photo": photo, "isMine": isMine, "about": about, "status": status, "membersCount": membersCount, "featured": featured, "members": members.map { (value: Member) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -27778,6 +27904,15 @@ public struct OrganizationSearch: GraphQLFragment {
     }
     set {
       resultMap.updateValue(newValue, forKey: "status")
+    }
+  }
+
+  public var membersCount: Int {
+    get {
+      return resultMap["membersCount"]! as! Int
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "membersCount")
     }
   }
 

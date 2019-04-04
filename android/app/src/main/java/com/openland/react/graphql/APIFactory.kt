@@ -1616,8 +1616,8 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        builder.all(readBool(src, "all"))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
-    if (name == "ExploreComunity") {
-       val builder = ExploreComunityQuery.builder()
+    if (name == "ExploreCommunity") {
+       val builder = ExploreCommunityQuery.builder()
        builder.query(readString(src, "query"))
        builder.sort(readString(src, "sort"))
        builder.page(readInt(src, "page"))
@@ -2278,6 +2278,10 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
 fun readFragment(name: String, src: ReadableMap): Pair<String, GraphqlFragment> {
     if (name == "AppFull") {
         val res = AppFull.Mapper().map(responseReader(src))
+        return (res.__typename() + "$" + res.id()) to res
+    }
+    if (name == "CommunitySearch") {
+        val res = CommunitySearch.Mapper().map(responseReader(src))
         return (res.__typename() + "$" + res.id()) to res
     }
     if (name == "ConferenceFull") {

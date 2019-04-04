@@ -47,6 +47,7 @@
         "@types/webpack": "^4.4.20",
         "@welldone-software/why-did-you-render": "^2.5.2",
         "@zeit/next-typescript": "^1.1.1",
+        "@zeit/next-workers": "^1.0.0",
         "add": "^2.0.6",
         "apollo-cache-hermes": "^0.8.8",
         "apollo-cache-inmemory": "^1.1.4",
@@ -199,6 +200,7 @@
         "use-onclickoutside": "^0.3.0",
         "uuid": "^3.3.2",
         "webrtc-adapter": "^6.4.6",
+        "worker-loader": "^2.0.0",
         "yarn": "^1.9.4"
     },
     "devDependencies": {

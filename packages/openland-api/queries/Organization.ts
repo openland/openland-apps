@@ -3,6 +3,7 @@ import { OrganizationFull } from '../fragments/OrganizationFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
 import { OrganizationSearch } from '../fragments/OrganizationSearch';
+import { CommunitySearch } from '../fragments/CommunitySearch';
 import { UserShort } from 'openland-api/fragments/UserShort';
 
 export const MyOrganizationsQuery = gql`
@@ -99,12 +100,12 @@ export const ExploreOrganizationsQuery = gql`
     ${OrganizationSearch}
 `;
 
-export const ExploreComunityQuery = gql`
-    query ExploreComunity($query: String, $sort: String, $page: Int) {
+export const ExploreCommunityQuery = gql`
+    query ExploreCommunity($query: String, $sort: String, $page: Int) {
         items: alphaComunityPrefixSearch(query: $query, sort: $sort, page: $page, first: 25) {
             edges {
                 node {
-                    ...OrganizationSearch
+                    ...CommunitySearch
                 }
                 cursor
             }
@@ -118,7 +119,7 @@ export const ExploreComunityQuery = gql`
             }
         }
     }
-    ${OrganizationSearch}
+    ${CommunitySearch}
 `;
 
 export const OrganizationChangeMemberRoleMutation = gql`

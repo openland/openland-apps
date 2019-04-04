@@ -21648,6 +21648,7 @@ export interface ExploreOrganizations_items_edges_node {
   isMine: boolean;
   about: string | null;
   status: string;
+  membersCount: number;
   featured: boolean;
   members: ExploreOrganizations_items_edges_node_members[];
 }
@@ -21692,22 +21693,10 @@ export interface ExploreOrganizationsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ExploreComunity
+// GraphQL query operation: ExploreCommunity
 // ====================================================
 
-export interface ExploreComunity_items_edges_node_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ExploreComunity_items_edges_node_members {
-  __typename: "OrganizationJoinedMember";
-  user: ExploreComunity_items_edges_node_members_user;
-}
-
-export interface ExploreComunity_items_edges_node {
+export interface ExploreCommunity_items_edges_node {
   __typename: "Organization";
   id: string;
   /**
@@ -21720,16 +21709,16 @@ export interface ExploreComunity_items_edges_node {
   about: string | null;
   status: string;
   featured: boolean;
-  members: ExploreComunity_items_edges_node_members[];
+  membersCount: number;
 }
 
-export interface ExploreComunity_items_edges {
+export interface ExploreCommunity_items_edges {
   __typename: "OrganizationsEdge";
-  node: ExploreComunity_items_edges_node;
+  node: ExploreCommunity_items_edges_node;
   cursor: string;
 }
 
-export interface ExploreComunity_items_pageInfo {
+export interface ExploreCommunity_items_pageInfo {
   __typename: "PageInfo";
   hasNextPage: boolean;
   hasPreviousPage: boolean;
@@ -21739,17 +21728,17 @@ export interface ExploreComunity_items_pageInfo {
   openEnded: boolean;
 }
 
-export interface ExploreComunity_items {
+export interface ExploreCommunity_items {
   __typename: "OrganizationsConnection";
-  edges: ExploreComunity_items_edges[];
-  pageInfo: ExploreComunity_items_pageInfo;
+  edges: ExploreCommunity_items_edges[];
+  pageInfo: ExploreCommunity_items_pageInfo;
 }
 
-export interface ExploreComunity {
-  items: ExploreComunity_items;
+export interface ExploreCommunity {
+  items: ExploreCommunity_items;
 }
 
-export interface ExploreComunityVariables {
+export interface ExploreCommunityVariables {
   query?: string | null;
   sort?: string | null;
   page?: number | null;
@@ -22874,6 +22863,7 @@ export interface OrganizationAlterPublished_alphaAlterPublished {
   isMine: boolean;
   about: string | null;
   status: string;
+  membersCount: number;
   featured: boolean;
   members: OrganizationAlterPublished_alphaAlterPublished_members[];
 }
@@ -22919,6 +22909,7 @@ export interface OrganizationByPrefix_organizationByPrefix {
   isMine: boolean;
   about: string | null;
   status: string;
+  membersCount: number;
   featured: boolean;
   members: OrganizationByPrefix_organizationByPrefix_members[];
 }
@@ -24822,6 +24813,30 @@ export interface AppFull {
   photoRef: AppFull_photoRef | null;
   about: string | null;
   token: AppFull_token;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: CommunitySearch
+// ====================================================
+
+export interface CommunitySearch {
+  __typename: "Organization";
+  id: string;
+  /**
+   * # Refactor?
+   */
+  superAccountId: string;
+  name: string;
+  photo: string | null;
+  isMine: boolean;
+  about: string | null;
+  status: string;
+  featured: boolean;
+  membersCount: number;
 }
 
 /* tslint:disable */
@@ -26833,6 +26848,7 @@ export interface OrganizationSearch {
   isMine: boolean;
   about: string | null;
   status: string;
+  membersCount: number;
   featured: boolean;
   members: OrganizationSearch_members[];
 }

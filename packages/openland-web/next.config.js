@@ -3,6 +3,7 @@ const path = require('path');
 const withTypescript = require('@zeit/next-typescript');
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const withCSS = require('@zeit/next-css');
+const withWorkers = require('@zeit/next-workers')
 
 const config = {
     pageExtensions: ['page.ts', 'page.tsx'],
@@ -61,7 +62,7 @@ const config = {
 
         // HACK: Quick fix to resolve the custom babel config in root
         config.module.rules.forEach(rule => {
-            if (rule.use.loader === 'next-babel-loader') {
+            if (rule.use && rule.use.loader === 'next-babel-loader') {
                 rule.use.options.cwd = undefined;
             }
         });
@@ -255,4 +256,4 @@ const config = {
     assetPrefix: process.env.CDN_PREFIX ? process.env.CDN_PREFIX : undefined,
 };
 
-module.exports = withCSS(withBundleAnalyzer(config));
+module.exports = withWorkers(withCSS(withBundleAnalyzer(config)));

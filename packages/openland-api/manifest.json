@@ -751,17 +751,17 @@
       }
     },
     {
-      "signature": "ce83fe7c3272e142c4cd4fa43fd46dfd09c531ee692f1b2311befc6b1160304c",
-      "document": "fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine name photo status superAccountId}query ExploreOrganizations($after:String,$all:Boolean,$page:Int,$prefix:String,$query:String,$sort:String){items:alphaOrganizations(after:$after,all:$all,first:25,page:$page,prefix:$prefix,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...OrganizationSearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}",
+      "signature": "22849935ec60817dbe3569edfbe98c5deccb8238912f559db94d53d8ece680a7",
+      "document": "fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}query ExploreOrganizations($after:String,$all:Boolean,$page:Int,$prefix:String,$query:String,$sort:String){items:alphaOrganizations(after:$after,all:$all,first:25,page:$page,prefix:$prefix,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...OrganizationSearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationSearch on Organization{__typename about alphaFeatured alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine name photo status superAccountId}query ExploreOrganizations($after:String,$all:Boolean,$page:Int,$prefix:String,$query:String,$sort:String){alphaOrganizations(after:$after,all:$all,first:0,page:$page,prefix:$prefix,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...OrganizationSearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}"
+        "engineSignature": "fragment OrganizationSearch on Organization{__typename about alphaFeatured alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}query ExploreOrganizations($after:String,$all:Boolean,$page:Int,$prefix:String,$query:String,$sort:String){alphaOrganizations(after:$after,all:$all,first:0,page:$page,prefix:$prefix,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...OrganizationSearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}"
       }
     },
     {
-      "signature": "bf85295909855b7d1989ce4158666c599084470d1f55f7fa0b70ea9b260c83f2",
-      "document": "fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine name photo status superAccountId}query ExploreComunity($page:Int,$query:String,$sort:String){items:alphaComunityPrefixSearch(first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...OrganizationSearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}",
+      "signature": "53ec54cffef45accbe454bb112453f68a85839f93a56fb89044b53fa1e059b2d",
+      "document": "fragment CommunitySearch on Organization{__typename about featured:alphaFeatured id isMine membersCount name photo status superAccountId}query ExploreCommunity($page:Int,$query:String,$sort:String){items:alphaComunityPrefixSearch(first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationSearch on Organization{__typename about alphaFeatured alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine name photo status superAccountId}query ExploreComunity($page:Int,$query:String,$sort:String){alphaComunityPrefixSearch(first:0,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...OrganizationSearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}"
+        "engineSignature": "fragment CommunitySearch on Organization{__typename about alphaFeatured id isMine membersCount name photo status superAccountId}query ExploreCommunity($page:Int,$query:String,$sort:String){alphaComunityPrefixSearch(first:0,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}"
       }
     },
     {
@@ -828,17 +828,17 @@
       }
     },
     {
-      "signature": "8212aec03b7361beb7f46c4c8d60bddbbe22b90fd21f64921200fc0223be6213",
-      "document": "fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine name photo status superAccountId}mutation OrganizationAlterPublished($organizationId:ID!,$published:Boolean!){alphaAlterPublished(id:$organizationId,published:$published){__typename...OrganizationSearch}}",
+      "signature": "dcaef4a427845eaf0d1d38c692e48d1aad58d035d80894f6d83cf1ede9639159",
+      "document": "fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}mutation OrganizationAlterPublished($organizationId:ID!,$published:Boolean!){alphaAlterPublished(id:$organizationId,published:$published){__typename...OrganizationSearch}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationSearch on Organization{__typename about alphaFeatured alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine name photo status superAccountId}mutation OrganizationAlterPublished($organizationId:ID!,$published:Boolean!){alphaAlterPublished(id:$organizationId,published:$published){__typename...OrganizationSearch}}"
+        "engineSignature": "fragment OrganizationSearch on Organization{__typename about alphaFeatured alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}mutation OrganizationAlterPublished($organizationId:ID!,$published:Boolean!){alphaAlterPublished(id:$organizationId,published:$published){__typename...OrganizationSearch}}"
       }
     },
     {
-      "signature": "daa730525edfbf7e103deafd6e537b8d96d6387af9ee4b4255ede9551e49ee0e",
-      "document": "fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine name photo status superAccountId}query OrganizationByPrefix($query:String!){organizationByPrefix:alphaOrganizationByPrefix(query:$query){__typename...OrganizationSearch}}",
+      "signature": "aad552aba0cbf801e2b2628f543d0a4b4a6f20abdb0a2ab380f084d761c02915",
+      "document": "fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}query OrganizationByPrefix($query:String!){organizationByPrefix:alphaOrganizationByPrefix(query:$query){__typename...OrganizationSearch}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationSearch on Organization{__typename about alphaFeatured alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine name photo status superAccountId}query OrganizationByPrefix($query:String!){alphaOrganizationByPrefix(query:$query){__typename...OrganizationSearch}}"
+        "engineSignature": "fragment OrganizationSearch on Organization{__typename about alphaFeatured alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}query OrganizationByPrefix($query:String!){alphaOrganizationByPrefix(query:$query){__typename...OrganizationSearch}}"
       }
     },
     {
