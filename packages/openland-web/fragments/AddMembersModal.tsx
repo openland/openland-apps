@@ -488,7 +488,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                         />
                     </XView>
                     <XView fontSize={16} fontWeight="600" marginBottom={16} marginLeft={24}>
-                        Invitation link
+                        Add people directly
                     </XView>
                     <XView paddingHorizontal={24}>
                         <SearchBox
