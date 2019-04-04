@@ -59,9 +59,9 @@ export abstract class BridgedClient implements GraphqlClient {
         let watch = new BridgedQueryWatch();
         let callbacks = new Map<string, (args: { data?: TQuery, error?: Error }) => void>();
         let resolved = false;
-        let resolve!: (data: TQuery) => void;
-        let reject!: (error: Error) => void;
-        let promise = new Promise<TQuery>((rl, rj) => {
+        let resolve!: () => void;
+        let reject!: () => void;
+        let promise = new Promise<void>((rl, rj) => {
             resolve = rl;
             reject = rj;
         });
@@ -108,9 +108,9 @@ export abstract class BridgedClient implements GraphqlClient {
             if (!resolved) {
                 resolved = true;
                 if (watch.hasError) {
-                    reject(watch.error!);
+                    reject();
                 } else if (watch.hasValue) {
-                    resolve(watch.value!);
+                    resolve();
                 }
             }
             for (let i of callbacks.values()) {

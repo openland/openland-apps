@@ -32,6 +32,31 @@ export class DirectApollolClient implements GraphqlClient {
             fetchPolicy = params.fetchPolicy
         }
         let source = this.client.client.watchQuery<TQuery, TVars>({ query: query.document, variables: vars, fetchPolicy: fetchPolicy })
+        let resolved = false;
+        let resolve!: () => void;
+        let promise = new Promise<void>((rl, rj) => {
+            resolve = rl;
+        });
+        let baseSubscription = source.subscribe({
+            next: (v) => {
+                if (resolved) {
+                    return;
+                }
+                if (v.loading) {
+                    return;
+                }
+                resolve();
+            },
+            error: (e) => {
+                if (resolved) {
+                    return;
+                }
+                resolve();
+            },
+            complete: () => {
+                throwFatalError('Fatal error: Query Watch can\'t be completed')
+            }
+        });
         // let callback: ((args: { data?: TQuery, error?: Error }) => void) | undefined = undefined;
         return {
             subscribe: (handler: ((args: { data?: TQuery, error?: Error }) => void)) => {
@@ -74,17 +99,11 @@ export class DirectApollolClient implements GraphqlClient {
                 }
                 return undefined;
             },
-            result: async () => {
-                let res = await source.result();
-                if (res.errors && res.errors.length > 0) {
-                    return ({ error: convertError([...res.errors]) })
-                } else {
-                    return ({ data: res.data as TQuery })
-                }
-            },
+            result: () => promise,
             destroy: () => {
-                // Nothing to do
-                // this.postQueryWatchEnd(id);
+                if (!baseSubscription.closed) {
+                    baseSubscription.unsubscribe();
+                }
             }
         }
     }
