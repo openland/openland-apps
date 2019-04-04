@@ -246,7 +246,7 @@
 					"type": "String!"
 				}
 			],
-			"source": "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n    membersCount\n  }\n}",
+			"source": "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n    membersCount\n    organization {\n      __typename\n      isCommunity: alphaIsCommunity\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "invite",
@@ -352,6 +352,30 @@
 							"type": "Int",
 							"isConditional": false,
 							"isDeprecated": false
+						},
+						{
+							"responseName": "organization",
+							"fieldName": "organization",
+							"type": "Organization",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "isCommunity",
+									"fieldName": "alphaIsCommunity",
+									"type": "Boolean!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
 						}
 					],
 					"fragmentSpreads": [],
@@ -364,8 +388,8 @@
 				"UserShort",
 				"OrganizationShort"
 			],
-			"sourceWithFragments": "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n    membersCount\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
-			"operationId": "2da685942fa6de5f940052779d13e0b718e11c0747b9d82896167d6aabd3d69a"
+			"sourceWithFragments": "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n    membersCount\n    organization {\n      __typename\n      isCommunity: alphaIsCommunity\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
+			"operationId": "37e8521a928af344d4aab03a91a6cff6bd04b09c85dde23d46241eb60d42798a"
 		},
 		{
 			"filePath": "file:///Users/steve/Develop/openland-apps/packages/openland-api/queries/Account.ts",

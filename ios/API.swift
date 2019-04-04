@@ -2338,7 +2338,7 @@ public final class CreateOrganizationMutation: GraphQLMutation {
 
 public final class AccountInviteInfoQuery: GraphQLQuery {
   public let operationDefinition =
-    "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n    membersCount\n  }\n}"
+    "query AccountInviteInfo($inviteKey: String!) {\n  invite: alphaInviteInfo(key: $inviteKey) {\n    __typename\n    id\n    key\n    orgId\n    title\n    photo\n    joined\n    creator {\n      __typename\n      ...UserShort\n    }\n    forEmail\n    forName\n    membersCount\n    organization {\n      __typename\n      isCommunity: alphaIsCommunity\n    }\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
 
@@ -2393,6 +2393,7 @@ public final class AccountInviteInfoQuery: GraphQLQuery {
         GraphQLField("forEmail", type: .scalar(String.self)),
         GraphQLField("forName", type: .scalar(String.self)),
         GraphQLField("membersCount", type: .scalar(Int.self)),
+        GraphQLField("organization", type: .object(Organization.selections)),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -2401,8 +2402,8 @@ public final class AccountInviteInfoQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, key: String, orgId: GraphQLID, title: String, photo: String? = nil, joined: Bool, creator: Creator? = nil, forEmail: String? = nil, forName: String? = nil, membersCount: Int? = nil) {
-        self.init(unsafeResultMap: ["__typename": "InviteInfo", "id": id, "key": key, "orgId": orgId, "title": title, "photo": photo, "joined": joined, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "forEmail": forEmail, "forName": forName, "membersCount": membersCount])
+      public init(id: GraphQLID, key: String, orgId: GraphQLID, title: String, photo: String? = nil, joined: Bool, creator: Creator? = nil, forEmail: String? = nil, forName: String? = nil, membersCount: Int? = nil, organization: Organization? = nil) {
+        self.init(unsafeResultMap: ["__typename": "InviteInfo", "id": id, "key": key, "orgId": orgId, "title": title, "photo": photo, "joined": joined, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }, "forEmail": forEmail, "forName": forName, "membersCount": membersCount, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }])
       }
 
       public var __typename: String {
@@ -2504,6 +2505,15 @@ public final class AccountInviteInfoQuery: GraphQLQuery {
         }
       }
 
+      public var organization: Organization? {
+        get {
+          return (resultMap["organization"] as? ResultMap).flatMap { Organization(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "organization")
+        }
+      }
+
       public struct Creator: GraphQLSelectionSet {
         public static let possibleTypes = ["User"]
 
@@ -2550,6 +2560,43 @@ public final class AccountInviteInfoQuery: GraphQLQuery {
             set {
               resultMap += newValue.resultMap
             }
+          }
+        }
+      }
+
+      public struct Organization: GraphQLSelectionSet {
+        public static let possibleTypes = ["Organization"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("alphaIsCommunity", alias: "isCommunity", type: .nonNull(.scalar(Bool.self))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(isCommunity: Bool) {
+          self.init(unsafeResultMap: ["__typename": "Organization", "isCommunity": isCommunity])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var isCommunity: Bool {
+          get {
+            return resultMap["isCommunity"]! as! Bool
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "isCommunity")
           }
         }
       }

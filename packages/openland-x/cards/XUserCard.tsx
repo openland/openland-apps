@@ -25,20 +25,10 @@ const StatusWrapperOnline = css`
     line-height: 18px;
 `;
 
-const UserStatus = (props: { variables: { userId: string }; isBot: boolean }) => {
-    const client = useClient();
-    const data = client.useWithoutLoaderOnline(
-        props.variables,
-        //     {
-        //     fetchPolicy: 'network-only',
-        // }
-    );
-    if (!data) {
-        return null;
-    }
-    const { user } = data;
+const UserStatus = (props: { user: Partial<User_user> }) => {
+    const { user } = props;
 
-    if (props.isBot) {
+    if (user.isBot) {
         return <div className={StatusWrapperOnline}>bot</div>;
     }
 
@@ -229,7 +219,7 @@ export const XUserCard = ({
                             {!isMobile && organizationElem}
                         </XView>
                         {!isMobile && user.id && (
-                            <UserStatus variables={{ userId: user.id }} isBot={!!user.isBot} />
+                            <UserStatus user={user} />
                         )}
                         {isMobile && organizationElem}
                     </XView>
