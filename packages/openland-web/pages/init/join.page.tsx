@@ -65,6 +65,9 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                                 id: data.invite.id,
                                 membersCount: data.invite.membersCount,
                                 description: '',
+                                isCommunity: data.invite.organization
+                                    ? data.invite.organization.isCommunity
+                                    : false,
                             }}
                             invite={invitedByUser ? { invitedByUser } : undefined}
                         />
