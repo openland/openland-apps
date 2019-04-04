@@ -22,7 +22,7 @@ interface UrlAugmentationContentProps {
     compensateBubble?: boolean;
     maxWidth?: number;
     onUserPress: (id: string) => void;
-    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     padded?: boolean;
 }
@@ -74,12 +74,12 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         }
     }
 
-    onMediaPress = (event: ASPressEvent) => {
+    onMediaPress = (event: ASPressEvent, radius?: number) => {
         if (this.state && this.state.downloadState && this.state.downloadState.path && this.props.attach.image && this.props.attach.image.metadata && this.props.attach.image.metadata.imageHeight && this.props.attach.image.metadata.imageWidth) {
             let w = this.props.attach.image.metadata.imageWidth;
             let h = this.props.attach.image.metadata.imageHeight;
 
-            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { ...event, path: this.state.downloadState.path });
+            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { ...event, path: this.state.downloadState.path }, radius);
         }
     }
 
@@ -139,8 +139,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                         borderRadius={8}
                     >
                         <ASImage
-                            onPress={this.onMediaPress}
-
+                            onPress={(e) => this.onMediaPress(e, 8)}
                             source={imageSource}
                             width={imgLayout!.width}
                             height={imgLayout!.height}
@@ -178,7 +177,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     {imgCompact && imgLayout && imageSource && (
                         <ASFlex>
                             <ASImage
-                                onPress={this.onMediaPress}
+                                onPress={(e) => this.onMediaPress(e, 10)}
                                 source={imageSource}
                                 width={imgLayout!.width}
                                 height={imgLayout!.height}

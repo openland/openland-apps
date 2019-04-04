@@ -862,12 +862,20 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                                 onChange={this.handleSearchPeopleInputChange}
                             />
                         </XView>
-                        <ExplorePeople
-                            variables={{ query: searchPeopleQuery }}
-                            searchQuery={searchPeopleQuery}
-                            onPick={this.selectMembers}
-                            selectedUsers={selectedUsers}
-                        />
+                        <React.Suspense
+                            fallback={
+                                <XView flexGrow={1} flexShrink={0}>
+                                    <XLoader loading={true} />
+                                </XView>
+                            }
+                        >
+                            <ExplorePeople
+                                variables={{ query: searchPeopleQuery }}
+                                searchQuery={searchPeopleQuery}
+                                onPick={this.selectMembers}
+                                selectedUsers={selectedUsers}
+                            />
+                        </React.Suspense>
                     </XView>
                 )}
             </MainWrapper>
