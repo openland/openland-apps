@@ -6,6 +6,7 @@ export const TextAppBar = {
         explore: 'Explore',
         directory: 'Directory',
         feed: 'Feed',
+        apps: 'Apps',
         addListing: 'Add listing',
         map: 'Map',
         prospecting: 'Prospecting',

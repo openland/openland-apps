@@ -36,7 +36,7 @@ export function withApp(
                                 }}
                             >
                                 {canUseDOM && (
-                                    <React.Suspense fallback={<XLoader />}>
+                                    <React.Suspense fallback={<XLoader loading={true} />}>
                                         <WrappedComponent />
                                     </React.Suspense>
                                 )}

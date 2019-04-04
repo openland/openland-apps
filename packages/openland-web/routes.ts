@@ -39,13 +39,6 @@ routes.add('/createOrganization/', '/init/createOrganization');
 routes.add('/404', '/404');
 
 //
-// Map
-//
-
-routes.add('/map', '/main/explore/root');
-routes.add('/map/', '/main/explore/root');
-
-//
 // Settings
 //
 
@@ -63,10 +56,15 @@ routes.add('/settings/organization/:organizationId', '/main/settings/organizatio
 routes.add('/settings/organization/:organizationId/', '/main/settings/organization');
 
 //
-// Feed
+// Experimental
 //
 
 routes.add('/feed', '/main/feed/root');
+routes.add('/apps', '/main/apps/apps');
+routes.add('/apps/', '/main/apps/apps');
+routes.add('/apps/:appId', '/main/apps/apps');
+routes.add('/apps/:appId/', '/main/apps/apps');
+routes.add('/apps/:appId/*', '/main/apps/apps');
 
 //
 // Directory
