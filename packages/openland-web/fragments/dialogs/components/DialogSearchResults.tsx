@@ -33,10 +33,10 @@ type DialogSearchResultsT = {
     variables: { query: string };
 };
 
-export const DialogSearchResults = (props: DialogSearchResultsT) => {
+const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
     const client = useClient();
 
-    const data = client.useWithoutLoaderGlobalSearch(
+    const data = client.useGlobalSearch(
         props.variables,
         //     {
         //     fetchPolicy: 'cache-and-network',
@@ -118,5 +118,13 @@ export const DialogSearchResults = (props: DialogSearchResultsT) => {
                 );
             })}
         </>
+    );
+};
+
+export const DialogSearchResults = (props: DialogSearchResultsT) => {
+    return (
+        <React.Suspense fallback={<PlaceholderLoader color="#334562" />}>
+            <DialogSearchResultsInner {...props} />
+        </React.Suspense>
     );
 };

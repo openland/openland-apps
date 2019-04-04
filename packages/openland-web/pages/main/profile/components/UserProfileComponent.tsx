@@ -80,16 +80,9 @@ const StatusWrapperOnline = css`
 const UserStatus = (props: { variables: { userId: string }; isBot: boolean }) => {
     const client = useClient();
 
-    const data = client.useWithoutLoaderOnline(
-        props.variables,
-        //      {
-        //     fetchPolicy: 'network-only',
-        // }
-    );
-
-    if (!data) {
-        return null;
-    }
+    const data = client.useOnline(props.variables, {
+        fetchPolicy: 'network-only',
+    });
 
     const { user } = data;
 
@@ -171,7 +164,9 @@ const Header = (props: { user: User_user }) => {
                             </XView>
                         )}
                     </XHorizontal>
-                    <UserStatus variables={{ userId: user.id }} isBot={user.isBot} />
+                    <React.Suspense fallback={<div />}>
+                        <UserStatus variables={{ userId: user.id }} isBot={user.isBot} />
+                    </React.Suspense>
                 </XView>
                 <XView paddingTop={13}>
                     <XHorizontal separator={8} alignItems="center">

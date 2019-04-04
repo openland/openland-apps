@@ -15,6 +15,7 @@ import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
+import { XLoader } from 'openland-x/XLoader';
 
 const OrganizationsSelectorOptionsFetcher = (props: {
     children: any;
@@ -26,16 +27,9 @@ const OrganizationsSelectorOptionsFetcher = (props: {
 }) => {
     const client = useClient();
 
-    const data = client.useWithoutLoaderExploreOrganizations(
-        props.variables,
-        //     {
-        //     fetchPolicy: 'network-only',
-        // }
-    );
-
-    if (!data) {
-        return null;
-    }
+    const data = client.useExploreOrganizations(props.variables, {
+        fetchPolicy: 'network-only',
+    });
 
     const children = props.children as Function;
 
@@ -146,18 +140,20 @@ class CreateOrganizationPrefixHolderRoot extends React.Component<
 
         return (
             <Container pageMode="CreateOrganization">
-                <OrganizationsSelectorOptionsFetcher
-                    variables={{
-                        all: true,
-                        prefix: this.state.organizationPrefix,
-                        sort: JSON.stringify([
-                            { featured: { order: 'desc' } },
-                            { createdAt: { order: 'desc' } },
-                        ]),
-                    }}
-                >
-                    {this.renderOrganizationsSelectorOptionsFetcherInner}
-                </OrganizationsSelectorOptionsFetcher>
+                <React.Suspense fallback={<XLoader />}>
+                    <OrganizationsSelectorOptionsFetcher
+                        variables={{
+                            all: true,
+                            prefix: this.state.organizationPrefix,
+                            sort: JSON.stringify([
+                                { featured: { order: 'desc' } },
+                                { createdAt: { order: 'desc' } },
+                            ]),
+                        }}
+                    >
+                        {this.renderOrganizationsSelectorOptionsFetcherInner}
+                    </OrganizationsSelectorOptionsFetcher>
+                </React.Suspense>
             </Container>
         );
     }

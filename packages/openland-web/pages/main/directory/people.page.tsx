@@ -18,14 +18,11 @@ interface PeopleCardsProps {
 export const PeopleCards = ({ variables, error, tagsCount }: PeopleCardsProps) => {
     const client = useClient();
 
-    const data = client.useWithoutLoaderExplorePeople(
-        variables,
-        //     , {
-        //     fetchPolicy: 'network-only',
-        // }
-    );
+    const data = client.useExplorePeople(variables, {
+        fetchPolicy: 'network-only',
+    });
 
-    if (!(data && data.items)) {
+    if (!data.items) {
         return null;
     }
 

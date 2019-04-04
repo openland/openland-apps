@@ -370,7 +370,9 @@ const MembersProvider = ({
                         <>
                             <AddMembersModal
                                 id={chatId}
+                                isRoom={true}
                                 isChannel={isChannel}
+                                isOrganization={false}
                             />
                             <XCreateCard
                                 text="Add members"
