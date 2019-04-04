@@ -19,6 +19,7 @@ import * as Track from './queries/Track';
 import * as User from './queries/User';
 import * as AppChat from './fragments/AppChat';
 import * as AppFull from './fragments/AppFull';
+import * as CommunitySearch from './fragments/CommunitySearch';
 import * as ConferenceFull from './fragments/ConferenceFull';
 import * as Message from './fragments/Message';
 import * as OrganizationFull from './fragments/OrganizationFull';
@@ -142,7 +143,7 @@ export const OrganizationQuery = typedQuery<Types.Organization, Types.Organizati
 export const OrganizationMembersShortQuery = typedQuery<Types.OrganizationMembersShort, Types.OrganizationMembersShortVariables>(Organization.OrganizationMembersShortQuery);
 export const OrganizationProfileQuery = typedQuery<Types.OrganizationProfile, Types.OrganizationProfileVariables>(Organization.OrganizationProfileQuery);
 export const ExploreOrganizationsQuery = typedQuery<Types.ExploreOrganizations, Types.ExploreOrganizationsVariables>(Organization.ExploreOrganizationsQuery);
-export const ExploreComunityQuery = typedQuery<Types.ExploreComunity, Types.ExploreComunityVariables>(Organization.ExploreComunityQuery);
+export const ExploreCommunityQuery = typedQuery<Types.ExploreCommunity, Types.ExploreCommunityVariables>(Organization.ExploreCommunityQuery);
 export const OrganizationChangeMemberRoleMutation = typedMutation<Types.OrganizationChangeMemberRole, Types.OrganizationChangeMemberRoleVariables>(Organization.OrganizationChangeMemberRoleMutation);
 export const OrganizationAddMemberMutation = typedMutation<Types.OrganizationAddMember, Types.OrganizationAddMemberVariables>(Organization.OrganizationAddMemberMutation);
 export const OrganizationRemoveMemberMutation = typedMutation<Types.OrganizationRemoveMember, Types.OrganizationRemoveMemberVariables>(Organization.OrganizationRemoveMemberMutation);
@@ -183,6 +184,7 @@ export const ExplorePeopleQuery = typedQuery<Types.ExplorePeople, Types.ExploreP
 export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.ResolveShortNameVariables>(User.ResolveShortNameQuery);
 export const AppChatFragment = typedFragment<Types.AppChat>(AppChat.AppChat);
 export const AppFullFragment = typedFragment<Types.AppFull>(AppFull.AppFull);
+export const CommunitySearchFragment = typedFragment<Types.CommunitySearch>(CommunitySearch.CommunitySearch);
 export const ConferenceFullFragment = typedFragment<Types.ConferenceFull>(ConferenceFull.ConferenceFull);
 export const TinyMessageFragment = typedFragment<Types.TinyMessage>(Message.TinyMessage);
 export const FullMessageFragment = typedFragment<Types.FullMessage>(Message.FullMessage);
