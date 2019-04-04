@@ -12,7 +12,7 @@ const bg = css`
     flex-grow: 1;
     flex-shrink: 1;
     flex-direction: column;
-    background-image: url('/static/apps/tasks-bg.jpg');
+    background-image: url('https://cdn.openland.com/shared/apps/tasks-bg.jpg');
     background-size: cover;
 `;
 
