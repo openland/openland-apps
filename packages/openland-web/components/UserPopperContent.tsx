@@ -33,16 +33,9 @@ const Buttons = Glamorous(XHorizontal)({
 
 const Status = (({ variables }) => {
     const client = useClient();
-    const data = client.useWithoutLoaderOnline(
-        variables,
-        //     {
-        //     fetchPolicy: 'network-only',
-        // }
-    );
-
-    if (!data) {
-        return null;
-    }
+    const data = client.useOnline(variables, {
+        fetchPolicy: 'network-only',
+    });
 
     const { user } = data;
 
@@ -117,7 +110,10 @@ const UserPopperContent = XMemo(
                             cloudImageUuid={user.photo || undefined}
                             path={usrPath}
                         />
-                        <Status variables={{ userId: user.id }} />
+
+                        <React.Suspense fallback={<div />}>
+                            <Status variables={{ userId: user.id }} />
+                        </React.Suspense>
                     </XHorizontal>
                     <XView
                         marginTop={12}

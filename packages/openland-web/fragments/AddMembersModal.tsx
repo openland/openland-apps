@@ -31,7 +31,8 @@ import CheckIcon from 'openland-icons/ic-check.svg';
 interface RenewInviteLinkButtonProps {
     id: string;
     onClick: () => void;
-    isOrganization?: boolean;
+    isRoom: boolean;
+    isOrganization: boolean;
 }
 
 const RenewInviteLinkButton = (props: RenewInviteLinkButtonProps) => {
@@ -39,7 +40,7 @@ const RenewInviteLinkButton = (props: RenewInviteLinkButtonProps) => {
     const id = props.id;
     let renew = undefined;
 
-    if (!props.isOrganization) {
+    if (props.isRoom) {
         renew = async () => {
             await client.mutateRoomRenewInviteLink({ roomId: id });
             await client.refetchRoomInviteLink({ roomId: id });
@@ -83,8 +84,9 @@ const InputClassName = css`
 interface OwnerLinkComponentProps {
     id: string;
     invite: string;
+    isRoom: boolean;
     isChannel?: boolean;
-    isOrganization?: boolean;
+    isOrganization: boolean;
     isCommunity?: boolean;
 }
 
@@ -180,6 +182,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                     <RenewInviteLinkButton
                                         id={props.id}
                                         onClick={this.resetLink}
+                                        isRoom={props.isRoom}
                                         isOrganization={props.isOrganization}
                                     />
                                 </RenewInviteLinkButtonWrapper>
@@ -224,8 +227,9 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
 
 type OwnerLinkT = {
     id: string;
+    isRoom: boolean;
     isChannel?: boolean;
-    isOrganization?: boolean;
+    isOrganization: boolean;
     isCommunity?: boolean;
 };
 
@@ -234,7 +238,7 @@ const OwnerLink = (props: OwnerLinkT) => {
 
     let data = null;
     let link = null;
-    if (!props.isOrganization) {
+    if (props.isRoom) {
         data = client.useRoomInviteLink({ roomId: props.id });
         link = data.link;
     }
@@ -253,6 +257,7 @@ const OwnerLink = (props: OwnerLinkT) => {
         <OwnerLinkComponent
             invite={link}
             id={props.id}
+            isRoom={props.isRoom}
             isChannel={props.isChannel}
             isOrganization={props.isOrganization}
             isCommunity={props.isCommunity}
@@ -360,8 +365,9 @@ interface InviteModalProps extends XModalProps {
         };
     }[];
     isMobile: boolean;
+    isRoom: boolean;
     isChannel?: boolean;
-    isOrganization?: boolean;
+    isOrganization: boolean;
     isCommunity?: boolean;
 }
 
@@ -445,7 +451,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 useTopCloser={true}
                 targetQuery="inviteMembers"
                 defaultAction={async () => {
-                    if (!props.isOrganization) {
+                    if (props.isRoom) {
                         await (props.addMembers as RoomAddMembersType)({
                             variables: {
                                 roomId: props.id,
@@ -479,6 +485,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                     <XView paddingHorizontal={24} marginBottom={32}>
                         <OwnerLink
                             id={props.id}
+                            isRoom={props.isRoom}
                             isChannel={props.isChannel}
                             isOrganization={props.isOrganization}
                             isCommunity={props.isCommunity}
@@ -508,8 +515,9 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
 
 type AddMemberModalT = {
     id: string;
+    isRoom: boolean;
     isChannel?: boolean;
-    isOrganization?: boolean;
+    isOrganization: boolean;
     isCommunity?: boolean;
 };
 
@@ -528,7 +536,7 @@ interface AddMemberToOrganization {
 }
 
 export const AddMembersModal = React.memo(
-    ({ id, isChannel, isOrganization, isCommunity }: AddMemberModalT & XModalProps) => {
+    ({ id, isRoom, isChannel, isOrganization, isCommunity }: AddMemberModalT & XModalProps) => {
         const isMobile = React.useContext(IsMobileContext);
         const client = useClient();
 
@@ -553,7 +561,7 @@ export const AddMembersModal = React.memo(
         // TODO ask steve to add (opts?: QueryWatchParameters) to propagate fetchPolicy: 'network-only',
         let data = null;
 
-        if (!isOrganization) {
+        if (isRoom) {
             data = client.useWithoutLoaderRoomMembersShort({ roomId: id });
         }
 
@@ -575,6 +583,7 @@ export const AddMembersModal = React.memo(
                         : (data as RoomMembersShort).members
                 }
                 isMobile={isMobile}
+                isRoom={isRoom}
                 isChannel={isChannel}
                 isOrganization={isOrganization}
                 isCommunity={isCommunity}

@@ -19,6 +19,7 @@ import { Navigation } from '../../../../components/Navigation';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useIsMobile } from 'openland-web/hooks';
+import { XLoader } from 'openland-x/XLoader';
 
 export const SearchCardsOrShowProfile = XMemo(
     ({
@@ -245,17 +246,25 @@ export const ComponentWithSort = ({
     CustomButtonComponent: any;
 }) => {
     return (
-        <Component
-            tagsCount={tagsCount}
-            variables={{
-                ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
-                sort: JSON.stringify([
-                    ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
-                    { [orderBy]: { order: 'desc' } },
-                ]),
-            }}
-            customMenu={customMenu}
-            CustomButtonComponent={CustomButtonComponent}
-        />
+        <React.Suspense
+            fallback={
+                <XView flexGrow={1} flexShrink={0}>
+                    <XLoader loading={true} />
+                </XView>
+            }
+        >
+            <Component
+                tagsCount={tagsCount}
+                variables={{
+                    ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
+                    sort: JSON.stringify([
+                        ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
+                        { [orderBy]: { order: 'desc' } },
+                    ]),
+                }}
+                customMenu={customMenu}
+                CustomButtonComponent={CustomButtonComponent}
+            />
+        </React.Suspense>
     );
 };

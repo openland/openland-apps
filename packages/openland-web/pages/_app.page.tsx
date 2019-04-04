@@ -1,6 +1,7 @@
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XStyleFactoryRegistry } from 'react-mental';
 import { css, rehydrate } from 'glamor';
+import { ClientCacheProvider } from 'openland-graphql/ClientCache';
 if (canUseDOM) {
     rehydrate(JSON.parse((window as any).GLAMOR_IDS));
 }
@@ -103,13 +104,15 @@ export default withData(
                                         (this.props.apollo.client as DirectApollolClient).client
                                     }
                                 >
-                                    <OpenlandApiContext.Provider value={this.props.apollo}>
-                                        <RootErrorBoundary>
-                                            <AppContainer>
-                                                <Component {...pageProps} />
-                                            </AppContainer>
-                                        </RootErrorBoundary>
-                                    </OpenlandApiContext.Provider>
+                                    <ClientCacheProvider>
+                                        <OpenlandApiContext.Provider value={this.props.apollo}>
+                                            <RootErrorBoundary>
+                                                <AppContainer>
+                                                    <Component {...pageProps} />
+                                                </AppContainer>
+                                            </RootErrorBoundary>
+                                        </OpenlandApiContext.Provider>
+                                    </ClientCacheProvider>
                                 </YApolloProvider>
                             </XRouterProvider>
                         </XStorageProvider>

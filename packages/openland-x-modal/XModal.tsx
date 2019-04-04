@@ -73,18 +73,18 @@ const ModalRender = XMemo<ModalRenderProps>(props => {
                     width: isMobile
                         ? '100%'
                         : props.size !== 'x-large'
-                            ? width
-                            : 'calc(100% - 128px)',
+                        ? width
+                        : 'calc(100% - 128px)',
                     top: isMobile
                         ? 0
                         : props.size !== 'x-large' && !props.scrollableContent
-                            ? 96
-                            : 64,
+                        ? 96
+                        : 64,
                     left: isMobile
                         ? 0
                         : props.size !== 'x-large'
-                            ? `calc(50% - ${width / 2}px)`
-                            : 64,
+                        ? `calc(50% - ${width / 2}px)`
+                        : 64,
                     right: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
                     bottom: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
                 },
@@ -203,24 +203,22 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
         }
         return (
             <Root>
-                {this.props.heading === undefined &&
-                    (this.props.title || this.props.useTopCloser) && (
-                        <XModalHeader alignItems="center" justifyContent="space-between">
-                            <XHorizontal alignItems="center" separator={4}>
-                                <XModalTitle>{this.props.title}</XModalTitle>
-                                {this.props.titleChildren !== undefined && this.props.titleChildren}
-                            </XHorizontal>
-                            {this.props.useTopCloser && <XModalCloser autoClose={true} />}
-                        </XModalHeader>
-                    )}
+                {this.props.heading === undefined && (this.props.title || this.props.useTopCloser) && (
+                    <XModalHeader alignItems="center" justifyContent="space-between">
+                        <XHorizontal alignItems="center" separator={4}>
+                            <XModalTitle>{this.props.title}</XModalTitle>
+                            {this.props.titleChildren !== undefined && this.props.titleChildren}
+                        </XHorizontal>
+                        {this.props.useTopCloser && <XModalCloser autoClose={true} />}
+                    </XModalHeader>
+                )}
                 {this.props.heading !== undefined && this.props.heading}
                 {body}
-                {this.props.footer === undefined &&
-                    !this.props.useTopCloser && (
-                        <XModalFooter>
-                            <XButton text="Close" autoClose={true} />
-                        </XModalFooter>
-                    )}
+                {this.props.footer === undefined && !this.props.useTopCloser && (
+                    <XModalFooter>
+                        <XButton text="Close" autoClose={true} />
+                    </XModalFooter>
+                )}
                 {this.props.footer !== undefined && this.props.footer}
             </Root>
         );
@@ -280,7 +278,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                 onClick: this.onTargetClick,
             });
             return (
-                <>
+                <React.Suspense fallback={<div />}>
                     {TargetClone}
                     <ModalRender
                         scrollableContent={this.props.scrollableContent}
@@ -304,65 +302,69 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
                             {this.props.children}
                         </ModalContentRender>
                     </ModalRender>
-                </>
+                </React.Suspense>
             );
         } else if (this.props.targetQuery) {
             let q = this.props.targetQuery;
             return (
-                <XRouterContext.Consumer>
-                    {router => {
-                        this.lastRouter = router;
-                        return (
-                            <ModalRender
-                                scrollableContent={this.props.scrollableContent}
-                                isOpen={!!router!!.query[q]}
-                                onCloseRequest={this.onModalCloseRequest}
-                                size={size}
-                                sWidth={this.props.width}
-                                closeOnClick={this.props.closeOnClick}
-                                transparent={this.props.transparent}
-                            >
-                                <ModalContentRender
+                <React.Suspense fallback={<div />}>
+                    <XRouterContext.Consumer>
+                        {router => {
+                            this.lastRouter = router;
+                            return (
+                                <ModalRender
                                     scrollableContent={this.props.scrollableContent}
-                                    title={this.props.title}
-                                    titleChildren={this.props.titleChildren}
-                                    useTopCloser={this.props.useTopCloser}
-                                    heading={this.props.heading}
-                                    footer={this.props.footer}
-                                    body={this.props.body}
-                                    customContent={this.props.customContent}
+                                    isOpen={!!router!!.query[q]}
+                                    onCloseRequest={this.onModalCloseRequest}
+                                    size={size}
+                                    sWidth={this.props.width}
+                                    closeOnClick={this.props.closeOnClick}
+                                    transparent={this.props.transparent}
                                 >
-                                    {this.props.children}
-                                </ModalContentRender>
-                            </ModalRender>
-                        );
-                    }}
-                </XRouterContext.Consumer>
+                                    <ModalContentRender
+                                        scrollableContent={this.props.scrollableContent}
+                                        title={this.props.title}
+                                        titleChildren={this.props.titleChildren}
+                                        useTopCloser={this.props.useTopCloser}
+                                        heading={this.props.heading}
+                                        footer={this.props.footer}
+                                        body={this.props.body}
+                                        customContent={this.props.customContent}
+                                    >
+                                        {this.props.children}
+                                    </ModalContentRender>
+                                </ModalRender>
+                            );
+                        }}
+                    </XRouterContext.Consumer>
+                </React.Suspense>
             );
         } else if (this.props.isOpen !== undefined) {
             return (
-                <ModalRender
-                    scrollableContent={this.props.scrollableContent}
-                    isOpen={this.props.isOpen}
-                    onCloseRequest={this.onModalCloseRequest}
-                    size={size}
-                    sWidth={this.props.width}
-                    closeOnClick={this.props.closeOnClick}
-                    transparent={this.props.transparent}
-                >
-                    <ModalContentRender
+                <React.Suspense fallback={<div />}>
+                    <ModalRender
                         scrollableContent={this.props.scrollableContent}
-                        title={this.props.title}
-                        titleChildren={this.props.titleChildren}
-                        useTopCloser={this.props.useTopCloser}
-                        heading={this.props.heading}
-                        footer={this.props.footer}
-                        body={this.props.body}
-                        customContent={this.props.customContent}
+                        isOpen={this.props.isOpen}
+                        onCloseRequest={this.onModalCloseRequest}
+                        size={size}
+                        sWidth={this.props.width}
+                        closeOnClick={this.props.closeOnClick}
+                        transparent={this.props.transparent}
                     >
-                        {this.props.children}
-                    </ModalContentRender>
-                </ModalRender>
+                        <ModalContentRender
+                            scrollableContent={this.props.scrollableContent}
+                            title={this.props.title}
+                            titleChildren={this.props.titleChildren}
+                            useTopCloser={this.props.useTopCloser}
+                            heading={this.props.heading}
+                            footer={this.props.footer}
+                            body={this.props.body}
+                            customContent={this.props.customContent}
+                        >
+                            {this.props.children}
+                        </ModalContentRender>
+                    </ModalRender>
+                </React.Suspense>
             );
         } else {
             throw Error('You should provide show, targetQuery or target');
