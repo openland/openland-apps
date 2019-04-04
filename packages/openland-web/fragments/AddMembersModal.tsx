@@ -90,11 +90,16 @@ interface OwnerLinkComponentProps {
 
 class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
     input?: any;
+    timer: any;
 
     state = {
         copied: false,
         resetLink: false,
     };
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
+    }
 
     private handleRef = (e: any) => {
         if (e === null) {
@@ -111,6 +116,12 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
         this.setState({
             copied: true,
         });
+
+        this.timer = setTimeout(() => {
+            this.setState({
+                copied: false,
+            });
+        }, 1500);
     };
 
     private resetLink = () => {
@@ -118,6 +129,13 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
             copied: false,
             resetLink: true,
         });
+
+        this.timer = setTimeout(() => {
+            this.setState({
+                copied: false,
+                resetLink: false,
+            });
+        }, 1500);
     };
 
     render() {
@@ -174,6 +192,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                 flexDirection="row"
                                 alignItems="center"
                                 fontSize={14}
+                                fontWeight="600"
                                 backgroundColor={copied ? '#69d06d' : '#E8F4FF'}
                                 color={copied ? '#ffffff' : '#1790ff'}
                                 cursor="pointer"
@@ -294,7 +313,7 @@ const ExplorePeople = (props: ExplorePeopleProps) => {
     return (
         <XView flexGrow={1} flexShrink={0}>
             <XScrollView2 flexGrow={1} flexShrink={0}>
-                <XView paddingHorizontal={16} flexDirection="column">
+                <XView paddingHorizontal={24} marginTop={12} flexDirection="column">
                     {data.items.edges.map(i => {
                         if (props.selectedUsers && props.selectedUsers.has(i.node.id)) {
                             return null;
@@ -419,7 +438,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 target={props.target}
                 submitBtnText="Add"
                 submitProps={{
-                    successText: 'Done!',
+                    successText: 'Added',
                 }}
                 width={props.isMobile ? undefined : 520}
                 flexGrow={props.isMobile ? 1 : undefined}
