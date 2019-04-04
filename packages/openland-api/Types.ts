@@ -19198,14 +19198,57 @@ export interface RoomInviteInfoVariables {
 // GraphQL query operation: ResolvedInvite
 // ====================================================
 
+export interface ResolvedInvite_invite_InviteInfo_creator_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ResolvedInvite_invite_InviteInfo_creator {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ResolvedInvite_invite_InviteInfo_creator_primaryOrganization | null;
+}
+
 export interface ResolvedInvite_invite_InviteInfo {
   __typename: "InviteInfo";
+  creator: ResolvedInvite_invite_InviteInfo_creator | null;
+}
+
+export interface ResolvedInvite_invite_AppInvite_inviter_primaryOrganization {
+  __typename: "Organization";
   id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ResolvedInvite_invite_AppInvite_inviter {
   __typename: "User";
   id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ResolvedInvite_invite_AppInvite_inviter_primaryOrganization | null;
 }
 
 export interface ResolvedInvite_invite_AppInvite {
@@ -19213,9 +19256,33 @@ export interface ResolvedInvite_invite_AppInvite {
   inviter: ResolvedInvite_invite_AppInvite_inviter;
 }
 
+export interface ResolvedInvite_invite_RoomInvite_invitedByUser_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ResolvedInvite_invite_RoomInvite_invitedByUser {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: ResolvedInvite_invite_RoomInvite_invitedByUser_primaryOrganization | null;
+}
+
 export interface ResolvedInvite_invite_RoomInvite {
   __typename: "RoomInvite";
-  id: string;
+  invitedByUser: ResolvedInvite_invite_RoomInvite_invitedByUser;
 }
 
 export type ResolvedInvite_invite = ResolvedInvite_invite_InviteInfo | ResolvedInvite_invite_AppInvite | ResolvedInvite_invite_RoomInvite;

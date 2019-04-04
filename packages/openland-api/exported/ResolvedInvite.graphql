@@ -2,16 +2,22 @@ query ResolvedInvite($key: String!) {
   invite: alphaResolveInvite(key: $key) {
     __typename
     ... on InviteInfo {
-      id
+      creator {
+        __typename
+        ...UserShort
+      }
     }
     ... on AppInvite {
       inviter {
         __typename
-        id
+        ...UserShort
       }
     }
     ... on RoomInvite {
-      id
+      invitedByUser {
+        __typename
+        ...UserShort
+      }
     }
   }
 }

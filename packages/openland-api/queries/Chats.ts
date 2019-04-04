@@ -662,19 +662,25 @@ export const RoomInviteInfoQuery = gql`
 export const ResolvedInviteQuery = gql`
     query ResolvedInvite($key: String!) {
         invite: alphaResolveInvite(key: $key) {
+            __typename
             ... on InviteInfo {
-                id
+                creator {
+                    ...UserShort
+                }
             }
             ... on AppInvite {
                 inviter {
-                    id
+                    ...UserShort
                 }
             }
             ... on RoomInvite {
-                id
+                invitedByUser {
+                    ...UserShort
+                }
             }
         }
     }
+    ${UserShort}
 `;
 
 export const RoomUpdateMutation = gql`

@@ -24,25 +24,50 @@ import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { useClient } from 'openland-web/utils/useClient';
 import { XView } from 'react-mental';
 import { useIsMobile } from 'openland-web/hooks';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 function validateEmail(email: string) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
 
-const InviteInfo = ((props: any) => {
+const InviteInfo = (props: {
+    variables: { inviteKey: string };
+    signin: boolean;
+    loginWithGoogle: Function;
+    loginWithEmail: Function;
+}) => {
     const client = useClient();
-    const data = client.useWithoutLoaderAccountAppInviteInfo({
-        inviteKey: props.variables.inviteKey,
+
+    const resolvedInvite = client.useWithoutLoaderResolvedInvite({
+        key: props.variables.inviteKey,
     });
 
-    if (!data) {
+    if (!resolvedInvite || !resolvedInvite.invite) {
         return <XLoader loading={true} />;
     }
 
+    let inviter;
+
+    if (resolvedInvite && resolvedInvite.invite) {
+        if (resolvedInvite.invite.__typename === 'AppInvite') {
+            inviter = resolvedInvite.invite.inviter;
+        } else if (resolvedInvite.invite.__typename === 'RoomInvite') {
+            inviter = resolvedInvite.invite.invitedByUser;
+        } else if (resolvedInvite.invite.__typename === 'InviteInfo') {
+            inviter = resolvedInvite.invite.creator;
+        }
+    }
+
+    if (resolvedInvite.invite.__typename === 'RoomInvite') {
+        return <XPageRedirect path={`/joinChannel/${props.variables.inviteKey}`} />;
+    }
+
+    if (resolvedInvite.invite.__typename === 'InviteInfo') {
+        return <XPageRedirect path={`/signin/join/${props.variables.inviteKey}`} />;
+    }
+
     let signPath = '/signup?redirect=' + encodeURIComponent((props as any).redirect);
-    let inviter =
-        (data.invite && data.invite.creator) || (data.appInvite && data.appInvite.inviter);
 
     if (!inviter) {
         return <XLoader loading={true} />;
@@ -56,16 +81,14 @@ const InviteInfo = ((props: any) => {
             loginWithEmail={props.loginWithEmail}
         />
     );
-}) as React.ComponentType<{
-    variables: { inviteKey: string };
-    signin: boolean;
-    loginWithGoogle: Function;
-    loginWithEmail: Function;
-}>;
+};
 
 const checkIfIsSignInInvite = (router: any) => {
     return (
-        router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite'
+        router.query &&
+        router.query.redirect &&
+        (router.query.redirect.split('/')[1] === 'invite' ||
+            router.query.redirect.split('/')[1] === 'joinChannel')
     );
 };
 

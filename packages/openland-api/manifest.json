@@ -485,10 +485,10 @@
       }
     },
     {
-      "signature": "101f003bd256d9ad3d513ca112a165b174e7a83632a2299378ef06b7c8f60352",
-      "document": "query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename...on InviteInfo{id}...on AppInvite{inviter{__typename id}}...on RoomInvite{id}}}",
+      "signature": "c014ec844ea541a886ed3b7c0e869aba0872b2cad08d7c23caf18f8b4405d89b",
+      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename...on InviteInfo{creator{__typename...UserShort}}...on AppInvite{inviter{__typename...UserShort}}...on RoomInvite{invitedByUser{__typename...UserShort}}}}",
       "metadata": {
-        "engineSignature": "query ResolvedInvite($key:String!){alphaResolveInvite(key:$key){__typename...on InviteInfo{id}...on AppInvite{inviter{__typename id}}...on RoomInvite{id}}}"
+        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query ResolvedInvite($key:String!){alphaResolveInvite(key:$key){__typename...on InviteInfo{creator{__typename...UserShort}}...on AppInvite{inviter{__typename...UserShort}}...on RoomInvite{invitedByUser{__typename...UserShort}}}}"
       }
     },
     {

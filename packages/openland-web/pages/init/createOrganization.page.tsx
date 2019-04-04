@@ -88,7 +88,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
                 onPrefixChanges={onPrefixChanges}
                 roomView={roomView}
                 defaultAction={async (data: any) => {
-                    let res = await createOrganization({
+                    let result = await createOrganization({
                         variables: {
                             input: {
                                 personal: false,
@@ -97,7 +97,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
                             },
                         },
                     });
-                    switchOrganization(res.data.organization.id, router.query.redirect);
+                    switchOrganization(result.organization.id, router.query.redirect);
                     await delayForewer();
                 }}
             />
@@ -173,7 +173,7 @@ const CreateOrganizationPrefixHolder = (props: any) => {
     }
 
     const createOrganization = async ({ variables }: { variables: any }) => {
-        await client.mutateCreateOrganization(variables);
+        return await client.mutateCreateOrganization(variables);
     };
 
     return (
