@@ -19,7 +19,7 @@ const AppResolver = React.memo<{ appId: string }>((props) => {
 export const AppsFragment = React.memo(() => {
     let path = useXRouter();
     if (path.routeQuery.appId) {
-        return <AppContainer><AppResolver appId={path.routeQuery.appId} /></AppContainer>;
+        return <AppContainer key={path.routeQuery.appId}><AppResolver appId={path.routeQuery.appId} /></AppContainer>;
     } else {
         return null;
     }

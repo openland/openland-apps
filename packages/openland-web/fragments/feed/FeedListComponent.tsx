@@ -11,7 +11,7 @@ const textClassName = css`
 
 export const FeedListComponent = () => {
     const client = useClient();
-    const feed = client.useFeedHome().homeFeed;
+    const feed = client.useFeedHome({ fetchPolicy: 'cache-and-network' }).homeFeed;
     return (
         <XView flexGrow={1} flexShrink={0} minHeight={0} alignSelf="stretch" minWidth={0}>
             <XScrollView>
