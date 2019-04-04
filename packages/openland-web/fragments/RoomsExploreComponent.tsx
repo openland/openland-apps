@@ -23,12 +23,9 @@ interface WithChatSearchRoomsProps {
 export const Rooms = (props: WithChatSearchRoomsProps) => {
     const client = useClient();
     const { tagsCount, customMenu, customButton, CustomButtonComponent } = props;
-    const data = client.useWithoutLoaderRoomSearch(
-        props.variables,
-        //      {
-        //     fetchPolicy: 'cache-and-network',
-        // }
-    );
+    const data = client.useRoomSearch(props.variables, {
+        fetchPolicy: 'cache-and-network',
+    });
 
     if (!data) {
         tagsCount(0);

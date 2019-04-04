@@ -36,12 +36,9 @@ type DialogSearchResultsT = {
 const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
     const client = useClient();
 
-    const data = client.useGlobalSearch(
-        props.variables,
-        //     {
-        //     fetchPolicy: 'cache-and-network',
-        // }
-    );
+    const data = client.useGlobalSearch(props.variables, {
+        fetchPolicy: 'cache-and-network',
+    });
 
     if (!data || !data.items) {
         return <PlaceholderLoader color="#334562" />;
