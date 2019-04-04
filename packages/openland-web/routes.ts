@@ -145,6 +145,8 @@ routes.add('/mail/channels', '/main/mail/root');
 routes.add('/mail/channels/', '/main/mail/root');
 routes.add('/mail/joinChannel/:inviteKey', '/main/mail/root');
 routes.add('/mail/joinChannel/:inviteKey/', '/main/mail/root');
+routes.add('/mail/join/:inviteKey', '/main/mail/root');
+routes.add('/mail/join/:inviteKey/', '/main/mail/root');
 routes.add('/mail/invite/:inviteKey', '/main/mail/root');
 routes.add('/mail/invite/:inviteKey/', '/main/mail/root');
 routes.add('/mail/o/:organizationId', '/main/mail/root');
