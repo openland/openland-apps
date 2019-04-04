@@ -46,8 +46,6 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
         };
     }
 
-    console.log(data.invite);
-
     return (
         <AuthRouter>
             <XDocumentHead

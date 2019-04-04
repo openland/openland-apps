@@ -9287,7 +9287,7 @@ public final class RoomInviteInfoQuery: GraphQLQuery {
 
 public final class ResolvedInviteQuery: GraphQLQuery {
   public let operationDefinition =
-    "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      creator {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n    }\n  }\n}"
+    "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      creator {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n      room {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          socialImage\n          description\n          membership\n          membersCount\n        }\n      }\n    }\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
 
@@ -9353,8 +9353,8 @@ public final class ResolvedInviteQuery: GraphQLQuery {
         return Invite(unsafeResultMap: ["__typename": "AppInvite", "inviter": inviter.resultMap])
       }
 
-      public static func makeRoomInvite(invitedByUser: AsRoomInvite.InvitedByUser) -> Invite {
-        return Invite(unsafeResultMap: ["__typename": "RoomInvite", "invitedByUser": invitedByUser.resultMap])
+      public static func makeRoomInvite(invitedByUser: AsRoomInvite.InvitedByUser, room: AsRoomInvite.Room) -> Invite {
+        return Invite(unsafeResultMap: ["__typename": "RoomInvite", "invitedByUser": invitedByUser.resultMap, "room": room.resultMap])
       }
 
       public var __typename: String {
@@ -9579,6 +9579,7 @@ public final class ResolvedInviteQuery: GraphQLQuery {
         public static let selections: [GraphQLSelection] = [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("invitedByUser", type: .nonNull(.object(InvitedByUser.selections))),
+          GraphQLField("room", type: .nonNull(.object(Room.selections))),
         ]
 
         public private(set) var resultMap: ResultMap
@@ -9587,8 +9588,8 @@ public final class ResolvedInviteQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public init(invitedByUser: InvitedByUser) {
-          self.init(unsafeResultMap: ["__typename": "RoomInvite", "invitedByUser": invitedByUser.resultMap])
+        public init(invitedByUser: InvitedByUser, room: Room) {
+          self.init(unsafeResultMap: ["__typename": "RoomInvite", "invitedByUser": invitedByUser.resultMap, "room": room.resultMap])
         }
 
         public var __typename: String {
@@ -9606,6 +9607,15 @@ public final class ResolvedInviteQuery: GraphQLQuery {
           }
           set {
             resultMap.updateValue(newValue.resultMap, forKey: "invitedByUser")
+          }
+        }
+
+        public var room: Room {
+          get {
+            return Room(unsafeResultMap: resultMap["room"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "room")
           }
         }
 
@@ -9655,6 +9665,123 @@ public final class ResolvedInviteQuery: GraphQLQuery {
               set {
                 resultMap += newValue.resultMap
               }
+            }
+          }
+        }
+
+        public struct Room: GraphQLSelectionSet {
+          public static let possibleTypes = ["SharedRoom"]
+
+          public static let selections: [GraphQLSelection] = [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+            GraphQLField("kind", type: .nonNull(.scalar(SharedRoomKind.self))),
+            GraphQLField("isChannel", type: .nonNull(.scalar(Bool.self))),
+            GraphQLField("title", type: .nonNull(.scalar(String.self))),
+            GraphQLField("photo", type: .nonNull(.scalar(String.self))),
+            GraphQLField("socialImage", type: .scalar(String.self)),
+            GraphQLField("description", type: .scalar(String.self)),
+            GraphQLField("membership", type: .nonNull(.scalar(SharedRoomMembershipStatus.self))),
+            GraphQLField("membersCount", type: .scalar(Int.self)),
+          ]
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(id: GraphQLID, kind: SharedRoomKind, isChannel: Bool, title: String, photo: String, socialImage: String? = nil, description: String? = nil, membership: SharedRoomMembershipStatus, membersCount: Int? = nil) {
+            self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "isChannel": isChannel, "title": title, "photo": photo, "socialImage": socialImage, "description": description, "membership": membership, "membersCount": membersCount])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var id: GraphQLID {
+            get {
+              return resultMap["id"]! as! GraphQLID
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "id")
+            }
+          }
+
+          public var kind: SharedRoomKind {
+            get {
+              return resultMap["kind"]! as! SharedRoomKind
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "kind")
+            }
+          }
+
+          public var isChannel: Bool {
+            get {
+              return resultMap["isChannel"]! as! Bool
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "isChannel")
+            }
+          }
+
+          public var title: String {
+            get {
+              return resultMap["title"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "title")
+            }
+          }
+
+          public var photo: String {
+            get {
+              return resultMap["photo"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "photo")
+            }
+          }
+
+          public var socialImage: String? {
+            get {
+              return resultMap["socialImage"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "socialImage")
+            }
+          }
+
+          public var description: String? {
+            get {
+              return resultMap["description"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "description")
+            }
+          }
+
+          public var membership: SharedRoomMembershipStatus {
+            get {
+              return resultMap["membership"]! as! SharedRoomMembershipStatus
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "membership")
+            }
+          }
+
+          public var membersCount: Int? {
+            get {
+              return resultMap["membersCount"] as? Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "membersCount")
             }
           }
         }

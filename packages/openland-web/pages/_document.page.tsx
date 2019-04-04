@@ -9,17 +9,101 @@ import Document, {
 import { renderStaticOptimized } from 'glamor/server';
 import { buildConfig } from '../config';
 import { saveConfig } from 'openland-x-config';
+import { buildClient } from 'openland-y-graphql/apolloClient';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
+
 // let draftCss = require('draft-js/dist/Draft.css');
 // console.warn(draftCss);
 // Load Configuration
 let config = buildConfig();
 
+const buildSimpleHttpOpenlandClient = () => {
+    return new OpenlandClient(
+        new DirectApollolClient(
+            buildClient({
+                endpoint: process.env.API_ENDPOINT
+                    ? process.env.API_ENDPOINT + '/api'
+                    : 'http://localhost:9000/api',
+                wsEndpoint: undefined,
+                initialState: {},
+                token: undefined,
+                ssrMode: true,
+                fetch: require('node-fetch'),
+            }),
+        ),
+    );
+};
+
+const openland = buildSimpleHttpOpenlandClient();
+
+type MetaTagsInfoT = {
+    title?: string;
+    url?: string;
+    description?: string;
+    image?: string;
+};
+const MetaTags = ({ title, url, description, image }: MetaTagsInfoT) => {
+    return (
+        <>
+            <meta name="msapplication-TileColor" content="#ffffff" />
+            <meta
+                name="msapplication-TileImage"
+                content="/static/img/favicon/ms-icon-144x144.png?v=2"
+            />
+
+            <meta property="og:title" content={title} />
+            <meta property="og:url" content={url} />
+            <meta property="og:description" content={description} />
+            <meta property="og:image" content={image} />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@openland" />
+            <meta name="twitter:title" content={title} />
+            <meta name="twitter:description" content={description} />
+            <meta name="twitter:image" content={image} />
+        </>
+    );
+};
 export default class OpenlandDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
         const page = props.renderPage();
         const styles = renderStaticOptimized(() => page.html || page.errorHtml || '');
+
+        let inviteKey;
+        let metaTagsInfo;
+        if (props && props.req && (props.req as any).originalUrl) {
+            const originalUrl = (props.req as any).originalUrl;
+
+            if (originalUrl.startsWith('/invite/')) {
+                inviteKey = originalUrl.slice('/invite/'.length);
+            } else if (originalUrl.startsWith('/joinChannel/')) {
+                inviteKey = originalUrl.slice('/joinChannel/'.length);
+            }
+
+            const resolvedInvite = await openland.queryResolvedInvite({
+                key: inviteKey,
+            });
+
+            if (
+                resolvedInvite &&
+                resolvedInvite.invite &&
+                resolvedInvite.invite.__typename === 'RoomInvite'
+            ) {
+                const room = resolvedInvite.invite.room;
+
+                metaTagsInfo = {
+                    title: room.title,
+                    url: originalUrl,
+                    description: room.description,
+                    image: room.socialImage ? room.socialImage : room.photo,
+                };
+            }
+        }
+
         return {
             ...page,
+            metaTagsInfo,
+            inviteKey,
             glamCss: styles.css,
             ids: styles.ids,
         };
@@ -124,21 +208,8 @@ export default class OpenlandDocument extends Document {
                         content="/static/img/favicon/ms-icon-144x144.png?v=2"
                     />
 
-                    <meta property="og:title" content="test-community" />
-                    <meta property="og:url" content="http://openland.com/joinChannel/2qs9ceT" />
-                    <meta property="og:description" content="fdfdfdfdfdff" />
-                    <meta
-                        property="og:image"
-                        content="https://ucarecdn.com/10dd0be5-2931-4ae9-a5bb-7ae38a7a9c30/-/crop/248x139/175,25/"
-                    />
-                    <meta name="twitter:card" content="summary_large_image" />
-                    <meta name="twitter:site" content="@openland" />
-                    <meta name="twitter:title" content="test-community" />
-                    <meta name="twitter:description" content="fdfdfdfdfdff" />
-                    <meta
-                        name="twitter:image"
-                        content="https://ucarecdn.com/10dd0be5-2931-4ae9-a5bb-7ae38a7a9c30/-/crop/248x139/175,25/"
-                    />
+                    <MetaTags {...(this.props.metaTagsInfo ? this.props.metaTagsInfo : {})} />
+
                     <link
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/icon?family=Material+Icons"

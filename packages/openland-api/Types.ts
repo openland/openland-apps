@@ -19335,9 +19335,23 @@ export interface ResolvedInvite_invite_RoomInvite_invitedByUser {
   primaryOrganization: ResolvedInvite_invite_RoomInvite_invitedByUser_primaryOrganization | null;
 }
 
+export interface ResolvedInvite_invite_RoomInvite_room {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  isChannel: boolean;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+}
+
 export interface ResolvedInvite_invite_RoomInvite {
   __typename: "RoomInvite";
   invitedByUser: ResolvedInvite_invite_RoomInvite_invitedByUser;
+  room: ResolvedInvite_invite_RoomInvite_room;
 }
 
 export type ResolvedInvite_invite = ResolvedInvite_invite_InviteInfo | ResolvedInvite_invite_AppInvite | ResolvedInvite_invite_RoomInvite;

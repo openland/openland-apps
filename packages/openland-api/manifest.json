@@ -499,10 +499,10 @@
       }
     },
     {
-      "signature": "c014ec844ea541a886ed3b7c0e869aba0872b2cad08d7c23caf18f8b4405d89b",
-      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename...on InviteInfo{creator{__typename...UserShort}}...on AppInvite{inviter{__typename...UserShort}}...on RoomInvite{invitedByUser{__typename...UserShort}}}}",
+      "signature": "453007985603888ece5148bf6fb948cc358082e15d9db024dcc58d752766e282",
+      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename...on InviteInfo{creator{__typename...UserShort}}...on AppInvite{inviter{__typename...UserShort}}...on RoomInvite{invitedByUser{__typename...UserShort}room{__typename...on SharedRoom{description id isChannel kind membersCount membership photo socialImage title}}}}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query ResolvedInvite($key:String!){alphaResolveInvite(key:$key){__typename...on InviteInfo{creator{__typename...UserShort}}...on AppInvite{inviter{__typename...UserShort}}...on RoomInvite{invitedByUser{__typename...UserShort}}}}"
+        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query ResolvedInvite($key:String!){alphaResolveInvite(key:$key){__typename...on InviteInfo{creator{__typename...UserShort}}...on AppInvite{inviter{__typename...UserShort}}...on RoomInvite{invitedByUser{__typename...UserShort}room{__typename...on SharedRoom{description id isChannel kind membersCount membership photo socialImage title}}}}}"
       }
     },
     {

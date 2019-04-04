@@ -18,6 +18,20 @@ query ResolvedInvite($key: String!) {
         __typename
         ...UserShort
       }
+      room {
+        __typename
+        ... on SharedRoom {
+          description
+          id
+          isChannel
+          kind
+          membersCount
+          membership
+          photo
+          socialImage
+          title
+        }
+      }
     }
   }
 }

@@ -677,6 +677,20 @@ export const ResolvedInviteQuery = gql`
                 invitedByUser {
                     ...UserShort
                 }
+
+                room {
+                    ... on SharedRoom {
+                        id
+                        kind
+                        isChannel
+                        title
+                        photo
+                        socialImage
+                        description
+                        membership
+                        membersCount
+                    }
+                }
             }
         }
     }
