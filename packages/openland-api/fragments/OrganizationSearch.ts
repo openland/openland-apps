@@ -9,6 +9,7 @@ export const OrganizationSearch = gql`
         isMine
         about
         status
+        membersCount
         featured: alphaFeatured
         members: alphaOrganizationMembers {
             user {

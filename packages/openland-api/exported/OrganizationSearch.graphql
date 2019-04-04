@@ -13,6 +13,7 @@ fragment OrganizationSearch on Organization {
   }
   id
   isMine
+  membersCount
   name
   photo
   status

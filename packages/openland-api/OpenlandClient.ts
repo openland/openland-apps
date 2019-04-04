@@ -451,17 +451,17 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderExploreOrganizations(variables: Types.ExploreOrganizationsVariables): Types.ExploreOrganizations | null {
         return this.useQuery(Source.ExploreOrganizationsQuery, variables);
     }
-    async queryExploreComunity(variables: Types.ExploreComunityVariables, opts?: OperationParameters): Promise<Types.ExploreComunity> {
-        return this.client.query(Source.ExploreComunityQuery, variables, opts);
+    async queryExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: OperationParameters): Promise<Types.ExploreCommunity> {
+        return this.client.query(Source.ExploreCommunityQuery, variables, opts);
     }
-    async refetchExploreComunity(variables: Types.ExploreComunityVariables): Promise<Types.ExploreComunity> {
-        return this.refetch(Source.ExploreComunityQuery, variables);
+    async refetchExploreCommunity(variables: Types.ExploreCommunityVariables): Promise<Types.ExploreCommunity> {
+        return this.refetch(Source.ExploreCommunityQuery, variables);
     }
-    useExploreComunity(variables: Types.ExploreComunityVariables, opts?: QueryWatchParameters): Types.ExploreComunity {
-        return this.useQuerySuspense(Source.ExploreComunityQuery, variables, opts);
+    useExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: QueryWatchParameters): Types.ExploreCommunity {
+        return this.useQuerySuspense(Source.ExploreCommunityQuery, variables, opts);
     }
-    useWithoutLoaderExploreComunity(variables: Types.ExploreComunityVariables): Types.ExploreComunity | null {
-        return this.useQuery(Source.ExploreComunityQuery, variables);
+    useWithoutLoaderExploreCommunity(variables: Types.ExploreCommunityVariables): Types.ExploreCommunity | null {
+        return this.useQuery(Source.ExploreCommunityQuery, variables);
     }
     async queryOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: OperationParameters): Promise<Types.OrganizationPublicInvite> {
         return this.client.query(Source.OrganizationPublicInviteQuery, variables, opts);
@@ -912,6 +912,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     writeAppFull(data: Types.AppFull) {
       return this.client.writeFragment(data, Source.AppFullFragment);
+    }
+    writeCommunitySearch(data: Types.CommunitySearch) {
+      return this.client.writeFragment(data, Source.CommunitySearchFragment);
     }
     writeConferenceFull(data: Types.ConferenceFull) {
       return this.client.writeFragment(data, Source.ConferenceFullFragment);

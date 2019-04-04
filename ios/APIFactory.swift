@@ -517,11 +517,11 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
-    if (name == "ExploreComunity") {
+    if (name == "ExploreCommunity") {
       let query = readString(src, "query")
       let sort = readString(src, "sort")
       let page = readInt(src, "page")
-      let requestBody = ExploreComunityQuery(query: query, sort: sort, page: page)
+      let requestBody = ExploreCommunityQuery(query: query, sort: sort, page: page)
       client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -1234,11 +1234,11 @@ class ApiFactory: ApiFactoryBase {
       }
       return { () in res.cancel() }
     }
-    if (name == "ExploreComunity") {
+    if (name == "ExploreCommunity") {
       let query = readString(src, "query")
       let sort = readString(src, "sort")
       let page = readInt(src, "page")
-      let requestBody = ExploreComunityQuery(query: query, sort: sort, page: page)
+      let requestBody = ExploreCommunityQuery(query: query, sort: sort, page: page)
       let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -3359,11 +3359,11 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
-    if (name == "ExploreComunity") {
+    if (name == "ExploreCommunity") {
       let query = readString(src, "query")
       let sort = readString(src, "sort")
       let page = readInt(src, "page")
-      let requestBody = ExploreComunityQuery(query: query, sort: sort, page: page)
+      let requestBody = ExploreCommunityQuery(query: query, sort: sort, page: page)
       store.withinReadTransaction { (tx) in
         handler((try tx.read(query: requestBody)).resultMap, nil)
       }
@@ -3844,12 +3844,12 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
-    if (name == "ExploreComunity") {
+    if (name == "ExploreCommunity") {
       let query = readString(src, "query")
       let sort = readString(src, "sort")
       let page = readInt(src, "page")
-      let requestBody = ExploreComunityQuery(query: query, sort: sort, page: page)
-      let data = ExploreComunityQuery.Data(unsafeResultMap: self.convertData(src: data))
+      let requestBody = ExploreCommunityQuery(query: query, sort: sort, page: page)
+      let data = ExploreCommunityQuery.Data(unsafeResultMap: self.convertData(src: data))
       store.withinReadWriteTransaction { (tx) in
         try tx.write(data: data, forQuery: requestBody)
         handler(nil, nil)
@@ -3991,6 +3991,15 @@ class ApiFactory: ApiFactoryBase {
   func writeFragment(store: ApolloStore, data: NSDictionary, name: String, handler: @escaping ResponseHandler) {
     if name == "AppFull" {
       let data = AppFull(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "CommunitySearch" {
+      let data = CommunitySearch(unsafeResultMap: self.convertData(src: data))
       let key = data.id + ":" + data.__typename
       store.withinReadWriteTransaction { (tx) in
         try tx.write(object: data, withKey: key)
