@@ -9,14 +9,26 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { useClient } from 'openland-web/utils/useClient';
+import { SuperAdminRole } from 'openland-api/Types';
 import { MutationFunc } from 'react-apollo';
 
 const AddSuperAdminForm = () => {
     const client = useClient();
+    const mutate = async ({
+        variables: { userId, role },
+    }: {
+        variables: { userId: string; role: SuperAdminRole };
+    }) => {
+        await client.mutateSuperAdminAdd({
+            userId,
+            role,
+        });
+    };
+
     return (
         <XModalForm
             title="Add Super Admin"
-            submitMutation={client.mutateSuperAdminAdd as MutationFunc<{}>}
+            submitMutation={mutate as MutationFunc<{}>}
             mutationDirect={true}
             actionName="Add"
             target={<XButton text="Add New" />}
@@ -43,10 +55,16 @@ const AddSuperAdminForm = () => {
 
 const RemoveSuperAdminForm = () => {
     const client = useClient();
+
+    const mutate = async ({ variables: { userId } }: { variables: { userId: string } }) =>
+        await client.mutateSuperAdminRemove({
+            userId,
+        });
+
     return (
         <XModalForm
             title="Remove Super Admin"
-            submitMutation={client.mutateSuperAdminRemove as MutationFunc<{}>}
+            submitMutation={mutate as MutationFunc<{}>}
             mutationDirect={true}
             actionName="Remove"
             actionStyle="danger"
