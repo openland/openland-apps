@@ -48,7 +48,7 @@ import {
 import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
 import { AdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 import { tabs, tabsT } from '../tabs';
-import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
+import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { useClient } from 'openland-web/utils/useClient';
@@ -368,12 +368,9 @@ const MembersProvider = ({
                 <SectionContent>
                     {tab === tabs.members && (
                         <>
-                            <RoomAddMemberModal
-                                roomId={chatId}
+                            <AddMembersModal
+                                id={chatId}
                                 isChannel={isChannel}
-                                refetchVars={{
-                                    roomId: chatId,
-                                }}
                             />
                             <XCreateCard
                                 text="Add members"

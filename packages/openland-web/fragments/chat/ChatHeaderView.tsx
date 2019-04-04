@@ -7,7 +7,6 @@ import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { RoomEditModal } from './RoomEditModal';
 import { AdvancedSettingsModal } from './AdvancedSettingsModal';
-import { RoomAddMemberModal } from './RoomAddMemberModal';
 import { ChatForwardHeaderView } from './ChatForwardHeaderView';
 import { HeaderTitle } from './components/HeaderTitle';
 import { HeaderSubtitle } from './components/HeaderSubtitle';
@@ -25,6 +24,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { useClient } from 'openland-web/utils/useClient';
+import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 
 const inviteButtonClass = css`
     & svg > g > path {
@@ -200,11 +200,8 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                         className={inviteButtonClass}
                         query={{ field: 'inviteMembers', value: 'true' }}
                     />
-                    <RoomAddMemberModal
-                        roomId={room.id}
-                        refetchVars={{
-                            roomId: room.id,
-                        }}
+                    <AddMembersModal
+                        id={room.id}
                         isChannel={(room as Room_room_SharedRoom).isChannel}
                     />
                 </>

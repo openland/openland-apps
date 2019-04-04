@@ -936,6 +936,74 @@ fun readAppProfileInputListOptional(src: ReadableMap, name: String): Input<List<
         return Input.absent()
     }
 }
+fun parseAppStorageValueInput(src: ReadableMap): AppStorageValueInput {
+    val builder = AppStorageValueInput.builder()
+    builder.key(notNull(readOptionalString(src, "key")))
+    builder.valueInput(readOptionalString(src, "value"))
+    return builder.build()
+}
+fun readAppStorageValueInput(src: ReadableMap, name: String): AppStorageValueInput? {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return null
+        } else {
+            return parseAppStorageValueInput(src.getMap(name))
+        }
+    } else {
+        return null
+    }
+}
+fun readAppStorageValueInputList(src: ReadableMap, name: String): List<AppStorageValueInput?>? {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return null
+        } else {
+            val items = src.getArray(name)
+            val res = mutableListOf<AppStorageValueInput?>()
+            for(i in 0 until items.size()) {
+                if (items.isNull(i)) {
+                    res.add(null)
+                } else {
+                    res.add(parseAppStorageValueInput(items.getMap(i)))
+                }
+            }
+            return res
+        }
+    } else {
+        return null
+    }
+}
+fun readAppStorageValueInputOptional(src: ReadableMap, name: String): Input<AppStorageValueInput> {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return Input.fromNullable(null)
+        } else {
+            return Input.fromNullable(parseAppStorageValueInput(src.getMap(name)))
+        }
+    } else {
+        return Input.absent()
+    }
+}
+fun readAppStorageValueInputListOptional(src: ReadableMap, name: String): Input<List<AppStorageValueInput?>> {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return Input.fromNullable(null)
+        } else {
+            val items = src.getArray(name)
+            val res = mutableListOf<AppStorageValueInput?>()
+            for(i in 0 until items.size()) {
+                if (items.isNull(i)) {
+                    res.add(null)
+                } else {
+                    res.add(parseAppStorageValueInput(items.getMap(i)))
+                }
+            }
+            return Input.fromNullable(res)
+        }
+    } else {
+        return Input.absent()
+    }
+}
 fun parseUpdateOrganizationProfileInput(src: ReadableMap): UpdateOrganizationProfileInput {
     val builder = UpdateOrganizationProfileInput.builder()
     builder.nameInput(readOptionalString(src, "name"))
@@ -1407,6 +1475,12 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        val builder = MyAppsQuery.builder()
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "UserStorage") {
+       val builder = UserStorageQuery.builder()
+       builder.namespace(notNull(readString(src, "namespace")))
+       builder.keys(notNull(notNullListItems(readStringList(src, "keys"))))
+       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "Dialogs") {
        val builder = DialogsQuery.builder()
        builder.after(readString(src, "after"))
@@ -1719,6 +1793,12 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
        val builder = AddAppToChatMutation.builder()
        builder.appId(notNull(readString(src, "appId")))
        builder.chatId(notNull(readString(src, "chatId")))
+       return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
+    }
+    if (name == "UserStorageSet") {
+       val builder = UserStorageSetMutation.builder()
+       builder.namespace(notNull(readString(src, "namespace")))
+       builder.data(notNull(notNullListItems(readAppStorageValueInputList(src, "data"))))
        return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
     }
     if (name == "PinMessage") {

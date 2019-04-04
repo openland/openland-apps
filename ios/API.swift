@@ -335,6 +335,32 @@ public struct AppProfileInput: GraphQLMapConvertible {
   }
 }
 
+public struct AppStorageValueInput: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  public init(key: String, value: Swift.Optional<String?> = nil) {
+    graphQLMap = ["key": key, "value": value]
+  }
+
+  public var key: String {
+    get {
+      return graphQLMap["key"] as! String
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "key")
+    }
+  }
+
+  public var value: Swift.Optional<String?> {
+    get {
+      return graphQLMap["value"] as! Swift.Optional<String?>
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "value")
+    }
+  }
+}
+
 public enum DialogKind: RawRepresentable, Equatable, Hashable, Apollo.JSONDecodable, Apollo.JSONEncodable {
   public typealias RawValue = String
   case `private`
@@ -4142,6 +4168,208 @@ public final class AddAppToChatMutation: GraphQLMutation {
           set {
             resultMap += newValue.resultMap
           }
+        }
+      }
+    }
+  }
+}
+
+public final class UserStorageQuery: GraphQLQuery {
+  public let operationDefinition =
+    "query UserStorage($namespace: String!, $keys: [String!]!) {\n  userStorage(namespace: $namespace, keys: $keys) {\n    __typename\n    id\n    key\n    value\n  }\n}"
+
+  public var namespace: String
+  public var keys: [String]
+
+  public init(namespace: String, keys: [String]) {
+    self.namespace = namespace
+    self.keys = keys
+  }
+
+  public var variables: GraphQLMap? {
+    return ["namespace": namespace, "keys": keys]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("userStorage", arguments: ["namespace": GraphQLVariable("namespace"), "keys": GraphQLVariable("keys")], type: .nonNull(.list(.nonNull(.object(UserStorage.selections))))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(userStorage: [UserStorage]) {
+      self.init(unsafeResultMap: ["__typename": "Query", "userStorage": userStorage.map { (value: UserStorage) -> ResultMap in value.resultMap }])
+    }
+
+    public var userStorage: [UserStorage] {
+      get {
+        return (resultMap["userStorage"] as! [ResultMap]).map { (value: ResultMap) -> UserStorage in UserStorage(unsafeResultMap: value) }
+      }
+      set {
+        resultMap.updateValue(newValue.map { (value: UserStorage) -> ResultMap in value.resultMap }, forKey: "userStorage")
+      }
+    }
+
+    public struct UserStorage: GraphQLSelectionSet {
+      public static let possibleTypes = ["AppStorageValue"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("key", type: .nonNull(.scalar(String.self))),
+        GraphQLField("value", type: .scalar(String.self)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, key: String, value: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "AppStorageValue", "id": id, "key": key, "value": value])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var key: String {
+        get {
+          return resultMap["key"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "key")
+        }
+      }
+
+      public var value: String? {
+        get {
+          return resultMap["value"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "value")
+        }
+      }
+    }
+  }
+}
+
+public final class UserStorageSetMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation UserStorageSet($namespace: String!, $data: [AppStorageValueInput!]!) {\n  userStorageSet(namespace: $namespace, data: $data) {\n    __typename\n    id\n    key\n    value\n  }\n}"
+
+  public var namespace: String
+  public var data: [AppStorageValueInput]
+
+  public init(namespace: String, data: [AppStorageValueInput]) {
+    self.namespace = namespace
+    self.data = data
+  }
+
+  public var variables: GraphQLMap? {
+    return ["namespace": namespace, "data": data]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("userStorageSet", arguments: ["namespace": GraphQLVariable("namespace"), "data": GraphQLVariable("data")], type: .nonNull(.list(.nonNull(.object(UserStorageSet.selections))))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(userStorageSet: [UserStorageSet]) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "userStorageSet": userStorageSet.map { (value: UserStorageSet) -> ResultMap in value.resultMap }])
+    }
+
+    public var userStorageSet: [UserStorageSet] {
+      get {
+        return (resultMap["userStorageSet"] as! [ResultMap]).map { (value: ResultMap) -> UserStorageSet in UserStorageSet(unsafeResultMap: value) }
+      }
+      set {
+        resultMap.updateValue(newValue.map { (value: UserStorageSet) -> ResultMap in value.resultMap }, forKey: "userStorageSet")
+      }
+    }
+
+    public struct UserStorageSet: GraphQLSelectionSet {
+      public static let possibleTypes = ["AppStorageValue"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("key", type: .nonNull(.scalar(String.self))),
+        GraphQLField("value", type: .scalar(String.self)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, key: String, value: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "AppStorageValue", "id": id, "key": key, "value": value])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var key: String {
+        get {
+          return resultMap["key"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "key")
+        }
+      }
+
+      public var value: String? {
+        get {
+          return resultMap["value"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "value")
         }
       }
     }

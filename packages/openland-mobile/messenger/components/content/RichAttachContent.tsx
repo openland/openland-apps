@@ -57,7 +57,10 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
             }
 
             let ratio = PixelRatio.get();
-            let imageSize = { width: this.augLayout.width * ratio, height: this.augLayout.height * ratio };
+            let imageSize = {
+                width: Math.floor(this.augLayout.width * ratio),
+                height: Math.floor(this.augLayout.height * ratio)
+            };
 
             this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.attach.image.url, imageSize, (state) => {
                 this.setState({ downloadState: state });

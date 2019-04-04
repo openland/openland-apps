@@ -6,8 +6,6 @@ import {
     Organization_organization,
     Organization_organization_members,
     Organization_organization_requests,
-    OrganizationAddMember,
-    OrganizationAddMemberVariables,
 } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -27,23 +25,18 @@ import { XLoader } from 'openland-x/XLoader';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XLink } from 'openland-x/XLink';
-import { InvitesToOrganizationModal } from '../../settings/components/invites';
 import { XOverflow } from '../../../../components/XOverflow';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XInput } from 'openland-x/XInput';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XSelect } from 'openland-x/XSelect';
-import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
-import { XModalProps } from 'openland-x-modal/XModal';
 import { XText } from 'openland-x/XText';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-import LinkIcon from 'openland-icons/ic-link.svg';
 import { XSocialButton } from 'openland-x/XSocialButton';
 import { XMoreCards } from 'openland-x/cards/XMoreCards';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
@@ -52,9 +45,9 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
-import { MutationFunc } from 'react-apollo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
+import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -173,27 +166,31 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
             flat={true}
             content={
                 <>
-                    {isMeOwner && !isYou && role === 'ADMIN' && (
-                        <XMenuItem
-                            style="danger"
-                            query={{
-                                field: 'changeRole',
-                                value: user.id,
-                            }}
-                        >
-                            {TextProfiles.Organization.members.revokeAdminStatus}
-                        </XMenuItem>
-                    )}
-                    {isMeOwner && !isYou && role !== 'ADMIN' && (
-                        <XMenuItem
-                            query={{
-                                field: 'changeRole',
-                                value: user.id,
-                            }}
-                        >
-                            {TextProfiles.Organization.members.makeAdmin}
-                        </XMenuItem>
-                    )}
+                    {isMeOwner &&
+                        !isYou &&
+                        role === 'ADMIN' && (
+                            <XMenuItem
+                                style="danger"
+                                query={{
+                                    field: 'changeRole',
+                                    value: user.id,
+                                }}
+                            >
+                                {TextProfiles.Organization.members.revokeAdminStatus}
+                            </XMenuItem>
+                        )}
+                    {isMeOwner &&
+                        !isYou &&
+                        role !== 'ADMIN' && (
+                            <XMenuItem
+                                query={{
+                                    field: 'changeRole',
+                                    value: user.id,
+                                }}
+                            >
+                                {TextProfiles.Organization.members.makeAdmin}
+                            </XMenuItem>
+                        )}
                     <XWithRole role={['super-admin']}>
                         <XMenuItem
                             query={{
@@ -204,39 +201,45 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
                             {TextProfiles.Organization.members.edit}
                         </XMenuItem>
                     </XWithRole>
-                    {isMeAdmin && !isYou && role !== 'OWNER' && (
-                        <XMenuItem
-                            style="danger"
-                            query={{
-                                field: 'remove',
-                                value: user.id,
-                            }}
-                        >
-                            {TextProfiles.Organization.members.removeFromOrganization}
-                        </XMenuItem>
-                    )}
-                    {role !== 'ADMIN' && role !== 'OWNER' && isYou && (
-                        <XMenuItem
-                            style="danger"
-                            query={{
-                                field: 'remove',
-                                value: user.id,
-                            }}
-                        >
-                            {TextProfiles.Organization.members.leaveFromOrganization}
-                        </XMenuItem>
-                    )}
-                    {isMeAdmin && role !== 'OWNER' && isYou && (
-                        <XMenuItem
-                            style="danger"
-                            query={{
-                                field: 'remove',
-                                value: user.id,
-                            }}
-                        >
-                            {TextProfiles.Organization.members.leaveFromOrganization}
-                        </XMenuItem>
-                    )}
+                    {isMeAdmin &&
+                        !isYou &&
+                        role !== 'OWNER' && (
+                            <XMenuItem
+                                style="danger"
+                                query={{
+                                    field: 'remove',
+                                    value: user.id,
+                                }}
+                            >
+                                {TextProfiles.Organization.members.removeFromOrganization}
+                            </XMenuItem>
+                        )}
+                    {role !== 'ADMIN' &&
+                        role !== 'OWNER' &&
+                        isYou && (
+                            <XMenuItem
+                                style="danger"
+                                query={{
+                                    field: 'remove',
+                                    value: user.id,
+                                }}
+                            >
+                                {TextProfiles.Organization.members.leaveFromOrganization}
+                            </XMenuItem>
+                        )}
+                    {isMeAdmin &&
+                        role !== 'OWNER' &&
+                        isYou && (
+                            <XMenuItem
+                                style="danger"
+                                query={{
+                                    field: 'remove',
+                                    value: user.id,
+                                }}
+                            >
+                                {TextProfiles.Organization.members.leaveFromOrganization}
+                            </XMenuItem>
+                        )}
                 </>
             }
         />
@@ -639,27 +642,28 @@ const About = (props: { organization: Organization_organization }) => {
                     <SectionContent>{organization.about}</SectionContent>
                 </Section>
             )}
-            {!organization.about && organization.isMine && (
-                <XWithRole role="admin" orgPermission={organization.id}>
-                    <Section separator={0}>
-                        <XSubHeader
-                            title={TextProfiles.Organization.aboutTitle}
-                            paddingBottom={0}
-                            marginBottom={-5}
-                        />
-                        <SectionContent style={{ paddingBottom: 16 }}>
-                            <AboutPlaceholder
-                                target={
-                                    <EditButton
-                                        text={TextProfiles.Organization.addAbout}
-                                        big={true}
-                                    />
-                                }
+            {!organization.about &&
+                organization.isMine && (
+                    <XWithRole role="admin" orgPermission={organization.id}>
+                        <Section separator={0}>
+                            <XSubHeader
+                                title={TextProfiles.Organization.aboutTitle}
+                                paddingBottom={0}
+                                marginBottom={-5}
                             />
-                        </SectionContent>
-                    </Section>
-                </XWithRole>
-            )}
+                            <SectionContent style={{ paddingBottom: 16 }}>
+                                <AboutPlaceholder
+                                    target={
+                                        <EditButton
+                                            text={TextProfiles.Organization.addAbout}
+                                            big={true}
+                                        />
+                                    }
+                                />
+                            </SectionContent>
+                        </Section>
+                    </XWithRole>
+                )}
         </>
     );
 };
@@ -677,260 +681,7 @@ interface MembersProps {
     onDirectory?: boolean;
 }
 
-interface SearchBoxProps {
-    value: { label: string; value: string }[] | null;
-    onInputChange: (data: string) => string;
-    onChange: (data: { label: string; value: string }[] | null) => void;
-}
-
-const SearchBox = (props: SearchBoxProps) => (
-    <XSelect
-        multi={true}
-        render={
-            <XSelectCustomUsersRender
-                popper={false}
-                placeholder="Search"
-                onInputChange={props.onInputChange}
-                onChange={data => props.onChange(data as any)}
-                options={props.value || []}
-                value={props.value || []}
-            />
-        }
-    />
-);
-
-interface ExplorePeopleProps {
-    variables: { query?: string };
-    searchQuery: string;
-    organizationId: string;
-    onPick: (label: string, value: string) => void;
-    selectedUsers: Map<string, string> | null;
-    organizationUsers: Organization_organization_members[];
-    linkInvitePath?: string;
-}
-
-const ExplorePeople = (props: ExplorePeopleProps) => {
-    const client = useClient();
-
-    const data = client.useWithoutLoaderExplorePeople(props.variables, {
-        fetchPolicy: 'network-only',
-    });
-
-    if (!data.items) {
-        return (
-            <XView flexGrow={1} flexShrink={0}>
-                <XLoader loading={true} />
-            </XView>
-        );
-    }
-
-    let linkInvitePath = `/mail/${props.organizationId}?inviteToOrganizationByLink=true`;
-
-    if (props.linkInvitePath !== undefined) {
-        linkInvitePath = props.linkInvitePath;
-    }
-
-    return (
-        <XView flexGrow={1} flexShrink={0}>
-            <XScrollView2 flexGrow={1} flexShrink={0}>
-                <XView paddingHorizontal={16} flexDirection="column">
-                    {!props.searchQuery &&
-                        (!props.selectedUsers || props.selectedUsers.size === 0) && (
-                            <XCreateCard
-                                text="Invite with a link"
-                                path={linkInvitePath}
-                                icon={<LinkIcon />}
-                            />
-                        )}
-                    {data.items.edges.map(i => {
-                        if (
-                            (props.selectedUsers && props.selectedUsers.has(i.node.id)) ||
-                            (props.organizationUsers &&
-                                props.organizationUsers.find(
-                                    (j: Organization_organization_members) =>
-                                        j.user.id === i.node.id,
-                                ))
-                        ) {
-                            return null;
-                        }
-                        return (
-                            <XView
-                                key={i.node.id}
-                                onClick={() => props.onPick(i.node.name, i.node.id)}
-                            >
-                                <XUserCard user={i.node} noPath={true} customButton={null} />
-                            </XView>
-                        );
-                    })}
-                </XView>
-            </XScrollView2>
-        </XView>
-    );
-};
-
-interface InviteModalProps extends XModalProps {
-    organizationId: string;
-    addMembers: MutationFunc<OrganizationAddMember, Partial<OrganizationAddMemberVariables>>;
-    members: Organization_organization_members[];
-    linkInvitePath?: string;
-}
-
-interface InviteModalState {
-    searchQuery: string;
-    selectedUsers: Map<string, string> | null;
-}
-
-class OrganizationAddMemberModalInner extends React.Component<
-    InviteModalProps & { isMobile: boolean },
-    InviteModalState
-> {
-    constructor(props: InviteModalProps & { isMobile: boolean }) {
-        super(props);
-
-        this.state = { searchQuery: '', selectedUsers: null };
-    }
-
-    private onInputChange = (data: string) => {
-        this.setState({
-            searchQuery: data,
-        });
-        return data;
-    };
-
-    private onChange = (data: { label: string; value: string }[]) => {
-        let newSelected = new Map();
-        data.map(i => {
-            newSelected.set(i.value, i.label);
-        });
-
-        this.setState({
-            selectedUsers: newSelected,
-        });
-    };
-
-    private selectMembers = (label: string, value: string) => {
-        let selected = this.state.selectedUsers || new Map();
-
-        selected.set(value, label);
-
-        this.setState({
-            selectedUsers: selected,
-        });
-    };
-
-    render() {
-        const { props } = this;
-        const { selectedUsers } = this.state;
-        let options: { label: string; value: string }[] = [];
-        const invitesUsers: string[] = [];
-        if (selectedUsers) {
-            selectedUsers.forEach((l, v) => {
-                options.push({
-                    label: l,
-                    value: v,
-                });
-            });
-
-            selectedUsers.forEach((l, v) => {
-                invitesUsers.push(v);
-            });
-        }
-        return (
-            <XModalForm
-                title="Add members"
-                target={props.target}
-                submitBtnText="Add"
-                width={props.isMobile ? undefined : 520}
-                flexGrow={props.isMobile ? 1 : undefined}
-                useTopCloser={true}
-                targetQuery="addMembersToOrganization"
-                defaultAction={async data => {
-                    await props.addMembers({
-                        variables: {
-                            organizationId: this.props.organizationId,
-                            userIds: invitesUsers,
-                        },
-                    });
-
-                    this.setState({
-                        selectedUsers: null,
-                    });
-                }}
-                onClosed={() =>
-                    this.setState({
-                        selectedUsers: null,
-                        searchQuery: '',
-                    })
-                }
-            >
-                <XView
-                    height="60vh"
-                    flexGrow={1}
-                    marginHorizontal={-24}
-                    marginTop={-6}
-                    marginBottom={-24}
-                >
-                    <XView paddingHorizontal={16}>
-                        <SearchBox
-                            onInputChange={this.onInputChange}
-                            value={options}
-                            onChange={this.onChange}
-                        />
-                    </XView>
-                    <ExplorePeople
-                        variables={{ query: this.state.searchQuery }}
-                        searchQuery={this.state.searchQuery}
-                        organizationId={props.organizationId}
-                        onPick={this.selectMembers}
-                        selectedUsers={selectedUsers}
-                        organizationUsers={props.members}
-                        linkInvitePath={props.linkInvitePath}
-                    />
-                </XView>
-            </XModalForm>
-        );
-    }
-}
-
-type OrganizationAddMemberModalT = {
-    organizationId: string;
-    refetchVars: { orgId: string; organizationId: string };
-    linkInvitePath?: string;
-    members: Organization_organization_members[];
-};
-
-export const RoomAddMemberModal = (props: OrganizationAddMemberModalT & XModalProps) => {
-    const client = useClient();
-    const isMobile = React.useContext(IsMobileContext);
-
-    const addMembers = async ({
-        variables,
-    }: {
-        variables: {
-            organizationId: string;
-            userIds: any;
-        };
-    }) => {
-        await client.mutateOrganizationAddMember(variables);
-
-        await client.refetchOrganization({
-            organizationId: variables.organizationId,
-        });
-    };
-
-    return (
-        <OrganizationAddMemberModalInner
-            {...props}
-            organizationId={props.organizationId}
-            addMembers={addMembers}
-            members={props.members}
-            linkInvitePath={props.linkInvitePath}
-            isMobile={isMobile}
-        />
-    );
-};
-
-const Members = ({ organization, router, onDirectory }: MembersProps) => {
+const Members = ({ organization, router }: MembersProps) => {
     let tab: tabsT = tabs.members;
 
     if (router.query.tab === tabs.requests) {
@@ -957,30 +708,14 @@ const Members = ({ organization, router, onDirectory }: MembersProps) => {
                             <XCreateCard
                                 text={TextProfiles.Organization.addMembers}
                                 query={{
-                                    field: 'addMembersToOrganization',
+                                    field: 'inviteMembers',
                                     value: organization.id,
                                 }}
                             />
-                            <InvitesToOrganizationModal
-                                targetQuery="inviteToOrganizationByLink"
+                            <AddMembersModal
+                                id={organization.id}
+                                isOrganization={true}
                                 isCommunity={organization.isCommunity}
-                            />
-                            <RoomAddMemberModal
-                                refetchVars={{
-                                    orgId: organization.id,
-                                    organizationId: organization.id,
-                                }}
-                                members={organization.members}
-                                organizationId={organization.id}
-                                linkInvitePath={
-                                    onDirectory
-                                        ? `/directory/o/${
-                                              organization.id
-                                          }?inviteToOrganizationByLink=true`
-                                        : `/mail/o/${
-                                              organization.id
-                                          }?inviteToOrganizationByLink=true`
-                                }
                             />
                         </>
                     )}
@@ -995,35 +730,39 @@ const Members = ({ organization, router, onDirectory }: MembersProps) => {
 
         return (
             <Section separator={0}>
-                {organization.isMine && requestMembers.length > 0 && (
-                    <>
-                        <XSwitcher style="button">
-                            <XSwitcher.Item query={{ field: 'tab' }} counter={joinedMembers.length}>
-                                {TextProfiles.Organization.membersTitle}
-                            </XSwitcher.Item>
-                            <XSwitcher.Item
-                                query={{ field: 'tab', value: 'requests' }}
-                                counter={requestMembers.length}
-                                highlight={true}
-                            >
-                                {TextProfiles.Organization.requestsTitle}
-                            </XSwitcher.Item>
-                        </XSwitcher>
+                {organization.isMine &&
+                    requestMembers.length > 0 && (
+                        <>
+                            <XSwitcher style="button">
+                                <XSwitcher.Item
+                                    query={{ field: 'tab' }}
+                                    counter={joinedMembers.length}
+                                >
+                                    {TextProfiles.Organization.membersTitle}
+                                </XSwitcher.Item>
+                                <XSwitcher.Item
+                                    query={{ field: 'tab', value: 'requests' }}
+                                    counter={requestMembers.length}
+                                    highlight={true}
+                                >
+                                    {TextProfiles.Organization.requestsTitle}
+                                </XSwitcher.Item>
+                            </XSwitcher>
 
-                        {tab === tabs.members && joinedMembersBox(false)}
-                        {tab === tabs.requests && (
-                            <SectionContent>
-                                {requestMembers.map((member, i) => (
-                                    <MemberRequestCard
-                                        key={i}
-                                        member={member}
-                                        organization={organization}
-                                    />
-                                ))}
-                            </SectionContent>
-                        )}
-                    </>
-                )}
+                            {tab === tabs.members && joinedMembersBox(false)}
+                            {tab === tabs.requests && (
+                                <SectionContent>
+                                    {requestMembers.map((member, i) => (
+                                        <MemberRequestCard
+                                            key={i}
+                                            member={member}
+                                            organization={organization}
+                                        />
+                                    ))}
+                                </SectionContent>
+                            )}
+                        </>
+                    )}
 
                 {(!organization.isMine || (organization.isMine && requestMembers.length <= 0)) &&
                     joinedMembersBox(true)}

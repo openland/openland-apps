@@ -6,7 +6,10 @@ import {
     RoomMemberRole,
     RoomAddMembers,
     RoomAddMembersVariables,
-    RoomMembersShort_members,
+    OrganizationAddMember,
+    OrganizationAddMemberVariables,
+    OrganizationMembersShort,
+    RoomMembersShort,
 } from 'openland-api/Types';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
@@ -25,19 +28,33 @@ import RevokeIcon from 'openland-icons/ic-revoke.svg';
 import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import CheckIcon from 'openland-icons/ic-check.svg';
 
-const RenewInviteLinkButton = (props: {
-    variables: { roomId: string };
-    refetchVars: { roomId: string };
+interface RenewInviteLinkButtonProps {
+    id: string;
     onClick: () => void;
-}) => {
+    isOrganization?: boolean;
+}
+
+const RenewInviteLinkButton = (props: RenewInviteLinkButtonProps) => {
     const client = useClient();
-    const renew = async () => {
-        await client.mutateRoomRenewInviteLink(props.variables);
-        await client.refetchRoomInviteLink(props.variables);
-    };
+    const id = props.id;
+    let renew = undefined;
+
+    if (!props.isOrganization) {
+        renew = async () => {
+            await client.mutateRoomRenewInviteLink({ roomId: id });
+            await client.refetchRoomInviteLink({ roomId: id });
+        };
+    }
+
+    if (props.isOrganization) {
+        renew = async () => {
+            await client.mutateOrganizationCreatePublicInvite({ organizationId: id });
+            await client.refetchOrganizationPublicInvite({ organizationId: id });
+        };
+    }
 
     return (
-        <XMutation mutation={renew} onSuccess={(props as any).onClick}>
+        <XMutation mutation={renew} onSuccess={props.onClick}>
             <RevokeIcon />
         </XMutation>
     );
@@ -64,18 +81,25 @@ const InputClassName = css`
 `;
 
 interface OwnerLinkComponentProps {
+    id: string;
     invite: string;
-    isChannel: boolean;
-    variables: { roomId: string };
+    isChannel?: boolean;
+    isOrganization?: boolean;
+    isCommunity?: boolean;
 }
 
 class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
     input?: any;
+    timer: any;
 
     state = {
         copied: false,
         resetLink: false,
     };
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
+    }
 
     private handleRef = (e: any) => {
         if (e === null) {
@@ -92,6 +116,12 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
         this.setState({
             copied: true,
         });
+
+        this.timer = setTimeout(() => {
+            this.setState({
+                copied: false,
+            });
+        }, 1500);
     };
 
     private resetLink = () => {
@@ -99,12 +129,31 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
             copied: false,
             resetLink: true,
         });
+
+        this.timer = setTimeout(() => {
+            this.setState({
+                copied: false,
+                resetLink: false,
+            });
+        }, 1500);
     };
 
     render() {
         const { props } = this;
         const { copied, resetLink } = this.state;
         let invitePath = props.isChannel ? '/joinChannel/' : '/invite/';
+        let underLinkText = 'Anyone can use this link to join the group';
+        if (props.isChannel) {
+            underLinkText = 'Anyone with link can join as channel member';
+        }
+        if (props.isOrganization) {
+            underLinkText = 'Anyone with link can join as organization member';
+            invitePath = '/join/';
+        }
+        if (props.isCommunity) {
+            underLinkText = 'Anyone with link can join as community member';
+            invitePath = '/join/';
+        }
         return (
             <XVertical width="100%" flexGrow={1} separator={2}>
                 {props.invite && (
@@ -129,9 +178,9 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                             >
                                 <RenewInviteLinkButtonWrapper>
                                     <RenewInviteLinkButton
-                                        variables={props.variables}
-                                        refetchVars={props.variables}
+                                        id={props.id}
                                         onClick={this.resetLink}
+                                        isOrganization={props.isOrganization}
                                     />
                                 </RenewInviteLinkButtonWrapper>
                             </XPopper>
@@ -143,6 +192,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                 flexDirection="row"
                                 alignItems="center"
                                 fontSize={14}
+                                fontWeight="600"
                                 backgroundColor={copied ? '#69d06d' : '#E8F4FF'}
                                 color={copied ? '#ffffff' : '#1790ff'}
                                 cursor="pointer"
@@ -163,7 +213,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                         >
                             {resetLink
                                 ? 'The previous link is revoked and a new one has been created'
-                                : 'Anyone can use this link to join the group'}
+                                : underLinkText}
                         </XView>
                     </XView>
                 )}
@@ -172,18 +222,40 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
     }
 }
 
-type OwnerLinkT = { variables: { roomId: string }; isChannel: boolean };
+type OwnerLinkT = {
+    id: string;
+    isChannel?: boolean;
+    isOrganization?: boolean;
+    isCommunity?: boolean;
+};
 
 const OwnerLink = (props: OwnerLinkT) => {
     const client = useClient();
 
-    const data = client.useRoomInviteLink(props.variables);
+    let data = null;
+    let link = null;
+    if (!props.isOrganization) {
+        data = client.useRoomInviteLink({ roomId: props.id });
+        link = data.link;
+    }
+    if (props.isOrganization) {
+        data = client.useWithoutLoaderOrganizationPublicInvite({
+            organizationId: props.id,
+        });
+        link = data && data.publicInvite ? data.publicInvite.key : null;
+    }
+
+    if (!link) {
+        return null;
+    }
 
     return (
         <OwnerLinkComponent
-            invite={data.link}
+            invite={link}
+            id={props.id}
             isChannel={props.isChannel}
-            variables={props.variables}
+            isOrganization={props.isOrganization}
+            isCommunity={props.isCommunity}
         />
     );
 };
@@ -214,15 +286,21 @@ interface ExplorePeopleProps {
     variables: { query?: string };
     onPick: (label: string, value: string) => void;
     selectedUsers: Map<string, string> | null;
-    roomUsers: RoomMembersShort_members[];
+    roomUsers: {
+        user: {
+            id: string;
+        };
+    }[];
 }
 
 const ExplorePeople = (props: ExplorePeopleProps) => {
     const client = useClient();
 
-    const data = client.useExplorePeople(props.variables, {
-        fetchPolicy: 'network-only',
-    });
+    const data = client.useExplorePeople(props.variables);
+
+    if (!data) {
+        return null;
+    }
 
     if (!data.items) {
         return (
@@ -235,17 +313,12 @@ const ExplorePeople = (props: ExplorePeopleProps) => {
     return (
         <XView flexGrow={1} flexShrink={0}>
             <XScrollView2 flexGrow={1} flexShrink={0}>
-                <XView paddingHorizontal={16} flexDirection="column">
+                <XView paddingHorizontal={24} marginTop={12} flexDirection="column">
                     {data.items.edges.map(i => {
                         if (props.selectedUsers && props.selectedUsers.has(i.node.id)) {
                             return null;
                         }
-                        if (
-                            props.roomUsers &&
-                            props.roomUsers.find(
-                                (j: RoomMembersShort_members) => j.user.id === i.node.id,
-                            )
-                        ) {
+                        if (props.roomUsers && props.roomUsers.find(j => j.user.id === i.node.id)) {
                             return (
                                 <XView key={i.node.id}>
                                     <XUserCard
@@ -272,12 +345,24 @@ const ExplorePeople = (props: ExplorePeopleProps) => {
     );
 };
 
+type RoomAddMembersType = MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
+type OrganizationAddMembersType = MutationFunc<
+    OrganizationAddMember,
+    Partial<OrganizationAddMemberVariables>
+>;
+
 interface InviteModalProps extends XModalProps {
-    roomId: string;
-    addMembers: MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
-    members: RoomMembersShort_members[];
+    id: string;
+    addMembers: RoomAddMembersType | OrganizationAddMembersType;
+    members: {
+        user: {
+            id: string;
+        };
+    }[];
     isMobile: boolean;
-    isChannel: boolean;
+    isChannel?: boolean;
+    isOrganization?: boolean;
+    isCommunity?: boolean;
 }
 
 interface InviteModalState {
@@ -285,7 +370,7 @@ interface InviteModalState {
     selectedUsers: Map<string, string> | null;
 }
 
-class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteModalState> {
+class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalState> {
     constructor(props: InviteModalProps) {
         super(props);
 
@@ -332,6 +417,7 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
         const { selectedUsers } = this.state;
         let options: { label: string; value: string }[] = [];
         const invitesUsers: { userId: string; role: RoomMemberRole }[] = [];
+        const invitesUsersIds: string[] = [];
         if (selectedUsers) {
             selectedUsers.forEach((l, v) => {
                 options.push({
@@ -342,6 +428,7 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
 
             selectedUsers.forEach((l, v) => {
                 invitesUsers.push({ userId: v, role: RoomMemberRole.MEMBER });
+                invitesUsersIds.push(v);
             });
         }
         return (
@@ -351,19 +438,30 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                 target={props.target}
                 submitBtnText="Add"
                 submitProps={{
-                    successText: 'Done!',
+                    successText: 'Added',
                 }}
                 width={props.isMobile ? undefined : 520}
                 flexGrow={props.isMobile ? 1 : undefined}
                 useTopCloser={true}
                 targetQuery="inviteMembers"
                 defaultAction={async () => {
-                    await props.addMembers({
-                        variables: {
-                            roomId: this.props.roomId,
-                            invites: invitesUsers,
-                        },
-                    });
+                    if (!props.isOrganization) {
+                        await (props.addMembers as RoomAddMembersType)({
+                            variables: {
+                                roomId: props.id,
+                                invites: invitesUsers,
+                            },
+                        });
+                    }
+
+                    if (props.isOrganization) {
+                        await (props.addMembers as OrganizationAddMembersType)({
+                            variables: {
+                                organizationId: props.id,
+                                userIds: invitesUsersIds,
+                            },
+                        });
+                    }
 
                     this.setState({
                         selectedUsers: null,
@@ -380,8 +478,10 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                 >
                     <XView paddingHorizontal={24} marginBottom={32}>
                         <OwnerLink
-                            variables={{ roomId: this.props.roomId }}
-                            isChannel={this.props.isChannel}
+                            id={props.id}
+                            isChannel={props.isChannel}
+                            isOrganization={props.isOrganization}
+                            isCommunity={props.isCommunity}
                         />
                     </XView>
                     <XView fontSize={16} fontWeight="600" marginBottom={16} marginLeft={24}>
@@ -394,69 +494,91 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                             onChange={this.onChange}
                         />
                     </XView>
-                    <React.Suspense fallback={<XLoader />}>
-                        <ExplorePeople
-                            variables={{ query: this.state.searchQuery }}
-                            onPick={this.selectMembers}
-                            selectedUsers={selectedUsers}
-                            roomUsers={props.members}
-                        />
-                    </React.Suspense>
+                    <ExplorePeople
+                        variables={{ query: this.state.searchQuery }}
+                        onPick={this.selectMembers}
+                        selectedUsers={selectedUsers}
+                        roomUsers={props.members}
+                    />
                 </XView>
             </XModalForm>
         );
     }
 }
 
-type RoomAddMemberModalT = {
-    roomId: string;
-    refetchVars: { roomId: string };
-    isChannel: boolean;
+type AddMemberModalT = {
+    id: string;
+    isChannel?: boolean;
+    isOrganization?: boolean;
+    isCommunity?: boolean;
 };
 
-export const RoomAddMemberModal = React.memo(
-    ({ roomId, isChannel }: RoomAddMemberModalT & XModalProps) => {
+interface AddMemberToRoom {
+    variables: {
+        roomId: string;
+        invites: { userId: string; role: RoomMemberRole }[];
+    };
+}
+
+interface AddMemberToOrganization {
+    variables: {
+        organizationId: string;
+        userIds: string[];
+    };
+}
+
+export const AddMembersModal = React.memo(
+    ({ id, isChannel, isOrganization, isCommunity }: AddMemberModalT & XModalProps) => {
         const isMobile = React.useContext(IsMobileContext);
         const client = useClient();
 
-        const addMembers = async ({
-            variables,
-        }: {
-            variables: {
-                roomId: string;
-                invites: { userId: string; role: RoomMemberRole }[];
-            };
-        }) => {
+        const addMembersToRoom = async ({ variables }: AddMemberToRoom) => {
             await client.mutateRoomAddMembers({
-                roomId: variables.roomId,
+                roomId: id,
                 invites: variables.invites,
             });
 
-            await client.refetchRoomMembersShort({ roomId });
+            await client.refetchRoomMembersShort({ roomId: id });
+        };
+
+        const addMembersToOrganization = async ({ variables }: AddMemberToOrganization) => {
+            await client.mutateOrganizationAddMember({
+                organizationId: id,
+                userIds: variables.userIds,
+            });
+
+            await client.refetchOrganizationMembersShort({ organizationId: id });
         };
 
         // TODO ask steve to add (opts?: QueryWatchParameters) to propagate fetchPolicy: 'network-only',
-        const data = client.useWithoutLoaderRoomMembersShort(
-            { roomId },
-            //     {
-            //  fetchPolicy: 'network-only'
-            // }
-        );
+        let data = null;
+
+        if (!isOrganization) {
+            data = client.useWithoutLoaderRoomMembersShort({ roomId: id });
+        }
+
+        if (isOrganization) {
+            data = client.useWithoutLoaderOrganizationMembersShort({ organizationId: id });
+        }
 
         if (!data) {
             return null;
         }
 
         return (
-            <React.Suspense fallback={<XLoader />}>
-                <RoomAddMemberModalInner
-                    addMembers={addMembers}
-                    roomId={roomId}
-                    members={data.members}
-                    isMobile={isMobile}
-                    isChannel={isChannel}
-                />
-            </React.Suspense>
+            <AddMemberModalInner
+                addMembers={isOrganization ? addMembersToOrganization : addMembersToRoom}
+                id={id}
+                members={
+                    isOrganization
+                        ? (data as OrganizationMembersShort).organization.members
+                        : (data as RoomMembersShort).members
+                }
+                isMobile={isMobile}
+                isChannel={isChannel}
+                isOrganization={isOrganization}
+                isCommunity={isCommunity}
+            />
         );
     },
 );
