@@ -303,10 +303,6 @@ const ExplorePeople = (props: ExplorePeopleProps) => {
 
     const data = client.useExplorePeople(props.variables);
 
-    if (!data) {
-        return null;
-    }
-
     if (!data.items) {
         return (
             <XView flexGrow={1} flexShrink={0}>
@@ -501,12 +497,20 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                             onChange={this.onChange}
                         />
                     </XView>
-                    <ExplorePeople
-                        variables={{ query: this.state.searchQuery }}
-                        onPick={this.selectMembers}
-                        selectedUsers={selectedUsers}
-                        roomUsers={props.members}
-                    />
+                    <React.Suspense
+                        fallback={
+                            <XView flexGrow={1} flexShrink={0}>
+                                <XLoader loading={true} />
+                            </XView>
+                        }
+                    >
+                        <ExplorePeople
+                            variables={{ query: this.state.searchQuery }}
+                            onPick={this.selectMembers}
+                            selectedUsers={selectedUsers}
+                            roomUsers={props.members}
+                        />
+                    </React.Suspense>
                 </XView>
             </XModalForm>
         );
@@ -558,19 +562,14 @@ export const AddMembersModal = React.memo(
             await client.refetchOrganizationMembersShort({ organizationId: id });
         };
 
-        // TODO ask steve to add (opts?: QueryWatchParameters) to propagate fetchPolicy: 'network-only',
         let data = null;
 
         if (isRoom) {
-            data = client.useWithoutLoaderRoomMembersShort({ roomId: id });
+            data = client.useRoomMembersShort({ roomId: id });
         }
 
         if (isOrganization) {
-            data = client.useWithoutLoaderOrganizationMembersShort({ organizationId: id });
-        }
-
-        if (!data) {
-            return null;
+            data = client.useOrganizationMembersShort({ organizationId: id });
         }
 
         return (
