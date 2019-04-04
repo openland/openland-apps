@@ -714,6 +714,7 @@ const Members = ({ organization, router }: MembersProps) => {
                             />
                             <AddMembersModal
                                 id={organization.id}
+                                isRoom={false}
                                 isOrganization={true}
                                 isCommunity={organization.isCommunity}
                             />
