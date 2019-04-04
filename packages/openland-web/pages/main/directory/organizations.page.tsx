@@ -19,14 +19,11 @@ interface OrganizationCardsProps {
 export const OrganizationCards = (props: OrganizationCardsProps) => {
     const client = useClient();
 
-    const data = client.useWithoutLoaderExploreOrganizations(
-        props.variables,
-        //     {
-        //     fetchPolicy: 'network-only',
-        // }
-    );
+    const data = client.useExploreOrganizations(props.variables, {
+        fetchPolicy: 'network-only',
+    });
 
-    if (!(data && data.items)) {
+    if (!data.items) {
         return null;
     }
 

@@ -423,14 +423,11 @@ const UsersPickerWrapperClassName = css`
 const ExplorePeople = (props: ExplorePeopleProps) => {
     const client = useClient();
 
-    const data = client.useWithoutLoaderExplorePeople(
-        props.variables,
-        //     {
-        //     fetchPolicy: 'network-only',
-        // }
-    );
+    const data = client.useExplorePeople(props.variables, {
+        fetchPolicy: 'network-only',
+    });
 
-    if (!data || !data.items) {
+    if (!data.items) {
         return (
             <XView flexGrow={1} flexShrink={0}>
                 <XLoader loading={true} />
