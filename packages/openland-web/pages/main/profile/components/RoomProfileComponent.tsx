@@ -69,12 +69,14 @@ export const AdminTools = (props: { id: string; variables: { id: string } }) => 
 
     return (
         <>
-            {data && data.roomSuper && (
-                <RoomSetFeatured val={data.roomSuper!.featured} roomId={data.roomSuper.id} />
-            )}
-            {data && data.roomSuper && (
-                <RoomSetHidden val={data.roomSuper!.listed} roomId={data.roomSuper.id} />
-            )}
+            {data &&
+                data.roomSuper && (
+                    <RoomSetFeatured val={data.roomSuper!.featured} roomId={data.roomSuper.id} />
+                )}
+            {data &&
+                data.roomSuper && (
+                    <RoomSetHidden val={data.roomSuper!.listed} roomId={data.roomSuper.id} />
+                )}
         </>
     );
 };
@@ -345,19 +347,20 @@ const MembersProvider = ({
                 : tabs.members;
         return (
             <Section separator={0}>
-                {isOwner && (requests || []).length > 0 && (
-                    <XSwitcher style="button">
-                        <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
-                            Members
-                        </XSwitcher.Item>
-                        <XSwitcher.Item
-                            query={{ field: 'requests', value: '1' }}
-                            counter={requests!.length}
-                        >
-                            Requests
-                        </XSwitcher.Item>
-                    </XSwitcher>
-                )}
+                {isOwner &&
+                    (requests || []).length > 0 && (
+                        <XSwitcher style="button">
+                            <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
+                                Members
+                            </XSwitcher.Item>
+                            <XSwitcher.Item
+                                query={{ field: 'requests', value: '1' }}
+                                counter={requests!.length}
+                            >
+                                Requests
+                            </XSwitcher.Item>
+                        </XSwitcher>
+                    )}
                 {((requests || []).length === 0 || !isOwner) && (
                     <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
                 )}
@@ -376,6 +379,9 @@ const MembersProvider = ({
                                 text="Add members"
                                 query={{ field: 'inviteMembers', value: 'true' }}
                             />
+                            {members.map((member, i) => {
+                                return <MemberCard key={i} member={member} />;
+                            })}
                         </>
                     )}
 
