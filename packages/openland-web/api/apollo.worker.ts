@@ -1,4 +1,6 @@
-console.log('starting');
+import { disableTag, disableAll } from 'mental-log';
+disableAll();
+disableTag('GraphQL-Direct');
 
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { buildClient } from 'openland-y-graphql/apolloClient';

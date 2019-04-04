@@ -12,7 +12,7 @@ export function createWorkerClient(endpoint: string, wsEndpoint: string, token?:
     let threadInterface: WorkerInterface = {
         post: (src) => thread.postMessage(src),
         setHandler: (handler) => thread.onmessage = (src) => {
-            console.log(src)
+            // console.log(src)
             handler(src.data)
         } 
     }

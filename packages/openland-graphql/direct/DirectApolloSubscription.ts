@@ -39,7 +39,7 @@ export class DirectApolloSubscription<TSubscription, TVars> implements GraphqlAc
         if (this.source) {
             return;
         }
-        console.log('trying to start');
+        // console.log('trying to start');
         this.source = this.client.client.client.subscribe({ query: this.subscription, variables: this.vars });
         this.sourceSubscription = this.source.subscribe({
             next: this.handleNext,
@@ -52,7 +52,7 @@ export class DirectApolloSubscription<TSubscription, TVars> implements GraphqlAc
         if (!this.source) {
             return;
         }
-        console.log('trying to stop');
+        // console.log('trying to stop');
         try {
             if (!this.sourceSubscription!.closed) {
                 this.sourceSubscription!.unsubscribe();
@@ -87,7 +87,7 @@ export class DirectApolloSubscription<TSubscription, TVars> implements GraphqlAc
     }
 
     private handleError = (err?: any) => {
-        console.log('error');
+        // console.log('error');
         console.log(err);
         this.tryStop();
         this.tryStart();
