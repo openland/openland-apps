@@ -1,13 +1,22 @@
-import Worker from "worker-loader!./apollo.worker.js";
+const W = require('./apollo.worker');
 import { WorkerInterface } from 'openland-graphql/proxy/WorkerInterface';
 import { WorkerApolloClient } from 'openland-graphql/proxy/WorkerApolloClient';
 
 export function createWorkerClient(endpoint: string, wsEndpoint: string, token?: string) {
-    let thread: Worker = new Worker();
-    thread.postMessage(JSON.stringify({ type: 'init', token, endpoint, wsEndpoint }));
+    console.log('creating client');
+    let thread: Worker = new W();
+    thread.onerror = (e) => {
+        console.error(e);
+    }
+    thread.postMessage({ type: 'init', token, endpoint, wsEndpoint });
     let threadInterface: WorkerInterface = {
         post: (src) => thread.postMessage(src),
-        setHandler: (handler) => thread.onmessage = (src) => handler(src.data)
+        setHandler: (handler) => thread.onmessage = (src) => {
+            console.log(src)
+            handler(src.data)
+        } 
     }
-    return new WorkerApolloClient(threadInterface);
+    let res = new WorkerApolloClient(threadInterface);
+    console.log('completed');
+    return res;
 }

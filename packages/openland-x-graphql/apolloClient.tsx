@@ -4,6 +4,7 @@ import { buildClient } from 'openland-y-graphql/apolloClient';
 import { Track } from 'openland-engines/Tracking';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
+import { createWorkerClient } from 'openland-web/api/createWorkerClient';
 
 let cachedClient: OpenlandClient | undefined = undefined;
 
@@ -22,7 +23,10 @@ const buildWebClient = (token?: string) => {
 export const apolloClient = (token?: string) => {
     if (canUseDOM) {
         if (!cachedClient) {
-            cachedClient = new OpenlandClient(new DirectApollolClient(buildWebClient(token)));
+            let httpEndpoint = '/graphql';
+            let wsEndpoint = loadConfig().webSocketEndpoint!;
+            const client = createWorkerClient(httpEndpoint, wsEndpoint, token);
+            cachedClient = new OpenlandClient(client);
             Track.setClient(cachedClient);
         }
         return cachedClient!!;
