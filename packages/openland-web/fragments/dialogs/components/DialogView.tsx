@@ -76,6 +76,7 @@ export interface DialogViewProps {
 }
 
 export const DialogView = XMemo<DialogViewProps>(props => {
+    let router = React.useContext(XRouterContext);
     let dialog = props.item;
     let isMuted = dialog.isMuted;
     let isService = dialog.isService;
@@ -88,8 +89,8 @@ export const DialogView = XMemo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{emojifyMessage(dialog.sender)}: </>
     ) : (
-        ''
-    );
+                    ''
+                );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
 
@@ -170,6 +171,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
             as="a"
             ref={props.handleRef}
             path={'/mail/' + dialog.key}
+            onMouseDown={() => router!.push('/mail/' + dialog.key)}
             height={72}
             flexDirection="row"
             paddingLeft={16}
@@ -240,8 +242,8 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                                                 active
                                                     ? channelIconActiveClass
                                                     : dialog.kind === 'GROUP' && highlightSecretChat
-                                                    ? channelSecretIconClass
-                                                    : channelIconClass
+                                                        ? channelSecretIconClass
+                                                        : channelIconClass
                                             }
                                         />
                                     </XView>

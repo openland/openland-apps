@@ -133,16 +133,14 @@ export class XScrollViewReversedInner extends React.PureComponent<
     }
 
     componentDidUpdate() {
-        let dimensions = this.getDimensions();
-        if (this.lastDimensions && this.lastDimensions.scrollHeight !== dimensions.scrollHeight) {
-            requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            let dimensions = this.getDimensions();
+            if (this.lastDimensions && this.lastDimensions.scrollHeight !== dimensions.scrollHeight) {
                 this.restorePreviousScroll();
-            });
-        } else {
-            requestAnimationFrame(() => {
+            } else {
                 this.restoreScroll();
-            });
-        }
+            }
+        });
     }
 
     render() {
