@@ -9,6 +9,7 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
+import { withApp } from 'openland-web/components/withApp';
 interface PeopleCardsProps {
     variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
@@ -66,7 +67,7 @@ const SearchUserProfileComponent = XMemo(({ id }: { id: string }) => (
     <UserProfile userId={id} onDirectory={true} />
 ));
 
-export default () => {
+export default withApp('People', 'viewer', () => {
     const { path } = React.useContext(XRouterContext) as XRouter;
 
     let CardsComponent = ComponentWithSort({ Component: PeopleCards });
@@ -83,4 +84,4 @@ export default () => {
             withoutFeatured
         />
     );
-};
+});
