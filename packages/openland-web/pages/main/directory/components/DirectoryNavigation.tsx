@@ -102,6 +102,7 @@ export const SearchCardsOrShowProfile = XMemo(
                         />
                     </XVertical>
                 )}
+
                 {id && ProfileComponent && <ProfileComponent id={id} />}
             </>
         );
@@ -200,19 +201,27 @@ export const DirectoryNavigation = XMemo(
                     <XView flexGrow={1} height={isMobile ? undefined : '100%'} position="relative">
                         <XScrollView2 height="100%" flexGrow={1}>
                             <XView flexGrow={1}>
-                                {children ? (
-                                    children
-                                ) : (
-                                    <SearchCardsOrShowProfile
-                                        id={id}
-                                        ProfileComponent={ProfileComponent}
-                                        CardsComponent={CardsComponent}
-                                        searchPlaceholder={searchPlaceholder || ''}
-                                        noQueryText={noQueryText || ''}
-                                        hasQueryText={hasQueryText || ''}
-                                        withoutFeatured={withoutFeatured}
-                                    />
-                                )}
+                                <React.Suspense
+                                    fallback={
+                                        <XView flexGrow={1} flexShrink={0}>
+                                            <XLoader loading={true} />
+                                        </XView>
+                                    }
+                                >
+                                    {children ? (
+                                        children
+                                    ) : (
+                                        <SearchCardsOrShowProfile
+                                            id={id}
+                                            ProfileComponent={ProfileComponent}
+                                            CardsComponent={CardsComponent}
+                                            searchPlaceholder={searchPlaceholder || ''}
+                                            noQueryText={noQueryText || ''}
+                                            hasQueryText={hasQueryText || ''}
+                                            withoutFeatured={withoutFeatured}
+                                        />
+                                    )}
+                                </React.Suspense>
                             </XView>
                         </XScrollView2>
                     </XView>

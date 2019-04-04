@@ -423,9 +423,12 @@ const UsersPickerWrapperClassName = css`
 const ExplorePeople = (props: ExplorePeopleProps) => {
     const client = useClient();
 
-    const data = client.useExplorePeople(props.variables, {
-        fetchPolicy: 'network-only',
-    });
+    const data = client.useExplorePeople(
+        props.variables,
+        //     {
+        //     fetchPolicy: 'network-only',
+        // }
+    );
 
     if (!data.items) {
         return (
