@@ -104,15 +104,13 @@ export default withData(
                                         (this.props.apollo.client as DirectApollolClient).client
                                     }
                                 >
-                                    <ClientCacheProvider>
-                                        <OpenlandApiContext.Provider value={this.props.apollo}>
-                                            <RootErrorBoundary>
-                                                <AppContainer>
-                                                    <Component {...pageProps} />
-                                                </AppContainer>
-                                            </RootErrorBoundary>
-                                        </OpenlandApiContext.Provider>
-                                    </ClientCacheProvider>
+                                    <OpenlandApiContext.Provider value={this.props.apollo}>
+                                        <RootErrorBoundary>
+                                            <AppContainer>
+                                                <Component {...pageProps} />
+                                            </AppContainer>
+                                        </RootErrorBoundary>
+                                    </OpenlandApiContext.Provider>
                                 </YApolloProvider>
                             </XRouterProvider>
                         </XStorageProvider>
