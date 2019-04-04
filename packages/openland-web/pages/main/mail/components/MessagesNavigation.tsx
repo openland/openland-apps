@@ -109,22 +109,26 @@ export const MessagesNavigation = XMemo(
                 }
                 secondFragmentHeader={
                     <ErrorBoundary>
-                        {chatId && (
-                            <ChatHeaderViewLoader
-                                variables={{
-                                    id: chatId,
-                                }}
-                            />
-                        )}
-                        <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                        <React.Suspense fallback={null}>
+                            {chatId && (
+                                <ChatHeaderViewLoader
+                                    variables={{
+                                        id: chatId,
+                                    }}
+                                />
+                            )}
+                            <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                        </React.Suspense>
                     </ErrorBoundary>
                 }
                 firstFragment={<DialogListFragment />}
                 secondFragment={
                     <ErrorBoundary>
-                        <ConversationContainerWrapper
-                            {...{ tab, conversationId: cid, oid, uid, cid }}
-                        />
+                        <React.Suspense fallback={null}>
+                            <ConversationContainerWrapper
+                                {...{ tab, conversationId: cid, oid, uid, cid }}
+                            />
+                        </React.Suspense>
                     </ErrorBoundary>
                 }
             />

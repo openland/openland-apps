@@ -33,9 +33,12 @@ const Buttons = Glamorous(XHorizontal)({
 
 const Status = (({ variables }) => {
     const client = useClient();
-    const data = client.useOnline(variables, {
-        fetchPolicy: 'network-only',
-    });
+    const data = client.useOnline(
+        variables,
+        //      {
+        //     fetchPolicy: 'network-only',
+        // }
+    );
 
     const { user } = data;
 

@@ -5,7 +5,8 @@ import { useClient } from 'openland-web/utils/useClient';
 import { User_user } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
+import { XWithRouter } from 'openland-x-routing/withRouter';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
@@ -80,9 +81,12 @@ const StatusWrapperOnline = css`
 const UserStatus = (props: { variables: { userId: string }; isBot: boolean }) => {
     const client = useClient();
 
-    const data = client.useOnline(props.variables, {
-        fetchPolicy: 'network-only',
-    });
+    const data = client.useOnline(
+        props.variables,
+        //     {
+        //     fetchPolicy: 'network-only',
+        // }
+    );
 
     const { user } = data;
 
@@ -133,76 +137,80 @@ const Header = (props: { user: User_user }) => {
     let { user } = props;
 
     return (
-        <HeaderWrapper>
-            <XContentWrapper withFlex={true}>
-                <XView paddingRight={18}>
-                    {user.photo && (
-                        <AvatarModal photo={user.photo} userName={user.name} userId={user.id} />
-                    )}
-                    {!user.photo && (
-                        <XAvatar2 src={undefined} size={58} title={user.name} id={user.id} />
-                    )}
-                </XView>
-                <XView paddingTop={1} justifyContent="center" flexGrow={1}>
-                    <XHorizontal separator={4}>
-                        <XView fontSize={18} fontWeight="600" lineHeight="20px" color="#000000">
-                            {emoji({ src: user.name, size: 20 })}
-                        </XView>
-                        {user.primaryOrganization && (
-                            <XView
-                                as="a"
-                                marginTop={1}
-                                marginBottom={-1}
-                                fontSize={13}
-                                fontWeight="600"
-                                lineHeight="20px"
-                                color="rgba(0, 0, 0, 0.4)"
-                                path={'/directory/o/' + user.primaryOrganization.id}
-                                hoverTextDecoration="none"
-                            >
-                                {user.primaryOrganization.name}
+        <React.Suspense fallback={<div />}>
+            <HeaderWrapper>
+                <XContentWrapper withFlex={true}>
+                    <XView paddingRight={18}>
+                        {user.photo && (
+                            <AvatarModal photo={user.photo} userName={user.name} userId={user.id} />
+                        )}
+                        {!user.photo && (
+                            <XAvatar2 src={undefined} size={58} title={user.name} id={user.id} />
+                        )}
+                    </XView>
+                    <XView paddingTop={1} justifyContent="center" flexGrow={1}>
+                        <XHorizontal separator={4}>
+                            <XView fontSize={18} fontWeight="600" lineHeight="20px" color="#000000">
+                                {emoji({ src: user.name, size: 20 })}
                             </XView>
-                        )}
-                    </XHorizontal>
-                    <React.Suspense fallback={<div />}>
-                        <UserStatus variables={{ userId: user.id }} isBot={user.isBot} />
-                    </React.Suspense>
-                </XView>
-                <XView paddingTop={13}>
-                    <XHorizontal separator={8} alignItems="center">
-                        {user.website && (
-                            <XSocialButton
-                                value={user.website}
-                                style="website"
-                                placeholder={extractHostname(user.website)}
-                            />
-                        )}
-                        {user.linkedin && <XSocialButton value={user.linkedin} style="linkedin" />}
-                        {user.phone && <XSocialButton value={user.phone} style="phone" />}
-                        {user.isYou && (
-                            <XOverflow
-                                placement="bottom-end"
-                                flat={true}
-                                content={
-                                    <>
-                                        <XMenuItem path="/settings/profile/">
-                                            {TextProfiles.User.edit}
-                                        </XMenuItem>
-                                    </>
-                                }
-                            />
-                        )}
-                        {!user.isYou && (
-                            <XButton
-                                text={TextProfiles.User.message}
-                                style="primary"
-                                path={'/mail/' + user.id}
-                            />
-                        )}
-                    </XHorizontal>
-                </XView>
-            </XContentWrapper>
-        </HeaderWrapper>
+                            {user.primaryOrganization && (
+                                <XView
+                                    as="a"
+                                    marginTop={1}
+                                    marginBottom={-1}
+                                    fontSize={13}
+                                    fontWeight="600"
+                                    lineHeight="20px"
+                                    color="rgba(0, 0, 0, 0.4)"
+                                    path={'/directory/o/' + user.primaryOrganization.id}
+                                    hoverTextDecoration="none"
+                                >
+                                    {user.primaryOrganization.name}
+                                </XView>
+                            )}
+                        </XHorizontal>
+                        <React.Suspense fallback={<div />}>
+                            <UserStatus variables={{ userId: user.id }} isBot={user.isBot} />
+                        </React.Suspense>
+                    </XView>
+                    <XView paddingTop={13}>
+                        <XHorizontal separator={8} alignItems="center">
+                            {user.website && (
+                                <XSocialButton
+                                    value={user.website}
+                                    style="website"
+                                    placeholder={extractHostname(user.website)}
+                                />
+                            )}
+                            {user.linkedin && (
+                                <XSocialButton value={user.linkedin} style="linkedin" />
+                            )}
+                            {user.phone && <XSocialButton value={user.phone} style="phone" />}
+                            {user.isYou && (
+                                <XOverflow
+                                    placement="bottom-end"
+                                    flat={true}
+                                    content={
+                                        <>
+                                            <XMenuItem path="/settings/profile/">
+                                                {TextProfiles.User.edit}
+                                            </XMenuItem>
+                                        </>
+                                    }
+                                />
+                            )}
+                            {!user.isYou && (
+                                <XButton
+                                    text={TextProfiles.User.message}
+                                    style="primary"
+                                    path={'/mail/' + user.id}
+                                />
+                            )}
+                        </XHorizontal>
+                    </XView>
+                </XContentWrapper>
+            </HeaderWrapper>
+        </React.Suspense>
     );
 };
 
@@ -262,26 +270,24 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
     );
 };
 
-const UserProvider = withRouter(props => {
+const UserProvider = (props: { variables: { userId: string }; onDirectory?: boolean }) => {
     const client = useClient();
-    const data = client.useWithoutLoaderUser({
+    let router = React.useContext(XRouterContext)!;
+    const data = client.useUser({
         userId: props.variables.userId,
     });
 
-    return data && data.user ? (
+    return (
         <UserProfileInner
             user={data.user}
-            router={props.router}
+            router={router}
             onDirectory={(props as any).onDirectory}
         />
-    ) : (
-        <XLoader loading={true} />
     );
-}) as React.ComponentType<{
-    variables: { userId: string };
-    onDirectory?: boolean;
-}>;
+};
 
 export const UserProfile = (props: { userId: string; onDirectory?: boolean }) => (
-    <UserProvider variables={{ userId: props.userId }} onDirectory={props.onDirectory} />
+    <React.Suspense fallback={<XLoader loading={true} />}>
+        <UserProvider variables={{ userId: props.userId }} onDirectory={props.onDirectory} />
+    </React.Suspense>
 );
