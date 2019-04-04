@@ -92,9 +92,15 @@ export default class OpenlandDocument extends Document {
                 ) {
                     const room = resolvedInvite.invite.room;
 
+                    let urlPrefix = 'https://openland.com';
+
+                    if (process.env.APP_ENVIRONMENT === 'next') {
+                        urlPrefix = 'https://next.openland.com';
+                    }
+
                     metaTagsInfo = {
                         title: room.title,
-                        url: originalUrl,
+                        url: urlPrefix + originalUrl,
                         description: room.description,
                         image: room.socialImage ? room.socialImage : room.photo,
                     };
