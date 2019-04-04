@@ -55,7 +55,7 @@ export class MobileMessenger {
         return this.conversations.get(id)!!;
     }
 
-    handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => {
+    handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number) => {
         showPictureModal({
             url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
             width: fileMeta.imageWidth,
@@ -66,7 +66,7 @@ export class MobileMessenger {
                 y: event.y,
                 width: event.w,
                 height: event.h,
-                borderRadius: 16
+                borderRadius: typeof radius !== 'undefined' ? radius : 16
             },
             ...Platform.OS === 'ios' ? {
                 onBegin: () => {
