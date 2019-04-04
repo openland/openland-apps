@@ -51,3 +51,23 @@ export const AddAppToChatMutation = gql`
     }
     ${AppChat}
 `;
+
+export const UserStorageQuery = gql`
+    query UserStorage($namespace: String!, $keys: [String!]!) {
+        userStorage(namespace: $namespace, keys: $keys) {
+            id
+            key
+            value
+        }
+    }
+`;
+
+export const UserStorageSetMutation = gql`
+    mutation UserStorageSet($namespace: String!, $data: [AppStorageValueInput!]!) {
+        userStorageSet(namespace: $namespace, data: $data) {
+            id
+            key
+            value
+        }
+    }
+`;

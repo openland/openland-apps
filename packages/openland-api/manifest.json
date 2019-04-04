@@ -163,6 +163,20 @@
       }
     },
     {
+      "signature": "8ec5e6d134d0ec5da73879de67520a8f08b2fe3e391673574f4b421ddb12267a",
+      "document": "query UserStorage($keys:[String!]!,$namespace:String!){userStorage(keys:$keys,namespace:$namespace){__typename id key value}}",
+      "metadata": {
+        "engineSignature": "query UserStorage($keys:[String!]!,$namespace:String!){userStorage(keys:$keys,namespace:$namespace){__typename id key value}}"
+      }
+    },
+    {
+      "signature": "d914d597d3d474c488431a1f324a846ae820d3389be937ab5f81a1f882f7989f",
+      "document": "mutation UserStorageSet($data:[AppStorageValueInput!]!,$namespace:String!){userStorageSet(data:$data,namespace:$namespace){__typename id key value}}",
+      "metadata": {
+        "engineSignature": "mutation UserStorageSet($data:[AppStorageValueInput!]!,$namespace:String!){userStorageSet(data:$data,namespace:$namespace){__typename id key value}}"
+      }
+    },
+    {
       "signature": "13790b169c02e0e23945808122446b3e6ee9a832212bc10e5a3b2e0ecf889074",
       "document": "fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename...UserTiny}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview}}quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo shortname}query Dialogs($after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename...TinyMessage}cid fid haveMention isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}",
       "metadata": {

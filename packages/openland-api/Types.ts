@@ -748,6 +748,54 @@ export interface AddAppToChatVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: UserStorage
+// ====================================================
+
+export interface UserStorage_userStorage {
+  __typename: "AppStorageValue";
+  id: string;
+  key: string;
+  value: string | null;
+}
+
+export interface UserStorage {
+  userStorage: UserStorage_userStorage[];
+}
+
+export interface UserStorageVariables {
+  namespace: string;
+  keys: string[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: UserStorageSet
+// ====================================================
+
+export interface UserStorageSet_userStorageSet {
+  __typename: "AppStorageValue";
+  id: string;
+  key: string;
+  value: string | null;
+}
+
+export interface UserStorageSet {
+  userStorageSet: UserStorageSet_userStorageSet[];
+}
+
+export interface UserStorageSetVariables {
+  namespace: string;
+  data: AppStorageValueInput[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: Dialogs
 // ====================================================
 
@@ -31911,6 +31959,11 @@ export interface AppProfileInput {
   shortname?: string | null;
   photoRef?: ImageRefInput | null;
   about?: string | null;
+}
+
+export interface AppStorageValueInput {
+  key: string;
+  value?: string | null;
 }
 
 export interface ContactPersonInput {

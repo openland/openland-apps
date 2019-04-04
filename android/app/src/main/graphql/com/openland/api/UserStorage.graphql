@@ -1,0 +1,8 @@
+query UserStorage($keys: [String!]!, $namespace: String!) {
+  userStorage(keys: $keys, namespace: $namespace) {
+    __typename
+    id
+    key
+    value
+  }
+}

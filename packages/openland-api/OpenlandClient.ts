@@ -127,6 +127,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMyApps(opts?: QueryWatchParameters): Types.MyApps | null {
         return this.useQuery(Source.MyAppsQuery, undefined, opts);
     }
+    async queryUserStorage(variables: Types.UserStorageVariables, opts?: OperationParameters): Promise<Types.UserStorage> {
+        return this.client.query(Source.UserStorageQuery, variables, opts);
+    }
+    async refetchUserStorage(variables: Types.UserStorageVariables): Promise<Types.UserStorage> {
+        return this.refetch(Source.UserStorageQuery, variables);
+    }
+    useUserStorage(variables: Types.UserStorageVariables, opts?: QueryWatchParameters): Types.UserStorage {
+        return this.useQuerySuspense(Source.UserStorageQuery, variables, opts);
+    }
+    useWithoutLoaderUserStorage(variables: Types.UserStorageVariables): Types.UserStorage | null {
+        return this.useQuery(Source.UserStorageQuery, variables);
+    }
     async queryDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
         return this.client.query(Source.DialogsQuery, variables, opts);
     }
@@ -642,6 +654,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateAddAppToChat(variables: Types.AddAppToChatVariables): Promise<Types.AddAppToChat> {
         return this.client.mutate(Source.AddAppToChatMutation, variables);
+    }
+    async mutateUserStorageSet(variables: Types.UserStorageSetVariables): Promise<Types.UserStorageSet> {
+        return this.client.mutate(Source.UserStorageSetMutation, variables);
     }
     async mutatePinMessage(variables: Types.PinMessageVariables): Promise<Types.PinMessage> {
         return this.client.mutate(Source.PinMessageMutation, variables);

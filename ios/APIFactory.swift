@@ -133,6 +133,21 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "UserStorage") {
+      let namespace = notNull(readString(src, "namespace"))
+      let keys = notNull(notNullListItems(readStringList(src, "keys")))
+      let requestBody = UserStorageQuery(namespace: namespace, keys: keys)
+      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "Dialogs") {
       let after = readString(src, "after")
       let requestBody = DialogsQuery(after: after)
@@ -824,6 +839,21 @@ class ApiFactory: ApiFactoryBase {
     }
     if (name == "MyApps") {
       let requestBody = MyAppsQuery()
+      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
+    if (name == "UserStorage") {
+      let namespace = notNull(readString(src, "namespace"))
+      let keys = notNull(notNullListItems(readStringList(src, "keys")))
+      let requestBody = UserStorageQuery(namespace: namespace, keys: keys)
       let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -1591,6 +1621,23 @@ class ApiFactory: ApiFactoryBase {
       let appId = notNull(readString(src, "appId"))
       let chatId = notNull(readString(src, "chatId"))
       let requestBody = AddAppToChatMutation(appId: appId, chatId: chatId)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
+    if (name == "UserStorageSet") {
+      let namespace = notNull(readString(src, "namespace"))
+      let data = notNull(notNullListItems(readAppStorageValueInputList(src, "data")))
+      let requestBody = UserStorageSetMutation(namespace: namespace, data: data)
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -3090,6 +3137,15 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "UserStorage") {
+      let namespace = notNull(readString(src, "namespace"))
+      let keys = notNull(notNullListItems(readStringList(src, "keys")))
+      let requestBody = UserStorageQuery(namespace: namespace, keys: keys)
+      store.withinReadTransaction { (tx) in
+        handler((try tx.read(query: requestBody)).resultMap, nil)
+      }
+      return
+    }
     if (name == "Dialogs") {
       let after = readString(src, "after")
       let requestBody = DialogsQuery(after: after)
@@ -3506,6 +3562,17 @@ class ApiFactory: ApiFactoryBase {
     if (name == "MyApps") {
       let requestBody = MyAppsQuery()
       let data = MyAppsQuery.Data(unsafeResultMap: self.convertData(src: data))
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(data: data, forQuery: requestBody)
+        handler(nil, nil)
+      }
+      return
+    }
+    if (name == "UserStorage") {
+      let namespace = notNull(readString(src, "namespace"))
+      let keys = notNull(notNullListItems(readStringList(src, "keys")))
+      let requestBody = UserStorageQuery(namespace: namespace, keys: keys)
+      let data = UserStorageQuery.Data(unsafeResultMap: self.convertData(src: data))
       store.withinReadWriteTransaction { (tx) in
         try tx.write(data: data, forQuery: requestBody)
         handler(nil, nil)
@@ -4673,6 +4740,47 @@ class ApiFactory: ApiFactoryBase {
         let itm = items[i]
         if itm != nil && !(itm is NSNull) {
           res.append(self.parseAppProfileInput(itm!))
+        } else {
+          res.append(nil)
+        }
+      }
+      return res
+    } else {
+      return nil
+    }
+  }
+  func parseAppStorageValueInput(_ src: NSDictionary) -> AppStorageValueInput {
+    let key = optionalNotNull(readOptionalString(src, "key"))
+    let value = readOptionalString(src, "value")
+    return AppStorageValueInput(key: key, value: value)
+  }
+  func readAppStorageValueInput(_ src: NSDictionary, _ name: String) -> AppStorageValueInput? {
+    let v = src[name]
+    if v != nil && !(v is NSNull) {
+      return self.parseAppStorageValueInput(v as! NSDictionary)
+    } else {
+      return nil
+    }
+  }
+  func readAppStorageValueInputOptional(_ src: NSDictionary, _ name: String) -> Optional<AppStorageValueInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseAppStorageValueInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
+    }
+  }
+  func readAppStorageValueInputList(_ src: NSDictionary, _ name: String) -> [AppStorageValueInput?]? {
+    let v = src[name]
+    if v != nil && !(v is NSNull) {
+      let items = v as! [NSDictionary?]
+      var res: [AppStorageValueInput?] = []
+      for i in 0..<items.count {
+        let itm = items[i]
+        if itm != nil && !(itm is NSNull) {
+          res.append(self.parseAppStorageValueInput(itm!))
         } else {
           res.append(nil)
         }
