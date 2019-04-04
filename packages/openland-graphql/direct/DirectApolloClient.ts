@@ -5,6 +5,10 @@ import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { convertError } from './convertError';
 import { DirectApolloSubscription } from './DirectApolloSubscription';
 import { defaultDataIdFromObject } from 'apollo-cache-inmemory';
+import { createLogger } from 'mental-log';
+import { getQueryName } from 'openland-graphql/utils/getQueryName';
+
+const log = createLogger('GraphQL-Direct');
 
 export class DirectApollolClient implements GraphqlClient {
 
@@ -27,6 +31,11 @@ export class DirectApollolClient implements GraphqlClient {
     }
 
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
+
+        // if (__DEV__) {
+        log.log('Query Watch ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
+        // }
+
         let fetchPolicy: FetchPolicy = 'cache-first';
         if (params && params.fetchPolicy) {
             fetchPolicy = params.fetchPolicy
@@ -37,17 +46,27 @@ export class DirectApollolClient implements GraphqlClient {
         let promise = new Promise<void>((rl, rj) => {
             resolve = rl;
         });
+        let res = source.currentResult()
+        if (fetchPolicy === 'cache-and-network' || fetchPolicy === 'cache-first') {
+            if (!res.partial) {
+                resolved = true;
+                resolve();
+            }
+        }
         let baseSubscription = source.subscribe({
             next: (v) => {
+                log.log(JSON.stringify(v));
                 if (resolved) {
                     return;
                 }
                 if (v.loading) {
                     return;
                 }
+                log.log('Query Watch ' + getQueryName(query) + ' Resolved');
                 resolve();
             },
             error: (e) => {
+                log.warn(e);
                 if (resolved) {
                     return;
                 }
@@ -89,12 +108,12 @@ export class DirectApollolClient implements GraphqlClient {
                 }
             },
             currentResult: () => {
-                let res = source.currentResult();
-                if (res.errors && res.errors.length > 0) {
-                    return ({ error: convertError([...res.errors]) })
+                let res2 = source.currentResult();
+                if (res2.errors && res2.errors.length > 0) {
+                    return ({ error: convertError([...res2.errors]) })
                 } else {
-                    if (!res.loading && !res.partial) {
-                        return ({ data: res.data as TQuery })
+                    if (!res2.partial) {
+                        return ({ data: res2.data as TQuery })
                     }
                 }
                 return undefined;

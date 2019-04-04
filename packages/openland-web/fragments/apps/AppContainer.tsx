@@ -8,7 +8,7 @@ export const AppContainer = React.memo<{ children?: any }>((props) => {
     return (
         <ClientCacheProvider>
             <React.Suspense fallback={<XLoader loading={true} />}>
-                <XView flexGrow={1} alignItems="stretch" alignSelf="stretch" flexDirection="column">
+                <XView flexGrow={1} alignItems="stretch" alignSelf="stretch" flexDirection="column" flexShrink={1}>
                     <XScrollView flexGrow={1}>
                         {props.children}
                     </XScrollView>

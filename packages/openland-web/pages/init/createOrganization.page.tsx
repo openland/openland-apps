@@ -27,12 +27,9 @@ const OrganizationsSelectorOptionsFetcher = (props: {
 }) => {
     const client = useClient();
 
-    const data = client.useExploreOrganizations(
-        props.variables,
-        //     {
-        //     fetchPolicy: 'network-only',
-        // }
-    );
+    const data = client.useExploreOrganizations(props.variables, {
+        fetchPolicy: 'network-only',
+    });
 
     const children = props.children as Function;
 

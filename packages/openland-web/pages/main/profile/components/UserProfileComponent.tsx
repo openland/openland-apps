@@ -81,12 +81,9 @@ const StatusWrapperOnline = css`
 const UserStatus = (props: { variables: { userId: string }; isBot: boolean }) => {
     const client = useClient();
 
-    const data = client.useOnline(
-        props.variables,
-        //     {
-        //     fetchPolicy: 'network-only',
-        // }
-    );
+    const data = client.useOnline(props.variables, {
+        fetchPolicy: 'network-only',
+    });
 
     const { user } = data;
 

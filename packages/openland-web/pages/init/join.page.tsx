@@ -9,7 +9,7 @@ import { InviteLandingComponent } from '../../fragments/InviteLandingComponent';
 import { InitTexts } from './_text';
 import { css } from 'linaria';
 import Glamorous from 'glamorous';
-
+import { AuthRouter } from '../root/AuthRouter';
 const InfoText = css`
     margin-bottom: 15px;
 `;
@@ -47,7 +47,7 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
     }
 
     return (
-        <>
+        <AuthRouter>
             <XDocumentHead
                 title={InitTexts.join.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
@@ -76,7 +76,7 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                     )}
                 </Content>
             </Root>
-        </>
+        </AuthRouter>
     );
 };
 
