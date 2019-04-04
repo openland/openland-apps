@@ -28,7 +28,7 @@ export const CreateOrganization = withRouter(props => {
             title={texts.title}
             submitBtnText={texts.submit}
             defaultAction={async data => {
-                let res = (await client.mutateCreateOrganization({
+                let result = await client.mutateCreateOrganization({
                     input: {
                         personal: false,
                         name: data.input.name,
@@ -36,10 +36,10 @@ export const CreateOrganization = withRouter(props => {
                         isCommunity: community,
                         photoRef: data.input.photoRef,
                     },
-                })) as any;
+                });
                 let redirect =
-                    (community ? '/directory/c/' : '/directory/o/') + res.data.organization.id;
-                switchOrganization(res.data.organization.id, redirect);
+                    (community ? '/directory/c/' : '/directory/o/') + result.organization.id;
+                switchOrganization(result.organization.id, redirect);
                 await delayForewer();
             }}
             defaultData={{
