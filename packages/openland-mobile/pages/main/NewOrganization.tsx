@@ -12,14 +12,17 @@ import { SilentError } from 'openland-y-forms/errorHandling';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
+import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 
 class NewOrganizationComponent extends React.PureComponent<PageProps> {
     private ref = React.createRef<ZForm>();
     render() {
         const isCommunity = this.props.router.params.isCommunity;
+        const fromSignup = this.props.router.params.fromSignup;
 
         return (
             <>
+                {fromSignup && <ZTrack event="signup_org_view" />}
                 <SHeader title={isCommunity ? 'New community' : 'New organization'} />
                 <SHeaderButton title={isCommunity ? 'Create' : 'Next'} onPress={() => { this.ref.current!.submitForm(); }} />
                 <ZForm
