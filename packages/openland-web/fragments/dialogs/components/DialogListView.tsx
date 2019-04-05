@@ -8,7 +8,6 @@ import { XListView } from 'openland-web/components/XListView';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XButton } from 'openland-x/XButton';
 import { DialogView } from './DialogView';
-import { DialogDataSourceItem, emojifyMessage } from 'openland-engines/messenger/DialogListEngine';
 import { DialogSearchResults } from './DialogSearchResults';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';

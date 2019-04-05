@@ -97,7 +97,7 @@ class MessagengerFragmentInner extends React.PureComponent<
                     <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
                         <MessengerRootComponent
                             onChatLostAccess={this.onChatLostAccess}
-                            isActive={isActive}
+                            // isActive={isActive}
                             objectName={title}
                             objectId={
                                 sharedRoom ? sharedRoom.id : privateRoom ? privateRoom.user.id : ''

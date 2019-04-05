@@ -348,7 +348,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
 interface MessengerRootComponentProps {
     onChatLostAccess?: Function;
-    isActive: boolean;
+    // isActive: boolean;
     organizationId: string | null;
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
@@ -359,7 +359,7 @@ interface MessengerRootComponentProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
 }
 
-export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
+export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
     let isActive = React.useContext(IsActiveContext);
 
@@ -380,4 +380,4 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
             room={props.room}
         />
     );
-};
+});

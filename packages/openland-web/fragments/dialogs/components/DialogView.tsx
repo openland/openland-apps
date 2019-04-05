@@ -75,7 +75,7 @@ export interface DialogViewProps {
 
 export const DialogView = React.memo<DialogViewProps>(props => {
     console.log('render!');
-    let router = React.useContext(XRouterContext);
+    // let router = React.useContext(XRouterContext);
     let dialog = props.item;
     let isMuted = dialog.isMuted;
     let isService = dialog.isService;
@@ -170,7 +170,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
             as="a"
             ref={props.handleRef}
             path={'/mail/' + dialog.key}
-            onMouseDown={() => router!.push('/mail/' + dialog.key)}
+            // onMouseDown={() => router!.push('/mail/' + dialog.key)}
             height={72}
             flexDirection="row"
             paddingLeft={16}
