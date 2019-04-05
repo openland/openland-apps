@@ -53,6 +53,7 @@ const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
     cursor: 'pointer',
+    flexShrink: 0,
 });
 
 const BackInner = Glamorous(XContentWrapper)({

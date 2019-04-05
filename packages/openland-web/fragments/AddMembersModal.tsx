@@ -64,7 +64,7 @@ const RenewInviteLinkButton = (props: RenewInviteLinkButtonProps) => {
 class RenewInviteLinkButtonWrapper extends React.PureComponent {
     render() {
         return (
-            <XView position="absolute" right={110} top={12} cursor="pointer">
+            <XView position="absolute" right={14} top={11} cursor="pointer">
                 {this.props.children}
             </XView>
         );
@@ -137,7 +137,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                 copied: false,
                 resetLink: false,
             });
-        }, 1500);
+        }, 3000);
     };
 
     render() {
@@ -164,34 +164,36 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                             Invitation link
                         </XView>
                         <XView flexDirection="row" alignItems="center">
-                            <XInput
-                                size="large"
-                                flexGrow={1}
-                                ref={this.handleRef}
-                                value={'https://openland.com' + invitePath + props.invite}
-                                className={InputClassName}
-                            />
-                            <XPopper
-                                content="Revoke link"
-                                style="dark"
-                                showOnHover={true}
-                                placement="bottom"
-                                zIndex={200}
-                            >
-                                <RenewInviteLinkButtonWrapper>
-                                    <RenewInviteLinkButton
-                                        id={props.id}
-                                        onClick={this.resetLink}
-                                        isRoom={props.isRoom}
-                                        isOrganization={props.isOrganization}
-                                    />
-                                </RenewInviteLinkButtonWrapper>
-                            </XPopper>
+                            <XView flexDirection="row" alignItems="center" flexGrow={1}>
+                                <XInput
+                                    size="large"
+                                    flexGrow={1}
+                                    ref={this.handleRef}
+                                    value={'https://openland.com' + invitePath + props.invite}
+                                    className={InputClassName}
+                                />
+                                <XPopper
+                                    content="Revoke link"
+                                    style="dark"
+                                    showOnHover={true}
+                                    placement="bottom"
+                                    zIndex={200}
+                                >
+                                    <RenewInviteLinkButtonWrapper>
+                                        <RenewInviteLinkButton
+                                            id={props.id}
+                                            onClick={this.resetLink}
+                                            isRoom={props.isRoom}
+                                            isOrganization={props.isOrganization}
+                                        />
+                                    </RenewInviteLinkButtonWrapper>
+                                </XPopper>
+                            </XView>
                             <XView
                                 height={40}
                                 borderRadius={8}
-                                paddingLeft={7}
-                                paddingRight={12}
+                                paddingLeft={14}
+                                paddingRight={14}
                                 flexDirection="row"
                                 alignItems="center"
                                 fontSize={14}
@@ -203,7 +205,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                 marginLeft={12}
                             >
                                 {copied ? <CheckIcon /> : <CopiedIcon />}
-                                <XView marginLeft={copied ? 2 : 6}>
+                                <XView marginLeft={10}>
                                     {copied ? 'Copied' : 'Copy'}
                                 </XView>
                             </XView>
@@ -478,7 +480,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                     marginTop={props.isMobile ? undefined : -6}
                     marginBottom={props.isMobile ? undefined : -24}
                 >
-                    <XView paddingHorizontal={24} marginBottom={32}>
+                    <XView paddingHorizontal={24} marginBottom={26}>
                         <OwnerLink
                             id={props.id}
                             isRoom={props.isRoom}

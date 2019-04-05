@@ -9,7 +9,6 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { sanitizeImageRef } from '../../../../utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
-import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { DateFormater } from 'openland-x/XDate';
@@ -204,7 +203,7 @@ const GeneralForm = ({
                             <XInput field="input.about" size="large" title="About" />
                             <XInput
                                 flexGrow={1}
-                                title={TextOrganizationProfile.placeholderSocialInputPlaceholder}
+                                title="Website"
                                 field="input.website"
                                 size="large"
                             />
