@@ -154,15 +154,6 @@ export const DirectoryNavigation = XMemo(
                                 </XMenuItem>
                                 <XMenuItem
                                     query={{
-                                        field: 'createRoom',
-                                        value: 'true',
-                                    }}
-                                    icon="x-dropdown-room"
-                                >
-                                    {TextDirectory.create.room}
-                                </XMenuItem>
-                                <XMenuItem
-                                    query={{
                                         field: 'createOrganization',
                                         value: 'community',
                                     }}
