@@ -19,6 +19,8 @@ import { XText } from 'openland-x/XText';
 import { XPopper } from 'openland-x/XPopper';
 import IcInfo from 'openland-icons/ic-info.svg';
 import { useIsMobile } from 'openland-web/hooks';
+import { trackEvent } from 'openland-x-analytics';
+import { XTrack } from 'openland-x-analytics/XTrack';
 
 export const SubTitle = Glamorous.div({
     textAlign: 'center',
@@ -823,10 +825,19 @@ export const WebSignUpAuthMechanism = ({
 
     return (
         <div>
+            <XTrack event={signin ? 'signin_view' : 'signup_view'} key={signin ? 'signin_track' : 'signup_track'} />
+
             <Title roomView={false}>{title}</Title>
             <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={52} width={280}>
-                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
+                <GoogleButton
+                    rounded
+                    onClick={() => {
+                        trackEvent(signin ? 'signin_google_action' : 'signup_google_action');
+                        loginWithGoogle();
+                    }}
+                    text={googleButtonText}
+                />
                 <Separator />
                 <EmailButton rounded onClick={loginWithEmail} text={emailText} />
             </ButtonsWrapper>
@@ -861,6 +872,7 @@ const ResendButton = Glamorous(XButton)({
 });
 
 type ActivationCodeProps = {
+    signin: boolean;
     emailWasResend: boolean;
     emailSending: boolean;
     backButtonClick: (event?: React.MouseEvent<any>) => void;
@@ -878,6 +890,7 @@ const InputWrapperDesctopClassName = css`
 `;
 
 export const WebSignUpActivationCode = ({
+    signin,
     backButtonClick,
     resendCodeClick,
     emailSendedTo,
@@ -891,97 +904,104 @@ export const WebSignUpActivationCode = ({
 }: ActivationCodeProps) => {
     const [isMobile] = useIsMobile();
     return (
-        <XForm
-            defaultData={{
-                input: {
-                    code: codeValue,
-                },
-            }}
-            defaultAction={({ input: { code } }) => {
-                codeChanged(code, () => {
-                    loginCodeStart();
-                });
-            }}
-            defaultLayout={false}
-        >
-            <Title roomView={false}>{InitTexts.auth.enterActivationCode}</Title>
-            {emailSendedTo && (
-                <SubTitle>
-                    We just sent it to <strong>{emailSendedTo}</strong>
-                </SubTitle>
-            )}
-            <ButtonsWrapper marginTop={40} width={isMobile ? 300 : '100%'}>
-                <XFormField2
-                    field="input.code"
-                    className={isMobile ? undefined : InputWrapperDesctopClassName}
-                >
-                    {({ showError }: { showError: boolean }) => (
-                        <>
-                            <XInput
-                                width={isMobile ? undefined : 300}
-                                invalid={codeError !== ''}
-                                field="input.code"
-                                pattern="[0-9]*"
-                                type="number"
-                                autofocus={true}
-                                size="large"
-                                placeholder={InitTexts.auth.codePlaceholder}
-                                flexGrow={1}
-                                flexShrink={0}
-                                onChange={value => codeChanged(value, () => null)}
-                            />
-                            {codeError && <ErrorText>{codeError}</ErrorText>}
-                        </>
-                    )}
-                </XFormField2>
-            </ButtonsWrapper>
-            <ResendCodeRow alignItems="center">
-                <XHorizontal alignItems="center" separator="none">
-                    {emailSending ? (
-                        <>
-                            <SmallerText>Sending code...</SmallerText>
-                        </>
-                    ) : (
-                        <>
-                            <SmallerText>
-                                {emailWasResend
-                                    ? 'Code successfully sent.'
-                                    : InitTexts.auth.haveNotReceiveCode}
-                            </SmallerText>
-                            <ResendButton
-                                onClick={resendCodeClick}
-                                style="link"
-                                text={InitTexts.auth.resend}
-                            />
-                        </>
-                    )}
-                </XHorizontal>
-            </ResendCodeRow>
-            <ButtonsWrapper marginTop={20}>
-                <XVertical alignItems="center">
-                    <XHorizontal alignItems="center">
-                        <XButton
-                            onClick={backButtonClick}
-                            size="large"
-                            style="ghost"
-                            text={InitTexts.auth.back}
-                        />
-                        <XFormSubmit
-                            dataTestId="continue-button"
-                            style="primary"
-                            loading={codeSending}
-                            size="large"
-                            alignSelf="center"
-                            text={InitTexts.auth.continue}
-                        />
+        <>
+            <XTrack event={signin ? 'signin_code_view' : 'signup_code_view'} />
+            <XForm
+                defaultData={{
+                    input: {
+                        code: codeValue,
+                    },
+                }}
+                defaultAction={({ input: { code } }) => {
+                    codeChanged(code, () => {
+                        loginCodeStart();
+                    });
+                }}
+                defaultLayout={false}
+            >
+                <Title roomView={false}>{InitTexts.auth.enterActivationCode}</Title>
+                {emailSendedTo && (
+                    <SubTitle>
+                        We just sent it to <strong>{emailSendedTo}</strong>
+                    </SubTitle>
+                )}
+                <ButtonsWrapper marginTop={40} width={isMobile ? 300 : '100%'}>
+                    <XFormField2
+                        field="input.code"
+                        className={isMobile ? undefined : InputWrapperDesctopClassName}
+                    >
+                        {({ showError }: { showError: boolean }) => (
+                            <>
+                                <XInput
+                                    width={isMobile ? undefined : 300}
+                                    invalid={codeError !== ''}
+                                    field="input.code"
+                                    pattern="[0-9]*"
+                                    type="number"
+                                    autofocus={true}
+                                    size="large"
+                                    placeholder={InitTexts.auth.codePlaceholder}
+                                    flexGrow={1}
+                                    flexShrink={0}
+                                    onChange={value => codeChanged(value, () => null)}
+                                />
+                                {codeError && <ErrorText>{codeError}</ErrorText>}
+                            </>
+                        )}
+                    </XFormField2>
+                </ButtonsWrapper>
+                <ResendCodeRow alignItems="center">
+                    <XHorizontal alignItems="center" separator="none">
+                        {emailSending ? (
+                            <>
+                                <SmallerText>Sending code...</SmallerText>
+                            </>
+                        ) : (
+                            <>
+                                <SmallerText>
+                                    {emailWasResend
+                                        ? 'Code successfully sent.'
+                                        : InitTexts.auth.haveNotReceiveCode}
+                                </SmallerText>
+                                <ResendButton
+                                    onClick={() => {
+                                        trackEvent(signin ? 'signin_code_resend_action' : 'signup_code_resend_action');
+                                        resendCodeClick();
+                                    }}
+                                    style="link"
+                                    text={InitTexts.auth.resend}
+                                />
+                            </>
+                        )}
                     </XHorizontal>
-                </XVertical>
-            </ButtonsWrapper>
-        </XForm>
+                </ResendCodeRow>
+                <ButtonsWrapper marginTop={20}>
+                    <XVertical alignItems="center">
+                        <XHorizontal alignItems="center">
+                            <XButton
+                                onClick={backButtonClick}
+                                size="large"
+                                style="ghost"
+                                text={InitTexts.auth.back}
+                            />
+                            <XFormSubmit
+                                dataTestId="continue-button"
+                                style="primary"
+                                loading={codeSending}
+                                size="large"
+                                alignSelf="center"
+                                text={InitTexts.auth.continue}
+                            />
+                        </XHorizontal>
+                    </XVertical>
+                </ButtonsWrapper>
+            </XForm>
+        </>
     );
 };
 
 export const RoomActivationCode = ({
+    signin,
     emailWasResend,
     emailSending,
     backButtonClick,
@@ -1168,57 +1188,60 @@ export const WebSignUpCreateWithEmail = ({
     const [isMobile] = useIsMobile();
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
     return (
-        <XForm
-            defaultData={{
-                input: {
-                    email: emailValue,
-                },
-            }}
-            defaultAction={({ input: { email } }) => {
-                emailChanged(email, () => {
-                    loginEmailStart();
-                });
-            }}
-            defaultLayout={false}
-            width="100%"
-        >
-            <Title roomView={false}>
-                {signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}
-            </Title>
-            <SubTitle>{subTitle}</SubTitle>
-            <ButtonsWrapper marginTop={40} width={330}>
-                <XFormField2 field="input.email">
-                    {({ showError }: { showError: boolean }) => (
-                        <>
-                            <XInput
-                                autofocus
-                                width={isMobile ? undefined : 300}
-                                invalid={emailError !== ''}
-                                dataTestId="email"
-                                field="input.email"
-                                type="email"
-                                size="large"
-                                placeholder={InitTexts.auth.emailPlaceholder}
-                                onChange={value => emailChanged(value, () => null)}
-                            />
-                            {emailError && <ErrorText>{emailError}</ErrorText>}
-                        </>
-                    )}
-                </XFormField2>
-            </ButtonsWrapper>
-            <ButtonsWrapper marginTop={20}>
-                <XVertical alignItems="center">
-                    <XFormSubmit
-                        dataTestId="continue-button"
-                        style="primary"
-                        loading={emailSending}
-                        size="large"
-                        alignSelf="center"
-                        text={InitTexts.auth.continue}
-                    />
-                </XVertical>
-            </ButtonsWrapper>
-        </XForm>
+        <>
+            <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'} />
+            <XForm
+                defaultData={{
+                    input: {
+                        email: emailValue,
+                    },
+                }}
+                defaultAction={({ input: { email } }) => {
+                    emailChanged(email, () => {
+                        loginEmailStart();
+                    });
+                }}
+                defaultLayout={false}
+                width="100%"
+            >
+                <Title roomView={false}>
+                    {signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}
+                </Title>
+                <SubTitle>{subTitle}</SubTitle>
+                <ButtonsWrapper marginTop={40} width={330}>
+                    <XFormField2 field="input.email">
+                        {({ showError }: { showError: boolean }) => (
+                            <>
+                                <XInput
+                                    autofocus
+                                    width={isMobile ? undefined : 300}
+                                    invalid={emailError !== ''}
+                                    dataTestId="email"
+                                    field="input.email"
+                                    type="email"
+                                    size="large"
+                                    placeholder={InitTexts.auth.emailPlaceholder}
+                                    onChange={value => emailChanged(value, () => null)}
+                                />
+                                {emailError && <ErrorText>{emailError}</ErrorText>}
+                            </>
+                        )}
+                    </XFormField2>
+                </ButtonsWrapper>
+                <ButtonsWrapper marginTop={20}>
+                    <XVertical alignItems="center">
+                        <XFormSubmit
+                            dataTestId="continue-button"
+                            style="primary"
+                            loading={emailSending}
+                            size="large"
+                            alignSelf="center"
+                            text={InitTexts.auth.continue}
+                        />
+                    </XVertical>
+                </ButtonsWrapper>
+            </XForm>
+        </>
     );
 };
 

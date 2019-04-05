@@ -2,6 +2,7 @@ import UUID from 'uuid/v4';
 import { UploadingFile, UploadStatus } from './types';
 import { UserShort } from 'openland-api/Types';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { Track } from 'openland-engines/Tracking';
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
     onCompleted(key: string): void;
@@ -212,6 +213,9 @@ export class MessageSender {
                 }
             }
             console.log('Message sent in ' + (Date.now() - start) + ' ms');
+
+            Track.track('message_sent');
+
             this.pending.delete(key);
             callback.onCompleted(key);
         })();

@@ -352,78 +352,81 @@ class SignInComponent extends React.Component<
         const showTerms = (!signin && pageMode === 'AuthMechanism') || this.state.fromOutside;
 
         return (
-            <Container
-                showTerms={showTerms}
-                pageMode={pageMode}
-                text={signupText}
-                path={(signin ? '/signup' : '/signin') + redirect}
-                linkText={linkText}
-                headerStyle={signin ? 'signin' : 'signup'}
-            >
-                {pageMode === 'SignInInvite' && (
-                    <InviteInfo
-                        variables={{
-                            inviteKey: this.props.router.query.redirect.split('/')[2],
-                        }}
-                        signin={signin}
-                        loginWithGoogle={this.loginWithGoogle}
-                        loginWithEmail={this.loginWithEmail}
-                    />
-                )}
-                {pageMode === 'AuthMechanism' && (
-                    <AuthMechanism
-                        signin={signin}
-                        loginWithGoogle={this.loginWithGoogle}
-                        loginWithEmail={this.loginWithEmail}
-                    />
-                )}
+            <>
+                <Container
+                    showTerms={showTerms}
+                    pageMode={pageMode}
+                    text={signupText}
+                    path={(signin ? '/signup' : '/signin') + redirect}
+                    linkText={linkText}
+                    headerStyle={signin ? 'signin' : 'signup'}
+                >
+                    {pageMode === 'SignInInvite' && (
+                        <InviteInfo
+                            variables={{
+                                inviteKey: this.props.router.query.redirect.split('/')[2],
+                            }}
+                            signin={signin}
+                            loginWithGoogle={this.loginWithGoogle}
+                            loginWithEmail={this.loginWithEmail}
+                        />
+                    )}
+                    {pageMode === 'AuthMechanism' && (
+                        <AuthMechanism
+                            signin={signin}
+                            loginWithGoogle={this.loginWithGoogle}
+                            loginWithEmail={this.loginWithEmail}
+                        />
+                    )}
 
-                {pageMode === 'Loading' && <Loader />}
+                    {pageMode === 'Loading' && <Loader />}
 
-                {pageMode === 'CreateFromEmail' && (
-                    <MyCreateWithEmail
-                        signin={signin}
-                        emailError={this.state.emailError}
-                        emailChanged={this.emailValueChanged}
-                        emailValue={this.state.emailValue}
-                        loginEmailStart={this.loginEmailStart}
-                        emailSending={this.state.emailSending}
-                    />
-                )}
+                    {pageMode === 'CreateFromEmail' && (
+                        <MyCreateWithEmail
+                            signin={signin}
+                            emailError={this.state.emailError}
+                            emailChanged={this.emailValueChanged}
+                            emailValue={this.state.emailValue}
+                            loginEmailStart={this.loginEmailStart}
+                            emailSending={this.state.emailSending}
+                        />
+                    )}
 
-                {pageMode === 'ActivationCode' && (
-                    <MyActivationCode
-                        emailWasResend={this.state.emailWasResend}
-                        resendCodeClick={() => {
-                            this.setState({
-                                emailSending: true,
-                            });
-                            this.fireEmail(() => {
+                    {pageMode === 'ActivationCode' && (
+                        <MyActivationCode
+                            signin={signin}
+                            emailWasResend={this.state.emailWasResend}
+                            resendCodeClick={() => {
                                 this.setState({
-                                    emailWasResend: true,
+                                    emailSending: true,
                                 });
-                            });
-                        }}
-                        emailSendedTo={this.state.emailValue}
-                        backButtonClick={() => {
-                            this.setState(
-                                {
-                                    fromOutside: false,
-                                },
-                                () => {
-                                    this.loginWithEmail();
-                                },
-                            );
-                        }}
-                        codeError={this.state.codeError}
-                        codeChanged={this.codeValueChanged}
-                        codeSending={this.state.codeSending}
-                        emailSending={this.state.emailSending}
-                        codeValue={this.state.codeValue}
-                        loginCodeStart={this.loginCodeStart}
-                    />
-                )}
-            </Container>
+                                this.fireEmail(() => {
+                                    this.setState({
+                                        emailWasResend: true,
+                                    });
+                                });
+                            }}
+                            emailSendedTo={this.state.emailValue}
+                            backButtonClick={() => {
+                                this.setState(
+                                    {
+                                        fromOutside: false,
+                                    },
+                                    () => {
+                                        this.loginWithEmail();
+                                    },
+                                );
+                            }}
+                            codeError={this.state.codeError}
+                            codeChanged={this.codeValueChanged}
+                            codeSending={this.state.codeSending}
+                            emailSending={this.state.emailSending}
+                            codeValue={this.state.codeValue}
+                            loginCodeStart={this.loginCodeStart}
+                        />
+                    )}
+                </Container>
+            </>
         );
     }
 }
