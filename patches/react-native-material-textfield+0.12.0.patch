@@ -1,0 +1,103 @@
+diff --git a/node_modules/react-native-material-textfield/src/components/affix/index.js b/node_modules/react-native-material-textfield/src/components/affix/index.js
+index d6c9d64..5a800d9 100644
+--- a/node_modules/react-native-material-textfield/src/components/affix/index.js
++++ b/node_modules/react-native-material-textfield/src/components/affix/index.js
+@@ -72,12 +72,12 @@ export default class Affix extends PureComponent {
+ 
+     switch (type) {
+       case 'prefix':
+-        containerStyle.paddingRight = 8;
++        containerStyle.paddingRight = 0;
+         textStyle.textAlign = 'left';
+         break;
+ 
+       case 'suffix':
+-        containerStyle.paddingLeft = 8;
++        containerStyle.paddingLeft = 0;
+         textStyle.textAlign = 'right';
+         break;
+     }
+diff --git a/node_modules/react-native-material-textfield/src/components/field/index.js b/node_modules/react-native-material-textfield/src/components/field/index.js
+index 52c1868..0a1496b 100644
+--- a/node_modules/react-native-material-textfield/src/components/field/index.js
++++ b/node_modules/react-native-material-textfield/src/components/field/index.js
+@@ -298,7 +298,7 @@ export default class TextField extends PureComponent {
+     let {
+       [type]: affix,
+       fontSize,
+-      baseColor,
++      textColor,
+       animationDuration,
+       affixTextStyle,
+     } = this.props;
+@@ -312,7 +312,7 @@ export default class TextField extends PureComponent {
+       active,
+       focused,
+       fontSize,
+-      baseColor,
++      baseColor: textColor,
+       animationDuration,
+     };
+ 
+@@ -326,6 +326,7 @@ export default class TextField extends PureComponent {
+     let {
+       style: inputStyleOverrides,
+       label,
++      lineDefaultColor,
+       title,
+       value,
+       defaultValue,
+@@ -378,7 +379,7 @@ export default class TextField extends PureComponent {
+       errorColor:
+       focus.interpolate({
+         inputRange: [-1, 0, 1],
+-        outputRange: [errorColor, baseColor, tintColor],
++        outputRange: [errorColor, lineDefaultColor, tintColor],
+       });
+ 
+     let borderBottomWidth = restricted?
+@@ -390,14 +391,14 @@ export default class TextField extends PureComponent {
+ 
+     let inputContainerStyle = {
+       paddingTop: labelHeight,
+-      paddingBottom: inputContainerPadding,
++      paddingBottom: 0,
+ 
+       ...(disabled?
+         { overflow: 'hidden' }:
+         { borderBottomColor, borderBottomWidth }),
+ 
+       ...(props.multiline?
+-        { height: 'web' === Platform.OS ? 'auto' : labelHeight + inputContainerPadding + height }:
++        { height: 'web' === Platform.OS ? 'auto' : labelHeight + inputContainerPadding + height + 4 }:
+         { height: labelHeight + inputContainerPadding + fontSize * 1.5 }),
+     };
+ 
+@@ -412,13 +413,14 @@ export default class TextField extends PureComponent {
+       ...(props.multiline?
+         {
+           height: fontSize * 1.5 + height,
++          paddingBottom: 0,
+ 
+           ...Platform.select({
+             ios: { top: -1 },
+             android: { textAlignVertical: 'top' },
+           }),
+         }:
+-        { height: fontSize * 1.5 }),
++        { height: fontSize * 1.5 + 8 }),
+     };
+ 
+     let errorStyle = {
+diff --git a/node_modules/react-native-material-textfield/src/components/field/styles.js b/node_modules/react-native-material-textfield/src/components/field/styles.js
+index 6864adf..94b73ae 100644
+--- a/node_modules/react-native-material-textfield/src/components/field/styles.js
++++ b/node_modules/react-native-material-textfield/src/components/field/styles.js
+@@ -10,6 +10,7 @@ export default StyleSheet.create({
+     padding: 0,
+     margin: 0,
+     flex: 1,
++    paddingBottom: 8,
+   },
+ 
+   row: {
