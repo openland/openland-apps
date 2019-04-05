@@ -13,6 +13,7 @@ fragment OrganizationMedium on Organization {
   isOwner: betaIsOwner
   id
   isMine
+  membersCount
   name
   photo
 }

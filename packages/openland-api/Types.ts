@@ -7058,6 +7058,7 @@ export interface Room_room_SharedRoom_organization {
   name: string;
   photo: string | null;
   isMine: boolean;
+  membersCount: number;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -10156,6 +10157,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_organization {
   name: string;
   photo: string | null;
   isMine: boolean;
+  membersCount: number;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -11161,6 +11163,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_org
   name: string;
   photo: string | null;
   isMine: boolean;
+  membersCount: number;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -12163,6 +12166,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization {
   name: string;
   photo: string | null;
   isMine: boolean;
+  membersCount: number;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -13168,6 +13172,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_organization {
   name: string;
   photo: string | null;
   isMine: boolean;
+  membersCount: number;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -14170,6 +14175,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_organization {
   name: string;
   photo: string | null;
   isMine: boolean;
+  membersCount: number;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -15173,6 +15179,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_organization {
   name: string;
   photo: string | null;
   isMine: boolean;
+  membersCount: number;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -17209,6 +17216,7 @@ export interface RoomJoin_join_SharedRoom_organization {
   name: string;
   photo: string | null;
   isMine: boolean;
+  membersCount: number;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -18230,6 +18238,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_organization {
   name: string;
   photo: string | null;
   isMine: boolean;
+  membersCount: number;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -26775,6 +26784,7 @@ export interface OrganizationMedium {
   name: string;
   photo: string | null;
   isMine: boolean;
+  membersCount: number;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;
@@ -26958,6 +26968,7 @@ export interface RoomFull_SharedRoom_organization {
   name: string;
   photo: string | null;
   isMine: boolean;
+  membersCount: number;
   isOwner: boolean;
   isAdmin: boolean;
   isCommunity: boolean;

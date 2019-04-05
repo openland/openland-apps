@@ -16,7 +16,7 @@ import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
-import { RemoveMemberModal } from '../../../../fragments/membersComponent';
+import { RemoveMemberModal } from 'openland-web/fragments/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     HeaderAvatar,
@@ -52,6 +52,7 @@ import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { useClient } from 'openland-web/utils/useClient';
+import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -419,6 +420,14 @@ const RoomGroupProfileInner = ({
                 <Header chat={chat} />
                 <XScrollView2 flexGrow={1}>
                     <About chat={chat} />
+                    {chat.organization && (
+                        <XView flexDirection="column" flexShrink={0} paddingHorizontal={16}>
+                            <XView fontSize={16} color="#000" marginBottom={12}>
+                                Organization
+                            </XView>
+                            <XCommunityCard community={chat.organization} />
+                        </XView>
+                    )}
                     <MembersProvider
                         router={router}
                         members={chat.members}

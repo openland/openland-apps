@@ -186,6 +186,26 @@ fun readDebugEmailTypeOptional(src: ReadableMap, name: String): Input<DebugEmail
         return Input.absent()
     }
 }
+fun readEventPlatform(src: ReadableMap, name: String): EventPlatform? {
+    val v = readString(src, name);
+    if (v != null) {
+        return EventPlatform.safeValueOf(v)
+    } else {
+        return null
+    }
+}
+fun readEventPlatformOptional(src: ReadableMap, name: String): Input<EventPlatform> {
+    val v = readOptionalString(src, name);
+    if (v.defined) {
+        if (v.value != null) {
+          return Input.fromNullable(EventPlatform.safeValueOf(v.value))
+        } else {
+          return Input.fromNullable(null)
+        }
+    } else {
+        return Input.absent()
+    }
+}
 fun readPushType(src: ReadableMap, name: String): PushType? {
     val v = readString(src, name);
     if (v != null) {
@@ -2271,6 +2291,8 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
        val builder = PersistEventsMutation.builder()
        builder.did(notNull(readString(src, "did")))
        builder.events(notNull(notNullListItems(readEventList(src, "events"))))
+       builder.platform(readEventPlatform(src, "platform"))
+       builder.isProd(readBool(src, "isProd"))
        return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
     }
     throw Error("Unknown mutation: $name")

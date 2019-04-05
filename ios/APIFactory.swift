@@ -2945,7 +2945,9 @@ class ApiFactory: ApiFactoryBase {
     if (name == "PersistEvents") {
       let did = notNull(readString(src, "did"))
       let events = notNull(notNullListItems(readEventList(src, "events")))
-      let requestBody = PersistEventsMutation(did: did, events: events)
+      let platform = readEventPlatform(src, "platform")
+      let isProd = readBool(src, "isProd")
+      let requestBody = PersistEventsMutation(did: did, events: events, platform: platform, isProd: isProd)
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -4714,6 +4716,26 @@ class ApiFactory: ApiFactoryBase {
     } else {
       return nil
     }
+  }
+  func readEventPlatform(_ src: NSDictionary, _ name: String) -> EventPlatform? {
+    let v = self.readString(src, name);
+    if v != nil && !(v is NSNull) {
+      return EventPlatform.init(rawValue: v!)
+     } else {
+       return nil
+     }
+  }
+  func readEventPlatformOptional(_ src: NSDictionary, _ name: String) -> Optional<EventPlatform?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(EventPlatform.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
+     }
   }
   func parseAppProfileInput(_ src: NSDictionary) -> AppProfileInput {
     let name = readOptionalString(src, "name")

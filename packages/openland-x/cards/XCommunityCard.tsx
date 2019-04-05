@@ -128,7 +128,7 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
                             {TextProfiles.Organization.membersLabel(community.membersCount)}
                         </XView>
                     </XView>
-                    <XView flexDirection="row" paddingTop={4}>
+                    <XView flexDirection="row" alignItems="center">
                         {button}
                         <XView marginLeft={10}>{menu}</XView>
                     </XView>

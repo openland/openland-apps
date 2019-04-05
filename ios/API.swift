@@ -1678,6 +1678,43 @@ public struct Event: GraphQLMapConvertible {
   }
 }
 
+public enum EventPlatform: RawRepresentable, Equatable, Hashable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+  public typealias RawValue = String
+  case android
+  case iOs
+  case web
+  /// Auto generated constant for unknown enum values
+  case __unknown(RawValue)
+
+  public init?(rawValue: RawValue) {
+    switch rawValue {
+      case "Android": self = .android
+      case "iOS": self = .iOs
+      case "WEB": self = .web
+      default: self = .__unknown(rawValue)
+    }
+  }
+
+  public var rawValue: RawValue {
+    switch self {
+      case .android: return "Android"
+      case .iOs: return "iOS"
+      case .web: return "WEB"
+      case .__unknown(let value): return value
+    }
+  }
+
+  public static func == (lhs: EventPlatform, rhs: EventPlatform) -> Bool {
+    switch (lhs, rhs) {
+      case (.android, .android): return true
+      case (.iOs, .iOs): return true
+      case (.web, .web): return true
+      case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+      default: return false
+    }
+  }
+}
+
 /// Deprecated
 public enum ConferencePeerConnectionState: RawRepresentable, Equatable, Hashable, Apollo.JSONDecodable, Apollo.JSONEncodable {
   public typealias RawValue = String
@@ -18171,25 +18208,29 @@ public final class SettingsUpdateMutation: GraphQLMutation {
 
 public final class PersistEventsMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation PersistEvents($did: String!, $events: [Event!]!) {\n  track(did: $did, events: $events)\n}"
+    "mutation PersistEvents($did: String!, $events: [Event!]!, $platform: EventPlatform, $isProd: Boolean) {\n  track(did: $did, events: $events, platform: $platform, isProd: $isProd)\n}"
 
   public var did: String
   public var events: [Event]
+  public var platform: EventPlatform?
+  public var isProd: Bool?
 
-  public init(did: String, events: [Event]) {
+  public init(did: String, events: [Event], platform: EventPlatform? = nil, isProd: Bool? = nil) {
     self.did = did
     self.events = events
+    self.platform = platform
+    self.isProd = isProd
   }
 
   public var variables: GraphQLMap? {
-    return ["did": did, "events": events]
+    return ["did": did, "events": events, "platform": platform, "isProd": isProd]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("track", arguments: ["did": GraphQLVariable("did"), "events": GraphQLVariable("events")], type: .nonNull(.scalar(String.self))),
+      GraphQLField("track", arguments: ["did": GraphQLVariable("did"), "events": GraphQLVariable("events"), "platform": GraphQLVariable("platform"), "isProd": GraphQLVariable("isProd")], type: .nonNull(.scalar(String.self))),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -27345,7 +27386,7 @@ public struct OrganizationFull: GraphQLFragment {
 
 public struct OrganizationMedium: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment OrganizationMedium on Organization {\n  __typename\n  id\n  name\n  photo\n  isMine\n  isOwner: betaIsOwner\n  isAdmin: betaIsAdmin\n  isCommunity: alphaIsCommunity\n  adminMembers: alphaOrganizationAdminMembers {\n    __typename\n    role\n    user {\n      __typename\n      ...UserFull\n    }\n  }\n}"
+    "fragment OrganizationMedium on Organization {\n  __typename\n  id\n  name\n  photo\n  isMine\n  membersCount\n  isOwner: betaIsOwner\n  isAdmin: betaIsAdmin\n  isCommunity: alphaIsCommunity\n  adminMembers: alphaOrganizationAdminMembers {\n    __typename\n    role\n    user {\n      __typename\n      ...UserFull\n    }\n  }\n}"
 
   public static let possibleTypes = ["Organization"]
 
@@ -27355,6 +27396,7 @@ public struct OrganizationMedium: GraphQLFragment {
     GraphQLField("name", type: .nonNull(.scalar(String.self))),
     GraphQLField("photo", type: .scalar(String.self)),
     GraphQLField("isMine", type: .nonNull(.scalar(Bool.self))),
+    GraphQLField("membersCount", type: .nonNull(.scalar(Int.self))),
     GraphQLField("betaIsOwner", alias: "isOwner", type: .nonNull(.scalar(Bool.self))),
     GraphQLField("betaIsAdmin", alias: "isAdmin", type: .nonNull(.scalar(Bool.self))),
     GraphQLField("alphaIsCommunity", alias: "isCommunity", type: .nonNull(.scalar(Bool.self))),
@@ -27367,8 +27409,8 @@ public struct OrganizationMedium: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(id: GraphQLID, name: String, photo: String? = nil, isMine: Bool, isOwner: Bool, isAdmin: Bool, isCommunity: Bool, adminMembers: [AdminMember]) {
-    self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "name": name, "photo": photo, "isMine": isMine, "isOwner": isOwner, "isAdmin": isAdmin, "isCommunity": isCommunity, "adminMembers": adminMembers.map { (value: AdminMember) -> ResultMap in value.resultMap }])
+  public init(id: GraphQLID, name: String, photo: String? = nil, isMine: Bool, membersCount: Int, isOwner: Bool, isAdmin: Bool, isCommunity: Bool, adminMembers: [AdminMember]) {
+    self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "name": name, "photo": photo, "isMine": isMine, "membersCount": membersCount, "isOwner": isOwner, "isAdmin": isAdmin, "isCommunity": isCommunity, "adminMembers": adminMembers.map { (value: AdminMember) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -27413,6 +27455,15 @@ public struct OrganizationMedium: GraphQLFragment {
     }
     set {
       resultMap.updateValue(newValue, forKey: "isMine")
+    }
+  }
+
+  public var membersCount: Int {
+    get {
+      return resultMap["membersCount"]! as! Int
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "membersCount")
     }
   }
 

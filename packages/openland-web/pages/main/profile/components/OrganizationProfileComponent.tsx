@@ -494,11 +494,7 @@ export const RemoveJoinedModal = (props => {
 
 export const Section = Glamorous(XVertical)({
     paddingTop: 5,
-    borderBottom: '1px solid #ececec',
     flexShrink: 0,
-    '&:last-child': {
-        borderBottom: 'none',
-    },
 });
 
 export const SectionContent = Glamorous(XContentWrapper)({
