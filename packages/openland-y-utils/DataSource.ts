@@ -226,4 +226,40 @@ export class DataSource<T extends DataSourceItem> {
         }
         this.destroyed = true;
     }
+
+    map<T2 extends DataSourceItem>(map: (src: T) => T2) {
+        let res = new DataSource<T2>(() => {
+            this.needMore();
+        });
+
+        if (this.inited) {
+            res.initialize(this.data.map(map), this.completed);
+        }
+
+        this.watch({
+            onDataSourceInited(data: T[], completed: boolean) {
+                res.initialize(data.map(map), completed);
+            },
+            onDataSourceItemAdded(item: T, index: number) {
+                res.addItem(map(item), index);
+            },
+            onDataSourceItemUpdated(item: T, index: number) {
+                res.updateItem(map(item));
+            },
+            onDataSourceItemRemoved(item: T, index: number) {
+                res.removeItem(map(item).key);
+            },
+            onDataSourceItemMoved(item: T, fromIndex: number, toIndex: number) {
+                res.moveItem(map(item).key, toIndex);
+            },
+            onDataSourceLoadedMore(data: T[], completed: boolean) {
+                res.loadedMore(data.map(map), completed);
+            },
+            onDataSourceCompleted() {
+                res.complete();
+            }
+        });
+
+        return res;
+    }
 }

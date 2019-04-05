@@ -2,7 +2,6 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { XView, XViewSelectedContext } from 'react-mental';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { DialogDataSourceItem, emojifyMessage } from 'openland-engines/messenger/DialogListEngine';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from 'openland-icons/ic-photo.svg';
 import FileIcon from 'openland-icons/ic-file-2.svg';
@@ -10,11 +9,10 @@ import ForwardIcon from 'openland-icons/ic-reply-2.svg';
 import MentionIcon from 'openland-icons/ic-mention-2.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { emoji } from 'openland-y-utils/emoji';
 import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
-import { XMemo } from 'openland-y-utils/XMemo';
 import LockIcon from 'openland-icons/ic-group.svg';
 import ChanneSecretIcon from 'openland-icons/ic-channel-dialog.svg';
+import { DialogListWebItem } from './DialogListWebDataSource';
 
 export let iconClass = css`
     display: inline-block;
@@ -68,14 +66,15 @@ const GroupIconClass = css`
 `;
 
 export interface DialogViewProps {
-    item: DialogDataSourceItem;
+    item: DialogListWebItem;
     handleRef?: any;
     onSelect?: (id: string) => void;
     onClick?: () => void;
     selected?: boolean;
 }
 
-export const DialogView = XMemo<DialogViewProps>(props => {
+export const DialogView = React.memo<DialogViewProps>(props => {
+    console.log('render!');
     let router = React.useContext(XRouterContext);
     let dialog = props.item;
     let isMuted = dialog.isMuted;
@@ -87,22 +86,22 @@ export const DialogView = XMemo<DialogViewProps>(props => {
     ) : isPrivate ? (
         ''
     ) : dialog.sender ? (
-        <>{emojifyMessage(dialog.sender)}: </>
+        <>{dialog.senderEmojify}: </>
     ) : (
                     ''
                 );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
 
-    if (dialog.typing) {
-        message = <>{emojifyMessage(dialog.typing)}</>;
+    if (dialog.typingEmojify) {
+        message = <>{dialog.typingEmojify}</>;
     } else {
         message = dialog.fallback;
         if (dialog.message) {
             message = (
                 <span>
                     {!isService && sender}
-                    {dialog.message ? emojifyMessage(dialog.message) : undefined}
+                    {dialog.messageEmojify}
                 </span>
             );
         } else if (dialog.attachments && dialog.attachments.length === 1) {
@@ -251,10 +250,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                             </XViewSelectedContext.Consumer>
                         )}
                         <span>
-                            {emoji({
-                                src: dialog.title,
-                                size: 16,
-                            })}
+                            {dialog.titleEmojify}
                         </span>
                     </XView>
                     {dialog.date && (
@@ -306,3 +302,5 @@ export const DialogView = XMemo<DialogViewProps>(props => {
         </XView>
     );
 });
+
+DialogView.displayName = 'DialogView';
