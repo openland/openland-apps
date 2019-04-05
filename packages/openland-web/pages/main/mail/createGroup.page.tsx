@@ -23,7 +23,6 @@ import BackIcon from 'openland-icons/ic-back-create-room.svg';
 import AddPhotoIcon from 'openland-icons/ic-photo-create-room.svg';
 import CheckIcon from 'openland-icons/check-form.svg';
 import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
-import { Query } from 'react-apollo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { useClient } from 'openland-web/utils/useClient';
@@ -329,11 +328,13 @@ const SelectOrganizationWrapperClassName = css`
 `;
 
 const OrganizationsList = (props: {
-    organizations?: MyOrganizations_myOrganizations[];
+    // organizations?: MyOrganizations_myOrganizations[];
     onSelect: (v: string) => void;
     selectedOrg: string | null;
 }) => {
-    if (!props.organizations) {
+    const client = useClient();
+    const orgs = client.useWithoutLoaderMyOrganizations();
+    if (!orgs) {
         return (
             <XView
                 flexShrink={0}
@@ -359,7 +360,7 @@ const OrganizationsList = (props: {
                 Share with
             </XView>
             <div className={SelectOrganizationWrapperClassName}>
-                {props.organizations
+                {orgs.myOrganizations
                     .sort((a, b) => a.name.localeCompare(b.name))
                     .map(i => (
                         <OrganizationItem
@@ -796,19 +797,10 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                             </XView>
                         </XView>
                         {type === SharedRoomKind.PUBLIC && (
-                            <Query query={MyOrganizationsQuery.document}>
-                                {data => (
-                                    <OrganizationsList
-                                        onSelect={this.onOrganizationSelect}
-                                        selectedOrg={selectedOrg}
-                                        organizations={
-                                            data.data && data.data.myOrganizations
-                                                ? data.data.myOrganizations
-                                                : undefined
-                                        }
-                                    />
-                                )}
-                            </Query>
+                            <OrganizationsList
+                                onSelect={this.onOrganizationSelect}
+                                selectedOrg={selectedOrg}
+                            />
                         )}
                     </XView>
                 )}

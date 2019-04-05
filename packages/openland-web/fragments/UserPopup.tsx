@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { useQuery } from 'openland-web/components/useQuery';
-import { UserQuery } from 'openland-api';
 import { XLoader } from 'openland-x/XLoader';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { useClient } from 'openland-web/utils/useClient';
 
 export const UserPopup = XMemo<{ id: string }>(props => {
-    let profile = useQuery(UserQuery, { userId: props.id });
-    if (profile.loading) {
+    let client = useClient();
+    let profile = client.useWithoutLoaderUser({ userId: props.id });
+    if (!profile) {
         return <XLoader />;
     }
 
-    return <div>{profile.data.user.name}</div>;
+    return <div>{profile.user.name}</div>;
 });

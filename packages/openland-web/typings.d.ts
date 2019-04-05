@@ -1,13 +1,13 @@
 /// <resources type="react" />
 /// <resources type="draft-js" />
 
-declare module "worker-loader!*" {
+declare module 'worker-loader!*' {
     class WebpackWorker extends Worker {
-        constructor();
+      public constructor();
     }
-
+ 
     export default WebpackWorker;
-}
+ }
 
 declare module '*.handlebars' {
     const content: string;

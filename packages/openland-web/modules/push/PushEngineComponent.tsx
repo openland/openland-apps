@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { initPushEngine } from './PushEngine';
+import { useClient } from 'openland-web/utils/useClient';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 class PushEngineComponentMounted extends React.PureComponent<{
-    client: OpenApolloClient;
+    client: OpenlandClient;
     enabled: boolean;
 }> {
     componentDidMount() {
@@ -18,13 +18,8 @@ class PushEngineComponentMounted extends React.PureComponent<{
 
 export const PushEngineComponent = (props: { enable: boolean }) => {
     if (canUseDOM) {
-        return (
-            <YApolloContext.Consumer>
-                {client => {
-                    return <PushEngineComponentMounted enabled={props.enable} client={client!!} />;
-                }}
-            </YApolloContext.Consumer>
-        );
+        let client = useClient();
+        return (<PushEngineComponentMounted enabled={props.enable} client={client} />)
     } else {
         return null;
     }

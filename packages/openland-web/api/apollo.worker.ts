@@ -1,13 +1,19 @@
+import { disableTag, disableAll } from 'mental-log';
+disableAll();
+disableTag('GraphQL-Direct');
+
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { buildClient } from 'openland-y-graphql/apolloClient';
 import { WorkerApolloHost } from 'openland-graphql/proxy/WorkerApolloHost';
 import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
+import { WorkerInterface } from 'openland-graphql/proxy/WorkerInterface';
 
-const ctx = self;
+const ctx = self as any;
 
 var host;
 
-const initHandler = (ev) => {
+const initHandler = (ev: MessageEvent) => {
+    console.log('handler!');
     let msg = ev.data
     if (msg.type !== 'init') {
         throwFatalError('Worker need to be inited first!');
@@ -22,12 +28,14 @@ const initHandler = (ev) => {
         wsEndpoint: msg.wsEndpoint
     });
 
-    let workerInterface = {
+    let workerInterface: WorkerInterface = {
         post: (src) => ctx.postMessage(src),
-        setHandler: (handler) => ctx.addEventListener('message', (src) => handler(src.data))
+        setHandler: (handler) => ctx.addEventListener('message', (src: any) => handler(src.data))
     }
 
     host = new WorkerApolloHost(new DirectApollolClient(client), workerInterface);
 };
 
 ctx.addEventListener('message', initHandler);
+
+console.log('started');

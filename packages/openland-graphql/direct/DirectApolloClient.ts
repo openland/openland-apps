@@ -33,7 +33,7 @@ export class DirectApollolClient implements GraphqlClient {
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
 
         // if (__DEV__) {
-        log.log('Query Watch ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
+        // log.log('Query Watch ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
         // }
 
         let fetchPolicy: FetchPolicy = 'cache-first';
@@ -55,18 +55,18 @@ export class DirectApollolClient implements GraphqlClient {
         }
         let baseSubscription = source.subscribe({
             next: (v) => {
-                log.log(JSON.stringify(v));
+                // log.log(JSON.stringify(v));
                 if (resolved) {
                     return;
                 }
                 if (v.loading) {
                     return;
                 }
-                log.log('Query Watch ' + getQueryName(query) + ' Resolved');
+                // log.log('Query Watch ' + getQueryName(query) + ' Resolved');
                 resolve();
             },
             error: (e) => {
-                log.warn(e);
+                // log.warn(e);
                 if (resolved) {
                     return;
                 }

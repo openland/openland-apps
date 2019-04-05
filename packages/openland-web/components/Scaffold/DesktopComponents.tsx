@@ -3,7 +3,6 @@ import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import { XView, XImage } from 'react-mental';
 import * as Cookie from 'js-cookie';
-import { Query } from 'react-apollo';
 import { counterBorderHoverClassname } from 'openland-x/XCounter';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -26,6 +25,7 @@ import { InvitesGlobalModal } from '../../pages/main/settings/components/invites
 import { CreateOrganization } from './Modals';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PromoBanner } from './PromoBanner';
+import { useClient } from 'openland-web/utils/useClient';
 
 interface NavigatorItemProps {
     path?: string;
@@ -413,26 +413,26 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
     }
 }
 
-const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization }) => (
-    <XVertical>
-        <Query query={MyOrganizationsQuery.document}>
-            {data => (
-                <UserPopper
-                    picture={user!!.photo}
-                    name={user!!.name}
-                    id={user!!.id}
-                    primaryOrganization={organization || undefined}
-                    organizations={
-                        data.data && data.data.myOrganizations
-                            ? data.data.myOrganizations
-                            : undefined
-                    }
-                />
-            )}
-        </Query>
-        <InvitesGlobalModal targetQuery="invite_global" target={null} />
-    </XVertical>
-));
+const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization }) => {
+    const client = useClient();
+    const myorgs = client.useWithoutLoaderMyOrganizations();
+    return (
+        <XVertical>
+            <UserPopper
+                picture={user!!.photo}
+                name={user!!.name}
+                id={user!!.id}
+                primaryOrganization={organization || undefined}
+                organizations={
+                    myorgs && myorgs.myOrganizations
+                        ? myorgs.myOrganizations
+                        : undefined
+                }
+            />
+            <InvitesGlobalModal targetQuery="invite_global" target={null} />
+        </XVertical>
+    )
+});
 
 export const DesktopScaffold = ({
     menu,

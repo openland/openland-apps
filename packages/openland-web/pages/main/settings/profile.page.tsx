@@ -12,7 +12,6 @@ import { XFormError } from 'openland-x-forms/XFormError';
 import { XSelect } from 'openland-x/XSelect';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { Query } from 'react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import { XInput } from 'openland-x/XInput';
 import { XDate } from 'openland-x/XDate';
@@ -31,8 +30,8 @@ const CardsWrapper = XMemo<{ children: any }>(props => {
     return isMobile ? (
         <XVertical separator={8}>{props.children}</XVertical>
     ) : (
-        <XHorizontal separator={8}>{props.children}</XHorizontal>
-    );
+            <XHorizontal separator={8}>{props.children}</XHorizontal>
+        );
 });
 
 const CardText = (props: { children?: any }) => (
@@ -100,210 +99,203 @@ export default withApp('Profile', 'viewer', () => {
     const client = useClient();
     const profile = client.useProfile().profile!;
     const user = client.useProfile().user!;
+    const organizations = client.useMyOrganizations();
     return (
         <SettingsNavigation title="Profile">
             <Content>
                 <XVertical separator={21}>
-                    <Query query={MyOrganizationsQuery.document}>
-                        {orgsData => (
-                            <XVertical separator={25}>
-                                <XForm
-                                    defaultData={{
-                                        input: {
-                                            firstName: profile.firstName,
-                                            lastName: profile.lastName,
-                                            primaryOrganizationId:
-                                                profile.primaryOrganization &&
-                                                profile.primaryOrganization!!.id,
-                                            role: profile.role,
-                                            about: profile.about,
-                                            photoRef: sanitizeImageRef(profile.photoRef),
-                                        },
-                                    }}
-                                    defaultAction={async data => {
-                                        await client.mutateProfileUpdate({
-                                            input: {
-                                                firstName: data.input.firstName,
-                                                lastName: data.input.lastName,
-                                                alphaPrimaryOrganizationId:
-                                                    data.input.primaryOrganizationId,
-                                                alphaRole: data.input.role,
-                                                about: data.input.about,
-                                                photoRef: sanitizeImageRef(data.input.photoRef),
-                                            },
-                                        });
-                                        await client.refetchAccount();
-                                        await client.refetchMyOrganizations();
-                                    }}
-                                    defaultLayout={false}
-                                >
-                                    <XVertical separator={12} maxWidth={660}>
-                                        <HeadTitle>Profile</HeadTitle>
-                                        <XFormError onlyGeneralErrors={true} />
-                                        <XVertical separator={12}>
-                                            <XFormLoadingContent>
-                                                <XVertical
-                                                    flexGrow={1}
-                                                    maxWidth={480}
-                                                    separator={10}
-                                                >
-                                                    <XHorizontal separator={13}>
-                                                        <XVertical flexGrow={1} separator={10}>
-                                                            <XInput
-                                                                title="First name"
-                                                                field="input.firstName"
-                                                                size="large"
-                                                            />
-                                                            <XInput
-                                                                title="Last name"
-                                                                field="input.lastName"
-                                                                size="large"
-                                                            />
-                                                        </XVertical>
-                                                        <XAvatarUpload
-                                                            field="input.photoRef"
-                                                            size="xSmall"
-                                                        />
-                                                    </XHorizontal>
-                                                    <XVertical flexGrow={1} separator={10}>
-                                                        <XSelect
-                                                            title="Primary organization"
-                                                            field="input.primaryOrganizationId"
-                                                            searchable={false}
-                                                            clearable={false}
-                                                            options={(
-                                                                (orgsData.data &&
-                                                                    orgsData.data
-                                                                        .myOrganizations) ||
-                                                                []
-                                                            ).map((org: any) => ({
-                                                                value: org.id,
-                                                                label: org.name,
-                                                            }))}
-                                                        />
-                                                        <XView position="relative">
-                                                            <TextAreaTitle>About</TextAreaTitle>
-                                                            <XTextArea
-                                                                valueStoreKey="fields.input.about"
-                                                                resize={false}
-                                                                minHeight={85}
-                                                            />
-                                                        </XView>
-                                                    </XVertical>
-                                                </XVertical>
-                                            </XFormLoadingContent>
-                                            <XFormSubmit
-                                                text="Save changes"
-                                                alignSelf="flex-start"
-                                                style="primary"
-                                                successText="Changes saved!"
-                                            />
-                                        </XVertical>
-                                    </XVertical>
-                                </XForm>
-                                <XForm
-                                    defaultData={{
-                                        shortname: user.shortname,
-                                    }}
-                                    defaultAction={async data => {
-                                        await client.mutateSetUserShortname({
-                                            shortname: data.shortname,
-                                        });
-                                        await client.refetchAccount();
-                                    }}
-                                >
-                                    <XVertical separator={12}>
-                                        <HeadTitle>Username</HeadTitle>
-                                        <XFormError onlyGeneralErrors={true} />
-                                        <XVertical maxWidth={480} separator={12}>
-                                            <XFormLoadingContent>
-                                                <XVertical separator={10}>
+
+                    <XVertical separator={25}>
+                        <XForm
+                            defaultData={{
+                                input: {
+                                    firstName: profile.firstName,
+                                    lastName: profile.lastName,
+                                    primaryOrganizationId:
+                                        profile.primaryOrganization &&
+                                        profile.primaryOrganization!!.id,
+                                    role: profile.role,
+                                    about: profile.about,
+                                    photoRef: sanitizeImageRef(profile.photoRef),
+                                },
+                            }}
+                            defaultAction={async data => {
+                                await client.mutateProfileUpdate({
+                                    input: {
+                                        firstName: data.input.firstName,
+                                        lastName: data.input.lastName,
+                                        alphaPrimaryOrganizationId:
+                                            data.input.primaryOrganizationId,
+                                        alphaRole: data.input.role,
+                                        about: data.input.about,
+                                        photoRef: sanitizeImageRef(data.input.photoRef),
+                                    },
+                                });
+                                await client.refetchAccount();
+                                await client.refetchMyOrganizations();
+                            }}
+                            defaultLayout={false}
+                        >
+                            <XVertical separator={12} maxWidth={660}>
+                                <HeadTitle>Profile</HeadTitle>
+                                <XFormError onlyGeneralErrors={true} />
+                                <XVertical separator={12}>
+                                    <XFormLoadingContent>
+                                        <XVertical
+                                            flexGrow={1}
+                                            maxWidth={480}
+                                            separator={10}
+                                        >
+                                            <XHorizontal separator={13}>
+                                                <XVertical flexGrow={1} separator={10}>
                                                     <XInput
-                                                        field="shortname"
+                                                        title="First name"
+                                                        field="input.firstName"
                                                         size="large"
-                                                        title="Username"
+                                                    />
+                                                    <XInput
+                                                        title="Last name"
+                                                        field="input.lastName"
+                                                        size="large"
                                                     />
                                                 </XVertical>
-                                            </XFormLoadingContent>
-                                            <XFormSubmit
-                                                text="Save changes"
-                                                alignSelf="flex-start"
-                                                style="primary"
-                                                successText="Changes saved!"
-                                            />
+                                                <XAvatarUpload
+                                                    field="input.photoRef"
+                                                    size="xSmall"
+                                                />
+                                            </XHorizontal>
+                                            <XVertical flexGrow={1} separator={10}>
+                                                <XSelect
+                                                    title="Primary organization"
+                                                    field="input.primaryOrganizationId"
+                                                    searchable={false}
+                                                    clearable={false}
+                                                    options={organizations.myOrganizations.map((org: any) => ({
+                                                        value: org.id,
+                                                        label: org.name,
+                                                    }))}
+                                                />
+                                                <XView position="relative">
+                                                    <TextAreaTitle>About</TextAreaTitle>
+                                                    <XTextArea
+                                                        valueStoreKey="fields.input.about"
+                                                        resize={false}
+                                                        minHeight={85}
+                                                    />
+                                                </XView>
+                                            </XVertical>
                                         </XVertical>
-                                    </XVertical>
-                                </XForm>
-                                <XForm
-                                    defaultData={{
-                                        input: {
-                                            phone: profile.phone,
-                                            email: profile.email,
-                                            website: profile.website,
-                                            linkedin: profile.linkedin,
-                                            location: profile.location,
-                                        },
-                                    }}
-                                    defaultAction={async data => {
-                                        await client.mutateProfileUpdate({
-                                            input: {
-                                                phone: data.input.phone,
-                                                email: data.input.email,
-                                                website: data.input.website,
-                                                alphaLinkedin: data.input.linkedin,
-                                                location: data.input.location,
-                                            },
-                                        });
-                                        await client.refetchAccount();
-                                        await client.refetchMyOrganizations();
-                                    }}
-                                    defaultLayout={false}
-                                >
-                                    <XVertical separator={12}>
-                                        <HeadTitle>Contacts</HeadTitle>
-                                        <XFormError onlyGeneralErrors={true} />
-                                        <XVertical maxWidth={480} separator={12}>
-                                            <XFormLoadingContent>
-                                                <XVertical separator={10}>
-                                                    <XInput
-                                                        field="input.phone"
-                                                        size="large"
-                                                        title="Phone number"
-                                                    />
-                                                    <XInput
-                                                        field="input.email"
-                                                        size="large"
-                                                        title="Email"
-                                                    />
-                                                    <XInput
-                                                        field="input.website"
-                                                        size="large"
-                                                        title="Website"
-                                                    />
-                                                    <XInput
-                                                        field="input.linkedin"
-                                                        size="large"
-                                                        title="LinkedIn"
-                                                    />
-                                                    <XInput
-                                                        field="input.location"
-                                                        size="large"
-                                                        title="Location"
-                                                    />
-                                                </XVertical>
-                                            </XFormLoadingContent>
-                                            <XFormSubmit
-                                                text="Save changes"
-                                                alignSelf="flex-start"
-                                                style="primary"
-                                                successText="Changes saved!"
-                                            />
-                                        </XVertical>
-                                    </XVertical>
-                                </XForm>
+                                    </XFormLoadingContent>
+                                    <XFormSubmit
+                                        text="Save changes"
+                                        alignSelf="flex-start"
+                                        style="primary"
+                                        successText="Changes saved!"
+                                    />
+                                </XVertical>
                             </XVertical>
-                        )}
-                    </Query>
+                        </XForm>
+                        <XForm
+                            defaultData={{
+                                shortname: user.shortname,
+                            }}
+                            defaultAction={async data => {
+                                await client.mutateSetUserShortname({
+                                    shortname: data.shortname,
+                                });
+                                await client.refetchAccount();
+                            }}
+                        >
+                            <XVertical separator={12}>
+                                <HeadTitle>Username</HeadTitle>
+                                <XFormError onlyGeneralErrors={true} />
+                                <XVertical maxWidth={480} separator={12}>
+                                    <XFormLoadingContent>
+                                        <XVertical separator={10}>
+                                            <XInput
+                                                field="shortname"
+                                                size="large"
+                                                title="Username"
+                                            />
+                                        </XVertical>
+                                    </XFormLoadingContent>
+                                    <XFormSubmit
+                                        text="Save changes"
+                                        alignSelf="flex-start"
+                                        style="primary"
+                                        successText="Changes saved!"
+                                    />
+                                </XVertical>
+                            </XVertical>
+                        </XForm>
+                        <XForm
+                            defaultData={{
+                                input: {
+                                    phone: profile.phone,
+                                    email: profile.email,
+                                    website: profile.website,
+                                    linkedin: profile.linkedin,
+                                    location: profile.location,
+                                },
+                            }}
+                            defaultAction={async data => {
+                                await client.mutateProfileUpdate({
+                                    input: {
+                                        phone: data.input.phone,
+                                        email: data.input.email,
+                                        website: data.input.website,
+                                        alphaLinkedin: data.input.linkedin,
+                                        location: data.input.location,
+                                    },
+                                });
+                                await client.refetchAccount();
+                                await client.refetchMyOrganizations();
+                            }}
+                            defaultLayout={false}
+                        >
+                            <XVertical separator={12}>
+                                <HeadTitle>Contacts</HeadTitle>
+                                <XFormError onlyGeneralErrors={true} />
+                                <XVertical maxWidth={480} separator={12}>
+                                    <XFormLoadingContent>
+                                        <XVertical separator={10}>
+                                            <XInput
+                                                field="input.phone"
+                                                size="large"
+                                                title="Phone number"
+                                            />
+                                            <XInput
+                                                field="input.email"
+                                                size="large"
+                                                title="Email"
+                                            />
+                                            <XInput
+                                                field="input.website"
+                                                size="large"
+                                                title="Website"
+                                            />
+                                            <XInput
+                                                field="input.linkedin"
+                                                size="large"
+                                                title="LinkedIn"
+                                            />
+                                            <XInput
+                                                field="input.location"
+                                                size="large"
+                                                title="Location"
+                                            />
+                                        </XVertical>
+                                    </XFormLoadingContent>
+                                    <XFormSubmit
+                                        text="Save changes"
+                                        alignSelf="flex-start"
+                                        style="primary"
+                                        successText="Changes saved!"
+                                    />
+                                </XVertical>
+                            </XVertical>
+                        </XForm>
+                    </XVertical>
                     <XVertical separator={12}>
                         <XWithRole role="super-admin">
                             <HeadTitle>Super admin</HeadTitle>

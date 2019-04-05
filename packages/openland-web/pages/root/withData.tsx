@@ -1,13 +1,8 @@
 import * as React from 'react';
 import { NextAppContext } from 'next/app';
 import { getToken } from 'openland-x-graphql/auth';
-import Head from 'next/head';
 import { apolloClient } from 'openland-x-graphql/apolloClient';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { getDataFromTree } from 'react-apollo';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
-import { isPageChanged } from 'openland-x-routing/NextRouting';
-import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 export function withData(App: React.ComponentType<any>) {
@@ -41,53 +36,9 @@ export function withData(App: React.ComponentType<any>) {
             }
 
             let token = getToken(ctx.ctx.req);
-            const apollo = apolloClient({}, token);
-
-            if (
-                !canUseDOM ||
-                isPageChanged({
-                    pathname: ctx.router.pathname,
-                    query: ctx.router.query,
-                    asPath: ctx.router.asPath,
-                })
-            ) {
-                try {
-                    let start = Date.now();
-                    await getDataFromTree(
-                        <App
-                            {...appProps}
-                            Component={ctx.Component}
-                            router={ctx.router}
-                            apollo={apollo}
-                        />,
-                    );
-                    console.log('loaded in ' + (Date.now() - start) + ' ms');
-                } catch (error) {
-                    // Prevent Apollo Client GraphQL errors from crashing SSR.
-                    // Handle them in components via the data.error prop:
-                    // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
-                    console.error('Error while running `getDataFromTree`', error);
-
-                    if (error.networkError) {
-                        console.log(JSON.stringify(error.networkError.result.errors, null, 2));
-                    }
-
-                    if (error.graphQLErrors && error.graphQLErrors.length) {
-                        console.log(JSON.stringify(error.graphQLErrors, null, 2));
-                    }
-                }
-
-                // getDataFromTree Last names not call componentWillUnmount
-                // head side effect therefore need to be cleared manually
-                if (!canUseDOM) {
-                    Head.rewind();
-                }
-            }
-
-            const apolloState = (apollo.client as DirectApollolClient).client.client.extract();
+            apolloClient(token);
             return {
                 ...appProps,
-                apolloState,
                 token,
                 host,
                 protocol,
@@ -99,7 +50,7 @@ export function withData(App: React.ComponentType<any>) {
         private apollo: OpenlandClient;
         constructor(props: any) {
             super(props);
-            this.apollo = apolloClient(props.apolloState, props.token);
+            this.apollo = apolloClient(props.token);
         }
 
         render() {
