@@ -824,24 +824,24 @@ export const WebSignUpAuthMechanism = ({
     const emailText = signin ? auth.signinEmail : auth.signupEmail;
 
     return (
-        <div>
-            <XTrack event={signin ? 'signin_view' : 'signup_view'} key={signin ? 'signin_track' : 'signup_track'} />
-
-            <Title roomView={false}>{title}</Title>
-            <SubTitle>{subTitle}</SubTitle>
-            <ButtonsWrapper marginTop={52} width={280}>
-                <GoogleButton
-                    rounded
-                    onClick={() => {
-                        trackEvent(signin ? 'signin_google_action' : 'signup_google_action');
-                        loginWithGoogle();
-                    }}
-                    text={googleButtonText}
-                />
-                <Separator />
-                <EmailButton rounded onClick={loginWithEmail} text={emailText} />
-            </ButtonsWrapper>
-        </div>
+        <XTrack event={signin ? 'signin_view' : 'signup_view'} key={signin ? 'signin_track' : 'signup_track'}>
+            <div>
+                <Title roomView={false}>{title}</Title>
+                <SubTitle>{subTitle}</SubTitle>
+                <ButtonsWrapper marginTop={52} width={280}>
+                    <GoogleButton
+                        rounded
+                        onClick={() => {
+                            trackEvent(signin ? 'signin_google_action' : 'signup_google_action');
+                            loginWithGoogle();
+                        }}
+                        text={googleButtonText}
+                    />
+                    <Separator />
+                    <EmailButton rounded onClick={loginWithEmail} text={emailText} />
+                </ButtonsWrapper>
+            </div>
+        </XTrack>
     );
 };
 
@@ -904,8 +904,7 @@ export const WebSignUpActivationCode = ({
 }: ActivationCodeProps) => {
     const [isMobile] = useIsMobile();
     return (
-        <>
-            <XTrack event={signin ? 'signin_code_view' : 'signup_code_view'} />
+        <XTrack event={signin ? 'signin_code_view' : 'signup_code_view'}>
             <XForm
                 defaultData={{
                     input: {
@@ -996,7 +995,7 @@ export const WebSignUpActivationCode = ({
                     </XVertical>
                 </ButtonsWrapper>
             </XForm>
-        </>
+        </XTrack>
     );
 };
 
@@ -1188,8 +1187,7 @@ export const WebSignUpCreateWithEmail = ({
     const [isMobile] = useIsMobile();
     const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
     return (
-        <>
-            <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'} />
+        <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'}>
             <XForm
                 defaultData={{
                     input: {
@@ -1241,7 +1239,7 @@ export const WebSignUpCreateWithEmail = ({
                     </XVertical>
                 </ButtonsWrapper>
             </XForm>
-        </>
+        </XTrack>
     );
 };
 

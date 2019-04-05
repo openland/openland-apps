@@ -21,8 +21,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
         const fromSignup = this.props.router.params.fromSignup;
 
         return (
-            <>
-                {fromSignup && <ZTrack event="signup_org_view" />}
+            <ZTrack event={fromSignup ? 'signup_org_view' : 'new_org_view'}>
                 <SHeader title={isCommunity ? 'New community' : 'New organization'} />
                 <SHeaderButton title={isCommunity ? 'Create' : 'Next'} onPress={() => { this.ref.current!.submitForm(); }} />
                 <ZForm
@@ -79,7 +78,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                         </>
                     )}
                 </ZForm>
-            </>
+            </ZTrack>
         );
     }
 }

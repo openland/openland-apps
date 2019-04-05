@@ -94,11 +94,10 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
 
     render() {
         return (
-            <>
-                <ZTrack event="signup_profile_view" />
+            <ZTrack event="signup_profile_view">
                 <SHeader title="Full name" />
                 <SignupUserContent {...this.props} />
-            </>
+            </ZTrack>
         );
     }
 }

@@ -90,8 +90,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
 
     render() {
         return (
-            <>
-                <ZTrack event="signup_email_view" />
+            <ZTrack event="signup_email_view">
                 <SHeader title="Email" />
                 <SHeaderButton title="Next" onPress={this.submitForm} />
 
@@ -124,7 +123,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                         onSubmitEditing={this.submitForm}
                     />
                 </ZForm>
-            </>
+            </ZTrack>
         );
     }
 }
@@ -162,8 +161,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
 
     render() {
         return (
-            <>
-                <ZTrack event="signup_code_view" />
+            <ZTrack event="signup_code_view">
                 <SHeader title="Confirm email" />
                 <SHeaderButton title="Next" onPress={this.submitForm} />
                 <ZForm
@@ -221,7 +219,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                         onSubmitEditing={this.submitForm}
                     />
                 </ZForm>
-            </>
+            </ZTrack>
         );
     }
 }
