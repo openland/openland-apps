@@ -1,12 +1,18 @@
 import * as React from 'react';
 import { XLink2 } from 'openland-x/XLink2';
-import { DialogViewProps } from './DialogView';
 import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar } from 'openland-x/XAvatar';
 import { emoji } from 'openland-y-utils/emoji';
+import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 
-export const DialogViewCompact = React.memo((props: DialogViewProps) => {
+export const DialogViewCompact = React.memo((props: {
+    item: DialogDataSourceItem;
+    handleRef?: any;
+    onSelect?: (id: string) => void;
+    onClick?: () => void;
+    selected?: boolean;
+}) => {
     let dialog = props.item;
 
     let path = '/mail/' + dialog.key;
