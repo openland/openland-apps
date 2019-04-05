@@ -14,11 +14,10 @@ export default withApp('Mail', 'viewer', () => {
     let uid = routeQuery.userId;
 
     return (
-        <>
-            {path === '/mail' && <XTrack event="mail_view" />}
+        <XTrack event="mail_view">
             <MessageStateProviderComponent router={router}>
                 <MessagesNavigation path={path} cid={cid} oid={oid} uid={uid} />
             </MessageStateProviderComponent>
-        </>
+        </XTrack>
     );
 });

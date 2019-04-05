@@ -23576,6 +23576,8 @@ export interface PersistEvents {
 export interface PersistEventsVariables {
   did: string;
   events: Event[];
+  platform?: EventPlatform | null;
+  isProd?: boolean | null;
 }
 
 /* tslint:disable */
@@ -31902,6 +31904,12 @@ export enum EmailFrequency {
   MIN_15 = "MIN_15",
   NEVER = "NEVER",
   WEEK_1 = "WEEK_1",
+}
+
+export enum EventPlatform {
+  Android = "Android",
+  WEB = "WEB",
+  iOS = "iOS",
 }
 
 export enum MediaStreamState {

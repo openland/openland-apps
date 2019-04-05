@@ -1,9 +1,10 @@
 import { Track, TrackPlatform } from 'openland-engines/Tracking';
 import { Platform } from 'react-native';
+import { EventPlatform } from 'openland-api/Types';
 
 const platform: TrackPlatform = {
-    name: Platform.OS === 'ios' ? 'iOS' : 'Android',
-    type: !__DEV__ ? 'production' : 'development'
+    name: Platform.OS === 'ios' ? EventPlatform.iOS : EventPlatform.Android,
+    isProd: !__DEV__
 };
 
 export function trackEvent(event: string, params?: { [key: string]: any }) {

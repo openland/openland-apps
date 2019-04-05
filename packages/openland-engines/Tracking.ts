@@ -2,10 +2,11 @@ import { AppStorage } from 'openland-y-runtime-native/AppStorage';
 import uuid from 'uuid/v4';
 import { backoff } from 'openland-y-utils/timer';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { EventPlatform } from 'openland-api/Types';
 
 export interface TrackPlatform {
-    name: 'Web' | 'iOS' | 'Android';
-    type: 'development' | 'production';
+    name: EventPlatform;
+    isProd: boolean;
 }
 
 class TrackingEngine {
@@ -13,8 +14,9 @@ class TrackingEngine {
     private client!: OpenlandClient;
     private initPromise: Promise<void> | undefined;
     private deviceId!: string;
-    private pending: { id: string, platform: TrackPlatform, event: string, params?: string }[] = [];
+    private pending: { id: string, event: string, params?: string }[] = [];
     private isSending = false;
+    private platform: TrackPlatform = { name: EventPlatform.WEB, isProd: true };
 
     setClient(client: OpenlandClient) {
         if (!this.client) {
@@ -26,8 +28,8 @@ class TrackingEngine {
     track(platform: TrackPlatform, event: string, params?: { [key: string]: any }) {
         console.log('Event: ' + event, params, platform);
 
+        this.platform = platform;
         this.pending.push({
-            platform,
             event,
             params: params ? JSON.stringify(params) : undefined,
             id: uuid()
@@ -68,7 +70,9 @@ class TrackingEngine {
         await backoff(async () => {
             await this.client.mutatePersistEvents({
                 did: this.deviceId,
-                events: events
+                events: events,
+                platform: this.platform.name,
+                isProd: this.platform.isProd
             });
         })
 

@@ -209,6 +209,8 @@ class SignInComponent extends React.Component<
     }
 
     loginWithGoogle = () => {
+        trackEvent('signup_google_action');
+
         this.setState({ googleStarting: true, signInInvite: false });
         this.fireGoogle();
     };
@@ -313,16 +315,20 @@ class SignInComponent extends React.Component<
     };
 
     trackError = (error: string) => {
-        let eventPrefix = this.props.roomView ? 'room_' : '';
-
-        eventPrefix += checkIfIsSignIn(this.props.router) ? 'signin_' : 'signup_';
-
-        if (['code_expired', 'invalid_user_password', 'wrong_code', 'wrong_code_length', 'no_code'].includes(error)) {
-            trackEvent(eventPrefix + 'code_error', { error_type: error});
+        if (
+            [
+                'code_expired',
+                'invalid_user_password',
+                'wrong_code',
+                'wrong_code_length',
+                'no_code',
+            ].includes(error)
+        ) {
+            trackEvent('signup_code_error', { error_type: error });
         } else {
-            trackEvent(eventPrefix + 'error', { error_type: error});
+            trackEvent('signup_error', { error_type: error });
         }
-    }
+    };
 
     render() {
         const signin = checkIfIsSignIn(this.props.router);
@@ -390,58 +396,69 @@ class SignInComponent extends React.Component<
                         />
                     )}
                     {pageMode === 'AuthMechanism' && (
-                        <AuthMechanism
-                            signin={signin}
-                            loginWithGoogle={this.loginWithGoogle}
-                            loginWithEmail={this.loginWithEmail}
-                        />
+                        <XTrack
+                            event={signin ? 'signin_view' : 'signup_view'}
+                            key={signin ? 'signin-track' : 'signup-track'}
+                        >
+                            <AuthMechanism
+                                signin={signin}
+                                loginWithGoogle={this.loginWithGoogle}
+                                loginWithEmail={this.loginWithEmail}
+                            />
+                        </XTrack>
                     )}
 
                     {pageMode === 'Loading' && <Loader />}
 
                     {pageMode === 'CreateFromEmail' && (
-                        <MyCreateWithEmail
-                            signin={signin}
-                            emailError={this.state.emailError}
-                            emailChanged={this.emailValueChanged}
-                            emailValue={this.state.emailValue}
-                            loginEmailStart={this.loginEmailStart}
-                            emailSending={this.state.emailSending}
-                        />
+                        <XTrack event="signup_email_view">
+                            <MyCreateWithEmail
+                                signin={signin}
+                                emailError={this.state.emailError}
+                                emailChanged={this.emailValueChanged}
+                                emailValue={this.state.emailValue}
+                                loginEmailStart={this.loginEmailStart}
+                                emailSending={this.state.emailSending}
+                            />
+                        </XTrack>
                     )}
 
                     {pageMode === 'ActivationCode' && (
-                        <MyActivationCode
-                            signin={signin}
-                            emailWasResend={this.state.emailWasResend}
-                            resendCodeClick={() => {
-                                this.setState({
-                                    emailSending: true,
-                                });
-                                this.fireEmail(() => {
+                        <XTrack event="signup_code_view">
+                            <MyActivationCode
+                                signin={signin}
+                                emailWasResend={this.state.emailWasResend}
+                                resendCodeClick={() => {
+                                    trackEvent('signup_code_resend_action');
+
                                     this.setState({
-                                        emailWasResend: true,
+                                        emailSending: true,
                                     });
-                                });
-                            }}
-                            emailSendedTo={this.state.emailValue}
-                            backButtonClick={() => {
-                                this.setState(
-                                    {
-                                        fromOutside: false,
-                                    },
-                                    () => {
-                                        this.loginWithEmail();
-                                    },
-                                );
-                            }}
-                            codeError={this.state.codeError}
-                            codeChanged={this.codeValueChanged}
-                            codeSending={this.state.codeSending}
-                            emailSending={this.state.emailSending}
-                            codeValue={this.state.codeValue}
-                            loginCodeStart={this.loginCodeStart}
-                        />
+                                    this.fireEmail(() => {
+                                        this.setState({
+                                            emailWasResend: true,
+                                        });
+                                    });
+                                }}
+                                emailSendedTo={this.state.emailValue}
+                                backButtonClick={() => {
+                                    this.setState(
+                                        {
+                                            fromOutside: false,
+                                        },
+                                        () => {
+                                            this.loginWithEmail();
+                                        },
+                                    );
+                                }}
+                                codeError={this.state.codeError}
+                                codeChanged={this.codeValueChanged}
+                                codeSending={this.state.codeSending}
+                                emailSending={this.state.emailSending}
+                                codeValue={this.state.codeValue}
+                                loginCodeStart={this.loginCodeStart}
+                            />
+                        </XTrack>
                     )}
                 </Container>
             </>

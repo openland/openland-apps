@@ -982,10 +982,10 @@
       }
     },
     {
-      "signature": "72168ab79168f33bb766e3392b7b738808ef93b367cec7e8289764bb1e03efb0",
-      "document": "mutation PersistEvents($did:String!,$events:[Event!]!){track(did:$did,events:$events)}",
+      "signature": "db5ccf90eb8d231f91cf970f6cab481bacdd9f68a475188729243c3c85acd6dd",
+      "document": "mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean,$platform:EventPlatform){track(did:$did,events:$events,isProd:$isProd,platform:$platform)}",
       "metadata": {
-        "engineSignature": "mutation PersistEvents($did:String!,$events:[Event!]!){track(did:$did,events:$events)}"
+        "engineSignature": "mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean,$platform:EventPlatform){track(did:$did,events:$events,isProd:$isProd,platform:$platform)}"
       }
     },
     {
