@@ -3,12 +3,17 @@ import uuid from 'uuid/v4';
 import { backoff } from 'openland-y-utils/timer';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 
+export interface TrackPlatform {
+    name: 'Web' | 'iOS' | 'Android';
+    type: 'development' | 'production';
+}
+
 class TrackingEngine {
 
     private client!: OpenlandClient;
     private initPromise: Promise<void> | undefined;
     private deviceId!: string;
-    private pending: { id: string, event: string, params?: string }[] = [];
+    private pending: { id: string, platform: TrackPlatform, event: string, params?: string }[] = [];
     private isSending = false;
 
     setClient(client: OpenlandClient) {
@@ -18,10 +23,15 @@ class TrackingEngine {
         }
     }
 
-    track(event: string, params?: { [key: string]: any }) {
-        console.log('Event: ' + event, params);
+    track(platform: TrackPlatform, event: string, params?: { [key: string]: any }) {
+        console.log('Event: ' + event, params, platform);
 
-        this.pending.push({ event: event, params: params ? JSON.stringify(params) : undefined, id: uuid() });
+        this.pending.push({
+            platform,
+            event,
+            params: params ? JSON.stringify(params) : undefined,
+            id: uuid()
+        });
 
         this.flush();
     }

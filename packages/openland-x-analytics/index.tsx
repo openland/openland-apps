@@ -1,9 +1,14 @@
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { Track } from 'openland-engines/Tracking';
+import { Track, TrackPlatform } from 'openland-engines/Tracking';
+
+const platform: TrackPlatform = {
+    name: 'Web',
+    type: location.hostname === 'openland.com' ? 'production' : 'development'
+};
 
 export function trackEvent(event: string, params?: { [key: string]: any }) {
     if (canUseDOM) {
-        Track.track(event, params);
+        Track.track(platform, event, params);
     }
 }
 

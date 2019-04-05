@@ -214,8 +214,6 @@ export class MessageSender {
             }
             console.log('Message sent in ' + (Date.now() - start) + ' ms');
 
-            Track.track('message_sent');
-
             this.pending.delete(key);
             callback.onCompleted(key);
         })();

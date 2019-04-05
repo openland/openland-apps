@@ -8,6 +8,7 @@ import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { ConversationTheme } from '../themes/ConversationThemeResolver';
+import { trackEvent } from 'openland-mobile/analytics';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -55,6 +56,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     }
 
     onMessageSend() {
+        trackEvent('message_sent');
+
         // if (this.listRef.current) {
         //     this.listRef.current.scrollToStart();
         // }

@@ -16,6 +16,7 @@ import LogoWithName from 'openland-icons/logo.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { switchOrganization } from '../utils/switchOrganization';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XTrack } from 'openland-x-analytics/XTrack';
 
 const RootClassName = css`
     position: relative;
@@ -506,18 +507,20 @@ export const InviteLandingComponent = ({
     console.log(organization);
 
     return (
-        <InviteLandingComponentLayout
-            button={button}
-            whereToInvite={whereToInvite}
-            photo={room ? room.photo!! : organization!!.photo!!}
-            title={room ? room.title!! : organization!!.title!!}
-            id={room ? room.id!! : organization!!.id!!}
-            membersCount={room ? room.membersCount : organization!!.membersCount!!}
-            description={room ? room.description : organization!!.description!!}
-            invite={invite}
-            inviteLink={inviteLink}
-            noLogin={noLogin}
-            signup={signup}
-        />
+        <XTrack event="invite_landing_view" params={{ invite_type: whereToInvite.toLowerCase() }}>
+            <InviteLandingComponentLayout
+                button={button}
+                whereToInvite={whereToInvite}
+                photo={room ? room.photo!! : organization!!.photo!!}
+                title={room ? room.title!! : organization!!.title!!}
+                id={room ? room.id!! : organization!!.id!!}
+                membersCount={room ? room.membersCount : organization!!.membersCount!!}
+                description={room ? room.description : organization!!.description!!}
+                invite={invite}
+                inviteLink={inviteLink}
+                noLogin={noLogin}
+                signup={signup}
+            />
+        </XTrack>
     );
 };

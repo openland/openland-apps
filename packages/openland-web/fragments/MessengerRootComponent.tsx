@@ -32,6 +32,7 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
+import { trackEvent } from 'openland-x-analytics';
 
 export interface File {
     uuid: string;
@@ -167,6 +168,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     onMessageSend = () => {
+        trackEvent('message_sent');
+
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();
         }
