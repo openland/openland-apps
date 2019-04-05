@@ -1,5 +1,5 @@
 import { Track, TrackPlatform } from 'openland-engines/Tracking';
-import { Platform } from 'react-native';
+import { Platform, AsyncStorage } from 'react-native';
 import { EventPlatform } from 'openland-api/Types';
 
 const platform: TrackPlatform = {
@@ -23,3 +23,19 @@ export function trackError(src: any) {
     // Log exception to analytics
     trackEvent('Error', { error: '' + src });
 }
+
+const trackLaunch = async () => {
+    const firstLaunch = await AsyncStorage.getItem('openland-first-launch');
+
+    if (!firstLaunch) {
+        const currentDate = new Date();
+    
+        await AsyncStorage.setItem('openland-first-launch', currentDate.getTime().toString());
+    
+        trackEvent('launch_first_time');
+    }
+    
+    trackEvent('session_start');
+}
+
+trackLaunch();

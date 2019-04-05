@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation, AsyncStorage } from 'react-native';
+import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation } from 'react-native';
 import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/apolloClient';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
 import { ZLoader } from '../components/ZLoader';
@@ -20,7 +20,6 @@ import { SDevice } from 'react-native-s/SDevice';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
-import { trackEvent } from 'openland-mobile/analytics';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull, dimensions?: { width: number, height: number } }> {
 
@@ -106,18 +105,6 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         Linking.getInitialURL().then(async url => await this.handleOpenURL({ url: url }));
 
         (async () => {
-            const firstLaunch = await AsyncStorage.getItem('openland-first-launch');
-
-            if (!firstLaunch) {
-                const currentDate = new Date();
-
-                await AsyncStorage.setItem('openland-first-launch', currentDate.getTime().toString());
-
-                trackEvent('launch_first_time');
-            }
-
-            trackEvent('session_start');
-
             await ThemePersister.prepare();
             await AppStorage.prepare();
             try {

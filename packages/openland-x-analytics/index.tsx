@@ -25,3 +25,19 @@ export function trackError(src: any) {
     // Log exception to analytics
     trackEvent('Error', { error: '' + src });
 }
+
+const trackLaunch = async () => {
+    const firstLaunch = await localStorage.getItem('openland-first-launch');
+
+    if (!firstLaunch) {
+        const currentDate = new Date();
+
+        await localStorage.setItem('openland-first-launch', currentDate.getTime().toString());
+
+        trackEvent('launch_first_time');
+    }
+
+    trackEvent('session_start');
+}
+
+trackLaunch();
