@@ -1458,16 +1458,20 @@ export class CreateOrganizationFormInner extends React.Component<
                                                                     </XIconWrapper>
                                                                 </XPopper>
                                                             </XHorizontal>
-                                                            {showError && (
-                                                                <div
-                                                                    className={cx(
-                                                                        organizationInputClassName,
-                                                                        organizationInputErrorClassName,
-                                                                    )}
-                                                                >
-                                                                    <XFormError field="input.organization" />
-                                                                </div>
-                                                            )}
+                                                            {showError ? () => {
+                                                                trackEvent(roomView ? 'room_signup_org_error' : 'signup_org_error');
+
+                                                                return (
+                                                                    <div
+                                                                        className={cx(
+                                                                            organizationInputClassName,
+                                                                            organizationInputErrorClassName,
+                                                                        )}
+                                                                    >
+                                                                        <XFormError field="input.organization" />
+                                                                    </div>
+                                                                );
+                                                            } : undefined}
                                                         </>
                                                     </XVertical>
                                                 )}

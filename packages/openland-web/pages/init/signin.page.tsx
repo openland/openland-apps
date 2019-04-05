@@ -25,6 +25,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { XView } from 'react-mental';
 import { useIsMobile } from 'openland-web/hooks';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { trackEvent } from 'openland-x-analytics';
 
 function validateEmail(email: string) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -273,11 +274,15 @@ class SignInComponent extends React.Component<
 
     loginCodeStart = async () => {
         if (this.state.codeValue === '') {
+            this.trackError('no_code');
+
             this.setState({
                 codeError: InitTexts.auth.noCode,
             });
             return;
         } else if (this.state.codeValue.length !== 6) {
+            this.trackError('wrong_code_length');
+
             this.setState({
                 codeError: InitTexts.auth.wrongCodeLength,
             });
@@ -291,6 +296,7 @@ class SignInComponent extends React.Component<
                     verificationCode: this.state.codeValue,
                 },
                 (error: any, v) => {
+                    this.trackError(error.code);
                     console.warn(error);
                     if (error) {
                         this.setState({
@@ -305,6 +311,18 @@ class SignInComponent extends React.Component<
             );
         }
     };
+
+    trackError = (error: string) => {
+        let eventPrefix = this.props.roomView ? 'room_' : '';
+
+        eventPrefix += checkIfIsSignIn(this.props.router) ? 'signin_' : 'signup_';
+
+        if (['code_expired', 'invalid_user_password', 'wrong_code', 'wrong_code_length', 'no_code'].includes(error)) {
+            trackEvent(eventPrefix + 'code_error', { error_type: error});
+        } else {
+            trackEvent(eventPrefix + 'error', { error_type: error});
+        }
+    }
 
     render() {
         const signin = checkIfIsSignIn(this.props.router);

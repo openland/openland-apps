@@ -13,6 +13,7 @@ import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { trackError } from 'openland-mobile/analytics';
 
 class NewOrganizationComponent extends React.PureComponent<PageProps> {
     private ref = React.createRef<ZForm>();
@@ -28,6 +29,10 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                     ref={this.ref}
                     action={async (src) => {
                         if (!src.input || (src.input && !src.input.name)) {
+                            if (fromSignup) {
+                                trackError('signup_org_error');
+                            }
+
                             Alert.builder().title('Please enter a name for this ' + (isCommunity ? 'community' : 'organization')).button('GOT IT!').show();    
 
                             throw new SilentError();

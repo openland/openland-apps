@@ -14,6 +14,7 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
+import { TrackAuthError } from './TrackAuthError';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
@@ -189,6 +190,8 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                         await AppStorage.setToken(res2.accessToken);
                     }}
                     onError={(e: Error) => {
+                        TrackAuthError(e);
+
                         if (e.name === 'code_expired') {
                             Alert.builder()
                                 .title('This code has expired')
