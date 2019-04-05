@@ -67,7 +67,6 @@ export interface XListViewProps<T extends DataSourceItem> {
 }
 
 export const XListView = React.memo(function <T extends DataSourceItem>(props: XListViewProps<T>) {
-    console.log('render');
     let [items, completed] = useDataSource(props.dataSource);
     let refHandler = React.useCallback((src: any) => {
         if (!src) {

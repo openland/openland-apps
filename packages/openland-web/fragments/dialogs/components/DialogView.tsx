@@ -74,7 +74,6 @@ export interface DialogViewProps {
 }
 
 export const DialogView = React.memo<DialogViewProps>(props => {
-    console.log('render!');
     // let router = React.useContext(XRouterContext);
     let dialog = props.item;
     let isMuted = dialog.isMuted;
