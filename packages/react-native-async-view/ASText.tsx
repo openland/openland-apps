@@ -17,6 +17,7 @@ export interface ASTextProps extends ASViewStyle {
     textDecorationLine?: 'none' | 'underline';
     textAlign?: 'center' | 'right' | 'left';
     onPress?: (event: ASPressEvent) => void;
+    onLongPress?: (event: ASPressEvent) => void;
 }
 
 export class ASText extends React.PureComponent<ASTextProps> {
@@ -25,6 +26,9 @@ export class ASText extends React.PureComponent<ASTextProps> {
     componentWillMount() {
         if (this.props.onPress) {
             ASEventEmitter.registerOnPress(this.tag, this.handleOnPress);
+        }
+        if (this.props.onLongPress) {
+            ASEventEmitter.registerOnLongPress(this.tag, this.handleOnLongPress);
         }
     }
 
@@ -36,11 +40,22 @@ export class ASText extends React.PureComponent<ASTextProps> {
                 ASEventEmitter.registerOnPress(this.tag, this.handleOnPress);
             }
         }
+        if (!!nextProps.onLongPress !== !!this.props.onLongPress) {
+            if (this.props.onLongPress) {
+                ASEventEmitter.unregisterOnLongPress(this.tag);
+            } else {
+                ASEventEmitter.registerOnLongPress(this.tag, this.handleOnLongPress);
+            }
+        }
     }
 
     componentWillUnmount() {
         if (this.props.onPress) {
             ASEventEmitter.unregisterOnPress(this.tag);
+        }
+
+        if (this.props.onLongPress) {
+            ASEventEmitter.unregisterOnLongPress(this.tag);
         }
     }
 
@@ -49,13 +64,20 @@ export class ASText extends React.PureComponent<ASTextProps> {
             this.props.onPress(event);
         }
     }
+
+    private handleOnLongPress = (event: ASPressEvent) => {
+        if (this.props.onLongPress) {
+            this.props.onLongPress(event);
+        }
+    }
+
     render() {
         let { children, onPress, color, ...other } = this.props;
         let realProps = other;
         realProps = {
             ...baseStyleProcessor(other),
             color: color ? processColor(color) : undefined,
-            touchableKey: this.props.onPress && this.tag
+            touchableKey: (this.props.onPress || this.props.onLongPress) && this.tag,
         } as any;
         return <asynctext {...realProps}>{children}</asynctext>;
     }

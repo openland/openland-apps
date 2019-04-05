@@ -109,4 +109,12 @@ class RNAsyncTextNode: ASTextNode, ASTextNodeDelegate {
   func textNode(_ textNode: ASTextNode!, tappedLinkAttribute attribute: String!, value: Any!, at point: CGPoint, textRange: NSRange) {
     AsyncViewEventEmitter.sharedInstance.dispatchOnPress(key: value as! String, frame: CGRect.zero, instanceKey: nil)
   }
+
+  func textNode(_ textNode: ASTextNode!, longPressedLinkAttribute attribute: String!, value: Any!, at point: CGPoint, textRange: NSRange) {
+    AsyncViewEventEmitter.sharedInstance.dispatchOnLongPress(key: value as! String, frame: CGRect.zero, instanceKey: nil)
+  }
+
+  func textNode(_ textNode: ASTextNode!, shouldLongPressLinkAttribute attribute: String!, value: Any!, at point: CGPoint) -> Bool {
+    return true
+  }
 }
