@@ -1,107 +1,125 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import { css } from 'linaria';
+import { XView } from 'react-mental';
 import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
 import { XInput } from 'openland-x/XInput';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { TextInvites } from 'openland-text/TextInvites';
-import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { useClient } from 'openland-web/utils/useClient';
+import CopiedIcon from 'openland-icons/ic-content-copy.svg';
+import CheckIcon from 'openland-icons/ic-check.svg';
 
-export const FooterWrap = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    paddingLeft: 24,
-    paddingRight: 24,
-    height: 64,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#fafbfc',
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
-    borderTop: '1px solid rgba(220, 222, 228, 0.6)',
-});
+const InputClassName = css`
+    border-radius: 8px !important;
+    background: #f2f3f4 !important;
+    border: none !important;
+    &:focus-within {
+        border: none !important;
+        box-shadow: none !important;
+    }
+`;
 
-const ModalContentWrapper = Glamorous(XVertical)<{ bottomOfset?: boolean }>(props => ({
-    paddingBottom: props.bottomOfset ? 60 : undefined,
-}));
-
-const InviteText = Glamorous.div({
-    fontSize: 12,
-    fontWeight: 500,
-    letterSpacing: -0.2,
-    color: '#99a2b0',
-});
-
-const LinkHolder = Glamorous(XVertical)({
-    '& > div:first-child': {
-        backgroundColor: '#f5f7f9',
-        borderColor: 'transparent',
-        color: '#5c6a81',
-    },
-});
+const CopyIconClassName = css`
+    & path:last-child {
+        fill: #a2d2ff !important;
+    }
+`;
 
 interface OwnerLinkComponentProps {
-    invite?: {
-        id: string;
-        key: string;
-        ttl: string | null;
-    } | null;
-    appInvite?: string | null;
-    organization: boolean;
-    isCommunity: boolean;
+    appInvite: string | null;
 }
 
 class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
     input?: any;
-    constructor(props: any) {
-        super(props);
+    timer: any;
+
+    state = {
+        copied: false,
+    };
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
     }
 
-    handleRef = (e: any) => {
+    private handleRef = (e: any) => {
         if (e === null) {
             return;
         }
         this.input = e;
     };
 
-    copy = (e: any) => {
-        if (this.input && this.input.inputRef && this.input.inputRef) {
+    private copy = (e: any) => {
+        if (this.input && this.input.inputRef) {
             this.input.inputRef.inputRef.select();
         }
         document.execCommand('copy');
+        this.setState({
+            copied: true,
+        });
+
+        this.timer = setTimeout(() => {
+            this.setState({
+                copied: false,
+            });
+        }, 1500);
     };
 
     render() {
+        const { copied } = this.state;
         return (
             <XVertical width="100%" flexGrow={1} separator={2}>
-                {!!(this.props.invite || this.props.appInvite) && (
-                    <LinkHolder separator={4}>
-                        <XInput
-                            size="large"
-                            flexGrow={1}
-                            ref={this.handleRef}
-                            value={
-                                'https://openland.com' +
-                                (this.props.organization ? '/invite/' : '/join/') +
-                                (this.props.appInvite || this.props.invite!.key)
-                            }
-                        />
-                        <InviteText>
-                            {!this.props.organization
-                                ? this.props.isCommunity
-                                    ? 'Anyone with link can join as community member'
-                                    : 'Anyone with link can join as organization member'
-                                : 'Anyone with link can join Openland'}
-                        </InviteText>
-                    </LinkHolder>
+                {this.props.appInvite && (
+                    <XView flexDirection="column">
+                        <XView flexDirection="row" alignItems="center">
+                            <XView flexDirection="row" alignItems="center" flexGrow={1}>
+                                <XInput
+                                    size="large"
+                                    flexGrow={1}
+                                    ref={this.handleRef}
+                                    className={InputClassName}
+                                    value={'https://openland.com/invite/' + this.props.appInvite}
+                                />
+                            </XView>
+                            <XView
+                                height={40}
+                                borderRadius={8}
+                                paddingLeft={14}
+                                paddingRight={14}
+                                flexDirection="row"
+                                alignItems="center"
+                                fontSize={14}
+                                fontWeight="600"
+                                backgroundColor={copied ? '#69d06d' : '#1790ff'}
+                                color="#ffffff"
+                                cursor="pointer"
+                                onClick={this.copy}
+                                marginLeft={12}
+                            >
+                                {copied ? (
+                                    <CheckIcon />
+                                ) : (
+                                    <CopiedIcon className={CopyIconClassName} />
+                                )}
+                                <XView marginLeft={10}>{copied ? 'Copied' : 'Copy'}</XView>
+                            </XView>
+                        </XView>
+                        <XView
+                            fontSize={12}
+                            color="rgba(0, 0, 0, 0.5)"
+                            marginLeft={16}
+                            marginTop={6}
+                        >
+                            Anyone with link can join Openland
+                        </XView>
+                    </XView>
                 )}
             </XVertical>
         );
     }
 }
 
-const OwnerLinkOrganization = (props => {
+const OwnerLinkOrganization = () => {
     const client = useClient();
     const data = client.useWithoutLoaderAccountAppInvite();
 
@@ -109,80 +127,32 @@ const OwnerLinkOrganization = (props => {
         return null;
     }
 
-    return (
-        <OwnerLinkComponent
-            ref={(props as any).innerRef}
-            appInvite={data ? data.invite : null}
-            organization={true}
-            isCommunity={false}
-        />
-    );
-}) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
+    return <OwnerLinkComponent appInvite={data ? data.invite : null} />;
+};
 
 interface InvitesModalRawProps {
     organizationId: string;
     isMobile: boolean;
 }
 
-interface InvitesModalRawState {
-    customTextAreaOpen?: boolean;
-    showLink?: boolean;
-}
-
-class InvitesModalRaw extends React.Component<
-    InvitesModalRawProps & Partial<XModalFormProps>,
-    InvitesModalRawState
-> {
-    linkComponent?: any;
-    constructor(props: any) {
-        super(props);
-        this.state = { showLink: true };
-    }
-
-    handleLinkComponentRef = (ref: any) => {
-        this.linkComponent = ref;
-    };
-
-    copyLink = () => {
-        if (this.linkComponent) {
-            this.linkComponent.copy();
-        }
-    };
-
+class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XModalFormProps>> {
     render() {
         let { submitProps, isMobile, ...modalFormProps } = this.props;
-
-        let footer = (
-            <FooterWrap>
-                <XFormSubmit
-                    key="link"
-                    style="primary"
-                    successText={TextInvites.copied}
-                    {...submitProps}
-                    text={'Copy'}
-                />
-            </FooterWrap>
-        );
         return (
             <XModalForm
                 autoClose={1500}
                 useTopCloser={true}
                 flexGrow={isMobile ? 1 : undefined}
                 maxHeight={isMobile ? '100%' : undefined}
-                defaultAction={async () => {
-                    this.copyLink();
-                }}
+                defaultAction={async () => null}
                 scrollableContent={true}
                 submitProps={submitProps}
-                customFooter={footer}
+                customFooter={null}
                 {...modalFormProps}
             >
-                <ModalContentWrapper alignItems="center">
-                    <OwnerLinkOrganization
-                        innerRef={this.handleLinkComponentRef}
-                        onBack={() => this.setState({ showLink: false })}
-                    />
-                </ModalContentWrapper>
+                <XVertical alignItems="center">
+                    <OwnerLinkOrganization />
+                </XVertical>
             </XModalForm>
         );
     }
