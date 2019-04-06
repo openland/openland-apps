@@ -29,6 +29,7 @@ const ActivateButton = ({ accountId }: { accountId: string }) => {
                 });
             }}
             text="Activate"
+            flexShrink={0}
         />
     );
 };
@@ -45,6 +46,7 @@ const SuspendButton = ({ accountId }: { accountId: string }) => {
                 })
             }
             text="Suspend"
+            flexShrink={0}
         />
     );
 };
@@ -61,6 +63,7 @@ const PendButton = ({ accountId }: { accountId: string }) => {
                 })
             }
             text="Pend"
+            flexShrink={0}
         />
     );
 };
@@ -71,7 +74,7 @@ const DeleteButton = ({ accountId, orgId }: { accountId: string; orgId: string }
         <XModal
             useTopCloser={true}
             title="Delete organization?"
-            target={<XButton text="Delete" style="danger" />}
+            target={<XButton text="Delete" style="danger" flexShrink={0} />}
             footer={
                 <XView padding={20} flexDirection="row">
                     <XHorizontal justifyContent="flex-end" flexGrow={1}>
@@ -102,7 +105,7 @@ const DeleteUserButton = ({ accountId, userId }: { accountId: string; userId: st
         <XModal
             useTopCloser={true}
             title="Block user?"
-            target={<XButton text="Block" style="danger" />}
+            target={<XButton text="Block" style="danger" flexShrink={0} />}
             footer={
                 <XView padding={20} flexDirection="row">
                     <XHorizontal justifyContent="flex-end" flexGrow={1}>
@@ -168,7 +171,7 @@ const AddMemberForm = ({ accountId }: { accountId: string }) => {
             submitMutation={mutate as MutationFunc<{}>}
             mutationDirect={true}
             actionName="Add"
-            target={<XButton text="Add member" />}
+            target={<XButton text="Add member" flexShrink={0} />}
         >
             <XFormField title="User">
                 <XForm.Select field="userId" component={UserSelect} />
@@ -192,7 +195,7 @@ const RemoveMemberForm = ({ accountId }: { accountId: string }) => {
             mutationDirect={true}
             actionStyle="danger"
             actionName="Remove"
-            target={<XButton style="danger" text="Remove member" />}
+            target={<XButton style="danger" text="Remove member" flexShrink={0} />}
         >
             <XFormField title="User">
                 <XForm.Select field="userId" component={UserSelect} />
@@ -285,7 +288,7 @@ const Edit = ({ accountId, orgTitle }: { accountId: string; orgTitle: string }) 
         <XModalForm
             title="Edit organization"
             actionName="Rename"
-            target={<XButton text="Edit" />}
+            target={<XButton text="Edit" flexShrink={0} />}
             submitMutation={mutate as MutationFunc<{}>}
             mutationDirect={true}
         >

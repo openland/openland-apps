@@ -65,11 +65,14 @@ export class HeaderTargetElement extends React.Component<{ children: any }> {
 
 const HorizontalOuter = Glamorous(XHorizontal)({
     alignItems: 'center',
+    flexWrap: 'wrap',
     flexShrink: 0,
 });
 
 const HorizontalInner = Glamorous(XHorizontal)({
     padding: 24,
+    flexWrap: 'wrap',
+    alignItems: 'center',
 });
 
 const BulletWrapper = Glamorous.div({
