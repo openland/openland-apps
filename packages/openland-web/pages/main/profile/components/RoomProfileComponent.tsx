@@ -421,7 +421,15 @@ const RoomGroupProfileInner = ({
                 <XScrollView2 flexGrow={1}>
                     <About chat={chat} />
                     {chat.organization && (
-                        <XView flexDirection="column" flexShrink={0} paddingHorizontal={16}>
+                        <XView
+                            flexDirection="column"
+                            flexShrink={0}
+                            paddingHorizontal={16}
+                            maxWidth={832}
+                            width="100%"
+                            alignSelf="center"
+                            paddingTop={chat.description ? undefined : 22}
+                        >
                             <XView fontSize={16} color="#000" marginBottom={12}>
                                 Organization
                             </XView>
