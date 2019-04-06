@@ -2295,6 +2295,11 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
        builder.isProd(readBool(src, "isProd"))
        return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "DeleteUser") {
+       val builder = DeleteUserMutation.builder()
+       builder.id(notNull(readString(src, "id")))
+       return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
+    }
     throw Error("Unknown mutation: $name")
 }
 fun readFragment(name: String, src: ReadableMap): Pair<String, GraphqlFragment> {

@@ -2961,6 +2961,22 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "DeleteUser") {
+      let id = notNull(readString(src, "id"))
+      let requestBody = DeleteUserMutation(id: id)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     fatalError()
   }
 

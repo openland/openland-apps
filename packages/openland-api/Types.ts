@@ -24768,6 +24768,22 @@ export interface ResolveShortNameVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: DeleteUser
+// ====================================================
+
+export interface DeleteUser {
+  superDeleteUser: boolean;
+}
+
+export interface DeleteUserVariables {
+  id: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: AppChat
 // ====================================================
 

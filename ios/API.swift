@@ -19339,6 +19339,48 @@ public final class ResolveShortNameQuery: GraphQLQuery {
   }
 }
 
+public final class DeleteUserMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation DeleteUser($id: ID!) {\n  superDeleteUser(id: $id)\n}"
+
+  public var id: GraphQLID
+
+  public init(id: GraphQLID) {
+    self.id = id
+  }
+
+  public var variables: GraphQLMap? {
+    return ["id": id]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("superDeleteUser", arguments: ["id": GraphQLVariable("id")], type: .nonNull(.scalar(Bool.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(superDeleteUser: Bool) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "superDeleteUser": superDeleteUser])
+    }
+
+    public var superDeleteUser: Bool {
+      get {
+        return resultMap["superDeleteUser"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "superDeleteUser")
+      }
+    }
+  }
+}
+
 public struct AppChat: GraphQLFragment {
   public static let fragmentDefinition =
     "fragment AppChat on AppChat {\n  __typename\n  chat {\n    __typename\n    ... on PrivateRoom {\n      id\n    }\n    ... on SharedRoom {\n      id\n    }\n  }\n  webhook\n}"

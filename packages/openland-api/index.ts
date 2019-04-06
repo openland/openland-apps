@@ -182,6 +182,7 @@ export const OnlineQuery = typedQuery<Types.Online, Types.OnlineVariables>(User.
 export const OnlineWatchSubscription = typedSubscription<Types.OnlineWatch, Types.OnlineWatchVariables>(User.OnlineWatchSubscription);
 export const ExplorePeopleQuery = typedQuery<Types.ExplorePeople, Types.ExplorePeopleVariables>(User.ExplorePeopleQuery);
 export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.ResolveShortNameVariables>(User.ResolveShortNameQuery);
+export const DeleteUserMutation = typedMutation<Types.DeleteUser, Types.DeleteUserVariables>(User.DeleteUserMutation);
 export const AppChatFragment = typedFragment<Types.AppChat>(AppChat.AppChat);
 export const AppFullFragment = typedFragment<Types.AppFull>(AppFull.AppFull);
 export const CommunitySearchFragment = typedFragment<Types.CommunitySearch>(CommunitySearch.CommunitySearch);

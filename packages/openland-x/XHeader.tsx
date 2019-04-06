@@ -3,15 +3,15 @@ import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import XStyles from './XStyles';
 
-const XCardTitle = Glamorous.div<{ appStyle?: 'default' | 'compact' }>((props) => ({
+const XCardTitle = Glamorous.div<{ appStyle?: 'default' | 'compact' }>(props => ({
     ...(props.appStyle === 'compact' ? XStyles.text.h600 : XStyles.text.h700),
     lineHeight: '32px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
 }));
 
-const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
+const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>(props => ({
     opacity: 0.7,
     color: '#182642',
     fontSize: 14,
@@ -21,13 +21,17 @@ const XCardDescription = Glamorous.div<{ ellipcise?: boolean }>((props) => ({
     textOverflow: props.ellipcise ? 'ellipsis' : undefined,
 }));
 
-const TargetDivStyle = Glamorous(XHorizontal)<{ ellipcise?: boolean }>((props) => ({
+const TargetDivStyle = Glamorous(XHorizontal)<{ ellipcise?: boolean }>(props => ({
     overflow: props.ellipcise ? 'hidden' : undefined,
     whiteSpace: props.ellipcise ? 'nowrap' : undefined,
     textOverflow: props.ellipcise ? 'ellipsis' : undefined,
 }));
 
-let XCardHeaderDiv = Glamorous.div<{ appStyle?: 'default' | 'compact', separated?: boolean, grow: boolean }>((props) => ({
+let XCardHeaderDiv = Glamorous.div<{
+    appStyle?: 'default' | 'compact';
+    separated?: boolean;
+    grow: boolean;
+}>(props => ({
     paddingLeft: props.appStyle === 'compact' ? XStyles.paddings.large : XStyles.paddings.xlarge,
     paddingRight: props.appStyle === 'compact' ? XStyles.paddings.large : XStyles.paddings.xlarge,
     paddingTop: XStyles.paddings.large,
@@ -36,7 +40,7 @@ let XCardHeaderDiv = Glamorous.div<{ appStyle?: 'default' | 'compact', separated
     flexDirection: 'column',
     borderBottom: props.separated ? '1px solid rgba(229, 233, 242, 0.5)' : undefined,
     flexGrow: props.grow ? 1 : undefined,
-    flexShrink: 0
+    flexShrink: 0,
 }));
 
 interface XCardHeaderProps {
@@ -50,30 +54,26 @@ interface XCardHeaderProps {
     separated?: boolean;
 }
 
-export class HeaderTargetElement extends React.Component<({ children: any })> {
+export class HeaderTargetElement extends React.Component<{ children: any }> {
     static defaultProps = {
-        _isTargetElement: true
+        _isTargetElement: true,
     };
     render() {
-        return (
-            <>
-                {this.props.children}
-            </>
-        );
+        return <>{this.props.children}</>;
     }
 }
 
 const HorizontalOuter = Glamorous(XHorizontal)({
     alignItems: 'center',
-
+    flexShrink: 0,
 });
 
 const HorizontalInner = Glamorous(XHorizontal)({
-    padding: 24
+    padding: 24,
 });
 
 const BulletWrapper = Glamorous.div({
-    paddingTop: 4
+    paddingTop: 4,
 });
 
 export class XHeader extends React.Component<XCardHeaderProps> {
@@ -93,18 +93,20 @@ export class XHeader extends React.Component<XCardHeaderProps> {
         const complex = content.length > 0;
 
         let headerMain = (
-            <XCardHeaderDiv appStyle={this.props.style} separated={this.props.separated} grow={complex}>
+            <XCardHeaderDiv
+                appStyle={this.props.style}
+                separated={this.props.separated}
+                grow={complex}
+            >
                 <XCardTitle appStyle={this.props.style}>
                     <TargetDivStyle ellipcise={this.props.truncateTitle} alignItems="center">
                         {target}
                         <div>{this.props.text}</div>
                     </TargetDivStyle>
-
                 </XCardTitle>
                 <XCardDescription ellipcise={this.props.truncateDescription}>
                     {this.props.description}
                 </XCardDescription>
-
             </XCardHeaderDiv>
         );
 
@@ -114,11 +116,7 @@ export class XHeader extends React.Component<XCardHeaderProps> {
             res = (
                 <HorizontalOuter>
                     {headerMain}
-                    {complex && (
-                        <HorizontalInner separator="normal" >
-                            {content}
-                        </HorizontalInner>
-                    )}
+                    {complex && <HorizontalInner separator="normal">{content}</HorizontalInner>}
                 </HorizontalOuter>
             );
         }

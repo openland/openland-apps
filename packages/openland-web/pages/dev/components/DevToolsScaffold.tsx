@@ -1,8 +1,8 @@
 import '../../init';
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from '../../../components/Scaffold';
-import { Sidebar } from '../../../components/Sidebar';
+import { Scaffold } from 'openland-web/components/Scaffold';
+import { Sidebar } from 'openland-web/components/Sidebar';
 
 export function DevToolsScaffold(props: { title: string; children?: any; padding?: boolean }) {
     return (
@@ -23,17 +23,11 @@ export function DevToolsScaffold(props: { title: string; children?: any; padding
                         <Sidebar.Item path="/super/mails" arrow={true}>
                             Mails
                         </Sidebar.Item>
-                        <Sidebar.Item path="/super/features" arrow={true}>
-                            Features
-                        </Sidebar.Item>
                         <Sidebar.Item path="/super/admins" arrow={true}>
                             Super Admins
                         </Sidebar.Item>
                         <Sidebar.Item path="/super/debug" arrow={true}>
                             Debugging
-                        </Sidebar.Item>
-                        <Sidebar.Item path="/super/readers" arrow={true}>
-                            Event Readers
                         </Sidebar.Item>
                     </Sidebar>
                 </Scaffold.Menu>

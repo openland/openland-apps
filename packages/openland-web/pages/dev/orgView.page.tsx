@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { withApp } from '../../components/withApp';
 import { MutationFunc } from 'react-apollo';
 import { XLoader } from 'openland-x/XLoader';
@@ -13,6 +14,8 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XOverflow } from '../../components/XOverflow';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
+import { XModal } from 'openland-x-modal/XModal';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
 const ActivateButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
@@ -45,6 +48,7 @@ const SuspendButton = ({ accountId }: { accountId: string }) => {
         />
     );
 };
+
 const PendButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
 
@@ -57,6 +61,66 @@ const PendButton = ({ accountId }: { accountId: string }) => {
                 })
             }
             text="Pend"
+        />
+    );
+};
+
+const DeleteButton = ({ accountId, orgId }: { accountId: string; orgId: string }) => {
+    const client = useClient();
+    return (
+        <XModal
+            useTopCloser={true}
+            title="Delete organization?"
+            target={<XButton text="Delete" style="danger" />}
+            footer={
+                <XView padding={20} flexDirection="row">
+                    <XHorizontal justifyContent="flex-end" flexGrow={1}>
+                        <XButton text="Cancel" autoClose={true} />
+                        <XButton
+                            text="Delete"
+                            style="danger"
+                            action={async () => {
+                                await client.mutateDeleteOrganization({
+                                    organizationId: orgId,
+                                });
+                                await client.refetchSuperAccount({
+                                    accountId,
+                                });
+                            }}
+                        />
+                    </XHorizontal>
+                </XView>
+            }
+        />
+    );
+};
+
+const DeleteUserButton = ({ accountId, userId }: { accountId: string; userId: string }) => {
+    const client = useClient();
+    const [deleted, setDelete] = React.useState(false);
+    return (
+        <XModal
+            useTopCloser={true}
+            title="Block user?"
+            target={<XButton text="Block" style="danger" />}
+            footer={
+                <XView padding={20} flexDirection="row">
+                    <XHorizontal justifyContent="flex-end" flexGrow={1}>
+                        <XButton text="Cancel" autoClose={true} />
+                        <XButton
+                            text={deleted ? 'Done!' : 'Delete'}
+                            style={deleted ? 'success' : 'danger'}
+                            action={async () => {
+                                await client
+                                    .mutateDeleteUser({
+                                        id: userId,
+                                    })
+                                    .then(() => setDelete(!deleted));
+                            }}
+                        />
+                    </XHorizontal>
+                </XView>
+            }
         />
     );
 };
@@ -240,15 +304,23 @@ export default withApp('Super Organization', 'super-admin', () => {
     const router = useXRouter();
     const accountId = router.routeQuery.accountId as string;
     const superAccount = client.useSuperAccount({ accountId }).superAccount;
+    const actionsButton = superAccount.state === 'ACTIVATED';
+
     return (
         <DevToolsScaffold title={superAccount.title}>
             <XHeader text={superAccount.title} description={'Current State: ' + superAccount.state}>
                 <Edit orgTitle={superAccount.title} accountId={accountId} />
-                <AddMemberForm accountId={accountId} />
-                <RemoveMemberForm accountId={accountId} />
-                {superAccount.state !== 'ACTIVATED' && <ActivateButton accountId={accountId} />}
-                {superAccount.state === 'ACTIVATED' && <SuspendButton accountId={accountId} />}
-                {superAccount.state === 'ACTIVATED' && <PendButton accountId={accountId} />}
+                {superAccount.state !== 'DELETED' && (
+                    <>
+                        <AddMemberForm accountId={accountId} />
+                        <RemoveMemberForm accountId={accountId} />
+                    </>
+                )}
+                {!actionsButton &&
+                    superAccount.state !== 'DELETED' && <ActivateButton accountId={accountId} />}
+                {actionsButton && <SuspendButton accountId={accountId} />}
+                {actionsButton && <PendButton accountId={accountId} />}
+                {actionsButton && <DeleteButton accountId={accountId} orgId={superAccount.orgId} />}
                 <XOverflow
                     placement="bottom-end"
                     content={
@@ -271,6 +343,9 @@ export default withApp('Super Organization', 'super-admin', () => {
                         <XTable.Row key={v.id} noHover={true}>
                             <XTable.Cell>{v.name}</XTable.Cell>
                             <XTable.Cell>{v.email}</XTable.Cell>
+                            <XTable.Cell>
+                                <DeleteUserButton accountId={accountId} userId={v.id} />
+                            </XTable.Cell>
                         </XTable.Row>
                     ))}
                 </XTable.Body>
