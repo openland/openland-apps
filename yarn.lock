@@ -4382,6 +4382,11 @@ bowser@^1.7.3:
   version "1.9.4"
   resolved "https://registry.yarnpkg.com/bowser/-/bowser-1.9.4.tgz#890c58a2813a9d3243704334fa81b96a5c150c9a"
 
+bowser@^2.0.0-beta.3:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/bowser/-/bowser-2.1.2.tgz#35cba0487362ab6a8cea8fd094bf5670b408c8d3"
+  integrity sha512-K64ZigDayqlptyKVEiCDPPKQ2/SyPT/jsgJPwZOcpR3WA2bYojlHLeTHN+IRc/vbMz3F6CV62nnAo01+0zYrsQ==
+
 boxen@^1.2.1:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/boxen/-/boxen-1.3.0.tgz#55c6c39a8ba58d9c61ad22cd877532deb665a20b"
@@ -12956,6 +12961,13 @@ react-router@^4.2.0, react-router@^4.3.1:
     path-to-regexp "^1.7.0"
     prop-types "^15.6.1"
     warning "^4.0.1"
+
+react-scrollbars-custom@3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/react-scrollbars-custom/-/react-scrollbars-custom-3.1.5.tgz#4bc9f3f66110e8adc55b99863dd7fb021454ba5b"
+  integrity sha512-4/TUh2aHx8jANsdA2NLxUfsuvmxhO3u02B3j/sYjOxAX6/Ptyl9ZvEwwqvi7KEVTCwOKPSOzqKj5eogC7Shzlw==
+  dependencies:
+    bowser "^2.0.0-beta.3"
 
 react-select@^1.2.1:
   version "1.3.0"

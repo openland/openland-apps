@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XView, XStyles } from 'react-mental';
-import { XFlexStyles } from './basics/Flex';
+import Scrollbar from 'react-scrollbars-custom';
 
 export interface XScrollView3Props extends XStyles {
     scrollbarRadius?: number;
@@ -17,13 +17,13 @@ const WebKitBackend = Glamorous.div<{
     scrollbarWidth: number,
     scrollbarTrackColor: string,
     scrollbarHandleColor: string
-} & XFlexStyles>((props) => ({
+}>((props) => ({
     overflowY: 'scroll',
     overflowX: 'hidden',
     width: '100%',
     height: '100%',
+
     '::-webkit-scrollbar': {
-        // left: '-10px',
         width: props.scrollbarWidth
     },
     '::-webkit-scrollbar-track': {
@@ -35,6 +35,21 @@ const WebKitBackend = Glamorous.div<{
         borderRadius: props.scrollbarRadius,
     },
 }));
+
+class CustomBackend extends React.PureComponent<{ scrollbarWidth: number, scrollbarRadius: number, scrollbarTrackColor: string, scrollbarHandleColor: string }> {
+    render() {
+        return (
+            <Scrollbar
+                style={{ width: '100%', height: '100%' }}
+                wrapperProps={{ style: { width: '100%', height: '100%' } }}
+                trackYProps={{ style: { backgroundColor: this.props.scrollbarTrackColor, height: '100%', width: this.props.scrollbarWidth, borderRadius: this.props.scrollbarRadius, top: '0px' } }}
+                thumbYProps={{ style: { backgroundColor: this.props.scrollbarHandleColor, borderRadius: this.props.scrollbarRadius, width: this.props.scrollbarWidth } }}
+            >
+                {this.props.children}
+            </Scrollbar>
+        );
+    }
+}
 
 export class XScrollView3 extends React.Component<XScrollView3Props> {
 
@@ -83,16 +98,16 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
         // Fallback
         return (
             <XView {...xstyles}>
-                <WebKitBackend
-                    scrollbarRadius={scrollbarRadius || 4}
-                    scrollbarWidth={scrollbarWidth || 8}
-                    scrollbarTrackColor={scrollbarTrackColor || 'transparent'}
-                    scrollbarHandleColor={scrollbarHandleColor || 'rgba(0,0,0,0.4)'}
+                <CustomBackend
+                    scrollbarRadius={scrollbarRadius}
+                    scrollbarWidth={scrollbarWidth}
+                    scrollbarTrackColor={scrollbarTrackColor}
+                    scrollbarHandleColor={scrollbarHandleColor}
                 >
                     <XView flexDirection="column" alignItems="stretch">
                         {this.props.children}
                     </XView>
-                </WebKitBackend>
+                </CustomBackend>
             </XView>
         );
     }

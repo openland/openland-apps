@@ -178,6 +178,7 @@
         "react-resize-detector": "^3.2.1",
         "react-router": "^4.2.0",
         "react-router-dom": "^4.2.2",
+        "react-scrollbars-custom": "3.1.5",
         "react-select": "^1.2.1",
         "react-shortcuts": "^1.6.2",
         "react-ssr-prepass": "^1.0.2",
