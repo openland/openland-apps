@@ -28,7 +28,7 @@ export const AppContainer = React.memo<{ children?: any }>((props) => {
         <div className={bg} >
             <ClientCacheProvider>
                 <React.Suspense fallback={<AppLoader />}>
-                    <XScrollView3 flexGrow={1} alignSelf="stretch">
+                    <XScrollView3 flexGrow={1} alignSelf="stretch" flexShrink={1}>
                         {props.children}
                     </XScrollView3>
                 </React.Suspense>
