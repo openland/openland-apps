@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { XLoader } from 'openland-x/XLoader';
-import { XScrollView } from 'openland-x/XScrollView';
 import { ClientCacheProvider } from 'openland-graphql/ClientCache';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 
 const bg = css`
     display: flex;
@@ -29,9 +28,9 @@ export const AppContainer = React.memo<{ children?: any }>((props) => {
         <div className={bg} >
             <ClientCacheProvider>
                 <React.Suspense fallback={<AppLoader />}>
-                    <XScrollView flexGrow={1}>
+                    <XScrollView3 flexGrow={1} alignSelf="stretch">
                         {props.children}
-                    </XScrollView>
+                    </XScrollView3>
                 </React.Suspense>
             </ClientCacheProvider>
         </div>
