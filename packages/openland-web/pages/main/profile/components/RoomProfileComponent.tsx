@@ -431,7 +431,7 @@ const RoomGroupProfileInner = ({
                             paddingTop={chat.description ? undefined : 22}
                         >
                             <XView fontSize={16} color="#000" marginBottom={12}>
-                                Organization
+                                {chat.organization.isCommunity ? 'Community' : 'Organization'}
                             </XView>
                             <XCommunityCard community={chat.organization} />
                         </XView>

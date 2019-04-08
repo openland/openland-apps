@@ -9,7 +9,7 @@ let searchStyle = css`
     margin-right: 16px;
     margin-top: 5px;
     margin-bottom: 12px;
-    height: 36px !important;
+    height: 40px !important;
     & svg > path,
     &:focus-within svg > path,
     &:focus svg > path {
@@ -42,7 +42,6 @@ let searchStyle = css`
     & input {
         background-color: #f6f6f6;
         border-radius: 10px;
-        caret-color: #1790ff;
         padding-bottom: 3px;
     }
     > .icon {
