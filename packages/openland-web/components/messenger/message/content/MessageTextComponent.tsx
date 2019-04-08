@@ -47,9 +47,7 @@ export const MessageTextComponent = XMemo<MessageTextComponentProps>(
                 <XButton
                     text="Discuss"
                     size="default"
-                    onClick={() => {
-                        console.log('click click!');
-                    }}
+                    query={{ field: 'comments', value: 'true' }}
                 />
             </XView>
         </div>
