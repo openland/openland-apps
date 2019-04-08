@@ -1,4 +1,19 @@
 import { WatchSubscription } from './Watcher';
+import { Queue } from 'openland-graphql/utils/Queue';
+import { throttle } from 'react-native-s/SThrottler';
+
+async function throttledMap<T, V>(src: T[], map: (item: T) => V): Promise<V[]> {
+    let res: V[] = [];
+    let c = 0;
+    for (let s of src) {
+        if (c++ > 3) {
+            await throttle();
+            c = 0;
+        }
+        res.push(map(s));
+    }
+    return res;
+}
 
 export interface DataSourceItem {
     key: string;
@@ -257,6 +272,75 @@ export class DataSource<T extends DataSourceItem> {
             },
             onDataSourceCompleted() {
                 res.complete();
+            }
+        });
+
+        return res;
+    }
+
+    throttledMap<T2 extends DataSourceItem>(map: (src: T) => T2) {
+        let res = new DataSource<T2>(() => {
+            this.needMore();
+        });
+
+        let queue = new Queue();
+        (async () => {
+            let c = 0;
+            while (true) {
+                let s = await queue.get();
+                if (c++ > 3) {
+                    await throttle();
+                    c = 0;
+                }
+                await s();
+            }
+        })();
+
+        function schedule(callback: () => any) {
+            queue.post(callback);
+        }
+
+        if (this.inited) {
+            schedule(async () => {
+                res.initialize(await throttledMap(this.data, map), this.completed);
+            });
+        }
+
+        this.watch({
+            onDataSourceInited(data: T[], completed: boolean) {
+                schedule(async () => {
+                    res.initialize(await throttledMap(data, map), completed);
+                });
+            },
+            onDataSourceItemAdded(item: T, index: number) {
+                schedule(async () => {
+                    res.addItem(map(item), index);
+                });
+            },
+            onDataSourceItemUpdated(item: T, index: number) {
+                schedule(async () => {
+                    res.updateItem(map(item));
+                });
+            },
+            onDataSourceItemRemoved(item: T, index: number) {
+                schedule(async () => {
+                    res.removeItem(map(item).key);
+                });
+            },
+            onDataSourceItemMoved(item: T, fromIndex: number, toIndex: number) {
+                schedule(async () => {
+                    res.moveItem(map(item).key, toIndex);
+                });
+            },
+            onDataSourceLoadedMore(data: T[], completed: boolean) {
+                schedule(async () => {
+                    res.loadedMore(data.map(map), completed);
+                });
+            },
+            onDataSourceCompleted() {
+                schedule(async () => {
+                    res.complete();
+                });
             }
         });
 
