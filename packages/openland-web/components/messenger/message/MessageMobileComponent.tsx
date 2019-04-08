@@ -24,6 +24,7 @@ import { EditPostProps } from 'openland-web/fragments/MessengerRootComponent';
 import { MobileMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { Reactions } from './MessageReaction';
+import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 
 const MessageWrapper = Glamorous(XHorizontal)<{
     compact: boolean;
@@ -89,7 +90,7 @@ const ReplyMessageWrapper = Glamorous.div({
 });
 
 interface MessageComponentProps {
-    message: DataSourceMessageItem;
+    message: DataSourceWebMessageItem;
     conversation: ConversationEngine;
     me?: UserShort | null;
     conversationType?: SharedRoomKind | 'PRIVATE';
