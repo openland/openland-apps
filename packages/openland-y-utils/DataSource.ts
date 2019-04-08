@@ -2,7 +2,7 @@ import { WatchSubscription } from './Watcher';
 import { Queue } from 'openland-graphql/utils/Queue';
 
 async function throttle() {
-    return new Promise((r) => { setTimeout(r, 1); });
+    return new Promise((r) => { setTimeout(r, 10); });
 }
 
 async function throttledMap<T, V>(src: T[], map: (item: T) => V): Promise<V[]> {
