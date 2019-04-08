@@ -14,6 +14,7 @@ import { Platform } from 'react-native';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { AsyncMessageChannelReactionsView } from './AsyncMessageChannelReactionsView';
+import { SRouter } from 'react-native-s/SRouter';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -26,6 +27,8 @@ export interface AsyncMessageViewProps {
     navigationManager: NavigationManager;
 
     inChannel?: boolean;
+    router?: SRouter;
+    roomId: string;
 }
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
@@ -37,6 +40,14 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
     let handleLongPress = () => {
         props.onMessageLongPress(props.message);
+    }
+    let handleCommentsPress = () => {
+        if (props.router) {
+            props.router.push('MessageComments', {
+                message: props.message,
+                id: props.roomId
+            })
+        }
     }
 
     let res;
@@ -91,8 +102,9 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-right" backgroundColor={theme.backgroundColor} width={4} />
                 </ASFlex>
 
-                {!props.inChannel && props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
-                {props.inChannel && <AsyncMessageChannelReactionsView theme={theme} message={props.message} onReactionPress={props.onReactionPress} />}
+                {props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
+                {/* {!props.inChannel && props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
+                {props.inChannel && <AsyncMessageChannelReactionsView theme={theme} message={props.message} onReactionPress={props.onReactionPress} onCommentsPress={handleCommentsPress} />} */}
 
                 <ASFlex backgroundColor={theme.backgroundColor} height={50} marginBottom={-50} />
             </ASFlex>

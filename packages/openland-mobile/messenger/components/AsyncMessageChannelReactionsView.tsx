@@ -3,7 +3,6 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { AppTheme } from 'openland-mobile/themes/themes';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -13,6 +12,7 @@ interface AsyncMessageChannelReactionsViewProps {
     message: DataSourceMessageItem;
     theme: AppTheme;
     onReactionPress: (message: DataSourceMessageItem, r: string) => void;
+    onCommentsPress: () => void;
 }
 
 export const AsyncMessageChannelReactionsView = React.memo<AsyncMessageChannelReactionsViewProps>((props) => {
@@ -38,7 +38,7 @@ export const AsyncMessageChannelReactionsView = React.memo<AsyncMessageChannelRe
     return (
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={38} backgroundColor={theme.backgroundColor} >
             <ASFlex flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 14 : 0} marginLeft={props.message.isOut ? 0 : 56} marginTop={4} marginBottom={6}>
-                <ASFlex backgroundColor="rgba(0, 132, 254, 0.1)" borderRadius={14} onPress={() => Alert.alert('comments click')}>
+                <ASFlex backgroundColor="rgba(0, 132, 254, 0.1)" borderRadius={14} onPress={props.onCommentsPress}>
                     <ASFlex marginLeft={7} marginRight={7} height={28} alignItems="center" justifyContent="center">
                         {commentsCount <= 0 && <ASImage source={require('assets/ic-comments-24.png')} width={24} height={24} />}
                         {commentsCount > 0 && <ASImage source={require('assets/ic-comments-full-24.png')} width={24} height={24} />}

@@ -45,6 +45,7 @@ import { GroupInvite } from './pages/main/GroupInvite';
 import { UserPicker } from './pages/main/modals/UserPicker';
 import { PinnedMessage } from './pages/main/PinnedMessage';
 import Tasks from './pages/apps/Tasks';
+import { MessageComments } from './pages/main/MessageComments';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -75,6 +76,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('GroupList', GroupList)
   .addRoute('GroupInvite', GroupInvite)
   .addRoute('PinnedMessage', PinnedMessage)
+  .addRoute('MessageComments', MessageComments)
 
   .addRoute('SetUserShortname', SetUserShortname)
   .addRoute('SetOrgShortname', SetOrgShortname)
