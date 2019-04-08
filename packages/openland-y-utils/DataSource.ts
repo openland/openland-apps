@@ -364,6 +364,9 @@ export class DataSource<T extends DataSourceItem> {
             toIndex?: number,
         }[] = [];
 
+        let batchScheduled = false;
+        let timer: any;
+
         const doDlush = () => {
             batchScheduled = false;
             let latestBatch = batch;
@@ -424,8 +427,6 @@ export class DataSource<T extends DataSourceItem> {
             }
         }
 
-        let batchScheduled = false;
-        let timer: any;
         function scheduleFlush() {
             if (!batchScheduled) {
                 batchScheduled = true;
