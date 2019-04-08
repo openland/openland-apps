@@ -4,11 +4,11 @@ import { FullMessage_ServiceMessage_spans } from 'openland-api/Types';
 import { MentionComponentInnerText } from 'openland-x/XRichTextInput';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { UserShort } from 'openland-api/Types';
-import { emoji } from 'openland-y-utils/emoji';
 import { css, cx } from 'linaria';
 import { isEmoji } from 'openland-y-utils/isEmoji';
-import { OthersPopper } from './service/views/OthersPopper';
 import { LinkToRoom } from './service/views/LinkToRoom';
+import { SpannedString } from '../../data/SpannedString';
+import { spansPreprocess } from '../../data/spansPreprocess';
 
 const EmojiSpaceStyle = css`
     & img {
@@ -19,17 +19,6 @@ const EmojiSpaceStyle = css`
 
 const boldTextClassName = css`
     font-weight: bold;
-`;
-
-const EditLabelStyle = css`
-    display: inline-block;
-    vertical-align: baseline;
-    color: rgba(0, 0, 0, 0.4);
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 22px;
-    padding-left: 6px;
-    letter-spacing: 0;
 `;
 
 const TextOnlyEmojiStyle = css`
@@ -86,73 +75,12 @@ function emojiChecker(messageText: string) {
     return true;
 }
 
-const SpansMessageTextPreprocess = ({
-    text,
-    isEdited,
-    asPinMessage,
-}: {
-    text: string;
-    isEdited?: boolean;
-    asPinMessage?: boolean;
-}) => {
-    const isOnlyEmoji = emojiChecker(text);
-    const isRotating = text.startsWith('🔄') && text.endsWith('🔄');
-    const isInsane = text.startsWith('🌈') && text.endsWith('🌈');
-    const isMouthpiece = text.startsWith('📣') && text.endsWith('📣');
-    let isBig =
-        isOnlyEmoji ||
-        isInsane ||
-        isRotating ||
-        isMouthpiece ||
-        (text.length <= 302 && text.startsWith(':') && text.endsWith(':'));
-    const isTextSticker = !isOnlyEmoji && isBig;
-    if (isInsane || isMouthpiece || isRotating) {
-        text = text
-            .replace(/🌈/g, '')
-            .replace(/📣/g, '')
-            .replace(/🔄/g, '');
-    } else if (isTextSticker) {
-        text = text.slice(1, text.length - 1);
-    }
-    if (asPinMessage) {
-        isBig = false;
-    }
-    let smileSize: 38 | 16 = isBig ? 38 : 16;
-    return (
-        <span
-            className={cx(
-                EmojiSpaceStyle,
-                isBig && TextLargeStyle,
-                isInsane && TextInsaneStyle,
-                isRotating && TextRotatingStyle,
-                isOnlyEmoji && TextOnlyEmojiStyle,
-            )}
-        >
-            {emoji({
-                src: text,
-                size: smileSize,
-            })}
-            {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
-        </span>
-    );
-};
-
 const MentionedUser = React.memo(
-    ({ user, text, isYou }: { user: UserShort; text: string; isYou: boolean }) => {
-        const userNameEmojified = React.useMemo(
-            () => {
-                return emoji({
-                    src: text,
-                    size: 16,
-                });
-            },
-            [text],
-        );
-
+    ({ user, text, isYou }: { user: UserShort; text: any; isYou: boolean }) => {
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
                 <MentionComponentInnerText isYou={isYou}>
-                    {userNameEmojified}
+                    {text}
                 </MentionComponentInnerText>
             </UserPopper>
         );
@@ -168,156 +96,74 @@ const LinkText = css`
     }
 `;
 
-const SpansMessageText = ({ text }: { text: string }) => {
-    return (
-        <>
-            {emoji({
-                src: text,
-                size: 16,
-            })}
-        </>
-    );
-};
-
-const cropEmailSymbolIfAny = (message: string) => {
-    let finalMessage = message;
-
-    if (finalMessage.startsWith('@')) {
-        finalMessage = finalMessage.slice(1);
-    }
-    return finalMessage;
-};
-
-export const SpannedStringView = ({
-    message,
-    spans,
-    isEdited,
-    asPinMessage,
-}: {
-    message: string;
-    spans?: FullMessage_ServiceMessage_spans[];
-    isEdited?: boolean;
-    asPinMessage?: boolean;
-}) => {
+export const SpannedStringView = React.memo<{ spannedString: SpannedString }>((props) => {
     let res: any[] = [];
-
-    let lastOffset = 0;
     let i = 0;
-
-    if (spans && spans.length) {
-        const sortedSpans = spans.sort((span1: any, span2: any) => {
-            return span1.offset - span2.offset;
-        });
-
-        for (let span of sortedSpans) {
-            if (lastOffset < span.offset) {
-                res.push(
-                    <SpansMessageText
-                        key={'text-' + i}
-                        text={message.slice(lastOffset, span.offset)}
-                    />,
-                );
-            }
-
-            if (span.__typename === 'MessageSpanMultiUserMention') {
-                res.push(
-                    <span key={'users-' + i}>
-                        <OthersPopper
-                            show={true}
-                            items={span.users.map(
-                                ({ id, name, picture, primaryOrganization }: any) => ({
-                                    title: name,
-                                    subtitle: primaryOrganization ? primaryOrganization.name : '',
-                                    picture,
-                                    id,
-                                }),
-                            )}
-                        >
-                            {message.slice(span.offset, span.offset + span.length)}
-                        </OthersPopper>
-                    </span>,
-                );
-                lastOffset = span.offset + span.length;
-            } else if (span.__typename === 'MessageSpanRoomMention') {
-                let finalMessage = cropEmailSymbolIfAny(
-                    message.slice(span.offset, span.offset + span.length),
-                );
-
-                res.push(
-                    <LinkToRoom key={'room-' + i} text={finalMessage} roomId={span.room.id} />,
-                );
-                lastOffset = span.offset + span.length;
-            } else if (span.__typename === 'MessageSpanLink') {
-                res.push(
-                    <span key={'link-' + i} className={LinkText}>
-                        <XView
-                            as="a"
-                            target="_blank"
-                            href={span.url}
-                            onClick={(e: any) => e.stopPropagation()}
-                        >
-                            {message.slice(span.offset, span.offset + span.length)}
-                        </XView>
-                    </span>,
-                );
-                lastOffset = span.offset + span.length;
-            } else if (span.__typename === 'MessageSpanUserMention') {
-                let finalMessage = cropEmailSymbolIfAny(
-                    message.slice(span.offset, span.offset + span.length),
-                );
-
-                res.push(
-                    <MentionedUser
-                        key={'user-' + i}
-                        isYou={span.user.isYou}
-                        text={finalMessage}
-                        user={{
-                            __typename: 'User',
-                            id: span.user.id,
-                            name: span.user.name,
-                            firstName: span.user.name,
-                            lastName: null,
-                            photo: span.user.photo,
-                            email: null,
-                            online: false,
-                            lastSeen: null,
-                            isYou: span.user.isYou,
-                            isBot: false,
-                            shortname: null,
-                            primaryOrganization: null,
-                        }}
-                    />,
-                );
-                lastOffset = span.offset + span.length;
-            } else if (span.__typename === 'MessageSpanBold') {
-                res.push(
-                    <span key={'link-' + i} className={boldTextClassName}>
-                        {message.slice(span.offset, span.offset + span.length)}
-                    </span>,
-                );
-                lastOffset = span.offset + span.length;
-            }
-
-            i++;
-        }
-
-        if (lastOffset < message.length) {
+    for (let s of props.spannedString.spans) {
+        if (s.type === 'text') {
             res.push(
-                <SpansMessageText
+                <span
                     key={'text-' + i}
-                    text={message.slice(lastOffset, message.length)}
+                    className={cx(
+                        EmojiSpaceStyle,
+                        s.isBig && TextLargeStyle,
+                        s.isInsane && TextInsaneStyle,
+                        s.isRotating && TextRotatingStyle,
+                        s.isOnlyEmoji && TextOnlyEmojiStyle,
+                    )}
+                >
+                    {s.textEmoji}
+                </span>
+            );
+        } else if (s.type === 'link') {
+            res.push(
+                <span key={'link-' + i} className={LinkText}>
+                    <XView
+                        as="a"
+                        target="_blank"
+                        href={s.url}
+                        onClick={(e: any) => e.stopPropagation()}
+                    >
+                        <SpannedStringView spannedString={s.child} />
+                    </XView>
+                </span>
+            );
+        } else if (s.type === 'bold') {
+            res.push(
+                <span key={'bold-' + i} className={boldTextClassName}>
+                    <SpannedStringView spannedString={s.child} />
+                </span>
+            );
+        } else if (s.type === 'group') {
+            res.push(
+                <LinkToRoom key={'room-' + i} text={<SpannedStringView spannedString={s.child} />} roomId={s.group.id} />,
+            );
+        } else if (s.type === 'user') {
+            res.push(
+                <MentionedUser
+                    key={'user-' + i}
+                    isYou={s.user.isYou}
+                    text={<SpannedStringView spannedString={s.child} />}
+                    user={{
+                        __typename: 'User',
+                        id: s.user.id,
+                        name: s.user.name,
+                        firstName: s.user.name,
+                        lastName: null,
+                        photo: s.user.photo,
+                        email: null,
+                        online: false,
+                        lastSeen: null,
+                        isYou: s.user.isYou,
+                        isBot: false,
+                        shortname: null,
+                        primaryOrganization: null,
+                    }}
                 />,
             );
         }
-    } else {
-        return (
-            <SpansMessageTextPreprocess
-                text={message}
-                isEdited={isEdited}
-                asPinMessage={asPinMessage}
-            />
-        );
-    }
 
+        i++;
+    }
     return <>{res}</>;
-};
+})

@@ -11,10 +11,14 @@ const cropEmailSymbolIfAny = (message: string) => {
     return finalMessage;
 };
 
-export function spansPreprocess(message: string, spans?: FullMessage_ServiceMessage_spans[]): SpannedString {
+function _spansPreprocess(root: boolean, message: string, spans?: FullMessage_ServiceMessage_spans[], opts?: { disableBig?: boolean }): SpannedString {
     let res: SpannedStringSpan[] = [];
     if (!spans || spans.length === 0) {
-        res.push(spansMessageTextPreprocess(message))
+        if (root) {
+            res.push(spansMessageTextPreprocess(message, { disableBig: false || opts && opts.disableBig }))
+        } else {
+            res.push(spansMessageTextPreprocess(message, { disableBig: true }));
+        }
     } else {
         const sortedSpans = spans.sort((span1: any, span2: any) => {
             return span1.offset - span2.offset;
@@ -25,9 +29,9 @@ export function spansPreprocess(message: string, spans?: FullMessage_ServiceMess
         for (let span of sortedSpans) {
 
             // Prefix
-            if (span.__typename in ['MessageSpanMultiUserMention', 'MessageSpanUserMention', 'MessageSpanRoomMention', 'MessageSpanLink', 'MessageSpanBold']) {
+            if (['MessageSpanMultiUserMention', 'MessageSpanUserMention', 'MessageSpanRoomMention', 'MessageSpanLink', 'MessageSpanBold'].indexOf(span.__typename) >= 0) {
                 if (lastOffset < span.offset) {
-                    res.push(spansMessageTextPreprocess(message.slice(lastOffset, span.offset)));
+                    res.push(spansMessageTextPreprocess(message.slice(lastOffset, span.offset), { disableBig: true }));
                 }
             }
 
@@ -39,7 +43,7 @@ export function spansPreprocess(message: string, spans?: FullMessage_ServiceMess
                 res.push({
                     type: 'users',
                     users: span.users,
-                    child: spansPreprocess(message.slice(span.offset, span.offset + span.length))
+                    child: _spansPreprocess(false, message.slice(span.offset, span.offset + span.length))
                 });
                 lastOffset = span.offset + span.length;
             }
@@ -50,7 +54,7 @@ export function spansPreprocess(message: string, spans?: FullMessage_ServiceMess
                 res.push({
                     type: 'user',
                     user: span.user,
-                    child: spansPreprocess(finalMessage)
+                    child: _spansPreprocess(false, finalMessage)
                 });
                 lastOffset = span.offset + span.length;
             }
@@ -61,7 +65,7 @@ export function spansPreprocess(message: string, spans?: FullMessage_ServiceMess
                 res.push({
                     type: 'group',
                     group: span.room,
-                    child: spansPreprocess(finalMessage)
+                    child: _spansPreprocess(false, finalMessage)
                 });
                 lastOffset = span.offset + span.length;
             }
@@ -74,14 +78,14 @@ export function spansPreprocess(message: string, spans?: FullMessage_ServiceMess
                 res.push({
                     type: 'link',
                     url: span.url,
-                    child: spansPreprocess(message.slice(span.offset, span.offset + span.length))
+                    child: _spansPreprocess(false, message.slice(span.offset, span.offset + span.length))
                 });
                 lastOffset = span.offset + span.length;
             }
             if (span.__typename === 'MessageSpanBold') {
                 res.push({
                     type: 'bold',
-                    child: spansPreprocess(message.slice(span.offset, span.offset + span.length))
+                    child: _spansPreprocess(false, message.slice(span.offset, span.offset + span.length))
                 });
                 lastOffset = span.offset + span.length;
             }
@@ -89,10 +93,14 @@ export function spansPreprocess(message: string, spans?: FullMessage_ServiceMess
 
         // Suffix
         if (lastOffset < message.length) {
-            res.push(spansMessageTextPreprocess(message.slice(lastOffset, message.length)));
+            res.push(spansMessageTextPreprocess(message.slice(lastOffset, message.length), { disableBig: true }));
         }
     }
     return {
         spans: res
     }
+}
+
+export function spansPreprocess(message: string, spans?: FullMessage_ServiceMessage_spans[], opts?: { disableBig?: boolean }): SpannedString {
+    return _spansPreprocess(true, message, spans, opts);
 }
