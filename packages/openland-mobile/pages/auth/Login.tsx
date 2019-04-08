@@ -76,7 +76,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
     };
 
     handleGoogleAuth = async () => {
-        trackEvent('signup_google_action');
+        trackEvent('root_signup_google_action');
 
         try {
             this.setState({ loading: true });
@@ -139,7 +139,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
 
     render() {
         return (
-            <ZTrack event="signup_view">
+            <ZTrack event="root_view">
                 <SHeader hidden={true} />
                 <View style={{ backgroundColor: '#fff', flex: 1, marginBottom: Platform.OS === 'android' ? SDevice.safeArea.bottom : undefined }}>
                     <Image source={require('assets/img-chat-1.jpg')} style={{ position: 'absolute', top: 0, left: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="cover" />
