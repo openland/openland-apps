@@ -10,7 +10,7 @@ export interface DialogListWebItem extends DialogDataSourceItem {
 }
 
 export function dialogListWebDataSource(dialogs: DataSource<DialogDataSourceItem>): DataSource<DialogListWebItem> {
-    return dialogs.map((src) =>
+    return dialogs.batched().map((src) =>
         ({
             ...src,
             titleEmojify: emoji({
