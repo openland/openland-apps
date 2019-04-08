@@ -7,10 +7,12 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { SpannedString } from '../data/SpannedString';
 
 export interface DesktopMessageContainerProps {
     compact: boolean;
     sender: UserShort;
+    senderNameEmojify?: any;
     date: number;
 
     // Menu
@@ -167,8 +169,8 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                         <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
                     </UserPopper>
                 ) : (
-                    <XView>{hover && <XDate value={date.toString()} format="time" />}</XView>
-                )}
+                        <XView>{hover && <XDate value={date.toString()} format="time" />}</XView>
+                    )}
             </PreambulaContainer>
         ),
         [props.sender.isYou, props.sender, sender.id, sender.name, sender.photo, date, hover],
@@ -186,10 +188,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                         onMouseEnter={onAvatarOrUserNameMouseEnter}
                         onMouseLeave={onAvatarOrUserNameMouseLeave}
                     >
-                        {emoji({
-                            src: props.sender.name,
-                            size: 16,
-                        })}
+                        {props.senderNameEmojify}
                     </XView>
                     {props.sender.primaryOrganization && (
                         <XView
@@ -234,11 +233,11 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
             {props.compact ? (
                 props.children
             ) : (
-                <>
-                    {notCompactHeader}
-                    <XView flexDirection="column">{props.children}</XView>
-                </>
-            )}
+                    <>
+                        {notCompactHeader}
+                        <XView flexDirection="column">{props.children}</XView>
+                    </>
+                )}
         </XView>
     );
 

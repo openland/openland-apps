@@ -133,7 +133,7 @@ interface MessageComponentInnerProps extends MessageComponentProps {
 export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
-> {
+    > {
     static getDerivedStateFromProps = (props: MessageComponentInnerProps) => {
         if (!props.message.isSending) {
             if (props.messagesContext.editMessageId === props.message.id) {
@@ -341,8 +341,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
                                 let qfileAttach = (item.__typename === 'GeneralMessage'
                                     ? (item.attachments || []).filter(
-                                          a => a.__typename === 'MessageAttachmentFile',
-                                      )[0]
+                                        a => a.__typename === 'MessageAttachmentFile',
+                                    )[0]
                                     : undefined) as
                                     | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
                                     | undefined;
@@ -508,6 +508,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     compact={message.attachTop}
                     selecting={hideMenu}
                     sender={message.sender}
+                    senderNameEmojify={message.senderNameEmojify}
                     date={this.props.message.date}
                     renderMenu={this.menuRender}
                     onSelected={this.selectMessage}
