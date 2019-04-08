@@ -174,7 +174,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
         [props.sender.isYou, props.sender, sender.id, sender.name, sender.photo, date, hover],
     );
 
-    const notCompactHeader = React.useMemo(
+    const notCompactHeader = !props.compact && React.useMemo(
         () => (
             <XView flexDirection="row" marginBottom={4}>
                 <XView flexDirection="row">
