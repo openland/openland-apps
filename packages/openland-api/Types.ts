@@ -2582,10 +2582,17 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Privat
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_user_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
   user: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_user;
+  settings: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom_settings;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
@@ -3392,6 +3399,12 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   isCommunity: boolean;
 }
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -3406,6 +3419,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_organization | null;
+  settings: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_settings;
 }
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_PrivateRoom | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom;
@@ -5069,10 +5083,17 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Privat
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_user_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
   user: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_user;
+  settings: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom_settings;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
@@ -5879,6 +5900,12 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   isCommunity: boolean;
 }
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -5893,6 +5920,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   membersCount: number | null;
   pinnedMessage: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_organization | null;
+  settings: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_settings;
 }
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_PrivateRoom | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom;
@@ -8005,10 +8033,17 @@ export interface RoomTiny_room_PrivateRoom_user {
   primaryOrganization: RoomTiny_room_PrivateRoom_user_primaryOrganization | null;
 }
 
+export interface RoomTiny_room_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface RoomTiny_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
   user: RoomTiny_room_PrivateRoom_user;
+  settings: RoomTiny_room_PrivateRoom_settings;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
@@ -8815,6 +8850,12 @@ export interface RoomTiny_room_SharedRoom_organization {
   isCommunity: boolean;
 }
 
+export interface RoomTiny_room_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface RoomTiny_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -8829,6 +8870,7 @@ export interface RoomTiny_room_SharedRoom {
   membersCount: number | null;
   pinnedMessage: RoomTiny_room_SharedRoom_pinnedMessage | null;
   organization: RoomTiny_room_SharedRoom_organization | null;
+  settings: RoomTiny_room_SharedRoom_settings;
 }
 
 export type RoomTiny_room = RoomTiny_room_PrivateRoom | RoomTiny_room_SharedRoom;
@@ -16931,6 +16973,12 @@ export interface RoomSearch_items_edges_node_organization {
   isCommunity: boolean;
 }
 
+export interface RoomSearch_items_edges_node_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface RoomSearch_items_edges_node {
   __typename: "SharedRoom";
   id: string;
@@ -16945,6 +16993,7 @@ export interface RoomSearch_items_edges_node {
   membersCount: number | null;
   pinnedMessage: RoomSearch_items_edges_node_pinnedMessage | null;
   organization: RoomSearch_items_edges_node_organization | null;
+  settings: RoomSearch_items_edges_node_settings;
 }
 
 export interface RoomSearch_items_edges {
@@ -21500,6 +21549,12 @@ export interface Organization_organization_rooms_organization {
   isCommunity: boolean;
 }
 
+export interface Organization_organization_rooms_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface Organization_organization_rooms {
   __typename: "SharedRoom";
   id: string;
@@ -21514,6 +21569,7 @@ export interface Organization_organization_rooms {
   membersCount: number | null;
   pinnedMessage: Organization_organization_rooms_pinnedMessage | null;
   organization: Organization_organization_rooms_organization | null;
+  settings: Organization_organization_rooms_settings;
 }
 
 export interface Organization_organization {
@@ -22655,6 +22711,12 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_organizat
   isCommunity: boolean;
 }
 
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms {
   __typename: "SharedRoom";
   id: string;
@@ -22669,6 +22731,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms {
   membersCount: number | null;
   pinnedMessage: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage | null;
   organization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_organization | null;
+  settings: OrganizationAddMember_betaOrganizationMemberAdd_rooms_settings;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd {
@@ -24712,6 +24775,12 @@ export interface ResolveShortName_item_Organization_rooms_organization {
   isCommunity: boolean;
 }
 
+export interface ResolveShortName_item_Organization_rooms_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface ResolveShortName_item_Organization_rooms {
   __typename: "SharedRoom";
   id: string;
@@ -24726,6 +24795,7 @@ export interface ResolveShortName_item_Organization_rooms {
   membersCount: number | null;
   pinnedMessage: ResolveShortName_item_Organization_rooms_pinnedMessage | null;
   organization: ResolveShortName_item_Organization_rooms_organization | null;
+  settings: ResolveShortName_item_Organization_rooms_settings;
 }
 
 export interface ResolveShortName_item_Organization {
@@ -26709,6 +26779,12 @@ export interface OrganizationFull_rooms_organization {
   isCommunity: boolean;
 }
 
+export interface OrganizationFull_rooms_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface OrganizationFull_rooms {
   __typename: "SharedRoom";
   id: string;
@@ -26723,6 +26799,7 @@ export interface OrganizationFull_rooms {
   membersCount: number | null;
   pinnedMessage: OrganizationFull_rooms_pinnedMessage | null;
   organization: OrganizationFull_rooms_organization | null;
+  settings: OrganizationFull_rooms_settings;
 }
 
 export interface OrganizationFull {
@@ -27923,10 +28000,17 @@ export interface RoomShort_PrivateRoom_user {
   primaryOrganization: RoomShort_PrivateRoom_user_primaryOrganization | null;
 }
 
+export interface RoomShort_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface RoomShort_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
   user: RoomShort_PrivateRoom_user;
+  settings: RoomShort_PrivateRoom_settings;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
@@ -28733,6 +28817,12 @@ export interface RoomShort_SharedRoom_organization {
   isCommunity: boolean;
 }
 
+export interface RoomShort_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface RoomShort_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -28747,6 +28837,7 @@ export interface RoomShort_SharedRoom {
   membersCount: number | null;
   pinnedMessage: RoomShort_SharedRoom_pinnedMessage | null;
   organization: RoomShort_SharedRoom_organization | null;
+  settings: RoomShort_SharedRoom_settings;
 }
 
 export type RoomShort = RoomShort_PrivateRoom | RoomShort_SharedRoom;
@@ -30529,10 +30620,17 @@ export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_user {
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_user_primaryOrganization | null;
 }
 
+export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface ChatUpdateFragment_ChatUpdated_chat_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
   user: ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_user;
+  settings: ChatUpdateFragment_ChatUpdated_chat_PrivateRoom_settings;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
@@ -31339,6 +31437,12 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_organization {
   isCommunity: boolean;
 }
 
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -31353,6 +31457,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom {
   membersCount: number | null;
   pinnedMessage: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage | null;
   organization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_organization | null;
+  settings: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_settings;
 }
 
 export type ChatUpdateFragment_ChatUpdated_chat = ChatUpdateFragment_ChatUpdated_chat_PrivateRoom | ChatUpdateFragment_ChatUpdated_chat_SharedRoom;

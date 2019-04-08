@@ -37,6 +37,7 @@ export interface MessageInputBarProps {
     attachesEnabled?: boolean;
     text: string;
     theme: ConversationTheme;
+    placeholder: string;
 
     topContent?: any;
 }
@@ -72,7 +73,7 @@ export const MessageInputBar = XMemo<MessageInputBarProps>(props => {
                     <TextInput
                         flexGrow={1}
                         flexBasis={0}
-                        placeholder="Message..."
+                        placeholder={props.placeholder}
                         placeholderTextColor="#8a8a8f"
                         onChangeText={props.onChangeText}
                         onSelectionChange={props.onSelectionChange}

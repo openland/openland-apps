@@ -2,6 +2,11 @@ fragment RoomShort on Room {
   __typename
   ... on PrivateRoom {
     id
+    settings {
+      __typename
+      id
+      mute
+    }
     user {
       __typename
       ...UserShort
@@ -25,6 +30,11 @@ fragment RoomShort on Room {
       ...FullMessage
     }
     role
+    settings {
+      __typename
+      id
+      mute
+    }
     title
   }
 }

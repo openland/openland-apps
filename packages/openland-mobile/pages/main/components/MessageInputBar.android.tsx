@@ -46,6 +46,7 @@ export interface MessageInputBarProps {
     attachesEnabled?: boolean;
     text: string;
     theme: ConversationTheme;
+    placeholder: string;
 
     topContent?: any;
 }
@@ -75,11 +76,9 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                     )}
 
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-
                         {this.props.attachesEnabled !== false && (
                             <TouchableOpacity onPress={this.props.onAttachPress} style={{ alignSelf: "flex-end" }}>
                                 <View
-
                                     marginTop={1}
                                     marginLeft={12}
                                     marginBottom={14}
@@ -94,6 +93,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                                 </View>
                             </TouchableOpacity>
                         )}
+
                         {this.props.attachesEnabled === false && (
                             <View width={15} />
                         )}
@@ -116,7 +116,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                             </ASView>
                             <TextInput
                                 style={styles.textInput}
-                                placeholder="Message"
+                                placeholder={this.props.placeholder}
                                 placeholderTextColor="#aaaaaa"
                                 onChangeText={this.props.onChangeText}
                                 onSelectionChange={this.props.onSelectionChange}
