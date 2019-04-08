@@ -29,7 +29,6 @@ import { MessageReplyComponent } from 'openland-web/components/messenger/message
 import { XLink } from 'openland-x/XLink';
 import { useClient } from 'openland-web/utils/useClient';
 import { MutationFunc } from 'react-apollo';
-import { XLink2 } from 'openland-x/XLink2';
 
 const ReplyMessageWrapper = Glamorous.div({
     position: 'relative',
@@ -97,6 +96,7 @@ export interface PinMessageComponentProps {
     pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage;
     chatId: string;
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
+    target?: any;
 }
 
 const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
@@ -343,7 +343,17 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
         </XView>
     );
 
-    return <XModal body={body} targetQuery={'pinMessageView'} footer={null} />;
+    let target = (
+        <XView cursor="pointer">
+            <ExpandIcon />
+        </XView>
+    );
+
+    if (props.target) {
+        target = props.target;
+    }
+
+    return <XModal body={body} target={target} footer={null} />;
 });
 
 const ForwardIconClassName = css`
@@ -418,61 +428,65 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
                                 </XView>
                             )}
                         </XView>
-                        <XLink2
-                            color="rgba(0, 0, 0, 0.8)"
-                            hoverColor="rgba(0, 0, 0, 0.8)"
-                            fontSize={14}
-                            query={{ field: 'pinMessageView', value: 'true' }}
-                        >
-                            {pinMessage.message && (
-                                <MessageTextComponent
-                                    spans={pinMessage.spans}
-                                    message={pinMessage.message}
-                                    isEdited={false}
-                                    asPinMessage={true}
-                                    shouldCrop
-                                />
-                            )}
-                            {pinMessage.quotedMessages &&
-                                pinMessage.quotedMessages!.length > 0 &&
-                                !pinMessage.message && (
-                                    <XView flexDirection="row" alignItems="center">
-                                        <XView marginRight={6}>
-                                            <ForwardIcon className={ForwardIconClassName} />
-                                        </XView>
-                                        <XView color="rgba(0, 0, 0, 0.5)">Forward</XView>
-                                    </XView>
-                                )}
-                            {attach &&
-                                attach.__typename === 'MessageAttachmentFile' && (
-                                    <>
-                                        {attach.fileMetadata.isImage && (
+                        <PinMessageModal
+                            pinMessage={pinMessage}
+                            chatId={chatId}
+                            room={room}
+                            target={
+                                <XView
+                                    color="rgba(0, 0, 0, 0.8)"
+                                    hoverColor="rgba(0, 0, 0, 0.8)"
+                                    fontSize={14}
+                                    cursor="pointer"
+                                >
+                                    {pinMessage.message && (
+                                        <MessageTextComponent
+                                            spans={pinMessage.spans}
+                                            message={pinMessage.message}
+                                            isEdited={false}
+                                            asPinMessage={true}
+                                            shouldCrop
+                                        />
+                                    )}
+                                    {pinMessage.quotedMessages &&
+                                        pinMessage.quotedMessages!.length > 0 &&
+                                        !pinMessage.message && (
                                             <XView flexDirection="row" alignItems="center">
                                                 <XView marginRight={6}>
-                                                    <IconImage />
+                                                    <ForwardIcon className={ForwardIconClassName} />
                                                 </XView>
-                                                <XView>Image</XView>
+                                                <XView color="rgba(0, 0, 0, 0.5)">Forward</XView>
                                             </XView>
                                         )}
-                                        {!attach.fileMetadata.isImage && (
-                                            <XView flexDirection="row" alignItems="center">
-                                                <XView marginRight={6}>
-                                                    <IconFile />
-                                                </XView>
-                                                <XView>Document</XView>
-                                            </XView>
+                                    {attach &&
+                                        attach.__typename === 'MessageAttachmentFile' && (
+                                            <>
+                                                {attach.fileMetadata.isImage && (
+                                                    <XView flexDirection="row" alignItems="center">
+                                                        <XView marginRight={6}>
+                                                            <IconImage />
+                                                        </XView>
+                                                        <XView>Image</XView>
+                                                    </XView>
+                                                )}
+                                                {!attach.fileMetadata.isImage && (
+                                                    <XView flexDirection="row" alignItems="center">
+                                                        <XView marginRight={6}>
+                                                            <IconFile />
+                                                        </XView>
+                                                        <XView>Document</XView>
+                                                    </XView>
+                                                )}
+                                            </>
                                         )}
-                                    </>
-                                )}
-                        </XLink2>
+                                </XView>
+                            }
+                        />
                     </XView>
                 </XView>
-                <XLink2 query={{ field: 'pinMessageView', value: 'true' }}>
-                    <ExpandIcon />
-                </XLink2>
+                <PinMessageModal pinMessage={pinMessage} chatId={chatId} room={room} />
             </XView>
             <XView height={1} width="100%" flexShrink={0} backgroundColor="#ececec" />
-            <PinMessageModal pinMessage={pinMessage} chatId={chatId} room={room} />
         </XView>
     );
 });
