@@ -1,9 +1,11 @@
 import { DialogDataSourceItem, emojifyMessage } from 'openland-engines/messenger/DialogListEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
+import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 
 export interface DialogListWebItem extends DialogDataSourceItem {
     titleEmojify: any;
+    titlePlaceholderEmojify: any;
     senderEmojify?: any;
     messageEmojify?: any;
     typingEmojify?: any;
@@ -16,6 +18,11 @@ export function dialogListWebDataSource(dialogs: DataSource<DialogDataSourceItem
             titleEmojify: emoji({
                 src: src.title,
                 size: 16,
+            }),
+            titlePlaceholderEmojify: emoji({
+                src: extractPlaceholder(src.title),
+                size: 20,
+                cache: true,
             }),
             senderEmojify: src.sender && emojifyMessage(src.sender),
             typingEmojify: src.typing && emojifyMessage(src.typing),

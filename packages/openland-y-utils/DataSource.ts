@@ -1,15 +1,14 @@
 import { WatchSubscription } from './Watcher';
 import { Queue } from 'openland-graphql/utils/Queue';
-import { throttle } from 'react-native-s/SThrottler';
+
+async function throttle() {
+    return new Promise((r) => { setTimeout(r, 10); });
+}
 
 async function throttledMap<T, V>(src: T[], map: (item: T) => V): Promise<V[]> {
     let res: V[] = [];
-    let c = 0;
     for (let s of src) {
-        if (c++ > 3) {
-            await throttle();
-            c = 0;
-        }
+        await throttle();
         res.push(map(s));
     }
     return res;
@@ -334,7 +333,7 @@ export class DataSource<T extends DataSourceItem> {
             },
             onDataSourceLoadedMore(data: T[], completed: boolean) {
                 schedule(async () => {
-                    res.loadedMore(data.map(map), completed);
+                    res.loadedMore(await throttledMap(data, map), completed);
                 });
             },
             onDataSourceCompleted() {

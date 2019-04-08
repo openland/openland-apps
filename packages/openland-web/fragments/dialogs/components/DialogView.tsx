@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView, XViewSelectedContext } from 'react-mental';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from 'openland-icons/ic-photo.svg';
 import FileIcon from 'openland-icons/ic-file-2.svg';
@@ -185,6 +184,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         >
             <XAvatar2
                 title={dialog.title}
+                titleEmoji={dialog.titlePlaceholderEmojify}
                 id={dialog.kind === 'PRIVATE' ? dialog.flexibleId : dialog.key}
                 src={dialog.photo}
                 online={dialog.online}

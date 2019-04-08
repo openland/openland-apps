@@ -16,6 +16,7 @@ import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
 import glamorous from 'glamorous';
 import { getMessagesWrapperClassName } from './MessagesContainer';
+import { DataSource } from 'openland-y-utils/DataSource';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -98,6 +99,12 @@ const LoadingWrapper = glamorous.div({
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
     private scroller = React.createRef<XScrollViewReversedInner>();
     unshifted = false;
+    private dataSource: DataSource<DataSourceMessageItem | DataSourceDateItem>
+
+    constructor(props: MessageListProps) {
+        super(props);
+        this.dataSource = props.conversation.dataSource.batched();
+    }
 
     scrollToBottom = () => {
         this.scroller.current!!.scrollToBottom();
@@ -227,7 +234,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     render() {
         return (
             <DataSourceRender
-                dataSource={this.props.conversation.dataSource}
+                dataSource={this.dataSource}
                 reverce={true}
                 wrapWith={this.dataSourceWrapper}
                 renderItem={this.renderMessage}

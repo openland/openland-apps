@@ -9,6 +9,7 @@ type XAvatarSize = 74 | 58 | 40 | 36 | 32 | 28 | 24;
 
 export interface XAvatar2Props {
     title: string;
+    titleEmoji?: any;
     id: string;
     src?: string | null;
     online?: boolean;
@@ -51,7 +52,7 @@ const AvatarPlaceholder = React.memo((props: XAvatar2Props) => {
             overflow="hidden"
             hoverTextDecoration="none"
         >
-            {emoji({
+            {props.titleEmoji || emoji({
                 src: ph,
                 size: 20,
                 cache: true,
