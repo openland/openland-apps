@@ -86,8 +86,10 @@ export class XRouterProvider extends React.Component<{
     }
 
     scrollToTop = () => {
-        window.scrollTo(0, 0);
-        document.body.focus();
+        requestAnimationFrame(() => {
+            window.scrollTo(0, 0);
+            document.body.focus();
+        });
     };
 
     resolveLink = (path: string) => {
