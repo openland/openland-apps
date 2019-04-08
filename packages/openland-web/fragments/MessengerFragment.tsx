@@ -124,7 +124,7 @@ class MessagengerFragmentInner extends React.PureComponent<
     }
 }
 
-export const MessengerFragment = (props: { id: string; isActive: boolean }) => {
+export const MessengerFragment = React.memo<{ id: string; isActive: boolean }>((props) => {
     const client = useClient();
 
     // const apollo = React.useContext(YApolloContext)!;
@@ -144,4 +144,4 @@ export const MessengerFragment = (props: { id: string; isActive: boolean }) => {
             client={client}
         />
     );
-};
+});

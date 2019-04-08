@@ -86,13 +86,13 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             return 0;
         }
 
-        const currentDialogIndex = messenger.dialogList.dataSource.findIndex(currentConversationId);
+        const currentDialogIndex = dataSource.findIndex(currentConversationId);
         const nextIndex = Math.min(
             Math.max(currentDialogIndex - delta, 0),
-            messenger.dialogList.dataSource.getSize() - 1,
+            dataSource.getSize() - 1,
         );
 
-        return messenger.dialogList.dataSource.getItemByIndex(nextIndex).key;
+        return dataSource.getItemByIndex(nextIndex).key;
     };
 
     const handleOptionUp = () => {
@@ -161,3 +161,5 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         </XShortcuts>
     );
 });
+
+DialogListView.displayName = 'DialogListView';
