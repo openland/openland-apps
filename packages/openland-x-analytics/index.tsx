@@ -27,17 +27,19 @@ export function trackError(src: any) {
 }
 
 const trackLaunch = async () => {
-    const firstLaunch = await localStorage.getItem('openland-first-launch');
+    if (canUseDOM) {
+        const firstLaunch = await localStorage.getItem('openland-first-launch');
 
-    if (!firstLaunch) {
-        const currentDate = new Date();
+        if (!firstLaunch) {
+            const currentDate = new Date();
 
-        await localStorage.setItem('openland-first-launch', currentDate.getTime().toString());
+            await localStorage.setItem('openland-first-launch', currentDate.getTime().toString());
 
-        trackEvent('launch_first_time');
+            trackEvent('launch_first_time');
+        }
+
+        trackEvent('session_start');
     }
-
-    trackEvent('session_start');
 }
 
 trackLaunch();
