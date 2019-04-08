@@ -1,57 +1,49 @@
 import * as React from 'react';
 import { withApp } from 'openland-web/components/withApp';
-import { withQueryLoader } from 'openland-web/components/withQueryLoader';
-import { withAvailableRooms } from 'openland-web/api/withAvailableRooms';
 import { AvailableRooms_rooms } from 'openland-api/Types';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNavigation';
+import { useClient } from 'openland-web/utils/useClient';
 interface RoomsCardsProps {
     onPageChange?: () => void;
     variables: { query?: string; prefix?: string; sort?: string };
     tagsCount: (n: number) => void;
 }
 
-export const RoomsCards = withAvailableRooms(
-    withQueryLoader(props => {
-        if (!props.data) {
-            return null;
-        }
+export const RoomsCards = (props: RoomsCardsProps) => {
+    const client = useClient();
+    const data = client.useAvailableRooms();
 
-        let noData =
-            props.error ||
-            props.data === undefined ||
-            props.data.rooms === undefined ||
-            props.data.rooms === null;
+    let noData = data === undefined || data.rooms === undefined || data.rooms === null;
 
-        (props as any).tagsCount(noData ? 0 : props.data.rooms.length);
+    props.tagsCount(noData ? 0 : data.rooms.length);
 
-        return (
-            <>
-                {!noData && (
-                    <XContentWrapper withPaddingBottom={true}>
-                        {props.data.rooms.map((room: AvailableRooms_rooms, key) => {
-                            return (
-                                <XRoomCard
-                                    key={key}
-                                    room={room as any}
-                                    path={'/directory/p/' + room.id}
-                                    isMember={room.membership === 'MEMBER'}
-                                />
-                            );
-                        })}
-                        {/* <PagePagination
+    return (
+        <>
+            {!noData && (
+                <XContentWrapper withPaddingBottom={true}>
+                    {data.rooms.map((room: AvailableRooms_rooms, key) => {
+                        return (
+                            <XRoomCard
+                                key={key}
+                                room={room as any}
+                                path={'/directory/p/' + room.id}
+                                isMember={room.membership === 'MEMBER'}
+                            />
+                        );
+                    })}
+                    {/* <PagePagination
                             currentRoute="/directory/explore"
-                            pageInfo={props.data.rooms.pageInfo}
+                            pageInfo={data.rooms.pageInfo}
                         /> */}
-                    </XContentWrapper>
-                )}
-                {noData && <EmptySearchBlock text="No groups matches your search" />}
-            </>
-        );
-    }),
-) as React.ComponentType<RoomsCardsProps>;
+                </XContentWrapper>
+            )}
+            {noData && <EmptySearchBlock text="No groups matches your search" />}
+        </>
+    );
+};
 
 export default withApp('Explore', 'viewer', () => {
     let CardsComponent = ComponentWithSort({ Component: RoomsCards, queryToPrefix: true });

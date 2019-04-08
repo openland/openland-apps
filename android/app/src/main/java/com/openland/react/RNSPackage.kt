@@ -21,9 +21,12 @@ import com.openland.react.window.RNSWindowManager
 class RNSPackage : ReactPackage {
 
     init {
-        // ComponentsConfiguration.incrementalMountUsesLocalVisibleBounds = false
+        ComponentsConfiguration.incrementalMountUsesLocalVisibleBounds = false
         // ComponentsConfiguration.incrementalMountWhenNotVisible = false
-        ComponentsConfiguration.prewarmImageTexture = true
+//        ComponentsConfiguration.prewarmImageTexture = true
+//        ComponentsConfiguration.incrementalMountWhenNotVisible = false
+//        ComponentsConfiguration.isDebugModeEnabled = true
+//        ComponentsConfiguration.NEEDS_THEME_SYNCHRONIZATION
     }
 
     override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {

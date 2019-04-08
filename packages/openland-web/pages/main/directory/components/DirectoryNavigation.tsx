@@ -19,6 +19,7 @@ import { Navigation } from '../../../../components/Navigation';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useIsMobile } from 'openland-web/hooks';
+import { XLoader } from 'openland-x/XLoader';
 
 export const SearchCardsOrShowProfile = XMemo(
     ({
@@ -78,20 +79,19 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 &&
-                            itemCount > 0 && (
-                                <XSubHeader
-                                    title={hasQueryText}
-                                    counter={itemCount}
-                                    right={
-                                        <SortPicker
-                                            sort={sort}
-                                            onPick={setSort}
-                                            withoutFeatured={withoutFeatured}
-                                        />
-                                    }
-                                />
-                            )}
+                        {query.length > 0 && itemCount > 0 && (
+                            <XSubHeader
+                                title={hasQueryText}
+                                counter={itemCount}
+                                right={
+                                    <SortPicker
+                                        sort={sort}
+                                        onPick={setSort}
+                                        withoutFeatured={withoutFeatured}
+                                    />
+                                }
+                            />
+                        )}
                         <CardsComponent
                             featuredFirst={sort.featured}
                             orderBy={sort.orderBy}
@@ -102,6 +102,7 @@ export const SearchCardsOrShowProfile = XMemo(
                         />
                     </XVertical>
                 )}
+
                 {id && ProfileComponent && <ProfileComponent id={id} />}
             </>
         );
@@ -153,15 +154,6 @@ export const DirectoryNavigation = XMemo(
                                 </XMenuItem>
                                 <XMenuItem
                                     query={{
-                                        field: 'createRoom',
-                                        value: 'true',
-                                    }}
-                                    icon="x-dropdown-room"
-                                >
-                                    {TextDirectory.create.room}
-                                </XMenuItem>
-                                <XMenuItem
-                                    query={{
                                         field: 'createOrganization',
                                         value: 'community',
                                     }}
@@ -200,19 +192,27 @@ export const DirectoryNavigation = XMemo(
                     <XView flexGrow={1} height={isMobile ? undefined : '100%'} position="relative">
                         <XScrollView2 height="100%" flexGrow={1}>
                             <XView flexGrow={1}>
-                                {children ? (
-                                    children
-                                ) : (
-                                    <SearchCardsOrShowProfile
-                                        id={id}
-                                        ProfileComponent={ProfileComponent}
-                                        CardsComponent={CardsComponent}
-                                        searchPlaceholder={searchPlaceholder || ''}
-                                        noQueryText={noQueryText || ''}
-                                        hasQueryText={hasQueryText || ''}
-                                        withoutFeatured={withoutFeatured}
-                                    />
-                                )}
+                                <React.Suspense
+                                    fallback={
+                                        <XView flexGrow={1} flexShrink={0}>
+                                            <XLoader loading={true} />
+                                        </XView>
+                                    }
+                                >
+                                    {children ? (
+                                        children
+                                    ) : (
+                                        <SearchCardsOrShowProfile
+                                            id={id}
+                                            ProfileComponent={ProfileComponent}
+                                            CardsComponent={CardsComponent}
+                                            searchPlaceholder={searchPlaceholder || ''}
+                                            noQueryText={noQueryText || ''}
+                                            hasQueryText={hasQueryText || ''}
+                                            withoutFeatured={withoutFeatured}
+                                        />
+                                    )}
+                                </React.Suspense>
                             </XView>
                         </XScrollView2>
                     </XView>
@@ -246,17 +246,25 @@ export const ComponentWithSort = ({
     CustomButtonComponent: any;
 }) => {
     return (
-        <Component
-            tagsCount={tagsCount}
-            variables={{
-                ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
-                sort: JSON.stringify([
-                    ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
-                    { [orderBy]: { order: 'desc' } },
-                ]),
-            }}
-            customMenu={customMenu}
-            CustomButtonComponent={CustomButtonComponent}
-        />
+        <React.Suspense
+            fallback={
+                <XView flexGrow={1} flexShrink={0}>
+                    <XLoader loading={true} />
+                </XView>
+            }
+        >
+            <Component
+                tagsCount={tagsCount}
+                variables={{
+                    ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
+                    sort: JSON.stringify([
+                        ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
+                        { [orderBy]: { order: 'desc' } },
+                    ]),
+                }}
+                customMenu={customMenu}
+                CustomButtonComponent={CustomButtonComponent}
+            />
+        </React.Suspense>
     );
 };

@@ -65,16 +65,6 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
         subtitle = sharedRoom.membersCount + (sharedRoom.membersCount === 1 ? ' member' : ' members');
     }
 
-    let typingString = props.typing;
-    if (typingString && privateRoom) {
-        typingString = 'typing...';
-    }
-    subtitle = (typingString) || subtitle;
-
-    if (props.typing) {
-        accent = true;
-    }
-
     if (privateRoom) {
         if (privateRoom.user.isBot) {
             subtitle = 'bot'
@@ -102,6 +92,18 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
             // }
         }
     }
+
+    // typings
+
+    if (props.typing) {
+        accent = true;
+    }
+
+    let typingString = props.typing;
+    if (typingString && privateRoom) {
+        typingString = 'typing...';
+    }
+    subtitle = (typingString) || subtitle;
 
     return (
         <View flexDirection="column" alignItems={'flex-start'} justifyContent="center" pointerEvents="box-none" height={isAndroid ? 56 : 44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>

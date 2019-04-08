@@ -21,20 +21,54 @@ import { InitTexts } from './_text';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
-import { withAppInviteInfo } from '../../api/withAppInvite';
+import { useClient } from 'openland-web/utils/useClient';
 import { XView } from 'react-mental';
 import { useIsMobile } from 'openland-web/hooks';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { trackEvent } from 'openland-x-analytics';
 
 function validateEmail(email: string) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
 
-const InviteInfo = withAppInviteInfo((props: any) => {
+const InviteInfo = (props: {
+    variables: { inviteKey: string };
+    signin: boolean;
+    loginWithGoogle: Function;
+    loginWithEmail: Function;
+}) => {
+    const client = useClient();
+
+    const resolvedInvite = client.useWithoutLoaderResolvedInvite({
+        key: props.variables.inviteKey,
+    });
+
+    if (!resolvedInvite || !resolvedInvite.invite) {
+        return <XLoader loading={true} />;
+    }
+
+    let inviter;
+
+    if (resolvedInvite && resolvedInvite.invite) {
+        if (resolvedInvite.invite.__typename === 'AppInvite') {
+            inviter = resolvedInvite.invite.inviter;
+        } else if (resolvedInvite.invite.__typename === 'RoomInvite') {
+            inviter = resolvedInvite.invite.invitedByUser;
+        } else if (resolvedInvite.invite.__typename === 'InviteInfo') {
+            inviter = resolvedInvite.invite.creator;
+        }
+    }
+
+    if (resolvedInvite.invite.__typename === 'RoomInvite') {
+        return <XPageRedirect path={`/joinChannel/${props.variables.inviteKey}`} />;
+    }
+
+    if (resolvedInvite.invite.__typename === 'InviteInfo') {
+        return <XPageRedirect path={`/signin/join/${props.variables.inviteKey}`} />;
+    }
+
     let signPath = '/signup?redirect=' + encodeURIComponent((props as any).redirect);
-    let inviter =
-        (props.data.invite && props.data.invite.creator) ||
-        (props.data.appInvite && props.data.appInvite.inviter);
 
     if (!inviter) {
         return <XLoader loading={true} />;
@@ -48,16 +82,14 @@ const InviteInfo = withAppInviteInfo((props: any) => {
             loginWithEmail={props.loginWithEmail}
         />
     );
-}) as React.ComponentType<{
-    variables: { inviteKey: string };
-    signin: boolean;
-    loginWithGoogle: Function;
-    loginWithEmail: Function;
-}>;
+};
 
 const checkIfIsSignInInvite = (router: any) => {
     return (
-        router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite'
+        router.query &&
+        router.query.redirect &&
+        (router.query.redirect.split('/')[1] === 'invite' ||
+            router.query.redirect.split('/')[1] === 'joinChannel')
     );
 };
 
@@ -177,6 +209,8 @@ class SignInComponent extends React.Component<
     }
 
     loginWithGoogle = () => {
+        trackEvent('signup_google_action');
+
         this.setState({ googleStarting: true, signInInvite: false });
         this.fireGoogle();
     };
@@ -242,11 +276,15 @@ class SignInComponent extends React.Component<
 
     loginCodeStart = async () => {
         if (this.state.codeValue === '') {
+            this.trackError('no_code');
+
             this.setState({
                 codeError: InitTexts.auth.noCode,
             });
             return;
         } else if (this.state.codeValue.length !== 6) {
+            this.trackError('wrong_code_length');
+
             this.setState({
                 codeError: InitTexts.auth.wrongCodeLength,
             });
@@ -260,6 +298,7 @@ class SignInComponent extends React.Component<
                     verificationCode: this.state.codeValue,
                 },
                 (error: any, v) => {
+                    this.trackError(error.code);
                     console.warn(error);
                     if (error) {
                         this.setState({
@@ -272,6 +311,22 @@ class SignInComponent extends React.Component<
                     }
                 },
             );
+        }
+    };
+
+    trackError = (error: string) => {
+        if (
+            [
+                'code_expired',
+                'invalid_user_password',
+                'wrong_code',
+                'wrong_code_length',
+                'no_code',
+            ].includes(error)
+        ) {
+            trackEvent('signup_code_error', { error_type: error });
+        } else {
+            trackEvent('signup_error', { error_type: error });
         }
     };
 
@@ -321,78 +376,92 @@ class SignInComponent extends React.Component<
         const showTerms = (!signin && pageMode === 'AuthMechanism') || this.state.fromOutside;
 
         return (
-            <Container
-                showTerms={showTerms}
-                pageMode={pageMode}
-                text={signupText}
-                path={(signin ? '/signup' : '/signin') + redirect}
-                linkText={linkText}
-                headerStyle={signin ? 'signin' : 'signup'}
-            >
-                {pageMode === 'SignInInvite' && (
-                    <InviteInfo
-                        variables={{
-                            inviteKey: this.props.router.query.redirect.split('/')[2],
-                        }}
-                        signin={signin}
-                        loginWithGoogle={this.loginWithGoogle}
-                        loginWithEmail={this.loginWithEmail}
-                    />
-                )}
-                {pageMode === 'AuthMechanism' && (
-                    <AuthMechanism
-                        signin={signin}
-                        loginWithGoogle={this.loginWithGoogle}
-                        loginWithEmail={this.loginWithEmail}
-                    />
-                )}
+            <>
+                <Container
+                    showTerms={showTerms}
+                    pageMode={pageMode}
+                    text={signupText}
+                    path={(signin ? '/signup' : '/signin') + redirect}
+                    linkText={linkText}
+                    headerStyle={signin ? 'signin' : 'signup'}
+                >
+                    {pageMode === 'SignInInvite' && (
+                        <InviteInfo
+                            variables={{
+                                inviteKey: this.props.router.query.redirect.split('/')[2],
+                            }}
+                            signin={signin}
+                            loginWithGoogle={this.loginWithGoogle}
+                            loginWithEmail={this.loginWithEmail}
+                        />
+                    )}
+                    {pageMode === 'AuthMechanism' && (
+                        <XTrack
+                            event={signin ? 'signin_view' : 'signup_view'}
+                            key={signin ? 'signin-track' : 'signup-track'}
+                        >
+                            <AuthMechanism
+                                signin={signin}
+                                loginWithGoogle={this.loginWithGoogle}
+                                loginWithEmail={this.loginWithEmail}
+                            />
+                        </XTrack>
+                    )}
 
-                {pageMode === 'Loading' && <Loader />}
+                    {pageMode === 'Loading' && <Loader />}
 
-                {pageMode === 'CreateFromEmail' && (
-                    <MyCreateWithEmail
-                        signin={signin}
-                        emailError={this.state.emailError}
-                        emailChanged={this.emailValueChanged}
-                        emailValue={this.state.emailValue}
-                        loginEmailStart={this.loginEmailStart}
-                        emailSending={this.state.emailSending}
-                    />
-                )}
+                    {pageMode === 'CreateFromEmail' && (
+                        <XTrack event="signup_email_view">
+                            <MyCreateWithEmail
+                                signin={signin}
+                                emailError={this.state.emailError}
+                                emailChanged={this.emailValueChanged}
+                                emailValue={this.state.emailValue}
+                                loginEmailStart={this.loginEmailStart}
+                                emailSending={this.state.emailSending}
+                            />
+                        </XTrack>
+                    )}
 
-                {pageMode === 'ActivationCode' && (
-                    <MyActivationCode
-                        emailWasResend={this.state.emailWasResend}
-                        resendCodeClick={() => {
-                            this.setState({
-                                emailSending: true,
-                            });
-                            this.fireEmail(() => {
-                                this.setState({
-                                    emailWasResend: true,
-                                });
-                            });
-                        }}
-                        emailSendedTo={this.state.emailValue}
-                        backButtonClick={() => {
-                            this.setState(
-                                {
-                                    fromOutside: false,
-                                },
-                                () => {
-                                    this.loginWithEmail();
-                                },
-                            );
-                        }}
-                        codeError={this.state.codeError}
-                        codeChanged={this.codeValueChanged}
-                        codeSending={this.state.codeSending}
-                        emailSending={this.state.emailSending}
-                        codeValue={this.state.codeValue}
-                        loginCodeStart={this.loginCodeStart}
-                    />
-                )}
-            </Container>
+                    {pageMode === 'ActivationCode' && (
+                        <XTrack event="signup_code_view">
+                            <MyActivationCode
+                                signin={signin}
+                                emailWasResend={this.state.emailWasResend}
+                                resendCodeClick={() => {
+                                    trackEvent('signup_code_resend_action');
+
+                                    this.setState({
+                                        emailSending: true,
+                                    });
+                                    this.fireEmail(() => {
+                                        this.setState({
+                                            emailWasResend: true,
+                                        });
+                                    });
+                                }}
+                                emailSendedTo={this.state.emailValue}
+                                backButtonClick={() => {
+                                    this.setState(
+                                        {
+                                            fromOutside: false,
+                                        },
+                                        () => {
+                                            this.loginWithEmail();
+                                        },
+                                    );
+                                }}
+                                codeError={this.state.codeError}
+                                codeChanged={this.codeValueChanged}
+                                codeSending={this.state.codeSending}
+                                emailSending={this.state.emailSending}
+                                codeValue={this.state.codeValue}
+                                loginCodeStart={this.loginCodeStart}
+                            />
+                        </XTrack>
+                    )}
+                </Container>
+            </>
         );
     }
 }

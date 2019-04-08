@@ -5,6 +5,9 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XVertical } from 'openland-x-layout/XVertical';
+import { XScrollView3 } from 'openland-x/XScrollView3';
+import { XView } from 'react-mental';
+import { XScrollView2 } from 'openland-x/XScrollView2';
 
 const Box = Glamorous.div({
     width: '100px',
@@ -17,8 +20,8 @@ const Box = Glamorous.div({
 const Container = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    width: 200,
-    height: 500,
+    width: 600,
+    height: 600,
     backgroundColor: '#ff0000',
 });
 
@@ -27,35 +30,95 @@ export default withApp('UI Framework - Scroll', 'viewer', props => {
         <DevDocsScaffold title="Scroll">
             <XContent>
                 <Container>
-                    <XScrollView width={200} height={500}>
-                        <XVertical>
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                            <Box />
-                        </XVertical>
-                    </XScrollView>
+                    <XView width={600} flexDirection="row">
+                        <XScrollView width={200} height={600}>
+                            <XVertical>
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                            </XVertical>
+                        </XScrollView>
+                        <XScrollView2 width={200} height={600}>
+                            <XVertical>
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                            </XVertical>
+                        </XScrollView2>
+                        <XScrollView3 width={200} height={600}>
+                            <XVertical>
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                                <Box />
+                            </XVertical>
+                        </XScrollView3>
+                    </XView>
                 </Container>
             </XContent>
         </DevDocsScaffold>

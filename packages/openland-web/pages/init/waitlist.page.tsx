@@ -56,7 +56,7 @@ export default withAppBase('Waitlist', props => {
                 title={InitTexts.need_info.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <XTrack event="View Waitlist">
+            <XTrack event="waitlist_view">
                 <MessagePage hideLegalText={true}>
                     <Img
                         src="/static/img/artwork-copy.png"

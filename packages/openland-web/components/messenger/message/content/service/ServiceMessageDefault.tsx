@@ -140,12 +140,15 @@ const SpansMessageTextPreprocess = ({
 
 const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserShort; text: string; isYou: boolean }) => {
-        const userNameEmojified = React.useMemo(() => {
-            return emoji({
-                src: text,
-                size: 16,
-            });
-        }, [text]);
+        const userNameEmojified = React.useMemo(
+            () => {
+                return emoji({
+                    src: text,
+                    size: 16,
+                });
+            },
+            [text],
+        );
 
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>

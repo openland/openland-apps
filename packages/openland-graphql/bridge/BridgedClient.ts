@@ -27,9 +27,9 @@ export abstract class BridgedClient implements GraphqlClient {
     //
 
     async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): Promise<TQuery> {
-        if (__DEV__) {
-            log.log('Query ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
-        }
+        // if (__DEV__) {
+        //     log.log('Query ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
+        // }
 
         // Retry logic
         while (true) {
@@ -51,17 +51,17 @@ export abstract class BridgedClient implements GraphqlClient {
     }
 
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
-        if (__DEV__) {
-            log.log('Query Watch ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
-        }
+        // if (__DEV__) {
+        //     log.log('Query Watch ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
+        // }
         let id = this.nextKey();
         let currentId = id;
         let watch = new BridgedQueryWatch();
         let callbacks = new Map<string, (args: { data?: TQuery, error?: Error }) => void>();
         let resolved = false;
-        let resolve!: (data: TQuery) => void;
-        let reject!: (error: Error) => void;
-        let promise = new Promise<TQuery>((rl, rj) => {
+        let resolve!: () => void;
+        let reject!: () => void;
+        let promise = new Promise<void>((rl, rj) => {
             resolve = rl;
             reject = rj;
         });
@@ -108,9 +108,9 @@ export abstract class BridgedClient implements GraphqlClient {
             if (!resolved) {
                 resolved = true;
                 if (watch.hasError) {
-                    reject(watch.error!);
+                    reject();
                 } else if (watch.hasValue) {
-                    resolve(watch.value!);
+                    resolve();
                 }
             }
             for (let i of callbacks.values()) {
@@ -155,9 +155,9 @@ export abstract class BridgedClient implements GraphqlClient {
     //
 
     async mutate<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
-        if (__DEV__) {
-            log.log('Mutate ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ')');
-        }
+        // if (__DEV__) {
+        //     log.log('Mutate ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ')');
+        // }
         while (true) {
             try {
                 let id = this.nextKey();

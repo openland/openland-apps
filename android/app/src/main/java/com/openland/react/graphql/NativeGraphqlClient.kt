@@ -14,6 +14,7 @@ import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
 import com.apollographql.apollo.cache.normalized.sql.ApolloSqlHelper
 import com.apollographql.apollo.cache.normalized.sql.SqlNormalizedCacheFactory
 import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.apollographql.apollo.fetcher.ResponseFetcher
 import com.apollographql.apollo.internal.cache.normalized.ResponseNormalizer
 import com.apollographql.apollo.internal.field.MapFieldValueResolver
@@ -275,19 +276,19 @@ class JSStoreOperationCallback(val id: String, val key: String, val context: Rea
         map.putString("key", key)
         map.putString("type", "failure")
         map.putString("id", id)
+        map.putString("kind", "network")
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("apollo_client", map)
     }
 }
 
 
-class JSStoreOperationCallback2(val id: String, val key: String, val context: ReactApplicationContext) : ApolloStoreOperation.Callback<Set<String>> {
-    override fun onSuccess(result: Set<String>) {
+class JSStoreOperationCallback2(val id: String, val key: String, val context: ReactApplicationContext) : ApolloStoreOperation.Callback<Boolean> {
+    override fun onSuccess(result: Boolean) {
         val map = WritableNativeMap()
         map.putString("key", key)
         map.putString("type", "response")
         map.putString("id", id)
-
         map.putNull("data")
 
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
@@ -300,6 +301,7 @@ class JSStoreOperationCallback2(val id: String, val key: String, val context: Re
         map.putString("key", key)
         map.putString("type", "failure")
         map.putString("id", id)
+        map.putString("kind", "network")
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("apollo_client", map)
     }
@@ -313,6 +315,7 @@ class JSOperationCallback(val id: String, val key: String, val context: ReactApp
         map.putString("key", key)
         map.putString("type", "failure")
         map.putString("id", id)
+        map.putString("kind", "network")
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("apollo_client", map)
     }
@@ -324,6 +327,36 @@ class JSOperationCallback(val id: String, val key: String, val context: ReactApp
             map.putString("key", key)
             map.putString("type", "failure")
             map.putString("id", id)
+            map.putString("kind", "graphql")
+            val errors = WritableNativeArray()
+            for (i in response.errors()) {
+                val errMap = WritableNativeMap()
+                errMap.putString("message", i.message() ?: "Unknown error")
+                val custom = i.customAttributes()
+                if (custom.containsKey("uuid")) {
+                    errMap.putString("uuid", custom["uuid"] as String)
+                }
+                if (custom.containsKey("shouldRetry")) {
+                    errMap.putBoolean("shouldRetry", custom["shouldRetry"] as Boolean)
+                } else {
+                    errMap.putBoolean("shouldRetry", false)
+                }
+
+                if (custom.containsKey("invalidFields")) {
+                    val errFields = WritableNativeArray()
+                    val errFieldsSrc = custom["invalidFields"] as List<Map<String, Any>>
+                    for (j in errFieldsSrc) {
+                        val errField = WritableNativeMap()
+                        errField.putString("key", j["key"] as String)
+                        errField.putString("message", j["message"] as String)
+                        errFields.pushMap(errField)
+                    }
+                    errMap.putArray("invalidFields", errFields)
+                }
+
+                errors.pushMap(errMap)
+            }
+            map.putArray("data", errors)
             context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                     .emit("apollo_client", map)
             return
@@ -348,16 +381,16 @@ class JSOperationCallback(val id: String, val key: String, val context: ReactApp
     }
 }
 
-fun loadCachePolicy(parameters: ReadableMap): HttpCachePolicy.Policy {
-    var cachePolicy: HttpCachePolicy.Policy = HttpCachePolicy.CACHE_FIRST
+fun loadResponseFetcher(parameters: ReadableMap): ResponseFetcher {
+    var responseFetcher: ResponseFetcher = ApolloResponseFetchers.CACHE_FIRST
     val policy = if (parameters.hasKey("fetchPolicy")) parameters.getString("fetchPolicy") else null
     when (policy) {
-        "cache-first" -> cachePolicy = HttpCachePolicy.CACHE_FIRST
-        "network-only" -> cachePolicy = HttpCachePolicy.NETWORK_ONLY
-        "cache-and-network" -> cachePolicy = HttpCachePolicy.CACHE_FIRST
-        "no-cache" -> cachePolicy = HttpCachePolicy.NETWORK_FIRST
+        "cache-first" -> responseFetcher = ApolloResponseFetchers.CACHE_FIRST
+        "network-only" -> responseFetcher = ApolloResponseFetchers.NETWORK_ONLY
+        "cache-and-network" -> responseFetcher = ApolloResponseFetchers.CACHE_AND_NETWORK
+        "no-cache" -> throw Error("no-cache is unsupported on Android")
     }
-    return cachePolicy
+    return responseFetcher
 }
 
 class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?, storage: String?) {
@@ -466,7 +499,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 .okHttpClient(this.httpClient)
                 .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory("wss:$endpoint", wsFactory))
                 .subscriptionConnectionParams(connParams)
-                .sendOperationIdentifiers(false)
+                .enableAutoPersistedQueries(false)
                 .logger { priority, message, t, args ->
                     Log.d("APOLLO", String.format(message, *args))
                 }
@@ -477,14 +510,14 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     }
 
     fun query(id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
-        this.client.query(createQuery(query, arguments))
-                .httpCachePolicy(loadCachePolicy(parameters))
+        this.client.query(readQuery(query, arguments))
+                .responseFetcher(loadResponseFetcher(parameters))
                 .enqueue(JSOperationCallback(id, key, context))
     }
 
     fun watch(id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
-        val w = this.client.query(createQuery(query, arguments))
-                .httpCachePolicy(loadCachePolicy(parameters))
+        val w = this.client.query(readQuery(query, arguments))
+                .responseFetcher(loadResponseFetcher(parameters))
                 .watcher()
         this.watches[id] = w
         w.enqueueAndWatch(JSOperationCallback(id, key, context))
@@ -495,17 +528,17 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     }
 
     fun mutate(id: String, query: String, arguments: ReadableMap) {
-        this.client.mutate(createMutation(query, arguments))
+        this.client.mutate(readMutation(query, arguments))
                 .enqueue(JSOperationCallback(id, key, context))
     }
 
     fun read(id: String, query: String, arguments: ReadableMap) {
-        this.client.apolloStore().read(createQuery(query, arguments))
+        this.client.apolloStore().read(readQuery(query, arguments))
                 .enqueue(JSStoreOperationCallback(id, key, context))
     }
 
     fun write(id: String, data: ReadableMap, query: String, arguments: ReadableMap) {
-        val query = createQuery(query, arguments)
+        val query = readQuery(query, arguments)
         val variables = query.variables()
         val reader = RealResponseReader<Map<String, Any>>(variables,
                 nativeMapToApolloMap(data),
@@ -513,7 +546,14 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 ScalarTypeAdapters(emptyMap()),
                 EmptyResponseDelegate)
         val mapped = query.responseFieldMapper().map(reader)
-        this.client.apolloStore().write(query, mapped)
+        this.client.apolloStore().writeAndPublish(query, mapped)
+                .enqueue(JSStoreOperationCallback2(id, key, context))
+    }
+
+    fun writeFragment(id: String, data: ReadableMap, fragment: String) {
+        val fragment = readFragment(fragment, data)
+        this.client.apolloStore()
+                .writeAndPublish(fragment.second, CacheKey.from(fragment.first), Operation.EMPTY_VARIABLES)
                 .enqueue(JSStoreOperationCallback2(id, key, context))
     }
 
@@ -530,6 +570,6 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     }
 
     fun dispose() {
-        // TODO: Implement
+        this.subscriptions!!.destroy()
     }
 }

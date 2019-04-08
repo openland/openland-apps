@@ -6,6 +6,7 @@ import { disableTag } from 'mental-log';
 
 // Disable annoying logs
 disableTag('API');
+disableTag('GraphQL-Direct');
 
 // Is it a good place?
 if (canUseDOM) {

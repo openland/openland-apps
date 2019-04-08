@@ -7,17 +7,16 @@ import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import ProfileIcon from 'openland-icons/ic-profile.svg';
-import { withChannelJoinInviteLink } from '../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { XView } from 'react-mental';
-import { isMobileUserAgent } from 'openland-web/utils/isMobileUserAgent';
 import { useClient } from 'openland-web/utils/useClient';
 import { useIsMobile } from 'openland-web/hooks';
 import LogoWithName from 'openland-icons/logo.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { switchOrganization } from '../utils/switchOrganization';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XTrack } from 'openland-x-analytics/XTrack';
 
 const RootClassName = css`
     position: relative;
@@ -146,28 +145,27 @@ const JoinButton = (props: {
     );
 };
 
-const JoinLinkButton = withChannelJoinInviteLink(props => {
+const JoinLinkButton = (props: {
+    invite: string;
+    refetchVars: { conversationId: string };
+    text: string;
+}) => {
+    const client = useClient();
+
     return (
         <XButton
             style="primary"
             size="large"
-            text={(props as any).text}
+            text={props.text}
             alignSelf="center"
             flexShrink={0}
             action={async () => {
-                if (isMobileUserAgent) {
-                    window.location.href = 'openland://deep/joinroom/' + (props as any).invite;
-                }
-                await props.join({ variables: { invite: (props as any).invite } });
+                await client.mutateRoomJoinInviteLink({ invite: props.invite });
                 await delayForewer();
             }}
         />
     );
-}) as React.ComponentType<{
-    invite: string;
-    refetchVars: { conversationId: string };
-    text: string;
-}>;
+};
 
 const textAlignCenter = css`
     text-align: center;
@@ -326,7 +324,7 @@ export const InviteLandingComponentLayout = ({
         };
     };
     noLogin?: boolean;
-    whereToInvite: 'Channel' | 'Group' | 'Organization';
+    whereToInvite: 'Channel' | 'Group' | 'Organization' | 'Community';
 }) => {
     if (!canUseDOM) {
         return null;
@@ -398,15 +396,10 @@ export const InviteLandingComponentLayout = ({
                         alignSelf="center"
                         flexShrink={0}
                         path={signup}
-                        onClick={() => {
-                            if (isMobileUserAgent) {
-                                window.location.href = 'openland://deep/joinroom/' + inviteLink;
-                            }
-                        }}
                     />
                 </MainContent>
             )}
-            {!isMobile && !!noLogin && <Footer />}
+            {!isMobile && noLogin && <Footer />}
         </div>
     );
 };
@@ -425,7 +418,8 @@ export const InviteLandingComponent = ({
         title: string;
         id: string;
         membersCount: number | null;
-        description: string;
+        description: string | null;
+        isCommunity: boolean;
     };
     inviteLink?: string;
     noLogin?: boolean;
@@ -502,19 +496,31 @@ export const InviteLandingComponent = ({
         </>
     );
 
+    const whereToInvite = room
+        ? room.isChannel
+            ? 'Channel'
+            : 'Group'
+        : organization && organization.isCommunity
+        ? 'Community'
+        : 'Organization';
+
+    console.log(organization);
+
     return (
-        <InviteLandingComponentLayout
-            button={button}
-            whereToInvite={room ? (room.isChannel ? 'Channel' : 'Group') : 'Organization'}
-            photo={room ? room.photo!! : organization!!.photo!!}
-            title={room ? room.title!! : organization!!.title!!}
-            id={room ? room.id!! : organization!!.id!!}
-            membersCount={room ? room.membersCount : organization!!.membersCount!!}
-            description={room ? room.description : organization!!.description!!}
-            invite={invite}
-            inviteLink={inviteLink}
-            noLogin={noLogin}
-            signup={signup}
-        />
+        <XTrack event="invite_landing_view" params={{ invite_type: whereToInvite.toLowerCase() }}>
+            <InviteLandingComponentLayout
+                button={button}
+                whereToInvite={whereToInvite}
+                photo={room ? room.photo!! : organization!!.photo!!}
+                title={room ? room.title!! : organization!!.title!!}
+                id={room ? room.id!! : organization!!.id!!}
+                membersCount={room ? room.membersCount : organization!!.membersCount!!}
+                description={room ? room.description : organization!!.description!!}
+                invite={invite}
+                inviteLink={inviteLink}
+                noLogin={noLogin}
+                signup={signup}
+            />
+        </XTrack>
     );
 };

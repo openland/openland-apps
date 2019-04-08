@@ -13,6 +13,7 @@ import { SilentError } from 'openland-y-forms/errorHandling';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 
 export const signupStyles = StyleSheet.create({
     input: {
@@ -93,10 +94,10 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
 
     render() {
         return (
-            <>
+            <ZTrack event="signup_profile_view">
                 <SHeader title="Full name" />
                 <SignupUserContent {...this.props} />
-            </>
+            </ZTrack>
         );
     }
 }

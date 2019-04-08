@@ -16,6 +16,8 @@ import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
 import glamorous from 'glamorous';
 import { getMessagesWrapperClassName } from './MessagesContainer';
+import { DataSource } from 'openland-y-utils/DataSource';
+import { DataSourceWebMessageItem, buildMessagesDataSource } from '../data/WebMessageItemDataSource';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -98,6 +100,12 @@ const LoadingWrapper = glamorous.div({
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
     private scroller = React.createRef<XScrollViewReversedInner>();
     unshifted = false;
+    private dataSource: DataSource<DataSourceWebMessageItem | DataSourceDateItem>
+
+    constructor(props: MessageListProps) {
+        super(props);
+        this.dataSource = buildMessagesDataSource(props.conversation.dataSource);
+    }
 
     scrollToBottom = () => {
         this.scroller.current!!.scrollToBottom();
@@ -142,7 +150,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         }
     };
 
-    renderMessage = React.memo((i: DataSourceMessageItem | DataSourceDateItem) => {
+    renderMessage = React.memo((i: DataSourceWebMessageItem | DataSourceDateItem) => {
         if (i.type === 'message') {
             return (
                 <MessageComponent
@@ -227,7 +235,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     render() {
         return (
             <DataSourceRender
-                dataSource={this.props.conversation.dataSource}
+                dataSource={this.dataSource}
                 reverce={true}
                 wrapWith={this.dataSourceWrapper}
                 renderItem={this.renderMessage}

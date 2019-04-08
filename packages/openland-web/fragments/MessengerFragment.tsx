@@ -20,9 +20,9 @@ import { XLoader } from 'openland-x/XLoader';
 import { UserInfoContext } from '../components/UserInfo';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
 import { ForwardPlaceholder } from './chat/ForwardPlaceholder';
-import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { useClient } from 'openland-web/utils/useClient';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 export interface MessengerComponentProps {
     id: string;
@@ -47,10 +47,11 @@ const DocumentHeadTitleUpdater = ({ title }: { title: string }) => {
 };
 
 class MessagengerFragmentInner extends React.PureComponent<
-    MessengerComponentLoaderProps & { apollo: OpenApolloClient; id: string }
-> {
+    MessengerComponentLoaderProps & { client: OpenlandClient; id: string }
+    > {
     onChatLostAccess = () => {
-        this.props.apollo.client.reFetchObservableQueries();
+        this.props.client.refetchRoom({ id: this.props.id });
+        // this.props.apollo.client.reFetchObservableQueries();
     };
 
     render() {
@@ -65,8 +66,8 @@ class MessagengerFragmentInner extends React.PureComponent<
             data.room.__typename === 'PrivateRoom' ? data.room : null;
         let pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null =
             sharedRoom &&
-            sharedRoom.pinnedMessage &&
-            sharedRoom.pinnedMessage.__typename === 'GeneralMessage'
+                sharedRoom.pinnedMessage &&
+                sharedRoom.pinnedMessage.__typename === 'GeneralMessage'
                 ? sharedRoom.pinnedMessage
                 : null;
 
@@ -96,7 +97,7 @@ class MessagengerFragmentInner extends React.PureComponent<
                     <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
                         <MessengerRootComponent
                             onChatLostAccess={this.onChatLostAccess}
-                            isActive={isActive}
+                            // isActive={isActive}
                             objectName={title}
                             objectId={
                                 sharedRoom ? sharedRoom.id : privateRoom ? privateRoom.user.id : ''
@@ -126,7 +127,7 @@ class MessagengerFragmentInner extends React.PureComponent<
 export const MessengerFragment = (props: { id: string; isActive: boolean }) => {
     const client = useClient();
 
-    const apollo = React.useContext(YApolloContext)!;
+    // const apollo = React.useContext(YApolloContext)!;
 
     let room = client.useWithoutLoaderRoom({ id: props.id })!!;
     const state: MessagesStateContextProps = React.useContext(MessagesStateContext);
@@ -140,7 +141,7 @@ export const MessengerFragment = (props: { id: string; isActive: boolean }) => {
             state={state}
             user={user}
             data={room}
-            apollo={apollo}
+            client={client}
         />
     );
 };

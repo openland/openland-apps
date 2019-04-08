@@ -22,7 +22,7 @@ interface XCommunityCardProps {
         name: string;
         photo: string | null;
         isMine: boolean;
-        members: any[];
+        membersCount: number;
     };
     path?: string;
     customButton?: any;
@@ -41,7 +41,6 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
 
     render() {
         let { community, path, customButton, customMenu, extraMenu } = this.props;
-        let membersCount = community.members.length;
 
         let button = this.state.isHovered ? (
             typeof customButton === 'undefined' ? (
@@ -126,10 +125,10 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
                             <div className={CommunityTitleInner}>{community.name}</div>
                         </XView>
                         <XView fontSize={13} lineHeight="18px" color="rgba(0, 0, 0, 0.5)">
-                            {TextProfiles.Organization.membersLabel(membersCount)}
+                            {TextProfiles.Organization.membersLabel(community.membersCount)}
                         </XView>
                     </XView>
-                    <XView flexDirection="row" paddingTop={4}>
+                    <XView flexDirection="row" alignItems="center">
                         {button}
                         <XView marginLeft={10}>{menu}</XView>
                     </XView>

@@ -1,6 +1,7 @@
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XStyleFactoryRegistry } from 'react-mental';
 import { css, rehydrate } from 'glamor';
+import { ClientCacheProvider } from 'openland-graphql/ClientCache';
 if (canUseDOM) {
     rehydrate(JSON.parse((window as any).GLAMOR_IDS));
 }
@@ -19,7 +20,6 @@ import * as Sentry from '@sentry/browser';
 import { loadConfig } from 'openland-x-config';
 import { buildConfig } from '../config';
 import { withData } from './root/withData';
-import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { RootErrorBoundary } from './root/RootErrorBoundary';
 import moment from 'moment-timezone';
 import { getClientStorage, SharedStorage } from 'openland-x-utils/SharedStorage';
@@ -30,7 +30,6 @@ import { Routes } from '../routes';
 import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
 
 export default withData(
@@ -98,7 +97,7 @@ export default withData(
                                 hostName={this.props.host}
                                 protocol={this.props.protocol}
                             >
-                                <YApolloProvider client={(this.props.apollo.client as DirectApollolClient).client}>
+                                <ClientCacheProvider>
                                     <OpenlandApiContext.Provider value={this.props.apollo}>
                                         <RootErrorBoundary>
                                             <AppContainer>
@@ -106,7 +105,7 @@ export default withData(
                                             </AppContainer>
                                         </RootErrorBoundary>
                                     </OpenlandApiContext.Provider>
-                                </YApolloProvider>
+                                </ClientCacheProvider>
                             </XRouterProvider>
                         </XStorageProvider>
                     </EnvironmentContext.Provider>

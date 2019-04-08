@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { withConversationSettingsUpdate } from 'openland-web/api/withConversationSettingsUpdate';
 import NotificationsOnIcon from 'openland-icons/notifications/ic-notifications-on.svg';
 import NotificationsOffIcon from 'openland-icons/notifications/ic-notifications-off.svg';
 import { css } from 'linaria';
+import { useClient } from 'openland-web/utils/useClient';
 
 const muteButtonClass = css`
     display: flex;
@@ -17,7 +17,7 @@ const muteButtonClass = css`
 `;
 
 class NotificationSettingsComponent extends React.Component<
-    { mutation: any; settings: { mute: boolean }; roomId: string },
+    { mutation: any; settings: { mute: boolean | null }; roomId: string },
     { settings: { mute: boolean } }
 > {
     handleClick = () => {
@@ -42,13 +42,17 @@ class NotificationSettingsComponent extends React.Component<
     }
 }
 
-export const HeaderMuteButton = withConversationSettingsUpdate(props => (
-    <NotificationSettingsComponent
-        mutation={props.update}
-        settings={(props as any).settings}
-        roomId={(props as any).roomId}
-    />
-)) as React.ComponentType<{
-    settings: { mute: boolean | null };
-    roomId: string;
-}>;
+export const HeaderMuteButton = (props: { settings: { mute: boolean | null }; roomId: string }) => {
+    const client = useClient();
+
+    const update = async ({ variables }: { variables: any }) => {
+        await client.mutateRoomSettingsUpdate(variables);
+    };
+    return (
+        <NotificationSettingsComponent
+            mutation={update}
+            settings={props.settings}
+            roomId={props.roomId}
+        />
+    );
+};

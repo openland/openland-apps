@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { LandingLinks } from '../_links';
 import { GoogleButton, EmailButton } from 'openland-web/pages/init/components/SignComponents';
+import { trackEvent } from 'openland-x-analytics';
 
 let homeFormRootClass = css`
     margin: 0 0 30px;
@@ -46,6 +47,7 @@ export const HomeForm = () => (
         <div className={homeFormBtnClass}>
             <GoogleButton
                 path={LandingLinks.signup + '?google=true'}
+                onClick={() => ( trackEvent('root_signup_google_action') )}
                 text="Sign up with Google"
                 rounded={true}
             />

@@ -3,10 +3,11 @@ import { withApp } from '../../components/withApp';
 import { XHeader } from 'openland-x/XHeader';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
-import { withDebugMails } from '../../api/withDebugMails';
+
 import { DebugEmailType } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XContent } from 'openland-x-layout/XContent';
+import { useClient } from 'openland-web/utils/useClient';
 
 interface DebugMailButtonProps {
     sendMail?: any;
@@ -50,9 +51,13 @@ class DebugMailButtonInner extends React.Component<DebugMailButtonProps, { isSen
     }
 }
 
-const DebugMailButton = withDebugMails(props => (
-    <DebugMailButtonInner {...props as any} />
-)) as React.ComponentType<DebugMailButtonProps>;
+const DebugMailButton = (props: DebugMailButtonProps) => {
+    const client = useClient();
+    const sendMail = async ({ variables }: { variables: any }) => {
+        await client.mutateDebugMails(variables);
+    };
+    return <DebugMailButtonInner {...props as any} sendMail={sendMail} />;
+};
 
 export default withApp('Super Debug', ['super-admin', 'software-developer'], props => (
     <DevToolsScaffold title="Mails">

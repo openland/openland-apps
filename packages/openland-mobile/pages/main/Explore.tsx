@@ -15,6 +15,7 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 
 const RoomsList = () => {
+    let resp = getClient().useAccountSettings({ fetchPolicy: 'cache-and-network' });
     let rooms = getClient().useAvailableRooms().rooms as AvailableRooms_rooms[];
     let featureds = getClient()
         .useRoomSearch({
@@ -39,9 +40,11 @@ const RoomsList = () => {
         .filter(v => !existingRooms.find(v2 => v.id !== v2.id))
         .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0));
 
+    let isSuper = (resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ'));
     return (
         <>
             {/* <ZListItem text="Organizations" path="ExploreOrganizations" /> */}
+            {isSuper && <ZListItem text="Tasks" path="Apps/Tasks" />}
             <ZListItemGroup header="Available Groups" divider={false}>
                 {newRoomsLimited.map(v => (
                     <ZListItem

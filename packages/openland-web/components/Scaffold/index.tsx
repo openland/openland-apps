@@ -18,6 +18,8 @@ import { MobileSidebarContext } from './MobileSidebarContext';
 import { useClient } from 'openland-web/utils/useClient';
 import { IsMobileContext } from './IsMobileContext';
 import { RenderedOnceContext } from './RenderedOnceContext';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { XLoader } from 'openland-x/XLoader';
 
 const CounterWrapper = (props: { count: number }) => (
     <div className="unread-messages-counter">
@@ -96,6 +98,16 @@ class ScaffoldContent extends React.Component<{
                     {bottomOffset !== false && <PageDiv />}
                 </>
             );
+        }
+        if (canUseDOM) {
+            return (
+                <React.Suspense fallback={<XLoader />}>
+                    <XVertical flexGrow={1}>
+                        {children}
+                        {bottomOffset !== false && <PageDiv />}
+                    </XVertical>
+                </React.Suspense>
+            )
         }
         return (
             <XVertical flexGrow={1}>
@@ -185,14 +197,6 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                     <UniversalScaffold
                         topItems={
                             <>
-                                <XWithRole role="feature-non-production">
-                                    <UniversalScafoldMenuItem
-                                        name={TextAppBar.items.feed}
-                                        path="/feed"
-                                        icon={<RoomIcon />}
-                                    />
-                                </XWithRole>
-
                                 <UniversalScafoldMenuItem
                                     name={'Messages'}
                                     path="/mail"
@@ -203,6 +207,14 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                                         </>
                                     }
                                 />
+
+                                <XWithRole role="feature-non-production">
+                                    <UniversalScafoldMenuItem
+                                        name={TextAppBar.items.apps}
+                                        path="/apps"
+                                        icon={<RoomIcon />}
+                                    />
+                                </XWithRole>
 
                                 <UniversalScafoldMenuItem
                                     name={TextAppBar.items.directory}

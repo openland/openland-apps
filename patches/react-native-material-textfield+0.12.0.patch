@@ -18,7 +18,7 @@ index d6c9d64..5a800d9 100644
          break;
      }
 diff --git a/node_modules/react-native-material-textfield/src/components/field/index.js b/node_modules/react-native-material-textfield/src/components/field/index.js
-index 52c1868..39a46ea 100644
+index 52c1868..0a1496b 100644
 --- a/node_modules/react-native-material-textfield/src/components/field/index.js
 +++ b/node_modules/react-native-material-textfield/src/components/field/index.js
 @@ -298,7 +298,7 @@ export default class TextField extends PureComponent {
@@ -69,11 +69,18 @@ index 52c1868..39a46ea 100644
  
        ...(props.multiline?
 -        { height: 'web' === Platform.OS ? 'auto' : labelHeight + inputContainerPadding + height }:
-+        { height: 'web' === Platform.OS ? 'auto' : labelHeight + 4 + height }:
++        { height: 'web' === Platform.OS ? 'auto' : labelHeight + inputContainerPadding + height + 4 }:
          { height: labelHeight + inputContainerPadding + fontSize * 1.5 }),
      };
  
-@@ -418,7 +419,7 @@ export default class TextField extends PureComponent {
+@@ -412,13 +413,14 @@ export default class TextField extends PureComponent {
+       ...(props.multiline?
+         {
+           height: fontSize * 1.5 + height,
++          paddingBottom: 0,
+ 
+           ...Platform.select({
+             ios: { top: -1 },
              android: { textAlignVertical: 'top' },
            }),
          }:

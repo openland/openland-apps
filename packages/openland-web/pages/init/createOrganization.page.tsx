@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withApp } from '../../components/withApp';
-import { withCreateOrganization } from '../../api/withCreateOrganization';
 import { withUserInfo } from '../../components/UserInfo';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
@@ -12,32 +11,46 @@ import {
     CreateOrganizationFormInner,
 } from './components/SignComponents';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { withExploreOrganizations } from '../../api/withExploreOrganizations';
 import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks';
 import { withRouter } from 'openland-x-routing/withRouter';
+import { useClient } from 'openland-web/utils/useClient';
+import { XLoader } from 'openland-x/XLoader';
 
-const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
+const OrganizationsSelectorOptionsFetcher = (props: {
+    children: any;
+    variables: {
+        all: boolean;
+        prefix: string;
+        sort: string;
+    };
+}) => {
+    const client = useClient();
+
+    const data = client.useExploreOrganizations(props.variables, {
+        fetchPolicy: 'network-only',
+    });
+
     const children = props.children as Function;
 
     return (
         <>
             {children({
                 data:
-                    !props.data || !props.data.items
+                    !data || !data.items
                         ? []
-                        : props.data.items.edges
-                            .filter(({ node }: any) => {
-                                return node.status === 'activated';
-                            })
-                            .map(({ node: { id, name } }: any) => {
-                                return { value: id, label: name };
-                            }),
+                        : data.items.edges
+                              .filter(({ node }: any) => {
+                                  return node.status === 'activated';
+                              })
+                              .map(({ node: { id, name } }: any) => {
+                                  return { value: id, label: name };
+                              }),
                 loading: false,
             })}
         </>
     );
-});
+};
 
 class OrganizationsSelectorOptionsFetcherInner extends React.Component<
     {
@@ -50,7 +63,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
     {
         lastLoadedOrganizations: any;
     }
-    > {
+> {
     componentWillReceiveProps(nextProps: any) {
         this.setState({
             lastLoadedOrganizations: nextProps.organizations,
@@ -69,7 +82,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
                 onPrefixChanges={onPrefixChanges}
                 roomView={roomView}
                 defaultAction={async (data: any) => {
-                    let res = await createOrganization({
+                    let result = await createOrganization({
                         variables: {
                             input: {
                                 personal: false,
@@ -78,7 +91,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
                             },
                         },
                     });
-                    switchOrganization(res.data.organization.id, router.query.redirect);
+                    switchOrganization(result.organization.id, router.query.redirect);
                     await delayForewer();
                 }}
             />
@@ -89,7 +102,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
 class CreateOrganizationPrefixHolderRoot extends React.Component<
     any,
     { organizationPrefix: string; lastLoadedOrganizations: any[] }
-    > {
+> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -127,24 +140,27 @@ class CreateOrganizationPrefixHolderRoot extends React.Component<
 
         return (
             <Container pageMode="CreateOrganization">
-                <OrganizationsSelectorOptionsFetcher
-                    variables={{
-                        all: true,
-                        prefix: this.state.organizationPrefix,
-                        sort: JSON.stringify([
-                            { featured: { order: 'desc' } },
-                            { createdAt: { order: 'desc' } },
-                        ]),
-                    }}
-                >
-                    {this.renderOrganizationsSelectorOptionsFetcherInner}
-                </OrganizationsSelectorOptionsFetcher>
+                <React.Suspense fallback={<XLoader />}>
+                    <OrganizationsSelectorOptionsFetcher
+                        variables={{
+                            all: true,
+                            prefix: this.state.organizationPrefix,
+                            sort: JSON.stringify([
+                                { featured: { order: 'desc' } },
+                                { createdAt: { order: 'desc' } },
+                            ]),
+                        }}
+                    >
+                        {this.renderOrganizationsSelectorOptionsFetcherInner}
+                    </OrganizationsSelectorOptionsFetcher>
+                </React.Suspense>
             </Container>
         );
     }
 }
 
 const CreateOrganizationPrefixHolder = (props: any) => {
+    const client = useClient();
     let roomView = Cookie.get('x-openland-invite') || false;
     const [isMobile] = useIsMobile();
 
@@ -152,12 +168,20 @@ const CreateOrganizationPrefixHolder = (props: any) => {
         roomView = false;
     }
 
-    return <CreateOrganizationPrefixHolderRoot {...props} roomView={roomView} />;
+    const createOrganization = async ({ variables }: { variables: any }) => {
+        return await client.mutateCreateOrganization(variables);
+    };
+
+    return (
+        <CreateOrganizationPrefixHolderRoot
+            {...props}
+            roomView={roomView}
+            createOrganization={createOrganization}
+        />
+    );
 };
 
-export const CreateOrganizationForm = withCreateOrganization(
-    withRouter(withUserInfo(CreateOrganizationPrefixHolder)),
-);
+export const CreateOrganizationForm = withRouter(withUserInfo(CreateOrganizationPrefixHolder));
 
 export default withApp('Create Organization', 'viewer', props => {
     if (!canUseDOM) {

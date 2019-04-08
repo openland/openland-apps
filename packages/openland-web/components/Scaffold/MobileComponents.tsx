@@ -278,7 +278,7 @@ const MobileSidebar = ({ topItems, menu }: { topItems: any; menu: any }) => {
                 <XView width="100%">
                     <MobileNavigationContainer>
                         <InvitesGlobalModal targetQuery="invite_global" target={null} />
-                        <CreateOrganization isMobile={true} />
+                        <CreateOrganization />
                         <MobileUserProfile onClick={close} />
                         {topItems}
                         <XView

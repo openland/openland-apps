@@ -15,7 +15,6 @@ import {
 import { XDate } from 'openland-x/XDate';
 import { MessageTextComponent } from 'openland-web/components/messenger/message/content/MessageTextComponent';
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
-import { withUnpinMessage } from 'openland-web/api/withPinMessage';
 import { XMutation } from 'openland-x/XMutation';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
@@ -28,12 +27,8 @@ import AttachIcon from 'openland-icons/ic-attach-doc-blue.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { MessageReplyComponent } from 'openland-web/components/messenger/message/content/MessageReplyComponent';
 import { XLink } from 'openland-x/XLink';
-
-interface UnpinButtonProps {
-    variables: {
-        chatId: string;
-    };
-}
+import { useClient } from 'openland-web/utils/useClient';
+import { MutationFunc } from 'react-apollo';
 
 const ReplyMessageWrapper = Glamorous.div({
     position: 'relative',
@@ -71,19 +66,29 @@ const ImageClassName = css`
     object-fit: contain;
 `;
 
-const UnpinButton = withUnpinMessage(props => (
-    <XMutation mutation={props.unpinMessage}>
-        <XView
-            marginRight={10}
-            color="rgba(0, 0, 0, 0.5)"
-            fontSize={13}
-            marginTop={-4}
-            cursor="pointer"
-        >
-            Unpin
-        </XView>
-    </XMutation>
-)) as React.ComponentType<UnpinButtonProps>;
+const UnpinButton = (props: {
+    variables: {
+        chatId: string;
+    };
+}) => {
+    const client = useClient();
+
+    const unpinMessage = async () => await client.mutateUnpinMessage(props.variables);
+
+    return (
+        <XMutation mutation={unpinMessage as MutationFunc<{}>}>
+            <XView
+                marginRight={10}
+                color="rgba(0, 0, 0, 0.5)"
+                fontSize={13}
+                marginTop={-4}
+                cursor="pointer"
+            >
+                Unpin
+            </XView>
+        </XMutation>
+    );
+};
 
 type attachmentType = Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
 
@@ -370,7 +375,7 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
                 height={60}
                 flexShrink={0}
                 flexGrow={1}
-                paddingHorizontal={isMobile ? 20 : 74}
+                paddingHorizontal={isMobile ? 20 : 80}
                 alignItems="center"
                 flexDirection="row"
                 justifyContent="space-between"

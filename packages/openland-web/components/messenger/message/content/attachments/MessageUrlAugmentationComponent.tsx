@@ -24,7 +24,7 @@ const LinkContentWrapperClassName = css`
     width: 100%;
     background-color: #f7f7f7;
     border-radius: 10px;
-    padding: 16px 20px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
     margin-top: 10px;
@@ -55,23 +55,23 @@ const SplitTitleClassName = css`
 const DeleteButton = makeNavigable(
     Glamorous.div<NavigableChildProps>(props => ({
         position: 'absolute',
-        right: 0,
-        top: 0,
-        width: 32,
-        height: 32,
+        right: 12,
+        top: 12,
+        width: 20,
+        height: 20,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
-        '& > svg': {
+        '& svg': {
             width: 15,
             height: 15,
         },
-        '& > svg > path': {
+        '& svg > path': {
             fill: 'rgba(0, 0, 0, 0.3)',
         },
-        '&:hover & > svg > path': {
-            fill: 'rgba(0, 0, 0, 0.4)',
+        '&:hover svg > path': {
+            fill: 'rgba(0, 0, 0, 0.7)',
         },
     })),
 );
@@ -385,7 +385,11 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             src={image.url}
                                         />
                                     ) : (
-                                        <img width={40} height={40} src="/static/img/img-thn@3x.png" />
+                                        <img
+                                            width={40}
+                                            height={40}
+                                            src="/static/img/img-thn@3x.png"
+                                        />
                                     )}
                                 </XView>
                             )}

@@ -12,7 +12,6 @@ import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
 import {
     ConversationEngine,
-    DataSourceMessageItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
 import {
@@ -25,11 +24,12 @@ import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContextProps } from '../MessagesStateContext';
 import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
-import { File, EditPostProps } from '../../../fragments/MessengerRootComponent';
+import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
 import { DesktopMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
+import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
     flexShrink: 0,
@@ -119,7 +119,7 @@ const IconButton = Glamorous.div({
 });
 
 export interface MessageComponentProps {
-    message: DataSourceMessageItem;
+    message: DataSourceWebMessageItem;
     conversation: ConversationEngine;
     me?: UserShort | null;
     conversationType?: SharedRoomKind | 'PRIVATE';

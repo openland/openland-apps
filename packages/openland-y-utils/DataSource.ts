@@ -1,4 +1,18 @@
 import { WatchSubscription } from './Watcher';
+import { Queue } from 'openland-graphql/utils/Queue';
+
+async function throttle() {
+    return new Promise((r) => { setTimeout(r, 10); });
+}
+
+async function throttledMap<T, V>(src: T[], map: (item: T) => V): Promise<V[]> {
+    let res: V[] = [];
+    for (let s of src) {
+        await throttle();
+        res.push(map(s));
+    }
+    return res;
+}
 
 export interface DataSourceItem {
     key: string;
@@ -225,5 +239,236 @@ export class DataSource<T extends DataSourceItem> {
             throw Error('Datasource already destroyed');
         }
         this.destroyed = true;
+    }
+
+    map<T2 extends DataSourceItem>(map: (src: T) => T2) {
+        let res = new DataSource<T2>(() => {
+            this.needMore();
+        });
+
+        if (this.inited) {
+            res.initialize(this.data.map(map), this.completed);
+        }
+
+        this.watch({
+            onDataSourceInited(data: T[], completed: boolean) {
+                res.initialize(data.map(map), completed);
+            },
+            onDataSourceItemAdded(item: T, index: number) {
+                res.addItem(map(item), index);
+            },
+            onDataSourceItemUpdated(item: T, index: number) {
+                res.updateItem(map(item));
+            },
+            onDataSourceItemRemoved(item: T, index: number) {
+                res.removeItem(map(item).key);
+            },
+            onDataSourceItemMoved(item: T, fromIndex: number, toIndex: number) {
+                res.moveItem(map(item).key, toIndex);
+            },
+            onDataSourceLoadedMore(data: T[], completed: boolean) {
+                res.loadedMore(data.map(map), completed);
+            },
+            onDataSourceCompleted() {
+                res.complete();
+            }
+        });
+
+        return res;
+    }
+
+    throttledMap<T2 extends DataSourceItem>(map: (src: T) => T2) {
+        let res = new DataSource<T2>(() => {
+            this.needMore();
+        });
+
+        let queue = new Queue();
+        (async () => {
+            let c = 0;
+            while (true) {
+                let s = await queue.get();
+                if (c++ > 3) {
+                    await throttle();
+                    c = 0;
+                }
+                await s();
+            }
+        })();
+
+        function schedule(callback: () => any) {
+            queue.post(callback);
+        }
+
+        if (this.inited) {
+            schedule(async () => {
+                res.initialize(await throttledMap(this.data, map), this.completed);
+            });
+        }
+
+        this.watch({
+            onDataSourceInited(data: T[], completed: boolean) {
+                schedule(async () => {
+                    res.initialize(await throttledMap(data, map), completed);
+                });
+            },
+            onDataSourceItemAdded(item: T, index: number) {
+                schedule(async () => {
+                    res.addItem(map(item), index);
+                });
+            },
+            onDataSourceItemUpdated(item: T, index: number) {
+                schedule(async () => {
+                    res.updateItem(map(item));
+                });
+            },
+            onDataSourceItemRemoved(item: T, index: number) {
+                schedule(async () => {
+                    res.removeItem(map(item).key);
+                });
+            },
+            onDataSourceItemMoved(item: T, fromIndex: number, toIndex: number) {
+                schedule(async () => {
+                    res.moveItem(map(item).key, toIndex);
+                });
+            },
+            onDataSourceLoadedMore(data: T[], completed: boolean) {
+                schedule(async () => {
+                    res.loadedMore(await throttledMap(data, map), completed);
+                });
+            },
+            onDataSourceCompleted() {
+                schedule(async () => {
+                    res.complete();
+                });
+            }
+        });
+
+        return res;
+    }
+
+    batched(): DataSource<T> {
+
+        let res = new DataSource<T>(() => {
+            this.needMore();
+        });
+
+        if (this.inited) {
+            res.initialize(this.data, this.completed);
+        }
+
+        let batch: {
+            op: 'added' | 'updated' | 'removed' | 'moved'
+            item: T,
+            index: number,
+            toIndex?: number,
+        }[] = [];
+
+        let batchScheduled = false;
+        let timer: any;
+
+        const doDlush = () => {
+            batchScheduled = false;
+            let latestBatch = batch;
+            batch = [];
+
+            console.log(latestBatch);
+
+            let removed: { [key: string]: boolean } = {};
+            let added: { [key: string]: boolean } = {};
+            let updated: { [key: string]: boolean } = {};
+            // let updated: { [key: string]: boolean } = {};
+
+            let values: { [key: string]: T } = {};
+
+            // Collect values
+            for (let b of latestBatch) {
+                if (b.op === 'added') {
+                    values[b.item!.key] = b.item!
+                    added[b.item!.key] = true
+                    removed[b.item!.key] = false
+                    updated[b.item!.key] = false
+                } else if (b.op === 'removed') {
+                    if (added[b.item!.key]) {
+                        added[b.item!.key] = false;
+                    } else {
+                        removed[b.item!.key] = true;
+                        added[b.item!.key] = false;
+                    }
+                } else if (b.op === 'updated') {
+                    values[b.item!.key] = b.item!
+                    if (!added[b.item!.key]) {
+                        added[b.item!.key] = false
+                        updated[b.item!.key] = true
+                        removed[b.item!.key] = false
+                    }
+                }
+            }
+
+            // Apply changes
+            let processed: { [key: string]: boolean } = {};
+            for (let b of latestBatch) {
+                if (b.op === 'added') {
+                    processed[b.item.key] = true;
+                    res.addItem(b.item, b.index);
+                } else if (b.op === 'moved') {
+                    res.moveItem(b.item.key, b.toIndex!);
+                } else if (b.op === 'updated') {
+                    if (!processed[b.item.key] && updated[b.item.key]) {
+                        processed[b.item.key] = true;
+                        res.updateItem(b.item);
+                    }
+                } else if (b.op === 'removed') {
+                    if (removed[b.item.key]) {
+                        processed[b.item.key] = true;
+                        res.removeItem(b.item.key);
+                    }
+                }
+            }
+        }
+
+        function scheduleFlush() {
+            if (!batchScheduled) {
+                batchScheduled = true;
+                timer = setTimeout(() => doDlush(), 10);
+            }
+        }
+
+        this.watch({
+            onDataSourceInited(data: T[], completed: boolean) {
+                res.initialize(data, completed);
+            },
+            onDataSourceItemAdded(item: T, index: number) {
+                batch.push({ op: 'added', item, index });
+                scheduleFlush();
+            },
+            onDataSourceItemUpdated(item: T, index: number) {
+                batch.push({ op: 'updated', item, index });
+                scheduleFlush();
+            },
+            onDataSourceItemRemoved(item: T, index: number) {
+                batch.push({ op: 'removed', item, index });
+                scheduleFlush();
+            },
+            onDataSourceItemMoved(item: T, fromIndex: number, toIndex: number) {
+                batch.push({ op: 'moved', item, index: fromIndex, toIndex });
+                scheduleFlush();
+            },
+            onDataSourceLoadedMore(data: T[], completed: boolean) {
+                if (batchScheduled) {
+                    clearTimeout(timer);
+                    doDlush();
+                }
+                res.loadedMore(data, completed);
+            },
+            onDataSourceCompleted() {
+                if (batchScheduled) {
+                    clearTimeout(timer);
+                    doDlush();
+                }
+                res.complete();
+            }
+        });
+
+        return res;
     }
 }

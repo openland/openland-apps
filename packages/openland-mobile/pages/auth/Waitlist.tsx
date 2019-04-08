@@ -9,6 +9,7 @@ import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { joinInviteIfHave } from 'openland-mobile/utils/internalLnksResolver';
 import { ZText } from 'openland-mobile/components/ZText';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
+import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 
 export class WaitlistComponent extends React.PureComponent<PageProps> {
 
@@ -25,7 +26,7 @@ export class WaitlistComponent extends React.PureComponent<PageProps> {
 
     render() {
         return (
-            <>
+            <ZTrack event="waitlist_view">
                 <SHeader />
                 <SHeaderButton title="Sign out" onPress={() => this.handleLogout()} />
                 <ASSafeAreaView flexGrow={1}>
@@ -42,7 +43,7 @@ export class WaitlistComponent extends React.PureComponent<PageProps> {
                     </View>
                     <Image source={require('assets/img-waitlist.png')} style={{ width: Dimensions.get('window').width, height: 320 }} />
                 </ASSafeAreaView>
-            </>
+            </ZTrack>
         );
     }
 }

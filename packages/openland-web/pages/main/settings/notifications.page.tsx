@@ -9,10 +9,7 @@ import { XFormError } from 'openland-x-forms/XFormError';
 import { XButton } from 'openland-x/XButton';
 import { XSelect } from 'openland-x/XSelect';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import {
-    NotificationMessages,
-    Settings_settings,
-} from 'openland-api/Types';
+import { NotificationMessages, Settings_settings } from 'openland-api/Types';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
 import { XModal, XModalFooter } from 'openland-x-modal/XModal';
@@ -62,7 +59,7 @@ const InstructionItem = css`
 class BrowserNotifications extends React.Component<
     {},
     { notificationsState: AppNotifcationsState }
-    > {
+> {
     constructor(props: {}) {
         super(props);
 
@@ -244,7 +241,7 @@ interface NotificationsSettingsPageState {
 class NotificationsSettingsPageInner extends React.Component<
     NotificationsSettingsPageProps,
     NotificationsSettingsPageState
-    > {
+> {
     constructor(props: NotificationsSettingsPageProps) {
         super(props);
 
@@ -422,14 +419,21 @@ class NotificationsSettingsPageInner extends React.Component<
     }
 }
 
-export default withApp('Notifications', 'viewer', () => {
-    if (!canUseDOM) {
-        return null;
-    }
-    const client = useClient();
-    const settings = client.useSettings();
-    return <NotificationsSettingsPageInner settings={settings.settings} client={client} />
-}
+export default withApp(
+    'Notifications',
+    'viewer',
+    () => {
+        if (!canUseDOM) {
+            return null;
+        }
+        const client = useClient();
+        const settings = client.useWithoutLoaderSettings();
+
+        if (!settings) {
+            return null;
+        }
+        return <NotificationsSettingsPageInner settings={settings.settings} client={client} />;
+    },
 
     // withSettings(
     //     withQueryLoader(props => (

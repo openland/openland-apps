@@ -12,6 +12,9 @@ import { UserError, NamedError } from 'openland-y-forms/errorHandling';
 import { ShowAuthError } from './ShowAuthError';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
+import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { trackEvent } from 'openland-mobile/analytics';
+import { TrackAuthError } from './TrackAuthError';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
@@ -88,7 +91,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
 
     render() {
         return (
-            <>
+            <ZTrack event="signup_email_view">
                 <SHeader title="Email" />
                 <SHeaderButton title="Next" onPress={this.submitForm} />
 
@@ -121,7 +124,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                         onSubmitEditing={this.submitForm}
                     />
                 </ZForm>
-            </>
+            </ZTrack>
         );
     }
 }
@@ -150,6 +153,8 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
     }
 
     private resendCode = async () => {
+        trackEvent('signup_code_resend_action');
+
         await requestActivationCode();
 
         this.ref.current!.setField('fields.code');
@@ -157,7 +162,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
 
     render() {
         return (
-            <>
+            <ZTrack event="signup_code_view">
                 <SHeader title="Confirm email" />
                 <SHeaderButton title="Next" onPress={this.submitForm} />
                 <ZForm
@@ -185,6 +190,8 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                         await AppStorage.setToken(res2.accessToken);
                     }}
                     onError={(e: Error) => {
+                        TrackAuthError(e);
+
                         if (e.name === 'code_expired') {
                             Alert.builder()
                                 .title('This code has expired')
@@ -215,7 +222,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                         onSubmitEditing={this.submitForm}
                     />
                 </ZForm>
-            </>
+            </ZTrack>
         );
     }
 }

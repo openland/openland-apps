@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { UserSelect } from '../../api/UserSelect';
-import { withSuperAdminAdd } from '../../api/withSuperAdminAdd';
-import { withSuperAdminRemove } from '../../api/withSuperAdminRemove';
 import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
 import { XTable } from 'openland-x/XTable';
@@ -11,12 +9,26 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { useClient } from 'openland-web/utils/useClient';
+import { SuperAdminRole } from 'openland-api/Types';
+import { MutationFunc } from 'react-apollo';
 
-const AddSuperAdminForm = withSuperAdminAdd(props => {
+const AddSuperAdminForm = () => {
+    const client = useClient();
+    const mutate = async ({
+        variables: { userId, role },
+    }: {
+        variables: { userId: string; role: SuperAdminRole };
+    }) => {
+        await client.mutateSuperAdminAdd({
+            userId,
+            role,
+        });
+    };
+
     return (
         <XModalForm
             title="Add Super Admin"
-            submitMutation={props.add}
+            submitMutation={mutate as MutationFunc<{}>}
             mutationDirect={true}
             actionName="Add"
             target={<XButton text="Add New" />}
@@ -39,13 +51,20 @@ const AddSuperAdminForm = withSuperAdminAdd(props => {
             </XFormField>
         </XModalForm>
     );
-});
+};
 
-const RemoveSuperAdminForm = withSuperAdminRemove(props => {
+const RemoveSuperAdminForm = () => {
+    const client = useClient();
+
+    const mutate = async ({ variables: { userId } }: { variables: { userId: string } }) =>
+        await client.mutateSuperAdminRemove({
+            userId,
+        });
+
     return (
         <XModalForm
             title="Remove Super Admin"
-            submitMutation={props.remove}
+            submitMutation={mutate as MutationFunc<{}>}
             mutationDirect={true}
             actionName="Remove"
             actionStyle="danger"
@@ -56,17 +75,14 @@ const RemoveSuperAdminForm = withSuperAdminRemove(props => {
             </XFormField>
         </XModalForm>
     );
-});
+};
 
 export default withApp('Super Admins', 'super-admin', () => {
     const client = useClient();
     const superAdmins = client.useSuperAdmins().superAdmins;
     return (
         <DevToolsScaffold title="Super Admins">
-            <XHeader
-                text="Super Admins"
-                description={superAdmins.length + ' total'}
-            >
+            <XHeader text="Super Admins" description={superAdmins.length + ' total'}>
                 <AddSuperAdminForm />
                 <RemoveSuperAdminForm />
             </XHeader>

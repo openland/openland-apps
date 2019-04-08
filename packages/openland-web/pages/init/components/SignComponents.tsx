@@ -19,6 +19,8 @@ import { XText } from 'openland-x/XText';
 import { XPopper } from 'openland-x/XPopper';
 import IcInfo from 'openland-icons/ic-info.svg';
 import { useIsMobile } from 'openland-web/hooks';
+import { trackEvent } from 'openland-x-analytics';
+import { XTrack } from 'openland-x-analytics/XTrack';
 
 export const SubTitle = Glamorous.div({
     textAlign: 'center',
@@ -826,7 +828,7 @@ export const WebSignUpAuthMechanism = ({
             <Title roomView={false}>{title}</Title>
             <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={52} width={280}>
-                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
+                <GoogleButton rounded onClick={loginWithGoogle()} text={googleButtonText} />
                 <Separator />
                 <EmailButton rounded onClick={loginWithEmail} text={emailText} />
             </ButtonsWrapper>
@@ -861,6 +863,7 @@ const ResendButton = Glamorous(XButton)({
 });
 
 type ActivationCodeProps = {
+    signin: boolean;
     emailWasResend: boolean;
     emailSending: boolean;
     backButtonClick: (event?: React.MouseEvent<any>) => void;
@@ -878,6 +881,7 @@ const InputWrapperDesctopClassName = css`
 `;
 
 export const WebSignUpActivationCode = ({
+    signin,
     backButtonClick,
     resendCodeClick,
     emailSendedTo,
@@ -982,6 +986,7 @@ export const WebSignUpActivationCode = ({
 };
 
 export const RoomActivationCode = ({
+    signin,
     emailWasResend,
     emailSending,
     backButtonClick,
@@ -1242,85 +1247,88 @@ export const CreateProfileFormInner = (props: {
     defaultAction: (data: any) => any;
 }) => {
     const { roomView, prefill, defaultAction } = props;
-    const MyTitle = roomView ? Title : Title;
 
     return (
-        <ContentWrapper noPadding={true}>
-            <MyTitle roomView={roomView}>{InitTexts.create_profile.title}</MyTitle>
-            <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
-            <ButtonsWrapper marginTop={40} width="100%" marginBottom={80}>
-                <XForm
-                    defaultData={{
-                        input: {
-                            firstName: (prefill && prefill.firstName) || '',
-                            lastName: (prefill && prefill.lastName) || '',
-                        },
-                    }}
-                    validate={{
-                        input: {
-                            firstName: [
-                                {
-                                    rule: (value: string) => value !== '',
-                                    errorMessage: InitTexts.auth.firstNameIsEmptyError,
-                                },
-                            ],
-                        },
-                    }}
-                    defaultAction={defaultAction}
-                    defaultLayout={false}
-                >
-                    <XFormError onlyGeneralErrors={true} width={472} />
-                    <XFormLoadingContent>
-                        <XVertical alignItems="center">
-                            <XAvatarUploadWrapper
-                                field="input.photoRef"
-                                dataTestId="photo"
-                                size="default"
-                                initialUrl={prefill ? prefill.picture : undefined}
-                            />
-
-                            <XView>
-                                <XFormField2 field="input.firstName">
-                                    {({ showError }: { showError: boolean }) => (
-                                        <>
-                                            <XInput
-                                                invalid={showError}
-                                                field="input.firstName"
-                                                size="large"
-                                                title="First name"
-                                                dataTestId="first-name"
-                                                flexGrow={1}
-                                            />
-
-                                            {showError && <XFormError field="input.firstName" />}
-                                        </>
-                                    )}
-                                </XFormField2>
-                            </XView>
-
-                            <XView>
-                                <XInput
-                                    field="input.lastName"
-                                    size="large"
-                                    title="Last name"
-                                    dataTestId="last-name"
-                                    flexGrow={1}
+        <XTrack event="signup_profile_view">
+            <ContentWrapper noPadding={true}>
+                <Title roomView={roomView}>{InitTexts.create_profile.title}</Title>
+                <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
+                <ButtonsWrapper marginTop={40} width="100%" marginBottom={80}>
+                    <XForm
+                        defaultData={{
+                            input: {
+                                firstName: (prefill && prefill.firstName) || '',
+                                lastName: (prefill && prefill.lastName) || '',
+                            },
+                        }}
+                        validate={{
+                            input: {
+                                firstName: [
+                                    {
+                                        rule: (value: string) => value !== '',
+                                        errorMessage: InitTexts.auth.firstNameIsEmptyError,
+                                    },
+                                ],
+                            },
+                        }}
+                        defaultAction={defaultAction}
+                        defaultLayout={false}
+                    >
+                        <XFormError onlyGeneralErrors={true} width={472} />
+                        <XFormLoadingContent>
+                            <XVertical alignItems="center">
+                                <XAvatarUploadWrapper
+                                    field="input.photoRef"
+                                    dataTestId="photo"
+                                    size="default"
+                                    initialUrl={prefill ? prefill.picture : undefined}
                                 />
-                            </XView>
 
-                            <ButtonsWrapper marginBottom={84}>
-                                <XFormSubmitWrapper
-                                    dataTestId="continue-button"
-                                    style="primary"
-                                    text={InitTexts.create_profile.continue}
-                                    size="large"
-                                />
-                            </ButtonsWrapper>
-                        </XVertical>
-                    </XFormLoadingContent>
-                </XForm>
-            </ButtonsWrapper>
-        </ContentWrapper>
+                                <XView>
+                                    <XFormField2 field="input.firstName">
+                                        {({ showError }: { showError: boolean }) => (
+                                            <>
+                                                <XInput
+                                                    invalid={showError}
+                                                    field="input.firstName"
+                                                    size="large"
+                                                    title="First name"
+                                                    dataTestId="first-name"
+                                                    flexGrow={1}
+                                                />
+
+                                                {showError && (
+                                                    <XFormError field="input.firstName" />
+                                                )}
+                                            </>
+                                        )}
+                                    </XFormField2>
+                                </XView>
+
+                                <XView>
+                                    <XInput
+                                        field="input.lastName"
+                                        size="large"
+                                        title="Last name"
+                                        dataTestId="last-name"
+                                        flexGrow={1}
+                                    />
+                                </XView>
+
+                                <ButtonsWrapper marginBottom={84}>
+                                    <XFormSubmitWrapper
+                                        dataTestId="continue-button"
+                                        style="primary"
+                                        text={InitTexts.create_profile.continue}
+                                        size="large"
+                                    />
+                                </ButtonsWrapper>
+                            </XVertical>
+                        </XFormLoadingContent>
+                    </XForm>
+                </ButtonsWrapper>
+            </ContentWrapper>
+        </XTrack>
     );
 };
 
@@ -1364,108 +1372,118 @@ export class CreateOrganizationFormInner extends React.Component<
     render() {
         const { roomView, defaultAction } = this.props;
 
-        const MyTitle = roomView ? Title : Title;
-
         return (
-            <ContentWrapper>
-                <MyTitle roomView={roomView} className="title">
-                    {InitTexts.create_organization.title}
-                </MyTitle>
-                <SubTitle className="subtitle">{InitTexts.create_organization.subTitle}</SubTitle>
-                <XForm
-                    defaultAction={(data: any) => {
-                        defaultAction({
-                            name: data.input.organization,
-                        });
-                    }}
-                    defaultData={{
-                        input: {
-                            organization: '',
-                        },
-                    }}
-                    validate={{
-                        input: {
-                            organization: [
-                                {
-                                    rule: (value: string) => value !== '',
-                                    errorMessage: InitTexts.auth.organizationIsEmptyError,
-                                },
-                            ],
-                        },
-                    }}
-                    defaultLayout={false}
-                >
-                    <XVertical separator="large">
-                        <XFormError width={472} />
-                        <XFormLoadingContent>
-                            <ButtonsWrapper marginBottom={84} marginTop={34}>
-                                <div>
-                                    <XVertical alignItems="center" separator="none">
-                                        <XFormField2 field="input.organization">
-                                            {({ showError }: { showError: boolean }) => (
-                                                <XVertical separator="none" alignItems="center">
-                                                    <>
-                                                        <XHorizontal
-                                                            alignItems="center"
-                                                            separator="none"
-                                                        >
-                                                            <XInput
-                                                                invalid={showError}
-                                                                field="input.organization"
-                                                                size="large"
-                                                                title="Organization name"
-                                                                dataTestId="organization"
-                                                                flexGrow={1}
-                                                                className={
-                                                                    organizationInputClassName
-                                                                }
-                                                            />
-                                                            <XPopper
-                                                                content={
-                                                                    <InfoText>
-                                                                        To register as an
-                                                                        individual, simply enter
-                                                                        your name
-                                                                    </InfoText>
-                                                                }
-                                                                showOnHover={true}
-                                                                placement="top"
-                                                                style="dark"
+            <XTrack event="signup_org_view">
+                <ContentWrapper>
+                    <Title roomView={roomView} className="title">
+                        {InitTexts.create_organization.title}
+                    </Title>
+                    <SubTitle className="subtitle">
+                        {InitTexts.create_organization.subTitle}
+                    </SubTitle>
+                    <XForm
+                        defaultAction={(data: any) => {
+                            defaultAction({
+                                name: data.input.organization,
+                            });
+                        }}
+                        defaultData={{
+                            input: {
+                                organization: '',
+                            },
+                        }}
+                        validate={{
+                            input: {
+                                organization: [
+                                    {
+                                        rule: (value: string) => value !== '',
+                                        errorMessage: InitTexts.auth.organizationIsEmptyError,
+                                    },
+                                ],
+                            },
+                        }}
+                        defaultLayout={false}
+                    >
+                        <XVertical separator="large">
+                            <XFormError width={472} />
+                            <XFormLoadingContent>
+                                <ButtonsWrapper marginBottom={84} marginTop={34}>
+                                    <div>
+                                        <XVertical alignItems="center" separator="none">
+                                            <XFormField2 field="input.organization">
+                                                {({ showError }: { showError: boolean }) => (
+                                                    <XVertical separator="none" alignItems="center">
+                                                        <>
+                                                            <XHorizontal
+                                                                alignItems="center"
+                                                                separator="none"
                                                             >
-                                                                <XIconWrapper>
-                                                                    <IcInfo />
-                                                                </XIconWrapper>
-                                                            </XPopper>
-                                                        </XHorizontal>
-                                                        {showError && (
-                                                            <div
-                                                                className={cx(
-                                                                    organizationInputClassName,
-                                                                    organizationInputErrorClassName,
-                                                                )}
-                                                            >
-                                                                <XFormError field="input.organization" />
-                                                            </div>
-                                                        )}
-                                                    </>
-                                                </XVertical>
-                                            )}
-                                        </XFormField2>
-                                        <XView marginTop={50}>
-                                            <XFormSubmit
-                                                dataTestId="continue-button"
-                                                style="primary"
-                                                text={InitTexts.create_organization.continue}
-                                                size="large"
-                                            />
-                                        </XView>
-                                    </XVertical>
-                                </div>
-                            </ButtonsWrapper>
-                        </XFormLoadingContent>
-                    </XVertical>
-                </XForm>
-            </ContentWrapper>
+                                                                <XInput
+                                                                    invalid={showError}
+                                                                    field="input.organization"
+                                                                    size="large"
+                                                                    title="Organization name"
+                                                                    dataTestId="organization"
+                                                                    flexGrow={1}
+                                                                    className={
+                                                                        organizationInputClassName
+                                                                    }
+                                                                />
+                                                                <XPopper
+                                                                    content={
+                                                                        <InfoText>
+                                                                            To register as an
+                                                                            individual, simply enter
+                                                                            your name
+                                                                        </InfoText>
+                                                                    }
+                                                                    showOnHover={true}
+                                                                    placement="top"
+                                                                    style="dark"
+                                                                >
+                                                                    <XIconWrapper>
+                                                                        <IcInfo />
+                                                                    </XIconWrapper>
+                                                                </XPopper>
+                                                            </XHorizontal>
+                                                            {showError
+                                                                ? () => {
+                                                                      trackEvent(
+                                                                          'signup_org_error',
+                                                                      );
+
+                                                                      return (
+                                                                          <div
+                                                                              className={cx(
+                                                                                  organizationInputClassName,
+                                                                                  organizationInputErrorClassName,
+                                                                              )}
+                                                                          >
+                                                                              <XFormError field="input.organization" />
+                                                                          </div>
+                                                                      );
+                                                                  }
+                                                                : undefined}
+                                                        </>
+                                                    </XVertical>
+                                                )}
+                                            </XFormField2>
+                                            <XView marginTop={50}>
+                                                <XFormSubmit
+                                                    dataTestId="continue-button"
+                                                    style="primary"
+                                                    text={InitTexts.create_organization.continue}
+                                                    size="large"
+                                                />
+                                            </XView>
+                                        </XVertical>
+                                    </div>
+                                </ButtonsWrapper>
+                            </XFormLoadingContent>
+                        </XVertical>
+                    </XForm>
+                </ContentWrapper>
+            </XTrack>
         );
     }
 }

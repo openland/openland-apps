@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { withAppProfile } from 'openland-web/api/withAppProfile';
 import { AppFull } from 'openland-api/Types';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
@@ -9,11 +8,20 @@ import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XTextArea } from 'openland-x/XTextArea';
 import { TextProfiles } from 'openland-text/TextProfiles';
+import { useClient } from 'openland-web/utils/useClient';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const { App } = TextProfiles;
 
-export const EditAppModal = withAppProfile(({ updateApp, apps, router: { query } }) => {
-    let [app] = apps.filter((a: AppFull) => a.id === query.editApp || '');
+export const EditAppModal = ({ apps }: { apps: AppFull[] }) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+
+    const updateApp = async (variables: any) => {
+        await client.mutateUpdateApp(variables);
+    };
+
+    let [app] = apps.filter((a: AppFull) => a.id === router.query.editApp || '');
 
     if (!app) {
         return null;
@@ -70,6 +78,4 @@ export const EditAppModal = withAppProfile(({ updateApp, apps, router: { query }
             />
         </XModalForm>
     );
-}) as React.ComponentType<{
-    apps: AppFull[];
-}>;
+};

@@ -3,16 +3,20 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { delayForewer, delay } from 'openland-y-utils/timer';
+import { delayForewer } from 'openland-y-utils/timer';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { switchOrganization } from '../../utils/switchOrganization';
-import { withCreateOrganization } from '../../api/withCreateOrganization';
+import { withRouter } from 'openland-x-routing/withRouter';
 import { InitTexts } from '../../pages/init/_text';
+import { useClient } from 'openland-web/utils/useClient';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
-export const CreateOrganization = withCreateOrganization(props => {
-    const typedProps = props as typeof props & {isMobile?: boolean}
+export const CreateOrganization = withRouter(props => {
+    const client = useClient();
+    const isMobile = React.useContext(IsMobileContext);
+
     let community = props.router.query.createOrganization === 'community';
     let texts = community
         ? InitTexts.create_community_popper
@@ -24,20 +28,18 @@ export const CreateOrganization = withCreateOrganization(props => {
             title={texts.title}
             submitBtnText={texts.submit}
             defaultAction={async data => {
-                let res = (await props.createOrganization({
-                    variables: {
-                        input: {
-                            personal: false,
-                            name: data.input.name,
-                            about: data.input.about,
-                            isCommunity: community,
-                            photoRef: data.input.photoRef,
-                        },
+                let result = await client.mutateCreateOrganization({
+                    input: {
+                        personal: false,
+                        name: data.input.name,
+                        about: data.input.about,
+                        isCommunity: community,
+                        photoRef: data.input.photoRef,
                     },
-                })) as any;
+                });
                 let redirect =
-                    (community ? '/directory/c/' : '/directory/o/') + res.data.organization.id;
-                switchOrganization(res.data.organization.id, redirect);
+                    (community ? '/directory/c/' : '/directory/o/') + result.organization.id;
+                switchOrganization(result.organization.id, redirect);
                 await delayForewer();
             }}
             defaultData={{
@@ -48,8 +50,8 @@ export const CreateOrganization = withCreateOrganization(props => {
                 },
             }}
         >
-            <XVertical separator="large" flexGrow={typedProps.isMobile ? 1 : undefined}>
-                <XFormLoadingContent flexGrow={typedProps.isMobile ? 1 : undefined}>
+            <XVertical separator="large" flexGrow={isMobile ? 1 : undefined}>
+                <XFormLoadingContent flexGrow={isMobile ? 1 : undefined}>
                     <XHorizontal>
                         <XVertical separator={8} flexGrow={1}>
                             <XInput
@@ -77,4 +79,4 @@ export const CreateOrganization = withCreateOrganization(props => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{isMobile?: boolean}>;
+});

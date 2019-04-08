@@ -36,12 +36,12 @@ const NewPostModal = () => {
 export const FeedFragment = XMemo(() => {
     return (
         <XView flexDirection="row" alignItems="stretch" justifyContent="center">
-            <XView flexDirection="column" width={200} alignItems="center" marginTop={32}>
+            {/* <XView flexDirection="column" width={200} alignItems="center" marginTop={32}>
                 <XTitle>Channels</XTitle>
                 <XLink>Founders</XLink>
                 <XLink>Developers</XLink>
                 <XLink>Openland</XLink>
-            </XView>
+            </XView> */}
             <XView
                 flexDirection="column"
                 flexBasis={1}
@@ -92,12 +92,12 @@ export const FeedFragment = XMemo(() => {
                     kind="introduction"
                 /> */}
             </XView>
-            <XView flexDirection="column" width={200} alignItems="center" marginTop={32}>
+            {/* <XView flexDirection="column" width={200} alignItems="center" marginTop={32}>
                 <XTitle>Hot topics</XTitle>
                 <XLink>#hiring</XLink>
                 <XLink>#advice</XLink>
                 <XLink>#intro</XLink>
-            </XView>
+            </XView> */}
             <NewPostModal />
         </XView>
     );

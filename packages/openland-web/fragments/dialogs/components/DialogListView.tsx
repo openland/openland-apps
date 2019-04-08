@@ -8,12 +8,12 @@ import { XListView } from 'openland-web/components/XListView';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XButton } from 'openland-x/XButton';
 import { DialogView } from './DialogView';
-import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { DialogSearchResults } from './DialogSearchResults';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { dialogListWebDataSource, DialogListWebItem } from './DialogListWebDataSource';
 
 const LoadingWrapper = Glamorous.div({
     height: 60,
@@ -32,8 +32,10 @@ export interface DialogListViewProps {
 }
 
 export const DialogListView = XMemo<DialogListViewProps>(props => {
+    console.log('render DialogListView');
     const ref = React.createRef<XInput>();
     let messenger = React.useContext(MessengerContext);
+    let dataSource = React.useMemo(() => dialogListWebDataSource(messenger.dialogList.dataSource), [messenger]);
     let [query, setQuery] = React.useState('');
     let isSearching = query.trim().length > 0;
     let router = React.useContext(XViewRouterContext);
@@ -62,7 +64,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     }, []);
 
     const renderDialog = React.useMemo(() => {
-        return (item: DialogDataSourceItem) => {
+        return (item: DialogListWebItem) => {
             let selected = false;
             if (
                 conversationId &&
@@ -147,7 +149,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                     </div>
                     {canUseDOM && !isSearching && (
                         <XListView
-                            dataSource={messenger.dialogList.dataSource}
+                            dataSource={dataSource}
                             itemHeight={72}
                             loadingHeight={60}
                             renderItem={renderDialog}

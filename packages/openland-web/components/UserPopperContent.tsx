@@ -4,11 +4,11 @@ import { XView } from 'react-mental';
 import { UserShort } from 'openland-api/Types';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { withOnline } from '../api/withOnline';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar } from 'openland-x/XAvatar';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { useClient } from 'openland-web/utils/useClient';
 
 const StatusWrapper = Glamorous.div<{ online: boolean }>(props => ({
     flex: 1,
@@ -31,7 +31,14 @@ const Buttons = Glamorous(XHorizontal)({
     width: 224,
 });
 
-const Status = withOnline(({ data: { user } }) => {
+const Status = (({ variables }) => {
+    const client = useClient();
+    const data = client.useOnline(variables, {
+        fetchPolicy: 'network-only',
+    });
+
+    const { user } = data;
+
     if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
         return (
             <StatusWrapper online={false}>
@@ -103,7 +110,10 @@ const UserPopperContent = XMemo(
                             cloudImageUuid={user.photo || undefined}
                             path={usrPath}
                         />
-                        <Status variables={{ userId: user.id }} />
+
+                        <React.Suspense fallback={<div />}>
+                            <Status variables={{ userId: user.id }} />
+                        </React.Suspense>
                     </XHorizontal>
                     <XView
                         marginTop={12}

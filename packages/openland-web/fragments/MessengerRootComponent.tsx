@@ -24,7 +24,6 @@ import {
     Room_room_PrivateRoom,
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
-import { withDeleteUrlAugmentation } from '../api/withDeleteUrlAugmentation';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { UploadContextProvider } from './MessageComposeComponent/FileUploading/UploadContext';
@@ -33,6 +32,7 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
+import { trackEvent } from 'openland-x-analytics';
 
 export interface File {
     uuid: string;
@@ -91,15 +91,16 @@ const DeleteMessageComponent = () => {
     );
 };
 
-const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation(props => {
+const DeleteUrlAugmentationComponent = withRouter(props => {
+    const client = useClient();
     let id = props.router.query.deleteUrlAugmentation;
     return (
         <XModalForm
             title="Remove attachment"
             targetQuery="deleteUrlAugmentation"
             submitBtnText="Remove"
-            defaultAction={data => {
-                props.deleteUrlAugmentation({ variables: { messageId: id } });
+            defaultAction={async () => {
+                await client.mutateRoomDeleteUrlAugmentation({ messageId: id });
             }}
             submitProps={{ successText: 'Removed!', style: 'danger' }}
         >
@@ -167,6 +168,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     onMessageSend = () => {
+        trackEvent('message_sent');
+
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();
         }
@@ -272,7 +275,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
-        
+
         this.conversation.sendFile(new UplaodCareUploading(file));
     };
 
@@ -318,27 +321,26 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     scrollPosition={this.onMessageListScroll}
                 />
 
-                {!this.state.hideInput &&
-                    this.conversation.canSendMessage && (
-                        <UploadContextProvider>
-                            <MessageComposeHandler
-                                isActive={this.props.isActive}
-                                getMessages={this.getMessages}
-                                conversation={this.conversation}
-                                onChange={this.handleChange}
-                                onSend={this.handleSend}
-                                onSendFile={this.handleSendFile}
-                                enabled={true}
-                                conversationType={this.props.conversationType}
-                                conversationId={this.props.conversationId}
-                                variables={{
-                                    roomId: this.props.conversationId,
-                                    conversationId: this.props.conversationId,
-                                    organizationId: this.props.organizationId,
-                                }}
-                            />
-                        </UploadContextProvider>
-                    )}
+                {!this.state.hideInput && this.conversation.canSendMessage && (
+                    <UploadContextProvider>
+                        <MessageComposeHandler
+                            isActive={this.props.isActive}
+                            getMessages={this.getMessages}
+                            conversation={this.conversation}
+                            onChange={this.handleChange}
+                            onSend={this.handleSend}
+                            onSendFile={this.handleSendFile}
+                            enabled={true}
+                            conversationType={this.props.conversationType}
+                            conversationId={this.props.conversationId}
+                            variables={{
+                                roomId: this.props.conversationId,
+                                conversationId: this.props.conversationId,
+                                organizationId: this.props.organizationId,
+                            }}
+                        />
+                    </UploadContextProvider>
+                )}
                 <DeleteUrlAugmentationComponent />
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
@@ -349,7 +351,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
 interface MessengerRootComponentProps {
     onChatLostAccess?: Function;
-    isActive: boolean;
+    // isActive: boolean;
     organizationId: string | null;
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
@@ -360,7 +362,7 @@ interface MessengerRootComponentProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
 }
 
-export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
+export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
     let isActive = React.useContext(IsActiveContext);
 
@@ -381,4 +383,4 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
             room={props.room}
         />
     );
-};
+});

@@ -6,6 +6,7 @@ import { InitTexts } from '../_text';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
 import { css } from 'linaria';
+import { AuthRouter } from '../../root/AuthRouter';
 
 const InfoText = css`
     margin-bottom: 15px;
@@ -41,7 +42,7 @@ export const AppJoinComponent = ({ inviteKey }: { inviteKey: string }) => {
         return null;
     }
     return (
-        <>
+        <AuthRouter>
             <XDocumentHead
                 title={InitTexts.invite.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
@@ -54,6 +55,6 @@ export const AppJoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                     </MessagePageContent>
                 )}
             </MessagePage>
-        </>
+            </AuthRouter>
     );
 };

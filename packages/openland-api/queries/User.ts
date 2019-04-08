@@ -92,3 +92,9 @@ export const ResolveShortNameQuery = gql`
     ${UserFull}
     ${OrganizationFull}
 `;
+
+export const DeleteUserMutation = gql`
+    mutation DeleteUser($id: ID!) {
+        superDeleteUser(id: $id)
+    }
+`;

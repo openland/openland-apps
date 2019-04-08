@@ -9,6 +9,9 @@ import { InviteLandingComponent } from '../../fragments/InviteLandingComponent';
 import { InitTexts } from './_text';
 import { css } from 'linaria';
 import Glamorous from 'glamorous';
+import { AuthRouter } from '../root/AuthRouter';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const InfoText = css`
     margin-bottom: 15px;
@@ -28,10 +31,14 @@ const Content = Glamorous.div({
 
 export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
     const client = useClient();
-
+    let userCtx = React.useContext(UserInfoContext)!!;
     const data = client.useWithoutLoaderAccountInviteInfo({
         inviteKey,
     });
+
+    if (userCtx.isLoggedIn && userCtx.isCompleted) {
+        return <XPageRedirect path={`/mail/join/${inviteKey}`} />;
+    }
 
     if (data === null) {
         return null;
@@ -47,7 +54,7 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
     }
 
     return (
-        <>
+        <AuthRouter>
             <XDocumentHead
                 title={InitTexts.join.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
@@ -64,7 +71,13 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                                 title: data.invite.title,
                                 id: data.invite.id,
                                 membersCount: data.invite.membersCount,
-                                description: '',
+                                description:
+                                    data.invite && data.invite.organization
+                                        ? data.invite.organization.about
+                                        : '',
+                                isCommunity: data.invite.organization
+                                    ? data.invite.organization.isCommunity
+                                    : false,
                             }}
                             invite={invitedByUser ? { invitedByUser } : undefined}
                         />
@@ -76,7 +89,7 @@ export const JoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                     )}
                 </Content>
             </Root>
-        </>
+        </AuthRouter>
     );
 };
 

@@ -19,6 +19,7 @@ import * as Track from './queries/Track';
 import * as User from './queries/User';
 import * as AppChat from './fragments/AppChat';
 import * as AppFull from './fragments/AppFull';
+import * as CommunitySearch from './fragments/CommunitySearch';
 import * as ConferenceFull from './fragments/ConferenceFull';
 import * as Message from './fragments/Message';
 import * as OrganizationFull from './fragments/OrganizationFull';
@@ -31,7 +32,6 @@ import * as RoomShort from './fragments/RoomShort';
 import * as SessionStateFull from './fragments/SessionStateFull';
 import * as SettingsFragment from './fragments/SettingsFragment';
 import * as UserFull from './fragments/UserFull';
-import * as UserOnline from './fragments/UserOnline';
 import * as UserShort from './fragments/UserShort';
 import * as UserTiny from './fragments/UserTiny';
 
@@ -58,6 +58,8 @@ export const CreateAppMutation = typedMutation<Types.CreateApp, Types.CreateAppV
 export const UpdateAppMutation = typedMutation<Types.UpdateApp, Types.UpdateAppVariables>(App.UpdateAppMutation);
 export const RefreshAppTokenMutation = typedMutation<Types.RefreshAppToken, Types.RefreshAppTokenVariables>(App.RefreshAppTokenMutation);
 export const AddAppToChatMutation = typedMutation<Types.AddAppToChat, Types.AddAppToChatVariables>(App.AddAppToChatMutation);
+export const UserStorageQuery = typedQuery<Types.UserStorage, Types.UserStorageVariables>(App.UserStorageQuery);
+export const UserStorageSetMutation = typedMutation<Types.UserStorageSet, Types.UserStorageSetVariables>(App.UserStorageSetMutation);
 export const DialogsQuery = typedQuery<Types.Dialogs, Types.DialogsVariables>(Chats.DialogsQuery);
 export const ChatWatchSubscription = typedSubscription<Types.ChatWatch, Types.ChatWatchVariables>(Chats.ChatWatchSubscription);
 export const DialogsWatchSubscription = typedSubscription<Types.DialogsWatch, Types.DialogsWatchVariables>(Chats.DialogsWatchSubscription);
@@ -141,7 +143,7 @@ export const OrganizationQuery = typedQuery<Types.Organization, Types.Organizati
 export const OrganizationMembersShortQuery = typedQuery<Types.OrganizationMembersShort, Types.OrganizationMembersShortVariables>(Organization.OrganizationMembersShortQuery);
 export const OrganizationProfileQuery = typedQuery<Types.OrganizationProfile, Types.OrganizationProfileVariables>(Organization.OrganizationProfileQuery);
 export const ExploreOrganizationsQuery = typedQuery<Types.ExploreOrganizations, Types.ExploreOrganizationsVariables>(Organization.ExploreOrganizationsQuery);
-export const ExploreComunityQuery = typedQuery<Types.ExploreComunity, Types.ExploreComunityVariables>(Organization.ExploreComunityQuery);
+export const ExploreCommunityQuery = typedQuery<Types.ExploreCommunity, Types.ExploreCommunityVariables>(Organization.ExploreCommunityQuery);
 export const OrganizationChangeMemberRoleMutation = typedMutation<Types.OrganizationChangeMemberRole, Types.OrganizationChangeMemberRoleVariables>(Organization.OrganizationChangeMemberRoleMutation);
 export const OrganizationAddMemberMutation = typedMutation<Types.OrganizationAddMember, Types.OrganizationAddMemberVariables>(Organization.OrganizationAddMemberMutation);
 export const OrganizationRemoveMemberMutation = typedMutation<Types.OrganizationRemoveMember, Types.OrganizationRemoveMemberVariables>(Organization.OrganizationRemoveMemberMutation);
@@ -180,8 +182,10 @@ export const OnlineQuery = typedQuery<Types.Online, Types.OnlineVariables>(User.
 export const OnlineWatchSubscription = typedSubscription<Types.OnlineWatch, Types.OnlineWatchVariables>(User.OnlineWatchSubscription);
 export const ExplorePeopleQuery = typedQuery<Types.ExplorePeople, Types.ExplorePeopleVariables>(User.ExplorePeopleQuery);
 export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.ResolveShortNameVariables>(User.ResolveShortNameQuery);
+export const DeleteUserMutation = typedMutation<Types.DeleteUser, Types.DeleteUserVariables>(User.DeleteUserMutation);
 export const AppChatFragment = typedFragment<Types.AppChat>(AppChat.AppChat);
 export const AppFullFragment = typedFragment<Types.AppFull>(AppFull.AppFull);
+export const CommunitySearchFragment = typedFragment<Types.CommunitySearch>(CommunitySearch.CommunitySearch);
 export const ConferenceFullFragment = typedFragment<Types.ConferenceFull>(ConferenceFull.ConferenceFull);
 export const TinyMessageFragment = typedFragment<Types.TinyMessage>(Message.TinyMessage);
 export const FullMessageFragment = typedFragment<Types.FullMessage>(Message.FullMessage);
@@ -195,7 +199,6 @@ export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomSh
 export const SessionStateFullFragment = typedFragment<Types.SessionStateFull>(SessionStateFull.SessionStateFull);
 export const SettingsFullFragment = typedFragment<Types.SettingsFull>(SettingsFragment.SettingsFull);
 export const UserFullFragment = typedFragment<Types.UserFull>(UserFull.UserFull);
-export const UserOnlineFragment = typedFragment<Types.UserOnline>(UserOnline.UserOnline);
 export const UserShortFragment = typedFragment<Types.UserShort>(UserShort.UserShort);
 export const UserTinyFragment = typedFragment<Types.UserTiny>(UserTiny.UserTiny);
 export const ChatUpdateFragmentFragment = typedFragment<Types.ChatUpdateFragment>(Chats.ChatUpdateFragment);

@@ -34,6 +34,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
+import { SDevice } from 'react-native-s/SDevice';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -296,6 +297,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
+        let showInputBar = !sharedRoom || sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage;
 
         return (
             <>
@@ -339,8 +341,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 </ASSafeAreaContext.Consumer>
 
                             )}
-                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} messagesPaddingBottom={sharedRoom && !sharedRoom.canSendMessage ? 50 : undefined} />
-                            {(!sharedRoom || sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage) && <MessageInputBar
+                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} messagesPaddingBottom={!showInputBar ? 50 : undefined} />
+                            {showInputBar && <MessageInputBar
                                 onAttachPress={this.handleAttach}
                                 onSubmitPress={this.handleSubmit}
                                 onChangeText={this.handleTextChange}
@@ -351,6 +353,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 theme={this.state.theme}
                                 topContent={mentions}
                             />}
+                            {(!showInputBar && Platform.OS === 'android') && <View height={SDevice.safeArea.bottom} />}
                         </View>
                     </KeyboardSafeAreaView>
                 </SDeferred>

@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { withOrganizationPublishedAlter } from '../../openland-web/api/withOrganizationPublishedAlter';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../openland-web/components/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
@@ -12,9 +11,11 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
+import { useClient } from 'openland-web/utils/useClient';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const OrganizationCardWrapper = makeNavigable(
-    Glamorous.div<NavigableChildProps>(props => ({
+    Glamorous.div<NavigableChildProps>(() => ({
         cursor: 'pointer',
         backgroundColor: '#fff',
         paddingTop: 16,
@@ -111,24 +112,32 @@ const OrganizationMembers = makeNavigable(Glamorous.div({
     },
 }) as any);
 
-export const AlterOrgPublishedButton = withOrganizationPublishedAlter(props => (
-    <XButton
-        text={
-            (props as any).published
-                ? TextProfiles.Organization.hideFromSearch
-                : TextProfiles.Organization.publish
-        }
-        style="flat"
-        action={async () =>
-            props.alterPublished({
-                variables: {
-                    organizationId: (props as any).orgId,
-                    published: !(props as any).published,
-                },
-            })
-        }
-    />
-)) as React.ComponentType<{ orgId: string; published: boolean }>;
+export const AlterOrgPublishedButton = ({
+    orgId,
+    published,
+}: {
+    orgId: string;
+    published: boolean;
+}) => {
+    const client = useClient();
+
+    return (
+        <XButton
+            text={
+                published
+                    ? TextProfiles.Organization.hideFromSearch
+                    : TextProfiles.Organization.publish
+            }
+            style="flat"
+            action={async () =>
+                client.mutateOrganizationAlterPublished({
+                    organizationId: orgId,
+                    published: !published,
+                })
+            }
+        />
+    );
+};
 
 interface XOrganizationCardProps {
     organization: {

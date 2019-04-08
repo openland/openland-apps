@@ -5,8 +5,6 @@ import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleRes
 import { XPhotoRef } from './XCloudImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
-import { Query } from 'react-apollo';
-import { OnlineQuery } from 'openland-api';
 import { XRouting } from 'openland-x-routing/XRouting';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import { XImage } from './XImage';
@@ -496,21 +494,6 @@ class XAvatarWrapper extends React.Component<XAvatarProps & { routing: XRouting 
                 {props.online === true && (
                     <OnlineDot format={props.size} className="online-status-dot" />
                 )}
-                {props.style === 'user' &&
-                    props.objectId &&
-                    props.online === undefined && (
-                        <Query
-                            query={OnlineQuery.document}
-                            variables={{ userId: props.objectId }}
-                            fetchPolicy="network-only"
-                        >
-                            {data => {
-                                return data.data && data.data.user && data.data.user.online ? (
-                                    <OnlineDot format={props.size} className="online-status-dot" />
-                                ) : null;
-                            }}
-                        </Query>
-                    )}
             </AvatarWrapper>
         );
     }

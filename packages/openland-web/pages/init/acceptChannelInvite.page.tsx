@@ -6,8 +6,8 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../root/AuthRouter';
 import { InitTexts } from './_text';
 import { XLoader } from 'openland-x/XLoader';
-import { withChanneJoinlnviteSIgnin } from '../../api/withChanneJoinlnviteSIgnin';
-
+import { useClient } from 'openland-web/utils/useClient';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 class AcceptInviteComponent extends React.Component<{ mutation: any }> {
     componentDidMount() {
         this.accept();
@@ -22,21 +22,26 @@ class AcceptInviteComponent extends React.Component<{ mutation: any }> {
     }
 }
 
-export default withAppBase(
-    'Room Invite',
-    withChanneJoinlnviteSIgnin(props => {
-        return (
-            <AuthRouter>
-                <XDocumentHead
-                    title={InitTexts.invite.pageTitle}
-                    titleSocial={InitTexts.socialPageTitle}
-                />
-                <XTrack event="Invite">
-                    <MessagePage>
-                        <AcceptInviteComponent mutation={props.join} />
-                    </MessagePage>
-                </XTrack>
-            </AuthRouter>
-        );
-    }),
-);
+export default withAppBase('Room Invite', () => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+
+    const join = async () => {
+        await client.mutateRoomJoinInviteLink({
+            invite: router.routeQuery.invite,
+        });
+    };
+    return (
+        <AuthRouter>
+            <XDocumentHead
+                title={InitTexts.invite.pageTitle}
+                titleSocial={InitTexts.socialPageTitle}
+            />
+            <XTrack event="Invite">
+                <MessagePage>
+                    <AcceptInviteComponent mutation={join} />
+                </MessagePage>
+            </XTrack>
+        </AuthRouter>
+    );
+});

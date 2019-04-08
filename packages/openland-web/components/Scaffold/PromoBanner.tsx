@@ -11,7 +11,7 @@ const ActiveButton = Glamorous(XButton)({
     border: 'solid 1px #ffffff',
     '&:hover': {
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    }
+    },
 });
 
 export const PromoBanner = (props: { onClise: () => void }) => (

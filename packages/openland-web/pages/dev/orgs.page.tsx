@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { withSuperAccountAdd } from '../../api/withSuperAccountAdd';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
@@ -13,13 +12,26 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XView } from 'react-mental';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { useClient } from 'openland-web/utils/useClient';
+import { MutationFunc } from 'react-apollo';
+import { XInput } from '../../../openland-x/XInput';
+import { SuperAccounts_superAccounts } from 'openland-api/Types';
 
-const AddAccountForm = withSuperAccountAdd(props => {
+const AddAccountForm = () => {
+    const client = useClient();
+
+    const mutate = async ({ variables: { title } }: { variables: { title: string } }) => {
+        await client.mutateSuperAccountAdd({
+            title,
+        });
+
+        await client.refetchSuperAccounts();
+    };
+
     return (
         <XModalForm
             title="Add new organization"
             target={<XButton text="Add organization" />}
-            submitMutation={props.add}
+            submitMutation={mutate as MutationFunc<{}>}
             mutationDirect={true}
             actionName="Add"
         >
@@ -28,22 +40,99 @@ const AddAccountForm = withSuperAccountAdd(props => {
             </XFormField>
         </XModalForm>
     );
-});
+};
+
+const SearchInput = (props: { onClick: (data: string) => void }) => {
+    const [value, searchHandler] = React.useState('');
+    const searchField = (data: string) => {
+        searchHandler(data);
+    };
+    const onClick = () => {
+        props.onClick(value);
+    };
+    const clearSearch = () => {
+        searchHandler('');
+        props.onClick('');
+    };
+    return (
+        <XView flexShrink={0} paddingHorizontal={24} flexDirection="row" alignItems="center">
+            <XView marginRight={16} flexGrow={1}>
+                <XInput value={value} onChange={searchField} placeholder="search" />
+            </XView>
+            <XButton text="search" style="primary" onClick={onClick} />
+            {value && (
+                <XView marginLeft={16}>
+                    <XButton text="clear search" onClick={clearSearch} />
+                </XView>
+            )}
+        </XView>
+    );
+};
+
+interface FilteredOptionsProps {
+    orgsCurrentTab: SuperAccounts_superAccounts[];
+    searchValue: string;
+}
+
+class FilteredOptions extends React.PureComponent<FilteredOptionsProps> {
+    shouldComponentUpdate(nextProps: FilteredOptionsProps) {
+        if (this.props.orgsCurrentTab !== nextProps.orgsCurrentTab) {
+            return true;
+        } else {
+            return this.props.searchValue !== nextProps.searchValue;
+        }
+    }
+
+    render() {
+        const { props } = this;
+        let nodes = props.orgsCurrentTab;
+        if (props.searchValue) {
+            nodes = nodes.filter(o => o.title.toLowerCase().match(props.searchValue.toLowerCase()));
+        }
+        return (
+            <>
+                {nodes.map(v => (
+                    <XTable.Row key={v.id} noHover={true}>
+                        <XTable.Cell>{v.title}</XTable.Cell>
+                        <XTable.Cell>{v.state}</XTable.Cell>
+                        <XTable.Cell>
+                            <XHorizontal justifyContent="flex-end">
+                                <XButton
+                                    path={'/super/orgs/' + v.id}
+                                    style="ghost"
+                                    text="Settings"
+                                />
+                                <XButton
+                                    path={'/directory/o/' + v.orgId}
+                                    style="ghost"
+                                    text="Profile"
+                                />
+                            </XHorizontal>
+                        </XTable.Cell>
+                    </XTable.Row>
+                ))}
+            </>
+        );
+    }
+}
 
 export default withApp('Super Organizations', 'super-admin', () => {
+    const [searchValue, setSearchValue] = React.useState('');
     const client = useClient();
     const orgs = client.useSuperAccounts().superAccounts;
     const router = useXRouter();
-    let orgsCurrentTab = orgs.filter(
-        o => o.state === (router.query.orgState || 'ACTIVATED'),
-    );
+    const orgsCurrentTab = orgs.filter(o => o.state === (router.query.orgState || 'ACTIVATED'));
+
+    const searchTextFilter = (data: string) => {
+        setSearchValue(data);
+    };
 
     return (
         <DevToolsScaffold title="Organizations">
             <XHeader text="Organizations" description={orgs.length + ' total'}>
                 <AddAccountForm />
             </XHeader>
-
+            <SearchInput onClick={searchTextFilter} />
             <XView marginLeft={24}>
                 <XSwitcher style="flat">
                     <XSwitcher.Item
@@ -76,26 +165,7 @@ export default withApp('Super Organizations', 'super-admin', () => {
                     <XTable.Cell>{}</XTable.Cell>
                 </XTable.Header>
                 <XTable.Body>
-                    {orgsCurrentTab.map(v => (
-                        <XTable.Row key={v.id} noHover={true}>
-                            <XTable.Cell>{v.title}</XTable.Cell>
-                            <XTable.Cell>{v.state}</XTable.Cell>
-                            <XTable.Cell>
-                                <XHorizontal justifyContent="flex-end">
-                                    <XButton
-                                        path={'/super/orgs/' + v.id}
-                                        style="ghost"
-                                        text="Settings"
-                                    />
-                                    <XButton
-                                        path={'/directory/o/' + v.orgId}
-                                        style="ghost"
-                                        text="Profile"
-                                    />
-                                </XHorizontal>
-                            </XTable.Cell>
-                        </XTable.Row>
-                    ))}
+                    <FilteredOptions orgsCurrentTab={orgsCurrentTab} searchValue={searchValue} />
                 </XTable.Body>
             </XTable>
         </DevToolsScaffold>

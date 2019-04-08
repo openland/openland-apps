@@ -9,14 +9,13 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { sanitizeImageRef } from '../../../../utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
-import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { withSuperAccountActions } from '../../../../api/withSuperAccountActions';
 import { DateFormater } from 'openland-x/XDate';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { SettingsNavigation } from './SettingsNavigation';
 import { Content, HeadTitle } from './SettingComponents';
+import { useClient } from 'openland-web/utils/useClient';
 import { XView } from 'react-mental';
 
 const SACreatedBlock = Glamorous.div({
@@ -47,8 +46,12 @@ type AdminToolsT = {
     variables: { accountId: string; viaOrgId: true };
 };
 
-const AdminTools = withSuperAccountActions(props => {
-    if (!(props.data && props.data.superAccount)) {
+const AdminTools = (props: AdminToolsT) => {
+    const client = useClient();
+
+    const data = client.useWithoutLoaderSuperAccount(props.variables);
+
+    if (!(data && data.superAccount)) {
         return null;
     }
     return (
@@ -57,14 +60,14 @@ const AdminTools = withSuperAccountActions(props => {
                 <SACreatedText>
                     <span>Created </span>
                     <span className="bold">
-                        {props.data.superAccount.createdAt
-                            ? DateFormater(props.data.superAccount.createdAt)
+                        {data.superAccount.createdAt
+                            ? DateFormater(data.superAccount.createdAt)
                             : 'once'}{' '}
                     </span>
                     <span>by </span>
                     <span className="bold author">
-                        {props.data.superAccount.createdBy
-                            ? props.data.superAccount.createdBy.name
+                        {data.superAccount.createdBy
+                            ? data.superAccount.createdBy.name
                             : 'First name Last name'}
                     </span>
                 </SACreatedText>
@@ -72,34 +75,30 @@ const AdminTools = withSuperAccountActions(props => {
             <XForm
                 defaultData={{
                     input: {
-                        activated: props.data && props.data.superAccount.state,
-                        published: (props as any).published ? 'published' : 'unpublished',
-                        editorial: (props as any).editorial ? 'editorial' : 'noneditorial',
-                        featured: (props as any).featured ? 'featured' : 'nonfeatured',
+                        activated: data && data.superAccount.state,
+                        published: props.published ? 'published' : 'unpublished',
+                        editorial: props.editorial ? 'editorial' : 'noneditorial',
+                        featured: props.featured ? 'featured' : 'nonfeatured',
                     },
                 }}
-                defaultAction={async data => {
-                    await (props as any).updateOrganizatonMutations({
+                defaultAction={async submitData => {
+                    await props.updateOrganizatonMutations({
                         variables: {
                             input: {
-                                alphaPublished: data.input.published === 'published',
-                                alphaEditorial: data.input.editorial === 'editorial',
-                                alphaFeatured: data.input.featured === 'featured',
+                                alphaPublished: submitData.input.published === 'published',
+                                alphaEditorial: submitData.input.editorial === 'editorial',
+                                alphaFeatured: submitData.input.featured === 'featured',
                             },
                         },
                     });
 
-                    if (data.input.activated === 'ACTIVATED') {
-                        props.activate({
-                            variables: {
-                                accountId: props.data.superAccount.id,
-                            },
+                    if (submitData.input.activated === 'ACTIVATED') {
+                        await client.mutateSuperAccountActivate({
+                            accountId: submitData.data.superAccount.id,
                         });
                     } else {
-                        props.pend({
-                            variables: {
-                                accountId: props.data.superAccount.id,
-                            },
+                        await client.mutateSuperAccountPend({
+                            accountId: submitData.data.superAccount.id,
                         });
                     }
                 }}
@@ -142,7 +141,7 @@ const AdminTools = withSuperAccountActions(props => {
             </XForm>
         </XVertical>
     );
-}) as React.ComponentType<AdminToolsT>;
+};
 
 const GeneralForm = ({
     data: { organizationProfile },
@@ -204,7 +203,7 @@ const GeneralForm = ({
                             <XInput field="input.about" size="large" title="About" />
                             <XInput
                                 flexGrow={1}
-                                title={TextOrganizationProfile.placeholderSocialInputPlaceholder}
+                                title="Website"
                                 field="input.website"
                                 size="large"
                             />

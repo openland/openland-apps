@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XButton } from 'openland-x/XButton';
 import { User_user } from 'openland-api/Types';
-import { withOnline } from '../../openland-web/api/withOnline';
 import { XPopper } from 'openland-x/XPopper';
 import AdminIcon from 'openland-icons/ic-star-admin.svg';
 import { TextProfiles } from 'openland-text/TextProfiles';
@@ -12,6 +11,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { css } from 'linaria';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { emoji } from 'openland-y-utils/emoji';
+import { useClient } from 'openland-web/utils/useClient';
 
 const StatusWrapperOffline = css`
     color: rgba(0, 0, 0, 0.5);
@@ -25,36 +25,30 @@ const StatusWrapperOnline = css`
     line-height: 18px;
 `;
 
-const UserStatus = withOnline(props => {
-    if ((props as any).isBot) {
+const UserStatus = (props: { user: Partial<User_user> }) => {
+    const { user } = props;
+
+    if (user.isBot) {
         return <div className={StatusWrapperOnline}>bot</div>;
     }
-    if (!props.data) {
-        return null;
-    }
 
-    if (
-        props.data.user &&
-        (props.data.user.lastSeen &&
-            props.data.user.lastSeen !== 'online' &&
-            !props.data.user.online)
-    ) {
+    if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
         return (
             <div className={StatusWrapperOffline}>
                 {TextProfiles.User.status.lastSeen}{' '}
-                {props.data.user.lastSeen === 'never_online' ? (
+                {user.lastSeen === 'never_online' ? (
                     TextProfiles.User.status.momentsAgo
                 ) : (
-                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+                    <XDate value={user.lastSeen} format="humanize_cute" />
                 )}
             </div>
         );
-    } else if (props.data.user && props.data.user.online) {
+    } else if (user && user.online) {
         return <div className={StatusWrapperOnline}>{TextProfiles.User.status.online}</div>;
     } else {
         return null;
     }
-}) as React.ComponentType<{ variables: { userId: string }; isBot: boolean }>;
+};
 
 const AdminIconClass = css`
     & * {
@@ -149,19 +143,18 @@ export const XUserCard = ({
             customMenu
         );
 
-    const organizationElem = !hideOrganization &&
-        user.primaryOrganization && (
-            <XView
-                fontSize={12}
-                lineHeight="22px"
-                fontWeight="600"
-                color="rgba(0, 0, 0, 0.4)"
-                marginTop={1}
-                marginBottom={-1}
-            >
-                {user.primaryOrganization.name}
-            </XView>
-        );
+    const organizationElem = !hideOrganization && user.primaryOrganization && (
+        <XView
+            fontSize={12}
+            lineHeight="22px"
+            fontWeight="600"
+            color="rgba(0, 0, 0, 0.4)"
+            marginTop={1}
+            marginBottom={-1}
+        >
+            {user.primaryOrganization.name}
+        </XView>
+    );
 
     let cardPath: string | undefined = path || '/directory/u/' + user.id;
 
@@ -225,10 +218,9 @@ export const XUserCard = ({
                             </XView>
                             {!isMobile && organizationElem}
                         </XView>
-                        {!isMobile &&
-                            user.id && (
-                                <UserStatus variables={{ userId: user.id }} isBot={!!user.isBot} />
-                            )}
+                        {!isMobile && user.id && (
+                            <UserStatus user={user} />
+                        )}
                         {isMobile && organizationElem}
                     </XView>
                     <XView flexShrink={0} flexDirection="row" alignItems="center">

@@ -39,13 +39,6 @@ routes.add('/createOrganization/', '/init/createOrganization');
 routes.add('/404', '/404');
 
 //
-// Map
-//
-
-routes.add('/map', '/main/explore/root');
-routes.add('/map/', '/main/explore/root');
-
-//
 // Settings
 //
 
@@ -63,10 +56,15 @@ routes.add('/settings/organization/:organizationId', '/main/settings/organizatio
 routes.add('/settings/organization/:organizationId/', '/main/settings/organization');
 
 //
-// Feed
+// Experimental
 //
 
 routes.add('/feed', '/main/feed/root');
+routes.add('/apps', '/main/apps/apps');
+routes.add('/apps/', '/main/apps/apps');
+routes.add('/apps/:appId', '/main/apps/apps');
+routes.add('/apps/:appId/', '/main/apps/apps');
+routes.add('/apps/:appId/*', '/main/apps/apps');
 
 //
 // Directory
@@ -122,8 +120,6 @@ routes.add('/join/:inviteKey', '/init/resolveInvite');
 routes.add('/join/:inviteKey/', '/init/resolveInvite');
 routes.add('/invite/:inviteKey', '/init/resolveInvite');
 routes.add('/invite/:inviteKey/', '/init/resolveInvite');
-routes.add('/acceptChannelInvite/:inviteKey', '/init/resolveInvite');
-routes.add('/acceptChannelInvite/:inviteKey/', '/init/resolveInvite');
 routes.add('/resolveInvite/:inviteKey', '/init/resolveInvite');
 routes.add('/resolveInvite/:inviteKey/', '/init/resolveInvite');
 routes.add('/joinChannel/:inviteKey', '/init/resolveInvite');
@@ -132,6 +128,8 @@ routes.add('/signin/channel', '/init/resolveInvite');
 routes.add('/signin/channel/', '/init/resolveInvite');
 routes.add('/signin/joinChannel/:inviteKey', '/init/resolveInvite');
 routes.add('/signin/joinChannel/:inviteKey/', '/init/resolveInvite');
+routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
+routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
 
 //
 // Mail
@@ -147,6 +145,8 @@ routes.add('/mail/channels', '/main/mail/root');
 routes.add('/mail/channels/', '/main/mail/root');
 routes.add('/mail/joinChannel/:inviteKey', '/main/mail/root');
 routes.add('/mail/joinChannel/:inviteKey/', '/main/mail/root');
+routes.add('/mail/join/:inviteKey', '/main/mail/root');
+routes.add('/mail/join/:inviteKey/', '/main/mail/root');
 routes.add('/mail/invite/:inviteKey', '/main/mail/root');
 routes.add('/mail/invite/:inviteKey/', '/main/mail/root');
 routes.add('/mail/o/:organizationId', '/main/mail/root');
@@ -283,14 +283,6 @@ routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
 // Dev Tools
 //
 
-routes.add('/super/debug', '/dev/debug');
-routes.add('/super/debug/', '/dev/debug');
-routes.add('/super/features', '/dev/features');
-routes.add('/super/features/', '/dev/features');
-routes.add('/super/readers', '/dev/readers');
-routes.add('/super/readers/', '/dev/readers');
-routes.add('/super/cities', '/dev/cities');
-routes.add('/super/cities/', '/dev/cities');
 routes.add('/super/mails', '/dev/mails');
 routes.add('/super/mails/', '/dev/mails');
 

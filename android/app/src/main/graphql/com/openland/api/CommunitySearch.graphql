@@ -1,0 +1,12 @@
+fragment CommunitySearch on Organization {
+  __typename
+  about
+  featured: alphaFeatured
+  id
+  isMine
+  membersCount
+  name
+  photo
+  status
+  superAccountId
+}

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView, XViewSelectedContext } from 'react-mental';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { DialogDataSourceItem, emojifyMessage } from 'openland-engines/messenger/DialogListEngine';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from 'openland-icons/ic-photo.svg';
 import FileIcon from 'openland-icons/ic-file-2.svg';
@@ -10,11 +8,10 @@ import ForwardIcon from 'openland-icons/ic-reply-2.svg';
 import MentionIcon from 'openland-icons/ic-mention-2.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { emoji } from 'openland-y-utils/emoji';
 import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
-import { XMemo } from 'openland-y-utils/XMemo';
 import LockIcon from 'openland-icons/ic-group.svg';
 import ChanneSecretIcon from 'openland-icons/ic-channel-dialog.svg';
+import { DialogListWebItem } from './DialogListWebDataSource';
 
 export let iconClass = css`
     display: inline-block;
@@ -37,21 +34,21 @@ export let iconActiveClass = css`
 `;
 
 export let channelIconClass = css`
-    margin: 0px 0px -2px 0px ;
+    margin: 0px 0px -2px 0px;
     path {
         fill: black;
     }
 `;
 
 export let channelSecretIconClass = css`
-    margin: 0px 0px -2px 0px ;
+    margin: 0px 0px -2px 0px;
     path {
         fill: #129f25;
     }
 `;
 
 export let channelIconActiveClass = css`
-    margin: 0px 0px -2px 0px ;
+    margin: 0px 0px -2px 0px;
     path {
         fill: white;
     }
@@ -68,14 +65,15 @@ const GroupIconClass = css`
 `;
 
 export interface DialogViewProps {
-    item: DialogDataSourceItem;
+    item: DialogListWebItem;
     handleRef?: any;
     onSelect?: (id: string) => void;
     onClick?: () => void;
     selected?: boolean;
 }
 
-export const DialogView = XMemo<DialogViewProps>(props => {
+export const DialogView = React.memo<DialogViewProps>(props => {
+    // let router = React.useContext(XRouterContext);
     let dialog = props.item;
     let isMuted = dialog.isMuted;
     let isService = dialog.isService;
@@ -86,22 +84,22 @@ export const DialogView = XMemo<DialogViewProps>(props => {
     ) : isPrivate ? (
         ''
     ) : dialog.sender ? (
-        <>{emojifyMessage(dialog.sender)}: </>
+        <>{dialog.senderEmojify}: </>
     ) : (
                     ''
                 );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
 
-    if (dialog.typing) {
-        message = <>{emojifyMessage(dialog.typing)}</>;
+    if (dialog.typingEmojify) {
+        message = <>{dialog.typingEmojify}</>;
     } else {
         message = dialog.fallback;
         if (dialog.message) {
             message = (
                 <span>
                     {!isService && sender}
-                    {dialog.message ? emojifyMessage(dialog.message) : undefined}
+                    {dialog.messageEmojify}
                 </span>
             );
         } else if (dialog.attachments && dialog.attachments.length === 1) {
@@ -170,6 +168,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
             as="a"
             ref={props.handleRef}
             path={'/mail/' + dialog.key}
+            // onMouseDown={() => router!.push('/mail/' + dialog.key)}
             height={72}
             flexDirection="row"
             paddingLeft={16}
@@ -185,6 +184,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
         >
             <XAvatar2
                 title={dialog.title}
+                titleEmoji={dialog.titlePlaceholderEmojify}
                 id={dialog.kind === 'PRIVATE' ? dialog.flexibleId : dialog.key}
                 src={dialog.photo}
                 online={dialog.online}
@@ -227,23 +227,29 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                                 <LockIcon className={GroupIconClass} />
                             </XView>
                         )}
-                        {
-                            dialog.isChannel && (
-                                <XViewSelectedContext.Consumer>
-                                    {active => (
-                                        <XView alignSelf="stretch" justifyContent="center" marginRight={2}>
-                                            <ChanneSecretIcon className={active ? channelIconActiveClass : ((dialog.kind === 'GROUP' && highlightSecretChat) ? channelSecretIconClass : channelIconClass)} />
-                                        </XView>
-
-                                    )}
-                                </XViewSelectedContext.Consumer>
-                            )
-                        }
+                        {dialog.isChannel && (
+                            <XViewSelectedContext.Consumer>
+                                {active => (
+                                    <XView
+                                        alignSelf="stretch"
+                                        justifyContent="center"
+                                        marginRight={2}
+                                    >
+                                        <ChanneSecretIcon
+                                            className={
+                                                active
+                                                    ? channelIconActiveClass
+                                                    : dialog.kind === 'GROUP' && highlightSecretChat
+                                                        ? channelSecretIconClass
+                                                        : channelIconClass
+                                            }
+                                        />
+                                    </XView>
+                                )}
+                            </XViewSelectedContext.Consumer>
+                        )}
                         <span>
-                            {emoji({
-                                src: dialog.title,
-                                size: 16,
-                            })}
+                            {dialog.titleEmojify}
                         </span>
                     </XView>
                     {dialog.date && (
@@ -295,3 +301,5 @@ export const DialogView = XMemo<DialogViewProps>(props => {
         </XView>
     );
 });
+
+DialogView.displayName = 'DialogView';

@@ -38,7 +38,7 @@ export class ApolloClientStatus {
             console.log('Connected in ' + (Date.now() - this.start) + ' ms');
         }
         if (!this.isConnected) {
-            console.info('Connection Started');
+            // console.info('Connection Started');
             this.isConnected = true;
             for (let l of this.listeners) {
                 try {
@@ -53,11 +53,11 @@ export class ApolloClientStatus {
 
     subscribe = (listener: (isConnected: boolean) => void) => {
         this.listeners.push(listener);
-        console.info('Status Subscribed');
+        // console.info('Status Subscribed');
         return () => {
             let index = this.listeners.findIndex((v) => v === listener);
             if (index >= 0) {
-                console.info('Status unsubscribed');
+                // console.info('Status unsubscribed');
                 this.listeners.splice(index, 1);
             } else {
                 console.warn('Trying to unsubscribe unknown listener');

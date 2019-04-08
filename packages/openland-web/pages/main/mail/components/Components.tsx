@@ -18,6 +18,7 @@ import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { Menu } from 'openland-web/components/MainLayout';
 import { XButton } from 'openland-x/XButton';
 import { RoomInviteFromLink } from './RoomInviteFromLink';
+import { OrganizationInviteFromLink } from './OrganizationInviteFromLink';
 import { tabs } from '../tabs';
 import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
 import NewChatIcon from 'openland-icons/ic-new-chat.svg';
@@ -135,31 +136,28 @@ const CacheComponent = ({
         }
     }
 
-    React.useEffect(
-        () => {
-            if (activeChat) {
+    React.useEffect(() => {
+        if (activeChat) {
+            if (
+                cachedPropsArray.length > SIZE_OF_CACHE &&
+                cachedPropsArray[0].chatId !== activeChat
+            ) {
                 if (
-                    cachedPropsArray.length > SIZE_OF_CACHE &&
-                    cachedPropsArray[0].chatId !== activeChat
+                    cachedPropsArray.length - 1 > SIZE_OF_CACHE &&
+                    cachedPropsArray[0].chatId !== activeChat &&
+                    cachedPropsArray[1].chatId !== activeChat
                 ) {
-                    if (
-                        cachedPropsArray.length - 1 > SIZE_OF_CACHE &&
-                        cachedPropsArray[0].chatId !== activeChat &&
-                        cachedPropsArray[1].chatId !== activeChat
-                    ) {
-                        maybeRequestIdleCallback(() => {
-                            setCachedProps(cachedPropsArray.slice(2));
-                        });
-                    } else {
-                        maybeRequestIdleCallback(() => {
-                            setCachedProps(cachedPropsArray.slice(1));
-                        });
-                    }
+                    maybeRequestIdleCallback(() => {
+                        setCachedProps(cachedPropsArray.slice(2));
+                    });
+                } else {
+                    maybeRequestIdleCallback(() => {
+                        setCachedProps(cachedPropsArray.slice(1));
+                    });
                 }
             }
-        },
-        [activeChat],
-    );
+        }
+    }, [activeChat]);
 
     // if (true) {
     //     return (
@@ -229,25 +227,23 @@ export const ConversationContainerWrapper = ({
 
                 {tab === tabs.empty && <MessengerEmptyFragment />}
                 {tab === tabs.rooms && <RoomsExploreComponent />}
-                {tab === tabs.invite && <RoomInviteFromLink />}
-                {tab === tabs.organization &&
-                    oid && (
-                        <OrganizationProfileContainer>
-                            <OrganizationProfile organizationId={oid} />
-                        </OrganizationProfileContainer>
-                    )}
-                {tab === tabs.user &&
-                    uid && (
-                        <OrganizationProfileContainer>
-                            <UserProfile userId={uid} />
-                        </OrganizationProfileContainer>
-                    )}
-                {tab === tabs.roomProfile &&
-                    cid && (
-                        <OrganizationProfileContainer>
-                            <RoomProfile conversationId={cid} />
-                        </OrganizationProfileContainer>
-                    )}
+                {tab === tabs.roomInvite && <RoomInviteFromLink />}
+                {tab === tabs.organizationInvite && <OrganizationInviteFromLink />}
+                {tab === tabs.organization && oid && (
+                    <OrganizationProfileContainer>
+                        <OrganizationProfile organizationId={oid} />
+                    </OrganizationProfileContainer>
+                )}
+                {tab === tabs.user && uid && (
+                    <OrganizationProfileContainer>
+                        <UserProfile userId={uid} />
+                    </OrganizationProfileContainer>
+                )}
+                {tab === tabs.roomProfile && cid && (
+                    <OrganizationProfileContainer>
+                        <RoomProfile conversationId={cid} />
+                    </OrganizationProfileContainer>
+                )}
             </ConversationContainerInner>
         </>
     );

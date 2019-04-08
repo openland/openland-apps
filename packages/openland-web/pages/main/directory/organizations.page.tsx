@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withExploreOrganizations } from 'openland-web/api/withExploreOrganizations';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
 import { OrganizationProfile } from '../profile/components/OrganizationProfileComponent';
@@ -9,44 +8,50 @@ import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNa
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XMemo } from 'openland-y-utils/XMemo';
-
+import { useClient } from 'openland-web/utils/useClient';
+import { withApp } from 'openland-web/components/withApp';
 interface OrganizationCardsProps {
     onPageChange?: () => void;
     variables: { query?: string; prefix?: string; sort?: string };
     tagsCount: (n: number) => void;
 }
 
-export const OrganizationCards = withExploreOrganizations(props => {
-    if (!(props.data && props.data.items)) {
+export const OrganizationCards = (props: OrganizationCardsProps) => {
+    const client = useClient();
+
+    const data = client.useExploreOrganizations(props.variables, {
+        fetchPolicy: 'network-only',
+    });
+
+    if (!data.items) {
         return null;
     }
 
     let noData =
-        props.error ||
-        props.data === undefined ||
-        props.data.items === undefined ||
-        props.data.items === null ||
-        props.data.items.edges.length === 0;
+        data === undefined ||
+        data.items === undefined ||
+        data.items === null ||
+        data.items.edges.length === 0;
 
-    (props as any).tagsCount(noData ? 0 : props.data.items.pageInfo.itemsCount);
+    props.tagsCount(noData ? 0 : data.items.pageInfo.itemsCount);
 
     return (
         <>
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
-                    {props.data.items.edges.map((i, j) => (
+                    {data.items.edges.map((i, j) => (
                         <XOrganizationCard key={'_org_card_' + i.node.id} organization={i.node} />
                     ))}
                     <PagePagination
                         currentRoute="/directory/organizations"
-                        pageInfo={props.data.items.pageInfo}
+                        pageInfo={data.items.pageInfo}
                     />
                 </XContentWrapper>
             )}
             {noData && <EmptySearchBlock text="No organization matches your search" />}
         </>
     );
-}) as React.ComponentType<OrganizationCardsProps>;
+};
 
 interface OrganizationsProps {
     featuredFirst: boolean;
@@ -91,7 +96,7 @@ const SearchOrganizationProfileComponent = XMemo(({ id }: { id: string }) => (
     <OrganizationProfile organizationId={id} onDirectory={true} />
 ));
 
-export default () => {
+export default withApp('Organizations', 'viewer', () => {
     const { path } = React.useContext(XRouterContext) as XRouter;
 
     let CardsComponent = ComponentWithSort({ Component: OrganizationCards, queryToPrefix: true });
@@ -106,4 +111,4 @@ export default () => {
             hasQueryText={'Organizations'}
         />
     );
-};
+});

@@ -16,6 +16,7 @@ import { DialogItemViewAsync } from 'openland-mobile/messenger/components/Dialog
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
+import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
     let handleShareDialogClick = React.useCallback((id: string, dialog: DialogDataSourceItem) => {
@@ -45,7 +46,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
         );
     }) : undefined;
     return (
-        <>
+        <ZTrack event="mail_view">
             {Platform.OS === 'ios' && (
                 <SHeader title={props.router.params.share ? 'Share with' : 'Messages'} />
             )}
@@ -74,7 +75,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                     <DialogListComponent dialogs={getMessenger().dialogs} />
                 </SSearchControler>
             )}
-        </>
+        </ZTrack>
     );
 });
 

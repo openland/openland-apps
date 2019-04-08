@@ -2,10 +2,11 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XPopper } from 'openland-x/XPopper';
 import { XLink } from 'openland-x/XLink';
-import { withConversationKick } from 'openland-web/api/withConversationKick';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import CloseIcon from 'openland-icons/ic-close-1.svg';
 import { XText } from 'openland-x/XText';
+import { useClient } from 'openland-web/utils/useClient';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const DeclineButtonWrapper = Glamorous(XLink)<{ isHoveredWrapper?: boolean }>([
     {
@@ -52,9 +53,12 @@ class DeclineButton extends React.Component<{
     }
 }
 
-export const RemoveMemberModal = withConversationKick(props => {
-    let member = (props as any).members.filter(
-        (m: any) => (m.user && m.user.id === props.router.query.remove) || '',
+export const RemoveMemberModal = (props: { members: any[]; roomId: string; roomTitle: string }) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+
+    let member = props.members.filter(
+        (m: any) => (m.user && m.user.id === router.query.remove) || '',
     )[0];
     if (!member) {
         return null;
@@ -65,14 +69,16 @@ export const RemoveMemberModal = withConversationKick(props => {
                 text: 'Remove',
                 style: 'danger',
             }}
-            title={'Remove ' + member.user.name + ' from ' + (props as any).roomTitle}
+            title={'Remove ' + member.user.name + ' from ' + props.roomTitle}
             targetQuery="remove"
-            defaultAction={async data => {
-                await props.kick({
-                    variables: {
-                        userId: member.user.id,
-                        roomId: (props as any).roomId,
-                    },
+            defaultAction={async () => {
+                await client.mutateRoomKick({
+                    userId: member.user.id,
+                    roomId: props.roomId,
+                });
+
+                await client.refetchRoom({
+                    id: props.roomId,
                 });
             }}
         >
@@ -82,8 +88,4 @@ export const RemoveMemberModal = withConversationKick(props => {
             </XText>
         </XModalForm>
     );
-}) as React.ComponentType<{
-    members: any[];
-    roomId: string;
-    roomTitle: string;
-}>;
+};

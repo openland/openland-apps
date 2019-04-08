@@ -1,20 +1,26 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { withAppProfile } from 'openland-web/api/withAppProfile';
 import { AppFull } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { SearchCardsOrShowProfile } from 'openland-web/pages/main/directory/components/DirectoryNavigation';
 import { RoomsWithSort } from 'openland-web/fragments/RoomsExploreComponent';
-import { XViewRouterContext } from 'react-mental';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { useClient } from 'openland-web/utils/useClient';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const { App } = TextProfiles;
 
-export const AddBotToChat = withAppProfile(({ addAppToChat, apps, router: { query } }) => {
-    let router = React.useContext(XViewRouterContext);
-    let [app] = apps.filter((a: AppFull) => a.id === query.addBotToChat || '');
+export const AddBotToChat = ({ apps }: { apps: AppFull[] }) => {
+    const client = useClient();
+    let router = React.useContext(XRouterContext)!;
+
+    const addAppToChat = async (variables: any) => {
+        await client.mutateAddAppToChat(variables);
+    };
+
+    let [app] = apps.filter((a: AppFull) => a.id === router.query.addBotToChat || '');
 
     if (!app) {
         return null;
@@ -41,7 +47,7 @@ export const AddBotToChat = withAppProfile(({ addAppToChat, apps, router: { quer
                                 });
                                 // hack to navigate after modal closing navigation
                                 setTimeout(() => {
-                                    router!.navigate(`/mail/${xRoomCardProps.room.id}`);
+                                    router!.push(`/mail/${xRoomCardProps.room.id}`);
                                 });
                             }}
                         />
@@ -79,6 +85,4 @@ export const AddBotToChat = withAppProfile(({ addAppToChat, apps, router: { quer
             </XView>
         </XModalForm>
     );
-}) as React.ComponentType<{
-    apps: AppFull[];
-}>;
+};

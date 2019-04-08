@@ -127,6 +127,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMyApps(opts?: QueryWatchParameters): Types.MyApps | null {
         return this.useQuery(Source.MyAppsQuery, undefined, opts);
     }
+    async queryUserStorage(variables: Types.UserStorageVariables, opts?: OperationParameters): Promise<Types.UserStorage> {
+        return this.client.query(Source.UserStorageQuery, variables, opts);
+    }
+    async refetchUserStorage(variables: Types.UserStorageVariables): Promise<Types.UserStorage> {
+        return this.refetch(Source.UserStorageQuery, variables);
+    }
+    useUserStorage(variables: Types.UserStorageVariables, opts?: QueryWatchParameters): Types.UserStorage {
+        return this.useQuerySuspense(Source.UserStorageQuery, variables, opts);
+    }
+    useWithoutLoaderUserStorage(variables: Types.UserStorageVariables): Types.UserStorage | null {
+        return this.useQuery(Source.UserStorageQuery, variables);
+    }
     async queryDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
         return this.client.query(Source.DialogsQuery, variables, opts);
     }
@@ -439,17 +451,17 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderExploreOrganizations(variables: Types.ExploreOrganizationsVariables): Types.ExploreOrganizations | null {
         return this.useQuery(Source.ExploreOrganizationsQuery, variables);
     }
-    async queryExploreComunity(variables: Types.ExploreComunityVariables, opts?: OperationParameters): Promise<Types.ExploreComunity> {
-        return this.client.query(Source.ExploreComunityQuery, variables, opts);
+    async queryExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: OperationParameters): Promise<Types.ExploreCommunity> {
+        return this.client.query(Source.ExploreCommunityQuery, variables, opts);
     }
-    async refetchExploreComunity(variables: Types.ExploreComunityVariables): Promise<Types.ExploreComunity> {
-        return this.refetch(Source.ExploreComunityQuery, variables);
+    async refetchExploreCommunity(variables: Types.ExploreCommunityVariables): Promise<Types.ExploreCommunity> {
+        return this.refetch(Source.ExploreCommunityQuery, variables);
     }
-    useExploreComunity(variables: Types.ExploreComunityVariables, opts?: QueryWatchParameters): Types.ExploreComunity {
-        return this.useQuerySuspense(Source.ExploreComunityQuery, variables, opts);
+    useExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: QueryWatchParameters): Types.ExploreCommunity {
+        return this.useQuerySuspense(Source.ExploreCommunityQuery, variables, opts);
     }
-    useWithoutLoaderExploreComunity(variables: Types.ExploreComunityVariables): Types.ExploreComunity | null {
-        return this.useQuery(Source.ExploreComunityQuery, variables);
+    useWithoutLoaderExploreCommunity(variables: Types.ExploreCommunityVariables): Types.ExploreCommunity | null {
+        return this.useQuery(Source.ExploreCommunityQuery, variables);
     }
     async queryOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: OperationParameters): Promise<Types.OrganizationPublicInvite> {
         return this.client.query(Source.OrganizationPublicInviteQuery, variables, opts);
@@ -642,6 +654,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateAddAppToChat(variables: Types.AddAppToChatVariables): Promise<Types.AddAppToChat> {
         return this.client.mutate(Source.AddAppToChatMutation, variables);
+    }
+    async mutateUserStorageSet(variables: Types.UserStorageSetVariables): Promise<Types.UserStorageSet> {
+        return this.client.mutate(Source.UserStorageSetMutation, variables);
     }
     async mutatePinMessage(variables: Types.PinMessageVariables): Promise<Types.PinMessage> {
         return this.client.mutate(Source.PinMessageMutation, variables);
@@ -871,6 +886,9 @@ export class OpenlandClient extends BaseApiClient {
     async mutatePersistEvents(variables: Types.PersistEventsVariables): Promise<Types.PersistEvents> {
         return this.client.mutate(Source.PersistEventsMutation, variables);
     }
+    async mutateDeleteUser(variables: Types.DeleteUserVariables): Promise<Types.DeleteUser> {
+        return this.client.mutate(Source.DeleteUserMutation, variables);
+    }
     subscribeSettingsWatch(): GraphqlActiveSubscription<Types.SettingsWatch, {}> {
         return this.client.subscribe(Source.SettingsWatchSubscription);
     }
@@ -897,6 +915,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     writeAppFull(data: Types.AppFull) {
       return this.client.writeFragment(data, Source.AppFullFragment);
+    }
+    writeCommunitySearch(data: Types.CommunitySearch) {
+      return this.client.writeFragment(data, Source.CommunitySearchFragment);
     }
     writeConferenceFull(data: Types.ConferenceFull) {
       return this.client.writeFragment(data, Source.ConferenceFullFragment);
@@ -936,9 +957,6 @@ export class OpenlandClient extends BaseApiClient {
     }
     writeUserFull(data: Types.UserFull) {
       return this.client.writeFragment(data, Source.UserFullFragment);
-    }
-    writeUserOnline(data: Types.UserOnline) {
-      return this.client.writeFragment(data, Source.UserOnlineFragment);
     }
     writeUserShort(data: Types.UserShort) {
       return this.client.writeFragment(data, Source.UserShortFragment);

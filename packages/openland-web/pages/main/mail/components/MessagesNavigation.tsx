@@ -55,7 +55,8 @@ export const MessagesNavigation = XMemo(
 
         let isRooms = path.endsWith('/channels');
         let isCall = path.endsWith('/call');
-        let isInvite = path.includes('joinChannel') || path.includes('invite');
+        let isOrganizationInvite = path.includes('join') && !path.includes('joinChannel');
+        let isRoomInvite = path.includes('joinChannel') || path.includes('invite');
         let isChat = path.includes('/mail');
         let isRoomProfile = path.includes('/mail/p/');
 
@@ -69,8 +70,11 @@ export const MessagesNavigation = XMemo(
             tab = tabs.conversation;
         }
 
-        if (isInvite) {
-            tab = tabs.invite;
+        if (isOrganizationInvite) {
+            tab = tabs.organizationInvite;
+        }
+        if (isRoomInvite) {
+            tab = tabs.roomInvite;
         }
 
         if (isRooms) {
@@ -109,22 +113,26 @@ export const MessagesNavigation = XMemo(
                 }
                 secondFragmentHeader={
                     <ErrorBoundary>
-                        {chatId && (
-                            <ChatHeaderViewLoader
-                                variables={{
-                                    id: chatId,
-                                }}
-                            />
-                        )}
-                        <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                        <React.Suspense fallback={null}>
+                            {chatId && (
+                                <ChatHeaderViewLoader
+                                    variables={{
+                                        id: chatId,
+                                    }}
+                                />
+                            )}
+                            <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                        </React.Suspense>
                     </ErrorBoundary>
                 }
                 firstFragment={<DialogListFragment />}
                 secondFragment={
                     <ErrorBoundary>
-                        <ConversationContainerWrapper
-                            {...{ tab, conversationId: cid, oid, uid, cid }}
-                        />
+                        <React.Suspense fallback={null}>
+                            <ConversationContainerWrapper
+                                {...{ tab, conversationId: cid, oid, uid, cid }}
+                            />
+                        </React.Suspense>
                     </ErrorBoundary>
                 }
             />

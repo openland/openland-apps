@@ -7,7 +7,7 @@ const DEFAULT_OG = {
     title: 'Openland',
     description:
         'Openland is a professional messenger designed to support all communication needs of a modern business.',
-    image: 'https://cdn.openland.com/shared/og-messenger-6.png',
+    image: 'https://cdn.openland.com/shared/img-og-link-oplnd.png',
 };
 
 export type XDocumentHeadT = {

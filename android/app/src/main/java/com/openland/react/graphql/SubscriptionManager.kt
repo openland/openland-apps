@@ -35,9 +35,15 @@ class ActiveSubscription(val manager: SubscriptionManager, val id: String, val q
     }
 
     private fun doStart() {
-        val subs = manager.client.subscribe(createSubscription(query, arguments))
+        val subs = manager.client.subscribe(readSubscription(query, arguments))
         this.subscription = subs
         subs.execute(object : ApolloSubscriptionCall.Callback<Operation.Data> {
+            override fun onTerminated() {
+                if (this@ActiveSubscription.subscription == subs) {
+                    this@ActiveSubscription.onEnded()
+                }
+            }
+
             override fun onFailure(e: ApolloException) {
                 if (this@ActiveSubscription.subscription == subs) {
                     this@ActiveSubscription.onEnded()
@@ -130,5 +136,12 @@ class SubscriptionManager(val key: String, val client: ApolloClient, val context
 //                it.start()
 //            }
 //        }
+    }
+
+    @Synchronized
+    fun destroy() {
+        this.subscriptions.values.forEach {
+            it.stop()
+        }
     }
 }

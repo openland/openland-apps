@@ -3,7 +3,8 @@ export type tabsT =
     | 'conversation'
     | 'compose'
     | 'rooms'
-    | 'invite'
+    | 'roomInvite'
+    | 'organizationInvite'
     | 'organization'
     | 'user'
     | 'conference'
@@ -15,7 +16,8 @@ export const tabs: { [K in tabsT]: tabsT } = {
     conversation: 'conversation',
     compose: 'compose',
     rooms: 'rooms',
-    invite: 'invite',
+    roomInvite: 'roomInvite',
+    organizationInvite: 'organizationInvite',
     organization: 'organization',
     user: 'user',
     conference: 'conference',

@@ -3,11 +3,10 @@ import { css } from 'linaria';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
-import { Room, Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
+import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { RoomEditModal } from './RoomEditModal';
 import { AdvancedSettingsModal } from './AdvancedSettingsModal';
-import { RoomAddMemberModal } from './RoomAddMemberModal';
 import { ChatForwardHeaderView } from './ChatForwardHeaderView';
 import { HeaderTitle } from './components/HeaderTitle';
 import { HeaderSubtitle } from './components/HeaderSubtitle';
@@ -17,16 +16,15 @@ import { HeaderMenu } from './components/HeaderMenu';
 import CloseChatIcon from 'openland-icons/ic-chat-back.svg';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { HideOnDesktop } from 'openland-web/components/Adaptive';
-import { UserInfoContext, withUserInfo } from 'openland-web/components/UserInfo';
-import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { InviteMembersModal } from 'openland-web/fragments/inviteMembersModal';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { useClient } from 'openland-web/utils/useClient';
+import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 
 const inviteButtonClass = css`
     & svg > g > path {
@@ -202,14 +200,10 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                         className={inviteButtonClass}
                         query={{ field: 'inviteMembers', value: 'true' }}
                     />
-                    <RoomAddMemberModal
-                        roomId={room.id}
-                        refetchVars={{
-                            roomId: room.id,
-                        }}
-                    />
-                    <InviteMembersModal
-                        roomId={room.id}
+                    <AddMembersModal
+                        id={room.id}
+                        isRoom={true}
+                        isOrganization={false}
                         isChannel={(room as Room_room_SharedRoom).isChannel}
                     />
                 </>
@@ -247,7 +241,11 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     if (privateRoom) {
         headerPath = '/mail/u/' + privateRoom.user.id;
 
-        subtitle = <HeaderLastSeen variables={{ userId: privateRoom.user.id }} />;
+        subtitle = (
+            <React.Suspense fallback={<div />}>
+                <HeaderLastSeen variables={{ userId: privateRoom.user.id }} />
+            </React.Suspense>
+        );
     }
 
     const photo = sharedRoom ? sharedRoom.photo : privateRoom!!.user.photo;

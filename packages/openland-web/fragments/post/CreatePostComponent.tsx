@@ -9,7 +9,7 @@ import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XCloudImage } from 'openland-x/XCloudImage';
-import { withSendPostMessage, withEditPostMessage } from '../../api/withPostMessage';
+import { useClient } from 'openland-web/utils/useClient';
 import { PostMessageType } from 'openland-api/Types';
 import { EditPostProps } from '../MessengerRootComponent';
 import { DropZone } from '../MessageComposeComponent/FileUploading/DropZone';
@@ -87,13 +87,22 @@ interface SendPostButtonProps {
     title: string;
     text: string;
     files: Set<File> | null;
-    postType: PostMessageType | null | string;
+    postType: PostMessageType | null;
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
     textValidation: (title: boolean, text: boolean) => void;
 }
 
-const SendPostButton = withSendPostMessage(props => {
-    const { files, title, text } = props as any;
+const SendPostButton = ({
+    files,
+    title,
+    text,
+    conversationId,
+    postType,
+    handleHideChat,
+    textValidation,
+    children,
+}: SendPostButtonProps) => {
+    const client = useClient();
 
     let attachments: string[] | null = null;
 
@@ -108,31 +117,27 @@ const SendPostButton = withSendPostMessage(props => {
         <XMutation
             action={async () => {
                 if (checkTitleSend && checkTextSend) {
-                    await props.sendPost({
-                        variables: {
-                            conversationId: (props as any).conversationId,
-                            title: title,
-                            text: text,
-                            attachments: attachments,
-                            postType: (props as any).postType
-                                ? (props as any).postType
-                                : PostMessageType.BLANK,
-                        },
+                    await client.mutateSendPostMessage({
+                        conversationId,
+                        title,
+                        text,
+                        attachments,
+                        postType: postType ? postType : PostMessageType.BLANK,
                     });
                 }
             }}
             onSuccess={() => {
                 if (checkTitleSend && checkTextSend) {
-                    (props as any).handleHideChat(false, null);
+                    handleHideChat(false, null);
                 } else {
-                    (props as any).textValidation(!checkTitleSend, !checkTextSend);
+                    textValidation(!checkTitleSend, !checkTextSend);
                 }
             }}
         >
-            {props.children}
+            {children}
         </XMutation>
     );
-}) as React.ComponentType<SendPostButtonProps>;
+};
 
 interface EditPostButtonProps {
     messageId: string;
@@ -140,13 +145,22 @@ interface EditPostButtonProps {
     title: string;
     text: string;
     files: Set<File> | null;
-    postType: PostMessageType | null | string;
+    postType: PostMessageType | null;
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
     textValidation: (title: boolean, text: boolean) => void;
 }
 
-const EditPostButton = withEditPostMessage(props => {
-    const { files, title, text } = props as any;
+const EditPostButton = ({
+    files,
+    title,
+    text,
+    messageId,
+    postType,
+    handleHideChat,
+    textValidation,
+    children,
+}: EditPostButtonProps) => {
+    const client = useClient();
 
     let attachments: string[] | null = null;
 
@@ -161,31 +175,27 @@ const EditPostButton = withEditPostMessage(props => {
         <XMutation
             action={async () => {
                 if (checkTitleSend && checkTextSend) {
-                    await props.editPost({
-                        variables: {
-                            messageId: (props as any).messageId,
-                            title: title,
-                            text: text,
-                            attachments: attachments,
-                            postType: (props as any).postType
-                                ? (props as any).postType
-                                : PostMessageType.BLANK,
-                        },
+                    await client.mutateEditPostMessage({
+                        messageId,
+                        title,
+                        text,
+                        attachments,
+                        postType: postType ? postType : PostMessageType.BLANK,
                     });
                 }
             }}
             onSuccess={() => {
                 if (checkTitleSend && checkTextSend) {
-                    (props as any).handleHideChat(false, null);
+                    handleHideChat(false, null);
                 } else {
-                    (props as any).textValidation(!checkTitleSend, !checkTextSend);
+                    textValidation(!checkTitleSend, !checkTextSend);
                 }
             }}
         >
-            {props.children}
+            {children}
         </XMutation>
     );
-}) as React.ComponentType<EditPostButtonProps>;
+};
 
 interface CreatePostComponentProps {
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
@@ -387,7 +397,7 @@ export class CreatePostComponent extends React.Component<
 
     render() {
         const { props, state } = this;
-        let postType = this.props.postType || 'BLANK';
+        let postType = this.props.postType || PostMessageType.BLANK;
 
         const header = postTexts[postType].header;
         const titlePlaceholder = postTexts[postType].titlePlaceholder;
