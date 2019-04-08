@@ -142,21 +142,21 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     return (
         <>
             {/* TODO maybe some other pattern here */}
-            {isActive && (
-                <DumpSendMessage
-                    TextInputComponent={
-                        messageComposeProps.TextInputComponent || DesktopSendMessage
-                    }
-                    quoteState={quoteState}
-                    handleChange={handleChange}
-                    handleSend={handleSend}
-                    inputRef={inputRef}
-                    inputValue={inputValue}
-                    enabled={messageComposeProps.enabled}
-                    closeEditor={closeEditor}
-                    mentionsState={mentionsState}
-                />
-            )}
+            {/* {isActive && ( */}
+            <DumpSendMessage
+                TextInputComponent={
+                    messageComposeProps.TextInputComponent || DesktopSendMessage
+                }
+                quoteState={quoteState}
+                handleChange={handleChange}
+                handleSend={handleSend}
+                inputRef={inputRef}
+                inputValue={inputValue}
+                enabled={messageComposeProps.enabled}
+                closeEditor={closeEditor}
+                mentionsState={mentionsState}
+            />
+            {/* )} */}
         </>
     );
 };
