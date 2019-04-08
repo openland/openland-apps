@@ -64,7 +64,7 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
         pinnedDs.initialize([message], true);
 
         pinnedDataView = new ASDataView(pinnedDs, (item) => {
-            let { topContnet, bottomContent } = extractContent({
+            let { topContent, bottomContent } = extractContent({
                 message: item as any, engine,
                 onDocumentPress: messenger.handleDocumentClick,
                 onMediaPress: messenger.handleMediaClick,
@@ -94,7 +94,7 @@ const PinnedMessageComponent = XMemo<PageProps>((props) => {
                         </ASFlex>
 
                     </ASFlex>
-                    {topContnet}
+                    {topContent}
                     {bottomContent}
                 </ASFlex>
             );

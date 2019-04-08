@@ -69,33 +69,33 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     let hasDocument = !!(fileAttach && !hasImage);
     let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
 
-    let topContnet = [];
+    let topContent = [];
 
     if (hasReply) {
-        topContnet.push(<ReplyContent key="msg-reply" message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<ReplyContent key="msg-reply" message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasText) {
-        topContnet.push(<TextContent key="msg-text" message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<TextContent key="msg-text" message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasImage && imageLayout) {
-        topContnet.push(<MediaContent key="msg-media" compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />);
+        topContent.push(<MediaContent key="msg-media" compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />);
     }
     if (hasDocument) {
-        topContnet.push(<DocumentContent key="msg-document" compensateBubble={compensateBubble} attach={fileAttach!} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<DocumentContent key="msg-document" compensateBubble={compensateBubble} attach={fileAttach!} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
 
     let bottomContent: any[] = [];
     if (hasUrlAug) {
-        bottomContent.push(<RichAttachContent key="msg-rich" padded={!topContnet.length} compensateBubble={compensateBubble} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        bottomContent.push(<RichAttachContent key="msg-rich" padded={!topContent.length} compensateBubble={compensateBubble} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
 
-    if (!topContnet.length && bottomContent.length) {
-        topContnet = bottomContent;
+    if (!topContent.length && bottomContent.length) {
+        topContent = bottomContent;
         bottomContent = [];
     }
 
     if (!props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument) {
-        topContnet.unshift(<ASText fontSize={13} onPress={() => props.onUserPress(props.message.senderId)} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{props.message.senderName}</ASText>);
+        topContent.unshift(<ASText fontSize={13} onPress={() => props.onUserPress(props.message.senderId)} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{props.message.senderName}</ASText>);
     }
 
     return {
@@ -104,7 +104,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         hasReply,
         hasText,
         hasUrlAug,
-        topContnet,
+        topContent,
         bottomContent,
         imageLayout,
         imageOnly,
@@ -122,7 +122,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         hasText,
         hasUrlAug,
         imageOnly,
-        topContnet,
+        topContent,
         imageLayout,
         richAttachImageLayout,
         bottomContent,
@@ -138,7 +138,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                     alignItems="stretch"
                 >
 
-                    {topContnet}
+                    {topContent}
 
                     <ASFlex
                         overlay={true}
