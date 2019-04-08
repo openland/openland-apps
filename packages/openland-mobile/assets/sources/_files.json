@@ -404,6 +404,34 @@
             "sizes": [
                 24
             ]
+        },
+        {
+            "name": "ic-comments",
+            "src": "ic-comments.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-comments-full",
+            "src": "ic-comments-full.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-likes",
+            "src": "ic-likes.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-likes-full",
+            "src": "ic-likes-full.svg",
+            "sizes": [
+                24
+            ]
         }
     ]
 }

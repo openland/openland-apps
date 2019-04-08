@@ -13,6 +13,7 @@ import { ASText } from 'react-native-async-view/ASText';
 import { Platform } from 'react-native';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
+import { AsyncMessageChannelReactionsView } from './AsyncMessageChannelReactionsView';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -21,7 +22,10 @@ export interface AsyncMessageViewProps {
     onAvatarPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
+    onReactionPress: (message: DataSourceMessageItem, r: string) => void;
     navigationManager: NavigationManager;
+
+    inChannel?: boolean;
 }
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
@@ -61,11 +65,9 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch" onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundColor : undefined}>
-
             <ASFlex key="margin-top" backgroundColor={theme.backgroundColor} height={(props.message.attachTop ? 2 : 14) + 2} marginTop={-2} />
 
             <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
-
                 <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
                     <ASFlex key="margin-left-1" backgroundColor={theme.backgroundColor} width={(props.message.attachBottom ? 36 : 0) + 10} />
 
@@ -79,20 +81,23 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                             />
                         </ASFlex>
                     }
+
                     <ASFlex key="margin-left-2" backgroundColor={theme.backgroundColor} width={(props.message.isOut ? 10 : 0)} />
 
                     {props.message.isOut && <ASFlex backgroundColor={theme.backgroundColor} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
-                    {res}
-                    <ASFlex key="margin-right" backgroundColor={theme.backgroundColor} width={4} />
 
+                    {res}
+
+                    <ASFlex key="margin-right" backgroundColor={theme.backgroundColor} width={4} />
                 </ASFlex>
 
-                {props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
+                {!props.inChannel && props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
+                {props.inChannel && <AsyncMessageChannelReactionsView theme={theme} message={props.message} onReactionPress={props.onReactionPress} />}
+
                 <ASFlex backgroundColor={theme.backgroundColor} height={50} marginBottom={-50} />
-
             </ASFlex>
-            <ASFlex key="margin-bottom" backgroundColor={theme.backgroundColor} height={4} marginBottom={-2} />
 
+            <ASFlex key="margin-bottom" backgroundColor={theme.backgroundColor} height={4} marginBottom={-2} />
         </ASFlex>
     );
 });

@@ -37,7 +37,7 @@ export class MobileMessenger {
         });
     }
 
-    getConversation(id: string) {
+    getConversation(id: string, isChannel?: boolean) {
         if (!this.conversations.has(id)) {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
@@ -45,7 +45,7 @@ export class MobileMessenger {
                     if (item.serviceMetaData || item.isService) {
                         return (<ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} />);
                     } else {
-                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} />);
+                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} inChannel={isChannel} />);
                     }
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
@@ -92,7 +92,7 @@ export class MobileMessenger {
         this.history.navigationManager.push('ProfileUser', { id });
     }
 
-    private handleReactionSetUnset = async (message: DataSourceMessageItem, r: string) => {
+    private handleReactionSetUnset = (message: DataSourceMessageItem, r: string) => {
         startLoader();
         try {
             let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;

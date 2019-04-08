@@ -15,6 +15,8 @@ export interface MessagesListProps {
     theme: ConversationTheme;
     messagesPaddingBottom?: number;
     inverted: boolean;
+
+    isChannel?: boolean;
 }
 export const androidMessageInputListOverlap = 50;
 
@@ -105,6 +107,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     paddingBottom={this.props.messagesPaddingBottom}
                     loaded={this.state.conversation.historyFullyLoaded}
                     engine={this.props.engine}
+
+                    isChannel={this.props.isChannel}
                 />
                 {
                     !this.state.conversation.loading && this.state.conversation.messages.length === 0 && (

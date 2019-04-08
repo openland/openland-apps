@@ -342,7 +342,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 </ASSafeAreaContext.Consumer>
 
                             )}
-                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} />
+                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} isChannel={(sharedRoom && sharedRoom.isChannel) ? true : false} />
                             {showInputBar && (
                                 <MessageInputBar
                                     onAttachPress={this.handleAttach}
