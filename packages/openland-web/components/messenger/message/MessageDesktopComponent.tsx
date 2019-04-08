@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { MessageTextComponent } from './content/MessageTextComponent';
+import { MessageTextComponent, MessageTextComponentSpanned } from './content/MessageTextComponent';
 import { MessageAnimationComponent } from './content/MessageAnimationComponent';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
@@ -379,9 +379,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         );
                     } else {
                         content.push(
-                            <MessageTextComponent
-                                message={message.text || ''}
-                                spans={message.spans || []}
+                            <MessageTextComponentSpanned
+                                spannedString={message.textSpannedString!}
                                 key={'text'}
                                 isEdited={!!message.isEdited}
                             />,

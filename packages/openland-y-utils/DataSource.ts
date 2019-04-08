@@ -371,8 +371,6 @@ export class DataSource<T extends DataSourceItem> {
             let latestBatch = batch;
             batch = [];
 
-            console.log(latestBatch);
-
             let removed: { [key: string]: boolean } = {};
             let added: { [key: string]: boolean } = {};
             let updated: { [key: string]: boolean } = {};

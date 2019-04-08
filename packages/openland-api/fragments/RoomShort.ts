@@ -8,6 +8,10 @@ export const RoomShort = gql`
             user {
                 ...UserShort
             }
+            settings {
+                id
+                mute
+            }
         } 
         ... on SharedRoom {
             id
@@ -25,6 +29,10 @@ export const RoomShort = gql`
             }
             organization{
                 ...OrganizationShort
+            }
+            settings {
+                id
+                mute
             }
         }
     }

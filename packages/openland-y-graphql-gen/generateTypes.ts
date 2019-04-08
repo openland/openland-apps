@@ -1,6 +1,7 @@
 // import { generateApi } from "./generateApi";
 import * as fs from 'fs';
 import * as path from 'path';
+import { URL } from 'url';
 
 function extractImport(src: string) {
     let url = new URL(src)

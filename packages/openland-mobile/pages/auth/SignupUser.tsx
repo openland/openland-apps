@@ -61,7 +61,7 @@ const SignupUserContent = XMemo<PageProps>((props) => {
                 action={async (src) => {
                     // await delay(1000);
                     if (!src.input.firstName) {
-                        Alert.builder().title('Name can\'t be empty').button('GOT IT!').show();
+                        Alert.builder().title('Please enter your name').button('GOT IT!').show();
                         throw new SilentError();
                     }
                     await getClient().mutateProfileCreate({ input: { firstName: src.input.firstName, lastName: src.input.lastName } });

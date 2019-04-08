@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 import { css, cx } from 'linaria';
-import { XMemo } from 'openland-y-utils/XMemo';
-import { SpansMessage } from './service/ServiceMessageDefault';
-import { XButton } from 'openland-x/XButton';
-import { XView } from 'react-mental';
+import { SpannedStringView } from './SpannedStringView';
+import { spansPreprocess } from '../../data/spansPreprocess';
+import { SpannedString } from '../../data/SpannedString';
+
 export interface MessageTextComponentProps {
     spans?: FullMessage_GeneralMessage_spans[];
     message: string;
@@ -33,23 +33,44 @@ const cropTextStyle = css`
     text-overflow: ellipsis;
 `;
 
-export const MessageTextComponent = XMemo<MessageTextComponentProps>(
-    ({ shouldCrop, message, spans, isEdited, asPinMessage }) => (
-        <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
-            <SpansMessage
-                message={message}
-                spans={spans}
-                isEdited={isEdited}
-                asPinMessage={asPinMessage}
-            />
+const EditLabelStyle = css`
+    display: inline-block;
+    vertical-align: baseline;
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 22px;
+    padding-left: 6px;
+    letter-spacing: 0;
+`;
 
-            <XView width={100}>
-                <XButton
-                    text="Discuss"
-                    size="default"
-                    query={{ field: 'comments', value: 'true' }}
-                />
-            </XView>
-        </div>
-    ),
-);
+export const MessageTextComponent = React.memo<MessageTextComponentProps>(
+    ({ shouldCrop, message, spans, isEdited, asPinMessage }) => {
+        let spannedString = spansPreprocess(message, spans, { disableBig: asPinMessage });
+        return (
+            <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
+                <span>
+                    <SpannedStringView spannedString={spannedString} />
+                    {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
+                </span>
+            </div>
+        );
+    });
+
+export const MessageTextComponentSpanned = React.memo<{
+    spannedString: SpannedString,
+    isEdited: boolean;
+    isService?: boolean;
+    shouldCrop?: boolean;
+    asPinMessage?: boolean;
+}>(
+    ({ shouldCrop, spannedString, isEdited }) => {
+        return (
+            <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
+                <span>
+                    <SpannedStringView spannedString={spannedString} />
+                    {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
+                </span>
+            </div>
+        );
+    });

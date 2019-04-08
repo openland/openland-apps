@@ -102,7 +102,7 @@ export class WorkerApolloHost {
                 }
             });
         } else {
-            this.postMessage({ type: 'error', id: id, data: error });
+            this.postMessage({ type: 'error', id: id, data: {} });
         }
     }
     private postMessage = (msg: WorkerResponse) => {

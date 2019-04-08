@@ -35,6 +35,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { SDevice } from 'react-native-s/SDevice';
+import { ChannelMuteButton } from './components/ChannelMuteButton';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -341,19 +342,22 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 </ASSafeAreaContext.Consumer>
 
                             )}
-                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} messagesPaddingBottom={!showInputBar ? 50 : undefined} />
-                            {showInputBar && <MessageInputBar
-                                onAttachPress={this.handleAttach}
-                                onSubmitPress={this.handleSubmit}
-                                onChangeText={this.handleTextChange}
-                                onSelectionChange={this.handleSelectionChange}
-                                onFocus={this.handleFocus}
-                                onBlur={this.handleBlur}
-                                text={this.state.text}
-                                theme={this.state.theme}
-                                topContent={mentions}
-                            />}
-                            {(!showInputBar && Platform.OS === 'android') && <View height={SDevice.safeArea.bottom} />}
+                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} />
+                            {showInputBar && (
+                                <MessageInputBar
+                                    onAttachPress={this.handleAttach}
+                                    onSubmitPress={this.handleSubmit}
+                                    onChangeText={this.handleTextChange}
+                                    onSelectionChange={this.handleSelectionChange}
+                                    onFocus={this.handleFocus}
+                                    onBlur={this.handleBlur}
+                                    text={this.state.text}
+                                    theme={this.state.theme}
+                                    topContent={mentions}
+                                    placeholder={sharedRoom && sharedRoom.canSendMessage ? 'Broadcast something...' : 'Message...'}
+                                />
+                            )}
+                            {!showInputBar && sharedRoom && <ChannelMuteButton id={sharedRoom.id} mute={!!sharedRoom.settings.mute} />}
                         </View>
                     </KeyboardSafeAreaView>
                 </SDeferred>
