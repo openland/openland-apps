@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { XView, XViewSelectedContext } from 'react-mental';
+import { XView, XViewSelectedContext, XViewRouterContext } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from 'openland-icons/ic-photo.svg';
 import FileIcon from 'openland-icons/ic-file-2.svg';
@@ -73,7 +73,7 @@ export interface DialogViewProps {
 }
 
 export const DialogView = React.memo<DialogViewProps>(props => {
-    // let router = React.useContext(XRouterContext);
+    let router = React.useContext(XViewRouterContext);
     let dialog = props.item;
     let isMuted = dialog.isMuted;
     let isService = dialog.isService;
@@ -167,8 +167,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
             selected={props.selected}
             as="a"
             ref={props.handleRef}
-            path={'/mail/' + dialog.key}
-            // onMouseDown={() => router!.push('/mail/' + dialog.key)}
+            // path={'/mail/' + dialog.key}
+            onMouseDown={() => router!.navigate('/mail/' + dialog.key)}
             height={72}
             flexDirection="row"
             paddingLeft={16}
