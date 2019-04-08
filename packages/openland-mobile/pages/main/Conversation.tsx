@@ -354,7 +354,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     text={this.state.text}
                                     theme={this.state.theme}
                                     topContent={mentions}
-                                    placeholder={sharedRoom && sharedRoom.canSendMessage ? 'Broadcast something...' : 'Message...'}
+                                    placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message...'}
                                 />
                             )}
                             {!showInputBar && sharedRoom && <ChannelMuteButton id={sharedRoom.id} mute={!!sharedRoom.settings.mute} />}
