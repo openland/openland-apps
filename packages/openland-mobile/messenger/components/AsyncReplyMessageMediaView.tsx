@@ -11,7 +11,7 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'op
 
 export interface AsyncMessageMediaViewProps {
     message: DataSourceMessageItem;
-    onPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
+    onPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number) => void;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
 }
 
@@ -24,12 +24,12 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
         this.state = {};
     }
 
-    private handlePress = (event: ASPressEvent) => {
+    private handlePress = (event: ASPressEvent, radius?: number) => {
         // Ignore clicks for not-downloaded files
         if (this.state.downloadState && this.state.downloadState.path && this.props.attach.fileMetadata.imageHeight && this.props.attach.fileMetadata.imageWidth) {
             let w = this.props.attach.fileMetadata.imageWidth;
             let h = this.props.attach.fileMetadata.imageHeight;
-            this.props.onPress({ imageHeight: h, imageWidth: w }, { path: this.state.downloadState.path, ...event });
+            this.props.onPress({ imageHeight: h, imageWidth: w }, { path: this.state.downloadState.path, ...event }, radius);
         }
     }
 
@@ -52,11 +52,11 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
         return (
             <ASFlex width={layout.width} height={layout.height} marginLeft={10} marginTop={5} marginRight={7}>
                 <ASImage
-                    onPress={this.handlePress}
                     source={{ uri: (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
                     width={layout.width}
                     height={layout.height}
                     isGif={this.props.attach!!.fileMetadata.imageFormat === 'gif'}
+                    onPress={(e) => this.handlePress(e, 0)}
                 />
 
             </ASFlex>
