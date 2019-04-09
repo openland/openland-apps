@@ -16,10 +16,10 @@ import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBo
 import { SortPicker } from 'openland-web/pages/main/directory/components/sortPicker';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { Navigation } from '../../../../components/Navigation';
-import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useIsMobile } from 'openland-web/hooks';
 import { XLoader } from 'openland-x/XLoader';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 
 export const SearchCardsOrShowProfile = XMemo(
     ({
@@ -190,7 +190,7 @@ export const DirectoryNavigation = XMemo(
                 }
                 secondFragment={
                     <XView flexGrow={1} height={isMobile ? undefined : '100%'} position="relative">
-                        <XScrollView2 height="100%" flexGrow={1}>
+                        <XScrollView3 height="100%" flexGrow={1}>
                             <XView flexGrow={1}>
                                 <React.Suspense
                                     fallback={
@@ -214,7 +214,7 @@ export const DirectoryNavigation = XMemo(
                                     )}
                                 </React.Suspense>
                             </XView>
-                        </XScrollView2>
+                        </XScrollView3>
                     </XView>
                 }
             />

@@ -9,7 +9,6 @@ import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
-import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XModal } from 'openland-x-modal/XModal';
 import { XLink } from 'openland-x/XLink';
 import { XCloudImage } from 'openland-x/XCloudImage';
@@ -33,6 +32,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XIcon } from 'openland-x/XIcon';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 
 const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
@@ -302,9 +302,9 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
             <XView flexGrow={1}>
                 {!props.hideBack && <BackButton />}
                 <Header user={user} />
-                <XScrollView2 flexGrow={1} height="100%">
+                <XScrollView3 flexGrow={1} height="100%">
                     <About user={user} />
-                </XScrollView2>
+                </XScrollView3>
             </XView>
         </>
     );
