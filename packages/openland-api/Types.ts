@@ -940,6 +940,2552 @@ export interface DialogsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL subscription operation: CommentWatch
+// ====================================================
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageAttachmentPost | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageAttachmentFile | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments_MessageRichAttachment;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  fileId: string;
+  fileMetadata: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans = CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanBold;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_attachments[];
+  quotedMessages: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages[];
+  reactions: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_reactions[];
+  spans: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_parentComment {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment {
+  __typename: "CommentEntry";
+  id: string;
+  comment: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment;
+  parentComment: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_parentComment | null;
+  childComments: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_childComments[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived {
+  __typename: "CommentReceived";
+  comment: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageAttachmentPost | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageAttachmentFile | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments_MessageRichAttachment;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  fileId: string;
+  fileMetadata: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans = CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanBold;
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_attachments[];
+  quotedMessages: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages[];
+  reactions: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_reactions[];
+  spans: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_parentComment {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment {
+  __typename: "CommentEntry";
+  id: string;
+  comment: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment;
+  parentComment: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_parentComment | null;
+  childComments: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_childComments[];
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated {
+  __typename: "CommentUpdated";
+  comment: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment;
+}
+
+export type CommentWatch_event_CommentUpdateSingle_update = CommentWatch_event_CommentUpdateSingle_update_CommentReceived | CommentWatch_event_CommentUpdateSingle_update_CommentUpdated;
+
+export interface CommentWatch_event_CommentUpdateSingle {
+  __typename: "CommentUpdateSingle";
+  seq: number;
+  state: string;
+  update: CommentWatch_event_CommentUpdateSingle_update;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageAttachmentPost | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageAttachmentFile | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments_MessageRichAttachment;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  fileId: string;
+  fileMetadata: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanBold;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_attachments[];
+  quotedMessages: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages[];
+  reactions: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_reactions[];
+  spans: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_parentComment {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment {
+  __typename: "CommentEntry";
+  id: string;
+  comment: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment;
+  parentComment: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_parentComment | null;
+  childComments: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_childComments[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived {
+  __typename: "CommentReceived";
+  comment: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageAttachmentPost | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageAttachmentFile | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments_MessageRichAttachment;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  fileId: string;
+  fileMetadata: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans = CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanRoomMention | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanLink | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanBold;
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_attachments[];
+  quotedMessages: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages[];
+  reactions: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_reactions[];
+  spans: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_parentComment {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment {
+  __typename: "CommentEntry";
+  id: string;
+  comment: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment;
+  parentComment: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_parentComment | null;
+  childComments: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_childComments[];
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated {
+  __typename: "CommentUpdated";
+  comment: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment;
+}
+
+export type CommentWatch_event_CommentUpdateBatch_updates = CommentWatch_event_CommentUpdateBatch_updates_CommentReceived | CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated;
+
+export interface CommentWatch_event_CommentUpdateBatch {
+  __typename: "CommentUpdateBatch";
+  fromSeq: number;
+  seq: number;
+  state: string;
+  updates: CommentWatch_event_CommentUpdateBatch_updates[];
+}
+
+export type CommentWatch_event = CommentWatch_event_CommentUpdateSingle | CommentWatch_event_CommentUpdateBatch;
+
+export interface CommentWatch {
+  event: CommentWatch_event | null;
+}
+
+export interface CommentWatchVariables {
+  peerId: string;
+  fromState?: string | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL subscription operation: ChatWatch
 // ====================================================
 
@@ -30349,6 +32895,1270 @@ export interface UserTiny {
   photo: string | null;
   shortname: string | null;
 }
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: CommentUpdateFragment
+// ====================================================
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_sender_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type CommentUpdateFragment_CommentReceived_comment_comment_attachments = CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageAttachmentPost | CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageAttachmentFile | CommentUpdateFragment_CommentReceived_comment_comment_attachments_MessageRichAttachment;
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans = CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans = CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  fileId: string;
+  fileMetadata: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments = CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages = CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage | CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage;
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: CommentUpdateFragment_CommentReceived_comment_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room = CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export type CommentUpdateFragment_CommentReceived_comment_comment_spans = CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanLink | CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanBold;
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: CommentUpdateFragment_CommentReceived_comment_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: CommentUpdateFragment_CommentReceived_comment_comment_attachments[];
+  quotedMessages: CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages[];
+  reactions: CommentUpdateFragment_CommentReceived_comment_comment_reactions[];
+  spans: CommentUpdateFragment_CommentReceived_comment_comment_spans[];
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_parentComment {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment {
+  __typename: "CommentEntry";
+  id: string;
+  comment: CommentUpdateFragment_CommentReceived_comment_comment;
+  parentComment: CommentUpdateFragment_CommentReceived_comment_parentComment | null;
+  childComments: CommentUpdateFragment_CommentReceived_comment_childComments[];
+}
+
+export interface CommentUpdateFragment_CommentReceived {
+  __typename: "CommentReceived";
+  comment: CommentUpdateFragment_CommentReceived_comment;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_sender_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  id: string;
+  fileId: string;
+  fileMetadata: CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard_buttons {
+  __typename: "ModernMessageButton";
+  title: string;
+  style: ModernMessageButtonStyle;
+  url: string | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard {
+  __typename: "MessageKeyboard";
+  buttons: (CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard_buttons[] | null)[];
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_icon | null;
+  image: CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_image | null;
+  keyboard: CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment_keyboard | null;
+}
+
+export type CommentUpdateFragment_CommentUpdated_comment_comment_attachments = CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageAttachmentPost | CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageAttachmentFile | CommentUpdateFragment_CommentUpdated_comment_comment_attachments_MessageRichAttachment;
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room = CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans = CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanLink;
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_sender;
+  fallback: string;
+  spans: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans[];
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room = CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_PrivateRoom | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export type CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans = CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanLink;
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost";
+  fallback: string;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  fallback: string;
+  fileId: string;
+  fileMetadata: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon {
+  __typename: "Image";
+  url: string;
+  metadata: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon_metadata | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image {
+  __typename: "Image";
+  url: string;
+  metadata: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment";
+  fallback: string;
+  title: string | null;
+  subTitle: string | null;
+  titleLink: string | null;
+  titleLinkHostname: string | null;
+  text: string | null;
+  icon: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+}
+
+export type CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments = CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_sender;
+  fallback: string;
+  spans: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
+  edited: boolean;
+  attachments: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_attachments[];
+}
+
+export type CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages = CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage | CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage;
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_reactions_user_primaryOrganization | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_reactions {
+  __typename: "ModernMessageReaction";
+  user: CommentUpdateFragment_CommentUpdated_comment_comment_reactions_user;
+  reaction: MessageReactionType;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention {
+  __typename: "MessageSpanUserMention";
+  offset: number;
+  length: number;
+  user: CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
+  __typename: "User";
+  id: string;
+  isYou: boolean;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  shortname: string | null;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention {
+  __typename: "MessageSpanMultiUserMention";
+  offset: number;
+  length: number;
+  users: CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users[];
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom_user;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export type CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room = CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_PrivateRoom | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room_SharedRoom;
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention {
+  __typename: "MessageSpanRoomMention";
+  offset: number;
+  length: number;
+  room: CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention_room;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanLink {
+  __typename: "MessageSpanLink";
+  offset: number;
+  length: number;
+  url: string;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanBold {
+  __typename: "MessageSpanBold";
+  offset: number;
+  length: number;
+}
+
+export type CommentUpdateFragment_CommentUpdated_comment_comment_spans = CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanRoomMention | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanLink | CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanBold;
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: CommentUpdateFragment_CommentUpdated_comment_comment_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  edited: boolean;
+  commentsCount: number;
+  attachments: CommentUpdateFragment_CommentUpdated_comment_comment_attachments[];
+  quotedMessages: CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages[];
+  reactions: CommentUpdateFragment_CommentUpdated_comment_comment_reactions[];
+  spans: CommentUpdateFragment_CommentUpdated_comment_comment_spans[];
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_parentComment {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_childComments {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment {
+  __typename: "CommentEntry";
+  id: string;
+  comment: CommentUpdateFragment_CommentUpdated_comment_comment;
+  parentComment: CommentUpdateFragment_CommentUpdated_comment_parentComment | null;
+  childComments: CommentUpdateFragment_CommentUpdated_comment_childComments[];
+}
+
+export interface CommentUpdateFragment_CommentUpdated {
+  __typename: "CommentUpdated";
+  comment: CommentUpdateFragment_CommentUpdated_comment;
+}
+
+export type CommentUpdateFragment = CommentUpdateFragment_CommentReceived | CommentUpdateFragment_CommentUpdated;
 
 /* tslint:disable */
 /* eslint-disable */

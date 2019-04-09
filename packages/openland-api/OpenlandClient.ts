@@ -910,6 +910,9 @@ export class OpenlandClient extends BaseApiClient {
     subscribeSettingsWatch(): GraphqlActiveSubscription<Types.SettingsWatch, {}> {
         return this.client.subscribe(Source.SettingsWatchSubscription);
     }
+    subscribeCommentWatch(variables: Types.CommentWatchVariables): GraphqlActiveSubscription<Types.CommentWatch, Types.CommentWatchVariables> {
+        return this.client.subscribe(Source.CommentWatchSubscription, variables);
+    }
     subscribeChatWatch(variables: Types.ChatWatchVariables): GraphqlActiveSubscription<Types.ChatWatch, Types.ChatWatchVariables> {
         return this.client.subscribe(Source.ChatWatchSubscription, variables);
     }
@@ -984,6 +987,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     writeUserTiny(data: Types.UserTiny) {
       return this.client.writeFragment(data, Source.UserTinyFragment);
+    }
+    writeCommentUpdateFragment(data: Types.CommentUpdateFragment) {
+      return this.client.writeFragment(data, Source.CommentUpdateFragmentFragment);
     }
     writeChatUpdateFragment(data: Types.ChatUpdateFragment) {
       return this.client.writeFragment(data, Source.ChatUpdateFragmentFragment);

@@ -39,6 +39,46 @@ export const DialogsQuery = gql`
     ${TinyMessage}
 `;
 
+export const CommentUpdateFragment = gql`
+    fragment CommentUpdateFragment on CommentUpdate {
+        ... on CommentReceived {
+            comment {
+                ...CommentEntryFragment
+            }
+        }
+        ... on CommentUpdated {
+            comment {
+                ...CommentEntryFragment
+            }
+        }
+    }
+`;
+
+export const CommentWatchSubscription = gql`
+    subscription CommentWatch($peerId: ID!, $fromState: String) {
+        event: commentUpdates(peerId: $peerId, fromState: $fromState) {
+            ... on CommentUpdateSingle {
+                seq
+                state
+                update {
+                    ...CommentUpdateFragment
+                }
+            }
+            ... on CommentUpdateBatch {
+                fromSeq
+                seq
+                state
+                updates {
+                    ...CommentUpdateFragment
+                }
+            }
+        }
+    }
+    ${CommentUpdateFragment}
+    ${CommentEntryFragment}
+    ${FullMessage}
+`;
+
 export const ChatUpdateFragment = gql`
     fragment ChatUpdateFragment on ChatUpdate {
         ... on ChatMessageReceived {

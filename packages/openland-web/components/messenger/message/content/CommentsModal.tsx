@@ -7,7 +7,11 @@ import { DumpSendMessage } from 'openland-web/fragments/MessageComposeComponent/
 import { DesktopSendMessage } from 'openland-web/fragments/MessageComposeComponent/SendMessage/DesktopSendMessage';
 import UploadCare from 'uploadcare-widget';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
-import { UserShort, RoomMembers_members } from 'openland-api/Types';
+import {
+    UserShort,
+    RoomMembers_members,
+    CommentWatch_event_CommentUpdateSingle_update,
+} from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { useHandleSend } from 'openland-web/fragments/MessageComposeComponent/useHandleSend';
 import { useInputMethods } from 'openland-web/fragments/MessageComposeComponent/useInputMethods';
@@ -16,6 +20,7 @@ import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/
 import { useMentions } from 'openland-web/fragments/MessageComposeComponent/useMentions';
 import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 
 type CommentsInputProps = {
@@ -85,6 +90,29 @@ const CommentsInner = () => {
 
     const messageComments = client.useMessageComments({
         messageId: curMesssageId,
+    });
+
+    const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
+        if (event.__typename === 'CommentReceived') {
+            await client.refetchMessageComments({
+                messageId: curMesssageId,
+            });
+        }
+    };
+
+    React.useEffect(() => {
+        const watcher = new SequenceModernWatcher(
+            'comment messageId:' + curMesssageId,
+            client.subscribeCommentWatch({ peerId: curMesssageId }),
+            client.client,
+            updateHandler,
+            undefined,
+            { peerId: curMesssageId },
+            null,
+        );
+        return () => {
+            watcher.destroy();
+        };
     });
 
     const addComment = async ({

@@ -1,0 +1,15 @@
+fragment CommentUpdateFragment on CommentUpdate {
+  __typename
+  ... on CommentReceived {
+    comment {
+      __typename
+      ...CommentEntryFragment
+    }
+  }
+  ... on CommentUpdated {
+    comment {
+      __typename
+      ...CommentEntryFragment
+    }
+  }
+}

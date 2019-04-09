@@ -1719,6 +1719,12 @@ fun readSubscription(name: String, src: ReadableMap): Subscription<Operation.Dat
        val builder = SettingsWatchSubscription.builder()
        return builder.build() as Subscription<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "CommentWatch") {
+       val builder = CommentWatchSubscription.builder()
+       builder.peerId(notNull(readString(src, "peerId")))
+       builder.fromState(readString(src, "fromState"))
+       return builder.build() as Subscription<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "ChatWatch") {
        val builder = ChatWatchSubscription.builder()
        builder.chatId(notNull(readString(src, "chatId")))

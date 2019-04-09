@@ -1807,6 +1807,176 @@
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"operationName": "CommentWatch",
+			"operationType": "subscription",
+			"rootType": "Subscription",
+			"variables": [
+				{
+					"name": "peerId",
+					"type": "ID!"
+				},
+				{
+					"name": "fromState",
+					"type": "String"
+				}
+			],
+			"source": "subscription CommentWatch($peerId: ID!, $fromState: String) {\n  event: commentUpdates(peerId: $peerId, fromState: $fromState) {\n    __typename\n    ... on CommentUpdateSingle {\n      seq\n      state\n      update {\n        __typename\n        ...CommentUpdateFragment\n      }\n    }\n    ... on CommentUpdateBatch {\n      fromSeq\n      seq\n      state\n      updates {\n        __typename\n        ...CommentUpdateFragment\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "event",
+					"fieldName": "commentUpdates",
+					"type": "CommentUpdateContainer",
+					"args": [
+						{
+							"name": "peerId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "peerId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "fromState",
+							"value": {
+								"kind": "Variable",
+								"variableName": "fromState"
+							},
+							"type": "String"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": [
+						{
+							"typeCondition": "CommentUpdateSingle",
+							"possibleTypes": [
+								"CommentUpdateSingle"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "seq",
+									"fieldName": "seq",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "state",
+									"fieldName": "state",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "update",
+									"fieldName": "update",
+									"type": "CommentUpdate!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										}
+									],
+									"fragmentSpreads": [
+										"CommentUpdateFragment"
+									],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "CommentUpdateBatch",
+							"possibleTypes": [
+								"CommentUpdateBatch"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "fromSeq",
+									"fieldName": "fromSeq",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "seq",
+									"fieldName": "seq",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "state",
+									"fieldName": "state",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "updates",
+									"fieldName": "updates",
+									"type": "[CommentUpdate!]!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										}
+									],
+									"fragmentSpreads": [
+										"CommentUpdateFragment"
+									],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
+						}
+					]
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"CommentUpdateFragment",
+				"CommentEntryFragment",
+				"FullMessage",
+				"UserShort",
+				"OrganizationShort",
+				"UserTiny"
+			],
+			"sourceWithFragments": "subscription CommentWatch($peerId: ID!, $fromState: String) {\n  event: commentUpdates(peerId: $peerId, fromState: $fromState) {\n    __typename\n    ... on CommentUpdateSingle {\n      seq\n      state\n      update {\n        __typename\n        ...CommentUpdateFragment\n      }\n    }\n    ... on CommentUpdateBatch {\n      fromSeq\n      seq\n      state\n      updates {\n        __typename\n        ...CommentUpdateFragment\n      }\n    }\n  }\n}\nfragment CommentUpdateFragment on CommentUpdate {\n  __typename\n  ... on CommentReceived {\n    comment {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n  ... on CommentUpdated {\n    comment {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n}\nfragment CommentEntryFragment on CommentEntry {\n  __typename\n  id\n  comment {\n    __typename\n    ...FullMessage\n    id\n  }\n  parentComment {\n    __typename\n    id\n  }\n  childComments {\n    __typename\n    id\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}",
+			"operationId": "7ef3436e0396316d4bb3d229a9e31e5fda60e6eca828260a9fca21f649eb2655"
+		},
+		{
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "ChatWatch",
 			"operationType": "subscription",
 			"rootType": "Subscription",
@@ -17704,6 +17874,95 @@
 			],
 			"fragmentSpreads": [],
 			"inlineFragments": []
+		},
+		{
+			"typeCondition": "CommentUpdate",
+			"possibleTypes": [
+				"CommentReceived",
+				"CommentUpdated"
+			],
+			"fragmentName": "CommentUpdateFragment",
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"source": "fragment CommentUpdateFragment on CommentUpdate {\n  __typename\n  ... on CommentReceived {\n    comment {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n  ... on CommentUpdated {\n    comment {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "__typename",
+					"fieldName": "__typename",
+					"type": "String!",
+					"isConditional": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [
+				{
+					"typeCondition": "CommentReceived",
+					"possibleTypes": [
+						"CommentReceived"
+					],
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "comment",
+							"fieldName": "comment",
+							"type": "CommentEntry!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"CommentEntryFragment"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": []
+				},
+				{
+					"typeCondition": "CommentUpdated",
+					"possibleTypes": [
+						"CommentUpdated"
+					],
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "comment",
+							"fieldName": "comment",
+							"type": "CommentEntry!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"CommentEntryFragment"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": []
+				}
+			]
 		},
 		{
 			"typeCondition": "ChatUpdate",

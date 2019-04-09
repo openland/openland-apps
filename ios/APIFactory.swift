@@ -3057,6 +3057,21 @@ class ApiFactory: ApiFactoryBase {
       }
       return { () in res.cancel() }
     }
+    if (name == "CommentWatch") {
+      let peerId = notNull(readString(src, "peerId"))
+      let fromState = readString(src, "fromState")
+      let requestBody = CommentWatchSubscription(peerId: peerId, fromState: fromState)
+      let res = client.subscribe(subscription: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
     if (name == "ChatWatch") {
       let chatId = notNull(readString(src, "chatId"))
       let state = readString(src, "state")
