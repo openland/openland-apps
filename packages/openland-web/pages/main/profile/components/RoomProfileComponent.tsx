@@ -53,6 +53,7 @@ import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSend
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { useClient } from 'openland-web/utils/useClient';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
+import { AvatarModal } from './UserProfileComponent';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -97,7 +98,12 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
                 <HeaderAvatar>
-                    <XAvatar2 src={chat.photo} size={58} title={chat.title} id={chat.id} />
+                    {!chat.photo.match('ph://') && (
+                        <AvatarModal photo={chat.photo} title={chat.title} id={chat.id} />
+                    )}
+                    {chat.photo.match('ph://') && (
+                        <XAvatar2 src={chat.photo} size={58} title={chat.title} id={chat.id} />
+                    )}
                 </HeaderAvatar>
                 <HeaderInfo flexGrow={1} separator={3.5}>
                     <HeaderTitle>{chat.title}</HeaderTitle>

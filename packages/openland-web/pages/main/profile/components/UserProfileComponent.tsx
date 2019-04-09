@@ -15,15 +15,14 @@ import { XLink } from 'openland-x/XLink';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import {
-    BackButton,
     Section,
     SectionContent,
     HeaderWrapper,
     extractHostname,
-} from './OrganizationProfileComponent';
+} from 'openland-web/pages/main/profile/components/OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XMenuItem } from 'openland-x/XMenuItem';
-import { XOverflow } from '../../../../components/XOverflow';
+import { XOverflow } from 'openland-web/components/XOverflow';
 import { XSocialButton } from 'openland-x/XSocialButton';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XDate } from 'openland-x/XDate';
@@ -31,6 +30,9 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { emoji } from 'openland-y-utils/emoji';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { XIcon } from 'openland-x/XIcon';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
 const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
@@ -108,7 +110,11 @@ const UserStatus = (props: { variables: { userId: string }; isBot: boolean }) =>
     }
 };
 
-const AvatarModal = (props: { photo?: string; userName: string; userId: string }) => {
+export const AvatarModal = (props: { photo?: string; title: string; id: string }) => {
+    const isMobile = React.useContext(IsMobileContext);
+    if (isMobile) {
+        return <XAvatar2 src={props.photo} size={58} title={props.title} id={props.id} />;
+    }
     return (
         <XModal
             useTopCloser={true}
@@ -124,7 +130,9 @@ const AvatarModal = (props: { photo?: string; userName: string; userId: string }
                 </ModalBody>
             }
             target={
-                <XAvatar2 src={props.photo} size={58} title={props.userName} id={props.userId} />
+                <XView cursor="pointer">
+                    <XAvatar2 src={props.photo} size={58} title={props.title} id={props.id} />
+                </XView>
             }
         />
     );
@@ -139,7 +147,7 @@ const Header = (props: { user: User_user }) => {
                 <XContentWrapper withFlex={true}>
                     <XView paddingRight={18}>
                         {user.photo && (
-                            <AvatarModal photo={user.photo} userName={user.name} userId={user.id} />
+                            <AvatarModal photo={user.photo} title={user.name} id={user.id} />
                         )}
                         {!user.photo && (
                             <XAvatar2 src={undefined} size={58} title={user.name} id={user.id} />
@@ -249,6 +257,41 @@ interface UserProfileInnerProps extends XWithRouter {
     onDirectory?: boolean;
     hideBack?: boolean;
 }
+
+const BackWrapper = Glamorous.div({
+    background: '#f9f9f9',
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+    cursor: 'pointer',
+    flexShrink: 0,
+});
+
+const BackInner = Glamorous(XContentWrapper)({
+    alignItems: 'center',
+    paddingTop: 13,
+    paddingBottom: 12,
+    '& i': {
+        fontSize: 20,
+        marginRight: 6,
+        marginLeft: -7,
+        color: 'rgba(0, 0, 0, 0.3)',
+    },
+    '& span': {
+        fontWeight: 600,
+        fontSize: 14,
+        lineHeight: '20px',
+        letterSpacing: 0,
+        color: 'rgba(0, 0, 0, 0.8)',
+    },
+});
+
+export const BackButton = () => (
+    <BackWrapper onClick={() => (canUseDOM ? window.history.back() : null)}>
+        <BackInner withFlex={true}>
+            <XIcon icon="chevron_left" />
+            <span>{TextProfiles.backButton}</span>
+        </BackInner>
+    </BackWrapper>
+);
 
 export const UserProfileInner = (props: UserProfileInnerProps) => {
     let { user } = props;
