@@ -34,7 +34,6 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { SDevice } from 'react-native-s/SDevice';
 import { ChannelMuteButton } from './components/ChannelMuteButton';
 
 interface ConversationRootProps extends PageProps {
@@ -342,7 +341,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 </ASSafeAreaContext.Consumer>
 
                             )}
-                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} isChannel={(sharedRoom && sharedRoom.isChannel) ? true : false} />
+                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} />
                             {showInputBar && (
                                 <MessageInputBar
                                     onAttachPress={this.handleAttach}

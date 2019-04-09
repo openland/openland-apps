@@ -25,6 +25,7 @@ interface UrlAugmentationContentProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     padded?: boolean;
+    useAsync: boolean;
 }
 
 export let isInvite = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {
@@ -115,7 +116,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         }
 
         let maxWidth = this.props.maxWidth || ((imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
-        return (
+        return this.props.useAsync ? (
 
             <ASFlex flexDirection="column" alignItems="stretch" alignSelf={'stretch'}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && <ASText
@@ -204,7 +205,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             onPress={this.onTitleClick}
                         >
                             {this.props.attach.title}
-                            {this.props.padded && !subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)}
+                            {this.props.padded && !subTitle && (this.props.message.isOut ? paddedTextOut(this.props.useAsync) : paddedText(this.props.useAsync))}
                         </ASText>}
                         {!!subTitle && <ASText
                             marginTop={(Platform.OS === 'android' ? -4 : -1)}
@@ -217,7 +218,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             fontWeight={TextStyles.weight.regular}
                         >
                             {subTitle}
-                            {this.props.padded && (this.props.message.isOut ? paddedTextOut : paddedText)}
+                            {this.props.padded && (this.props.message.isOut ? paddedTextOut(this.props.useAsync) : paddedText(this.props.useAsync))}
                         </ASText>}
                     </ASFlex>
                 </ASFlex>
@@ -234,7 +235,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 >
                     {!subTitle && this.imageCompact && imgLayout && paddedTextPrfix}
                     {text}
-                    {this.props.padded && (this.props.message.isOut ? paddedTextOut : paddedText)}
+                    {this.props.padded && (this.props.message.isOut ? paddedTextOut(this.props.useAsync) : paddedText(this.props.useAsync))}
                 </ASText>}
 
                 {!!keyboard && keyboard.buttons.map((line, i) =>
@@ -268,9 +269,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                         )}
                     </ASFlex>
                 )}
-
             </ASFlex>
-
-        )
+        ) : undefined;
     }
 }

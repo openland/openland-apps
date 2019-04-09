@@ -9,14 +9,13 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { ConversationTheme } from '../themes/ConversationThemeResolver';
 import { trackEvent } from 'openland-mobile/analytics';
+import { SRouter } from 'react-native-s/SRouter';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
     theme: ConversationTheme;
     messagesPaddingBottom?: number;
     inverted: boolean;
-
-    isChannel?: boolean;
 }
 export const androidMessageInputListOverlap = 50;
 
@@ -107,8 +106,6 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     paddingBottom={this.props.messagesPaddingBottom}
                     loaded={this.state.conversation.historyFullyLoaded}
                     engine={this.props.engine}
-
-                    isChannel={this.props.isChannel}
                 />
                 {
                     !this.state.conversation.loading && this.state.conversation.messages.length === 0 && (

@@ -6,14 +6,13 @@ import { Platform, View } from 'react-native';
 import { androidMessageInputListOverlap } from './ConversationView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { SRouter } from 'react-native-s/SRouter';
 
 export interface ConversationMessagesViewProps {
     loaded: boolean;
     engine: ConversationEngine;
     paddingBottom?: number;
     inverted: boolean;
-
-    isChannel?: boolean;
 }
 
 export const ConversationMessagesView = React.memo<ConversationMessagesViewProps>((props) => {
@@ -23,7 +22,7 @@ export const ConversationMessagesView = React.memo<ConversationMessagesViewProps
     return (
         <View marginTop={Platform.OS === 'ios' ? -500 : 0} justifyContent="flex-start" alignItems="stretch" flexGrow={1}>
             <ASListView
-                dataView={getMessenger().getConversation(props.engine.conversationId, props.isChannel)}
+                dataView={getMessenger().getConversation(props.engine.conversationId)}
                 inverted={props.inverted}
                 contentPaddingTop={safeArea.top + (Platform.OS === 'ios' ? 500 : 0)}
                 contentPaddingBottom={props.paddingBottom || 0}
