@@ -5,7 +5,6 @@ import { MobileMessageComponentInner } from './MessageMobileComponent';
 import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDesktopComponent';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
-import { useClient } from 'openland-web/utils/useClient';
 
 const MessageComponentInner = React.memo(
     (
