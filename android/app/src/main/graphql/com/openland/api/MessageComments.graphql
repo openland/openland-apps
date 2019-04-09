@@ -1,0 +1,19 @@
+query MessageComments($messageId: ID!) {
+  messageComments(messageId: $messageId) {
+    __typename
+    comments {
+      __typename
+      comment {
+        __typename
+        ...FullMessage
+      }
+      id
+    }
+    count
+    id
+    state {
+      __typename
+      state
+    }
+  }
+}

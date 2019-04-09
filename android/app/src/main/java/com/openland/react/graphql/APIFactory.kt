@@ -1579,6 +1579,11 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        builder.key(notNull(readString(src, "key")))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "MessageComments") {
+       val builder = MessageCommentsQuery.builder()
+       builder.messageId(notNull(readString(src, "messageId")))
+       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "Conference") {
        val builder = ConferenceQuery.builder()
        builder.id(notNull(readString(src, "id")))
@@ -2017,6 +2022,19 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
     if (name == "RoomRenewInviteLink") {
        val builder = RoomRenewInviteLinkMutation.builder()
        builder.roomId(notNull(readString(src, "roomId")))
+       return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
+    }
+    if (name == "AddMessageComment") {
+       val builder = AddMessageCommentMutation.builder()
+       builder.messageId(notNull(readString(src, "messageId")))
+       builder.message(readString(src, "message"))
+       builder.replyComment(readString(src, "replyComment"))
+       return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
+    }
+    if (name == "EditComment") {
+       val builder = EditCommentMutation.builder()
+       builder.id(notNull(readString(src, "id")))
+       builder.message(readString(src, "message"))
        return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
     }
     if (name == "RoomUpdate") {

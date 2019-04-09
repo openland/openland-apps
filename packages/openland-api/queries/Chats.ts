@@ -697,6 +697,37 @@ export const ResolvedInviteQuery = gql`
     ${UserShort}
 `;
 
+export const AddMessageCommentMutation = gql`
+    mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID) {
+        addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment)
+    }
+`;
+
+export const EditCommentMutation = gql`
+    mutation EditComment($id: ID!, $message: String) {
+        editComment(id: $id, message: $message)
+    }
+`;
+
+export const MessageCommentsQuery = gql`
+    query MessageComments($messageId: ID!) {
+        messageComments(messageId: $messageId) {
+            id
+            state {
+                state
+            }
+            count
+            comments {
+                id
+                comment {
+                    ...FullMessage
+                }
+            }
+        }
+    }
+    ${FullMessage}
+`;
+
 export const RoomUpdateMutation = gql`
     mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {
         betaRoomUpdate(roomId: $roomId, input: $input) {

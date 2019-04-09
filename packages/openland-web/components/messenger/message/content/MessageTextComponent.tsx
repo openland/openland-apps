@@ -53,14 +53,6 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
                     <SpannedStringView spannedString={spannedString} />
-                    <XView width={100}>
-                        <XButton
-                            text="Discuss"
-                            size="default"
-                            query={{ field: 'comments', value: 'true' }}
-                        />
-                    </XView>
-
                     {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
                 </span>
             </div>
@@ -79,13 +71,6 @@ export const MessageTextComponentSpanned = React.memo<{
         <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
             <span>
                 <SpannedStringView spannedString={spannedString} />
-                <XView width={100}>
-                    <XButton
-                        text="Discuss"
-                        size="default"
-                        query={{ field: 'comments', value: 'true' }}
-                    />
-                </XView>
                 {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
             </span>
         </div>

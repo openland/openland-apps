@@ -52,7 +52,7 @@ export abstract class BridgedClient implements GraphqlClient {
 
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
         // if (__DEV__) {
-        //     log.log('Query Watch ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
+            log.log('Query Watch ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
         // }
         let id = this.nextKey();
         let currentId = id;
@@ -69,10 +69,12 @@ export abstract class BridgedClient implements GraphqlClient {
         this.queryWatches.set(id, watch);
         this.handlersMap.set(currentId, id);
         this.handlers.set(id, (data, error) => {
+            console.log(error);
 
             // Special retry action
             if (error) {
                 if (!(error instanceof ApiError)) {
+                    console.log(error);
                     log.warn('Received unknown error: retrying watch');
 
                     // Stop old watch

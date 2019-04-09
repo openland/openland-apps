@@ -5,6 +5,7 @@ import { Track } from 'openland-engines/Tracking';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 import { createWorkerClient } from 'openland-web/api/createWorkerClient';
+import { createDumbBridgeClient } from 'openland-graphql/proxy/DumbBridgeClient';
 
 let cachedClient: OpenlandClient | undefined = undefined;
 
@@ -22,14 +23,14 @@ const buildWebClient = (token?: string) => {
 
 export const apolloClient = (token?: string) => {
     if (canUseDOM) {
-        if (!cachedClient) {
-            let httpEndpoint = '/graphql';
-            let wsEndpoint = loadConfig().webSocketEndpoint!;
-            const client = createWorkerClient(httpEndpoint, wsEndpoint, token);
-            cachedClient = new OpenlandClient(client);
-            Track.setClient(cachedClient);
-        }
-        return cachedClient!!;
+        // if (!cachedClient) {
+        //     let httpEndpoint = '/graphql';
+        //     let wsEndpoint = loadConfig().webSocketEndpoint!;
+        //     const client = createWorkerClient(httpEndpoint, wsEndpoint, token);
+        //     cachedClient = new OpenlandClient(new DirectApollolClient(buildWebClient(token)));
+        //     Track.setClient(cachedClient);
+        // }
+        return new OpenlandClient(new DirectApollolClient(buildWebClient(token)));
     } else {
         return new OpenlandClient(new DirectApollolClient(buildWebClient(token)));
     }

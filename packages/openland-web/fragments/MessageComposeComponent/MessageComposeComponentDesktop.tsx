@@ -124,20 +124,17 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         }
     });
 
-    React.useEffect(
-        () => {
-            if (isActive) {
-                const newInputValue = hasReply()
-                    ? draftState.getNextDraft()
-                    : { text: '', mentions: [] };
-                messagesContext.changeForwardConverstion();
-                setInputValue(newInputValue.text);
-                draftState.setBeDrafted(hasReply());
-                inputMethodsState.focusIfNeeded();
-            }
-        },
-        [isActive, currentConversation],
-    );
+    React.useEffect(() => {
+        if (isActive) {
+            const newInputValue = hasReply()
+                ? draftState.getNextDraft()
+                : { text: '', mentions: [] };
+            messagesContext.changeForwardConverstion();
+            setInputValue(newInputValue.text);
+            draftState.setBeDrafted(hasReply());
+            inputMethodsState.focusIfNeeded();
+        }
+    }, [isActive, currentConversation]);
 
     return (
         <>
@@ -197,7 +194,7 @@ export type MessageComposeComponentDraftProps = MessageComposeComponentProps & {
     getMessages?: () => ModelMessage[];
 };
 
-export const MessageComposeComponentDraft = (props => {
+export const MessageComposeComponentDraft = (props: MessageComposeComponentDraftProps) => {
     let client = useClient();
 
     const draft = client.useWithoutLoaderGetDraftMessage({
@@ -215,4 +212,4 @@ export const MessageComposeComponentDraft = (props => {
             {...props}
         />
     );
-}) as React.ComponentType<MessageComposeComponentDraftProps>;
+};
