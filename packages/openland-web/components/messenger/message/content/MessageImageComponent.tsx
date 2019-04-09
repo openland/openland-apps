@@ -6,7 +6,7 @@ import { XModal } from 'openland-x-modal/XModal';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
-import { IsMobileContext } from '../../../Scaffold/IsMobileContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const ModalBody = css`
@@ -151,7 +151,7 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
                 >
                     <XCloudImage
                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
-                        resize={'fill'}
+                        resize="fill"
                         width={dimensions.width}
                         height={dimensions.height}
                         className={
