@@ -35,6 +35,8 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { ChannelMuteButton } from './components/ChannelMuteButton';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { showCallModal } from './Call';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -304,11 +306,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SHeaderView>
                     {header}
                 </SHeaderView>
-                {/* <SHeaderButton
+                <SHeaderButton
                     title="Call"
                     icon={require('assets/ic-call-20.png')}
                     onPress={async () => { showCallModal(this.props.chat.id); }}
-                /> */}
+                />
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>

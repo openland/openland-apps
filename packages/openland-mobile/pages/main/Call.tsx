@@ -14,6 +14,7 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { RNSDevice } from 'react-native-s/RNSDevice';
+import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let [mute, setMute] = React.useState(false);
@@ -162,9 +163,16 @@ class CallContainer extends React.Component<{ id: string, modal: ZModalControlle
 }
 
 export function showCallModal(id: string) {
-    showModal((ctx) => {
-        return (
-            <CallContainer id={id} modal={ctx} />
-        )
-    })
+
+    (async () => {
+        if (await checkPermissions('microphone')) {
+            showModal((ctx) => {
+                return (
+                    <CallContainer id={id} modal={ctx} />
+                )
+            })
+        }
+
+    })();
+
 }

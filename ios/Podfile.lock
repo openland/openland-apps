@@ -123,6 +123,8 @@ PODS:
     - React/RCTBlob
   - ReactNativeIncallManager (3.2.2):
     - React
+  - ReactNativePermissions (1.1.1):
+    - React
   - rn-fetch-blob (0.10.6):
     - React/Core
   - RNDeviceInfo (0.21.5):
@@ -196,6 +198,7 @@ DEPENDENCIES:
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - ReactNativeIncallManager (from `../node_modules/react-native-incall-manager`)
+  - ReactNativePermissions (from `../node_modules/react-native-permissions`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -258,6 +261,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-webrtc"
   ReactNativeIncallManager:
     :path: "../node_modules/react-native-incall-manager"
+  ReactNativePermissions:
+    :path: "../node_modules/react-native-permissions"
   rn-fetch-blob:
     :path: "../node_modules/rn-fetch-blob"
   RNDeviceInfo:
@@ -300,6 +305,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: b303e31c3c4ada1d7cb1342423d328d2efb07fb3
   react-native-webrtc: 31b6d3f1e3e2ce373aa43fd682b04367250f807d
   ReactNativeIncallManager: c79b48e706ba3e495c747ea9ff5962378a65c04a
+  ReactNativePermissions: 9f2d9c45c98800795e6c2ed330e25d11a66a8169
   rn-fetch-blob: 76a8f798dae965bbcd146a2438f2e1d381c91ae3
   RNDeviceInfo: 568c5641057313b4912d08a7742ff0b2f753ed5c
   RNGestureHandler: afde2addc517e85cc97a25bfe119acbee779a7ce
@@ -315,6 +321,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: c0495dd098fcd13b4e7dc779e98a1cdbd901e5a8
+PODFILE CHECKSUM: 483ae7abfe16c1e4740b817afe2f6862450ad360
 
 COCOAPODS: 1.5.3

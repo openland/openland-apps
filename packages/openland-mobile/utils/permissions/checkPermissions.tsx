@@ -1,5 +1,6 @@
 import { Platform, PermissionsAndroid, Permission } from 'react-native';
 import { handlePermissionDismiss, permissionsType } from './handlePermissionDismiss';
+import Permissions from 'react-native-permissions';
 
 const nativePermissionChecker = async (nativePermission: Permission | Permission[], simplePermissionType: permissionsType) => {
     let hasPermissions = false;
@@ -55,5 +56,13 @@ export const checkPermissions = async (permission: permissionsType) => {
         ], 'camera');
     }
 
+    if (permission === 'microphone') {
+        let authorized = (await Permissions.request('microphone')) === 'authorized';
+        if (!authorized) {
+            handlePermissionDismiss(permission)
+        } else {
+            return true;
+        }
+    }
     return false;
 }

@@ -24,8 +24,8 @@ const AlertOpenSettings = (labels: AlertOpenSettingsLabels) => {
         if (labels.ios.message) {
             builder.message(labels.ios.message);
         }
-
-        builder.button('Open settings', 'default', () => ( Linking.openURL('app-settings:') ));
+        builder.button('Cancel', 'cancel');
+        builder.button('Open settings', 'default', () => (Linking.openURL('app-settings:')));
         builder.show();
     }
 
@@ -38,15 +38,14 @@ const AlertOpenSettings = (labels: AlertOpenSettingsLabels) => {
             builder.message(labels.android.message);
         }
 
-        builder.button('Settings', 'default', () => ( AndroidOpenSettings.appDetailsSettings() ));
+        builder.button('Settings', 'default', () => (AndroidOpenSettings.appDetailsSettings()));
         builder.show();
-        Alert.builder()
     }
 }
 
 export const handlePermissionDismiss = (permission: permissionsType) => {
     if (permission === 'gallery') {
-        AlertOpenSettings ({
+        AlertOpenSettings({
             ios: {
                 title: 'Allow Openland access to your photos',
                 message: 'In iPhone settings, tap Openland and turn on Photos.'
@@ -57,7 +56,7 @@ export const handlePermissionDismiss = (permission: permissionsType) => {
             }
         });
     } else if (permission === 'gallery-add') {
-        AlertOpenSettings ({
+        AlertOpenSettings({
             ios: {
                 title: 'Allow Openland access to your photos',
                 message: 'In iPhone settings, tap Openland and turn on Photos.'
@@ -68,7 +67,7 @@ export const handlePermissionDismiss = (permission: permissionsType) => {
             }
         });
     } else if (permission === 'microphone') {
-        AlertOpenSettings ({
+        AlertOpenSettings({
             ios: {
                 title: 'Allow Openland access to your microphone',
                 message: 'In iPhone settings, tap Openland and turn on Microphone.'
@@ -79,7 +78,7 @@ export const handlePermissionDismiss = (permission: permissionsType) => {
             }
         });
     } else if (permission === 'camera') {
-        AlertOpenSettings ({
+        AlertOpenSettings({
             ios: {
                 title: 'Allow Openland access to your camera',
                 message: 'In iPhone settings, tap Openland and turn on Camera.'
@@ -90,7 +89,7 @@ export const handlePermissionDismiss = (permission: permissionsType) => {
             }
         });
     } else if (permission === 'android-storage') {
-        AlertOpenSettings ({
+        AlertOpenSettings({
             android: {
                 title: 'Allow Openland to access your phone\'s storage?',
                 message: 'To share documents, allow Openland access to your storage. Tap Settings > Permissions, and turn on Storage.'

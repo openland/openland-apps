@@ -76,6 +76,8 @@ target 'openland' do
 
   pod 'ReactNativeIncallManager', :path => '../node_modules/react-native-incall-manager'
 
+  pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
+
 end
 
 post_install do |installer|

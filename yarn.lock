@@ -2085,6 +2085,11 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
+"@types/react-native-permissions@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react-native-permissions/-/react-native-permissions-1.1.1.tgz#297f39ed19234045e1dc1cd0abd85b86bdf9c606"
+  integrity sha512-+xLVH6kefg9hpJKxQhRcaYHckhbQCxDrU6HEaTzf3gMbn4I4aunjxkqeSMAofrHFNOnOS/phnsTbifoDATjk3w==
+
 "@types/react-native-push-notification@^3.0.2":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/react-native-push-notification/-/react-native-push-notification-3.0.3.tgz#738e64fe38ccff15b3d4957a2bae51780d670e5f"
@@ -12768,6 +12773,11 @@ react-native-modalbox@^1.6.0:
   dependencies:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
+
+react-native-permissions@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-1.1.1.tgz#4876004681ff8556454613d85249b01baff9b35b"
+  integrity sha512-t0Ujm177bagjUOSzhpmkSz+LqFW04HnY9TeZFavDCmV521fQvFz82aD+POXqWsAdsJVOK3umJYBNNqCjC3g0hQ==
 
 react-native-push-notification@3.1.1:
   version "3.1.1"
