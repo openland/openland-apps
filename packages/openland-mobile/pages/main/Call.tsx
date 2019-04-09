@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { View, Text, TouchableOpacity, Image, BackHandler } from 'react-native';
+import { View, Text, TouchableOpacity, Image, BackHandler, Platform, Vibration } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { CallController } from 'openland-mobile/calls/CallController';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -15,6 +15,8 @@ import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { RNSDevice } from 'react-native-s/RNSDevice';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let [mute, setMute] = React.useState(false);
@@ -40,6 +42,16 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         InCallManager.setForceSpeakerphoneOn(speaker);
     }, [speaker]);
 
+    let calls = getMessenger().engine.calls;
+    let callsState = calls.useState();
+
+    React.useEffect(() => {
+        if (callsState.status === 'connected') {
+            Vibration.vibrate(400, false);
+        }
+
+    }, [callsState.status])
+
     return (
         <ASSafeAreaView flexDirection="column" alignItems="stretch" flexGrow={1}>
             <View alignItems="center" justifyContent="center" paddingTop={82} paddingHorizontal={16} flexDirection="row">
@@ -52,7 +64,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                         style={{ fontSize: 28, fontWeight: '600', color: 'white' }}
                         numberOfLines={2}
                     >
-                        {title}
+                        {(callsState && callsState.status) === 'connecting' ? 'Connecting...' : title}
                     </Text>
                 </View>
             </View>
