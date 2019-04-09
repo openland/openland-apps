@@ -47,5 +47,5 @@ export function getDepthOfComment(comment: any, commentsMap: any) {
         currentDepth++;
     }
 
-    return currentDepth;
+    return currentDepth - 1;
 }

@@ -19,7 +19,7 @@ export const AsyncMessageChannelReactionsView = React.memo<AsyncMessageChannelRe
     let theme = props.theme;
     let message = props.message;
 
-    let commentsCount = 0; // message.commentsCount
+    let commentsCount = message.commentsCount || 0;
     let likesCount = 0;
     let myLike = false;
 
