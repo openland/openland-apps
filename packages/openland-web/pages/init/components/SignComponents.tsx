@@ -1351,6 +1351,27 @@ const organizationInputErrorClassName = css`
     align-self: flex-start;
 `;
 
+const ShowOrgError = () => {
+    const [ onceRender, setOnceRender ] = React.useState(false);
+
+    if (!onceRender) {
+        trackEvent('signup_org_error');
+
+        setOnceRender(true);
+    }
+
+    return (
+        <div
+            className={cx(
+                organizationInputClassName,
+                organizationInputErrorClassName,
+            )}
+        >
+            <XFormError field="input.organization" />
+        </div>
+    );
+}
+
 export class CreateOrganizationFormInner extends React.Component<
     {
         onPrefixChanges: (prefix: string) => void;
@@ -1446,24 +1467,7 @@ export class CreateOrganizationFormInner extends React.Component<
                                                                     </XIconWrapper>
                                                                 </XPopper>
                                                             </XHorizontal>
-                                                            {showError
-                                                                ? () => {
-                                                                      trackEvent(
-                                                                          'signup_org_error',
-                                                                      );
-
-                                                                      return (
-                                                                          <div
-                                                                              className={cx(
-                                                                                  organizationInputClassName,
-                                                                                  organizationInputErrorClassName,
-                                                                              )}
-                                                                          >
-                                                                              <XFormError field="input.organization" />
-                                                                          </div>
-                                                                      );
-                                                                  }
-                                                                : undefined}
+                                                            {showError && <ShowOrgError />}
                                                         </>
                                                     </XVertical>
                                                 )}
