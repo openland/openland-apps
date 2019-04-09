@@ -26,8 +26,6 @@ export interface AsyncMessageViewProps {
     onReactionPress: (message: DataSourceMessageItem, r: string) => void;
     onCommentsPress: (message: DataSourceMessageItem) => void;
     navigationManager: NavigationManager;
-
-    inChannel?: boolean;
 }
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
@@ -93,8 +91,8 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-right" backgroundColor={theme.backgroundColor} width={4} />
                 </ASFlex>
 
-                {!props.inChannel && props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
-                {props.inChannel && <AsyncMessageChannelReactionsView theme={theme} message={props.message} onReactionPress={props.onReactionPress} onCommentsPress={props.onCommentsPress} />}
+                {!props.engine.isChannel && props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
+                {props.engine.isChannel && <AsyncMessageChannelReactionsView theme={theme} message={props.message} onReactionPress={props.onReactionPress} onCommentsPress={props.onCommentsPress} />}
 
                 <ASFlex backgroundColor={theme.backgroundColor} height={50} marginBottom={-50} />
             </ASFlex>

@@ -49,7 +49,7 @@ export class MobileMessenger {
                     if (item.serviceMetaData || item.isService) {
                         return (<ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} />);
                     } else {
-                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} inChannel={eng.isChannel} />);
+                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} />);
                     }
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
