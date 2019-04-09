@@ -1,40 +1,55 @@
 import { MessageComments_messageComments_comments } from 'openland-api/Types';
 
-export const sortComments = (comments: MessageComments_messageComments_comments[], commentsMap: { [key: string]: MessageComments_messageComments_comments }): MessageComments_messageComments_comments[] => {
-    function topologicalSortHelper(node: any, explored: any, s: any) {
-        explored.add(node.id);
-        // Marks this node as visited and goes on to the nodes
-        // that are dependent on this node, the edge is node ----> n
+export const sortComments = (
+    comments: MessageComments_messageComments_comments[],
+    commentsMap: { [key: string]: MessageComments_messageComments_comments },
+): MessageComments_messageComments_comments[] => {
+    function treeSortHelper(node: any, explored: any, s: any) {
+        const curNode = commentsMap[node.id];
 
-        if (!!node.parentComment && !explored.has(node.parentComment.id)) {
-            topologicalSortHelper(node.parentComment, explored, s);
+        if (!curNode.parentComment && !explored.has(curNode.id)) {
+            explored.add(node.id);
+            s.push(curNode);
         }
 
-        // All dependencies are resolved for this node, we can now add
-        // This to the stack.
-        s.push(commentsMap[node.id]);
+        if (curNode.parentComment && explored.has(curNode.parentComment.id)) {
+            explored.add(node.id);
+            s.push(curNode);
+        }
+
+        for (let child of curNode.childComments) {
+            treeSortHelper(commentsMap[child.id], explored, s);
+        }
     }
 
-    function topologicalSort(nodes: any[]) {
-        // let res = [];
+    function treeSort(nodes: any[]) {
         // Create a Stack to keep track of all elements in sorted order
         let s: any[] = [];
         let explored = new Set();
 
-        // For every unvisited node in our graph, call the helper.
-        nodes.forEach(node => {
-            if (!explored.has(node.id)) {
-                topologicalSortHelper(node, explored, s);
-            }
-        });
+        while (explored.size !== nodes.length) {
+            // For every unvisited node in our graph, call the helper.
+            nodes.forEach(node => {
+                if (!explored.has(node.id)) {
+                    treeSortHelper(node, explored, s);
+                }
+            });
+        }
 
         return s;
     }
 
-    return topologicalSort(comments);
-}
+    comments.sort((a, b) => {
+        return parseInt(a.comment.date, 10) - parseInt(b.comment.date, 10);
+    });
 
-export function getDepthOfComment(comment: MessageComments_messageComments_comments, commentsMap: { [key: string]: MessageComments_messageComments_comments }): number {
+    return treeSort(comments);
+};
+
+export function getDepthOfComment(
+    comment: MessageComments_messageComments_comments,
+    commentsMap: { [key: string]: MessageComments_messageComments_comments },
+): number {
     let currentComment: MessageComments_messageComments_comments | null = comment;
     let currentDepth = 0;
     while (!!currentComment) {
