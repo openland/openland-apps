@@ -23,6 +23,7 @@ fragment TinyMessage on ModernMessage {
         filePreview
       }
     }
+    commentsCount
     quotedMessages {
       __typename
       id

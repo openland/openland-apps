@@ -20780,7 +20780,7 @@ public struct ConferenceFull: GraphQLFragment {
 
 public struct TinyMessage: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}"
+    "fragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    commentsCount\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}"
 
   public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
 
@@ -20808,8 +20808,8 @@ public struct TinyMessage: GraphQLFragment {
     return TinyMessage(unsafeResultMap: ["__typename": "ServiceMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback])
   }
 
-  public static func makeGeneralMessage(id: GraphQLID, date: String, sender: AsGeneralMessage.Sender, message: String? = nil, fallback: String, attachments: [AsGeneralMessage.Attachment], quotedMessages: [AsGeneralMessage.QuotedMessage]) -> TinyMessage {
-    return TinyMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: AsGeneralMessage.QuotedMessage) -> ResultMap in value.resultMap }])
+  public static func makeGeneralMessage(id: GraphQLID, date: String, sender: AsGeneralMessage.Sender, message: String? = nil, fallback: String, commentsCount: Int, attachments: [AsGeneralMessage.Attachment], quotedMessages: [AsGeneralMessage.QuotedMessage]) -> TinyMessage {
+    return TinyMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "commentsCount": commentsCount, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: AsGeneralMessage.QuotedMessage) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -20943,6 +20943,7 @@ public struct TinyMessage: GraphQLFragment {
       GraphQLField("sender", type: .nonNull(.object(Sender.selections))),
       GraphQLField("message", type: .scalar(String.self)),
       GraphQLField("fallback", type: .nonNull(.scalar(String.self))),
+      GraphQLField("commentsCount", type: .nonNull(.scalar(Int.self))),
       GraphQLField("attachments", type: .nonNull(.list(.nonNull(.object(Attachment.selections))))),
       GraphQLField("quotedMessages", type: .nonNull(.list(.nonNull(.object(QuotedMessage.selections))))),
     ]
@@ -20953,8 +20954,8 @@ public struct TinyMessage: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, date: String, sender: Sender, message: String? = nil, fallback: String, attachments: [Attachment], quotedMessages: [QuotedMessage]) {
-      self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: QuotedMessage) -> ResultMap in value.resultMap }])
+    public init(id: GraphQLID, date: String, sender: Sender, message: String? = nil, fallback: String, commentsCount: Int, attachments: [Attachment], quotedMessages: [QuotedMessage]) {
+      self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "commentsCount": commentsCount, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: QuotedMessage) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -21010,6 +21011,15 @@ public struct TinyMessage: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "fallback")
+      }
+    }
+
+    public var commentsCount: Int {
+      get {
+        return resultMap["commentsCount"]! as! Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "commentsCount")
       }
     }
 
@@ -21326,7 +21336,7 @@ public struct TinyMessage: GraphQLFragment {
 
 public struct FullMessage: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}"
+    "fragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}"
 
   public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
 
@@ -21351,8 +21361,8 @@ public struct FullMessage: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public static func makeGeneralMessage(id: GraphQLID, date: String, sender: AsGeneralMessage.Sender, message: String? = nil, fallback: String, edited: Bool, attachments: [AsGeneralMessage.Attachment], quotedMessages: [AsGeneralMessage.QuotedMessage], reactions: [AsGeneralMessage.Reaction], spans: [AsGeneralMessage.Span]) -> FullMessage {
-    return FullMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "edited": edited, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: AsGeneralMessage.QuotedMessage) -> ResultMap in value.resultMap }, "reactions": reactions.map { (value: AsGeneralMessage.Reaction) -> ResultMap in value.resultMap }, "spans": spans.map { (value: AsGeneralMessage.Span) -> ResultMap in value.resultMap }])
+  public static func makeGeneralMessage(id: GraphQLID, date: String, sender: AsGeneralMessage.Sender, message: String? = nil, fallback: String, edited: Bool, commentsCount: Int, attachments: [AsGeneralMessage.Attachment], quotedMessages: [AsGeneralMessage.QuotedMessage], reactions: [AsGeneralMessage.Reaction], spans: [AsGeneralMessage.Span]) -> FullMessage {
+    return FullMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "edited": edited, "commentsCount": commentsCount, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: AsGeneralMessage.QuotedMessage) -> ResultMap in value.resultMap }, "reactions": reactions.map { (value: AsGeneralMessage.Reaction) -> ResultMap in value.resultMap }, "spans": spans.map { (value: AsGeneralMessage.Span) -> ResultMap in value.resultMap }])
   }
 
   public static func makeServiceMessage(id: GraphQLID, date: String, sender: AsServiceMessage.Sender, message: String? = nil, fallback: String, spans: [AsServiceMessage.Span], serviceMetadata: AsServiceMessage.ServiceMetadatum? = nil) -> FullMessage {
@@ -22203,6 +22213,7 @@ public struct FullMessage: GraphQLFragment {
       GraphQLField("message", type: .scalar(String.self)),
       GraphQLField("fallback", type: .nonNull(.scalar(String.self))),
       GraphQLField("edited", type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("commentsCount", type: .nonNull(.scalar(Int.self))),
       GraphQLField("attachments", type: .nonNull(.list(.nonNull(.object(Attachment.selections))))),
       GraphQLField("quotedMessages", type: .nonNull(.list(.nonNull(.object(QuotedMessage.selections))))),
       GraphQLField("reactions", type: .nonNull(.list(.nonNull(.object(Reaction.selections))))),
@@ -22215,8 +22226,8 @@ public struct FullMessage: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, date: String, sender: Sender, message: String? = nil, fallback: String, edited: Bool, attachments: [Attachment], quotedMessages: [QuotedMessage], reactions: [Reaction], spans: [Span]) {
-      self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "edited": edited, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: QuotedMessage) -> ResultMap in value.resultMap }, "reactions": reactions.map { (value: Reaction) -> ResultMap in value.resultMap }, "spans": spans.map { (value: Span) -> ResultMap in value.resultMap }])
+    public init(id: GraphQLID, date: String, sender: Sender, message: String? = nil, fallback: String, edited: Bool, commentsCount: Int, attachments: [Attachment], quotedMessages: [QuotedMessage], reactions: [Reaction], spans: [Span]) {
+      self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "edited": edited, "commentsCount": commentsCount, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: QuotedMessage) -> ResultMap in value.resultMap }, "reactions": reactions.map { (value: Reaction) -> ResultMap in value.resultMap }, "spans": spans.map { (value: Span) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -22281,6 +22292,15 @@ public struct FullMessage: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "edited")
+      }
+    }
+
+    public var commentsCount: Int {
+      get {
+        return resultMap["commentsCount"]! as! Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "commentsCount")
       }
     }
 
@@ -23145,8 +23165,8 @@ public struct FullMessage: GraphQLFragment {
         return QuotedMessage(unsafeResultMap: ["__typename": "ServiceMessage", "id": id, "date": date, "message": message, "sender": sender.resultMap, "fallback": fallback, "spans": spans.map { (value: Span) -> ResultMap in value.resultMap }])
       }
 
-      public static func makeGeneralMessage(id: GraphQLID, date: String, message: String? = nil, sender: AsGeneralMessage.Sender, fallback: String, spans: [AsGeneralMessage.Span], edited: Bool, attachments: [AsGeneralMessage.Attachment]) -> QuotedMessage {
-        return QuotedMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "message": message, "sender": sender.resultMap, "fallback": fallback, "spans": spans.map { (value: AsGeneralMessage.Span) -> ResultMap in value.resultMap }, "edited": edited, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }])
+      public static func makeGeneralMessage(id: GraphQLID, date: String, message: String? = nil, sender: AsGeneralMessage.Sender, fallback: String, spans: [AsGeneralMessage.Span], commentsCount: Int, edited: Bool, attachments: [AsGeneralMessage.Attachment]) -> QuotedMessage {
+        return QuotedMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "message": message, "sender": sender.resultMap, "fallback": fallback, "spans": spans.map { (value: AsGeneralMessage.Span) -> ResultMap in value.resultMap }, "commentsCount": commentsCount, "edited": edited, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }])
       }
 
       public var __typename: String {
@@ -23926,6 +23946,7 @@ public struct FullMessage: GraphQLFragment {
           GraphQLField("message", type: .scalar(String.self)),
           GraphQLField("fallback", type: .nonNull(.scalar(String.self))),
           GraphQLField("spans", type: .nonNull(.list(.nonNull(.object(Span.selections))))),
+          GraphQLField("commentsCount", type: .nonNull(.scalar(Int.self))),
           GraphQLField("edited", type: .nonNull(.scalar(Bool.self))),
           GraphQLField("attachments", type: .nonNull(.list(.nonNull(.object(Attachment.selections))))),
         ]
@@ -23936,8 +23957,8 @@ public struct FullMessage: GraphQLFragment {
           self.resultMap = unsafeResultMap
         }
 
-        public init(id: GraphQLID, date: String, message: String? = nil, sender: Sender, fallback: String, spans: [Span], edited: Bool, attachments: [Attachment]) {
-          self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "message": message, "sender": sender.resultMap, "fallback": fallback, "spans": spans.map { (value: Span) -> ResultMap in value.resultMap }, "edited": edited, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }])
+        public init(id: GraphQLID, date: String, message: String? = nil, sender: Sender, fallback: String, spans: [Span], commentsCount: Int, edited: Bool, attachments: [Attachment]) {
+          self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "message": message, "sender": sender.resultMap, "fallback": fallback, "spans": spans.map { (value: Span) -> ResultMap in value.resultMap }, "commentsCount": commentsCount, "edited": edited, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }])
         }
 
         public var __typename: String {
@@ -24002,6 +24023,15 @@ public struct FullMessage: GraphQLFragment {
           }
           set {
             resultMap.updateValue(newValue.map { (value: Span) -> ResultMap in value.resultMap }, forKey: "spans")
+          }
+        }
+
+        public var commentsCount: Int {
+          get {
+            return resultMap["commentsCount"]! as! Int
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "commentsCount")
           }
         }
 

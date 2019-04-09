@@ -5,7 +5,6 @@ import { Track } from 'openland-engines/Tracking';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 import { createWorkerClient } from 'openland-web/api/createWorkerClient';
-import { createDumbBridgeClient } from 'openland-graphql/proxy/DumbBridgeClient';
 
 let cachedClient: OpenlandClient | undefined = undefined;
 
@@ -15,22 +14,30 @@ const buildWebClient = (token?: string) => {
     if (canUseDOM) {
         wsEndpoint = loadConfig().webSocketEndpoint;
     } else {
-        httpEndpoint = (process.env.API_ENDPOINT ? process.env.API_ENDPOINT + '/api' : 'http://localhost:9000/api');
+        httpEndpoint = process.env.API_ENDPOINT
+            ? process.env.API_ENDPOINT + '/api'
+            : 'http://localhost:9000/api';
     }
 
-    return buildClient({ endpoint: httpEndpoint, wsEndpoint: wsEndpoint, token, ssrMode: !canUseDOM, fetch: !canUseDOM ? require('node-fetch') : undefined });
+    return buildClient({
+        endpoint: httpEndpoint,
+        wsEndpoint: wsEndpoint,
+        token,
+        ssrMode: !canUseDOM,
+        fetch: !canUseDOM ? require('node-fetch') : undefined,
+    });
 };
 
 export const apolloClient = (token?: string) => {
     if (canUseDOM) {
-        // if (!cachedClient) {
-        //     let httpEndpoint = '/graphql';
-        //     let wsEndpoint = loadConfig().webSocketEndpoint!;
-        //     const client = createWorkerClient(httpEndpoint, wsEndpoint, token);
-        //     cachedClient = new OpenlandClient(new DirectApollolClient(buildWebClient(token)));
-        //     Track.setClient(cachedClient);
-        // }
-        return new OpenlandClient(new DirectApollolClient(buildWebClient(token)));
+        if (!cachedClient) {
+            let httpEndpoint = '/graphql';
+            let wsEndpoint = loadConfig().webSocketEndpoint!;
+            const client = createWorkerClient(httpEndpoint, wsEndpoint, token);
+            cachedClient = new OpenlandClient(client);
+            Track.setClient(cachedClient);
+        }
+        return cachedClient!!;
     } else {
         return new OpenlandClient(new DirectApollolClient(buildWebClient(token)));
     }

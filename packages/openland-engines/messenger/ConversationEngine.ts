@@ -47,6 +47,7 @@ export interface DataSourceMessageItem {
     serviceMetaData?: FullMessage_ServiceMessage_serviceMetadata;
     isService?: boolean;
     progress?: number;
+    commentsCount: number | null;
 }
 
 export interface DataSourceDateItem {
@@ -60,6 +61,7 @@ export interface DataSourceDateItem {
 export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
+
     return {
         chatId: chaId,
         type: 'message',
@@ -82,6 +84,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         reply: generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date) : undefined,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
+        commentsCount: generalMessage ? generalMessage.commentsCount : null,
     };
 }
 
@@ -580,6 +583,7 @@ export class ConversationEngine implements MessageSendHandler {
                 text: src.message ? src.message : undefined,
                 attachBottom: false,
                 spans: src.spans,
+                commentsCount: null,
                 attachments: p.uri ? [{
                     __typename: "MessageAttachmentFile",
                     id: 'pending_message_attach_file_id',

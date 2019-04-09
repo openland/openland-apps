@@ -887,6 +887,7 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage {
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments[];
   quotedMessages: Dialogs_dialogs_items_topMessage_GeneralMessage_quotedMessages[];
 }
@@ -1488,6 +1489,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   sender: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -1539,6 +1541,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   fallback: string;
   spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_attachments[];
   quotedMessages: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages[];
   reactions: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_reactions[];
@@ -2290,6 +2293,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   sender: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -2341,6 +2345,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   fallback: string;
   spans: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_attachments[];
   quotedMessages: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages[];
   reactions: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_reactions[];
@@ -3141,6 +3146,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   sender: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -3192,6 +3198,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   fallback: string;
   spans: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -3989,6 +3996,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   sender: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -4040,6 +4048,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   fallback: string;
   spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_attachments[];
   quotedMessages: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages[];
   reactions: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_reactions[];
@@ -4791,6 +4800,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   sender: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -4842,6 +4852,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   fallback: string;
   spans: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_attachments[];
   quotedMessages: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages[];
   reactions: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_reactions[];
@@ -5642,6 +5653,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   sender: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -5693,6 +5705,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   fallback: string;
   spans: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -6045,6 +6058,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
 }
@@ -6140,6 +6154,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
 }
@@ -6233,6 +6248,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
 }
@@ -6320,6 +6336,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
 }
@@ -6453,6 +6470,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMess
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_quotedMessages[];
 }
@@ -6557,6 +6575,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
 }
@@ -6652,6 +6671,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
 }
@@ -6745,6 +6765,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
 }
@@ -6832,6 +6853,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
 }
@@ -6965,6 +6987,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMess
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments[];
   quotedMessages: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_quotedMessages[];
 }
@@ -7719,6 +7742,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   sender: Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -7770,6 +7794,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage {
   fallback: string;
   spans: Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: Room_room_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -8592,6 +8617,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   sender: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -8643,6 +8669,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage {
   fallback: string;
   spans: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -9666,6 +9693,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
   sender: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -9717,6 +9745,7 @@ export interface ChatHistory_messages_GeneralMessage {
   fallback: string;
   spans: ChatHistory_messages_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: ChatHistory_messages_GeneralMessage_attachments[];
   quotedMessages: ChatHistory_messages_GeneralMessage_quotedMessages[];
   reactions: ChatHistory_messages_GeneralMessage_reactions[];
@@ -10832,6 +10861,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   sender: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -10883,6 +10913,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   fallback: string;
   spans: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -11838,6 +11869,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   sender: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -11889,6 +11921,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   fallback: string;
   spans: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -12841,6 +12874,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   sender: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -12892,6 +12926,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   fallback: string;
   spans: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -13847,6 +13882,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
   sender: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -13898,6 +13934,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage {
   fallback: string;
   spans: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -14850,6 +14887,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   sender: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -14901,6 +14939,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   fallback: string;
   spans: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -15854,6 +15893,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   sender: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -15905,6 +15945,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   fallback: string;
   spans: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -16715,6 +16756,7 @@ export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_quoted
   sender: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -16766,6 +16808,7 @@ export interface RoomSearch_items_edges_node_pinnedMessage_GeneralMessage {
   fallback: string;
   spans: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomSearch_items_edges_node_pinnedMessage_GeneralMessage_reactions[];
@@ -17898,6 +17941,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   sender: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -17949,6 +17993,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage {
   fallback: string;
   spans: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -18920,6 +18965,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   sender: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -18971,6 +19017,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   fallback: string;
   spans: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -19938,6 +19985,7 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
   sender: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_attachments[];
 }
@@ -20066,6 +20114,7 @@ export interface MessageComments_messageComments_comments_comment {
   message: string | null;
   fallback: string;
   edited: boolean;
+  commentsCount: number;
   attachments: MessageComments_messageComments_comments_comment_attachments[];
   quotedMessages: MessageComments_messageComments_comments_comment_quotedMessages[];
   reactions: MessageComments_messageComments_comments_comment_reactions[];
@@ -21996,6 +22045,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
   sender: Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -22047,6 +22097,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage {
   fallback: string;
   spans: Organization_organization_rooms_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: Organization_organization_rooms_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: Organization_organization_rooms_pinnedMessage_GeneralMessage_reactions[];
@@ -23158,6 +23209,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   sender: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -23209,6 +23261,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   fallback: string;
   spans: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_reactions[];
@@ -25222,6 +25275,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   sender: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -25273,6 +25327,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   fallback: string;
   spans: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_reactions[];
@@ -26093,6 +26148,7 @@ export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage {
   sender: CommentEntryFragment_comment_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: CommentEntryFragment_comment_quotedMessages_GeneralMessage_attachments[];
 }
@@ -26221,6 +26277,7 @@ export interface CommentEntryFragment_comment {
   message: string | null;
   fallback: string;
   edited: boolean;
+  commentsCount: number;
   attachments: CommentEntryFragment_comment_attachments[];
   quotedMessages: CommentEntryFragment_comment_quotedMessages[];
   reactions: CommentEntryFragment_comment_reactions[];
@@ -26418,6 +26475,7 @@ export interface TinyMessage_GeneralMessage {
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: TinyMessage_GeneralMessage_attachments[];
   quotedMessages: TinyMessage_GeneralMessage_quotedMessages[];
 }
@@ -26900,6 +26958,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage {
   sender: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: FullMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -27028,6 +27087,7 @@ export interface FullMessage_GeneralMessage {
   message: string | null;
   fallback: string;
   edited: boolean;
+  commentsCount: number;
   attachments: FullMessage_GeneralMessage_attachments[];
   quotedMessages: FullMessage_GeneralMessage_quotedMessages[];
   reactions: FullMessage_GeneralMessage_reactions[];
@@ -27854,6 +27914,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
   sender: OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -27905,6 +27966,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage {
   fallback: string;
   spans: OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: OrganizationFull_rooms_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: OrganizationFull_rooms_pinnedMessage_GeneralMessage_reactions[];
@@ -29027,6 +29089,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
   sender: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -29078,6 +29141,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage {
   fallback: string;
   spans: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -29892,6 +29956,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
   sender: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -29943,6 +30008,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage {
   fallback: string;
   spans: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -30859,6 +30925,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
   sender: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -30910,6 +30977,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage {
   fallback: string;
   spans: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_attachments[];
   quotedMessages: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages[];
   reactions: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_reactions[];
@@ -31661,6 +31729,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
   sender: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -31712,6 +31781,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage {
   fallback: string;
   spans: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_attachments[];
   quotedMessages: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages[];
   reactions: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_reactions[];
@@ -32512,6 +32582,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   sender: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_sender;
   fallback: string;
   spans: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans[];
+  commentsCount: number;
   edited: boolean;
   attachments: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments[];
 }
@@ -32563,6 +32634,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   fallback: string;
   spans: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans[];
   edited: boolean;
+  commentsCount: number;
   attachments: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_attachments[];
   quotedMessages: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages[];
   reactions: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_reactions[];
@@ -32896,6 +32968,7 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessa
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments[];
   quotedMessages: DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_quotedMessages[];
 }
@@ -32991,6 +33064,7 @@ export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessag
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments[];
   quotedMessages: DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_quotedMessages[];
 }
@@ -33084,6 +33158,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessag
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments[];
   quotedMessages: DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_quotedMessages[];
 }
@@ -33171,6 +33246,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMe
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments[];
   quotedMessages: DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_quotedMessages[];
 }
@@ -33304,6 +33380,7 @@ export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage {
    */
   message: string | null;
   fallback: string;
+  commentsCount: number;
   attachments: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments[];
   quotedMessages: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_quotedMessages[];
 }

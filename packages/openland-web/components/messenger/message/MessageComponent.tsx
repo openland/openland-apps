@@ -15,12 +15,6 @@ const MessageComponentInner = React.memo(
             messagesContextProps: MessagesStateContextProps;
         },
     ) => {
-        const client = useClient();
-
-        const commentsCount = client.useMessageCommentsCount({
-            messageId: props.message.id!!,
-        });
-
         return props.isMobile ? (
             <MobileMessageComponentInner
                 message={props.message}
@@ -43,9 +37,9 @@ const MessageComponentInner = React.memo(
                     <XView width={150}>
                         <XButton
                             text={
-                                !commentsCount.messageComments.count
+                                !props.message.commentsCount
                                     ? `Discuss`
-                                    : `${commentsCount.messageComments.count} Comments`
+                                    : `${props.message.commentsCount} Comments`
                             }
                             size="default"
                             query={{ field: 'comments', value: props.message.id }}
