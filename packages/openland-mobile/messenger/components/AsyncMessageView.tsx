@@ -14,7 +14,6 @@ import { Platform } from 'react-native';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { AsyncMessageChannelReactionsView } from './AsyncMessageChannelReactionsView';
-import { SRouter } from 'react-native-s/SRouter';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;

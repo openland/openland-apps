@@ -19,6 +19,7 @@ import * as Track from './queries/Track';
 import * as User from './queries/User';
 import * as AppChat from './fragments/AppChat';
 import * as AppFull from './fragments/AppFull';
+import * as Comment from './fragments/Comment';
 import * as CommunitySearch from './fragments/CommunitySearch';
 import * as ConferenceFull from './fragments/ConferenceFull';
 import * as Message from './fragments/Message';
@@ -61,6 +62,7 @@ export const AddAppToChatMutation = typedMutation<Types.AddAppToChat, Types.AddA
 export const UserStorageQuery = typedQuery<Types.UserStorage, Types.UserStorageVariables>(App.UserStorageQuery);
 export const UserStorageSetMutation = typedMutation<Types.UserStorageSet, Types.UserStorageSetVariables>(App.UserStorageSetMutation);
 export const DialogsQuery = typedQuery<Types.Dialogs, Types.DialogsVariables>(Chats.DialogsQuery);
+export const CommentWatchSubscription = typedSubscription<Types.CommentWatch, Types.CommentWatchVariables>(Chats.CommentWatchSubscription);
 export const ChatWatchSubscription = typedSubscription<Types.ChatWatch, Types.ChatWatchVariables>(Chats.ChatWatchSubscription);
 export const DialogsWatchSubscription = typedSubscription<Types.DialogsWatch, Types.DialogsWatchVariables>(Chats.DialogsWatchSubscription);
 export const RoomQuery = typedQuery<Types.Room, Types.RoomVariables>(Chats.RoomQuery);
@@ -107,6 +109,9 @@ export const RoomRenewInviteLinkMutation = typedMutation<Types.RoomRenewInviteLi
 export const RoomInviteLinkQuery = typedQuery<Types.RoomInviteLink, Types.RoomInviteLinkVariables>(Chats.RoomInviteLinkQuery);
 export const RoomInviteInfoQuery = typedQuery<Types.RoomInviteInfo, Types.RoomInviteInfoVariables>(Chats.RoomInviteInfoQuery);
 export const ResolvedInviteQuery = typedQuery<Types.ResolvedInvite, Types.ResolvedInviteVariables>(Chats.ResolvedInviteQuery);
+export const AddMessageCommentMutation = typedMutation<Types.AddMessageComment, Types.AddMessageCommentVariables>(Chats.AddMessageCommentMutation);
+export const EditCommentMutation = typedMutation<Types.EditComment, Types.EditCommentVariables>(Chats.EditCommentMutation);
+export const MessageCommentsQuery = typedQuery<Types.MessageComments, Types.MessageCommentsVariables>(Chats.MessageCommentsQuery);
 export const RoomUpdateMutation = typedMutation<Types.RoomUpdate, Types.RoomUpdateVariables>(Chats.RoomUpdateMutation);
 export const RoomDeleteMessageMutation = typedMutation<Types.RoomDeleteMessage, Types.RoomDeleteMessageVariables>(Chats.RoomDeleteMessageMutation);
 export const RoomDeleteMessagesMutation = typedMutation<Types.RoomDeleteMessages, Types.RoomDeleteMessagesVariables>(Chats.RoomDeleteMessagesMutation);
@@ -115,6 +120,7 @@ export const RoomEditMessageMutation = typedMutation<Types.RoomEditMessage, Type
 export const MarkSequenceReadMutation = typedMutation<Types.MarkSequenceRead, Types.MarkSequenceReadVariables>(Chats.MarkSequenceReadMutation);
 export const TypingsWatchSubscription = typedSubscription<Types.TypingsWatch, {}>(Chats.TypingsWatchSubscription);
 export const UpdateWelcomeMessageMutation = typedMutation<Types.UpdateWelcomeMessage, Types.UpdateWelcomeMessageVariables>(Chats.UpdateWelcomeMessageMutation);
+export const MessageQuery = typedQuery<Types.Message, Types.MessageVariables>(Chats.MessageQuery);
 export const ConferenceQuery = typedQuery<Types.Conference, Types.ConferenceVariables>(Conferences.ConferenceQuery);
 export const ConferenceMediaQuery = typedQuery<Types.ConferenceMedia, Types.ConferenceMediaVariables>(Conferences.ConferenceMediaQuery);
 export const ConferenceJoinMutation = typedMutation<Types.ConferenceJoin, Types.ConferenceJoinVariables>(Conferences.ConferenceJoinMutation);
@@ -185,6 +191,7 @@ export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.Re
 export const DeleteUserMutation = typedMutation<Types.DeleteUser, Types.DeleteUserVariables>(User.DeleteUserMutation);
 export const AppChatFragment = typedFragment<Types.AppChat>(AppChat.AppChat);
 export const AppFullFragment = typedFragment<Types.AppFull>(AppFull.AppFull);
+export const CommentEntryFragmentFragment = typedFragment<Types.CommentEntryFragment>(Comment.CommentEntryFragment);
 export const CommunitySearchFragment = typedFragment<Types.CommunitySearch>(CommunitySearch.CommunitySearch);
 export const ConferenceFullFragment = typedFragment<Types.ConferenceFull>(ConferenceFull.ConferenceFull);
 export const TinyMessageFragment = typedFragment<Types.TinyMessage>(Message.TinyMessage);
@@ -201,5 +208,6 @@ export const SettingsFullFragment = typedFragment<Types.SettingsFull>(SettingsFr
 export const UserFullFragment = typedFragment<Types.UserFull>(UserFull.UserFull);
 export const UserShortFragment = typedFragment<Types.UserShort>(UserShort.UserShort);
 export const UserTinyFragment = typedFragment<Types.UserTiny>(UserTiny.UserTiny);
+export const CommentUpdateFragmentFragment = typedFragment<Types.CommentUpdateFragment>(Chats.CommentUpdateFragment);
 export const ChatUpdateFragmentFragment = typedFragment<Types.ChatUpdateFragment>(Chats.ChatUpdateFragment);
 export const DialogUpdateFragmentFragment = typedFragment<Types.DialogUpdateFragment>(Chats.DialogUpdateFragment);

@@ -1,0 +1,22 @@
+subscription CommentWatch($fromState: String, $peerId: ID!) {
+  event: commentUpdates(fromState: $fromState, peerId: $peerId) {
+    __typename
+    ... on CommentUpdateSingle {
+      seq
+      state
+      update {
+        __typename
+        ...CommentUpdateFragment
+      }
+    }
+    ... on CommentUpdateBatch {
+      fromSeq
+      seq
+      state
+      updates {
+        __typename
+        ...CommentUpdateFragment
+      }
+    }
+  }
+}

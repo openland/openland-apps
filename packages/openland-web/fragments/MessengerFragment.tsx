@@ -20,9 +20,9 @@ import { XLoader } from 'openland-x/XLoader';
 import { UserInfoContext } from '../components/UserInfo';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
 import { ForwardPlaceholder } from './chat/ForwardPlaceholder';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { useClient } from 'openland-web/utils/useClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { CommentsModal } from '../components/messenger/message/content/CommentsModal';
 
 export interface MessengerComponentProps {
     id: string;
@@ -48,7 +48,7 @@ const DocumentHeadTitleUpdater = ({ title }: { title: string }) => {
 
 class MessagengerFragmentInner extends React.PureComponent<
     MessengerComponentLoaderProps & { client: OpenlandClient; id: string }
-    > {
+> {
     onChatLostAccess = () => {
         this.props.client.refetchRoom({ id: this.props.id });
         // this.props.apollo.client.reFetchObservableQueries();
@@ -66,8 +66,8 @@ class MessagengerFragmentInner extends React.PureComponent<
             data.room.__typename === 'PrivateRoom' ? data.room : null;
         let pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null =
             sharedRoom &&
-                sharedRoom.pinnedMessage &&
-                sharedRoom.pinnedMessage.__typename === 'GeneralMessage'
+            sharedRoom.pinnedMessage &&
+            sharedRoom.pinnedMessage.__typename === 'GeneralMessage'
                 ? sharedRoom.pinnedMessage
                 : null;
 
@@ -118,6 +118,7 @@ class MessagengerFragmentInner extends React.PureComponent<
                             room={data.room}
                         />
                     </XView>
+                    <CommentsModal />
                 </XView>
             </>
         );

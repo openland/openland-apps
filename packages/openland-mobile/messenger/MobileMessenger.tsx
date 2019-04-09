@@ -19,7 +19,6 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'op
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
 import { reactionsImagesMap, defaultReactions, reactionMap } from './components/AsyncMessageReactionsView';
-import { SRouter } from 'react-native-s/SRouter';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -85,7 +84,7 @@ export class MobileMessenger {
 
     handleCommentsClick = (message: DataSourceMessageItem) => {
         if (this.currentConvId !== '') {
-            this.history.navigationManager.push('MessageComments', { id: this.currentConvId, message });
+            this.history.navigationManager.push('MessageComments', { id: this.currentConvId, messageId: message.id });
         }
     }
 
@@ -102,7 +101,7 @@ export class MobileMessenger {
         this.history.navigationManager.push('ProfileUser', { id });
     }
 
-    private handleReactionSetUnset = (message: DataSourceMessageItem, r: string) => {
+    handleReactionSetUnset = (message: DataSourceMessageItem, r: string) => {
         startLoader();
         try {
             let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;

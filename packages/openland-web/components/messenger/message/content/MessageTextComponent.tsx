@@ -4,6 +4,8 @@ import { css, cx } from 'linaria';
 import { SpannedStringView } from './SpannedStringView';
 import { spansPreprocess } from '../../data/spansPreprocess';
 import { SpannedString } from '../../data/SpannedString';
+import { XButton } from 'openland-x/XButton';
+import { XView } from 'react-mental';
 
 export interface MessageTextComponentProps {
     spans?: FullMessage_GeneralMessage_spans[];
@@ -55,22 +57,22 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(
                 </span>
             </div>
         );
-    });
+    },
+);
 
 export const MessageTextComponentSpanned = React.memo<{
-    spannedString: SpannedString,
+    spannedString: SpannedString;
     isEdited: boolean;
     isService?: boolean;
     shouldCrop?: boolean;
     asPinMessage?: boolean;
-}>(
-    ({ shouldCrop, spannedString, isEdited }) => {
-        return (
-            <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
-                <span>
-                    <SpannedStringView spannedString={spannedString} />
-                    {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
-                </span>
-            </div>
-        );
-    });
+}>(({ shouldCrop, spannedString, isEdited }) => {
+    return (
+        <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
+            <span>
+                <SpannedStringView spannedString={spannedString} />
+                {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
+            </span>
+        </div>
+    );
+});

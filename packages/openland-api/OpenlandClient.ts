@@ -319,6 +319,30 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderResolvedInvite(variables: Types.ResolvedInviteVariables): Types.ResolvedInvite | null {
         return this.useQuery(Source.ResolvedInviteQuery, variables);
     }
+    async queryMessageComments(variables: Types.MessageCommentsVariables, opts?: OperationParameters): Promise<Types.MessageComments> {
+        return this.client.query(Source.MessageCommentsQuery, variables, opts);
+    }
+    async refetchMessageComments(variables: Types.MessageCommentsVariables): Promise<Types.MessageComments> {
+        return this.refetch(Source.MessageCommentsQuery, variables);
+    }
+    useMessageComments(variables: Types.MessageCommentsVariables, opts?: QueryWatchParameters): Types.MessageComments {
+        return this.useQuerySuspense(Source.MessageCommentsQuery, variables, opts);
+    }
+    useWithoutLoaderMessageComments(variables: Types.MessageCommentsVariables): Types.MessageComments | null {
+        return this.useQuery(Source.MessageCommentsQuery, variables);
+    }
+    async queryMessage(variables: Types.MessageVariables, opts?: OperationParameters): Promise<Types.Message> {
+        return this.client.query(Source.MessageQuery, variables, opts);
+    }
+    async refetchMessage(variables: Types.MessageVariables): Promise<Types.Message> {
+        return this.refetch(Source.MessageQuery, variables);
+    }
+    useMessage(variables: Types.MessageVariables, opts?: QueryWatchParameters): Types.Message {
+        return this.useQuerySuspense(Source.MessageQuery, variables, opts);
+    }
+    useWithoutLoaderMessage(variables: Types.MessageVariables): Types.Message | null {
+        return this.useQuery(Source.MessageQuery, variables);
+    }
     async queryConference(variables: Types.ConferenceVariables, opts?: OperationParameters): Promise<Types.Conference> {
         return this.client.query(Source.ConferenceQuery, variables, opts);
     }
@@ -748,6 +772,12 @@ export class OpenlandClient extends BaseApiClient {
     async mutateRoomRenewInviteLink(variables: Types.RoomRenewInviteLinkVariables): Promise<Types.RoomRenewInviteLink> {
         return this.client.mutate(Source.RoomRenewInviteLinkMutation, variables);
     }
+    async mutateAddMessageComment(variables: Types.AddMessageCommentVariables): Promise<Types.AddMessageComment> {
+        return this.client.mutate(Source.AddMessageCommentMutation, variables);
+    }
+    async mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
+        return this.client.mutate(Source.EditCommentMutation, variables);
+    }
     async mutateRoomUpdate(variables: Types.RoomUpdateVariables): Promise<Types.RoomUpdate> {
         return this.client.mutate(Source.RoomUpdateMutation, variables);
     }
@@ -892,6 +922,9 @@ export class OpenlandClient extends BaseApiClient {
     subscribeSettingsWatch(): GraphqlActiveSubscription<Types.SettingsWatch, {}> {
         return this.client.subscribe(Source.SettingsWatchSubscription);
     }
+    subscribeCommentWatch(variables: Types.CommentWatchVariables): GraphqlActiveSubscription<Types.CommentWatch, Types.CommentWatchVariables> {
+        return this.client.subscribe(Source.CommentWatchSubscription, variables);
+    }
     subscribeChatWatch(variables: Types.ChatWatchVariables): GraphqlActiveSubscription<Types.ChatWatch, Types.ChatWatchVariables> {
         return this.client.subscribe(Source.ChatWatchSubscription, variables);
     }
@@ -915,6 +948,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     writeAppFull(data: Types.AppFull) {
       return this.client.writeFragment(data, Source.AppFullFragment);
+    }
+    writeCommentEntryFragment(data: Types.CommentEntryFragment) {
+      return this.client.writeFragment(data, Source.CommentEntryFragmentFragment);
     }
     writeCommunitySearch(data: Types.CommunitySearch) {
       return this.client.writeFragment(data, Source.CommunitySearchFragment);
@@ -963,6 +999,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     writeUserTiny(data: Types.UserTiny) {
       return this.client.writeFragment(data, Source.UserTinyFragment);
+    }
+    writeCommentUpdateFragment(data: Types.CommentUpdateFragment) {
+      return this.client.writeFragment(data, Source.CommentUpdateFragmentFragment);
     }
     writeChatUpdateFragment(data: Types.ChatUpdateFragment) {
       return this.client.writeFragment(data, Source.ChatUpdateFragmentFragment);

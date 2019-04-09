@@ -14,10 +14,18 @@ const buildWebClient = (token?: string) => {
     if (canUseDOM) {
         wsEndpoint = loadConfig().webSocketEndpoint;
     } else {
-        httpEndpoint = (process.env.API_ENDPOINT ? process.env.API_ENDPOINT + '/api' : 'http://localhost:9000/api');
+        httpEndpoint = process.env.API_ENDPOINT
+            ? process.env.API_ENDPOINT + '/api'
+            : 'http://localhost:9000/api';
     }
 
-    return buildClient({ endpoint: httpEndpoint, wsEndpoint: wsEndpoint, token, ssrMode: !canUseDOM, fetch: !canUseDOM ? require('node-fetch') : undefined });
+    return buildClient({
+        endpoint: httpEndpoint,
+        wsEndpoint: wsEndpoint,
+        token,
+        ssrMode: !canUseDOM,
+        fetch: !canUseDOM ? require('node-fetch') : undefined,
+    });
 };
 
 export const apolloClient = (token?: string) => {

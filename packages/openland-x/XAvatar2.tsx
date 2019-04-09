@@ -52,11 +52,12 @@ const AvatarPlaceholder = React.memo((props: XAvatar2Props) => {
             overflow="hidden"
             hoverTextDecoration="none"
         >
-            {props.titleEmoji || emoji({
-                src: ph,
-                size: 20,
-                cache: true,
-            })}
+            {props.titleEmoji ||
+                emoji({
+                    src: ph,
+                    size: 20,
+                    cache: true,
+                })}
         </XView>
     );
 });

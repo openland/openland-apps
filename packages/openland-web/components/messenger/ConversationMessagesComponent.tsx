@@ -33,6 +33,7 @@ const TypingComponent = React.memo((props: { chatId: string }) => (
 ));
 
 interface ConversationMessagesComponentProps {
+    isChannel: boolean;
     isActive: boolean;
     conversation: ConversationEngine;
     conversationId: string;
@@ -60,6 +61,8 @@ export class ConversationMessagesComponent extends React.PureComponent<
         return (
             <MessagesContainer conversationId={this.props.conversationId}>
                 <MessageListComponent
+                    isChannel={this.props.isChannel}
+                    isActive={this.props.isActive}
                     me={this.props.me}
                     conversation={this.props.conversation}
                     conversationType={this.props.conversationType}
@@ -68,7 +71,6 @@ export class ConversationMessagesComponent extends React.PureComponent<
                     conversationId={this.props.conversationId}
                     editPostHandler={this.props.editPostHandler}
                     scrollPosition={this.props.scrollPosition}
-                    isActive={this.props.isActive}
                 />
                 {this.props.loading && <XLoader loading={this.props.loading} />}
                 <TypingComponent chatId={this.props.conversationId} />

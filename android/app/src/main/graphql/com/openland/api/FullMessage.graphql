@@ -114,6 +114,7 @@ fragment FullMessage on ModernMessage {
         titleLinkHostname
       }
     }
+    commentsCount
     edited
     quotedMessages {
       __typename
@@ -218,6 +219,7 @@ fragment FullMessage on ModernMessage {
             titleLinkHostname
           }
         }
+        commentsCount
         edited
       }
     }

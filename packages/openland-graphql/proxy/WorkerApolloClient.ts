@@ -4,7 +4,6 @@ import { WorkerResponse, WorkerRequest } from './api/WorkerApi';
 import { BridgedClient } from '../bridge/BridgedClient';
 
 export class WorkerApolloClient extends BridgedClient {
-
     private readonly bridge: WorkerInterface;
 
     constructor(bridge: WorkerInterface) {
@@ -54,7 +53,10 @@ export class WorkerApolloClient extends BridgedClient {
             this.operationUpdated(msg.id, msg.data);
         } else if (msg.type === 'error') {
             if (msg.data.__api) {
-                this.operationFailed(msg.id, new ApiError(msg.data.message, msg.data.invalidFields));
+                this.operationFailed(
+                    msg.id,
+                    new ApiError(msg.data.message, msg.data.invalidFields),
+                );
             } else {
                 this.operationFailed(msg.id, msg.data);
             }

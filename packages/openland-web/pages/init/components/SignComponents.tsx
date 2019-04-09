@@ -828,7 +828,7 @@ export const WebSignUpAuthMechanism = ({
             <Title roomView={false}>{title}</Title>
             <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={52} width={280}>
-                <GoogleButton rounded onClick={loginWithGoogle()} text={googleButtonText} />
+                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
                 <Separator />
                 <EmailButton rounded onClick={loginWithEmail} text={emailText} />
             </ButtonsWrapper>

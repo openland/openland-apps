@@ -19,6 +19,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import DeleteIcon from 'openland-icons/ic-close.svg';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { ImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
 
 const LinkContentWrapperClassName = css`
     width: 100%;
@@ -238,6 +239,7 @@ const JoinChannelCard = ({
 const ImageClassName = css`
     display: block;
     flex-shrink: 0;
+    cursor: pointer;
 `;
 
 const DomainNameClassName = css`
@@ -344,6 +346,27 @@ const MessageUrlAugmentationComponentInner = React.memo(
             openlandLink = false;
         }
 
+        const linkImage = image &&
+            dimensions &&
+            !openlandLink && (
+                <XView
+                    flexDirection="row"
+                    justifyContent="center"
+                    borderRadius={4}
+                    overflow="hidden"
+                    alignSelf="flex-start"
+                    maxWidth="100%"
+                >
+                    <XCloudImage
+                        srcCloud={image.url}
+                        resize="fill"
+                        width={dimensions.width}
+                        height={dimensions.height}
+                        className={ImageClassName}
+                    />
+                </XView>
+            );
+
         return (
             <XView width="100%" flexDirection="column" maxWidth={696}>
                 <div className={LinkContentWrapperClassName}>
@@ -357,22 +380,20 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                     alignItems="flex-start"
                                     maxWidth="60%"
                                 >
-                                    <XView
-                                        flexDirection="row"
-                                        justifyContent="center"
-                                        borderRadius={4}
-                                        overflow="hidden"
-                                        alignSelf="flex-start"
-                                        maxWidth="100%"
-                                    >
-                                        <XCloudImage
-                                            srcCloud={image.url}
-                                            resize="fill"
-                                            width={dimensions.width}
-                                            height={dimensions.height}
-                                            className={ImageClassName}
-                                        />
-                                    </XView>
+                                    {linkImage && (
+                                        <>
+                                            {isMobile ? (
+                                                linkImage
+                                            ) : (
+                                                <ImagePreviewModal
+                                                    file={image.url}
+                                                    width={image.metadata!.imageWidth!}
+                                                    height={image.metadata!.imageWidth!}
+                                                    target={linkImage}
+                                                />
+                                            )}
+                                        </>
+                                    )}
                                 </XView>
                             )}
                         {image &&

@@ -6,6 +6,7 @@ import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { TinyMessage, FullMessage } from 'openland-api/fragments/Message';
+import { CommentEntryFragment } from 'openland-api/fragments/Comment';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -36,6 +37,46 @@ export const DialogsQuery = gql`
     }
     ${UserTiny}
     ${TinyMessage}
+`;
+
+export const CommentUpdateFragment = gql`
+    fragment CommentUpdateFragment on CommentUpdate {
+        ... on CommentReceived {
+            comment {
+                ...CommentEntryFragment
+            }
+        }
+        ... on CommentUpdated {
+            comment {
+                ...CommentEntryFragment
+            }
+        }
+    }
+`;
+
+export const CommentWatchSubscription = gql`
+    subscription CommentWatch($peerId: ID!, $fromState: String) {
+        event: commentUpdates(peerId: $peerId, fromState: $fromState) {
+            ... on CommentUpdateSingle {
+                seq
+                state
+                update {
+                    ...CommentUpdateFragment
+                }
+            }
+            ... on CommentUpdateBatch {
+                fromSeq
+                seq
+                state
+                updates {
+                    ...CommentUpdateFragment
+                }
+            }
+        }
+    }
+    ${CommentUpdateFragment}
+    ${CommentEntryFragment}
+    ${FullMessage}
 `;
 
 export const ChatUpdateFragment = gql`
@@ -697,6 +738,35 @@ export const ResolvedInviteQuery = gql`
     ${UserShort}
 `;
 
+export const AddMessageCommentMutation = gql`
+    mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID) {
+        addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment)
+    }
+`;
+
+export const EditCommentMutation = gql`
+    mutation EditComment($id: ID!, $message: String) {
+        editComment(id: $id, message: $message)
+    }
+`;
+
+export const MessageCommentsQuery = gql`
+    query MessageComments($messageId: ID!) {
+        messageComments(messageId: $messageId) {
+            id
+            state {
+                state
+            }
+            count
+            comments {
+                ...CommentEntryFragment
+            }
+        }
+    }
+    ${CommentEntryFragment}
+    ${FullMessage}
+`;
+
 export const RoomUpdateMutation = gql`
     mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {
         betaRoomUpdate(roomId: $roomId, input: $input) {
@@ -785,4 +855,13 @@ export const UpdateWelcomeMessageMutation = gql`
             welcomeMessageText: $welcomeMessageText
         )
     }
+`;
+
+export const MessageQuery = gql`
+    query Message($messageId: ID!) {
+        message(messageId: $messageId) {
+            ...FullMessage
+        }
+    }
+    ${FullMessage}
 `;

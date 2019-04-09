@@ -12,6 +12,7 @@ export const TinyMessage = gql`
         message
         fallback
         ... on GeneralMessage {
+            commentsCount
             attachments {
                 id
                 fallback
@@ -44,6 +45,7 @@ export const FullMessage = gql`
 
         ... on GeneralMessage {
             edited
+            commentsCount
             attachments {
                 fallback
                 ... on MessageAttachmentFile {
@@ -144,6 +146,7 @@ export const FullMessage = gql`
                 }
 
                 ... on GeneralMessage {
+                    commentsCount
                     edited
                     attachments {
                         fallback
