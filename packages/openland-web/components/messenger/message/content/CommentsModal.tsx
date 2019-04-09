@@ -16,6 +16,7 @@ import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/
 import { useMentions } from 'openland-web/fragments/MessageComposeComponent/useMentions';
 import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 
 type CommentsInputProps = {
     onSend?: (text: string, mentions: UserShort[] | null) => void;
@@ -116,59 +117,13 @@ const CommentsInner = () => {
         commentsMap[comment.id] = comment;
     });
 
-    function getDepthOfComment(comment: any) {
-        let currentComment = comment;
-        let currentDepth = 0;
-        while (!!currentComment) {
-            if (currentComment.parentComment) {
-                currentComment = commentsMap[currentComment.parentComment.id];
-            } else {
-                currentComment = null;
-            }
-
-            currentDepth++;
-        }
-
-        return currentDepth;
-    }
+    const result = sortComments(messageComments.messageComments.comments, commentsMap);
 
     const commentsElements = [];
 
-    function topologicalSortHelper(node: any, explored: any, s: any) {
-        explored.add(node.id);
-        // Marks this node as visited and goes on to the nodes
-        // that are dependent on this node, the edge is node ----> n
-
-        if (!!node.parentComment && !explored.has(node.parentComment.id)) {
-            topologicalSortHelper(node.parentComment, explored, s);
-        }
-
-        // All dependencies are resolved for this node, we can now add
-        // This to the stack.
-        s.push(commentsMap[node.id]);
-    }
-
-    function topologicalSort(nodes: any[]) {
-        // let res = [];
-        // Create a Stack to keep track of all elements in sorted order
-        let s: any[] = [];
-        let explored = new Set();
-
-        // For every unvisited node in our graph, call the helper.
-        nodes.forEach(node => {
-            if (!explored.has(node.id)) {
-                topologicalSortHelper(node, explored, s);
-            }
-        });
-
-        return s;
-    }
-
-    const result = topologicalSort(messageComments.messageComments.comments);
-
     for (let item of result) {
         commentsElements.push(
-            <XView key={item.id} marginLeft={10 * getDepthOfComment(item)}>
+            <XView key={item.id} marginLeft={10 * getDepthOfComment(item, commentsMap)}>
                 {item.comment.message}
                 <XView width={500}>
                     <XButton
