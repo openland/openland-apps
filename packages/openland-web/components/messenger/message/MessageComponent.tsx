@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { MobileMessageComponentInner } from './MessageMobileComponent';
 import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDesktopComponent';
-import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const MessageComponentInner = React.memo(
     (
@@ -32,6 +33,7 @@ const MessageComponentInner = React.memo(
                     editPostHandler={props.editPostHandler}
                     messagesContext={props.messagesContextProps}
                 />
+                     <XWithRole role={['feature-non-production']}>
                 {props.isChannel && !props.message.isService && (
                     <XView width={150}>
                         <XButton
@@ -45,6 +47,7 @@ const MessageComponentInner = React.memo(
                         />
                     </XView>
                 )}
+                </XWithRole>
             </>
         );
     },

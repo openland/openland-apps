@@ -16,7 +16,6 @@ import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/
 import { useMentions } from 'openland-web/fragments/MessageComposeComponent/useMentions';
 import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { formatTime } from 'openland-mobile/utils/formatTime';
 
 type CommentsInputProps = {
     onSend?: (text: string, mentions: UserShort[] | null) => void;
@@ -167,9 +166,7 @@ const CommentsInner = () => {
 
     const result = topologicalSort(messageComments.messageComments.comments);
 
-    let i = 0;
     for (let item of result) {
-        console.log(getDepthOfComment(item));
         commentsElements.push(
             <XView key={item.id} marginLeft={10 * getDepthOfComment(item)}>
                 {item.comment.message}
@@ -196,7 +193,6 @@ const CommentsInner = () => {
                 </XView>
             </XView>,
         );
-        i++;
     }
 
     return (
