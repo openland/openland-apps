@@ -3,24 +3,29 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { View, Text, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
+import { View, Text, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData, TouchableWithoutFeedback, Image } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { MessageInputBar } from './components/MessageInputBar';
 import { DefaultConversationTheme, ConversationTheme } from './themes/ConversationThemeResolver';
-import { MessageComments_messageComments_comments } from 'openland-api/Types';
+import { MessageComments_messageComments_comments, FullMessage_GeneralMessage } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { MessageView } from 'openland-mobile/messenger/components/MessageView';
+import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
+import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { formatDate } from 'openland-mobile/utils/formatDate';
+import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
+import { reactionMap } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { SenderView } from 'openland-mobile/messenger/components/SenderView';
 
 interface MessageCommentsInnerProps {
-    messageId: string;
-    senderHeader: any;
-    messageContent: any;
-    toolButtons: any;
-    comments: MessageComments_messageComments_comments[]
+    message: FullMessage_GeneralMessage;
+    comments: MessageComments_messageComments_comments[];
+    messenger: MobileMessenger;
 }
 
 interface MessageCommentsInnerState {
@@ -43,13 +48,13 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
 
     handleSubmit = async () => {
         await getClient().mutateAddMessageComment({
-            messageId: this.props.messageId,
+            messageId: this.props.message.id,
             message: this.state.text,
             replyComment: null,
         });
 
         await getClient().refetchMessageComments({
-            messageId: this.props.messageId,
+            messageId: this.props.message.id,
         });
 
         this.setState({ text: '' });
@@ -71,7 +76,28 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         // temp ignore
     }
 
+    handleReactionPress = () => {
+        let r = 'LIKE';
+        let message = this.props.message;
+        let engine = this.props.messenger.engine;
+        let client = engine.client;
+
+        startLoader();
+            try {
+                let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;
+                if (remove) {
+                    client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: reactionMap[r] });
+                } else {
+                    client.mutateMessageSetReaction({ messageId: message.id!, reaction: reactionMap[r] });
+                }
+            } catch (e) {
+                Alert.alert(e.message);
+            }
+        stopLoader();
+    }
+
     render () {
+        const { message, comments, messenger } = this.props;
         const commentsElements = [];
 
         if (this.props.comments.length > 0) {
@@ -81,24 +107,64 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                 commentsMap[comment.id] = comment;
             });
     
-            const result = sortComments(this.props.comments, commentsMap);
+            const result = sortComments(comments, commentsMap);
     
-            for (let comment of result) {
+            for (let commentEntry of result) {
                 commentsElements.push(
-                    <View key={comment.id} marginLeft={20 * getDepthOfComment(comment, commentsMap)}>
-                        <MessageView message={comment} />
+                    <View key={commentEntry.id} marginLeft={20 * getDepthOfComment(commentEntry, commentsMap)}>
+                        <MessageView message={commentEntry.comment} />
                     </View>
                 );
             }
         }
 
+        let likesCount = 0;
+        let myLike = false;
+
+        if (message.reactions) {
+            let likes = message.reactions.filter(r => r.reaction === 'LIKE');
+
+            likesCount = likes.length;
+
+            likes.map(r => {
+                if (r.user.id === getMessenger().engine.user.id) {
+                    myLike = true;
+                }
+            });
+        }
+
+        const toolButtons = (
+            <View alignItems="stretch" flexDirection="row" marginTop={10} flexGrow={1} justifyContent="flex-start">
+                <TouchableWithoutFeedback onPress={this.handleReactionPress}>
+                    <View backgroundColor="#f3f5f7" borderRadius={14} paddingHorizontal={7} height={28} flexDirection="row" alignItems="center" justifyContent="center">
+                        {!myLike && <Image source={require('assets/ic-likes-24.png')} style={{ width: 24, height: 24 }} />}
+                        {myLike && <Image source={require('assets/ic-likes-full-24.png')} style={{ width: 24, height: 24 }} />}
+                        {likesCount > 0 && (
+                            <Text
+                                style={{
+                                    fontSize: 14,
+                                    fontWeight: TextStyles.weight.medium,
+                                    marginLeft: 2,
+                                    marginRight: 1,
+                                    opacity: 0.8
+                                } as TextStyle}
+                            >
+                                {likesCount}
+                            </Text>
+                        )}
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+        );
+
         return (
             <>
                 <SHeader title="Comments" />
                 <SScrollView flexGrow={1} paddingHorizontal={16}>
-                    {this.props.senderHeader}
-                    {this.props.messageContent}
-                    {this.props.toolButtons}
+                    <SenderView sender={message.sender} date={message.date} />
+                    <MessageView message={message} />
+
+                    {toolButtons}
     
                     <View height={1} backgroundColor="#eff0f2" marginTop={20} />
 
@@ -138,91 +204,14 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
 
     let engine = messenger.engine.getConversation(channelId);
 
+    let message = client.useMessage({ messageId: messageId }).message as FullMessage_GeneralMessage;
     let comments = client.useMessageComments({ messageId: messageId }).messageComments.comments;
-
-    // message.isOut = false;
-    // message.attachTop = true;
-    
-    // let { topContent } = extractContent({
-    //     message,
-    //     engine,
-    //     onDocumentPress: messenger.handleDocumentClick,
-    //     onMediaPress: messenger.handleMediaClick,
-    //     onUserPress: messenger.handleAvatarClick,
-    //     theme: theme,
-    // }, Dimensions.get('screen').width - 16, undefined, true);
-
-    // let likesCount = 0;
-    // let myLike = false;
-
-    // if (message.reactions) {
-    //     let likes = message.reactions.filter(r => r.reaction === 'LIKE');
-
-    //     likesCount = likes.length;
-
-    //     likes.map(r => {
-    //         if (r.user.id === getMessenger().engine.user.id) {
-    //             myLike = true;
-    //         }
-    //     });
-    // }
-
-    const topContent = undefined;
-    const senderHeader = undefined; // (
-    //     <TouchableWithoutFeedback onPress={() => messenger.handleAvatarClick(message.senderId)}>
-    //         <View alignItems="stretch" marginTop={15} marginBottom={15} flexDirection="row">
-    //             <View marginRight={15}>
-    //                 <ZAvatar
-    //                     size={40}
-    //                     src={message.senderPhoto}
-    //                     placeholderKey={message.senderId}
-    //                     placeholderTitle={message.senderName}
-    //                 />
-    //             </View>
-    //             <View flexDirection="column">
-    //                 <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.medium, color: '#000' } as TextStyle}>{message.senderName}
-    //                     {message.sender.primaryOrganization &&
-    //                         <Text style={{ fontSize: 13, fontWeight: TextStyles.weight.medium, color: '#99a2b0'} as TextStyle}>
-    //                             {' ' + message.sender.primaryOrganization.name}
-    //                         </Text>}
-    //                 </Text>
-    //                 <Text style={{ fontSize: 14, marginTop: 5, color: '#99a2b0' }}>{formatDate(message.date)}</Text>
-    //             </View>
-    //         </View>
-    //     </TouchableWithoutFeedback>
-    // );
-
-    const toolButtons = undefined; // (
-    //     <View alignItems="stretch" flexDirection="row" marginTop={10} flexGrow={1} justifyContent="flex-start">
-    //         <TouchableWithoutFeedback onPress={() => messenger.handleReactionSetUnset(message, 'LIKE')}>
-    //             <View backgroundColor="#f3f5f7" borderRadius={14} paddingHorizontal={7} height={28} flexDirection="row" alignItems="center" justifyContent="center">
-    //                 {!myLike && <Image source={require('assets/ic-likes-24.png')} style={{ width: 24, height: 24 }} />}
-    //                 {myLike && <Image source={require('assets/ic-likes-full-24.png')} style={{ width: 24, height: 24 }} />}
-    //                 {likesCount > 0 && (
-    //                     <Text
-    //                         style={{
-    //                             fontSize: 14,
-    //                             fontWeight: TextStyles.weight.medium,
-    //                             marginLeft: 2,
-    //                             marginRight: 1,
-    //                             opacity: 0.8
-    //                         } as TextStyle}
-    //                     >
-    //                         {likesCount}
-    //                     </Text>
-    //                 )}
-    //             </View>
-    //         </TouchableWithoutFeedback>
-    //     </View>
-    // );
 
     return (
         <MessageCommentsInner
-            messageId={messageId}
-            senderHeader={senderHeader}
-            messageContent={topContent}
-            toolButtons={toolButtons}
+            message={message}
             comments={comments}
+            messenger={messenger}
         />
     );
 });

@@ -1,6 +1,6 @@
 import { MessageComments_messageComments_comments } from 'openland-api/Types';
 
-export const sortComments = (comments: MessageComments_messageComments_comments[], commentsMap: any) => {
+export const sortComments = (comments: MessageComments_messageComments_comments[], commentsMap: { [key: string]: MessageComments_messageComments_comments }): MessageComments_messageComments_comments[] => {
     function topologicalSortHelper(node: any, explored: any, s: any) {
         explored.add(node.id);
         // Marks this node as visited and goes on to the nodes
@@ -34,8 +34,8 @@ export const sortComments = (comments: MessageComments_messageComments_comments[
     return topologicalSort(comments);
 }
 
-export function getDepthOfComment(comment: any, commentsMap: any) {
-    let currentComment = comment;
+export function getDepthOfComment(comment: MessageComments_messageComments_comments, commentsMap: { [key: string]: MessageComments_messageComments_comments }): number {
+    let currentComment: MessageComments_messageComments_comments | null = comment;
     let currentDepth = 0;
     while (!!currentComment) {
         if (currentComment.parentComment) {
