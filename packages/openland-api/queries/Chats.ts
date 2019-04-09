@@ -6,6 +6,7 @@ import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { TinyMessage, FullMessage } from 'openland-api/fragments/Message';
+import { CommentEntryFragment } from 'openland-api/fragments/Comment';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -695,6 +696,35 @@ export const ResolvedInviteQuery = gql`
         }
     }
     ${UserShort}
+`;
+
+export const AddMessageCommentMutation = gql`
+    mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID) {
+        addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment)
+    }
+`;
+
+export const EditCommentMutation = gql`
+    mutation EditComment($id: ID!, $message: String) {
+        editComment(id: $id, message: $message)
+    }
+`;
+
+export const MessageCommentsQuery = gql`
+    query MessageComments($messageId: ID!) {
+        messageComments(messageId: $messageId) {
+            id
+            state {
+                state
+            }
+            count
+            comments {
+                ...CommentEntryFragment
+            }
+        }
+    }
+    ${CommentEntryFragment}
+    ${FullMessage}
 `;
 
 export const RoomUpdateMutation = gql`

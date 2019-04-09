@@ -1579,6 +1579,11 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        builder.key(notNull(readString(src, "key")))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "MessageComments") {
+       val builder = MessageCommentsQuery.builder()
+       builder.messageId(notNull(readString(src, "messageId")))
+       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "Conference") {
        val builder = ConferenceQuery.builder()
        builder.id(notNull(readString(src, "id")))
@@ -2019,6 +2024,19 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
        builder.roomId(notNull(readString(src, "roomId")))
        return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "AddMessageComment") {
+       val builder = AddMessageCommentMutation.builder()
+       builder.messageId(notNull(readString(src, "messageId")))
+       builder.message(readString(src, "message"))
+       builder.replyComment(readString(src, "replyComment"))
+       return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
+    }
+    if (name == "EditComment") {
+       val builder = EditCommentMutation.builder()
+       builder.id(notNull(readString(src, "id")))
+       builder.message(readString(src, "message"))
+       return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "RoomUpdate") {
        val builder = RoomUpdateMutation.builder()
        builder.roomId(notNull(readString(src, "roomId")))
@@ -2305,6 +2323,10 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
 fun readFragment(name: String, src: ReadableMap): Pair<String, GraphqlFragment> {
     if (name == "AppFull") {
         val res = AppFull.Mapper().map(responseReader(src))
+        return (res.__typename() + "$" + res.id()) to res
+    }
+    if (name == "CommentEntryFragment") {
+        val res = CommentEntryFragment.Mapper().map(responseReader(src))
         return (res.__typename() + "$" + res.id()) to res
     }
     if (name == "CommunitySearch") {

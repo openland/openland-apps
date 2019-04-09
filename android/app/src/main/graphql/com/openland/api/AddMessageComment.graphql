@@ -1,0 +1,3 @@
+mutation AddMessageComment($message: String, $messageId: ID!, $replyComment: ID) {
+  addMessageComment(message: $message, messageId: $messageId, replyComment: $replyComment)
+}

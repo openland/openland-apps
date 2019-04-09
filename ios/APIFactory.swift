@@ -361,6 +361,20 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "MessageComments") {
+      let messageId = notNull(readString(src, "messageId"))
+      let requestBody = MessageCommentsQuery(messageId: messageId)
+      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "Conference") {
       let id = notNull(readString(src, "id"))
       let requestBody = ConferenceQuery(id: id)
@@ -1067,6 +1081,20 @@ class ApiFactory: ApiFactoryBase {
     if (name == "ResolvedInvite") {
       let key = notNull(readString(src, "key"))
       let requestBody = ResolvedInviteQuery(key: key)
+      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
+    if (name == "MessageComments") {
+      let messageId = notNull(readString(src, "messageId"))
+      let requestBody = MessageCommentsQuery(messageId: messageId)
       let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -2166,6 +2194,41 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomRenewInviteLink") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomRenewInviteLinkMutation(roomId: roomId)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
+    if (name == "AddMessageComment") {
+      let messageId = notNull(readString(src, "messageId"))
+      let message = readString(src, "message")
+      let replyComment = readString(src, "replyComment")
+      let requestBody = AddMessageCommentMutation(messageId: messageId, message: message, replyComment: replyComment)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
+    if (name == "EditComment") {
+      let id = notNull(readString(src, "id"))
+      let message = readString(src, "message")
+      let requestBody = EditCommentMutation(id: id, message: message)
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -3287,6 +3350,14 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "MessageComments") {
+      let messageId = notNull(readString(src, "messageId"))
+      let requestBody = MessageCommentsQuery(messageId: messageId)
+      store.withinReadTransaction { (tx) in
+        handler((try tx.read(query: requestBody)).resultMap, nil)
+      }
+      return
+    }
     if (name == "Conference") {
       let id = notNull(readString(src, "id"))
       let requestBody = ConferenceQuery(id: id)
@@ -3750,6 +3821,16 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "MessageComments") {
+      let messageId = notNull(readString(src, "messageId"))
+      let requestBody = MessageCommentsQuery(messageId: messageId)
+      let data = MessageCommentsQuery.Data(unsafeResultMap: self.convertData(src: data))
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(data: data, forQuery: requestBody)
+        handler(nil, nil)
+      }
+      return
+    }
     if (name == "Conference") {
       let id = notNull(readString(src, "id"))
       let requestBody = ConferenceQuery(id: id)
@@ -4009,6 +4090,15 @@ class ApiFactory: ApiFactoryBase {
   func writeFragment(store: ApolloStore, data: NSDictionary, name: String, handler: @escaping ResponseHandler) {
     if name == "AppFull" {
       let data = AppFull(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
+    if name == "CommentEntryFragment" {
+      let data = CommentEntryFragment(unsafeResultMap: self.convertData(src: data))
       let key = data.id + ":" + data.__typename
       store.withinReadWriteTransaction { (tx) in
         try tx.write(object: data, withKey: key)

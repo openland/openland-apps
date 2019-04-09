@@ -319,6 +319,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderResolvedInvite(variables: Types.ResolvedInviteVariables): Types.ResolvedInvite | null {
         return this.useQuery(Source.ResolvedInviteQuery, variables);
     }
+    async queryMessageComments(variables: Types.MessageCommentsVariables, opts?: OperationParameters): Promise<Types.MessageComments> {
+        return this.client.query(Source.MessageCommentsQuery, variables, opts);
+    }
+    async refetchMessageComments(variables: Types.MessageCommentsVariables): Promise<Types.MessageComments> {
+        return this.refetch(Source.MessageCommentsQuery, variables);
+    }
+    useMessageComments(variables: Types.MessageCommentsVariables, opts?: QueryWatchParameters): Types.MessageComments {
+        return this.useQuerySuspense(Source.MessageCommentsQuery, variables, opts);
+    }
+    useWithoutLoaderMessageComments(variables: Types.MessageCommentsVariables): Types.MessageComments | null {
+        return this.useQuery(Source.MessageCommentsQuery, variables);
+    }
     async queryConference(variables: Types.ConferenceVariables, opts?: OperationParameters): Promise<Types.Conference> {
         return this.client.query(Source.ConferenceQuery, variables, opts);
     }
@@ -748,6 +760,12 @@ export class OpenlandClient extends BaseApiClient {
     async mutateRoomRenewInviteLink(variables: Types.RoomRenewInviteLinkVariables): Promise<Types.RoomRenewInviteLink> {
         return this.client.mutate(Source.RoomRenewInviteLinkMutation, variables);
     }
+    async mutateAddMessageComment(variables: Types.AddMessageCommentVariables): Promise<Types.AddMessageComment> {
+        return this.client.mutate(Source.AddMessageCommentMutation, variables);
+    }
+    async mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
+        return this.client.mutate(Source.EditCommentMutation, variables);
+    }
     async mutateRoomUpdate(variables: Types.RoomUpdateVariables): Promise<Types.RoomUpdate> {
         return this.client.mutate(Source.RoomUpdateMutation, variables);
     }
@@ -915,6 +933,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     writeAppFull(data: Types.AppFull) {
       return this.client.writeFragment(data, Source.AppFullFragment);
+    }
+    writeCommentEntryFragment(data: Types.CommentEntryFragment) {
+      return this.client.writeFragment(data, Source.CommentEntryFragmentFragment);
     }
     writeCommunitySearch(data: Types.CommunitySearch) {
       return this.client.writeFragment(data, Source.CommunitySearchFragment);

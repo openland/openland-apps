@@ -9827,6 +9827,294 @@ public final class ResolvedInviteQuery: GraphQLQuery {
   }
 }
 
+public final class AddMessageCommentMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID) {\n  addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment)\n}"
+
+  public var messageId: GraphQLID
+  public var message: String?
+  public var replyComment: GraphQLID?
+
+  public init(messageId: GraphQLID, message: String? = nil, replyComment: GraphQLID? = nil) {
+    self.messageId = messageId
+    self.message = message
+    self.replyComment = replyComment
+  }
+
+  public var variables: GraphQLMap? {
+    return ["messageId": messageId, "message": message, "replyComment": replyComment]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("addMessageComment", arguments: ["messageId": GraphQLVariable("messageId"), "message": GraphQLVariable("message"), "replyComment": GraphQLVariable("replyComment")], type: .nonNull(.scalar(Bool.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(addMessageComment: Bool) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "addMessageComment": addMessageComment])
+    }
+
+    public var addMessageComment: Bool {
+      get {
+        return resultMap["addMessageComment"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "addMessageComment")
+      }
+    }
+  }
+}
+
+public final class EditCommentMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation EditComment($id: ID!, $message: String) {\n  editComment(id: $id, message: $message)\n}"
+
+  public var id: GraphQLID
+  public var message: String?
+
+  public init(id: GraphQLID, message: String? = nil) {
+    self.id = id
+    self.message = message
+  }
+
+  public var variables: GraphQLMap? {
+    return ["id": id, "message": message]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("editComment", arguments: ["id": GraphQLVariable("id"), "message": GraphQLVariable("message")], type: .nonNull(.scalar(Bool.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(editComment: Bool) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "editComment": editComment])
+    }
+
+    public var editComment: Bool {
+      get {
+        return resultMap["editComment"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "editComment")
+      }
+    }
+  }
+}
+
+public final class MessageCommentsQuery: GraphQLQuery {
+  public let operationDefinition =
+    "query MessageComments($messageId: ID!) {\n  messageComments(messageId: $messageId) {\n    __typename\n    id\n    state {\n      __typename\n      state\n    }\n    count\n    comments {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n}"
+
+  public var queryDocument: String { return operationDefinition.appending(CommentEntryFragment.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+
+  public var messageId: GraphQLID
+
+  public init(messageId: GraphQLID) {
+    self.messageId = messageId
+  }
+
+  public var variables: GraphQLMap? {
+    return ["messageId": messageId]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("messageComments", arguments: ["messageId": GraphQLVariable("messageId")], type: .nonNull(.object(MessageComment.selections))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(messageComments: MessageComment) {
+      self.init(unsafeResultMap: ["__typename": "Query", "messageComments": messageComments.resultMap])
+    }
+
+    public var messageComments: MessageComment {
+      get {
+        return MessageComment(unsafeResultMap: resultMap["messageComments"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "messageComments")
+      }
+    }
+
+    public struct MessageComment: GraphQLSelectionSet {
+      public static let possibleTypes = ["CommentsPeer"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("state", type: .nonNull(.object(State.selections))),
+        GraphQLField("count", type: .nonNull(.scalar(Int.self))),
+        GraphQLField("comments", type: .nonNull(.list(.nonNull(.object(Comment.selections))))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, state: State, count: Int, comments: [Comment]) {
+        self.init(unsafeResultMap: ["__typename": "CommentsPeer", "id": id, "state": state.resultMap, "count": count, "comments": comments.map { (value: Comment) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var state: State {
+        get {
+          return State(unsafeResultMap: resultMap["state"]! as! ResultMap)
+        }
+        set {
+          resultMap.updateValue(newValue.resultMap, forKey: "state")
+        }
+      }
+
+      public var count: Int {
+        get {
+          return resultMap["count"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "count")
+        }
+      }
+
+      public var comments: [Comment] {
+        get {
+          return (resultMap["comments"] as! [ResultMap]).map { (value: ResultMap) -> Comment in Comment(unsafeResultMap: value) }
+        }
+        set {
+          resultMap.updateValue(newValue.map { (value: Comment) -> ResultMap in value.resultMap }, forKey: "comments")
+        }
+      }
+
+      public struct State: GraphQLSelectionSet {
+        public static let possibleTypes = ["CommentUpdatesState"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("state", type: .scalar(String.self)),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(state: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "CommentUpdatesState", "state": state])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var state: String? {
+          get {
+            return resultMap["state"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "state")
+          }
+        }
+      }
+
+      public struct Comment: GraphQLSelectionSet {
+        public static let possibleTypes = ["CommentEntry"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(CommentEntryFragment.self),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var fragments: Fragments {
+          get {
+            return Fragments(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+
+        public struct Fragments {
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public var commentEntryFragment: CommentEntryFragment {
+            get {
+              return CommentEntryFragment(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class RoomUpdateMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {\n  betaRoomUpdate(roomId: $roomId, input: $input) {\n    __typename\n    ... on PrivateRoom {\n      id\n    }\n    ... on SharedRoom {\n      id\n      title\n      photo\n      description\n    }\n  }\n}"
@@ -19804,6 +20092,211 @@ public struct AppFull: GraphQLFragment {
   }
 }
 
+public struct CommentEntryFragment: GraphQLFragment {
+  public static let fragmentDefinition =
+    "fragment CommentEntryFragment on CommentEntry {\n  __typename\n  id\n  comment {\n    __typename\n    ...FullMessage\n    id\n  }\n  parentComment {\n    __typename\n    id\n  }\n  childComments {\n    __typename\n    id\n  }\n}"
+
+  public static let possibleTypes = ["CommentEntry"]
+
+  public static let selections: [GraphQLSelection] = [
+    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+    GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+    GraphQLField("comment", type: .nonNull(.object(Comment.selections))),
+    GraphQLField("parentComment", type: .object(ParentComment.selections)),
+    GraphQLField("childComments", type: .nonNull(.list(.nonNull(.object(ChildComment.selections))))),
+  ]
+
+  public private(set) var resultMap: ResultMap
+
+  public init(unsafeResultMap: ResultMap) {
+    self.resultMap = unsafeResultMap
+  }
+
+  public init(id: GraphQLID, comment: Comment, parentComment: ParentComment? = nil, childComments: [ChildComment]) {
+    self.init(unsafeResultMap: ["__typename": "CommentEntry", "id": id, "comment": comment.resultMap, "parentComment": parentComment.flatMap { (value: ParentComment) -> ResultMap in value.resultMap }, "childComments": childComments.map { (value: ChildComment) -> ResultMap in value.resultMap }])
+  }
+
+  public var __typename: String {
+    get {
+      return resultMap["__typename"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  public var id: GraphQLID {
+    get {
+      return resultMap["id"]! as! GraphQLID
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  public var comment: Comment {
+    get {
+      return Comment(unsafeResultMap: resultMap["comment"]! as! ResultMap)
+    }
+    set {
+      resultMap.updateValue(newValue.resultMap, forKey: "comment")
+    }
+  }
+
+  public var parentComment: ParentComment? {
+    get {
+      return (resultMap["parentComment"] as? ResultMap).flatMap { ParentComment(unsafeResultMap: $0) }
+    }
+    set {
+      resultMap.updateValue(newValue?.resultMap, forKey: "parentComment")
+    }
+  }
+
+  public var childComments: [ChildComment] {
+    get {
+      return (resultMap["childComments"] as! [ResultMap]).map { (value: ResultMap) -> ChildComment in ChildComment(unsafeResultMap: value) }
+    }
+    set {
+      resultMap.updateValue(newValue.map { (value: ChildComment) -> ResultMap in value.resultMap }, forKey: "childComments")
+    }
+  }
+
+  public struct Comment: GraphQLSelectionSet {
+    public static let possibleTypes = ["GeneralMessage"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLFragmentSpread(FullMessage.self),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    /// State
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    public var fragments: Fragments {
+      get {
+        return Fragments(unsafeResultMap: resultMap)
+      }
+      set {
+        resultMap += newValue.resultMap
+      }
+    }
+
+    public struct Fragments {
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var fullMessage: FullMessage {
+        get {
+          return FullMessage(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+    }
+  }
+
+  public struct ParentComment: GraphQLSelectionSet {
+    public static let possibleTypes = ["CommentEntry"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: GraphQLID) {
+      self.init(unsafeResultMap: ["__typename": "CommentEntry", "id": id])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+  }
+
+  public struct ChildComment: GraphQLSelectionSet {
+    public static let possibleTypes = ["CommentEntry"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: GraphQLID) {
+      self.init(unsafeResultMap: ["__typename": "CommentEntry", "id": id])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+  }
+}
+
 public struct CommunitySearch: GraphQLFragment {
   public static let fragmentDefinition =
     "fragment CommunitySearch on Organization {\n  __typename\n  id\n  superAccountId\n  name\n  photo\n  isMine\n  about\n  status\n  featured: alphaFeatured\n  membersCount\n}"
@@ -20208,7 +20701,7 @@ public struct ConferenceFull: GraphQLFragment {
 
 public struct TinyMessage: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}"
+    "fragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    commentsCount\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}"
 
   public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
 
@@ -20236,8 +20729,8 @@ public struct TinyMessage: GraphQLFragment {
     return TinyMessage(unsafeResultMap: ["__typename": "ServiceMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback])
   }
 
-  public static func makeGeneralMessage(id: GraphQLID, date: String, sender: AsGeneralMessage.Sender, message: String? = nil, fallback: String, attachments: [AsGeneralMessage.Attachment], quotedMessages: [AsGeneralMessage.QuotedMessage]) -> TinyMessage {
-    return TinyMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: AsGeneralMessage.QuotedMessage) -> ResultMap in value.resultMap }])
+  public static func makeGeneralMessage(id: GraphQLID, date: String, sender: AsGeneralMessage.Sender, message: String? = nil, fallback: String, commentsCount: Int, attachments: [AsGeneralMessage.Attachment], quotedMessages: [AsGeneralMessage.QuotedMessage]) -> TinyMessage {
+    return TinyMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "commentsCount": commentsCount, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: AsGeneralMessage.QuotedMessage) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -20371,6 +20864,7 @@ public struct TinyMessage: GraphQLFragment {
       GraphQLField("sender", type: .nonNull(.object(Sender.selections))),
       GraphQLField("message", type: .scalar(String.self)),
       GraphQLField("fallback", type: .nonNull(.scalar(String.self))),
+      GraphQLField("commentsCount", type: .nonNull(.scalar(Int.self))),
       GraphQLField("attachments", type: .nonNull(.list(.nonNull(.object(Attachment.selections))))),
       GraphQLField("quotedMessages", type: .nonNull(.list(.nonNull(.object(QuotedMessage.selections))))),
     ]
@@ -20381,8 +20875,8 @@ public struct TinyMessage: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, date: String, sender: Sender, message: String? = nil, fallback: String, attachments: [Attachment], quotedMessages: [QuotedMessage]) {
-      self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: QuotedMessage) -> ResultMap in value.resultMap }])
+    public init(id: GraphQLID, date: String, sender: Sender, message: String? = nil, fallback: String, commentsCount: Int, attachments: [Attachment], quotedMessages: [QuotedMessage]) {
+      self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "commentsCount": commentsCount, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: QuotedMessage) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -20438,6 +20932,15 @@ public struct TinyMessage: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "fallback")
+      }
+    }
+
+    public var commentsCount: Int {
+      get {
+        return resultMap["commentsCount"]! as! Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "commentsCount")
       }
     }
 
@@ -20754,7 +21257,7 @@ public struct TinyMessage: GraphQLFragment {
 
 public struct FullMessage: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}"
+    "fragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}"
 
   public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
 
@@ -20779,8 +21282,8 @@ public struct FullMessage: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public static func makeGeneralMessage(id: GraphQLID, date: String, sender: AsGeneralMessage.Sender, message: String? = nil, fallback: String, edited: Bool, attachments: [AsGeneralMessage.Attachment], quotedMessages: [AsGeneralMessage.QuotedMessage], reactions: [AsGeneralMessage.Reaction], spans: [AsGeneralMessage.Span]) -> FullMessage {
-    return FullMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "edited": edited, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: AsGeneralMessage.QuotedMessage) -> ResultMap in value.resultMap }, "reactions": reactions.map { (value: AsGeneralMessage.Reaction) -> ResultMap in value.resultMap }, "spans": spans.map { (value: AsGeneralMessage.Span) -> ResultMap in value.resultMap }])
+  public static func makeGeneralMessage(id: GraphQLID, date: String, sender: AsGeneralMessage.Sender, message: String? = nil, fallback: String, edited: Bool, commentsCount: Int, attachments: [AsGeneralMessage.Attachment], quotedMessages: [AsGeneralMessage.QuotedMessage], reactions: [AsGeneralMessage.Reaction], spans: [AsGeneralMessage.Span]) -> FullMessage {
+    return FullMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "edited": edited, "commentsCount": commentsCount, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: AsGeneralMessage.QuotedMessage) -> ResultMap in value.resultMap }, "reactions": reactions.map { (value: AsGeneralMessage.Reaction) -> ResultMap in value.resultMap }, "spans": spans.map { (value: AsGeneralMessage.Span) -> ResultMap in value.resultMap }])
   }
 
   public static func makeServiceMessage(id: GraphQLID, date: String, sender: AsServiceMessage.Sender, message: String? = nil, fallback: String, spans: [AsServiceMessage.Span], serviceMetadata: AsServiceMessage.ServiceMetadatum? = nil) -> FullMessage {
@@ -21631,6 +22134,7 @@ public struct FullMessage: GraphQLFragment {
       GraphQLField("message", type: .scalar(String.self)),
       GraphQLField("fallback", type: .nonNull(.scalar(String.self))),
       GraphQLField("edited", type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("commentsCount", type: .nonNull(.scalar(Int.self))),
       GraphQLField("attachments", type: .nonNull(.list(.nonNull(.object(Attachment.selections))))),
       GraphQLField("quotedMessages", type: .nonNull(.list(.nonNull(.object(QuotedMessage.selections))))),
       GraphQLField("reactions", type: .nonNull(.list(.nonNull(.object(Reaction.selections))))),
@@ -21643,8 +22147,8 @@ public struct FullMessage: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, date: String, sender: Sender, message: String? = nil, fallback: String, edited: Bool, attachments: [Attachment], quotedMessages: [QuotedMessage], reactions: [Reaction], spans: [Span]) {
-      self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "edited": edited, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: QuotedMessage) -> ResultMap in value.resultMap }, "reactions": reactions.map { (value: Reaction) -> ResultMap in value.resultMap }, "spans": spans.map { (value: Span) -> ResultMap in value.resultMap }])
+    public init(id: GraphQLID, date: String, sender: Sender, message: String? = nil, fallback: String, edited: Bool, commentsCount: Int, attachments: [Attachment], quotedMessages: [QuotedMessage], reactions: [Reaction], spans: [Span]) {
+      self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "edited": edited, "commentsCount": commentsCount, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: QuotedMessage) -> ResultMap in value.resultMap }, "reactions": reactions.map { (value: Reaction) -> ResultMap in value.resultMap }, "spans": spans.map { (value: Span) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -21709,6 +22213,15 @@ public struct FullMessage: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "edited")
+      }
+    }
+
+    public var commentsCount: Int {
+      get {
+        return resultMap["commentsCount"]! as! Int
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "commentsCount")
       }
     }
 
@@ -22573,8 +23086,8 @@ public struct FullMessage: GraphQLFragment {
         return QuotedMessage(unsafeResultMap: ["__typename": "ServiceMessage", "id": id, "date": date, "message": message, "sender": sender.resultMap, "fallback": fallback, "spans": spans.map { (value: Span) -> ResultMap in value.resultMap }])
       }
 
-      public static func makeGeneralMessage(id: GraphQLID, date: String, message: String? = nil, sender: AsGeneralMessage.Sender, fallback: String, spans: [AsGeneralMessage.Span], edited: Bool, attachments: [AsGeneralMessage.Attachment]) -> QuotedMessage {
-        return QuotedMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "message": message, "sender": sender.resultMap, "fallback": fallback, "spans": spans.map { (value: AsGeneralMessage.Span) -> ResultMap in value.resultMap }, "edited": edited, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }])
+      public static func makeGeneralMessage(id: GraphQLID, date: String, message: String? = nil, sender: AsGeneralMessage.Sender, fallback: String, spans: [AsGeneralMessage.Span], commentsCount: Int, edited: Bool, attachments: [AsGeneralMessage.Attachment]) -> QuotedMessage {
+        return QuotedMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "message": message, "sender": sender.resultMap, "fallback": fallback, "spans": spans.map { (value: AsGeneralMessage.Span) -> ResultMap in value.resultMap }, "commentsCount": commentsCount, "edited": edited, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }])
       }
 
       public var __typename: String {
@@ -23354,6 +23867,7 @@ public struct FullMessage: GraphQLFragment {
           GraphQLField("message", type: .scalar(String.self)),
           GraphQLField("fallback", type: .nonNull(.scalar(String.self))),
           GraphQLField("spans", type: .nonNull(.list(.nonNull(.object(Span.selections))))),
+          GraphQLField("commentsCount", type: .nonNull(.scalar(Int.self))),
           GraphQLField("edited", type: .nonNull(.scalar(Bool.self))),
           GraphQLField("attachments", type: .nonNull(.list(.nonNull(.object(Attachment.selections))))),
         ]
@@ -23364,8 +23878,8 @@ public struct FullMessage: GraphQLFragment {
           self.resultMap = unsafeResultMap
         }
 
-        public init(id: GraphQLID, date: String, message: String? = nil, sender: Sender, fallback: String, spans: [Span], edited: Bool, attachments: [Attachment]) {
-          self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "message": message, "sender": sender.resultMap, "fallback": fallback, "spans": spans.map { (value: Span) -> ResultMap in value.resultMap }, "edited": edited, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }])
+        public init(id: GraphQLID, date: String, message: String? = nil, sender: Sender, fallback: String, spans: [Span], commentsCount: Int, edited: Bool, attachments: [Attachment]) {
+          self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "message": message, "sender": sender.resultMap, "fallback": fallback, "spans": spans.map { (value: Span) -> ResultMap in value.resultMap }, "commentsCount": commentsCount, "edited": edited, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }])
         }
 
         public var __typename: String {
@@ -23430,6 +23944,15 @@ public struct FullMessage: GraphQLFragment {
           }
           set {
             resultMap.updateValue(newValue.map { (value: Span) -> ResultMap in value.resultMap }, forKey: "spans")
+          }
+        }
+
+        public var commentsCount: Int {
+          get {
+            return resultMap["commentsCount"]! as! Int
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "commentsCount")
           }
         }
 

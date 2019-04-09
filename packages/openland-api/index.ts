@@ -19,6 +19,7 @@ import * as Track from './queries/Track';
 import * as User from './queries/User';
 import * as AppChat from './fragments/AppChat';
 import * as AppFull from './fragments/AppFull';
+import * as Comment from './fragments/Comment';
 import * as CommunitySearch from './fragments/CommunitySearch';
 import * as ConferenceFull from './fragments/ConferenceFull';
 import * as Message from './fragments/Message';
@@ -107,6 +108,9 @@ export const RoomRenewInviteLinkMutation = typedMutation<Types.RoomRenewInviteLi
 export const RoomInviteLinkQuery = typedQuery<Types.RoomInviteLink, Types.RoomInviteLinkVariables>(Chats.RoomInviteLinkQuery);
 export const RoomInviteInfoQuery = typedQuery<Types.RoomInviteInfo, Types.RoomInviteInfoVariables>(Chats.RoomInviteInfoQuery);
 export const ResolvedInviteQuery = typedQuery<Types.ResolvedInvite, Types.ResolvedInviteVariables>(Chats.ResolvedInviteQuery);
+export const AddMessageCommentMutation = typedMutation<Types.AddMessageComment, Types.AddMessageCommentVariables>(Chats.AddMessageCommentMutation);
+export const EditCommentMutation = typedMutation<Types.EditComment, Types.EditCommentVariables>(Chats.EditCommentMutation);
+export const MessageCommentsQuery = typedQuery<Types.MessageComments, Types.MessageCommentsVariables>(Chats.MessageCommentsQuery);
 export const RoomUpdateMutation = typedMutation<Types.RoomUpdate, Types.RoomUpdateVariables>(Chats.RoomUpdateMutation);
 export const RoomDeleteMessageMutation = typedMutation<Types.RoomDeleteMessage, Types.RoomDeleteMessageVariables>(Chats.RoomDeleteMessageMutation);
 export const RoomDeleteMessagesMutation = typedMutation<Types.RoomDeleteMessages, Types.RoomDeleteMessagesVariables>(Chats.RoomDeleteMessagesMutation);
@@ -185,6 +189,7 @@ export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.Re
 export const DeleteUserMutation = typedMutation<Types.DeleteUser, Types.DeleteUserVariables>(User.DeleteUserMutation);
 export const AppChatFragment = typedFragment<Types.AppChat>(AppChat.AppChat);
 export const AppFullFragment = typedFragment<Types.AppFull>(AppFull.AppFull);
+export const CommentEntryFragmentFragment = typedFragment<Types.CommentEntryFragment>(Comment.CommentEntryFragment);
 export const CommunitySearchFragment = typedFragment<Types.CommunitySearch>(CommunitySearch.CommunitySearch);
 export const ConferenceFullFragment = typedFragment<Types.ConferenceFull>(ConferenceFull.ConferenceFull);
 export const TinyMessageFragment = typedFragment<Types.TinyMessage>(Message.TinyMessage);
