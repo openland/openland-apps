@@ -13,6 +13,7 @@ import { DefaultConversationTheme, ConversationTheme } from './themes/Conversati
 import { MessageComments_messageComments_comments } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
+import { MessageView } from 'openland-mobile/messenger/components/MessageView';
 
 interface MessageCommentsInnerProps {
     messageId: string;
@@ -85,7 +86,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             for (let comment of result) {
                 commentsElements.push(
                     <View key={comment.id} marginLeft={20 * getDepthOfComment(comment, commentsMap)}>
-                        <Text>{comment.comment.message}</Text>
+                        <MessageView message={comment} />
                     </View>
                 );
             }
