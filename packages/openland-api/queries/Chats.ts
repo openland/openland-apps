@@ -6,6 +6,7 @@ import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { TinyMessage, FullMessage } from 'openland-api/fragments/Message';
+import { CommentEntryFragment } from 'openland-api/fragments/Comment';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -718,13 +719,11 @@ export const MessageCommentsQuery = gql`
             }
             count
             comments {
-                id
-                comment {
-                    ...FullMessage
-                }
+                ...CommentEntryFragment
             }
         }
     }
+    ${CommentEntryFragment}
     ${FullMessage}
 `;
 

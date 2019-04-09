@@ -4097,6 +4097,15 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if name == "CommentEntryFragment" {
+      let data = CommentEntryFragment(unsafeResultMap: self.convertData(src: data))
+      let key = data.id + ":" + data.__typename
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(object: data, withKey: key)
+        handler(nil, nil)
+      }
+      return
+    }
     if name == "CommunitySearch" {
       let data = CommunitySearch(unsafeResultMap: self.convertData(src: data))
       let key = data.id + ":" + data.__typename

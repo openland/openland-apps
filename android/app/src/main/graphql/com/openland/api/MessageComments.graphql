@@ -3,11 +3,7 @@ query MessageComments($messageId: ID!) {
     __typename
     comments {
       __typename
-      comment {
-        __typename
-        ...FullMessage
-      }
-      id
+      ...CommentEntryFragment
     }
     count
     id

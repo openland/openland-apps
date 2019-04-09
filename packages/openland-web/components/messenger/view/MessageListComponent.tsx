@@ -4,7 +4,6 @@ import { MessageComponent } from '../message/MessageComponent';
 import { XScrollViewReversed, XScrollViewReversedInner } from 'openland-x/XScrollViewReversed';
 import {
     ConversationEngine,
-    DataSourceMessageItem,
     DataSourceDateItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { Loader } from 'openland-x/XButton';
@@ -17,7 +16,10 @@ import { DataSourceRender } from './DataSourceRender';
 import glamorous from 'glamorous';
 import { getMessagesWrapperClassName } from './MessagesContainer';
 import { DataSource } from 'openland-y-utils/DataSource';
-import { DataSourceWebMessageItem, buildMessagesDataSource } from '../data/WebMessageItemDataSource';
+import {
+    DataSourceWebMessageItem,
+    buildMessagesDataSource,
+} from '../data/WebMessageItemDataSource';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -59,6 +61,7 @@ const MessagesWrapperEmpty = (props: { children?: any }) => (
 );
 
 interface MessageListProps {
+    isChannel: boolean;
     conversation: ConversationEngine;
     conversationType?: SharedRoomKind | 'PRIVATE';
     inputShower?: (show: boolean) => void;
@@ -100,7 +103,7 @@ const LoadingWrapper = glamorous.div({
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
     private scroller = React.createRef<XScrollViewReversedInner>();
     unshifted = false;
-    private dataSource: DataSource<DataSourceWebMessageItem | DataSourceDateItem>
+    private dataSource: DataSource<DataSourceWebMessageItem | DataSourceDateItem>;
 
     constructor(props: MessageListProps) {
         super(props);
@@ -156,6 +159,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                 <MessageComponent
                     key={i.key}
                     message={i}
+                    isChannel={this.props.isChannel}
                     conversation={this.props.conversation}
                     editPostHandler={this.props.editPostHandler}
                     me={this.props.me}

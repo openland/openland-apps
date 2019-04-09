@@ -298,6 +298,11 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             return null;
         }
 
+        const isChannel =
+            this.props.room &&
+            this.props.room.__typename === 'SharedRoom' &&
+            this.props.room.isChannel;
+
         return (
             <XView flexDirection="column" flexGrow={1} flexShrink={1}>
                 {this.props.pinMessage && (
@@ -308,6 +313,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     />
                 )}
                 <ConversationMessagesComponent
+                    isChannel={isChannel}
                     isActive={this.props.isActive}
                     ref={this.messagesList}
                     key={this.props.conversationId}

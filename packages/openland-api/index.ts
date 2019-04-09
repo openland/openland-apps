@@ -19,6 +19,7 @@ import * as Track from './queries/Track';
 import * as User from './queries/User';
 import * as AppChat from './fragments/AppChat';
 import * as AppFull from './fragments/AppFull';
+import * as Comment from './fragments/Comment';
 import * as CommunitySearch from './fragments/CommunitySearch';
 import * as ConferenceFull from './fragments/ConferenceFull';
 import * as Message from './fragments/Message';
@@ -188,6 +189,7 @@ export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.Re
 export const DeleteUserMutation = typedMutation<Types.DeleteUser, Types.DeleteUserVariables>(User.DeleteUserMutation);
 export const AppChatFragment = typedFragment<Types.AppChat>(AppChat.AppChat);
 export const AppFullFragment = typedFragment<Types.AppFull>(AppFull.AppFull);
+export const CommentEntryFragmentFragment = typedFragment<Types.CommentEntryFragment>(Comment.CommentEntryFragment);
 export const CommunitySearchFragment = typedFragment<Types.CommunitySearch>(CommunitySearch.CommunitySearch);
 export const ConferenceFullFragment = typedFragment<Types.ConferenceFull>(ConferenceFull.ConferenceFull);
 export const TinyMessageFragment = typedFragment<Types.TinyMessage>(Message.TinyMessage);

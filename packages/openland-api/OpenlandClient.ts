@@ -934,6 +934,9 @@ export class OpenlandClient extends BaseApiClient {
     writeAppFull(data: Types.AppFull) {
       return this.client.writeFragment(data, Source.AppFullFragment);
     }
+    writeCommentEntryFragment(data: Types.CommentEntryFragment) {
+      return this.client.writeFragment(data, Source.CommentEntryFragmentFragment);
+    }
     writeCommunitySearch(data: Types.CommunitySearch) {
       return this.client.writeFragment(data, Source.CommunitySearchFragment);
     }

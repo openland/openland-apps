@@ -1,0 +1,17 @@
+fragment CommentEntryFragment on CommentEntry {
+  __typename
+  childComments {
+    __typename
+    id
+  }
+  comment {
+    __typename
+    id
+    ...FullMessage
+  }
+  id
+  parentComment {
+    __typename
+    id
+  }
+}

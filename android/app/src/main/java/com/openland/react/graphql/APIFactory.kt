@@ -2325,6 +2325,10 @@ fun readFragment(name: String, src: ReadableMap): Pair<String, GraphqlFragment> 
         val res = AppFull.Mapper().map(responseReader(src))
         return (res.__typename() + "$" + res.id()) to res
     }
+    if (name == "CommentEntryFragment") {
+        val res = CommentEntryFragment.Mapper().map(responseReader(src))
+        return (res.__typename() + "$" + res.id()) to res
+    }
     if (name == "CommunitySearch") {
         val res = CommunitySearch.Mapper().map(responseReader(src))
         return (res.__typename() + "$" + res.id()) to res

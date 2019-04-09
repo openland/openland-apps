@@ -10,9 +10,7 @@ import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageVideoComponent } from './content/MessageVideoComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
-import {
-    ConversationEngine,
-} from 'openland-engines/messenger/ConversationEngine';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
 import {
     UserShort,

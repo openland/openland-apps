@@ -16,6 +16,7 @@ import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/
 import { useMentions } from 'openland-web/fragments/MessageComposeComponent/useMentions';
 import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { formatTime } from 'openland-mobile/utils/formatTime';
 
 type CommentsInputProps = {
     onSend?: (text: string, mentions: UserShort[] | null) => void;
@@ -86,12 +87,20 @@ const CommentsInner = () => {
         messageId: curMesssageId,
     });
 
-    const addComment = async ({ messageId, message }: { messageId: string; message: string }) => {
+    const addComment = async ({
+        messageId,
+        message,
+        replyComment,
+    }: {
+        messageId: string;
+        message: string;
+        replyComment: string | null;
+    }) => {
         try {
             await client.mutateAddMessageComment({
                 messageId,
                 message,
-                replyComment: null,
+                replyComment,
             });
 
             await client.refetchMessageComments({
@@ -102,48 +111,108 @@ const CommentsInner = () => {
         }
     };
 
+    const commentsMap = {};
+
+    messageComments.messageComments.comments.forEach(comment => {
+        commentsMap[comment.id] = comment;
+    });
+
+    function getDepthOfComment(comment: any) {
+        let currentComment = comment;
+        let currentDepth = 0;
+        while (!!currentComment) {
+            if (currentComment.parentComment) {
+                currentComment = commentsMap[currentComment.parentComment.id];
+            } else {
+                currentComment = null;
+            }
+
+            currentDepth++;
+        }
+
+        return currentDepth;
+    }
+
+    const commentsElements = [];
+
+    function topologicalSortHelper(node: any, explored: any, s: any) {
+        explored.add(node.id);
+        // Marks this node as visited and goes on to the nodes
+        // that are dependent on this node, the edge is node ----> n
+
+        if (!!node.parentComment && !explored.has(node.parentComment.id)) {
+            topologicalSortHelper(node.parentComment, explored, s);
+        }
+
+        // All dependencies are resolved for this node, we can now add
+        // This to the stack.
+        s.push(commentsMap[node.id]);
+    }
+
+    function topologicalSort(nodes: any[]) {
+        // let res = [];
+        // Create a Stack to keep track of all elements in sorted order
+        let s: any[] = [];
+        let explored = new Set();
+
+        // For every unvisited node in our graph, call the helper.
+        nodes.forEach(node => {
+            if (!explored.has(node.id)) {
+                topologicalSortHelper(node, explored, s);
+            }
+        });
+
+        return s;
+    }
+
+    const result = topologicalSort(messageComments.messageComments.comments);
+
+    let i = 0;
+    for (let item of result) {
+        console.log(getDepthOfComment(item));
+        commentsElements.push(
+            <XView key={item.id} marginLeft={10 * getDepthOfComment(item)}>
+                {item.comment.message}
+                <XView width={500}>
+                    <XButton
+                        size="default"
+                        text="Reply"
+                        onClick={() => {
+                            setShowInputId(item.comment.id);
+                        }}
+                    />
+                    {showInputId === item.comment.id && (
+                        <CommentsInput
+                            onSend={msgToSend => {
+                                addComment({
+                                    messageId: curMesssageId,
+                                    message: msgToSend,
+                                    replyComment: item.comment.id,
+                                });
+                                setShowInputId(null);
+                            }}
+                        />
+                    )}
+                </XView>
+            </XView>,
+        );
+        i++;
+    }
+
     return (
         <XView flexDirection="row" marginBottom={16}>
             <XView flexGrow={1} paddingLeft={16}>
                 <XView>count: {messageComments.messageComments.count}</XView>
-                <XView>
-                    {messageComments.messageComments.comments
-                        .slice(
-                            messageComments.messageComments.comments.length - 3,
-                            messageComments.messageComments.comments.length,
-                        )
-                        .map((item, key) => {
-                            return (
-                                <XView key={key}>
-                                    {item.comment.message}
-                                    <XView width={400}>
-                                        <XButton
-                                            size="default"
-                                            text="Reply"
-                                            onClick={() => {
-                                                setShowInputId(item.comment.id);
-                                            }}
-                                        />
-                                        {showInputId === item.comment.id && (
-                                            <CommentsInput
-                                                onSend={msgToSend => {
-                                                    addComment({
-                                                        messageId: item.comment.id,
-                                                        message: msgToSend,
-                                                    });
-                                                }}
-                                            />
-                                        )}
-                                    </XView>
-                                </XView>
-                            );
-                        })}
-                </XView>
-                <XView width={400}>
+                <XView>{commentsElements}</XView>
+                <XView width={500}>
                     Add root Comment
                     <CommentsInput
                         onSend={msgToSend => {
-                            addComment({ messageId: curMesssageId, message: msgToSend });
+                            addComment({
+                                messageId: curMesssageId,
+                                message: msgToSend,
+                                replyComment: null,
+                            });
                             setShowInputId(null);
                         }}
                     />
