@@ -5,6 +5,7 @@ import { MobileMessageComponentInner } from './MessageMobileComponent';
 import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDesktopComponent';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
+import { useClient } from 'openland-web/utils/useClient';
 
 const MessageComponentInner = React.memo(
     (
@@ -14,6 +15,12 @@ const MessageComponentInner = React.memo(
             messagesContextProps: MessagesStateContextProps;
         },
     ) => {
+        const client = useClient();
+
+        const commentsCount = client.useMessageCommentsCount({
+            messageId: props.message.id!!,
+        });
+
         return props.isMobile ? (
             <MobileMessageComponentInner
                 message={props.message}
@@ -33,9 +40,13 @@ const MessageComponentInner = React.memo(
                     messagesContext={props.messagesContextProps}
                 />
                 {props.isChannel && !props.message.isService && (
-                    <XView width={100}>
+                    <XView width={150}>
                         <XButton
-                            text="Discuss"
+                            text={
+                                !commentsCount.messageComments.count
+                                    ? `Discuss`
+                                    : `${commentsCount.messageComments.count} Comments`
+                            }
                             size="default"
                             query={{ field: 'comments', value: props.message.id }}
                         />

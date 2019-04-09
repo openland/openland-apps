@@ -10115,6 +10115,85 @@ public final class MessageCommentsQuery: GraphQLQuery {
   }
 }
 
+public final class MessageCommentsCountQuery: GraphQLQuery {
+  public let operationDefinition =
+    "query MessageCommentsCount($messageId: ID!) {\n  messageComments(messageId: $messageId) {\n    __typename\n    count\n  }\n}"
+
+  public var messageId: GraphQLID
+
+  public init(messageId: GraphQLID) {
+    self.messageId = messageId
+  }
+
+  public var variables: GraphQLMap? {
+    return ["messageId": messageId]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("messageComments", arguments: ["messageId": GraphQLVariable("messageId")], type: .nonNull(.object(MessageComment.selections))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(messageComments: MessageComment) {
+      self.init(unsafeResultMap: ["__typename": "Query", "messageComments": messageComments.resultMap])
+    }
+
+    public var messageComments: MessageComment {
+      get {
+        return MessageComment(unsafeResultMap: resultMap["messageComments"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "messageComments")
+      }
+    }
+
+    public struct MessageComment: GraphQLSelectionSet {
+      public static let possibleTypes = ["CommentsPeer"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("count", type: .nonNull(.scalar(Int.self))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(count: Int) {
+        self.init(unsafeResultMap: ["__typename": "CommentsPeer", "count": count])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var count: Int {
+        get {
+          return resultMap["count"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "count")
+        }
+      }
+    }
+  }
+}
+
 public final class RoomUpdateMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {\n  betaRoomUpdate(roomId: $roomId, input: $input) {\n    __typename\n    ... on PrivateRoom {\n      id\n    }\n    ... on SharedRoom {\n      id\n      title\n      photo\n      description\n    }\n  }\n}"
