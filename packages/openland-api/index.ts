@@ -120,6 +120,7 @@ export const RoomEditMessageMutation = typedMutation<Types.RoomEditMessage, Type
 export const MarkSequenceReadMutation = typedMutation<Types.MarkSequenceRead, Types.MarkSequenceReadVariables>(Chats.MarkSequenceReadMutation);
 export const TypingsWatchSubscription = typedSubscription<Types.TypingsWatch, {}>(Chats.TypingsWatchSubscription);
 export const UpdateWelcomeMessageMutation = typedMutation<Types.UpdateWelcomeMessage, Types.UpdateWelcomeMessageVariables>(Chats.UpdateWelcomeMessageMutation);
+export const MessageQuery = typedQuery<Types.Message, Types.MessageVariables>(Chats.MessageQuery);
 export const ConferenceQuery = typedQuery<Types.Conference, Types.ConferenceVariables>(Conferences.ConferenceQuery);
 export const ConferenceMediaQuery = typedQuery<Types.ConferenceMedia, Types.ConferenceMediaVariables>(Conferences.ConferenceMediaQuery);
 export const ConferenceJoinMutation = typedMutation<Types.ConferenceJoin, Types.ConferenceJoinVariables>(Conferences.ConferenceJoinMutation);

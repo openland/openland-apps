@@ -11117,6 +11117,100 @@ public final class UpdateWelcomeMessageMutation: GraphQLMutation {
   }
 }
 
+public final class MessageQuery: GraphQLQuery {
+  public let operationDefinition =
+    "query Message($messageId: ID!) {\n  message(messageId: $messageId) {\n    __typename\n    ...FullMessage\n  }\n}"
+
+  public var queryDocument: String { return operationDefinition.appending(FullMessage.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+
+  public var messageId: GraphQLID
+
+  public init(messageId: GraphQLID) {
+    self.messageId = messageId
+  }
+
+  public var variables: GraphQLMap? {
+    return ["messageId": messageId]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("message", arguments: ["messageId": GraphQLVariable("messageId")], type: .object(Message.selections)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(message: Message? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "message": message.flatMap { (value: Message) -> ResultMap in value.resultMap }])
+    }
+
+    public var message: Message? {
+      get {
+        return (resultMap["message"] as? ResultMap).flatMap { Message(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "message")
+      }
+    }
+
+    public struct Message: GraphQLSelectionSet {
+      public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(FullMessage.self),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var fullMessage: FullMessage {
+          get {
+            return FullMessage(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class ConferenceQuery: GraphQLQuery {
   public let operationDefinition =
     "query Conference($id: ID!) {\n  conference(id: $id) {\n    __typename\n    ...ConferenceFull\n  }\n}"

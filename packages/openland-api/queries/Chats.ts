@@ -856,3 +856,12 @@ export const UpdateWelcomeMessageMutation = gql`
         )
     }
 `;
+
+export const MessageQuery = gql`
+    query Message($messageId: ID!) {
+        message(messageId: $messageId) {
+            ...FullMessage
+        }
+    }
+    ${FullMessage}
+`;

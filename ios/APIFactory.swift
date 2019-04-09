@@ -375,6 +375,20 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "Message") {
+      let messageId = notNull(readString(src, "messageId"))
+      let requestBody = MessageQuery(messageId: messageId)
+      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "Conference") {
       let id = notNull(readString(src, "id"))
       let requestBody = ConferenceQuery(id: id)
@@ -1095,6 +1109,20 @@ class ApiFactory: ApiFactoryBase {
     if (name == "MessageComments") {
       let messageId = notNull(readString(src, "messageId"))
       let requestBody = MessageCommentsQuery(messageId: messageId)
+      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
+    if (name == "Message") {
+      let messageId = notNull(readString(src, "messageId"))
+      let requestBody = MessageQuery(messageId: messageId)
       let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -3373,6 +3401,14 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "Message") {
+      let messageId = notNull(readString(src, "messageId"))
+      let requestBody = MessageQuery(messageId: messageId)
+      store.withinReadTransaction { (tx) in
+        handler((try tx.read(query: requestBody)).resultMap, nil)
+      }
+      return
+    }
     if (name == "Conference") {
       let id = notNull(readString(src, "id"))
       let requestBody = ConferenceQuery(id: id)
@@ -3840,6 +3876,16 @@ class ApiFactory: ApiFactoryBase {
       let messageId = notNull(readString(src, "messageId"))
       let requestBody = MessageCommentsQuery(messageId: messageId)
       let data = MessageCommentsQuery.Data(unsafeResultMap: self.convertData(src: data))
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(data: data, forQuery: requestBody)
+        handler(nil, nil)
+      }
+      return
+    }
+    if (name == "Message") {
+      let messageId = notNull(readString(src, "messageId"))
+      let requestBody = MessageQuery(messageId: messageId)
+      let data = MessageQuery.Data(unsafeResultMap: self.convertData(src: data))
       store.withinReadWriteTransaction { (tx) in
         try tx.write(data: data, forQuery: requestBody)
         handler(nil, nil)
