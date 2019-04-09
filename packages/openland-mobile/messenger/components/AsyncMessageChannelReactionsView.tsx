@@ -12,7 +12,7 @@ interface AsyncMessageChannelReactionsViewProps {
     message: DataSourceMessageItem;
     theme: AppTheme;
     onReactionPress: (message: DataSourceMessageItem, r: string) => void;
-    onCommentsPress: () => void;
+    onCommentsPress: (message: DataSourceMessageItem) => void;
 }
 
 export const AsyncMessageChannelReactionsView = React.memo<AsyncMessageChannelReactionsViewProps>((props) => {
@@ -38,7 +38,7 @@ export const AsyncMessageChannelReactionsView = React.memo<AsyncMessageChannelRe
     return (
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={38} backgroundColor={theme.backgroundColor} >
             <ASFlex flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 14 : 0} marginLeft={props.message.isOut ? 0 : 56} marginTop={4} marginBottom={6}>
-                <ASFlex backgroundColor="rgba(0, 132, 254, 0.1)" borderRadius={14} onPress={props.onCommentsPress}>
+                <ASFlex backgroundColor="rgba(0, 132, 254, 0.1)" borderRadius={14} onPress={() => props.onCommentsPress(message)}>
                     <ASFlex marginLeft={7} marginRight={7} height={28} alignItems="center" justifyContent="center">
                         {commentsCount <= 0 && <ASImage source={require('assets/ic-comments-24.png')} width={24} height={24} />}
                         {commentsCount > 0 && <ASImage source={require('assets/ic-comments-full-24.png')} width={24} height={24} />}

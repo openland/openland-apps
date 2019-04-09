@@ -24,11 +24,10 @@ export interface AsyncMessageViewProps {
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onReactionPress: (message: DataSourceMessageItem, r: string) => void;
+    onCommentsPress: (message: DataSourceMessageItem) => void;
     navigationManager: NavigationManager;
 
     inChannel?: boolean;
-    router?: SRouter;
-    roomId: string;
 }
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
@@ -40,14 +39,6 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
     let handleLongPress = () => {
         props.onMessageLongPress(props.message);
-    }
-    let handleCommentsPress = () => {
-        if (props.router) {
-            props.router.push('MessageComments', {
-                message: props.message,
-                id: props.roomId
-            })
-        }
     }
 
     let res;
@@ -102,9 +93,8 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-right" backgroundColor={theme.backgroundColor} width={4} />
                 </ASFlex>
 
-                {props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
-                {/* {!props.inChannel && props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
-                {props.inChannel && <AsyncMessageChannelReactionsView theme={theme} message={props.message} onReactionPress={props.onReactionPress} onCommentsPress={handleCommentsPress} />} */}
+                {!props.inChannel && props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
+                {props.inChannel && <AsyncMessageChannelReactionsView theme={theme} message={props.message} onReactionPress={props.onReactionPress} onCommentsPress={props.onCommentsPress} />}
 
                 <ASFlex backgroundColor={theme.backgroundColor} height={50} marginBottom={-50} />
             </ASFlex>

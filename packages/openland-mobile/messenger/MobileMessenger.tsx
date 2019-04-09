@@ -26,6 +26,7 @@ export class MobileMessenger {
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
+    private currentConvId: string;
 
     constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
@@ -35,9 +36,12 @@ export class MobileMessenger {
                 <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
             );
         });
+        this.currentConvId = '';
     }
 
-    getConversation(id: string, isChannel?: boolean, router?: SRouter) {
+    getConversation(id: string) {
+        this.currentConvId = id;
+
         if (!this.conversations.has(id)) {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
@@ -45,7 +49,7 @@ export class MobileMessenger {
                     if (item.serviceMetaData || item.isService) {
                         return (<ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} />);
                     } else {
-                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} inChannel={isChannel} router={router} roomId={id} />);
+                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} inChannel={eng.isChannel} />);
                     }
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
@@ -77,6 +81,12 @@ export class MobileMessenger {
                 }
             } : {}
         });
+    }
+
+    handleCommentsClick = (message: DataSourceMessageItem) => {
+        if (this.currentConvId !== '') {
+            this.history.navigationManager.push('MessageComments', { id: this.currentConvId, message });
+        }
     }
 
     handleDocumentClick = (document: DataSourceMessageItem) => {
