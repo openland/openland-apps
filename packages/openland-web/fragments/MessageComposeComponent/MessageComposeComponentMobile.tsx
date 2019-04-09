@@ -19,6 +19,7 @@ export const MobileMessageCompose = (messageComposeProps: MessageComposeComponen
     const { handleSend } = useHandleSend({
         conversationId: messageComposeProps.conversationId,
         onSend: messageComposeProps.onSend,
+        onSendFile: messageComposeProps.onSendFile,
         inputValue,
         setInputValue,
         inputRef,

@@ -34,7 +34,6 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { SDevice } from 'react-native-s/SDevice';
 import { ChannelMuteButton } from './components/ChannelMuteButton';
 
 interface ConversationRootProps extends PageProps {
@@ -354,7 +353,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     text={this.state.text}
                                     theme={this.state.theme}
                                     topContent={mentions}
-                                    placeholder={sharedRoom && sharedRoom.canSendMessage ? 'Broadcast something...' : 'Message...'}
+                                    placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message...'}
                                 />
                             )}
                             {!showInputBar && sharedRoom && <ChannelMuteButton id={sharedRoom.id} mute={!!sharedRoom.settings.mute} />}

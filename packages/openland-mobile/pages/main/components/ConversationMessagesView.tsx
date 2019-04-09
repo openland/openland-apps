@@ -6,12 +6,13 @@ import { Platform, View } from 'react-native';
 import { androidMessageInputListOverlap } from './ConversationView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { SRouter } from 'react-native-s/SRouter';
 
 export interface ConversationMessagesViewProps {
     loaded: boolean;
     engine: ConversationEngine;
     paddingBottom?: number;
-    inverted: boolean
+    inverted: boolean;
 }
 
 export const ConversationMessagesView = React.memo<ConversationMessagesViewProps>((props) => {

@@ -8,24 +8,25 @@ import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Platform, View, Text, TouchableOpacity, Image } from 'react-native';
+import { Clipboard, Platform, View, TouchableOpacity, Image } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { Prompt } from '../components/Prompt';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
-import { ThemeProvider, useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, SharedRoomMembershipStatus, RoomMemberRole } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
 import { reactionsImagesMap, defaultReactions, reactionMap } from './components/AsyncMessageReactionsView';
+import { SRouter } from 'react-native-s/SRouter';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
+    private currentConvId: string;
 
     constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
@@ -35,9 +36,12 @@ export class MobileMessenger {
                 <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
             );
         });
+        this.currentConvId = '';
     }
 
     getConversation(id: string) {
+        this.currentConvId = id;
+
         if (!this.conversations.has(id)) {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
@@ -45,7 +49,7 @@ export class MobileMessenger {
                     if (item.serviceMetaData || item.isService) {
                         return (<ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} />);
                     } else {
-                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} />);
+                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} />);
                     }
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
@@ -79,6 +83,12 @@ export class MobileMessenger {
         });
     }
 
+    handleCommentsClick = (message: DataSourceMessageItem) => {
+        if (this.currentConvId !== '') {
+            this.history.navigationManager.push('MessageComments', { id: this.currentConvId, message });
+        }
+    }
+
     handleDocumentClick = (document: DataSourceMessageItem) => {
         let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         // { config: { uuid, name, size }
@@ -92,7 +102,7 @@ export class MobileMessenger {
         this.history.navigationManager.push('ProfileUser', { id });
     }
 
-    private handleReactionSetUnset = async (message: DataSourceMessageItem, r: string) => {
+    private handleReactionSetUnset = (message: DataSourceMessageItem, r: string) => {
         startLoader();
         try {
             let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;

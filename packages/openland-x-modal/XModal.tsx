@@ -153,7 +153,6 @@ const XModalCloserStyles = Glamorous(XLink)({
     borderRadius: 50,
     border: '1px solid transparent',
     marginLeft: 'auto',
-    marginTop: -2,
     '& > svg > g > path:last-child': {
         fill: 'rgba(0, 0, 0, 0.3)',
     },

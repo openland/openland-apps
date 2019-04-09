@@ -108,7 +108,8 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                             fontSize={12}
                             color="rgba(0, 0, 0, 0.5)"
                             marginLeft={16}
-                            marginBottom={8}
+                            marginBottom={3}
+                            marginTop={5}
                         >
                             Anyone can use this link to join Openland
                         </XView>

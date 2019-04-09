@@ -9,6 +9,7 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { ConversationTheme } from '../themes/ConversationThemeResolver';
 import { trackEvent } from 'openland-mobile/analytics';
+import { SRouter } from 'react-native-s/SRouter';
 
 export interface MessagesListProps {
     engine: ConversationEngine;

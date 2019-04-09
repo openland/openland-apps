@@ -74,7 +74,7 @@ export const IsActiveContext = React.createContext<boolean | null>(null);
 
 class ShouldUpdateComponent extends React.Component<ShouldUpdateComponentT> {
     shouldComponentUpdate(props: any) {
-        return this.props.isActive && props.isActive;
+        return this.props.isActive !== props.isActive;
     }
     render() {
         return (
