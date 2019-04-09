@@ -38,7 +38,15 @@ const trackLaunch = async () => {
             trackEvent('launch_first_time');
         }
 
-        trackEvent('session_start');
+        const firstSessionLaunch = await sessionStorage.getItem('openland-first-session-launch');
+
+        if (!firstSessionLaunch) {
+            const currentDate = new Date();
+
+            await sessionStorage.setItem('openland-first-session-launch', currentDate.getTime().toString());
+
+            trackEvent('session_start');
+        }
     }
 }
 
