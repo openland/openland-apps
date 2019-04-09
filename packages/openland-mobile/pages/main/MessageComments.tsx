@@ -3,19 +3,15 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { Dimensions, View, TouchableOpacity, Text, TextStyle } from 'react-native';
+import { Dimensions, View, Text, TextStyle, TouchableWithoutFeedback } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { extractContent } from 'openland-mobile/messenger/components/AsyncMessageContentView';
-import { ASFlex } from 'react-native-async-view/ASFlex';
 import { formatDate } from 'openland-mobile/utils/formatDate';
-import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
-import { ASText } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { ASView } from 'react-native-async-view/ASView';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 
 const MessageCommentsComponent = XMemo<PageProps>((props) => {
@@ -44,7 +40,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
             <SDeferred>
                 <ASSafeAreaView>
                     <View flexGrow={1} flexDirection="column" alignItems="stretch" marginLeft={8} marginRight={8}>
-                        <TouchableOpacity onPress={() => messenger.handleAvatarClick(message.senderId)}>
+                        <TouchableWithoutFeedback onPress={() => messenger.handleAvatarClick(message.senderId)}>
                             <View alignItems="stretch" marginTop={15} marginBottom={15} flexDirection="row">
                                 <View marginRight={15}>
                                     <ZAvatar
@@ -64,7 +60,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
                                     <Text style={{ fontSize: 14, marginTop: 5, color: '#99a2b0' }}>{formatDate(message.date)}</Text>
                                 </View>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableWithoutFeedback>
 
                         {topContent}
                     </View>
