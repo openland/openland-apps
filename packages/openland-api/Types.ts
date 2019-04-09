@@ -20160,27 +20160,6 @@ export interface MessageCommentsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: MessageCommentsCount
-// ====================================================
-
-export interface MessageCommentsCount_messageComments {
-  __typename: "CommentsPeer";
-  count: number;
-}
-
-export interface MessageCommentsCount {
-  messageComments: MessageCommentsCount_messageComments;
-}
-
-export interface MessageCommentsCountVariables {
-  messageId: string;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: RoomUpdate
 // ====================================================
 

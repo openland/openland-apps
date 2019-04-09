@@ -331,18 +331,6 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMessageComments(variables: Types.MessageCommentsVariables): Types.MessageComments | null {
         return this.useQuery(Source.MessageCommentsQuery, variables);
     }
-    async queryMessageCommentsCount(variables: Types.MessageCommentsCountVariables, opts?: OperationParameters): Promise<Types.MessageCommentsCount> {
-        return this.client.query(Source.MessageCommentsCountQuery, variables, opts);
-    }
-    async refetchMessageCommentsCount(variables: Types.MessageCommentsCountVariables): Promise<Types.MessageCommentsCount> {
-        return this.refetch(Source.MessageCommentsCountQuery, variables);
-    }
-    useMessageCommentsCount(variables: Types.MessageCommentsCountVariables, opts?: QueryWatchParameters): Types.MessageCommentsCount {
-        return this.useQuerySuspense(Source.MessageCommentsCountQuery, variables, opts);
-    }
-    useWithoutLoaderMessageCommentsCount(variables: Types.MessageCommentsCountVariables): Types.MessageCommentsCount | null {
-        return this.useQuery(Source.MessageCommentsCountQuery, variables);
-    }
     async queryConference(variables: Types.ConferenceVariables, opts?: OperationParameters): Promise<Types.Conference> {
         return this.client.query(Source.ConferenceQuery, variables, opts);
     }

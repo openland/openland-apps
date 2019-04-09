@@ -68,7 +68,7 @@ export const DumpSendMessage = ({
                         handleDrop={handleDrop}
                     />
                     <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
-                        {/* <AttachmentButtons enabled={enabled} /> */}
+                        <AttachmentButtons enabled={enabled} />
 
                         <XButton
                             text="Send"

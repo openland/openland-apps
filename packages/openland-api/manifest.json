@@ -527,13 +527,6 @@
       }
     },
     {
-      "signature": "378b454df5c2db7fbbdc52ee18398bafe6a8849f33f33f1a729b348fcc0bf188",
-      "document": "query MessageCommentsCount($messageId:ID!){messageComments(messageId:$messageId){__typename count}}",
-      "metadata": {
-        "engineSignature": "query MessageCommentsCount($messageId:ID!){messageComments(messageId:$messageId){__typename count}}"
-      }
-    },
-    {
       "signature": "5e164fc8a53d72890564c00a77e8744b7ff43c22c0edd55efc22e87c677ad0b7",
       "document": "mutation RoomUpdate($input:RoomUpdateInput!,$roomId:ID!){betaRoomUpdate(input:$input,roomId:$roomId){__typename...on PrivateRoom{id}...on SharedRoom{description id photo title}}}",
       "metadata": {

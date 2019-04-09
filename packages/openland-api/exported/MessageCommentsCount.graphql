@@ -1,6 +1,0 @@
-query MessageCommentsCount($messageId: ID!) {
-  messageComments(messageId: $messageId) {
-    __typename
-    count
-  }
-}

@@ -1584,11 +1584,6 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        builder.messageId(notNull(readString(src, "messageId")))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
-    if (name == "MessageCommentsCount") {
-       val builder = MessageCommentsCountQuery.builder()
-       builder.messageId(notNull(readString(src, "messageId")))
-       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
-    }
     if (name == "Conference") {
        val builder = ConferenceQuery.builder()
        builder.id(notNull(readString(src, "id")))

@@ -5702,60 +5702,6 @@
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
-			"operationName": "MessageCommentsCount",
-			"operationType": "query",
-			"rootType": "Query",
-			"variables": [
-				{
-					"name": "messageId",
-					"type": "ID!"
-				}
-			],
-			"source": "query MessageCommentsCount($messageId: ID!) {\n  messageComments(messageId: $messageId) {\n    __typename\n    count\n  }\n}",
-			"fields": [
-				{
-					"responseName": "messageComments",
-					"fieldName": "messageComments",
-					"type": "CommentsPeer!",
-					"args": [
-						{
-							"name": "messageId",
-							"value": {
-								"kind": "Variable",
-								"variableName": "messageId"
-							},
-							"type": "ID!"
-						}
-					],
-					"isConditional": false,
-					"isDeprecated": false,
-					"fields": [
-						{
-							"responseName": "__typename",
-							"fieldName": "__typename",
-							"type": "String!",
-							"isConditional": false
-						},
-						{
-							"responseName": "count",
-							"fieldName": "count",
-							"type": "Int!",
-							"isConditional": false,
-							"isDeprecated": false
-						}
-					],
-					"fragmentSpreads": [],
-					"inlineFragments": []
-				}
-			],
-			"fragmentSpreads": [],
-			"inlineFragments": [],
-			"fragmentsReferenced": [],
-			"sourceWithFragments": "query MessageCommentsCount($messageId: ID!) {\n  messageComments(messageId: $messageId) {\n    __typename\n    count\n  }\n}",
-			"operationId": "c5ffabcb479cdd7afe8019cc30907507efc4463c70dc8290243b105fd5cf76c3"
-		},
-		{
-			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomUpdate",
 			"operationType": "mutation",
 			"rootType": "Mutation",

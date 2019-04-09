@@ -727,14 +727,6 @@ export const MessageCommentsQuery = gql`
     ${FullMessage}
 `;
 
-export const MessageCommentsCountQuery = gql`
-    query MessageCommentsCount($messageId: ID!) {
-        messageComments(messageId: $messageId) {
-            count
-        }
-    }
-`;
-
 export const RoomUpdateMutation = gql`
     mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {
         betaRoomUpdate(roomId: $roomId, input: $input) {
