@@ -24,11 +24,10 @@ class FormSubmit extends React.PureComponent<
 
     keydownHandler = async (e: any) => {
         const { props } = this;
-        if (e.keyCode === 13 && (e.ctrlKey || e.metaKey) && props.keyDownSubmit !== false) {
+        if (e.keyCode === 13 && props.useOnlyEnterKey && props.keyDownSubmit !== false && !e.shiftKey) {
             await this.submit();
         }
-
-        if (e.keyCode === 13 && props.useOnlyEnterKey && props.keyDownSubmit !== false) {
+        if (e.keyCode === 13 && (e.ctrlKey || e.metaKey) && props.keyDownSubmit !== false) {
             await this.submit();
         }
     };
