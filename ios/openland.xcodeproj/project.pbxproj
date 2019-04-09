@@ -23,6 +23,7 @@
 		A0153A96222426F400C026A4 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0153A95222426F400C026A4 /* ShareViewController.swift */; };
 		A0153A99222426F400C026A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0153A97222426F400C026A4 /* MainInterface.storyboard */; };
 		A0DDD9B62226BE8B00AA3061 /* openland-share-ex.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A0153A93222426F400C026A4 /* openland-share-ex.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AA0FAAEC225CCB220002C6FB /* RNGraphqlSQLCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0FAAEB225CCB220002C6FB /* RNGraphqlSQLCache.swift */; };
 		AA2365582244EBBA000AA3A7 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23654F2244EBB9000AA3A7 /* API.swift */; };
 		AA23655B2244EBFF000AA3A7 /* RNGraphqlModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655A2244EBFF000AA3A7 /* RNGraphqlModule.swift */; };
 		AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */; };
@@ -253,6 +254,7 @@
 		A0153AAA2224559800C026A4 /* openland-share-ex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "openland-share-ex.entitlements"; sourceTree = "<group>"; };
 		A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Pods/Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		A938EF8C563947299EE77727 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
+		AA0FAAEB225CCB220002C6FB /* RNGraphqlSQLCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlSQLCache.swift; sourceTree = "<group>"; };
 		AA23654F2244EBB9000AA3A7 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		AA23655A2244EBFF000AA3A7 /* RNGraphqlModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlModule.swift; sourceTree = "<group>"; };
 		AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlClient.swift; sourceTree = "<group>"; };
@@ -543,6 +545,7 @@
 				AA2365692246D950000AA3A7 /* APIFactoryBase.swift */,
 				AA2365752247CE78000AA3A7 /* RNGraphQL-Bridge.h */,
 				AA2365762247CE87000AA3A7 /* RNGraphQL-Bridge.m */,
+				AA0FAAEB225CCB220002C6FB /* RNGraphqlSQLCache.swift */,
 			);
 			name = RNGraphql;
 			sourceTree = "<group>";
@@ -1248,6 +1251,7 @@
 				AAB021962142ACB300927CF0 /* RNPatchNode.swift in Sources */,
 				AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */,
 				AAE5017E2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift in Sources */,
+				AA0FAAEC225CCB220002C6FB /* RNGraphqlSQLCache.swift in Sources */,
 				AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */,
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
 				AAA4DA512214585E00BB1781 /* AppCenterReactNativeCrashes.m in Sources */,

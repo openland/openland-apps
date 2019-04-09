@@ -76,7 +76,7 @@ class ActiveSubscription {
 
 var sqlCaches: [String: NormalizedCache] = [:]
 
-let CLIENT_VERSION = 1
+let CLIENT_VERSION = 2
 
 class RNGraphqlClient: WebSocketTransportDelegate {
   
@@ -113,7 +113,7 @@ class RNGraphqlClient: WebSocketTransportDelegate {
           let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
           let url = URL(fileURLWithPath: s + ".sqlite", relativeTo: path)
           print("Loading storage: \(storage) at \(url.absoluteURL)")
-          let c = try SQLiteNormalizedCache(fileURL: URL(fileURLWithPath: s + "-\(CLIENT_VERSION).sqlite", relativeTo: path))
+          let c = try RNGraphqlSQLSQLCache(fileURL: URL(fileURLWithPath: s + "-\(CLIENT_VERSION).sqlite", relativeTo: path))
           sqlCaches[s] = c
           cache = c
         }
@@ -219,10 +219,12 @@ class RNGraphqlClient: WebSocketTransportDelegate {
       return
     }
     let cachePolicy = self.resolveFetchPolicy(parameters: parameters)
+    // NSLog("Query: " + query)
     let c = self.factory.watchQuery(client: self.client, name: query, src: arguments, cachePolicy: cachePolicy) { (res, err) in
       if !self.live {
         return
       }
+      // NSLog("Query(Result): " + query)
       if err != nil {
         self.handleError(id: id, err: err!)
       } else {
