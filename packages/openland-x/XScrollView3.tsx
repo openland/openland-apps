@@ -3,47 +3,58 @@ import Glamorous from 'glamorous';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XView, XStyles } from 'react-mental';
 import Scrollbar from 'react-scrollbars-custom';
+import { css } from 'linaria';
+
+export interface XScrollValues {
+    scrollHeight: number;
+    scrollTop: number;
+    clientHeight: number;
+}
 
 export interface XScrollView3Props extends XStyles {
-    scrollbarRadius?: number;
-    scrollbarWidth?: number;
-    scrollbarTrackColor?: string;
-    scrollbarHandleColor?: string;
+    onScroll?: (values: XScrollValues) => void;
     children?: any;
 }
 
-const WebKitBackend = Glamorous.div<{
-    scrollbarRadius: number,
-    scrollbarWidth: number,
-    scrollbarTrackColor: string,
-    scrollbarHandleColor: string
-}>((props) => ({
-    overflowY: 'scroll',
-    overflowX: 'hidden',
-    width: '100%',
-    height: '100%',
+const NativeScrollStyle = css`
+    overflow-y: overlay;
+    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
+`;
 
-    '::-webkit-scrollbar': {
-        width: props.scrollbarWidth
-    },
-    '::-webkit-scrollbar-track': {
-        backgroundColor: props.scrollbarTrackColor,
-        borderRadius: props.scrollbarRadius
-    },
-    '::-webkit-scrollbar-thumb': {
-        backgroundColor: props.scrollbarHandleColor,
-        borderRadius: props.scrollbarRadius,
-    },
-}));
+const NativeBackend = React.memo<{
+    onScroll: (values: XScrollValues) => void,
+    children?: any
+}>((props) => {
 
-class CustomBackend extends React.PureComponent<{ scrollbarWidth: number, scrollbarRadius: number, scrollbarTrackColor: string, scrollbarHandleColor: string }> {
+    const callback = React.useCallback((src) => {
+        if (src) {
+            src.addEventListener('scroll', () => {
+                let scrollHeight = (src as HTMLDivElement).scrollHeight;
+                let scrollTop = (src as HTMLDivElement).scrollTop;
+                let clientHeight = (src as HTMLDivElement).clientHeight;
+                props.onScroll({ scrollHeight, scrollTop, clientHeight });
+            }, { passive: true });
+        }
+    }, []);
+
+    return (
+        <div className={NativeScrollStyle} ref={callback}>
+            {props.children}
+        </div>
+    );
+});
+
+class CustomBackend extends React.PureComponent<{ onScroll: (values: XScrollValues) => void }> {
     render() {
         return (
             <Scrollbar
                 style={{ width: '100%', height: '100%' }}
-                wrapperProps={{ style: { width: '100%', height: '100%' } }}
-                trackYProps={{ style: { backgroundColor: this.props.scrollbarTrackColor, height: '100%', width: this.props.scrollbarWidth, borderRadius: this.props.scrollbarRadius, top: '0px' } }}
-                thumbYProps={{ style: { backgroundColor: this.props.scrollbarHandleColor, borderRadius: this.props.scrollbarRadius, width: this.props.scrollbarWidth } }}
+                wrapperProps={{ style: { width: '100%', height: '100%', marginRight: 0 } }}
+                trackYProps={{ style: { backgroundColor: 'transparent', height: '100%', width: 8, borderRadius: 4, top: '0px' } }}
+                thumbYProps={{ style: { backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: 4, width: 8 } }}
+                onScroll={this.props.onScroll}
             >
                 {this.props.children}
             </Scrollbar>
@@ -63,34 +74,34 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
         this.isWebkit = ((window as any).safari !== undefined) || (window as any).chrome !== undefined;
     }
 
+    private onScroll = (values: XScrollValues) => {
+        if (this.props.onScroll) {
+            this.props.onScroll(values);
+        }
+    }
+
     render() {
         let {
-            scrollbarRadius,
-            scrollbarWidth,
-            scrollbarTrackColor,
-            scrollbarHandleColor,
+            onScroll,
             children,
             ...xstyles
         } = this.props;
 
-        scrollbarRadius = scrollbarRadius || 4;
-        scrollbarWidth = scrollbarWidth || 8;
-        scrollbarTrackColor = scrollbarTrackColor || 'transparent';
-        scrollbarHandleColor = scrollbarHandleColor || 'rgba(0,0,0,0.4)';
+        // scrollbarRadius = scrollbarRadius || 4;
+        // scrollbarWidth = scrollbarWidth || 8;
+        // scrollbarTrackColor = scrollbarTrackColor || 'rgba(0,0,0,0.1)';
+        // scrollbarHandleColor = scrollbarHandleColor || 'rgba(0,0,0,0.4)';
 
         if (this.isWebkit) {
             return (
                 <XView {...xstyles}>
-                    <WebKitBackend
-                        scrollbarRadius={scrollbarRadius}
-                        scrollbarWidth={scrollbarWidth}
-                        scrollbarTrackColor={scrollbarTrackColor}
-                        scrollbarHandleColor={scrollbarHandleColor}
+                    <NativeBackend
+                        onScroll={this.onScroll}
                     >
                         <XView flexDirection="column" alignItems="stretch">
                             {this.props.children}
                         </XView>
-                    </WebKitBackend>
+                    </NativeBackend>
                 </XView>
             );
         }
@@ -98,12 +109,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
         // Fallback
         return (
             <XView {...xstyles}>
-                <CustomBackend
-                    scrollbarRadius={scrollbarRadius}
-                    scrollbarWidth={scrollbarWidth}
-                    scrollbarTrackColor={scrollbarTrackColor}
-                    scrollbarHandleColor={scrollbarHandleColor}
-                >
+                <CustomBackend onScroll={this.onScroll}>
                     <XView flexDirection="column" alignItems="stretch">
                         {this.props.children}
                     </XView>

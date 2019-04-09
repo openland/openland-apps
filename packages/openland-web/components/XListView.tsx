@@ -3,6 +3,7 @@ import { DataSource, DataSourceItem } from 'openland-y-utils/DataSource';
 import { XView } from 'react-mental';
 import { XScrollView } from 'openland-x/XScrollView';
 import throttle from 'lodash/throttle';
+import { XScrollValues, XScrollView3 } from 'openland-x/XScrollView3';
 
 function useDataSource<T extends DataSourceItem>(dataSource: DataSource<T>): [T[], boolean] {
     let [items, setItems] = React.useState<T[]>([]);
@@ -68,74 +69,18 @@ export interface XListViewProps<T extends DataSourceItem> {
 
 export const XListView = React.memo(function <T extends DataSourceItem>(props: XListViewProps<T>) {
     let [items, completed] = useDataSource(props.dataSource);
-    let refHandler = React.useCallback((src: any) => {
-        if (!src) {
-            return;
+    const needMore = React.useMemo(() => throttle(() => {
+        props.dataSource.needMore()
+    }, 500), [props.dataSource]);
+    let onScroll = React.useCallback((values: XScrollValues) => {
+        let d = (values.scrollHeight - (values.clientHeight + values.scrollTop));
+        if (d < 1000) {
+            needMore();
         }
+    }, [needMore])
 
-        const needMore = throttle(() => {
-            props.dataSource.needMore()
-        }, 500);
-
-        src.addEventListener('scroll', (ev: any) => {
-            let scrollTop = ev.target.scrollTop as number;
-            let scrollHeight = ev.target.scrollHeight as number;
-            let offsetHeight = ev.target.offsetHeight as number;
-            let d = (scrollHeight - (offsetHeight + scrollTop));
-            if (d < 1000) {
-                needMore();
-            }
-        }, { passive: true });
-    }, []);
-    // let renderer = React.useCallback(
-    //     (renderProp: ListRowProps) => {
-    //         // console.log('render: ' + item.index);
-    //         // console.log(items[item.index]);
-    //         let res: any;
-    //         if (renderProp.index < items.length) {
-    //             res = props.renderItem(items[renderProp.index]);
-    //         } else {
-    //             res = props.renderLoading();
-    //         }
-    //         return (
-    //             <div key={renderProp.key} style={renderProp.style}>
-    //                 {res}
-    //             </div>
-    //         );
-    //     },
-    //     [items, props.renderItem, props.renderLoading],
-    // );
-    // let heightFunc = React.useCallback(
-    //     (params: { index: number }) => {
-    //         if (params.index < items.length) {
-    //             return props.itemHeight;
-    //         } else {
-    //             return props.loadingHeight;
-    //         }
-    //     },
-    //     [items, completed],
-    // );
-    // let onRendered = React.useCallback(
-    //     (info: {
-    //         overscanStartIndex: number;
-    //         overscanStopIndex: number;
-    //         startIndex: number;
-    //         stopIndex: number;
-    //     }) => {
-    //         if (!completed) {
-    //             if (info.stopIndex > items.length - 10) {
-    //                 props.dataSource.needMore();
-    //             }
-    //         }
-    //     },
-    //     [items, completed],
-    // );
-
-    // React.useLayoutEffect(() => {
-
-    // }, []);
     return (
-        <XScrollView optimize={true} innerRef={refHandler}>
+        <XScrollView3 onScroll={onScroll} width="100%" height="100%">
             <XView flexDirection="column">
                 {items.map((v) => (
                     <XView key={'item-' + v.key}>
@@ -144,6 +89,6 @@ export const XListView = React.memo(function <T extends DataSourceItem>(props: X
                 ))}
                 {!completed && props.renderLoading()}
             </XView>
-        </XScrollView>
+        </XScrollView3>
     );
 });
