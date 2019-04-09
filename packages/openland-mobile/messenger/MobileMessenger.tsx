@@ -25,7 +25,6 @@ export class MobileMessenger {
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
-    private currentConvId: string;
 
     constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
@@ -35,12 +34,9 @@ export class MobileMessenger {
                 <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
             );
         });
-        this.currentConvId = '';
     }
 
     getConversation(id: string) {
-        this.currentConvId = id;
-
         if (!this.conversations.has(id)) {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
@@ -83,9 +79,7 @@ export class MobileMessenger {
     }
 
     handleCommentsClick = (message: DataSourceMessageItem) => {
-        if (this.currentConvId !== '') {
-            this.history.navigationManager.push('MessageComments', { id: this.currentConvId, messageId: message.id });
-        }
+        this.history.navigationManager.push('MessageComments', { messageId: message.id });
     }
 
     handleDocumentClick = (document: DataSourceMessageItem) => {
