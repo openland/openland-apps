@@ -144,9 +144,8 @@ const EditMessageInline = (props: EditMessageInlineT) => {
                     mentionsData={props.mentionsData}
                 />
             </TextInputWrapper>
-
             <Footer separator={5}>
-                <XFormSubmit text="Save" style="primary" />
+                <XFormSubmit text="Save" style="primary" useOnlyEnterKey={true} />
                 <XButton
                     text="Cancel"
                     size="default"
