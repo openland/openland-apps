@@ -122,7 +122,6 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
                             alignItems="stretch"
                             flexGrow={1}
                             flexShrink={0}
-                            height="100%"
                         >
                             {this.props.children}
                         </XView>
@@ -138,7 +137,6 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
                     <XView
                         flexDirection="column"
                         alignItems="stretch"
-                        height="100%"
                         flexGrow={1}
                         flexShrink={0}
                     >
