@@ -97,7 +97,6 @@ export interface PinMessageComponentProps {
 }
 
 export const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
-    const isMobile = React.useContext(IsMobileContext);
     const { room, pinMessage } = props;
 
     let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;
@@ -118,12 +117,6 @@ export const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
     if ((room as Room_room_SharedRoom).kind === 'GROUP') {
         canMeUnpinMessage = true;
     }
-
-    // nearCrossButtons: any;
-    // generalMessage: FullMessage_GeneralMessage;
-    // chatId: string;
-    // room: Room_room_SharedRoom | Room_room_PrivateRoom;
-    // target?: any;
 
     let target = (
         <XView cursor="pointer">
