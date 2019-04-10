@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ASDataView } from 'react-native-async-view/ASDataView';
-import { DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, DataSourceDateItem, ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
 import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
@@ -25,6 +25,7 @@ export class MobileMessenger {
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
+    private currentConv: ConversationEngine | undefined;
 
     constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
@@ -34,17 +35,18 @@ export class MobileMessenger {
                 <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
             );
         });
+        this.currentConv = undefined;
     }
 
     getConversation(id: string) {
         if (!this.conversations.has(id)) {
-            let eng = this.engine.getConversation(id);
-            this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
+            this.currentConv = this.engine.getConversation(id);
+            this.conversations.set(id, new ASDataView(this.currentConv.dataSource, (item) => {
                 if (item.type === 'message') {
                     if (item.serviceMetaData || item.isService) {
                         return (<ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} />);
                     } else {
-                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} />);
+                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={this.currentConv!!} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} />);
                     }
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
@@ -113,20 +115,22 @@ export class MobileMessenger {
     private handleMessageLongPress = (message: DataSourceMessageItem) => {
         let builder = new ActionSheetBuilder();
 
-        builder.view((ctx: ZModalController) => (
-            <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={Platform.OS === 'android' ? 62 : 56} paddingHorizontal={10}>
-                {defaultReactions.map(r => (
-                    <TouchableOpacity
-                        onPress={() => {
-                            ctx.hide();
-                            this.handleReactionSetUnset(message, r);
-                        }}
-                    >
-                        <Image source={reactionsImagesMap[r]} />
-                    </TouchableOpacity>
-                ))}
-            </View>
-        ));
+        if (this.currentConv && !this.currentConv.isChannel) {
+            builder.view((ctx: ZModalController) => (
+                <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={Platform.OS === 'android' ? 62 : 56} paddingHorizontal={10}>
+                    {defaultReactions.map(r => (
+                        <TouchableOpacity
+                            onPress={() => {
+                                ctx.hide();
+                                this.handleReactionSetUnset(message, r);
+                            }}
+                        >
+                            <Image source={reactionsImagesMap[r]} />
+                        </TouchableOpacity>
+                    ))}
+                </View>
+            ));
+        }
 
         if (message.text) {
             if (message.senderId === this.engine.user.id) {
