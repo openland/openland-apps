@@ -14,6 +14,7 @@ import { Platform } from 'react-native';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { AsyncMessageChannelReactionsView } from './AsyncMessageChannelReactionsView';
+import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -90,8 +91,17 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-right" backgroundColor={theme.backgroundColor} width={4} />
                 </ASFlex>
 
-                {!props.engine.isChannel && props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
-                {props.engine.isChannel && <AsyncMessageChannelReactionsView theme={theme} message={props.message} onReactionPress={props.onReactionPress} onCommentsPress={props.onCommentsPress} />}
+                {NON_PRODUCTION && (
+                    <>
+                        {!props.engine.isChannel && props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
+                        {props.engine.isChannel && <AsyncMessageChannelReactionsView theme={theme} message={props.message} onReactionPress={props.onReactionPress} onCommentsPress={props.onCommentsPress} />}
+                    </>
+                )}
+                {!NON_PRODUCTION && (
+                    <>
+                        {props.message.reactions && <AsyncMessageReactionsView theme={theme} message={props.message} />}
+                    </>
+                )}
 
                 <ASFlex backgroundColor={theme.backgroundColor} height={50} marginBottom={-50} />
             </ASFlex>

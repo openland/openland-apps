@@ -150,9 +150,8 @@ export class ConversationEngine implements MessageSendHandler {
         log.log('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
-                let room = await this.engine.client.client.query(RoomTinyQuery, { id: this.conversationId });
                 let history = await this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, first: 15 }, { fetchPolicy: 'network-only' });
-                return { ...history, ...room };
+                return history;
             } catch (e) {
                 log.warn(e);
                 throw e;
@@ -266,7 +265,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     sendMessage = (text: string, mentions: UserShort[] | null) => {
-        
+
         if (text.trim().length > 0) {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
@@ -298,17 +297,17 @@ export class ConversationEngine implements MessageSendHandler {
             let info = await file.fetchInfo();
             let name = info.name || 'image.jpg';
             let date = (new Date().getTime()).toString();
-            let pmsg = { 
-                date, 
-                key, 
-                file: name, 
-                uri: info.uri, 
-                fileSize: info.fileSize, 
-                progress: 0, 
-                message: null, 
-                failed: false, 
-                isImage: !!info.isImage, 
-                imageSize: info.imageSize 
+            let pmsg = {
+                date,
+                key,
+                file: name,
+                uri: info.uri,
+                fileSize: info.fileSize,
+                progress: 0,
+                message: null,
+                failed: false,
+                isImage: !!info.isImage,
+                imageSize: info.imageSize
             } as PendingMessage;
             console.log(pmsg);
             this.messages = [...this.messages, { ...pmsg } as PendingMessage];

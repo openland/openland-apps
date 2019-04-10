@@ -19,6 +19,7 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'op
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
 import { reactionsImagesMap, defaultReactions, reactionMap } from './components/AsyncMessageReactionsView';
+import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -115,7 +116,7 @@ export class MobileMessenger {
     private handleMessageLongPress = (message: DataSourceMessageItem) => {
         let builder = new ActionSheetBuilder();
 
-        if (this.currentConv && !this.currentConv.isChannel) {
+        if ((this.currentConv && !this.currentConv.isChannel) || !NON_PRODUCTION) {
             builder.view((ctx: ZModalController) => (
                 <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={Platform.OS === 'android' ? 62 : 56} paddingHorizontal={10}>
                     {defaultReactions.map(r => (

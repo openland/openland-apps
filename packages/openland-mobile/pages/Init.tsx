@@ -21,6 +21,8 @@ import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 
+export let NON_PRODUCTION = false;
+
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull, dimensions?: { width: number, height: number } }> {
 
     private history: any;
@@ -111,6 +113,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                 if (hasClient()) {
                     let res = (await backoff(async () => await getClient().queryAccount()));
                     if (res && res.me) {
+                        NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0;
+
                         this.setState({ state: 'app' });
                     } else {
                         this.setState({ state: 'signup' });
@@ -129,6 +133,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState) : undefined;
                         this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
                         if (res.me) {
+                            NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0;
+
                             let messenger = buildMessenger(getClient(), res.me);
                             setMessenger(new MobileMessenger(messenger, this.history));
                             await messenger.awaitLoading();
