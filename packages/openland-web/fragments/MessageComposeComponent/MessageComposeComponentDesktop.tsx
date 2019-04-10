@@ -56,12 +56,13 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
     const { file } = React.useContext(UploadContext);
     const isActive = React.useContext(IsActiveContext);
+
     const [currentConversationId, setCurrentConversationId] = React.useState<string | undefined>(
         undefined,
     );
     const [currentConversation, setCurrentConversation] = React.useState<
         ConversationEngine | undefined
-    >(undefined);
+        >(undefined);
 
     React.useEffect(() => {
         if (isActive && messageComposeProps.conversationId) {
@@ -69,21 +70,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
             setCurrentConversation(messageComposeProps.conversation);
         }
     });
-
-    React.useEffect(
-        () => {
-            if (isActive) {
-                const newInputValue = hasReply()
-                    ? draftState.getNextDraft()
-                    : { text: '', mentions: [] };
-                messagesContext.changeForwardConverstion();
-                setInputValue(newInputValue.text);
-                draftState.setBeDrafted(hasReply());
-                inputMethodsState.focusIfNeeded();
-            }
-        },
-        [isActive, currentConversationId],
-    );
 
     if (file) {
         inputMethodsState.focusIfNeeded();
@@ -139,6 +125,21 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
             messagesContext.replyMessagesSender.size
         );
     };
+
+    React.useEffect(
+        () => {
+            if (isActive) {
+                const newInputValue = hasReply()
+                    ? draftState.getNextDraft()
+                    : { text: '', mentions: [] };
+                messagesContext.changeForwardConverstion();
+                setInputValue(newInputValue.text);
+                draftState.setBeDrafted(hasReply());
+                inputMethodsState.focusIfNeeded();
+            }
+        },
+        [isActive, currentConversationId],
+    );
 
     return (
         <>
