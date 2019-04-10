@@ -21,6 +21,7 @@
         "@types/react-native-push-notification": "^3.0.2",
         "@types/react-native-vector-icons": "^4.6.1",
         "@types/react-navigation": "^2.0.11",
+        "react-scrollbars-custom": "3.1.5",
         "add": "^2.0.6",
         "apollo-cache-inmemory": "^1.1.4",
         "apollo-client": "2.4.12",
