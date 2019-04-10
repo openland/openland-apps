@@ -17,7 +17,8 @@ export interface XScrollView3Props extends XStyles {
 }
 
 const NativeScrollStyle = css`
-    overflow-y: overlay;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
     overflow-x: hidden;
     width: 100%;
     height: 100%;
