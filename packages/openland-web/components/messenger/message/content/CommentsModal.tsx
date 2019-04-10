@@ -194,25 +194,28 @@ const CommentsInner = () => {
             <XView flexGrow={1} paddingLeft={16}>
                 <XView>count: {messageComments.messageComments.count}</XView>
                 <XView>{commentsElements}</XView>
-                <XView width={500}>
-                    Add root Comment
-                    <CommentsInput
-                        onSend={msgToSend => {
-                            addComment({
-                                messageId: curMesssageId,
-                                message: msgToSend,
-                                replyComment: null,
-                            });
-                            setShowInputId(null);
-                        }}
-                    />
-                </XView>
             </XView>
         </XView>
     );
 
     return (
-        <MessageModalBody generalMessage={maybeGeneralMessage}>{commentsElems}</MessageModalBody>
+        <>
+            <MessageModalBody generalMessage={maybeGeneralMessage}>
+                {commentsElems}
+            </MessageModalBody>
+            <XView>
+                <CommentsInput
+                    onSend={msgToSend => {
+                        addComment({
+                            messageId: curMesssageId,
+                            message: msgToSend,
+                            replyComment: null,
+                        });
+                        setShowInputId(null);
+                    }}
+                />
+            </XView>
+        </>
     );
 };
 
@@ -227,6 +230,7 @@ export const CommentsModal = () => {
             defaultAction={async () => {
                 //
             }}
+            customFooter={null}
         >
             <CommentsInner />
         </XModalForm>

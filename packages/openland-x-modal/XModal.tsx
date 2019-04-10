@@ -62,7 +62,7 @@ const ModalRender = XMemo<ModalRenderProps>(props => {
                     background: props.transparent ? 'transparent' : '#ffffff',
                     margin: 'auto',
                     padding: 0,
-                    overflow: 'visible',
+                    overflow: 'hidden',
 
                     // Border/shadow
                     border: 'none',
