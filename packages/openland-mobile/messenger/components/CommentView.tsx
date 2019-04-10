@@ -123,7 +123,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
                 <View flexGrow={1} flexShrink={1}>
                     <Text style={[styles.senderName, { marginBottom: 1 }]}>{sender.name}</Text>
-                    <MessageView message={comment} />
+                    <MessageView message={comment} size="small" />
 
                     {tools}
                 </View>
@@ -141,7 +141,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
                     <Text style={styles.senderName}>{sender.name}</Text>
                 </View>
-                <MessageView message={comment} />
+                <MessageView message={comment} size="small" />
 
                 {tools}
             </View>
