@@ -146,22 +146,13 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     let privateRoom = room.__typename === 'PrivateRoom' ? (room as Room_room_PrivateRoom) : null;
 
     if (state.useForwardHeader) {
-        let usersCanPinMessage = [];
-        let canMePinMessage = false;
-        if (sharedRoom) {
-            usersCanPinMessage = getWelcomeMessageSenders({
-                chat: sharedRoom,
-            });
-        }
-        if (usersCanPinMessage.find(i => i.id === myId) !== undefined) {
-            canMePinMessage = true;
-        }
+        let canMePinMessage = !!(sharedRoom && sharedRoom.canEdit);
         return (
             <ChatForwardHeaderView
                 roomId={room.id}
                 me={me}
                 privateRoom={room.__typename === 'PrivateRoom'}
-                publicRoom={sharedRoom ? (room as Room_room_SharedRoom).kind === 'PUBLIC' : false}
+                isChannel={!!(sharedRoom && sharedRoom.isChannel)}
                 canMePinMessage={canMePinMessage}
                 myId={myId}
             />
@@ -256,13 +247,13 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const title = sharedRoom ? (
         <HeaderTitle key={sharedRoom.id} value={sharedRoom.title} />
     ) : (
-        <HeaderTitle
-            key={privateRoom!!.user.id}
-            value={privateRoom!!.user.name}
-            path={'/mail/u/' + privateRoom!!.user.id}
-            organization={privateRoom!!.user.primaryOrganization}
-        />
-    );
+            <HeaderTitle
+                key={privateRoom!!.user.id}
+                value={privateRoom!!.user.name}
+                path={'/mail/u/' + privateRoom!!.user.id}
+                organization={privateRoom!!.user.primaryOrganization}
+            />
+        );
 
     return (
         <ChatHeaderViewAbstract
