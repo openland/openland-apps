@@ -188,6 +188,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-haptic-feedback')
     compile project(':react-native-incall-manager')
     compile project(':react-native-extra-dimensions-android')
     compile project(':react-native-document-picker')
@@ -205,7 +206,6 @@ dependencies {
     compile project(':react-native-share')
     compile project(':react-native-image-capinsets')
     implementation 'com.google.firebase:firebase-core:16.0.1'
-    compile project(':react-native-haptic-feedback')
     compile project(':react-native-gesture-handler')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-blur')

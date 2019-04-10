@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.mkuczera.RNReactNativeHapticFeedbackPackage;
 import com.zxcpoiu.incallmanager.InCallManagerPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
@@ -62,6 +63,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RNReactNativeHapticFeedbackPackage(),
             new InCallManagerPackage(),
             new ExtraDimensionsPackage(),
             new ReactNativeDocumentPicker(),

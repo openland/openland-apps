@@ -12709,9 +12709,10 @@ react-native-gesture-handler@^1.0.15:
     invariant "^2.2.2"
     prop-types "^15.5.10"
 
-react-native-haptic-feedback@^1.2.0:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-haptic-feedback/-/react-native-haptic-feedback-1.4.2.tgz#e15ed66f2ffe9ec886b4098b792591136efd5ee2"
+react-native-haptic-feedback@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/react-native-haptic-feedback/-/react-native-haptic-feedback-1.7.1.tgz#29000ef867fdd80a5eb20293d6274cd10f1cf577"
+  integrity sha512-iuXBEZsQbKOe5uOLXuzTEvrvUCV0a4AktAfJHlWK7Jb0t/ABUc4kUfclqx+la+yA1TKrauDp/6MjrP0OUDXA9Q==
 
 react-native-image-capinsets@^0.5.0:
   version "0.5.0"
