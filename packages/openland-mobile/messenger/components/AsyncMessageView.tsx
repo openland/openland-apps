@@ -57,7 +57,6 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                         onUserPress={props.onAvatarPress}
                         onDocumentPress={props.onDocumentPress}
                         onMediaPress={props.onMediaPress}
-                        useAsync={true}
                     />
                 </ASFlex>
             </AsyncBubbleView>;
