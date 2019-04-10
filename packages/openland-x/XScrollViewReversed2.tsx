@@ -17,6 +17,7 @@ const NativeScrollContentStyle = css`
     min-height: 100% !important;
     overflow-y: hidden;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 
     &:after {
         content: '';
