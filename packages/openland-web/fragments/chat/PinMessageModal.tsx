@@ -133,6 +133,20 @@ export const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
             nearCrossButtons={
                 canMeUnpinMessage && <UnpinButton variables={{ chatId: props.chatId }} />
             }
+            afterDateElems={
+                <>
+                    <XView
+                        width={3}
+                        height={3}
+                        opacity={0.3}
+                        backgroundColor="#000"
+                        borderRadius="100%"
+                        flexShrink={0}
+                        marginHorizontal={5}
+                    />
+                    <XView>Pinned</XView>
+                </>
+            }
             target={target}
             generalMessage={pinMessage}
         />

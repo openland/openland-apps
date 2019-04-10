@@ -21,6 +21,7 @@ import { XModalFooter } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
 
 export interface MessageComponentProps {
+    afterDateElems?: any;
     nearCrossButtons?: any;
     generalMessage: FullMessage_GeneralMessage;
     target?: any;
@@ -67,7 +68,7 @@ type attachmentType = FullMessage_GeneralMessage_attachments_MessageAttachmentFi
 
 export const MessageModalBody = (props: MessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
-    const { generalMessage, nearCrossButtons } = props;
+    const { generalMessage, nearCrossButtons, afterDateElems } = props;
     const { sender, message } = generalMessage;
 
     let attachment: attachmentType | null = null;
@@ -208,16 +209,7 @@ export const MessageModalBody = (props: MessageComponentProps) => {
                                 fontSize={12}
                             >
                                 <XDate value={generalMessage.date} format="datetime_short" />
-                                <XView
-                                    width={3}
-                                    height={3}
-                                    opacity={0.3}
-                                    backgroundColor="#000"
-                                    borderRadius="100%"
-                                    flexShrink={0}
-                                    marginHorizontal={5}
-                                />
-                                <XView>Pinned</XView>
+                                {props.afterDateElems}
                             </XView>
                         </XView>
                     </XView>
