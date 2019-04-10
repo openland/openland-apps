@@ -48,13 +48,17 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
     }
 
     handleSubmit = async () => {
-        await getClient().mutateAddMessageComment({
-            messageId: this.props.message.id,
-            message: this.state.text,
-            replyComment: this.state.replyTo ? this.state.replyTo.id : null,
-        });
+        const text = this.state.text;
 
-        this.setState({ text: '', replyTo: undefined });
+        if (text.trim().length > 0) {
+            await getClient().mutateAddMessageComment({
+                messageId: this.props.message.id,
+                message: this.state.text,
+                replyComment: this.state.replyTo ? this.state.replyTo.id : null,
+            });
+
+            this.setState({ text: '', replyTo: undefined });
+        }
     }
 
     handleTextChange = (src: string) => {
