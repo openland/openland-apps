@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XButton } from 'openland-x/XButton';
 import { XView, XImage } from 'react-mental';
 import { XMemo } from 'openland-y-utils/XMemo';
 
@@ -32,9 +31,8 @@ export const MessengerEmptyFragment = XMemo(() => {
                     marginBottom={50}
                 />
                 <XView fontSize={16} lineHeight="24px" color="rgba(0, 0, 0, 0.4)" marginBottom={32}>
-                    Select a chat or start a new one
+                    Select a chat to start messaging
                 </XView>
-                <XButton style="primary" text="New chat" path="/mail/new" />
             </XView>
         </XView>
     );
