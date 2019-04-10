@@ -407,13 +407,13 @@ export class DataSource<T extends DataSourceItem> {
             for (let b of latestBatch) {
                 if (b.op === 'added') {
                     processed[b.item.key] = true;
-                    res.addItem(b.item, b.index);
+                    res.addItem(values[b.item.key], b.index);
                 } else if (b.op === 'moved') {
                     res.moveItem(b.item.key, b.toIndex!);
                 } else if (b.op === 'updated') {
                     if (!processed[b.item.key] && updated[b.item.key]) {
                         processed[b.item.key] = true;
-                        res.updateItem(b.item);
+                        res.updateItem(values[b.item.key]);
                     }
                 } else if (b.op === 'removed') {
                     if (removed[b.item.key]) {
