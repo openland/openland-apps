@@ -24,11 +24,8 @@ export const AsyncMessageChannelReactionsView = React.memo<AsyncMessageChannelRe
     let myLike = false;
 
     if (message.reactions) {
-        let likes = message.reactions.filter(r => r.reaction === 'LIKE');
-
-        likesCount = likes.length;
-
-        likes.map(r => {
+        likesCount = message.reactions.length;
+        message.reactions.map(r => {
             if (r.user.id === getMessenger().engine.user.id) {
                 myLike = true;
             }

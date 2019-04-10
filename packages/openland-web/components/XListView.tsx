@@ -80,7 +80,7 @@ export const XListView = React.memo(function <T extends DataSourceItem>(props: X
     }, [needMore])
 
     return (
-        <XScrollView3 onScroll={onScroll} width="100%" height="100%">
+        <XScrollView3 onScroll={onScroll} width="100%" height="100%" flexGrow={1} flexShrink={0}>
             <XView flexDirection="column">
                 {items.map((v) => (
                     <XView key={'item-' + v.key}>
