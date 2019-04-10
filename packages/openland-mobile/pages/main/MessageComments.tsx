@@ -175,16 +175,27 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                     <MessageView message={message} />
 
                     {toolButtons}
-    
-                    <View height={1} backgroundColor="#eff0f2" marginTop={20} />
 
-                    <View marginTop={20} marginBottom={20}>
-                        <Text style={{ fontSize: 16, color: '#99a2b0', fontWeight: TextStyles.weight.medium } as TextStyle}>COMMENTS: <Text style={{ color: '#b9c1cd' }}>{this.props.comments.length}</Text></Text>
-                    </View>
+                    {comments.length > 0 && (
+                        <>
+                            <View height={1} backgroundColor="#eff0f2" marginTop={20} />
 
-                    {commentsElements}
+                            <View marginTop={20} marginBottom={20}>
+                                <Text style={{ fontSize: 16, color: '#99a2b0', fontWeight: TextStyles.weight.medium } as TextStyle}>COMMENTS: <Text style={{ color: '#b9c1cd' }}>{this.props.comments.length}</Text></Text>
+                            </View>
 
-                    <View height={50} />
+                            {commentsElements}
+
+                            <View height={50} />
+                        </>
+                    )}
+
+                    {comments.length === 0 && (
+                        <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40}>
+                            <Image source={require('assets/img-empty.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
+                            <Text style={{ fontSize: 15, color: 'rgba(0, 0, 0, 0.4)' }}>Write the first comment</Text>
+                        </View>
+                    )}
                 </SScrollView>
 
                 <MessageInputBar
