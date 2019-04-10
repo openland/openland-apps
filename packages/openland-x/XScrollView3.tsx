@@ -22,7 +22,7 @@ const NativeScrollStyle = css`
     width: 100%;
     height: 100%;
     flex-grow: 1;
-    flex-shrink: 0;
+    flex-shrink: 1;
     display: flex;
     flex-direction: column;
 `;
@@ -61,7 +61,7 @@ class CustomBackend extends React.PureComponent<{ onScroll: (values: XScrollValu
                     width: '100%',
                     height: '100%',
                     flexGrow: 1,
-                    flexShrink: 0,
+                    flexShrink: 1,
                     flexDirection: 'column',
                 }}
                 wrapperProps={{ style: { width: '100%', height: '100%', marginRight: 0 } }}
@@ -94,7 +94,9 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
             throw Error('XScrollView3 works only in browser');
         }
         this.isWebkit =
-            (window as any).safari !== undefined || (window as any).chrome !== undefined || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            (window as any).safari !== undefined ||
+            (window as any).chrome !== undefined ||
+            /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     }
 
     private onScroll = (values: XScrollValues) => {
