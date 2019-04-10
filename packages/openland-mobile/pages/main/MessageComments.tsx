@@ -6,21 +6,20 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { View, Text, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData, TouchableWithoutFeedback, Image } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { MessageInputBar } from './components/MessageInputBar';
 import { DefaultConversationTheme, ConversationTheme } from './themes/ConversationThemeResolver';
-import { MessageComments_messageComments_comments, FullMessage_GeneralMessage } from 'openland-api/Types';
+import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { MessageView } from 'openland-mobile/messenger/components/MessageView';
 import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
-import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { formatDate } from 'openland-mobile/utils/formatDate';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { reactionMap } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SenderView } from 'openland-mobile/messenger/components/SenderView';
+import { CommentView } from 'openland-mobile/messenger/components/CommentView';
+import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -31,6 +30,7 @@ interface MessageCommentsInnerProps {
 interface MessageCommentsInnerState {
     text: string;
     theme: ConversationTheme;
+    replyTo: MessageComments_messageComments_comments_comment | undefined;
 }
 
 class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, MessageCommentsInnerState> {
@@ -39,6 +39,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         this.state = {
             text: '',
             theme: DefaultConversationTheme,
+            replyTo: undefined
         };
     }
 
@@ -50,14 +51,10 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         await getClient().mutateAddMessageComment({
             messageId: this.props.message.id,
             message: this.state.text,
-            replyComment: null,
+            replyComment: this.state.replyTo ? this.state.replyTo.id : null,
         });
 
-        await getClient().refetchMessageComments({
-            messageId: this.props.message.id,
-        });
-
-        this.setState({ text: '' });
+        this.setState({ text: '', replyTo: undefined });
     }
 
     handleTextChange = (src: string) => {
@@ -83,21 +80,30 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         let client = engine.client;
 
         startLoader();
-            try {
-                let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;
-                if (remove) {
-                    client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: reactionMap[r] });
-                } else {
-                    client.mutateMessageSetReaction({ messageId: message.id!, reaction: reactionMap[r] });
-                }
-            } catch (e) {
-                Alert.alert(e.message);
+        try {
+            let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;
+            if (remove) {
+                client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: reactionMap[r] });
+            } else {
+                client.mutateMessageSetReaction({ messageId: message.id!, reaction: reactionMap[r] });
             }
+        } catch (e) {
+            Alert.alert(e.message);
+        }
         stopLoader();
     }
 
+    handleReplyPress = (comment: MessageComments_messageComments_comments_comment) => {
+        this.setState({ replyTo: comment });
+    }
+
+    handleReplyClear = () => {
+        this.setState({ replyTo: undefined });
+    }
+
     render () {
-        const { message, comments, messenger } = this.props;
+        const { message, comments } = this.props;
+        const { replyTo } = this.state;
         const commentsElements = [];
 
         if (this.props.comments.length > 0) {
@@ -110,11 +116,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             const result = sortComments(comments, commentsMap);
     
             for (let commentEntry of result) {
-                commentsElements.push(
-                    <View key={commentEntry.id} marginLeft={20 * getDepthOfComment(commentEntry, commentsMap)}>
-                        <MessageView message={commentEntry.comment} />
-                    </View>
-                );
+                commentsElements.push(<CommentView key={commentEntry.id} comment={commentEntry.comment} depth={getDepthOfComment(commentEntry, commentsMap)} onReplyPress={this.handleReplyPress} />);
             }
         }
 
@@ -157,6 +159,20 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             </View>
         );
 
+        const replyView = replyTo ? (
+            <View marginLeft={52} paddingLeft={8} marginRight={81} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
+                <View flexGrow={1}>
+                    <Text style={{ color: '#0084fe', fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1}>{replyTo.sender.name}</Text>
+                    <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1}>{replyTo.message}</Text>
+                </View>
+                <TouchableWithoutFeedback onPress={this.handleReplyClear}>
+                    <View marginLeft={11} width={18} height={38} alignItems="center" justifyContent="center">
+                        <Image source={require('assets/ic-clear-16.png')} style={{ width: 16, height: 16 }} />
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+        ) : undefined;
+
         return (
             <>
                 <SHeader title="Comments" />
@@ -174,7 +190,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
 
                     {commentsElements}
 
-                    <View height={60} />
+                    <View height={50} />
                 </SScrollView>
 
                 <MessageInputBar
@@ -188,6 +204,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                     text={this.state.text}
                     theme={this.state.theme}
                     placeholder="Write a comment..."
+                    topContent={replyView}
                 />
             </>
         );
@@ -195,17 +212,27 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
 }
 
 const MessageCommentsComponent = XMemo<PageProps>((props) => {
-    const theme = React.useContext(ThemeContext);
-    let channelId = props.router.params.flexibleId || props.router.params.id;
     let messageId = props.router.params.messageId;
 
     let messenger = getMessenger();
     let client = getClient();
 
-    let engine = messenger.engine.getConversation(channelId);
-
     let message = client.useMessage({ messageId: messageId }).message as FullMessage_GeneralMessage;
     let comments = client.useMessageComments({ messageId: messageId }).messageComments.comments;
+
+    const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
+        if (event.__typename === 'CommentReceived') {
+            await client.refetchMessageComments({ messageId });
+        }
+    };
+
+    React.useEffect(() => {
+        const watcher = new SequenceModernWatcher('comment messageId:' + messageId, client.subscribeCommentWatch({ peerId: messageId }), client.client, updateHandler, undefined, { peerId: messageId }, null );
+
+        return () => {
+            watcher.destroy();
+        };
+    });
 
     return (
         <MessageCommentsInner

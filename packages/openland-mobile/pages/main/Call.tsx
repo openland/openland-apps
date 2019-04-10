@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { View, Text, TouchableOpacity, Image, BackHandler, Platform, Vibration } from 'react-native';
+import { View, Text, TouchableOpacity, Image, BackHandler } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { CallController } from 'openland-mobile/calls/CallController';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -15,8 +15,8 @@ import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { RNSDevice } from 'react-native-s/RNSDevice';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let [mute, setMute] = React.useState(false);
@@ -47,7 +47,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
     React.useEffect(() => {
         if (callsState.status === 'connected') {
-            Vibration.vibrate(400, false);
+            ReactNativeHapticFeedback.trigger('impactMedium', { ignoreAndroidSystemSettings: false });
         }
 
     }, [callsState.status])
