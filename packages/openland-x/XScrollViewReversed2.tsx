@@ -36,6 +36,16 @@ export const XScrollViewReverse2 = React.memo<{ children?: any }>((props) => {
             let scrollBottom = clientHeight - scrollTop - scrollHeight;
             ref3.current = scrollBottom;
         }, { passive: true });
+
+        let lastHeight = v.clientHeight;
+        let observer = new ResizeObserver(() => {
+            let delta = v.clientHeight - lastHeight;
+            lastHeight = v.clientHeight;
+            if (delta < 0) {
+                v.scrollTop -= delta;
+            }
+        });
+        observer.observe(v);
     }, []);
 
     React.useLayoutEffect(() => {
