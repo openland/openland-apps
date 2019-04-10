@@ -56,6 +56,34 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
     const { file } = React.useContext(UploadContext);
     const isActive = React.useContext(IsActiveContext);
+    const [currentConversationId, setCurrentConversationId] = React.useState<string | undefined>(
+        undefined,
+    );
+    const [currentConversation, setCurrentConversation] = React.useState<
+        ConversationEngine | undefined
+    >(undefined);
+
+    React.useEffect(() => {
+        if (isActive && messageComposeProps.conversationId) {
+            setCurrentConversationId(messageComposeProps.conversationId);
+            setCurrentConversation(messageComposeProps.conversation);
+        }
+    });
+
+    React.useEffect(
+        () => {
+            if (isActive) {
+                const newInputValue = hasReply()
+                    ? draftState.getNextDraft()
+                    : { text: '', mentions: [] };
+                messagesContext.changeForwardConverstion();
+                setInputValue(newInputValue.text);
+                draftState.setBeDrafted(hasReply());
+                inputMethodsState.focusIfNeeded();
+            }
+        },
+        [isActive, currentConversationId],
+    );
 
     if (file) {
         inputMethodsState.focusIfNeeded();
@@ -89,11 +117,12 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     });
 
     useKeydownHandler({
-        conversation: messageComposeProps.conversation,
+        conversation: currentConversation,
         user: messageComposeProps.user,
         inputValue,
         quoteState,
         inputMethodsState,
+        isActive,
     });
 
     const { handleChange } = useHandleChange({
@@ -111,39 +140,12 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         );
     };
 
-    const [currentConversation, setCurrentConversation] = React.useState<string | undefined>(
-        undefined,
-    );
-
-    React.useEffect(() => {
-        if (
-            messageComposeProps.conversationId &&
-            currentConversation !== messageComposeProps.conversationId
-        ) {
-            setCurrentConversation(messageComposeProps.conversationId);
-        }
-    });
-
-    React.useEffect(() => {
-        if (isActive) {
-            const newInputValue = hasReply()
-                ? draftState.getNextDraft()
-                : { text: '', mentions: [] };
-            messagesContext.changeForwardConverstion();
-            setInputValue(newInputValue.text);
-            draftState.setBeDrafted(hasReply());
-            inputMethodsState.focusIfNeeded();
-        }
-    }, [isActive, currentConversation]);
-
     return (
         <>
             {/* TODO maybe some other pattern here */}
             {/* {isActive && ( */}
             <DumpSendMessage
-                TextInputComponent={
-                    messageComposeProps.TextInputComponent || DesktopSendMessage
-                }
+                TextInputComponent={messageComposeProps.TextInputComponent || DesktopSendMessage}
                 quoteState={quoteState}
                 handleChange={handleChange}
                 handleSend={handleSend}
