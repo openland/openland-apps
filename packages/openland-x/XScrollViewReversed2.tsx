@@ -5,6 +5,7 @@ import ResizeObserver from 'resize-observer-polyfill';
 const NativeScrollStyle = css`
     overflow-y: overlay;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
     flex-shrink: 1;
     width: 100%;
     height: 100%;
@@ -17,7 +18,6 @@ const NativeScrollContentStyle = css`
     min-height: 100% !important;
     overflow-y: hidden;
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
 
     &:after {
         content: '';
