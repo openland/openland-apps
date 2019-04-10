@@ -767,6 +767,18 @@ export const MessageCommentsQuery = gql`
     ${FullMessage}
 `;
 
+export const CommentSetReactionMutation = gql`
+    mutation CommentSetReaction($commentId: ID!, $reaction: MessageReactionType!) {
+        commentReactionAdd(commentId: $commentId, reaction: $reaction)
+    }
+`;
+
+export const CommentUnsetReactionMutation = gql`
+    mutation CommentUnsetReaction($commentId: ID!, $reaction: MessageReactionType!) {
+        commentReactionRemove(commentId: $commentId, reaction: $reaction)
+    }
+`;
+
 export const RoomUpdateMutation = gql`
     mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {
         betaRoomUpdate(roomId: $roomId, input: $input) {

@@ -22706,6 +22706,40 @@ export interface MessageCommentsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: CommentSetReaction
+// ====================================================
+
+export interface CommentSetReaction {
+  commentReactionAdd: boolean;
+}
+
+export interface CommentSetReactionVariables {
+  commentId: string;
+  reaction: MessageReactionType;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: CommentUnsetReaction
+// ====================================================
+
+export interface CommentUnsetReaction {
+  commentReactionRemove: boolean;
+}
+
+export interface CommentUnsetReactionVariables {
+  commentId: string;
+  reaction: MessageReactionType;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: RoomUpdate
 // ====================================================
 

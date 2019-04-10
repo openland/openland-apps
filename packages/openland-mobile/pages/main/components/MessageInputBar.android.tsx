@@ -94,10 +94,6 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                             </TouchableOpacity>
                         )}
 
-                        {this.props.attachesEnabled === false && (
-                            <View width={15} />
-                        )}
-
                         <View style={styles.textInputContainer} >
                             <ASView
                                 style={{

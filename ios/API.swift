@@ -649,6 +649,55 @@ public struct RoomInviteEmailRequest: GraphQLMapConvertible {
   }
 }
 
+public enum MessageReactionType: RawRepresentable, Equatable, Hashable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+  public typealias RawValue = String
+  case like
+  case thumbUp
+  case joy
+  case scream
+  case crying
+  case angry
+  /// Auto generated constant for unknown enum values
+  case __unknown(RawValue)
+
+  public init?(rawValue: RawValue) {
+    switch rawValue {
+      case "LIKE": self = .like
+      case "THUMB_UP": self = .thumbUp
+      case "JOY": self = .joy
+      case "SCREAM": self = .scream
+      case "CRYING": self = .crying
+      case "ANGRY": self = .angry
+      default: self = .__unknown(rawValue)
+    }
+  }
+
+  public var rawValue: RawValue {
+    switch self {
+      case .like: return "LIKE"
+      case .thumbUp: return "THUMB_UP"
+      case .joy: return "JOY"
+      case .scream: return "SCREAM"
+      case .crying: return "CRYING"
+      case .angry: return "ANGRY"
+      case .__unknown(let value): return value
+    }
+  }
+
+  public static func == (lhs: MessageReactionType, rhs: MessageReactionType) -> Bool {
+    switch (lhs, rhs) {
+      case (.like, .like): return true
+      case (.thumbUp, .thumbUp): return true
+      case (.joy, .joy): return true
+      case (.scream, .scream): return true
+      case (.crying, .crying): return true
+      case (.angry, .angry): return true
+      case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+      default: return false
+    }
+  }
+}
+
 public struct RoomUpdateInput: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
 
@@ -1788,55 +1837,6 @@ public enum ModernMessageButtonStyle: RawRepresentable, Equatable, Hashable, Apo
     switch (lhs, rhs) {
       case (.default, .default): return true
       case (.light, .light): return true
-      case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
-      default: return false
-    }
-  }
-}
-
-public enum MessageReactionType: RawRepresentable, Equatable, Hashable, Apollo.JSONDecodable, Apollo.JSONEncodable {
-  public typealias RawValue = String
-  case like
-  case thumbUp
-  case joy
-  case scream
-  case crying
-  case angry
-  /// Auto generated constant for unknown enum values
-  case __unknown(RawValue)
-
-  public init?(rawValue: RawValue) {
-    switch rawValue {
-      case "LIKE": self = .like
-      case "THUMB_UP": self = .thumbUp
-      case "JOY": self = .joy
-      case "SCREAM": self = .scream
-      case "CRYING": self = .crying
-      case "ANGRY": self = .angry
-      default: self = .__unknown(rawValue)
-    }
-  }
-
-  public var rawValue: RawValue {
-    switch self {
-      case .like: return "LIKE"
-      case .thumbUp: return "THUMB_UP"
-      case .joy: return "JOY"
-      case .scream: return "SCREAM"
-      case .crying: return "CRYING"
-      case .angry: return "ANGRY"
-      case .__unknown(let value): return value
-    }
-  }
-
-  public static func == (lhs: MessageReactionType, rhs: MessageReactionType) -> Bool {
-    switch (lhs, rhs) {
-      case (.like, .like): return true
-      case (.thumbUp, .thumbUp): return true
-      case (.joy, .joy): return true
-      case (.scream, .scream): return true
-      case (.crying, .crying): return true
-      case (.angry, .angry): return true
       case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
       default: return false
     }
@@ -10438,6 +10438,94 @@ public final class MessageCommentsQuery: GraphQLQuery {
             }
           }
         }
+      }
+    }
+  }
+}
+
+public final class CommentSetReactionMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation CommentSetReaction($commentId: ID!, $reaction: MessageReactionType!) {\n  commentReactionAdd(commentId: $commentId, reaction: $reaction)\n}"
+
+  public var commentId: GraphQLID
+  public var reaction: MessageReactionType
+
+  public init(commentId: GraphQLID, reaction: MessageReactionType) {
+    self.commentId = commentId
+    self.reaction = reaction
+  }
+
+  public var variables: GraphQLMap? {
+    return ["commentId": commentId, "reaction": reaction]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("commentReactionAdd", arguments: ["commentId": GraphQLVariable("commentId"), "reaction": GraphQLVariable("reaction")], type: .nonNull(.scalar(Bool.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(commentReactionAdd: Bool) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "commentReactionAdd": commentReactionAdd])
+    }
+
+    public var commentReactionAdd: Bool {
+      get {
+        return resultMap["commentReactionAdd"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "commentReactionAdd")
+      }
+    }
+  }
+}
+
+public final class CommentUnsetReactionMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation CommentUnsetReaction($commentId: ID!, $reaction: MessageReactionType!) {\n  commentReactionRemove(commentId: $commentId, reaction: $reaction)\n}"
+
+  public var commentId: GraphQLID
+  public var reaction: MessageReactionType
+
+  public init(commentId: GraphQLID, reaction: MessageReactionType) {
+    self.commentId = commentId
+    self.reaction = reaction
+  }
+
+  public var variables: GraphQLMap? {
+    return ["commentId": commentId, "reaction": reaction]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("commentReactionRemove", arguments: ["commentId": GraphQLVariable("commentId"), "reaction": GraphQLVariable("reaction")], type: .nonNull(.scalar(Bool.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(commentReactionRemove: Bool) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "commentReactionRemove": commentReactionRemove])
+    }
+
+    public var commentReactionRemove: Bool {
+      get {
+        return resultMap["commentReactionRemove"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "commentReactionRemove")
       }
     }
   }

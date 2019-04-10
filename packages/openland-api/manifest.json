@@ -534,6 +534,20 @@
       }
     },
     {
+      "signature": "0df68435dd4fff529e797120cb3cbbbd632d17080c42015bc681a7d49bc44bc5",
+      "document": "mutation CommentSetReaction($commentId:ID!,$reaction:MessageReactionType!){commentReactionAdd(commentId:$commentId,reaction:$reaction)}",
+      "metadata": {
+        "engineSignature": "mutation CommentSetReaction($commentId:ID!,$reaction:MessageReactionType!){commentReactionAdd(commentId:$commentId,reaction:$reaction)}"
+      }
+    },
+    {
+      "signature": "a7edfd5397fbe240bd5c73134b4c8389840cfc45bb0bf407e8d139fc8480493e",
+      "document": "mutation CommentUnsetReaction($commentId:ID!,$reaction:MessageReactionType!){commentReactionRemove(commentId:$commentId,reaction:$reaction)}",
+      "metadata": {
+        "engineSignature": "mutation CommentUnsetReaction($commentId:ID!,$reaction:MessageReactionType!){commentReactionRemove(commentId:$commentId,reaction:$reaction)}"
+      }
+    },
+    {
       "signature": "5e164fc8a53d72890564c00a77e8744b7ff43c22c0edd55efc22e87c677ad0b7",
       "document": "mutation RoomUpdate($input:RoomUpdateInput!,$roomId:ID!){betaRoomUpdate(input:$input,roomId:$roomId){__typename...on PrivateRoom{id}...on SharedRoom{description id photo title}}}",
       "metadata": {
