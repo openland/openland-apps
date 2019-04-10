@@ -21,7 +21,8 @@ const LoadingWrapper = Glamorous.div({
 
 const dialogSearchWrapperClassName = css`
     justify-content: flex-start !important;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -139,14 +140,16 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             <XView flexGrow={1} flexBasis={0} minHeight={0}>
                 <DialogSearchInput value={query} onChange={setQuery} ref={ref} />
                 <XView flexGrow={1} flexBasis={0} minHeight={0}>
-                    <div className={dialogSearchWrapperClassName}>
-                        {isSearching && (
+                    {isSearching && (
+                        <div className={dialogSearchWrapperClassName}>
+
                             <DialogSearchResults
                                 variables={{ query: query }}
                                 onClick={() => setQuery('')}
                             />
-                        )}
-                    </div>
+
+                        </div>
+                    )}
                     {canUseDOM && !isSearching && (
                         <XListView
                             dataSource={dataSource}
