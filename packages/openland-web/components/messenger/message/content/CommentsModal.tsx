@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { useClient } from 'openland-web/utils/useClient';
 import { XButton } from 'openland-x/XButton';
 import { DumpSendMessage } from 'openland-web/fragments/MessageComposeComponent/DumpSendMessage';
@@ -22,6 +21,7 @@ import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/Fi
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
+import { MessageModal } from 'openland-web/fragments/chat/MessageModal';
 
 type CommentsInputProps = {
     onSend?: (text: string, mentions: UserShort[] | null) => void;
@@ -202,19 +202,23 @@ const CommentsInner = () => {
 };
 
 export const CommentsModal = () => {
+    let router = React.useContext(XRouterContext)!;
+    const curMesssageId = router.routeQuery.comments;
+    const client = useClient();
+
+    const message = client.useMessage({
+        messageId: curMesssageId,
+    });
+
+    const maybeGeneralMessage = message.message;
+
+    if (!maybeGeneralMessage || maybeGeneralMessage.__typename === 'ServiceMessage') {
+        return;
+    }
+
     return (
-        <XModalForm
-            title={'TITLE'}
-            targetQuery="comments"
-            defaultData={{
-                input: {},
-            }}
-            defaultAction={async ({ input }) => {
-                console.log(input);
-                //
-            }}
-        >
+        <MessageModal generalMessage={maybeGeneralMessage}>
             <CommentsInner />
-        </XModalForm>
+        </MessageModal>
     );
 };

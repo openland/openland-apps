@@ -8,8 +8,6 @@ import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContex
 import {
     FullMessage_GeneralMessage,
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
-    Room_room_PrivateRoom,
-    Room_room_SharedRoom,
 } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { MessageTextComponent } from 'openland-web/components/messenger/message/content/MessageTextComponent';
@@ -21,11 +19,10 @@ import { XLink } from 'openland-x/XLink';
 import { MessageReplyComponent } from 'openland-web/components/messenger/message/content/MessageReplyComponent';
 
 export interface MessageComponentProps {
-    nearCrossButtons: any;
+    nearCrossButtons?: any;
     generalMessage: FullMessage_GeneralMessage;
-    chatId: string;
-    room: Room_room_SharedRoom | Room_room_PrivateRoom;
     target?: any;
+    children?: any;
 }
 
 const ImageClassName = css`
@@ -65,15 +62,6 @@ const ReplyMessageWrapper = Glamorous.div({
 });
 
 type attachmentType = FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
-
-// {canMeUnpinMessage && (
-//     <UnpinButton variables={{ chatId: props.chatId }} />
-// )}
-
-// let canMeUnpinMessage = false;
-// if ((room as Room_room_SharedRoom).kind === 'GROUP') {
-//     canMeUnpinMessage = true;
-// }
 
 export const MessageModal = React.memo((props: MessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
@@ -307,6 +295,7 @@ export const MessageModal = React.memo((props: MessageComponentProps) => {
                         )}
                         {quotedMessages}
                     </XView>
+                    {props.children}
                 </XView>
             }
             target={target}
