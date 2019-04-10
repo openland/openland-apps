@@ -21,7 +21,8 @@ import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/Fi
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
-import { MessageModal } from 'openland-web/fragments/chat/MessageModal';
+import { MessageModalBody } from 'openland-web/fragments/chat/MessageModal';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
 
 type CommentsInputProps = {
     onSend?: (text: string, mentions: UserShort[] | null) => void;
@@ -87,6 +88,16 @@ const CommentsInner = () => {
     let router = React.useContext(XRouterContext)!;
     const curMesssageId = router.routeQuery.comments;
     const [showInputId, setShowInputId] = React.useState<string | null>(null);
+
+    const commentedMessage = client.useMessage({
+        messageId: curMesssageId,
+    });
+
+    const maybeGeneralMessage = commentedMessage.message;
+
+    if (!maybeGeneralMessage || maybeGeneralMessage.__typename === 'ServiceMessage') {
+        return null;
+    }
 
     const messageComments = client.useMessageComments({
         messageId: curMesssageId,
@@ -178,7 +189,7 @@ const CommentsInner = () => {
         );
     }
 
-    return (
+    const commentsElems = (
         <XView flexDirection="row" marginBottom={16}>
             <XView flexGrow={1} paddingLeft={16}>
                 <XView>count: {messageComments.messageComments.count}</XView>
@@ -199,26 +210,24 @@ const CommentsInner = () => {
             </XView>
         </XView>
     );
+
+    return (
+        <MessageModalBody generalMessage={maybeGeneralMessage}>{commentsElems}</MessageModalBody>
+    );
 };
 
 export const CommentsModal = () => {
-    let router = React.useContext(XRouterContext)!;
-    const curMesssageId = router.routeQuery.comments;
-    const client = useClient();
-
-    const message = client.useMessage({
-        messageId: curMesssageId,
-    });
-
-    const maybeGeneralMessage = message.message;
-
-    if (!maybeGeneralMessage || maybeGeneralMessage.__typename === 'ServiceMessage') {
-        return;
-    }
-
     return (
-        <MessageModal generalMessage={maybeGeneralMessage}>
+        <XModalForm
+            targetQuery="comments"
+            defaultData={{
+                input: {},
+            }}
+            defaultAction={async () => {
+                //
+            }}
+        >
             <CommentsInner />
-        </MessageModal>
+        </XModalForm>
     );
 };
