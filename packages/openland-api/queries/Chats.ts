@@ -375,6 +375,24 @@ export const ChatHistoryQuery = gql`
     ${RoomShort}
 `;
 
+export const ChatInitQuery = gql`
+    query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {
+        messages(chatId: $chatId, first: $first, before: $before) {
+            ...FullMessage
+        }
+        state: conversationState(id: $chatId) {
+            state
+        }
+        room(id: $chatId) {
+            ...RoomShort
+        }
+    }
+    ${FullMessage}
+    ${UserTiny}
+    ${UserShort}
+    ${RoomShort}
+`;
+
 export const SendMessageMutation = gql`
     mutation SendMessage(
         $message: String

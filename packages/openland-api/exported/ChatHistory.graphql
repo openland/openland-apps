@@ -7,4 +7,8 @@ query ChatHistory($before: ID, $chatId: ID!, $first: Int!) {
     __typename
     ...FullMessage
   }
+  room(id: $chatId) {
+    __typename
+    ...RoomShort
+  }
 }

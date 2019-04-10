@@ -29,6 +29,7 @@ const Container = Glamorous.div({
 const ResizableScroll = () => {
     let [count, setCount] = React.useState(0);
     let [count2, setCount2] = React.useState(0);
+    let [height, setHeight] = React.useState(200);
     let childrens: any[] = [];
     for (let i = count2; i > 0; i--) {
         childrens.push(<XView key={'keyb-' + i} backgroundColor={['yellow', 'green', 'brown'][i % 3]} width={100} height={100} flexShrink={0} />);
@@ -44,8 +45,11 @@ const ResizableScroll = () => {
 
                 <XButton onClick={() => setCount2((v) => v + 1)} text="add2" />
                 <XButton onClick={() => setCount2((v) => v - 1)} text="remove2" />
+
+                <XButton onClick={() => setHeight((v) => v + 50)} text="increase" />
+                <XButton onClick={() => setHeight((v) => v - 50)} text="decrease" />
             </XView>
-            <XView flexDirection="column" width={200} height={200}>
+            <XView flexDirection="column" width={200} height={height}>
                 <XScrollViewReverse2>
                     {childrens}
                 </XScrollViewReverse2>

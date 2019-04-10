@@ -37,6 +37,7 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { ChannelMuteButton } from './components/ChannelMuteButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showCallModal } from './Call';
+import { NON_PRODUCTION } from '../Init';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -279,7 +280,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
 
         if (sharedRoom) {
-            if (sharedRoom.isChannel) {
+            if (sharedRoom.isChannel && NON_PRODUCTION) {
                 this.props.router.push('MessageComments', { messageId: mid });
             } else {
                 this.props.router.push('PinnedMessage', { id: this.props.chat.id, room: sharedRoom })
