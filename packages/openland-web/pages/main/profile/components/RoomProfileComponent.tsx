@@ -6,7 +6,7 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
-import { XScrollView2 } from 'openland-x/XScrollView2';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
@@ -23,7 +23,6 @@ import {
     HeaderTitle,
     HeaderInfo,
     HeaderTools,
-    BackButton,
     Section,
     SectionContent,
     HeaderWrapper,
@@ -54,6 +53,10 @@ import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvance
 import { useClient } from 'openland-web/utils/useClient';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
 import { AvatarModal } from './UserProfileComponent';
+import Glamorous from 'glamorous';
+import { canUseDOM } from '../../../../../openland-y-utils/canUseDOM';
+import { XIcon } from '../../../../../openland-x/XIcon';
+import { TextProfiles } from '../../../../../openland-text/TextProfiles';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -412,6 +415,41 @@ interface RoomGroupProfileInnerProps extends XWithRouter {
     conversationId: string;
 }
 
+const BackWrapper = Glamorous.div({
+    background: '#f9f9f9',
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+    cursor: 'pointer',
+    flexShrink: 0,
+});
+
+const BackInner = Glamorous(XContentWrapper)({
+    alignItems: 'center',
+    paddingTop: 13,
+    paddingBottom: 12,
+    '& i': {
+        fontSize: 20,
+        marginRight: 6,
+        marginLeft: -7,
+        color: 'rgba(0, 0, 0, 0.3)',
+    },
+    '& span': {
+        fontWeight: 600,
+        fontSize: 14,
+        lineHeight: '20px',
+        letterSpacing: 0,
+        color: 'rgba(0, 0, 0, 0.8)',
+    },
+});
+
+const BackButton = () => (
+    <BackWrapper onClick={() => (canUseDOM ? window.history.back() : null)}>
+        <BackInner withFlex={true}>
+            <XIcon icon="chevron_left" />
+            <span>{TextProfiles.backButton}</span>
+        </BackInner>
+    </BackWrapper>
+);
+
 const RoomGroupProfileInner = ({
     chat,
     onDirectory,
@@ -421,10 +459,10 @@ const RoomGroupProfileInner = ({
     return (
         <>
             <XDocumentHead title={chat.title} />
-            <XView flexGrow={1}>
+            <XView flexGrow={1} flexShrink={1}>
                 <BackButton />
                 <Header chat={chat} />
-                <XScrollView2 flexGrow={1}>
+                <XScrollView3 flexGrow={1} flexShrink={1}>
                     <About chat={chat} />
                     {chat.organization && (
                         <XView
@@ -452,7 +490,7 @@ const RoomGroupProfileInner = ({
                         onDirectory={onDirectory}
                         isChannel={chat.isChannel}
                     />
-                </XScrollView2>
+                </XScrollView3>
             </XView>
         </>
     );
