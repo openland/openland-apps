@@ -223,6 +223,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderChatHistory(variables: Types.ChatHistoryVariables): Types.ChatHistory | null {
         return this.useQuery(Source.ChatHistoryQuery, variables);
     }
+    async queryChatInit(variables: Types.ChatInitVariables, opts?: OperationParameters): Promise<Types.ChatInit> {
+        return this.client.query(Source.ChatInitQuery, variables, opts);
+    }
+    async refetchChatInit(variables: Types.ChatInitVariables): Promise<Types.ChatInit> {
+        return this.refetch(Source.ChatInitQuery, variables);
+    }
+    useChatInit(variables: Types.ChatInitVariables, opts?: QueryWatchParameters): Types.ChatInit {
+        return this.useQuerySuspense(Source.ChatInitQuery, variables, opts);
+    }
+    useWithoutLoaderChatInit(variables: Types.ChatInitVariables): Types.ChatInit | null {
+        return this.useQuery(Source.ChatInitQuery, variables);
+    }
     async queryChatSearchGroup(variables: Types.ChatSearchGroupVariables, opts?: OperationParameters): Promise<Types.ChatSearchGroup> {
         return this.client.query(Source.ChatSearchGroupQuery, variables, opts);
     }

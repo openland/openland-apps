@@ -3175,7 +3175,119 @@
 					"type": "Int!"
 				}
 			],
-			"source": "query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n  room(id: $chatId) {\n    __typename\n    ...RoomShort\n  }\n}",
+			"source": "query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n}",
+			"fields": [
+				{
+					"responseName": "messages",
+					"fieldName": "messages",
+					"type": "[ModernMessage!]!",
+					"args": [
+						{
+							"name": "chatId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "chatId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "first",
+							"value": {
+								"kind": "Variable",
+								"variableName": "first"
+							},
+							"type": "Int!"
+						},
+						{
+							"name": "before",
+							"value": {
+								"kind": "Variable",
+								"variableName": "before"
+							},
+							"type": "ID"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"FullMessage"
+					],
+					"inlineFragments": []
+				},
+				{
+					"responseName": "state",
+					"fieldName": "conversationState",
+					"type": "ConversationUpdateState!",
+					"args": [
+						{
+							"name": "id",
+							"value": {
+								"kind": "Variable",
+								"variableName": "chatId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "state",
+							"fieldName": "state",
+							"type": "String",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"FullMessage",
+				"UserShort",
+				"OrganizationShort",
+				"UserTiny"
+			],
+			"sourceWithFragments": "query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}",
+			"operationId": "15d2b84f0b07bfdc692f637abb0b91f26baee8ee4512c090488a4285d45c6b0d"
+		},
+		{
+			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Chats.ts",
+			"operationName": "ChatInit",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "chatId",
+					"type": "ID!"
+				},
+				{
+					"name": "before",
+					"type": "ID"
+				},
+				{
+					"name": "first",
+					"type": "Int!"
+				}
+			],
+			"source": "query ChatInit($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n  room(id: $chatId) {\n    __typename\n    ...RoomShort\n  }\n}",
 			"fields": [
 				{
 					"responseName": "messages",
@@ -3295,8 +3407,8 @@
 				"UserTiny",
 				"RoomShort"
 			],
-			"sourceWithFragments": "query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n  room(id: $chatId) {\n    __typename\n    ...RoomShort\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}\nfragment RoomShort on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    membership\n    role\n    canEdit\n    canSendMessage\n    membersCount\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n    organization {\n      __typename\n      ...OrganizationShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n}",
-			"operationId": "6d30fcb6aa562186b1089eb58dcf2d6180912f4709b15011dcb286d9dae541da"
+			"sourceWithFragments": "query ChatInit($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n  room(id: $chatId) {\n    __typename\n    ...RoomShort\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}\nfragment RoomShort on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    membership\n    role\n    canEdit\n    canSendMessage\n    membersCount\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n    organization {\n      __typename\n      ...OrganizationShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n}",
+			"operationId": "eaa15a498a269d25b388363675d6ebaac1383d6c6654ca449053c866afe7f543"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -5458,7 +5570,7 @@
 					"type": "String!"
 				}
 			],
-			"source": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      creator {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n      room {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          socialImage\n          description\n          membership\n          membersCount\n        }\n      }\n    }\n  }\n}",
+			"source": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      orgId\n      title\n      creator {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n      room {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          socialImage\n          description\n          membership\n          membersCount\n        }\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "invite",
@@ -5497,6 +5609,20 @@
 									"fieldName": "__typename",
 									"type": "String!",
 									"isConditional": false
+								},
+								{
+									"responseName": "orgId",
+									"fieldName": "orgId",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "title",
+									"fieldName": "title",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
 								},
 								{
 									"responseName": "creator",
@@ -5677,8 +5803,8 @@
 				"UserShort",
 				"OrganizationShort"
 			],
-			"sourceWithFragments": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      creator {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n      room {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          socialImage\n          description\n          membership\n          membersCount\n        }\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
-			"operationId": "46537ca20ab18507da8ebbcee7b0b2b0807f8cf1aa217644782fd3ed9ad4359f"
+			"sourceWithFragments": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      orgId\n      title\n      creator {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n      room {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          socialImage\n          description\n          membership\n          membersCount\n        }\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}",
+			"operationId": "357e07ab5f0cfe0af4b22df34f80d1bee64466768922f6737d029e0dc063715a"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Chats.ts",

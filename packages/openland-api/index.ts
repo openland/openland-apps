@@ -80,6 +80,7 @@ export const SaveDraftMessageMutation = typedMutation<Types.SaveDraftMessage, Ty
 export const GetDraftMessageQuery = typedQuery<Types.GetDraftMessage, Types.GetDraftMessageVariables>(Chats.GetDraftMessageQuery);
 export const GlobalCounterQuery = typedQuery<Types.GlobalCounter, {}>(Chats.GlobalCounterQuery);
 export const ChatHistoryQuery = typedQuery<Types.ChatHistory, Types.ChatHistoryVariables>(Chats.ChatHistoryQuery);
+export const ChatInitQuery = typedQuery<Types.ChatInit, Types.ChatInitVariables>(Chats.ChatInitQuery);
 export const SendMessageMutation = typedMutation<Types.SendMessage, Types.SendMessageVariables>(Chats.SendMessageMutation);
 export const ReplyMessageMutation = typedMutation<Types.ReplyMessage, Types.ReplyMessageVariables>(Chats.ReplyMessageMutation);
 export const RoomReadMutation = typedMutation<Types.RoomRead, Types.RoomReadVariables>(Chats.RoomReadMutation);

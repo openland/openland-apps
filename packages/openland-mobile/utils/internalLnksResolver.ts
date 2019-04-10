@@ -7,6 +7,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { next } from 'openland-mobile/pages/auth/signup';
 import UrlPattern from 'url-pattern';
 import UrlParse from 'url-parse';
+import { ResolvedInvite_invite_RoomInvite, ResolvedInvite_invite_InviteInfo } from 'openland-api/Types';
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
     return async () => {
@@ -18,24 +19,59 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         let patternBase = '(http(s)\\://)(:subdomain.)openland.com/';
         let patternBaseDeep = 'openland\\://deep/';
 
-        // 
-        // JOIN ROOMS
+        ////
+        ////  >>>>> INVITES
+        ////
+
+        let joinRoom = async (invite: Partial<ResolvedInvite_invite_RoomInvite> | null, key: string) => {
+            try {
+                if (invite && invite.room) {
+                    if (invite.room.membership === 'MEMBER') {
+                        getMessenger().history.navigationManager.pushAndReset('Conversation', { id: invite.room.id });
+                    } else {
+                        getMessenger().history.navigationManager.push('GroupInvite', { invite: invite, inviteId: key });
+                    }
+                } else {
+                    Alert.alert('Invite not found');
+                }
+            } catch (e) {
+                Alert.alert(e.message);
+            }
+        }
+
+        let joinOraganizaion = async (invite: Partial<ResolvedInvite_invite_InviteInfo> | null, key: string) => {
+            if (invite) {
+                stopLoader();
+                Alert.builder()
+                    .title('Invite to ' + invite.title)
+                    .message((invite.creator ? invite.creator.name : 'someone') + ' invites you to join ' + invite.title)
+                    .button('Cancel', 'cancel')
+                    .action('Accept invitation', 'default', async () => {
+                        await getMessenger().engine.client.mutateAccountInviteJoin({ inviteKey: key });
+                    })
+                    .show();
+            } else {
+                Alert.alert('Invite not found');
+            }
+        }
+
+        //
+        // GENERIC INVITE
         //
         try {
-            let roomInvitePattern = new UrlPattern(patternBase + 'joinChannel/:invite');
-            let roomInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinroom/:invite');
-            let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(srcLink);
+            let genericInvitePattern = new UrlPattern(patternBase + 'invite/:invite');
+            let match = genericInvitePattern.match(link);
 
             if (match && match.invite) {
                 resolved = true;
                 startLoader();
                 try {
-                    let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: match.invite });
-                    if (info && info.invite) {
-                        if (info.invite.room.membership === 'MEMBER') {
-                            getMessenger().history.navigationManager.pushAndReset('Conversation', { id: info.invite.room.id });
-                        } else {
-                            getMessenger().history.navigationManager.push('GroupInvite', { invite: info.invite, inviteId: match.invite });
+                    let info = await getMessenger().engine.client.queryResolvedInvite({ key: match.invite });
+                    if (info.invite) {
+                        if (info.invite.__typename === 'RoomInvite') {
+                            await joinRoom(info.invite, match.invite);
+                        } else if (info.invite.__typename === 'InviteInfo') {
+                            await joinOraganizaion(info.invite, match.invite);
                         }
                     } else {
                         Alert.alert('Invite not found');
@@ -49,7 +85,26 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
             Alert.alert(e.message);
         }
 
+        // DEPRICATED, delete after adoption, web + mobile link generation migration
+        // JOIN ROOMS 
         //
+        try {
+            let roomInvitePattern = new UrlPattern(patternBase + 'joinChannel/:invite');
+            let roomInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinroom/:invite');
+            let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(srcLink);
+
+            if (match && match.invite) {
+                resolved = true;
+                startLoader()
+                let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: match.invite });
+                await joinRoom(info.invite, match.invite);
+                stopLoader();
+            }
+        } catch (e) {
+            Alert.alert(e.message);
+        }
+
+        // DEPRICATED, delete after adoption, web + mobile link generation migration
         // JOIN ORGANIZATION
         //
         let orgInvitePattern = new UrlPattern(patternBase + 'join/:invite');
@@ -61,25 +116,16 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
             startLoader();
             try {
                 let info = await getMessenger().engine.client.queryAccountInviteInfo({ inviteKey: matchOrg.invite });
-                if (info && info.invite) {
-                    let orgId = info.invite.orgId;
-                    stopLoader();
-                    Alert.builder()
-                        .title('Invite to ' + info.invite.title)
-                        .message((info.invite.creator ? info.invite.creator.name : 'someone') + ' invites you to join ' + info.invite.title)
-                        .button('Cancel', 'cancel')
-                        .action('Accept invitation', 'default', async () => {
-                            await getMessenger().engine.client.mutateAccountInviteJoin({ inviteKey: matchOrg.invite });
-                        })
-                        .show();
-                } else {
-                    Alert.alert('Invite not found');
-                }
+                await joinOraganizaion(info.invite, matchOrg.invite);
             } catch (e) {
                 Alert.alert(e.message);
             }
             stopLoader();
         }
+
+        ////
+        ////  <<<<< INVITES
+        ////
 
         //
         // PROFILE ORGANIZATION
@@ -196,6 +242,39 @@ export const joinInviteIfHave = async () => {
     }
     let patternBase = '(http(s)\\://)(:subdomain.)openland.com/';
     let patternBaseDeep = 'openland\\://deep/';
+
+    let joinRoom = async (invite: Partial<ResolvedInvite_invite_RoomInvite> | null, key: string) => {
+        if (invite && invite.room && invite.invitedByUser) {
+            Alert.builder()
+                .title('Invite to ' + invite.room.title)
+                .message(invite.invitedByUser.name + ' invites you to join ' + invite.room.title)
+                .button('Cancel', 'cancel')
+                .action('Accept invitation', 'default', async () => {
+                    await getMessenger().engine.client.mutateRoomJoinInviteLink({ invite: key });
+                    await next(getMessenger().history.navigationManager);
+                })
+                .show();
+        } else {
+            Alert.alert('Invite not found');
+        }
+    }
+
+    let joinOraganizaion = async (invite: Partial<ResolvedInvite_invite_InviteInfo> | null, key: string) => {
+        if (invite) {
+            Alert.builder()
+                .title('Invite to ' + invite.title)
+                .message((invite.creator ? invite.creator.name : 'someone') + ' invites you to join ' + invite.title)
+                .button('Cancel', 'cancel')
+                .action('Accept invitation', 'default', async () => {
+                    await getMessenger().engine.client.mutateAccountInviteJoin({ inviteKey: key });
+                    await next(getMessenger().history.navigationManager);
+                })
+                .show();
+        } else {
+            Alert.alert('Invite not found');
+        }
+    }
+
     // 
     // JOIN ROOMS
     //
@@ -207,19 +286,7 @@ export const joinInviteIfHave = async () => {
             startLoader();
             let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: match.invite });
             stopLoader();
-            if (info && info.invite) {
-                Alert.builder()
-                    .title('Invite to ' + info.invite.room.title)
-                    .message(info.invite.invitedByUser.name + ' invites you to join ' + info.invite.room.title)
-                    .button('Cancel', 'cancel')
-                    .action('Accept invitation', 'default', async () => {
-                        await getMessenger().engine.client.mutateRoomJoinInviteLink({ invite: match.invite });
-                        await next(getMessenger().history.navigationManager);
-                    })
-                    .show();
-            } else {
-                Alert.alert('Invite not found');
-            }
+            await joinRoom(info.invite, match.invite);
         } catch (e) {
             stopLoader();
             Alert.alert(formatError(e));
@@ -234,23 +301,10 @@ export const joinInviteIfHave = async () => {
     let matchOrg = orgInvitePattern.match(link) || orgInvitePatternDeep.match(srcLink);
     if (matchOrg && matchOrg.invite) {
         try {
-            stopLoader();
+            startLoader();
             let info = await getMessenger().engine.client.queryAccountInviteInfo({ inviteKey: matchOrg.invite });
             stopLoader();
-            if (info && info.invite) {
-                let orgId = info.invite.orgId;
-                Alert.builder()
-                    .title('Invite to ' + info.invite.title)
-                    .message((info.invite.creator ? info.invite.creator.name : 'someone') + ' invites you to join ' + info.invite.title)
-                    .button('Cancel', 'cancel')
-                    .action('Accept invitation', 'default', async () => {
-                        await getMessenger().engine.client.mutateAccountInviteJoin({ inviteKey: matchOrg.invite });
-                        await next(getMessenger().history.navigationManager);
-                    })
-                    .show();
-            } else {
-                Alert.alert('Invite not found');
-            }
+            await joinOraganizaion(info.invite, matchOrg.invite);
         } catch (e) {
             stopLoader();
             Alert.alert(formatError(e));
@@ -258,16 +312,31 @@ export const joinInviteIfHave = async () => {
     }
 
     //
-    // JOIN GLOBAL INVITE
+    // JOIN GENERIC INVITE
     //
     let globalInvitePattern = new UrlPattern(patternBase + 'invite/:invite');
     let matchGlobal = globalInvitePattern.match(link);
     if (matchGlobal && matchGlobal.invite) {
         try {
             startLoader();
-            await getMessenger().engine.client.mutateOrganizationActivateByInvite({ inviteKey: matchGlobal.invite });
-            await next(getMessenger().history.navigationManager);
-            stopLoader();
+
+            let info = await getMessenger().engine.client.queryResolvedInvite({ key: match.invite });
+            if (info.invite) {
+                if (info.invite.__typename === 'AppInvite') {
+                    await getMessenger().engine.client.mutateOrganizationActivateByInvite({ inviteKey: matchGlobal.invite });
+                    await next(getMessenger().history.navigationManager);
+                    stopLoader();
+                } else if (info.invite.__typename === 'InviteInfo') {
+                    stopLoader();
+                    await joinOraganizaion(info.invite, matchGlobal.invite);
+                } else if (info.invite.__typename === 'RoomInvite') {
+                    stopLoader();
+                    await joinRoom(info.invite, matchGlobal.invite);
+                }
+            } else {
+                stopLoader();
+                Alert.alert('Invite not found');
+            }
         } catch (e) {
             stopLoader();
             Alert.alert(formatError(e));

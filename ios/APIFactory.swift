@@ -247,6 +247,22 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "ChatInit") {
+      let chatId = notNull(readString(src, "chatId"))
+      let before = readString(src, "before")
+      let first = notNull(readInt(src, "first"))
+      let requestBody = ChatInitQuery(chatId: chatId, before: before, first: first)
+      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "ChatSearchGroup") {
       let members = notNull(notNullListItems(readStringList(src, "members")))
       let requestBody = ChatSearchGroupQuery(members: members)
@@ -981,6 +997,22 @@ class ApiFactory: ApiFactoryBase {
       let before = readString(src, "before")
       let first = notNull(readInt(src, "first"))
       let requestBody = ChatHistoryQuery(chatId: chatId, before: before, first: first)
+      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
+    if (name == "ChatInit") {
+      let chatId = notNull(readString(src, "chatId"))
+      let before = readString(src, "before")
+      let first = notNull(readInt(src, "first"))
+      let requestBody = ChatInitQuery(chatId: chatId, before: before, first: first)
       let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -3361,6 +3393,16 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "ChatInit") {
+      let chatId = notNull(readString(src, "chatId"))
+      let before = readString(src, "before")
+      let first = notNull(readInt(src, "first"))
+      let requestBody = ChatInitQuery(chatId: chatId, before: before, first: first)
+      store.withinReadTransaction { (tx) in
+        handler((try tx.read(query: requestBody)).resultMap, nil)
+      }
+      return
+    }
     if (name == "ChatSearchGroup") {
       let members = notNull(notNullListItems(readStringList(src, "members")))
       let requestBody = ChatSearchGroupQuery(members: members)
@@ -3818,6 +3860,18 @@ class ApiFactory: ApiFactoryBase {
       let first = notNull(readInt(src, "first"))
       let requestBody = ChatHistoryQuery(chatId: chatId, before: before, first: first)
       let data = ChatHistoryQuery.Data(unsafeResultMap: self.convertData(src: data))
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(data: data, forQuery: requestBody)
+        handler(nil, nil)
+      }
+      return
+    }
+    if (name == "ChatInit") {
+      let chatId = notNull(readString(src, "chatId"))
+      let before = readString(src, "before")
+      let first = notNull(readInt(src, "first"))
+      let requestBody = ChatInitQuery(chatId: chatId, before: before, first: first)
+      let data = ChatInitQuery.Data(unsafeResultMap: self.convertData(src: data))
       store.withinReadWriteTransaction { (tx) in
         try tx.write(data: data, forQuery: requestBody)
         handler(nil, nil)

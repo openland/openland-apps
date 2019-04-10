@@ -6797,7 +6797,152 @@ public final class GlobalCounterQuery: GraphQLQuery {
 
 public final class ChatHistoryQuery: GraphQLQuery {
   public let operationDefinition =
-    "query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n  room(id: $chatId) {\n    __typename\n    ...RoomShort\n  }\n}"
+    "query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n}"
+
+  public var queryDocument: String { return operationDefinition.appending(FullMessage.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+
+  public var chatId: GraphQLID
+  public var before: GraphQLID?
+  public var first: Int
+
+  public init(chatId: GraphQLID, before: GraphQLID? = nil, first: Int) {
+    self.chatId = chatId
+    self.before = before
+    self.first = first
+  }
+
+  public var variables: GraphQLMap? {
+    return ["chatId": chatId, "before": before, "first": first]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("messages", arguments: ["chatId": GraphQLVariable("chatId"), "first": GraphQLVariable("first"), "before": GraphQLVariable("before")], type: .nonNull(.list(.nonNull(.object(Message.selections))))),
+      GraphQLField("conversationState", alias: "state", arguments: ["id": GraphQLVariable("chatId")], type: .nonNull(.object(State.selections))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(messages: [Message], state: State) {
+      self.init(unsafeResultMap: ["__typename": "Query", "messages": messages.map { (value: Message) -> ResultMap in value.resultMap }, "state": state.resultMap])
+    }
+
+    public var messages: [Message] {
+      get {
+        return (resultMap["messages"] as! [ResultMap]).map { (value: ResultMap) -> Message in Message(unsafeResultMap: value) }
+      }
+      set {
+        resultMap.updateValue(newValue.map { (value: Message) -> ResultMap in value.resultMap }, forKey: "messages")
+      }
+    }
+
+    public var state: State {
+      get {
+        return State(unsafeResultMap: resultMap["state"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "state")
+      }
+    }
+
+    public struct Message: GraphQLSelectionSet {
+      public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(FullMessage.self),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var fullMessage: FullMessage {
+          get {
+            return FullMessage(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+
+    public struct State: GraphQLSelectionSet {
+      public static let possibleTypes = ["ConversationUpdateState"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("state", type: .scalar(String.self)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(state: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "ConversationUpdateState", "state": state])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var state: String? {
+        get {
+          return resultMap["state"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "state")
+        }
+      }
+    }
+  }
+}
+
+public final class ChatInitQuery: GraphQLQuery {
+  public let operationDefinition =
+    "query ChatInit($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n  room(id: $chatId) {\n    __typename\n    ...RoomShort\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(FullMessage.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(RoomShort.fragmentDefinition) }
 
@@ -9712,7 +9857,7 @@ public final class RoomInviteInfoQuery: GraphQLQuery {
 
 public final class ResolvedInviteQuery: GraphQLQuery {
   public let operationDefinition =
-    "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      creator {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n      room {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          socialImage\n          description\n          membership\n          membersCount\n        }\n      }\n    }\n  }\n}"
+    "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      orgId\n      title\n      creator {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n      room {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          socialImage\n          description\n          membership\n          membersCount\n        }\n      }\n    }\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
 
@@ -9770,8 +9915,8 @@ public final class ResolvedInviteQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public static func makeInviteInfo(creator: AsInviteInfo.Creator? = nil) -> Invite {
-        return Invite(unsafeResultMap: ["__typename": "InviteInfo", "creator": creator.flatMap { (value: AsInviteInfo.Creator) -> ResultMap in value.resultMap }])
+      public static func makeInviteInfo(orgId: GraphQLID, title: String, creator: AsInviteInfo.Creator? = nil) -> Invite {
+        return Invite(unsafeResultMap: ["__typename": "InviteInfo", "orgId": orgId, "title": title, "creator": creator.flatMap { (value: AsInviteInfo.Creator) -> ResultMap in value.resultMap }])
       }
 
       public static func makeAppInvite(inviter: AsAppInvite.Inviter) -> Invite {
@@ -9807,6 +9952,8 @@ public final class ResolvedInviteQuery: GraphQLQuery {
 
         public static let selections: [GraphQLSelection] = [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("orgId", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("title", type: .nonNull(.scalar(String.self))),
           GraphQLField("creator", type: .object(Creator.selections)),
         ]
 
@@ -9816,8 +9963,8 @@ public final class ResolvedInviteQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public init(creator: Creator? = nil) {
-          self.init(unsafeResultMap: ["__typename": "InviteInfo", "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }])
+        public init(orgId: GraphQLID, title: String, creator: Creator? = nil) {
+          self.init(unsafeResultMap: ["__typename": "InviteInfo", "orgId": orgId, "title": title, "creator": creator.flatMap { (value: Creator) -> ResultMap in value.resultMap }])
         }
 
         public var __typename: String {
@@ -9826,6 +9973,24 @@ public final class ResolvedInviteQuery: GraphQLQuery {
           }
           set {
             resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var orgId: GraphQLID {
+          get {
+            return resultMap["orgId"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "orgId")
+          }
+        }
+
+        public var title: String {
+          get {
+            return resultMap["title"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "title")
           }
         }
 

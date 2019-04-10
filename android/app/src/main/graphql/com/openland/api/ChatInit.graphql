@@ -1,4 +1,4 @@
-query ChatHistory($before: ID, $chatId: ID!, $first: Int!) {
+query ChatInit($before: ID, $chatId: ID!, $first: Int!) {
   state: conversationState(id: $chatId) {
     __typename
     state
@@ -6,5 +6,9 @@ query ChatHistory($before: ID, $chatId: ID!, $first: Int!) {
   messages(before: $before, chatId: $chatId, first: $first) {
     __typename
     ...FullMessage
+  }
+  room(id: $chatId) {
+    __typename
+    ...RoomShort
   }
 }

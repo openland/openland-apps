@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatWatchSubscription, RoomTinyQuery } from 'openland-api';
+import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatWatchSubscription, RoomTinyQuery, ChatInitQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
 import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_ServiceMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
@@ -150,7 +150,7 @@ export class ConversationEngine implements MessageSendHandler {
         log.log('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
-                let history = await this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, first: 15 }, { fetchPolicy: 'network-only' });
+                let history = await this.engine.client.client.query(ChatInitQuery, { chatId: this.conversationId, first: 15 }, { fetchPolicy: 'network-only' });
                 return history;
             } catch (e) {
                 log.warn(e);

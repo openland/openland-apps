@@ -376,7 +376,7 @@ export const ChatHistoryQuery = gql`
 `;
 
 export const ChatInitQuery = gql`
-    query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {
+    query ChatInit($chatId: ID!, $before: ID, $first: Int!) {
         messages(chatId: $chatId, first: $first, before: $before) {
             ...FullMessage
         }
@@ -723,6 +723,8 @@ export const ResolvedInviteQuery = gql`
         invite: alphaResolveInvite(key: $key) {
             __typename
             ... on InviteInfo {
+                orgId
+                title
                 creator {
                     ...UserShort
                 }

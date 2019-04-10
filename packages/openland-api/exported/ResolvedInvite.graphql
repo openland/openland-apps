@@ -6,6 +6,8 @@ query ResolvedInvite($key: String!) {
         __typename
         ...UserShort
       }
+      orgId
+      title
     }
     ... on AppInvite {
       inviter {

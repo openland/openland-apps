@@ -1557,6 +1557,13 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        builder.first(notNull(readInt(src, "first")))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "ChatInit") {
+       val builder = ChatInitQuery.builder()
+       builder.chatId(notNull(readString(src, "chatId")))
+       builder.before(readString(src, "before"))
+       builder.first(notNull(readInt(src, "first")))
+       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "ChatSearchGroup") {
        val builder = ChatSearchGroupQuery.builder()
        builder.members(notNull(notNullListItems(readStringList(src, "members"))))
