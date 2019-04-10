@@ -65,7 +65,7 @@ PODS:
     - React
     - SDWebImage/Core
     - SDWebImage/GIF
-  - react-native-haptic-feedback (1.4.2):
+  - react-native-haptic-feedback (1.7.1):
     - React
   - react-native-image-picker (0.14.3):
     - React
@@ -321,6 +321,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 483ae7abfe16c1e4740b817afe2f6862450ad360
+PODFILE CHECKSUM: 7200b1b5af68eb3b87375652939a26117942c2da
 
 COCOAPODS: 1.5.3

@@ -391,14 +391,14 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
             this._punchBaseScale.setValue(this._pinchScaleLast);
             this._pinchMover.setValue(scale);
             animate(this._pinchMover, 1, this._pinchLastVelocity);
-            ReactNativeHapticFeedback.trigger('impactLight', false);
+            ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
         } else if (this._pinchScaleLast < this._minZoom) {
             let scale = this._pinchScaleLast / this._minZoom;
             this._pinchScaleLast = this._minZoom;
             this._punchBaseScale.setValue(this._pinchScaleLast);
             this._pinchMover.setValue(scale);
             animate(this._pinchMover, 1, this._pinchLastVelocity);
-            ReactNativeHapticFeedback.trigger('impactLight', false);
+            ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
         } else if (this._pinchScaleLast === this._minZoom) {
             canCancel = true;
         }

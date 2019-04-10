@@ -94,7 +94,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
 
         if (this.isWebkit) {
             return (
-                <XView flexShrink={1} {...xstyles}>
+                <XView flexShrink={0} {...xstyles}>
                     <NativeBackend
                         onScroll={this.onScroll}
                     >
@@ -108,7 +108,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
 
         // Fallback
         return (
-            <XView flexShrink={1} {...xstyles}>
+            <XView flexShrink={0} {...xstyles}>
                 <CustomBackend onScroll={this.onScroll}>
                     <XView flexDirection="column" alignItems="stretch">
                         {this.props.children}
