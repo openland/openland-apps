@@ -275,6 +275,18 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         });
     }
 
+    handlePinnedMessagePress = (mid: string) => {
+        let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
+
+        if (sharedRoom) {
+            if (sharedRoom.isChannel) {
+                this.props.router.push('MessageComments', { messageId: mid });
+            } else {
+                this.props.router.push('PinnedMessage', { id: this.props.chat.id, room: sharedRoom })
+            }
+        }
+    }
+
     render() {
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
@@ -319,7 +331,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 <ASSafeAreaContext.Consumer>
                                     {area => (
                                         <View width="100%" height={56} flexDirection="column" zIndex={1} marginTop={area.top}>
-                                            <TouchableHighlight underlayColor={'white'} onPress={() => this.props.router.push('PinnedMessage', { id: this.props.chat.id, room: sharedRoom })}>
+                                            <TouchableHighlight underlayColor={'white'} onPress={() => this.handlePinnedMessagePress(sharedRoom!.pinnedMessage!.id)}>
                                                 <View backgroundColor="#f3f5f7" width="100%" height={56} flexDirection="column" zIndex={1} >
                                                     <View flexDirection="row" marginTop={9} marginLeft={12}>
                                                         <View flexGrow={1} flexDirection="row">
