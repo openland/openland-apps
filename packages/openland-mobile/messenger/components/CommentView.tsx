@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessageComments_messageComments_comments_comment } from 'openland-api/Types';
+import { MessageComments_messageComments_comments_comment, MessageReactionType } from 'openland-api/Types';
 import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
 import { MessageView } from './MessageView';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
@@ -8,7 +8,6 @@ import { formatDate } from 'openland-mobile/utils/formatDate';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { reactionMap } from './AsyncMessageReactionsView';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 
 const styles = StyleSheet.create({
@@ -47,28 +46,28 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     let client = getClient();
 
     const handleReactionPress = React.useCallback(() => {
-        let r = 'LIKE';
+        let r = MessageReactionType.LIKE;
 
-        // startLoader();
-        // try {
-        //     let remove = comment.reactions && comment.reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;
-        //     if (remove) {
-        //         client.mutateMessageUnsetReaction({ messageId: comment.id, reaction: reactionMap[r] });
-        //     } else {
-        //         client.mutateMessageSetReaction({ messageId: comment.id, reaction: reactionMap[r] });
-        //     }
-        // } catch (e) {
-        //     Alert.alert(e.message);
-        // }
-        // stopLoader();
-    }, [ comment ])
+        startLoader();
+        try {
+            let remove = reactions && reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;        
+            if (remove) {
+                client.mutateCommentUnsetReaction({ commentId: comment.id, reaction: r });
+            } else {
+                client.mutateCommentSetReaction({ commentId: comment.id, reaction: r });
+            }
+        } catch (e) {
+            Alert.alert(e.message);
+        }
+        stopLoader();
+    }, [ comment, reactions ])
 
     const marginLeft = (depth > 0) ? ((15 * depth) + 57) : 0;
 
-    let likesCount = comment.reactions.length;
+    let likesCount = reactions.length;
     let myLike = false;
 
-    comment.reactions.map(r => {
+    reactions.map(r => {
         if (r.user.id === getMessenger().engine.user.id) {
             myLike = true;
         }
@@ -87,7 +86,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let tools = (
         <View flexDirection="row" marginTop={4}>
-            <Text style={styles.date}>{formatDate(parseInt(comment.date, 10))}</Text>
+            <Text style={styles.date}>{formatDate(parseInt(date, 10))}</Text>
             <View marginLeft={12}>
                 {depth === 0 && (
                     <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
@@ -111,7 +110,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         <TouchableWithoutFeedback onPress={handleReactionPress}>
             <View width={44} marginRight={-16} alignItems="center" justifyContent="center">
                 <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? '#f6564e' : 'rgba(129, 137, 149, 0.3)', width: 18, height: 18 }} />
-                {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? '#000000' : 'rgba(0, 0, 0, 0.6)' } as TextStyle}>{comment.reactions.length}</Text>}
+                {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? '#000000' : 'rgba(0, 0, 0, 0.6)' } as TextStyle}>{likesCount}</Text>}
             </View>
         </TouchableWithoutFeedback>
     );

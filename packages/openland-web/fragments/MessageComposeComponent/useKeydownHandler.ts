@@ -15,12 +15,14 @@ export function useKeydownHandler({
     quoteState,
     conversation,
     user,
+    isActive,
 }: {
     inputMethodsState: InputMethodsStateT;
     inputValue: string;
     quoteState: QuoteStateT;
     conversation?: ConversationEngine;
     user: UserShort | null;
+    isActive: boolean | null;
 }) {
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
@@ -30,6 +32,7 @@ export function useKeydownHandler({
         }
 
         if (
+            isActive &&
             inputValue.length === 0 &&
             conversation &&
             ((e.code === 'ArrowUp' && !e.altKey && inputMethodsState.getHasFocus()) ||

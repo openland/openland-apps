@@ -2270,6 +2270,40 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "CommentSetReaction") {
+      let commentId = notNull(readString(src, "commentId"))
+      let reaction = notNull(readMessageReactionType(src, "reaction"))
+      let requestBody = CommentSetReactionMutation(commentId: commentId, reaction: reaction)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
+    if (name == "CommentUnsetReaction") {
+      let commentId = notNull(readString(src, "commentId"))
+      let reaction = notNull(readMessageReactionType(src, "reaction"))
+      let requestBody = CommentUnsetReactionMutation(commentId: commentId, reaction: reaction)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "RoomUpdate") {
       let roomId = notNull(readString(src, "roomId"))
       let input = notNull(readRoomUpdateInput(src, "input"))
@@ -4442,6 +4476,26 @@ class ApiFactory: ApiFactoryBase {
         return Optional.some(nil)
       } else {
         return Optional.some(SuperAdminRole.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
+     }
+  }
+  func readMessageReactionType(_ src: NSDictionary, _ name: String) -> MessageReactionType? {
+    let v = self.readString(src, name);
+    if v != nil && !(v is NSNull) {
+      return MessageReactionType.init(rawValue: v!)
+     } else {
+       return nil
+     }
+  }
+  func readMessageReactionTypeOptional(_ src: NSDictionary, _ name: String) -> Optional<MessageReactionType?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(MessageReactionType.init(rawValue: v!))
       }
      } else {
        return Optional.none

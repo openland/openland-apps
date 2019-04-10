@@ -1,0 +1,3 @@
+mutation CommentSetReaction($commentId: ID!, $reaction: MessageReactionType!) {
+  commentReactionAdd(commentId: $commentId, reaction: $reaction)
+}

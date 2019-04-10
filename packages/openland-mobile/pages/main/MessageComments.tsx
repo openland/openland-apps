@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { View, Text, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData, TouchableWithoutFeedback, Image, Platform } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -48,13 +48,17 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
     }
 
     handleSubmit = async () => {
-        await getClient().mutateAddMessageComment({
-            messageId: this.props.message.id,
-            message: this.state.text,
-            replyComment: this.state.replyTo ? this.state.replyTo.id : null,
-        });
+        const text = this.state.text;
 
-        this.setState({ text: '', replyTo: undefined });
+        if (text.trim().length > 0) {
+            await getClient().mutateAddMessageComment({
+                messageId: this.props.message.id,
+                message: this.state.text,
+                replyComment: this.state.replyTo ? this.state.replyTo.id : null,
+            });
+
+            this.setState({ text: '', replyTo: undefined });
+        }
     }
 
     handleTextChange = (src: string) => {
@@ -154,7 +158,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         );
 
         const replyView = replyTo ? (
-            <View marginLeft={15} paddingLeft={8} marginRight={52} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
+            <View marginLeft={Platform.OS === 'android' ? 12 : 15} paddingLeft={8} marginRight={Platform.OS === 'android' ? 12 : 52} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
                 <View flexGrow={1}>
                     <Text style={{ color: '#0084fe', fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1}>{replyTo.sender.name}</Text>
                     <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1}>{replyTo.message}</Text>

@@ -166,6 +166,26 @@ fun readSuperAdminRoleOptional(src: ReadableMap, name: String): Input<SuperAdmin
         return Input.absent()
     }
 }
+fun readMessageReactionType(src: ReadableMap, name: String): MessageReactionType? {
+    val v = readString(src, name);
+    if (v != null) {
+        return MessageReactionType.safeValueOf(v)
+    } else {
+        return null
+    }
+}
+fun readMessageReactionTypeOptional(src: ReadableMap, name: String): Input<MessageReactionType> {
+    val v = readOptionalString(src, name);
+    if (v.defined) {
+        if (v.value != null) {
+          return Input.fromNullable(MessageReactionType.safeValueOf(v.value))
+        } else {
+          return Input.fromNullable(null)
+        }
+    } else {
+        return Input.absent()
+    }
+}
 fun readDebugEmailType(src: ReadableMap, name: String): DebugEmailType? {
     val v = readString(src, name);
     if (v != null) {
@@ -2046,6 +2066,18 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
        val builder = EditCommentMutation.builder()
        builder.id(notNull(readString(src, "id")))
        builder.message(readString(src, "message"))
+       return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
+    }
+    if (name == "CommentSetReaction") {
+       val builder = CommentSetReactionMutation.builder()
+       builder.commentId(notNull(readString(src, "commentId")))
+       builder.reaction(notNull(readMessageReactionType(src, "reaction")))
+       return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
+    }
+    if (name == "CommentUnsetReaction") {
+       val builder = CommentUnsetReactionMutation.builder()
+       builder.commentId(notNull(readString(src, "commentId")))
+       builder.reaction(notNull(readMessageReactionType(src, "reaction")))
        return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
     }
     if (name == "RoomUpdate") {

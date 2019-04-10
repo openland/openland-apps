@@ -1,0 +1,3 @@
+mutation CommentUnsetReaction($commentId: ID!, $reaction: MessageReactionType!) {
+  commentReactionRemove(commentId: $commentId, reaction: $reaction)
+}
