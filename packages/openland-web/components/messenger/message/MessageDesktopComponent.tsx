@@ -215,10 +215,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             return;
         }
 
-        if (window.getSelection().toString()) {
-            return;
-        }
-
         let { forwardMessagesId } = messagesContext;
         let selectedMessageId = forwardMessagesId;
 
@@ -260,9 +256,9 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 >
                     <XHorizontal alignItems="center" separator={8}>
                         <ReactionComponent messageId={message.id!} />
-                        <IconButton onClick={this.setReplyMessages}>
+                        {!this.props.conversation.isChannel && <IconButton onClick={this.setReplyMessages}>
                             <ReplyIcon />
-                        </IconButton>
+                        </IconButton>}
                         {out && message.text && (
                             <IconButton onClick={this.setEditMessage}>
                                 <EditIcon />

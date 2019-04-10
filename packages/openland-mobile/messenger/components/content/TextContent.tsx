@@ -4,7 +4,7 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Platform, Text, TextStyle } from 'react-native';
+import { Platform } from 'react-native';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { isEmoji } from 'openland-y-utils/isEmoji';
@@ -16,7 +16,6 @@ interface TextContentProps {
     onDocumentPress: (document: DataSourceMessageItem) => void;
     padded?: boolean;
     fontStyle?: 'italic' | 'normal';
-    useAsync: boolean;
 }
 export class TextContent extends React.PureComponent<TextContentProps> {
     render() {
@@ -36,18 +35,13 @@ export class TextContent extends React.PureComponent<TextContentProps> {
         }
         let preprocessed = preprocessText(message.text || '', message.spans);
 
-        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, message, this.props.onUserPress, this.props.useAsync));
+        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, message, this.props.onUserPress));
         if (message.title) {
-            if (this.props.useAsync) {
-                parts.unshift(<ASText key={'br-title'}>{'\n'}</ASText>);
-                parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{message.title}</ASText>);
-            } else {
-                parts.unshift(<Text key={'br-title'}>{'\n'}</Text>);
-                parts.unshift(<Text key={'text-title'} style={{ fontWeight: TextStyles.weight.medium } as TextStyle}>{message.title}</Text>);
-            }
+            parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
+            parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{message.title}</ASText>);
         }
 
-        return this.props.useAsync ? (
+        return (
             <>
                 {!!message.text && <ASText
                     key={'text-' + DefaultConversationTheme.senderNameColor}
@@ -59,27 +53,8 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                     fontStyle={this.props.fontStyle}
                 >
                     {parts}
-                    {this.props.padded !== false ? (message.isOut ? paddedTextOut(this.props.useAsync) : paddedText(this.props.useAsync)) : undefined}
+                    {this.props.padded !== false ? (message.isOut ? paddedTextOut : paddedText) : undefined}
                 </ASText>}
-            </>
-        ) : (
-            <>
-                {!!message.text && (
-                    <Text
-                        key={'text-' + DefaultConversationTheme.senderNameColor}
-                        style={{
-                            color: mainTextColor,
-                            lineHeight: big ? undefined : 20,
-                            letterSpacing: -0.3,
-                            fontSize: big ? 52 : 16,
-                            fontWeight: TextStyles.weight.regular,
-                            fontStyle: this.props.fontStyle,
-                        } as TextStyle}
-                    >
-                        {parts}
-                        {this.props.padded !== false ? (message.isOut ? paddedTextOut(this.props.useAsync) : paddedText(this.props.useAsync)) : undefined}
-                    </Text>
-                )}
             </>
         )
     }

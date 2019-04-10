@@ -69,25 +69,17 @@ export const ChatForwardHeaderView = (props: {
     me: UserShort;
     roomId: string;
     privateRoom: boolean;
-    publicRoom: boolean;
+    isChannel: boolean;
     canMePinMessage: boolean;
     myId: string;
 }) => {
     const state = React.useContext(MessagesStateContext);
-    let pinMessageAccess = false;
     const { selectedMessages } = state;
     const selectedMessageArr = Array.from(selectedMessages);
+
     const youPinMessage = selectedMessageArr[0];
-    const firstStepPinAccess =
-        !props.privateRoom && selectedMessages.size === 1 && !youPinMessage.isService;
-
-    if (firstStepPinAccess && !props.publicRoom) {
-        pinMessageAccess = true;
-    }
-
-    if (firstStepPinAccess && props.publicRoom && props.canMePinMessage) {
-        pinMessageAccess = true;
-    }
+    const canPinThisMessage = !props.privateRoom && selectedMessages.size === 1 && !youPinMessage.isService;
+    let pinMessageAccess = canPinThisMessage && props.canMePinMessage;
 
     const { forwardMessagesId, resetAll } = state;
     if (forwardMessagesId && forwardMessagesId.size) {
@@ -124,11 +116,11 @@ export const ChatForwardHeaderView = (props: {
                         {!Array.from(state.selectedMessages).find(
                             msg => msg.sender.id !== props.me.id,
                         ) && (
-                            <DeleteMessagesFrom
-                                messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
-                                onDelete={resetAll}
-                            />
-                        )}
+                                <DeleteMessagesFrom
+                                    messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
+                                    onDelete={resetAll}
+                                />
+                            )}
                     </XWithRole>
                     {pinMessageAccess && (
                         <PinMessageButton
@@ -139,13 +131,13 @@ export const ChatForwardHeaderView = (props: {
                             onSuccess={state.resetAll}
                         />
                     )}
-                    <XButton
+                    {!props.isChannel && <XButton
                         text="Reply"
                         style="primary"
                         onClick={() =>
                             state.setReplyMessages(state.forwardMessagesId, new Set(), new Set())
                         }
-                    />
+                    />}
                     <XButton
                         text="Forward"
                         style="primary"

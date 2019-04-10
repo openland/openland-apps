@@ -18,7 +18,6 @@ interface ReplyContentProps {
     onUserPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    useAsync: boolean;
 }
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
@@ -34,7 +33,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
             lineBAckgroundPatch = Image.resolveAssetSource(image);
         }
 
-        return this.props.useAsync ? (
+        return (
             <>
                 {/* forward/reply */}
                 {this.props.message.reply && (
@@ -71,8 +70,8 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         fontWeight={TextStyles.weight.regular}
                                     >
 
-                                        {preprocessText(generalMesage!.message!, generalMesage.spans).map((p: Span, j: number) => renderPreprocessedText(p, j, this.props.message, this.props.onUserPress, this.props.useAsync))}
-                                        {(!this.props.message.text && (i + 1 === this.props.message.reply!!.length)) ? (this.props.message.isOut ? paddedTextOut(this.props.useAsync) : paddedText(this.props.useAsync)) : undefined}
+                                        {preprocessText(generalMesage!.message!, generalMesage.spans).map((p: Span, j: number) => renderPreprocessedText(p, j, this.props.message, this.props.onUserPress))}
+                                        {(!this.props.message.text && (i + 1 === this.props.message.reply!!.length)) ? (this.props.message.isOut ? paddedTextOut : paddedText) : undefined}
                                     </ASText>}
                                     {attachFile && attachFile.fileMetadata.isImage ? <AsyncReplyMessageMediaView attach={attachFile} onPress={this.props.onMediaPress} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
                                     {attachFile && !attachFile.fileMetadata.isImage ? <AsyncReplyMessageDocumentView attach={attachFile} onPress={this.props.onDocumentPress} parent={this.props.message} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
@@ -87,6 +86,6 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
                 )}
             </>
-        ) : undefined;
+        )
     }
 }

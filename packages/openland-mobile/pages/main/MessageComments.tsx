@@ -154,14 +154,14 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         );
 
         const replyView = replyTo ? (
-            <View marginLeft={52} paddingLeft={8} marginRight={81} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
+            <View marginLeft={15} paddingLeft={8} marginRight={52} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
                 <View flexGrow={1}>
                     <Text style={{ color: '#0084fe', fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1}>{replyTo.sender.name}</Text>
                     <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1}>{replyTo.message}</Text>
                 </View>
                 <TouchableWithoutFeedback onPress={this.handleReplyClear}>
                     <View marginLeft={11} width={18} height={38} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-clear-16.png')} style={{ width: 16, height: 16 }} />
+                        <Image source={require('assets/ic-cancel-gray-18.png')} style={{ tintColor: '#b9c1cd', width: 18, height: 18 }} />
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -175,16 +175,27 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                     <MessageView message={message} />
 
                     {toolButtons}
-    
-                    <View height={1} backgroundColor="#eff0f2" marginTop={20} />
 
-                    <View marginTop={20} marginBottom={20}>
-                        <Text style={{ fontSize: 16, color: '#99a2b0', fontWeight: TextStyles.weight.medium } as TextStyle}>COMMENTS: <Text style={{ color: '#b9c1cd' }}>{this.props.comments.length}</Text></Text>
-                    </View>
+                    {comments.length > 0 && (
+                        <>
+                            <View height={1} backgroundColor="#eff0f2" marginTop={20} />
 
-                    {commentsElements}
+                            <View marginTop={20} marginBottom={20}>
+                                <Text style={{ fontSize: 16, color: '#99a2b0', fontWeight: TextStyles.weight.medium } as TextStyle}>COMMENTS: <Text style={{ color: '#b9c1cd' }}>{this.props.comments.length}</Text></Text>
+                            </View>
 
-                    <View height={50} />
+                            {commentsElements}
+
+                            <View height={50} />
+                        </>
+                    )}
+
+                    {comments.length === 0 && (
+                        <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40}>
+                            <Image source={require('assets/img-empty.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
+                            <Text style={{ fontSize: 15, color: 'rgba(0, 0, 0, 0.4)' }}>Write the first comment</Text>
+                        </View>
+                    )}
                 </SScrollView>
 
                 <MessageInputBar

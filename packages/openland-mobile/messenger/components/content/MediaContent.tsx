@@ -12,7 +12,6 @@ import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '../AsyncBubbleView';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
-import { MediaContentAsyncRender } from './renders/MediaContentAsyncRender';
 
 interface MediaContentProps {
     single?: boolean;
@@ -23,7 +22,6 @@ interface MediaContentProps {
     onDocumentPress: (document: DataSourceMessageItem) => void;
     layout: { width: number, height: number },
     compensateBubble?: boolean;
-    useAsync: boolean;
 }
 
 export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeight: number | null }, maxSize?: number) => {
@@ -106,16 +104,56 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
 
     render() {
         let fileAttach = this.props.attach;
-        return this.props.useAsync ? (
-            <MediaContentAsyncRender
-                layout={this.props.layout}
-                downloadProgress={(this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path) ? this.state.downloadState.progress : undefined}
-                compensateBubble={this.props.compensateBubble}
-                single={this.props.single}
-                imageSource={{ uri: (fileAttach && fileAttach.uri) ? fileAttach.uri : (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
-                fileMetadata={this.props.attach.fileMetadata}
-                handlePress={this.handlePress}
-            />
-        ) : undefined;
+        return (
+            <ASFlex
+                flexDirection="column"
+                width={this.props.single ? this.props.layout.width : undefined}
+                height={this.props.layout.height}
+                marginTop={this.props.compensateBubble ? (this.props.single ? -contentInsetsTop : 8) : undefined}
+                marginLeft={this.props.compensateBubble ? - contentInsetsHorizontal : undefined}
+                marginRight={this.props.compensateBubble ? - contentInsetsHorizontal : undefined}
+                marginBottom={this.props.compensateBubble ? - contentInsetsBottom : undefined}
+                backgroundColor={!this.props.single ? '#dbdce1' : undefined}
+                borderRadius={18}
+                alignItems="center"
+            >
+                <ASImage
+                    maxWidth={this.props.layout.width}
+                    onPress={this.handlePress}
+                    source={{ uri: (fileAttach && fileAttach.uri) ? fileAttach.uri : (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
+                    isGif={fileAttach!!.fileMetadata.imageFormat === 'gif'}
+                    borderRadius={16}
+                    marginLeft={2}
+                    marginRight={2}
+                    marginTop={2}
+                    marginBottom={2}
+                    width={this.props.layout.width - 4}
+                    height={this.props.layout.height - 4}
+
+                />
+
+                <ASFlex
+                    overlay={true}
+                    alignItems="flex-end"
+                    justifyContent="flex-end"
+                    marginRight={8}
+                >
+                    {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && <ASFlex
+                        overlay={true}
+                        width={this.props.layout.width}
+                        height={this.props.layout.height}
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <ASFlex
+                            backgroundColor="#0008"
+                            borderRadius={20}
+                        >
+                            <ASText color="#fff" opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
+                        </ASFlex>
+                    </ASFlex>}
+                </ASFlex>
+            </ASFlex>
+        )
     }
 }

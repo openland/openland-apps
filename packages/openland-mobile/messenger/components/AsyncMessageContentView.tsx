@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, Linking, TouchableOpacity, View, Text, TextStyle } from 'react-native';
+import { Platform, Linking } from 'react-native';
 import { DataSourceMessageItem, ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ASText } from 'react-native-async-view/ASText';
 import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming } from './AsyncBubbleView';
@@ -21,8 +21,8 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessa
 import { OthersUsersWrapper } from './service/views/OthersUsersWrapper';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
-export const paddedText = (useAsync: boolean) => (useAsync ? <ASText key="padded-text" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText> : <Text key="padded-text" style={{ fontSize: 16 }}>{' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</Text>);
-export const paddedTextOut = (useAsync: boolean) => (useAsync ? <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</ASText> : <Text key="padded-text-out" style={{ fontSize: 16 }}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</Text>);
+export const paddedText = <ASText key="padded-text" fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
+export const paddedTextOut = <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</ASText>;
 
 interface AsyncMessageTextViewProps {
     theme: AppTheme;
@@ -32,60 +32,21 @@ interface AsyncMessageTextViewProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
-
-export let renderPreprocessedText = (v: Span, i: number, message: DataSourceMessageItem, onUserPress: (id: string) => void, useAsync: boolean) => {
-    if (useAsync) {
-        if (v.type === 'new_line') {
-            return <ASText key={'br-' + i} >{'\n'}</ASText>;
-        } else if (v.type === 'link') {
-            return <ASText key={'link-' + i} color={(message.isOut && !message.isService) ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn} onPress={resolveInternalLink(v.link!, async () => await Linking.openURL(v.link!))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{v.text}</ASText>;
-        } else if (v.type === 'mention_user') {
-            return <ASText key={'mention-' + i} color={(message.isOut && !message.isService) ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(v.id)}>{useNonBreakingSpaces(v.text)}</ASText>;
-        } else if (v.type === 'mention_users') {
-            return <OthersUsersWrapper onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={useAsync} />
-        } else {
-            return <ASText key={'text-' + i}>{v.text}</ASText>;
-        }
+export let renderPreprocessedText = (v: Span, i: number, message: DataSourceMessageItem, onUserPress: (id: string) => void) => {
+    if (v.type === 'new_line') {
+        return <ASText key={'br-' + i} >{'\n'}</ASText>;
+    } else if (v.type === 'link') {
+        return <ASText key={'link-' + i} color={(message.isOut && !message.isService) ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn} onPress={resolveInternalLink(v.link!, async () => await Linking.openURL(v.link!))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{v.text}</ASText>;
+    } else if (v.type === 'mention_user') {
+        return <ASText key={'mention-' + i} color={(message.isOut && !message.isService) ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(v.id)}>{useNonBreakingSpaces(v.text)}</ASText>;
+    } else if (v.type === 'mention_users') {
+        return <OthersUsersWrapper onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={true} />
     } else {
-        if (v.type === 'new_line') {
-            return <Text key={'br-' + i} >{'\n'}</Text>;
-        } else if (v.type === 'link') {
-            return (
-                <Text
-                    key={'link-' + i}
-                    style={{
-                        color: (message.isOut && !message.isService) ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn,
-                        textDecorationLine: message.isOut && !message.isService ? 'underline' : undefined,
-                    }}
-                    onPress={resolveInternalLink(v.link!, async () => await Linking.openURL(v.link!))}
-                >
-                    {v.text}
-                </Text>
-            );
-        } else if (v.type === 'mention_user') {
-            return (
-                <Text
-                    key={'mention-' + i}
-                    style={{
-                        color: (message.isOut && !message.isService) ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn,
-                        textDecorationLine: (message.isOut && !message.isService) ? 'underline' : 'none',
-                    }}
-                    onPress={() => onUserPress(v.id)}
-                >
-                    {useNonBreakingSpaces(v.text)}
-                </Text>
-            );
-        } else if (v.type === 'mention_users') {
-            return <OthersUsersWrapper onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={useAsync} />
-        } else {
-            return <Text key={'text-' + i}>{v.text}</Text>;
-        }
+        return <ASText key={'text-' + i}>{v.text}</ASText>;
     }
 }
 
-export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean, noAsync?: boolean) => {
-    let useAsync = typeof noAsync === 'undefined' ? true : !noAsync;
-
+export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {
     // todo: handle multiple attaches
     let attaches = (props.message.attachments || []);
     let fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
@@ -111,21 +72,21 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     let topContent = [];
 
     if (hasReply) {
-        topContent.push(<ReplyContent key="msg-reply" message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} useAsync={useAsync} />);
+        topContent.push(<ReplyContent key="msg-reply" message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasText) {
-        topContent.push(<TextContent key="msg-text" message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} useAsync={useAsync} />);
+        topContent.push(<TextContent key="msg-text" message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasImage && imageLayout) {
-        topContent.push(<MediaContent key="msg-media" compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} useAsync={useAsync} />);
+        topContent.push(<MediaContent key="msg-media" compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />);
     }
     if (hasDocument) {
-        topContent.push(<DocumentContent key="msg-document" compensateBubble={compensateBubble} attach={fileAttach!} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} useAsync={useAsync} />);
+        topContent.push(<DocumentContent key="msg-document" compensateBubble={compensateBubble} attach={fileAttach!} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
 
     let bottomContent: any[] = [];
     if (hasUrlAug) {
-        bottomContent.push(<RichAttachContent key="msg-rich" padded={!topContent.length} compensateBubble={compensateBubble} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} useAsync={useAsync} />);
+        bottomContent.push(<RichAttachContent key="msg-rich" padded={!topContent.length} compensateBubble={compensateBubble} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
 
     if (!topContent.length && bottomContent.length) {
@@ -134,11 +95,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     }
 
     if (!props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument) {
-        if (useAsync) {
-            topContent.unshift(<ASText fontSize={13} onPress={() => props.onUserPress(props.message.senderId)} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{props.message.senderName}</ASText>);
-        } else {
-            topContent.unshift(<Text key={'name-' + DefaultConversationTheme.senderNameColor} onPress={() => props.onUserPress(props.message.senderId)} style={{ marginBottom: 2, fontSize: 13, fontWeight: TextStyles.weight.medium, color: props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor } as TextStyle}>{props.message.senderName}</Text>);
-        }
+        topContent.unshift(<ASText fontSize={13} onPress={() => props.onUserPress(props.message.senderId)} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{props.message.senderName}</ASText>);
     }
 
     return {

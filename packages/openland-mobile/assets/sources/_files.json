@@ -432,6 +432,20 @@
             "sizes": [
                 24
             ]
+        },
+        {
+            "name": "ic-cancel-gray",
+            "src": "ic-cancel-gray.svg",
+            "sizes": [
+                18
+            ]
+        },
+        {
+            "name": "ic-reply",
+            "src": "ic-reply.svg",
+            "sizes": [
+                16
+            ]
         }
     ]
 }

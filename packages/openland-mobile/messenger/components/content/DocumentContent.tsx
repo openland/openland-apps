@@ -3,18 +3,18 @@ import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
-import { Platform, Text, TextStyle } from 'react-native';
+import { Platform } from 'react-native';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
-import { renderPreprocessedText } from '../AsyncMessageContentView';
+import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
+import { ASFlex } from 'react-native-async-view/ASFlex';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
+import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
+import { bubbleMaxWidth } from '../AsyncBubbleView';
+import { formatBytes } from 'openland-mobile/utils/formatBytes';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
-import { DocumentContentAsyncRender } from './renders/DocumentContentAsyncRender';
-import { DocumentContentRender } from './renders/DocumentContentRender';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
-
 interface DocumentContentProps {
     message: DataSourceMessageItem;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
@@ -22,9 +22,7 @@ interface DocumentContentProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     compensateBubble?: boolean;
-    useAsync: boolean;
 }
-
 export class DocumentContent extends React.PureComponent<DocumentContentProps, { downloadState?: DownloadState }> {
     private handlePress = () => {
         this.props.onDocumentPress(this.props.message);
@@ -69,37 +67,81 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
             big = big || (this.props.message.text.length <= 302 && this.props.message.text.startsWith(':') && this.props.message.text.endsWith(':'));
         }
 
-        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, this.props.message, this.props.onUserPress, this.props.useAsync));
+        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, this.props.message, this.props.onUserPress));
         if (this.props.message.title) {
-            if (this.props.useAsync) {
-                parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
-                parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{this.props.message.title}</ASText>);
-            } else {
-                parts.unshift(<Text key={'br-title'} >{'\n'}</Text>);
-                parts.unshift(<Text key={'text-title'} style={{ fontWeight: TextStyles.weight.medium } as TextStyle}>{this.props.message.title}</Text>);
-            }
+            parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
+            parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{this.props.message.title}</ASText>);
         }
 
-        let isOut = this.props.message.isOut;
+        return (
+            <ASFlex
+                height={40}
+                flexDirection="row"
+                onPress={this.handlePress}
+                marginTop={2}
+                marginBottom={1}
+                marginLeft={this.props.compensateBubble ? -2 : undefined}
+            >
 
-        return this.props.useAsync ? (
-            <DocumentContentAsyncRender
-                handlePress={this.handlePress}
-                compensateBubble={this.props.compensateBubble}
-                isOut={isOut}
-                imageSource={downloaded ? (isOut ? require('assets/ic-file-white-ios.png') : require('assets/img-file.png')) : (isOut ? require('assets/ic-file-download-out.png') : require('assets/ic-file-download.png'))}
-                downloadProgress={(this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path) ? this.state.downloadState.progress : undefined}
-                fileMetadata={this.props.attach!!.fileMetadata}
-            />
-        ) : (
-            <DocumentContentRender
-                handlePress={this.handlePress}
-                compensateBubble={this.props.compensateBubble}
-                isOut={isOut}
-                imageSource={downloaded ? (isOut ? require('assets/ic-file-white-ios.png') : require('assets/img-file.png')) : (isOut ? require('assets/ic-file-download-out.png') : require('assets/ic-file-download.png'))}
-                downloadProgress={(this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path) ? this.state.downloadState.progress : undefined}
-                fileMetadata={this.props.attach!!.fileMetadata}
-            />
-        );
+                <ASFlex
+                    width={40}
+                    height={40}
+                    backgroundColor={this.props.message.isOut ? 'rgba(0,0,0,0.15)' : 'rgba(185,192,202,0.20)'}
+                    opacity={this.props.message.isOut ? 0.15 : 0.2}
+                    borderRadius={20}
+
+                    marginRight={10}
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <ASImage
+                        source={downloaded ? (this.props.message.isOut ? require('assets/ic-file-white-ios.png') : require('assets/img-file.png')) : (this.props.message.isOut ? require('assets/ic-file-download-out.png') : require('assets/ic-file-download.png'))}
+                        width={16}
+                        height={20}
+                    />
+                    {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && <ASFlex
+                        width={40}
+                        backgroundColor="#0008"
+                        borderRadius={20}
+                        marginRight={10}
+                        overlay={true}
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <ASText color="#fff" opacity={0.8} textAlign="center">{Math.round(this.state.downloadState.progress * 100)}</ASText>
+                    </ASFlex>}
+                </ASFlex>
+
+                <ASFlex
+                    flexGrow={1}
+                    flexDirection="column"
+                    marginTop={4}
+                    marginRight={14}
+                    alignSelf="center"
+                >
+                    <ASText
+                        maxWidth={bubbleMaxWidth - 110}
+                        color={this.props.message.isOut ? '#ffffff' : '#000000'}
+                        height={18}
+                        fontSize={15}
+                        lineHeight={18}
+                        numberOfLines={1}
+                    >
+                        {this.props.attach!!.fileMetadata.name}{this.props.message.isOut ? paddedTextOut : paddedText}
+                    </ASText>
+                    <ASText
+                        color={this.props.message.isOut ? '#ffffff' : '#8a8a8f'}
+                        height={15}
+                        lineHeight={15}
+                        fontSize={13}
+                        marginTop={3}
+                        numberOfLines={1}
+                        opacity={0.7}
+                    >
+                        {formatBytes(this.props.attach!!.fileMetadata.size)}
+                    </ASText>
+                </ASFlex>
+            </ASFlex>
+        )
     }
 }
