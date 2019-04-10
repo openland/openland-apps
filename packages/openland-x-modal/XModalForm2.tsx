@@ -9,6 +9,7 @@ import { applyFlex, extractFlexProps, XFlexStyles } from 'openland-x/basics/Flex
 import { useIsMobile } from 'openland-web/hooks';
 
 export interface XModalFormProps extends XFormProps, XModalProps {
+    noPadding?: boolean;
     submitProps?: XFormSubmitProps;
     customFooter?: any;
     submitBtnText?: string;
@@ -54,10 +55,16 @@ export class XModalFormInner extends React.Component<XModalFormProps & XFlexStyl
             defaultLayout,
             submitProps,
             scrollableContent,
+            noPadding,
             ...other
         } = this.props;
 
-        let body = <BodyPadding isMobile={this.props.isMobile}>{this.props.children}</BodyPadding>;
+        let body = noPadding ? (
+            this.props.children
+        ) : (
+            <BodyPadding isMobile={this.props.isMobile}>{this.props.children}</BodyPadding>
+        );
+
         if (scrollableContent) {
             body = (
                 <ModalBodyContainer isMobile={this.props.isMobile} {...extractFlexProps(other)}>
@@ -84,10 +91,9 @@ export class XModalFormInner extends React.Component<XModalFormProps & XFlexStyl
                                   {...submitProps}
                                   keyDownSubmit={true}
                               />
-                              {!this.props.useTopCloser &&
-                                  !this.props.alsoUseBottomCloser && (
-                                      <XButton text="Cancel" style="ghost" autoClose={true} />
-                                  )}
+                              {!this.props.useTopCloser && !this.props.alsoUseBottomCloser && (
+                                  <XButton text="Cancel" style="ghost" autoClose={true} />
+                              )}
                           </XHorizontal>
                       </XModalFooter>
                   );

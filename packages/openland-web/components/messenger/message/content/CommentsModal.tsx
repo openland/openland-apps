@@ -219,6 +219,7 @@ const CommentsInner = () => {
 export const CommentsModal = () => {
     return (
         <XModalForm
+            noPadding
             targetQuery="comments"
             defaultData={{
                 input: {},

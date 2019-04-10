@@ -17,6 +17,8 @@ import AttachIcon from 'openland-icons/ic-attach-doc-blue.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { XLink } from 'openland-x/XLink';
 import { MessageReplyComponent } from 'openland-web/components/messenger/message/content/MessageReplyComponent';
+import { XModalFooter } from 'openland-x-modal/XModal';
+import { XButton } from 'openland-x/XButton';
 
 export interface MessageComponentProps {
     nearCrossButtons?: any;
@@ -126,143 +128,86 @@ export const MessageModalBody = (props: MessageComponentProps) => {
     }
 
     return (
-        <XView
-            paddingHorizontal={32}
-            paddingTop={isMobile ? 0 : 30}
-            paddingBottom={30}
-            flexDirection="column"
-        >
-            {isMobile && (
-                <XView
-                    height={52}
-                    marginBottom={8}
-                    flexDirection="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                >
-                    <XView color="rgba(0, 0, 0, 0.9)" fontSize={20} fontWeight="600">
-                        Pinned message
+        <>
+            <XView
+                paddingHorizontal={32}
+                paddingTop={isMobile ? 0 : 30}
+                paddingBottom={30}
+                flexDirection="column"
+            >
+                {isMobile && (
+                    <XView
+                        height={52}
+                        marginBottom={8}
+                        flexDirection="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                    >
+                        <XView color="rgba(0, 0, 0, 0.9)" fontSize={20} fontWeight="600">
+                            Pinned message
+                        </XView>
+                        <Close autoClose={true}>
+                            <CloseIcon />
+                        </Close>
                     </XView>
-                    <Close autoClose={true}>
-                        <CloseIcon />
-                    </Close>
-                </XView>
-            )}
-            <XView flexDirection="row" alignItems="center" justifyContent="space-between">
-                <XView flexDirection="row" alignItems="center" flexGrow={1}>
-                    <XView flexDirection="row" alignItems="center" marginRight={12}>
-                        <XAvatar
-                            style="user"
-                            src={sender.photo || undefined}
-                            objectId={sender.id}
-                            objectName={sender.name}
-                            online={false}
-                        />
-                    </XView>
-                    <XView flexDirection="column" flexGrow={1}>
-                        <XView
-                            flexDirection="row"
-                            alignItems="center"
-                            justifyContent="space-between"
-                        >
-                            <XView flexDirection="row" alignItems="center">
-                                <XView
-                                    as="a"
-                                    path={'/mail/u/' + sender.id}
-                                    color="rgba(0, 0, 0, 0.8)"
-                                    hoverTextDecoration="none"
-                                    fontWeight="600"
-                                    fontSize={14}
-                                >
-                                    {sender.name}
-                                </XView>
-                                {sender.primaryOrganization && (
+                )}
+                <XView flexDirection="row" alignItems="center" justifyContent="space-between">
+                    <XView flexDirection="row" alignItems="center" flexGrow={1}>
+                        <XView flexDirection="row" alignItems="center" marginRight={12}>
+                            <XAvatar
+                                style="user"
+                                src={sender.photo || undefined}
+                                objectId={sender.id}
+                                objectName={sender.name}
+                                online={false}
+                            />
+                        </XView>
+                        <XView flexDirection="column" flexGrow={1}>
+                            <XView
+                                flexDirection="row"
+                                alignItems="center"
+                                justifyContent="space-between"
+                            >
+                                <XView flexDirection="row" alignItems="center">
                                     <XView
                                         as="a"
-                                        path={'/mail/o/' + sender.primaryOrganization.id}
+                                        path={'/mail/u/' + sender.id}
+                                        color="rgba(0, 0, 0, 0.8)"
                                         hoverTextDecoration="none"
-                                        color="rgba(0, 0, 0, 0.4)"
-                                        hoverColor="#1790ff"
                                         fontWeight="600"
-                                        fontSize={12}
-                                        marginLeft={8}
-                                        marginBottom={-2}
+                                        fontSize={14}
                                     >
-                                        {sender.primaryOrganization.name}
+                                        {sender.name}
                                     </XView>
-                                )}
-                            </XView>
-                            <XView flexDirection="row" alignItems="center">
-                                {nearCrossButtons}
-                                {!isMobile && <XModalCloser autoClose={true} />}
-                            </XView>
-                        </XView>
-                        <XView
-                            flexDirection="row"
-                            alignItems="center"
-                            color="rgba(0, 0, 0, 0.4)"
-                            fontWeight="600"
-                            fontSize={12}
-                        >
-                            <XDate value={generalMessage.date} format="datetime_short" />
-                            <XView
-                                width={3}
-                                height={3}
-                                opacity={0.3}
-                                backgroundColor="#000"
-                                borderRadius="100%"
-                                flexShrink={0}
-                                marginHorizontal={5}
-                            />
-                            <XView>Pinned</XView>
-                        </XView>
-                    </XView>
-                </XView>
-            </XView>
-            <XView marginTop={12}>
-                {message && (
-                    <MessageTextComponent
-                        spans={generalMessage.spans}
-                        message={message}
-                        isEdited={false}
-                    />
-                )}
-                {attachment && attachment.fileMetadata.isImage && (
-                    <img
-                        src={'https://ucarecdn.com/' + attachment.fileId + '/'}
-                        className={ImageClassName}
-                    />
-                )}
-                {attachment && !attachment.fileMetadata.isImage && (
-                    <XView flexDirection="column">
-                        <XView
-                            height={1}
-                            backgroundColor="#ececec"
-                            width="100%"
-                            flexShrink={0}
-                            marginBottom={12}
-                        />
-                        <XView
-                            flexDirection="row"
-                            alignItems="center"
-                            as="a"
-                            hoverTextDecoration="none"
-                            href={`https://ucarecdn.com/${attachment.fileId}/${
-                                attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
-                            }`}
-                        >
-                            <XView
-                                alignItems="center"
-                                flexDirection="row"
-                                flexShrink={0}
-                                marginRight={8}
-                            >
-                                <AttachIcon />
-                            </XView>
-                            <XView flexDirection="row" alignItems="center">
-                                <XView fontSize={13} color="#1790ff">
-                                    {attachment.fileMetadata.name}
+                                    {sender.primaryOrganization && (
+                                        <XView
+                                            as="a"
+                                            path={'/mail/o/' + sender.primaryOrganization.id}
+                                            hoverTextDecoration="none"
+                                            color="rgba(0, 0, 0, 0.4)"
+                                            hoverColor="#1790ff"
+                                            fontWeight="600"
+                                            fontSize={12}
+                                            marginLeft={8}
+                                            marginBottom={-2}
+                                        >
+                                            {sender.primaryOrganization.name}
+                                        </XView>
+                                    )}
                                 </XView>
+                                <XView flexDirection="row" alignItems="center">
+                                    {nearCrossButtons}
+                                    {!isMobile && <XModalCloser autoClose={true} />}
+                                </XView>
+                            </XView>
+                            <XView
+                                flexDirection="row"
+                                alignItems="center"
+                                color="rgba(0, 0, 0, 0.4)"
+                                fontWeight="600"
+                                fontSize={12}
+                            >
+                                <XDate value={generalMessage.date} format="datetime_short" />
                                 <XView
                                     width={3}
                                     height={3}
@@ -272,17 +217,76 @@ export const MessageModalBody = (props: MessageComponentProps) => {
                                     flexShrink={0}
                                     marginHorizontal={5}
                                 />
-                                <XView fontSize={13} color="rgba(0, 0, 0, 0.5)">
-                                    {niceBytes(Number(attachment.fileMetadata.size))}
-                                </XView>
+                                <XView>Pinned</XView>
                             </XView>
                         </XView>
                     </XView>
-                )}
-                {quotedMessages}
+                </XView>
+                <XView marginTop={12}>
+                    {message && (
+                        <MessageTextComponent
+                            spans={generalMessage.spans}
+                            message={message}
+                            isEdited={false}
+                        />
+                    )}
+                    {attachment && attachment.fileMetadata.isImage && (
+                        <img
+                            src={'https://ucarecdn.com/' + attachment.fileId + '/'}
+                            className={ImageClassName}
+                        />
+                    )}
+                    {attachment && !attachment.fileMetadata.isImage && (
+                        <XView flexDirection="column">
+                            <XView
+                                height={1}
+                                backgroundColor="#ececec"
+                                width="100%"
+                                flexShrink={0}
+                                marginBottom={12}
+                            />
+                            <XView
+                                flexDirection="row"
+                                alignItems="center"
+                                as="a"
+                                hoverTextDecoration="none"
+                                href={`https://ucarecdn.com/${attachment.fileId}/${
+                                    attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
+                                }`}
+                            >
+                                <XView
+                                    alignItems="center"
+                                    flexDirection="row"
+                                    flexShrink={0}
+                                    marginRight={8}
+                                >
+                                    <AttachIcon />
+                                </XView>
+                                <XView flexDirection="row" alignItems="center">
+                                    <XView fontSize={13} color="#1790ff">
+                                        {attachment.fileMetadata.name}
+                                    </XView>
+                                    <XView
+                                        width={3}
+                                        height={3}
+                                        opacity={0.3}
+                                        backgroundColor="#000"
+                                        borderRadius="100%"
+                                        flexShrink={0}
+                                        marginHorizontal={5}
+                                    />
+                                    <XView fontSize={13} color="rgba(0, 0, 0, 0.5)">
+                                        {niceBytes(Number(attachment.fileMetadata.size))}
+                                    </XView>
+                                </XView>
+                            </XView>
+                        </XView>
+                    )}
+                    {quotedMessages}
+                </XView>
+                {props.children}
             </XView>
-            {props.children}
-        </XView>
+        </>
     );
 };
 
@@ -297,5 +301,17 @@ export const MessageModal = React.memo((props: MessageComponentProps) => {
         target = props.target;
     }
 
-    return <XModal body={<MessageModalBody {...props} />} target={target} footer={null} />;
+    return (
+        <XModal
+            body={<MessageModalBody {...props} />}
+            target={target}
+            footer={
+                <XModalFooter>
+                    <XButton text="Cancel" style="primary" autoClose={true} />
+                    <XView width={12} flexShrink={0} />
+                    <XButton text="Leave and delete" style="ghost" path="/mail" />
+                </XModalFooter>
+            }
+        />
+    );
 });
