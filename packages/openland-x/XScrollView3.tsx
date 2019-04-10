@@ -21,21 +21,28 @@ const NativeScrollStyle = css`
     overflow-x: hidden;
     width: 100%;
     height: 100%;
+    flex-grow: 1;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
 `;
 
 const NativeBackend = React.memo<{
-    onScroll: (values: XScrollValues) => void,
-    children?: any
-}>((props) => {
-
-    const callback = React.useCallback((src) => {
+    onScroll: (values: XScrollValues) => void;
+    children?: any;
+}>(props => {
+    const callback = React.useCallback(src => {
         if (src) {
-            src.addEventListener('scroll', () => {
-                let scrollHeight = (src as HTMLDivElement).scrollHeight;
-                let scrollTop = (src as HTMLDivElement).scrollTop;
-                let clientHeight = (src as HTMLDivElement).clientHeight;
-                props.onScroll({ scrollHeight, scrollTop, clientHeight });
-            }, { passive: true });
+            src.addEventListener(
+                'scroll',
+                () => {
+                    let scrollHeight = (src as HTMLDivElement).scrollHeight;
+                    let scrollTop = (src as HTMLDivElement).scrollTop;
+                    let clientHeight = (src as HTMLDivElement).clientHeight;
+                    props.onScroll({ scrollHeight, scrollTop, clientHeight });
+                },
+                { passive: true },
+            );
         }
     }, []);
 
@@ -50,10 +57,26 @@ class CustomBackend extends React.PureComponent<{ onScroll: (values: XScrollValu
     render() {
         return (
             <Scrollbar
-                style={{ width: '100%', height: '100%' }}
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    flexGrow: 1,
+                    flexShrink: 0,
+                    flexDirection: 'column',
+                }}
                 wrapperProps={{ style: { width: '100%', height: '100%', marginRight: 0 } }}
-                trackYProps={{ style: { backgroundColor: 'transparent', height: '100%', width: 8, borderRadius: 4, top: '0px' } }}
-                thumbYProps={{ style: { backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: 4, width: 8 } }}
+                trackYProps={{
+                    style: {
+                        backgroundColor: 'transparent',
+                        height: '100%',
+                        width: 8,
+                        borderRadius: 4,
+                        top: '0px',
+                    },
+                }}
+                thumbYProps={{
+                    style: { backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: 4, width: 8 },
+                }}
                 onScroll={this.props.onScroll}
             >
                 {this.props.children}
@@ -63,29 +86,25 @@ class CustomBackend extends React.PureComponent<{ onScroll: (values: XScrollValu
 }
 
 export class XScrollView3 extends React.Component<XScrollView3Props> {
-
-    private isWebkit: boolean
+    private isWebkit: boolean;
 
     constructor(props: { children?: any }) {
         super(props);
         if (!canUseDOM) {
             throw Error('XScrollView3 works only in browser');
         }
-        this.isWebkit = ((window as any).safari !== undefined) || (window as any).chrome !== undefined;
+        this.isWebkit =
+            (window as any).safari !== undefined || (window as any).chrome !== undefined;
     }
 
     private onScroll = (values: XScrollValues) => {
         if (this.props.onScroll) {
             this.props.onScroll(values);
         }
-    }
+    };
 
     render() {
-        let {
-            onScroll,
-            children,
-            ...xstyles
-        } = this.props;
+        let { onScroll, children, ...xstyles } = this.props;
 
         // scrollbarRadius = scrollbarRadius || 4;
         // scrollbarWidth = scrollbarWidth || 8;
@@ -94,10 +113,8 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
 
         if (this.isWebkit) {
             return (
-                <XView flexShrink={0} {...xstyles}>
-                    <NativeBackend
-                        onScroll={this.onScroll}
-                    >
+                <XView {...xstyles}>
+                    <NativeBackend onScroll={this.onScroll}>
                         <XView flexDirection="column" alignItems="stretch">
                             {this.props.children}
                         </XView>
@@ -108,7 +125,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
 
         // Fallback
         return (
-            <XView flexShrink={0} {...xstyles}>
+            <XView {...xstyles}>
                 <CustomBackend onScroll={this.onScroll}>
                     <XView flexDirection="column" alignItems="stretch">
                         {this.props.children}
