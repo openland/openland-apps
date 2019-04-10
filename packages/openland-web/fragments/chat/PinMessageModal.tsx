@@ -133,9 +133,7 @@ export const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
             nearCrossButtons={
                 canMeUnpinMessage && <UnpinButton variables={{ chatId: props.chatId }} />
             }
-            chatId={props.chatId}
             target={target}
-            room={room}
             generalMessage={pinMessage}
         />
     );
