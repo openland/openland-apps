@@ -6797,9 +6797,9 @@ public final class GlobalCounterQuery: GraphQLQuery {
 
 public final class ChatHistoryQuery: GraphQLQuery {
   public let operationDefinition =
-    "query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n}"
+    "query ChatHistory($chatId: ID!, $before: ID, $first: Int!) {\n  messages(chatId: $chatId, first: $first, before: $before) {\n    __typename\n    ...FullMessage\n  }\n  state: conversationState(id: $chatId) {\n    __typename\n    state\n  }\n  room(id: $chatId) {\n    __typename\n    ...RoomShort\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(FullMessage.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(FullMessage.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(RoomShort.fragmentDefinition) }
 
   public var chatId: GraphQLID
   public var before: GraphQLID?
@@ -6821,6 +6821,7 @@ public final class ChatHistoryQuery: GraphQLQuery {
     public static let selections: [GraphQLSelection] = [
       GraphQLField("messages", arguments: ["chatId": GraphQLVariable("chatId"), "first": GraphQLVariable("first"), "before": GraphQLVariable("before")], type: .nonNull(.list(.nonNull(.object(Message.selections))))),
       GraphQLField("conversationState", alias: "state", arguments: ["id": GraphQLVariable("chatId")], type: .nonNull(.object(State.selections))),
+      GraphQLField("room", arguments: ["id": GraphQLVariable("chatId")], type: .object(Room.selections)),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -6829,8 +6830,8 @@ public final class ChatHistoryQuery: GraphQLQuery {
       self.resultMap = unsafeResultMap
     }
 
-    public init(messages: [Message], state: State) {
-      self.init(unsafeResultMap: ["__typename": "Query", "messages": messages.map { (value: Message) -> ResultMap in value.resultMap }, "state": state.resultMap])
+    public init(messages: [Message], state: State, room: Room? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "messages": messages.map { (value: Message) -> ResultMap in value.resultMap }, "state": state.resultMap, "room": room.flatMap { (value: Room) -> ResultMap in value.resultMap }])
     }
 
     public var messages: [Message] {
@@ -6848,6 +6849,15 @@ public final class ChatHistoryQuery: GraphQLQuery {
       }
       set {
         resultMap.updateValue(newValue.resultMap, forKey: "state")
+      }
+    }
+
+    public var room: Room? {
+      get {
+        return (resultMap["room"] as? ResultMap).flatMap { Room(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "room")
       }
     }
 
@@ -6934,6 +6944,56 @@ public final class ChatHistoryQuery: GraphQLQuery {
         }
         set {
           resultMap.updateValue(newValue, forKey: "state")
+        }
+      }
+    }
+
+    public struct Room: GraphQLSelectionSet {
+      public static let possibleTypes = ["PrivateRoom", "SharedRoom"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(RoomShort.self),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var roomShort: RoomShort {
+          get {
+            return RoomShort(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
         }
       }
     }
