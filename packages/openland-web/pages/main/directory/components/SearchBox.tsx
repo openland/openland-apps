@@ -10,6 +10,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 
 const SearchWrapper = Glamorous.div({
     borderBottom: '1px solid #ececec',
+    flexShrink: 0,
 });
 
 const SearchInner = Glamorous(XHorizontal)({

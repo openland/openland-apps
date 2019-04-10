@@ -25,11 +25,11 @@ import NewChatIcon from 'openland-icons/ic-new-chat.svg';
 import { TextDirectory } from 'openland-text/TextDirectory';
 
 export const OrganizationProfileContainer = Glamorous.div({
-    display: 'flex',
-    flexGrow: 1,
-    flexDirection: 'column',
-    flexShrink: 0,
-});
+           display: 'flex',
+           flexGrow: 1,
+           flexDirection: 'column',
+           flexShrink: 1,
+       });
 
 const DesktopConversationContainer = Glamorous.div({
     justifyContent: 'flex-start',
@@ -37,7 +37,7 @@ const DesktopConversationContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    flexShrink: 0,
+    flexShrink: 1,
     minWidth: 0,
     backgroundColor: XThemeDefault.backgroundColor,
 });
@@ -51,7 +51,7 @@ type PageInnerProps = {
 };
 
 const MobileConversationContainer = ({ children }: { children: any }) => (
-    <XView flexGrow={1}>{children}</XView>
+    <XView flexGrow={1} flexShrink={1}>{children}</XView>
 );
 
 const displayNoneCommonClassName = css`

@@ -15,7 +15,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBox';
 import { SortPicker } from 'openland-web/pages/main/directory/components/sortPicker';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { Navigation } from '../../../../components/Navigation';
+import { Navigation } from 'openland-web/components/Navigation';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useIsMobile } from 'openland-web/hooks';
 import { XLoader } from 'openland-x/XLoader';
@@ -79,19 +79,20 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 && itemCount > 0 && (
-                            <XSubHeader
-                                title={hasQueryText}
-                                counter={itemCount}
-                                right={
-                                    <SortPicker
-                                        sort={sort}
-                                        onPick={setSort}
-                                        withoutFeatured={withoutFeatured}
-                                    />
-                                }
-                            />
-                        )}
+                        {query.length > 0 &&
+                            itemCount > 0 && (
+                                <XSubHeader
+                                    title={hasQueryText}
+                                    counter={itemCount}
+                                    right={
+                                        <SortPicker
+                                            sort={sort}
+                                            onPick={setSort}
+                                            withoutFeatured={withoutFeatured}
+                                        />
+                                    }
+                                />
+                            )}
                         <CardsComponent
                             featuredFirst={sort.featured}
                             orderBy={sort.orderBy}
@@ -189,9 +190,14 @@ export const DirectoryNavigation = XMemo(
                     </>
                 }
                 secondFragment={
-                    <XView flexGrow={1} height={isMobile ? undefined : '100%'} position="relative">
-                        <XScrollView3 height="100%" flexGrow={1}>
-                            <XView flexGrow={1}>
+                    <XView
+                        flexGrow={1}
+                        height={isMobile ? undefined : '100%'}
+                        position="relative"
+                        flexShrink={1}
+                    >
+                        <XScrollView3 height="100%" flexGrow={1} flexShrink={1}>
+                            <XView flexGrow={1} flexShrink={1}>
                                 <React.Suspense
                                     fallback={
                                         <XView flexGrow={1} flexShrink={0}>
