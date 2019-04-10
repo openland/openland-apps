@@ -105,24 +105,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
     const { pinMessage } = props;
     const { sender, message } = pinMessage;
     let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;
-    const userContext = React.useContext(UserInfoContext);
-    const myId = userContext!!.user!!.id!!;
-
-    let usersCanUnpinMessage = [];
-    let canMeUnpinMessage = false;
-    if (sharedRoom) {
-        usersCanUnpinMessage = getWelcomeMessageSenders({
-            chat: sharedRoom,
-        });
-    }
-    if (usersCanUnpinMessage.find(i => i.id === myId) !== undefined) {
-        canMeUnpinMessage = true;
-    }
-
-    if ((room as Room_room_SharedRoom).kind === 'GROUP') {
-        canMeUnpinMessage = true;
-    }
-
+    let canMeUnpinMessage = sharedRoom && sharedRoom.canEdit;
     let attachment: attachmentType | null = null;
 
     if (
@@ -308,7 +291,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                                 hoverTextDecoration="none"
                                 href={`https://ucarecdn.com/${attachment.fileId}/${
                                     attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
-                                }`}
+                                    }`}
                             >
                                 <XView
                                     alignItems="center"
