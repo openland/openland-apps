@@ -145,7 +145,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
                 subtitle={subtitle}
                 photo={room.photo}
                 id={room.id}
-                action="Send message"
+                action={room.isChannel ? "View channel" : "Send message"}
                 onPress={handleSend}
             />
 
