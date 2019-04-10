@@ -120,20 +120,14 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             }
         }
 
-        let likesCount = 0;
+        let likesCount = message.reactions.length;
         let myLike = false;
 
-        if (message.reactions) {
-            let likes = message.reactions.filter(r => r.reaction === 'LIKE');
-
-            likesCount = likes.length;
-
-            likes.map(r => {
-                if (r.user.id === getMessenger().engine.user.id) {
-                    myLike = true;
-                }
-            });
-        }
+        message.reactions.map(r => {
+            if (r.user.id === getMessenger().engine.user.id) {
+                myLike = true;
+            }
+        });
 
         const toolButtons = (
             <View alignItems="stretch" flexDirection="row" marginTop={10} flexGrow={1} justifyContent="flex-start">
