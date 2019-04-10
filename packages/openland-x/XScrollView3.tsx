@@ -106,7 +106,8 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
     };
 
     render() {
-        let { onScroll, children, ...xstyles } = this.props;
+        const { props } = this;
+        let { onScroll, children } = props;
 
         // scrollbarRadius = scrollbarRadius || 4;
         // scrollbarWidth = scrollbarWidth || 8;
@@ -115,7 +116,19 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
 
         if (this.isWebkit) {
             return (
-                <XView overflow="hidden" {...xstyles}>
+                <XView
+                    overflow="hidden"
+                    flexGrow={props.flexGrow}
+                    flexShrink={props.flexShrink}
+                    height={props.height}
+                    minHeight={props.minHeight}
+                    width={props.width}
+                    minWidth={props.minWidth}
+                    alignSelf={props.alignSelf}
+                    alignItems={props.alignItems}
+                    flexDirection={props.flexDirection}
+                    justifyContent={props.justifyContent}
+                >
                     <NativeBackend onScroll={this.onScroll}>
                         <XView
                             flexDirection="column"
@@ -132,14 +145,21 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
 
         // Fallback
         return (
-            <XView overflow="hidden" {...xstyles}>
+            <XView
+                overflow="hidden"
+                flexGrow={props.flexGrow}
+                flexShrink={props.flexShrink}
+                height={props.height}
+                minHeight={props.minHeight}
+                width={props.width}
+                minWidth={props.minWidth}
+                alignSelf={props.alignSelf}
+                alignItems={props.alignItems}
+                flexDirection={props.flexDirection}
+                justifyContent={props.justifyContent}
+            >
                 <CustomBackend onScroll={this.onScroll}>
-                    <XView
-                        flexDirection="column"
-                        alignItems="stretch"
-                        flexGrow={1}
-                        flexShrink={0}
-                    >
+                    <XView flexDirection="column" alignItems="stretch" flexGrow={1} flexShrink={0}>
                         {this.props.children}
                     </XView>
                 </CustomBackend>
