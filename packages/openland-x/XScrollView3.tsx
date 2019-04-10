@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XView, XStyles } from 'react-mental';
 import Scrollbar from 'react-scrollbars-custom';

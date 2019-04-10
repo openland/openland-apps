@@ -189,6 +189,7 @@
         "react-virtualized": "^9.21.0",
         "reactotron-react-native": "^2.1.5",
         "recharts": "^1.2.0",
+        "resize-observer-polyfill": "^1.5.1",
         "rn-fetch-blob": "^0.10.12",
         "simplebar": "^2.6.1",
         "style-loader": "^0.23.1",
