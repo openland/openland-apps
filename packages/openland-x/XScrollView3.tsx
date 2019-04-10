@@ -94,7 +94,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
             throw Error('XScrollView3 works only in browser');
         }
         this.isWebkit =
-            (window as any).safari !== undefined || (window as any).chrome !== undefined;
+            (window as any).safari !== undefined || (window as any).chrome !== undefined || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     }
 
     private onScroll = (values: XScrollValues) => {
