@@ -4,7 +4,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
-import { OthersPopper } from 'openland-web/components/messenger/message/content/service/views/OthersPopper';
+// import { OthersPopper } from 'openland-web/components/messenger/message/content/service/views/OthersPopper';
 
 const joinedUserPopperRowExample = {
     title: 'Sarah Massey',
@@ -33,18 +33,18 @@ export default withApp('UI Framework - Popper', 'viewer', () => {
                         <br />
                         <br />
                         <br />
-                        <OthersPopper
-                            show={true}
-                            items={[
-                                joinedUserPopperRowExample,
-                                joinedUserPopperRowExample,
-                                joinedUserPopperRowExample,
-                                joinedUserPopperRowExample,
-                                joinedUserPopperRowExample,
-                            ]}
-                        >
-                            5 others
-                        </OthersPopper>
+                        {/*<OthersPopper*/}
+                        {/*    show={true}*/}
+                        {/*    items={[*/}
+                        {/*        joinedUserPopperRowExample,*/}
+                        {/*        joinedUserPopperRowExample,*/}
+                        {/*        joinedUserPopperRowExample,*/}
+                        {/*        joinedUserPopperRowExample,*/}
+                        {/*        joinedUserPopperRowExample,*/}
+                        {/*    ]}*/}
+                        {/*>*/}
+                        {/*    5 others*/}
+                        {/*</OthersPopper>*/}
                     </XVertical>
                 </XVertical>
             </XContent>
