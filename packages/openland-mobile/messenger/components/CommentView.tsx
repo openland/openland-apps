@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { MessageComments_messageComments_comments_comment, MessageReactionType } from 'openland-api/Types';
 import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
-import { MessageView } from './MessageView';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { formatDate } from 'openland-mobile/utils/formatDate';
@@ -9,6 +8,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 
 const styles = StyleSheet.create({
     senderName: {
@@ -43,8 +43,10 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     const { comment, depth } = props;
     const { sender, date, reactions } = comment;
 
-    let engine = getMessenger().engine;
+    let messenger = getMessenger();
+    let engine = messenger.engine;
     let client = getClient();
+    let router = messenger.history.navigationManager;
 
     const handleReactionPress = React.useCallback(() => {
         let r = MessageReactionType.LIKE;
@@ -76,12 +78,14 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let avatar = (
         <View marginRight={depth === 0 ? 10 : 6}>
-            <ZAvatar
-                size={depth === 0 ? 32 : 16}
-                src={sender.photo}
-                placeholderKey={sender.id}
-                placeholderTitle={sender.name}
-            />
+            <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
+                <ZAvatar
+                    size={depth === 0 ? 32 : 16}
+                    src={sender.photo}
+                    placeholderKey={sender.id}
+                    placeholderTitle={sender.name}
+                />
+            </TouchableWithoutFeedback>
         </View>
     );
 
@@ -123,8 +127,8 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                     {avatar}
 
                     <View flexGrow={1} flexShrink={1}>
-                        <Text style={[styles.senderName, { marginBottom: 1 }]}>{sender.name}</Text>
-                        <MessageView message={comment} size="small" />
+                        <Text style={[styles.senderName, { marginBottom: 1 }]} onPress={() => router.push('ProfileUser', { id: sender.id })}>{sender.name}</Text>
+                        <ZMessageView message={comment} size="small" />
 
                         {tools}
                     </View>
@@ -139,12 +143,15 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         <TouchableWithoutFeedback onLongPress={() => props.onLongPress(comment)}>
             <View marginLeft={marginLeft} flexDirection="row" marginBottom={16}>
                 <View flexGrow={1} flexShrink={1}>
-                    <View flexDirection="row" marginBottom={3}>
-                        {avatar}
+                    <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
+                        <View flexDirection="row" marginBottom={3}>
+                            {avatar}
 
-                        <Text style={styles.senderName}>{sender.name}</Text>
-                    </View>
-                    <MessageView message={comment} size="small" />
+                            <Text style={styles.senderName}>{sender.name}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+
+                    <ZMessageView message={comment} size="small" />
 
                     {tools}
                 </View>
