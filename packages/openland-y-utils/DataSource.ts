@@ -7,9 +7,10 @@ async function throttle() {
 
 async function throttledMap<T, V>(src: T[], map: (item: T) => V): Promise<V[]> {
     let res: V[] = [];
-    for (let s of src) {
-        await throttle();
+    await throttle();
+    for (let s of src) {   
         res.push(map(s));
+        await throttle();
     }
     return res;
 }
