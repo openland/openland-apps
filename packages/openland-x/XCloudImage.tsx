@@ -38,7 +38,7 @@ export function buildBaseImageUrl(image?: XPhotoRef | null) {
 
 export class XCloudImage extends React.PureComponent<XCloudImageProps> {
     render() {
-        const srcCloud = this.props.srcCloud || buildBaseImageUrl(this.props.photoRef);
+        const srcCloud = this.props.srcCloud ? this.props.srcCloud : buildBaseImageUrl(this.props.photoRef);
         if (srcCloud) {
             let scale: string | null = null;
             let scaleRetina: string | null = null;
@@ -60,14 +60,14 @@ export class XCloudImage extends React.PureComponent<XCloudImageProps> {
                 let ops: string = '';
                 let opsRetina: string = '';
                 if (this.props.resize === 'fill') {
-                    ops += '-/format/jpeg/-/scale_crop/' + scale + '/center/-/progressive/yes/';
-                    opsRetina += '-/format/jpeg/-/scale_crop/' + scaleRetina + '/center/-/quality/lighter/-/progressive/yes/';
+                    ops += '-/scale_crop/' + scale + '/center/';
+                    opsRetina += '-/scale_crop/' + scaleRetina + '/center/-/quality/lighter/';
                 } else {
-                    ops += '-/format/jpeg/-/preview/' + scale + '/-/setfill/000000/-/crop/' + scale + '/center/-/progressive/yes/';
-                    opsRetina += '-/format/jpeg/-/preview/' + scaleRetina + '/-/setfill/000000/-/crop/' + scaleRetina + '/center/-/quality/lighter/-/progressive/yes/';
+                    ops += '-/preview/' + scale + '/-/setfill/000000/-/crop/' + scale + '/center/';
+                    opsRetina += '-/preview/' + scaleRetina + '/-/setfill/000000/-/crop/' + scaleRetina + '/center/-/quality/lighter/';
                 }
-                let url = srcCloud + ops;
-                let urlRetina = srcCloud + opsRetina;
+                let url = srcCloud + ops + '-/format/jpeg/-/progressive/yes/';
+                let urlRetina = srcCloud + opsRetina + '-/format/jpeg/-/progressive/yes/';
                 return (
                     <img
                         src={url}
