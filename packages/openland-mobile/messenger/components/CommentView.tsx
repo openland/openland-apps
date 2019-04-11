@@ -36,6 +36,7 @@ export interface CommentViewProps {
     comment: MessageComments_messageComments_comments_comment;
     depth: number;
     onReplyPress: (comment: MessageComments_messageComments_comments_comment) => void;
+    onLongPress: (comment: MessageComments_messageComments_comments_comment) => void;
 }
 
 export const CommentView = React.memo<CommentViewProps>((props) => {
@@ -117,11 +118,32 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     if (depth === 0) {
         return (
-            <View marginLeft={marginLeft} flexDirection="row" marginBottom={16}>
-                {avatar}
+            <TouchableWithoutFeedback onLongPress={() => props.onLongPress(comment)}>
+                <View marginLeft={marginLeft} flexDirection="row" marginBottom={16}>
+                    {avatar}
 
+                    <View flexGrow={1} flexShrink={1}>
+                        <Text style={[styles.senderName, { marginBottom: 1 }]}>{sender.name}</Text>
+                        <MessageView message={comment} size="small" />
+
+                        {tools}
+                    </View>
+
+                    {likes}
+                </View>
+            </TouchableWithoutFeedback>
+        );
+    }
+
+    return (
+        <TouchableWithoutFeedback onLongPress={() => props.onLongPress(comment)}>
+            <View marginLeft={marginLeft} flexDirection="row" marginBottom={16}>
                 <View flexGrow={1} flexShrink={1}>
-                    <Text style={[styles.senderName, { marginBottom: 1 }]}>{sender.name}</Text>
+                    <View flexDirection="row" marginBottom={3}>
+                        {avatar}
+
+                        <Text style={styles.senderName}>{sender.name}</Text>
+                    </View>
                     <MessageView message={comment} size="small" />
 
                     {tools}
@@ -129,23 +151,6 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
                 {likes}
             </View>
-        );
-    }
-
-    return (
-        <View marginLeft={marginLeft} flexDirection="row" marginBottom={16}>
-            <View flexGrow={1} flexShrink={1}>
-                <View flexDirection="row" marginBottom={3}>
-                    {avatar}
-
-                    <Text style={styles.senderName}>{sender.name}</Text>
-                </View>
-                <MessageView message={comment} size="small" />
-
-                {tools}
-            </View>
-
-            {likes}
-        </View>
+        </TouchableWithoutFeedback>
     );
 });

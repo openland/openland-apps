@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { View, Text, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData, TouchableWithoutFeedback, Image, Platform } from 'react-native';
+import { View, Text, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData, TouchableWithoutFeedback, Image, Platform, Clipboard } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -22,6 +22,8 @@ import { CommentView } from 'openland-mobile/messenger/components/CommentView';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { EmojiRender, findEmojiByShortname } from './components/EmojiRender';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import { Prompt } from 'openland-mobile/components/Prompt';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -134,6 +136,53 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         this.setState({ replyTo: comment });
     }
 
+    handleCommentLongPress = (comment: MessageComments_messageComments_comments_comment) => {
+        let engine = this.props.messenger.engine;
+        let builder = new ActionSheetBuilder();
+
+        if (comment.message) {
+            if (comment.sender.id === engine.user.id) {
+                builder.action('Edit', () => {
+                    Prompt.builder()
+                        .title('Edit comment')
+                        .value(comment.message!)
+                        .callback(async (text) => {
+                            startLoader();
+                            try {
+                                await engine.client.mutateEditComment({ id: comment.id!, message: text });
+                            } catch (e) {
+                                Alert.alert(e.message);
+                            }
+                            stopLoader();
+                        })
+                        .show();
+                });
+            }
+
+            builder.action('Copy', () => {
+                Clipboard.setString(comment.message!!);
+            });
+        }
+
+        // if (comment.sender.id === engine.user.id) {
+        //     builder.action('Delete', async () => {
+        //         try {
+        //             Alert.builder()
+        //                 .title('Delete comment')
+        //                 .message('Delete this comment for everyone? This cannot be undone.')
+        //                 .button('Cancel', 'cancel')
+        //                 .action('Delete', 'destructive', async () => {
+        //                     await engine.client.mutateDeleteComment({ id: comment.id! });
+        //                 }).show();
+        //         } catch (e) {
+        //             Alert.alert(e.message);
+        //         }
+        //     }, true);
+        // }
+
+        builder.show();
+    }
+
     handleReplyClear = () => {
         this.setState({ replyTo: undefined });
     }
@@ -153,7 +202,15 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             const result = sortComments(comments, commentsMap);
     
             for (let commentEntry of result) {
-                commentsElements.push(<CommentView key={commentEntry.id} comment={commentEntry.comment} depth={getDepthOfComment(commentEntry, commentsMap)} onReplyPress={this.handleReplyPress} />);
+                commentsElements.push(
+                    <CommentView
+                        key={commentEntry.id}
+                        comment={commentEntry.comment}
+                        depth={getDepthOfComment(commentEntry, commentsMap)}
+                        onReplyPress={this.handleReplyPress}
+                        onLongPress={this.handleCommentLongPress}
+                    />
+                );
             }
         }
 
