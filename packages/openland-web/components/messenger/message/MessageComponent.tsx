@@ -33,7 +33,7 @@ const MessageComponentInner = React.memo(
                         editPostHandler={props.editPostHandler}
                         messagesContext={props.messagesContextProps}
                     />
-                    {/* <XWithRole role={['feature-non-production']}>
+                    <XWithRole role={['feature-non-production']}>
                         {props.isChannel && !props.message.isService && (
                             <XView width={150}>
                                 <XButton
@@ -47,7 +47,7 @@ const MessageComponentInner = React.memo(
                                 />
                             </XView>
                         )}
-                    </XWithRole> */}
+                    </XWithRole>
                 </>
             );
     },
