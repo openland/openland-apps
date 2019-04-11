@@ -99,6 +99,7 @@ export const XScrollViewReverse2 = React.memo<XScrollViewReverse2Props>((props) 
         outerHeight.current = outerDiv.clientHeight;
         scrollTop.current = innerHeight.current;
         outerDiv.scrollTop = scrollTop.current;
+        reportOnScroll();
 
         // Watch for scroll
         const onScrollHandler = throttle(() => {
@@ -140,6 +141,7 @@ export const XScrollViewReverse2 = React.memo<XScrollViewReverse2Props>((props) 
             return;
         }
         updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
+        reportOnScroll();
     }, [props.children]);
 
     const { children, ...other } = props;
