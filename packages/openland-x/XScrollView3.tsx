@@ -65,6 +65,7 @@ class CustomBackend extends React.PureComponent<{ onScroll: (values: XScrollValu
                     flexDirection: 'column',
                 }}
                 wrapperProps={{ style: { width: '100%', height: '100%', marginRight: 0 } }}
+                contentProps={{ style: { display: 'flex', flexDirection: 'column' } }}
                 trackYProps={{
                     style: {
                         backgroundColor: 'transparent',

@@ -151,6 +151,7 @@ export const XUserCard = ({
             color="rgba(0, 0, 0, 0.4)"
             marginTop={1}
             marginBottom={-1}
+            maxWidth={140}
         >
             {user.primaryOrganization.name}
         </XView>
