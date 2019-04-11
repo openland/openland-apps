@@ -9,13 +9,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { isAndroid } from 'openland-mobile/utils/isAndroid';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-interface RenderMentionsProps {
+interface MentionsRenderProps {
     activeWord: string;
     groupId: string;
     onMentionPress: (word: string | undefined, user: RoomMembers_members_user) => void;
 }
 
-export const MentionsRender = (props: RenderMentionsProps) => {
+export const MentionsRender = (props: MentionsRenderProps) => {
     let theme = React.useContext(ThemeContext);
     let members = getClient().useRoomMembers({ roomId: props.groupId }).members;
     let mentionsWrapper = null;

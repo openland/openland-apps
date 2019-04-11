@@ -20,6 +20,8 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SenderView } from 'openland-mobile/messenger/components/SenderView';
 import { CommentView } from 'openland-mobile/messenger/components/CommentView';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
+import { findActiveWord } from 'openland-y-utils/findActiveWord';
+import { EmojiRender, findEmojiByShortname } from './components/EmojiRender';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -31,6 +33,11 @@ interface MessageCommentsInnerState {
     text: string;
     theme: ConversationTheme;
     replyTo: MessageComments_messageComments_comments_comment | undefined;
+    inputFocused: boolean;
+    selection: {
+        start: number,
+        end: number
+    }
 }
 
 class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, MessageCommentsInnerState> {
@@ -39,7 +46,12 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         this.state = {
             text: '',
             theme: DefaultConversationTheme,
-            replyTo: undefined
+            replyTo: undefined,
+            selection: {
+                start: 0,
+                end: 0.
+            },
+            inputFocused: false
         };
     }
 
@@ -66,15 +78,36 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
     }
 
     handleSelectionChange = (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
-        // temp ignore
+        this.setState({
+            selection: {
+                start: e.nativeEvent.selection.start,
+                end: e.nativeEvent.selection.end
+            }
+        });
     }
 
     handleFocus = () => {
-        // temp ignore
+        this.setState({
+            inputFocused: true
+        });
     }
 
     handleBlur = () => {
-        // temp ignore
+        this.setState({
+            inputFocused: false
+        });
+    }
+
+    handleEmojiPress = (word: string | undefined, emoji: string) => {
+        if (typeof word !== 'string') {
+            return;
+        }
+
+        let { text, selection } = this.state;
+
+        let newText = text.substring(0, selection.start - word.length) + emoji + ' ' + text.substring(selection.start, text.length);
+
+        this.setState({ text: newText });
     }
 
     handleReactionPress = () => {
@@ -157,19 +190,38 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             </View>
         );
 
-        const replyView = replyTo ? (
-            <View marginLeft={Platform.OS === 'android' ? 12 : 15} paddingLeft={8} marginRight={Platform.OS === 'android' ? 12 : 52} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
-                <View flexGrow={1}>
-                    <Text style={{ color: '#0084fe', fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1}>{replyTo.sender.name}</Text>
-                    <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1}>{replyTo.message}</Text>
-                </View>
-                <TouchableWithoutFeedback onPress={this.handleReplyClear}>
-                    <View marginLeft={11} width={18} height={38} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-cancel-gray-18.png')} style={{ tintColor: '#b9c1cd', width: 18, height: 18 }} />
+        let suggestions = null;
+        let activeWord = findActiveWord(this.state.text, this.state.selection);
+
+        if (replyTo) {
+            suggestions = (
+                <View marginLeft={Platform.OS === 'android' ? 12 : 15} paddingLeft={8} marginRight={Platform.OS === 'android' ? 12 : 52} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
+                    <View flexGrow={1}>
+                        <Text style={{ color: '#0084fe', fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1}>{replyTo.sender.name}</Text>
+                        <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1}>{replyTo.message}</Text>
                     </View>
-                </TouchableWithoutFeedback>
-            </View>
-        ) : undefined;
+                    <TouchableWithoutFeedback onPress={this.handleReplyClear}>
+                        <View marginLeft={11} width={18} height={38} alignItems="center" justifyContent="center">
+                            <Image source={require('assets/ic-cancel-gray-18.png')} style={{ tintColor: '#b9c1cd', width: 18, height: 18 }} />
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+            );
+        }
+
+        if (this.state.inputFocused && activeWord && activeWord.startsWith(':')) {
+            let findedEmoji = findEmojiByShortname(activeWord);
+
+            if (findedEmoji.length > 0) {
+                suggestions = (
+                    <EmojiRender
+                        activeWord={activeWord}
+                        onEmojiPress={this.handleEmojiPress}
+                        redefineItems={findedEmoji}
+                    />
+                );
+            }
+        }
 
         return (
             <>
@@ -213,7 +265,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                     text={this.state.text}
                     theme={this.state.theme}
                     placeholder="Write a comment..."
-                    topContent={replyView}
+                    topContent={suggestions}
                 />
             </>
         );
