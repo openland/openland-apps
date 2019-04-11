@@ -25,7 +25,7 @@ const CreateProfileFormRoot = ({ roomView }: { roomView: boolean }) => {
 
     let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
 
-    const data = client.useWithoutLoaderProfilePrefill();
+    const data = client.useProfilePrefill();
 
     const createProfile = async ({
         variables,
@@ -39,10 +39,6 @@ const CreateProfileFormRoot = ({ roomView }: { roomView: boolean }) => {
     };
 
     const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
-
-    if (!data) {
-        return <div />;
-    }
 
     const prefill = usePhotoPrefill ? data.prefill : null;
 
