@@ -24,36 +24,36 @@ const MessageComponentInner = React.memo(
                 editPostHandler={props.editPostHandler}
             />
         ) : (
-            <>
-                <DesktopMessageComponentInner
-                    message={props.message}
-                    conversation={props.conversation}
-                    me={props.me}
-                    conversationType={props.conversationType}
-                    editPostHandler={props.editPostHandler}
-                    messagesContext={props.messagesContextProps}
-                />
-                     <XWithRole role={['feature-non-production']}>
-                {props.isChannel && !props.message.isService && (
-                    <XView width={150}>
-                        <XButton
-                            text={
-                                !props.message.commentsCount
-                                    ? `Discuss`
-                                    : `${props.message.commentsCount} Comments`
-                            }
-                            size="default"
-                            query={{ field: 'comments', value: props.message.id }}
-                        />
-                    </XView>
-                )}
-                </XWithRole>
-            </>
-        );
+                <>
+                    <DesktopMessageComponentInner
+                        message={props.message}
+                        conversation={props.conversation}
+                        me={props.me}
+                        conversationType={props.conversationType}
+                        editPostHandler={props.editPostHandler}
+                        messagesContext={props.messagesContextProps}
+                    />
+                    {/* <XWithRole role={['feature-non-production']}>
+                        {props.isChannel && !props.message.isService && (
+                            <XView width={150}>
+                                <XButton
+                                    text={
+                                        !props.message.commentsCount
+                                            ? `Discuss`
+                                            : `${props.message.commentsCount} Comments`
+                                    }
+                                    size="default"
+                                    query={{ field: 'comments', value: props.message.id }}
+                                />
+                            </XView>
+                        )}
+                    </XWithRole> */}
+                </>
+            );
     },
 );
 
-export const MessageComponent = (
+export const MessageComponent = React.memo((
     props: MessageComponentProps & {
         isChannel: boolean;
     },
@@ -73,4 +73,4 @@ export const MessageComponent = (
             isMobile={isMobile}
         />
     );
-};
+});

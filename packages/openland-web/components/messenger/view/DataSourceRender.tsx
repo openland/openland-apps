@@ -63,19 +63,19 @@ export interface XListViewProps<T extends DataSourceItem> {
     wrapWith?: any;
 }
 
-const WrapWith = ({
+const WrapWith = React.memo(({
     WrapWithComponent,
     reverce,
     completed,
     LoadingComponent,
     children,
 }: {
-    WrapWithComponent: any;
-    reverce?: boolean;
-    completed: boolean;
-    LoadingComponent: any;
-    children: any;
-}) => {
+        WrapWithComponent: any;
+        reverce?: boolean;
+        completed: boolean;
+        LoadingComponent: any;
+        children: any;
+    }) => {
     if (!WrapWithComponent) {
         return (
             <>
@@ -92,9 +92,9 @@ const WrapWith = ({
             {!completed && !reverce && <LoadingComponent />}
         </WrapWithComponent>
     );
-};
+});
 
-export const DataSourceRender = React.memo(function<T extends DataSourceItem>(
+export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
     props: XListViewProps<T>,
 ) {
     let [items, completed] = useDataSource(props.dataSource);

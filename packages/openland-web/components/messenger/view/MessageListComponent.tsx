@@ -36,9 +36,9 @@ const messagesWrapperClassName = css`
     }
 `;
 
-const MessagesWrapper = ({ children }: { children?: any }) => (
+const MessagesWrapper = React.memo(({ children }: { children?: any }) => (
     <div className={messagesWrapperClassName}>{children}</div>
-);
+));
 
 const messagesWrapperEmptyClassName = css`
     display: flex;
