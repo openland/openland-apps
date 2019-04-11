@@ -830,10 +830,11 @@ export const CreateGroupPopperButton = XMemo((props: {orgId: string}) => {
             contentContainer={<XMenuVertical />}
             placement="bottom-start"
             show={show}
-            marginTop={5}
+            marginTop={-3}
             marginRight={-5}
             arrow={null}
             onClickOutside={closer}
+            width={178}
             content={
                 <>
                     <XMenuItem
