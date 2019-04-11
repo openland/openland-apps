@@ -22,7 +22,7 @@ import {
     WebsitePlaceholder,
 } from './modals';
 import { XLoader } from 'openland-x/XLoader';
-import { XMenuItem } from 'openland-x/XMenuItem';
+import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XLink } from 'openland-x/XLink';
 import { XOverflow } from 'openland-web/components/XOverflow';
@@ -49,6 +49,10 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
 import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { AvatarModal } from './UserProfileComponent';
+import { XPopper } from 'openland-x/XPopper';
+import { XMemo } from 'openland-y-utils/XMemo';
+import CreateRoomIcon from 'openland-icons/ic-create-room.svg';
+import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -801,6 +805,69 @@ const Members = ({ organization, router }: MembersProps) => {
     }
 };
 
+class CreateGroupButton extends React.PureComponent<{ onClick: () => void }> {
+    render() {
+        return (
+            <XCreateCard
+                text={TextProfiles.Organization.createPublicGroup}
+                onClick={this.props.onClick}
+            />
+        );
+    }
+}
+
+export const CreateGroupPopperButton = XMemo(() => {
+    const [show, setShow] = React.useState(false);
+
+    const closer = () => {
+        setShow(false);
+    };
+
+    const toggle = () => {
+        setShow(!show);
+    };
+
+    return (
+        <XPopper
+            contentContainer={<XMenuVertical />}
+            placement="bottom-start"
+            show={show}
+            marginTop={10}
+            marginRight={-5}
+            arrow={null}
+            onClickOutside={closer}
+            content={
+                <>
+                    <XMenuItem
+                        style="gray"
+                        path="/mail/create"
+                        icon={
+                            <XView marginRight={14} marginTop={-4}>
+                                <CreateRoomIcon />
+                            </XView>
+                        }
+                    >
+                        New group
+                    </XMenuItem>
+                    <XMenuItem
+                        style="gray"
+                        path="/mail/create?channel=true"
+                        icon={
+                            <XView marginRight={14} marginTop={-4}>
+                                <CreateChannelIcon />
+                            </XView>
+                        }
+                    >
+                        New channel
+                    </XMenuItem>
+                </>
+            }
+        >
+            <CreateGroupButton onClick={() => toggle()} />
+        </XPopper>
+    );
+});
+
 const Rooms = (props: { organization: Organization_organization }) => {
     let { organization } = props;
 
@@ -815,10 +882,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
                     paddingBottom={0}
                 />
                 <SectionContent>
-                    <XCreateCard
-                        path="/mail/create"
-                        text={TextProfiles.Organization.createPublicGroup}
-                    />
+                    <CreateGroupPopperButton />
                     <XMoreCards>
                         {groups.map((c: any, i: any) => (
                             <XRoomCard key={i} room={c} />

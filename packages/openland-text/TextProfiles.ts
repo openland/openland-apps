@@ -36,10 +36,10 @@ export const TextProfiles = {
     },
 
     Organization: {
-        publicGroups: 'Groups',
+        publicGroups: 'Groups and Channels',
         privateGroups: 'Private groups',
 
-        createPublicGroup: 'Create group',
+        createPublicGroup: 'Create new',
         createPrivateGroup: 'Create private group',
 
         addSocialLinks: 'Add social links',
