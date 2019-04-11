@@ -106,7 +106,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     }
 
     handlerScroll = (e: XScrollValues) => {
-        if (e.scrollTop < 200) {
+        if (e.scrollTop < 1000) {
             this.props.conversation.loadBefore();
         }
     }
