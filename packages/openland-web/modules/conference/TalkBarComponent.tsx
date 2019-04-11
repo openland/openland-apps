@@ -6,7 +6,7 @@ import { XView } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 
-export const TalkBarComponent = (props: { conversationId: string }) => {
+export const TalkBarComponent = (props: { conversationId: string, isPrivate: boolean }) => {
     let calls = React.useContext(MessengerContext).calls;
     let callState = calls.useState();
     let client = useClient();
@@ -75,7 +75,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                 onClick={
                                     callState.conversationId
                                         ? () => calls.leaveCall()
-                                        : () => calls.joinCall(props.conversationId)
+                                        : () => calls.joinCall(props.conversationId, props.isPrivate)
                                 }
                             />
                         )}

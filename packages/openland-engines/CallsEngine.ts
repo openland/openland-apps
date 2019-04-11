@@ -3,9 +3,11 @@ import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { MediaSessionManager } from './media/MediaSessionManager';
 
+export type CallStatus = 'initial' | 'connecting' | 'connected' | 'end' | 'waiting';
 export interface CallState {
     conversationId?: string;
-    status: 'connecting' | 'connected' | 'end';
+    private?: boolean;
+    status: CallStatus;
     mute: boolean;
 }
 
@@ -14,7 +16,7 @@ export class CallsEngine {
     readonly client: OpenlandClient;
 
     private mediaSession?: MediaSessionManager;
-    private _state: CallState = { status: 'end', mute: false };
+    private _state: CallState = { status: 'initial', mute: false };
     private _stateSubscriptions: ((state: CallState) => void)[] = [];
 
     constructor(messenger: MessengerEngine) {
@@ -26,20 +28,19 @@ export class CallsEngine {
         return this._state;
     }
 
-    joinCall = (conversationId: string) => {
+    joinCall = (conversationId: string, isPrivate: boolean) => {
         if (this.mediaSession) {
             this.mediaSession.destroy();
         }
-        this.mediaSession = new MediaSessionManager(this.client, conversationId, this._state.mute, () => {
-            this.setState({ ...this._state, status: 'connected' });
-        });
-        this.setState({ mute: false, status: 'connecting', conversationId });
+        this.mediaSession = new MediaSessionManager(this.client, conversationId, this._state.mute, !!isPrivate, (status) => this.setState({ ...this._state, status, private: !!isPrivate }), this.leaveCall);
+        this.setState({ mute: false, status: 'connecting', conversationId, private: isPrivate });
     }
 
     leaveCall = () => {
         if (this.mediaSession) {
             this.mediaSession.destroy();
-            this.setState({ mute: false, status: 'connecting' });
+            this.setState({ mute: false, status: 'end' });
+            this.setState({ mute: false, status: 'initial' });
         }
     }
 
