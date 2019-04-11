@@ -19,7 +19,6 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'op
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
 import { reactionsImagesMap, defaultReactions, reactionMap } from './components/AsyncMessageReactionsView';
-import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -119,22 +118,24 @@ export class MobileMessenger {
     private handleMessageLongPress = (message: DataSourceMessageItem) => {
         let builder = new ActionSheetBuilder();
 
-        if ((this.currentConv && !this.currentConv.isChannel) || !NON_PRODUCTION) {
-            builder.view((ctx: ZModalController) => (
-                <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={Platform.OS === 'android' ? 62 : 56} paddingHorizontal={10}>
-                    {defaultReactions.map(r => (
-                        <TouchableOpacity
-                            onPress={() => {
-                                ctx.hide();
-                                this.handleReactionSetUnset(message, r);
-                            }}
-                        >
-                            <Image source={reactionsImagesMap[r]} />
-                        </TouchableOpacity>
-                    ))}
-                </View>
-            ));
-        }
+        builder.view((ctx: ZModalController) => (
+            <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={Platform.OS === 'android' ? 62 : 56} paddingHorizontal={10}>
+                {defaultReactions.map(r => (
+                    <TouchableOpacity
+                        onPress={() => {
+                            ctx.hide();
+                            this.handleReactionSetUnset(message, r);
+                        }}
+                    >
+                        <Image source={reactionsImagesMap[r]} />
+                    </TouchableOpacity>
+                ))}
+            </View>
+        ));
+
+        builder.action('Comments', () => {
+            this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId: this.currentConvId });
+        });
 
         if (message.text) {
             if (message.senderId === this.engine.user.id) {
@@ -153,7 +154,7 @@ export class MobileMessenger {
                         })
                         .show();
                 });
-            }
+            };
 
             builder.action('Copy', () => {
                 Clipboard.setString(message.text!!);
@@ -168,7 +169,7 @@ export class MobileMessenger {
                 } finally {
                     stopLoader();
                 }
-            })
+            });
         }
 
         if (message.senderId === this.engine.user.id) {

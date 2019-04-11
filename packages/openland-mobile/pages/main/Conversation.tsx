@@ -295,11 +295,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
 
         if (sharedRoom) {
-            if (sharedRoom.isChannel && NON_PRODUCTION) {
-                this.props.router.push('MessageComments', { messageId: mid });
-            } else {
-                this.props.router.push('PinnedMessage', { id: this.props.chat.id, room: sharedRoom })
-            }
+            this.props.router.push('MessageComments', { messageId: mid, chatId: sharedRoom.id });
         }
     }
 
