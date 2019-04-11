@@ -3,16 +3,14 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { View, Text, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData, TouchableWithoutFeedback, Image, Platform, Clipboard } from 'react-native';
+import { View, Text, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData, TouchableWithoutFeedback, Image, Platform, Clipboard, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { SScrollView } from 'react-native-s/SScrollView';
 import { MessageInputBar } from './components/MessageInputBar';
 import { DefaultConversationTheme, ConversationTheme } from './themes/ConversationThemeResolver';
 import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
-import { MessageView } from 'openland-mobile/messenger/components/MessageView';
 import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { reactionMap } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
@@ -24,6 +22,8 @@ import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { EmojiRender, findEmojiByShortname } from './components/EmojiRender';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Prompt } from 'openland-mobile/components/Prompt';
+import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -39,7 +39,8 @@ interface MessageCommentsInnerState {
     selection: {
         start: number,
         end: number
-    }
+    },
+    sending: boolean
 }
 
 class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, MessageCommentsInnerState> {
@@ -53,7 +54,8 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                 start: 0,
                 end: 0.
             },
-            inputFocused: false
+            inputFocused: false,
+            sending: false
         };
     }
 
@@ -65,13 +67,15 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         const text = this.state.text;
 
         if (text.trim().length > 0) {
+            this.setState({ sending: true });
+
             await getClient().mutateAddMessageComment({
                 messageId: this.props.message.id,
                 message: this.state.text,
                 replyComment: this.state.replyTo ? this.state.replyTo.id : null,
             });
 
-            this.setState({ text: '', replyTo: undefined });
+            this.setState({ text: '', replyTo: undefined, sending: false });
         }
     }
 
@@ -190,7 +194,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
     render () {
         const { message, comments } = this.props;
         const { replyTo } = this.state;
-        const commentsElements = [];
+        const commentsElements: JSX.Element[] = [];
 
         if (this.props.comments.length > 0) {
             const commentsMap = {};
@@ -280,12 +284,11 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             }
         }
 
-        return (
-            <>
-                <SHeader title="Comments" />
-                <SScrollView flexGrow={1} paddingHorizontal={16}>
+        let content = (
+            <ScrollView flexGrow={1} keyboardDismissMode="interactive">
+                <View paddingHorizontal={16} paddingBottom={Platform.OS === 'ios' ? 68 : undefined}>
                     <SenderView sender={message.sender} date={message.date} />
-                    <MessageView message={message} />
+                    <ZMessageView message={message} />
 
                     {toolButtons}
 
@@ -298,8 +301,6 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                             </View>
 
                             {commentsElements}
-
-                            <View height={50} />
                         </>
                     )}
 
@@ -309,21 +310,52 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                             <Text style={{ fontSize: 15, color: 'rgba(0, 0, 0, 0.4)' }}>Write the first comment</Text>
                         </View>
                     )}
-                </SScrollView>
+                </View>
+            </ScrollView>
+        );
 
-                <MessageInputBar
-                    attachesEnabled={false}
-                    onAttachPress={this.handleAttach}
-                    onSubmitPress={this.handleSubmit}
-                    onChangeText={this.handleTextChange}
-                    onSelectionChange={this.handleSelectionChange}
-                    onFocus={this.handleFocus}
-                    onBlur={this.handleBlur}
-                    text={this.state.text}
-                    theme={this.state.theme}
-                    placeholder="Write a comment..."
-                    topContent={suggestions}
-                />
+        let input = (
+            <MessageInputBar
+                attachesEnabled={false}
+                onAttachPress={this.handleAttach}
+                onSubmitPress={this.handleSubmit}
+                onChangeText={this.handleTextChange}
+                onSelectionChange={this.handleSelectionChange}
+                onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
+                text={this.state.text}
+                theme={this.state.theme}
+                placeholder="Write a comment..."
+                topContent={suggestions}
+                showLoader={this.state.sending}
+            />
+        );
+
+        return (
+            <>
+                <SHeader title="Comments" />
+                <ASSafeAreaContext.Consumer>
+                    {area => (
+                        <>
+                            <View flexGrow={1} flexShrink={1} paddingTop={area.top}>
+                                {Platform.OS === 'ios' && (
+                                    <KeyboardAvoidingView flexGrow={1} behavior="padding">
+                                        {content}
+                                    </KeyboardAvoidingView>
+                                )}
+                                {Platform.OS !== 'ios' && (
+                                    <>
+                                        {content}
+                                    </>
+                                )}
+                            </View>
+
+                            <View paddingBottom={Platform.OS === 'android' ? area.keyboardHeight : undefined}>
+                                {input}
+                            </View>
+                        </>
+                    )}
+                </ASSafeAreaContext.Consumer>
             </>
         );
     }
@@ -336,7 +368,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
     let client = getClient();
 
     let message = client.useMessage({ messageId: messageId }).message as FullMessage_GeneralMessage;
-    let comments = client.useMessageComments({ messageId: messageId }).messageComments.comments;
+    let comments = client.useMessageComments({ messageId: messageId }, { fetchPolicy: 'network-only' }).messageComments.comments;
 
     const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
         if (event.__typename === 'CommentReceived') {
