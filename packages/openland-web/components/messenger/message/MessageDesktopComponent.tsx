@@ -117,6 +117,7 @@ const IconButton = Glamorous.div({
 export interface MessageComponentProps {
     message: DataSourceWebMessageItem;
     isChannel: boolean;
+    hasComments?: boolean;
     conversationId?: string;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me?: UserShort | null;

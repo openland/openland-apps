@@ -4,7 +4,6 @@ import { MentionComponentInnerText } from 'openland-x/XRichTextInput';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { UserShort } from 'openland-api/Types';
 import { css, cx } from 'linaria';
-import { isEmoji } from 'openland-y-utils/isEmoji';
 import { LinkToRoom } from './service/views/LinkToRoom';
 import { OthersPopper, JoinedUserPopperRowProps } from './service/views/OthersPopper';
 import { SpannedString } from '../../data/SpannedString';
@@ -86,7 +85,9 @@ export const SpannedStringView = React.memo<{ spannedString: SpannedString }>(pr
     const messagesContextProps = React.useContext(MessagesStateContext);
     let res: any[] = [];
     let i = 0;
-    for (let s of props.spannedString.spans) {
+
+    const spans = props.spannedString ? props.spannedString.spans : [];
+    for (let s of spans) {
         if (s.type === 'text') {
             res.push(
                 <span

@@ -32,7 +32,7 @@ const MessageComponentInner = React.memo(
                     messagesContext={props.messagesContextProps}
                 />
                 <XWithRole role={['feature-non-production']}>
-                    {props.isChannel && !props.message.isService && (
+                    {props.hasComments && (
                         <XView width={150}>
                             <XButton
                                 text={
@@ -61,6 +61,7 @@ export const MessageComponent = (
 
     return (
         <MessageComponentInner
+            hasComments={props.hasComments}
             isChannel={props.isChannel}
             message={props.message}
             conversationId={props.conversationId}

@@ -12,10 +12,13 @@ export interface DataSourceWebMessageItem extends DataSourceMessageItem {
     textSpannedString?: SpannedString;
 }
 
-export function buildMessagesDataSource(
-    ds: DataSource<DataSourceMessageItem | DataSourceDateItem>,
-): DataSource<DataSourceWebMessageItem | DataSourceDateItem> {
-    return ds.batched().throttledMap(src => ({
+export interface DataSourceWebDateItem extends DataSourceDateItem {
+    senderNameEmojify?: any;
+    textSpannedString?: SpannedString;
+}
+
+export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessageItem {
+    return {
         ...src,
         senderNameEmojify:
             src.type === 'message' && !src.attachTop
@@ -26,5 +29,11 @@ export function buildMessagesDataSource(
                 : undefined,
         textSpannedString:
             src.type === 'message' && src.text ? spansPreprocess(src.text!, src.spans) : undefined,
-    }));
+    };
+}
+
+export function buildMessagesDataSource(
+    ds: DataSource<DataSourceMessageItem | DataSourceDateItem>,
+): DataSource<DataSourceWebMessageItem | DataSourceWebDateItem> {
+    return ds.batched().throttledMap(convertDsMessage);
 }

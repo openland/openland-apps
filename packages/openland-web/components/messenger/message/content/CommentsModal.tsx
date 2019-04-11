@@ -26,6 +26,7 @@ import { MessageModalBody } from 'openland-web/fragments/chat/MessageModal';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 
 function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -199,30 +200,31 @@ const CommentsInner = () => {
 
     const commentsElements = [];
 
-    for (let item of result) {
+    const dsMessages = result.map(item => {
+        const res = convertDsMessage(convertMessage(item.comment));
+        return { ...res, depth: getDepthOfComment(item, commentsMap) };
+    });
+
+    for (let message of dsMessages) {
         commentsElements.push(
-            <XView key={item.id} marginLeft={10 * getDepthOfComment(item, commentsMap)}>
-                <MessageComponent
-                    message={convertMessage(item.comment)}
-                    isChannel={true}
-                    me={null}
-                />
+            <XView key={message.key} marginLeft={10 * message.depth}>
+                <MessageComponent message={message} isChannel={true} me={null} />
                 <XView width={500}>
                     <XButton
                         size="default"
                         text="Reply"
                         onClick={() => {
-                            setShowInputId(item.comment.id);
+                            setShowInputId(message.key);
                         }}
                     />
-                    {showInputId === item.comment.id && (
+                    {showInputId === message.key && (
                         <CommentsInput
                             minimal
                             onSend={msgToSend => {
                                 addComment({
                                     messageId: curMesssageId,
                                     message: msgToSend,
-                                    replyComment: item.comment.id,
+                                    replyComment: message.text ? message.text : null,
                                 });
                                 setShowInputId(null);
                             }}
