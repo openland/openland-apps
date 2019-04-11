@@ -36,6 +36,7 @@ class ContainerWrapper extends React.PureComponent {
 }
 
 type EditorContainerContainer = XRichTextInput2Props & {
+    minimal?: boolean;
     editorState: EditorState;
     setEditorState: (a: EditorState) => void;
     mentionState: MentionSuggestionsStateT;
@@ -47,6 +48,8 @@ type EditorContainerContainer = XRichTextInput2Props & {
 };
 
 const photoIconClassName = css`
+    width: 18px;
+    height: 18px;
     & * {
         width: 18px;
         height: 18px;
@@ -54,6 +57,8 @@ const photoIconClassName = css`
 `;
 
 const fileIconClassName = css`
+    width: 18px;
+    height: 18px;
     & * {
         width: 18px;
         height: 18px;
@@ -123,7 +128,14 @@ const SendIconWrapper = () => {
 
 const IconsWrapper = ({ children }: { children: any }) => {
     return (
-        <XView position="absolute" top={11} right={0} flexDirection="row">
+        <XView
+            position="absolute"
+            height="100%"
+            alignItems="center"
+            top={0}
+            right={0}
+            flexDirection="row"
+        >
             {children}
         </XView>
     );
@@ -161,6 +173,7 @@ export const EditorContainer = (props: EditorContainerContainer) => {
         onEmojiPicked,
         finalAddEmoji,
         onMentionPicked,
+        minimal,
     } = props;
 
     const mentionSuggestionsItems = mentionState.suggestions.map(
@@ -219,10 +232,10 @@ export const EditorContainer = (props: EditorContainerContainer) => {
 
             {children}
             <IconsWrapper>
-                <PhotoIconWrapper />
-                <FileIconWrapper />
+                {minimal && <PhotoIconWrapper />}
+                {minimal && <FileIconWrapper />}
                 <EmojiButton onEmojiPicked={onEmojiPicked} />
-                <SendIconWrapper />
+                {minimal && <SendIconWrapper />}
             </IconsWrapper>
         </ContainerWrapper>
     );

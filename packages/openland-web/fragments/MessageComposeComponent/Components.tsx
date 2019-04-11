@@ -20,20 +20,22 @@ export const SendMessageContent = Glamorous(XHorizontal)(
     },
 );
 
-export const SendMessageWrapper = Glamorous.div<{ fullWidth?: boolean }>(({ fullWidth }) => {
-    return {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'stretch',
-        flexShrink: 0,
-        minHeight: 114,
-        backgroundColor: XThemeDefault.backyardColor,
-        paddingLeft: fullWidth ? 32 : 16,
-        paddingRight: fullWidth ? 32 : 16,
-        paddingTop: 12,
-        paddingBottom: 12,
-        borderTopStyle: 'solid',
-        borderTopWidth: '1px',
-        borderTopColor: XThemeDefault.separatorColor,
-    };
-});
+export const SendMessageWrapper = Glamorous.div<{ fullWidth?: boolean; minimal?: boolean }>(
+    ({ fullWidth, minimal }) => {
+        return {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'stretch',
+            flexShrink: 0,
+            minHeight: minimal ? undefined : 114,
+            backgroundColor: minimal ? undefined : XThemeDefault.backyardColor,
+            paddingLeft: fullWidth ? 32 : 16,
+            paddingRight: fullWidth ? 32 : 16,
+            paddingTop: 12,
+            paddingBottom: 12,
+            borderTopStyle: 'solid',
+            borderTopWidth: minimal ? undefined : '1px',
+            borderTopColor: minimal ? undefined : XThemeDefault.separatorColor,
+        };
+    },
+);

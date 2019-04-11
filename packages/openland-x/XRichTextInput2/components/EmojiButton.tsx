@@ -6,6 +6,8 @@ import useOnClickOutside from 'use-onclickoutside';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
 
 const emojiWrapperClassName = css`
+    width: 18px;
+    height: 18px;
     & * {
         cursor: pointer;
         width: 18px;

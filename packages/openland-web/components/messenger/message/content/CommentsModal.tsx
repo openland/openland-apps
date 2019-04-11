@@ -209,7 +209,6 @@ const CommentsInner = () => {
             </MessageModalBody>
             <XView>
                 <CommentsInput
-                    minimal
                     onSend={msgToSend => {
                         addComment({
                             messageId: curMesssageId,

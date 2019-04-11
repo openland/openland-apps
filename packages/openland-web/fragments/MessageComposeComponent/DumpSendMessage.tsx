@@ -50,7 +50,7 @@ export const DumpSendMessage = React.memo(({
 }: DumpSendMessageT) => {
     const { handleDrop } = React.useContext(UploadContext);
     return (
-        <SendMessageWrapper fullWidth={fullWidth}>
+        <SendMessageWrapper fullWidth={fullWidth} minimal={minimal}>
             <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
             <SendMessageContent separator={4} fullWidth={fullWidth} alignItems="center">
                 <XVertical separator={6} flexGrow={1} maxWidth="100%">
@@ -70,17 +70,20 @@ export const DumpSendMessage = React.memo(({
                         inputRef={inputRef}
                         inputValue={inputValue}
                         handleDrop={handleDrop}
+                        minimal={minimal}
                     />
                     <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
                         {!minimal && <AttachmentButtons enabled={enabled} />}
 
-                        <XButton
-                            text="Send"
-                            style="primary"
-                            action={handleSend}
-                            iconRight="send"
-                            enabled={enabled}
-                        />
+                        {!minimal && (
+                            <XButton
+                                text="Send"
+                                style="primary"
+                                action={handleSend}
+                                iconRight="send"
+                                enabled={enabled}
+                            />
+                        )}
                     </XHorizontal>
                 </XVertical>
             </SendMessageContent>

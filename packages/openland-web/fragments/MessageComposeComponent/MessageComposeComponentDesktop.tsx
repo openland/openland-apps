@@ -36,6 +36,7 @@ export interface MessageComposeComponentProps {
     conversationId?: string;
     conversation?: ConversationEngine;
     enabled?: boolean;
+    minimal?: boolean;
     onSend?: (text: string, mentions: UserShort[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;

@@ -21,6 +21,7 @@ export interface XRichTextInput2Props extends XFlexStyles {
     mentionsData?: MentionDataT[];
     onPasteFile?: (file: any) => void;
     onCurrentWordChanged?: (word: string | undefined) => void;
+    minimal?: boolean;
 }
 
 export const XRichTextInput2 = React.memo(
