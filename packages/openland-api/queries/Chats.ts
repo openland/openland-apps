@@ -759,8 +759,20 @@ export const ResolvedInviteQuery = gql`
 `;
 
 export const AddMessageCommentMutation = gql`
-    mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID) {
-        addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment)
+    mutation AddMessageComment(
+        $messageId: ID!,
+        $message: String,
+        $replyComment: ID
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+    ) {
+        addMessageComment(
+            messageId: $messageId
+            message: $message
+            replyComment: $replyComment
+            mentions: $mentions
+            fileAttachments: $fileAttachments
+        )
     }
 `;
 

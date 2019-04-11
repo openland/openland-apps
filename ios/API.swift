@@ -649,6 +649,76 @@ public struct RoomInviteEmailRequest: GraphQLMapConvertible {
   }
 }
 
+public struct MentionInput: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  public init(chatId: Swift.Optional<GraphQLID?> = nil, userId: Swift.Optional<GraphQLID?> = nil, userIds: Swift.Optional<[GraphQLID]?> = nil, offset: Int, length: Int) {
+    graphQLMap = ["chatId": chatId, "userId": userId, "userIds": userIds, "offset": offset, "length": length]
+  }
+
+  public var chatId: Swift.Optional<GraphQLID?> {
+    get {
+      return graphQLMap["chatId"] as! Swift.Optional<GraphQLID?>
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "chatId")
+    }
+  }
+
+  public var userId: Swift.Optional<GraphQLID?> {
+    get {
+      return graphQLMap["userId"] as! Swift.Optional<GraphQLID?>
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "userId")
+    }
+  }
+
+  public var userIds: Swift.Optional<[GraphQLID]?> {
+    get {
+      return graphQLMap["userIds"] as! Swift.Optional<[GraphQLID]?>
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "userIds")
+    }
+  }
+
+  public var offset: Int {
+    get {
+      return graphQLMap["offset"] as! Int
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "offset")
+    }
+  }
+
+  public var length: Int {
+    get {
+      return graphQLMap["length"] as! Int
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "length")
+    }
+  }
+}
+
+public struct FileAttachmentInput: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  public init(fileId: String) {
+    graphQLMap = ["fileId": fileId]
+  }
+
+  public var fileId: String {
+    get {
+      return graphQLMap["fileId"] as! String
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "fileId")
+    }
+  }
+}
+
 public enum MessageReactionType: RawRepresentable, Equatable, Hashable, Apollo.JSONDecodable, Apollo.JSONEncodable {
   public typealias RawValue = String
   case like
@@ -10382,27 +10452,31 @@ public final class ResolvedInviteQuery: GraphQLQuery {
 
 public final class AddMessageCommentMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID) {\n  addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment)\n}"
+    "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments)\n}"
 
   public var messageId: GraphQLID
   public var message: String?
   public var replyComment: GraphQLID?
+  public var mentions: [MentionInput]?
+  public var fileAttachments: [FileAttachmentInput]?
 
-  public init(messageId: GraphQLID, message: String? = nil, replyComment: GraphQLID? = nil) {
+  public init(messageId: GraphQLID, message: String? = nil, replyComment: GraphQLID? = nil, mentions: [MentionInput]?, fileAttachments: [FileAttachmentInput]?) {
     self.messageId = messageId
     self.message = message
     self.replyComment = replyComment
+    self.mentions = mentions
+    self.fileAttachments = fileAttachments
   }
 
   public var variables: GraphQLMap? {
-    return ["messageId": messageId, "message": message, "replyComment": replyComment]
+    return ["messageId": messageId, "message": message, "replyComment": replyComment, "mentions": mentions, "fileAttachments": fileAttachments]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("addMessageComment", arguments: ["messageId": GraphQLVariable("messageId"), "message": GraphQLVariable("message"), "replyComment": GraphQLVariable("replyComment")], type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("addMessageComment", arguments: ["messageId": GraphQLVariable("messageId"), "message": GraphQLVariable("message"), "replyComment": GraphQLVariable("replyComment"), "mentions": GraphQLVariable("mentions"), "fileAttachments": GraphQLVariable("fileAttachments")], type: .nonNull(.scalar(Bool.self))),
     ]
 
     public private(set) var resultMap: ResultMap

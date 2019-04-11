@@ -12,6 +12,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 interface MentionsRenderProps {
     activeWord: string;
     groupId: string;
+
     onMentionPress: (word: string | undefined, user: RoomMembers_members_user) => void;
 }
 

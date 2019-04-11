@@ -2271,7 +2271,9 @@ class ApiFactory: ApiFactoryBase {
       let messageId = notNull(readString(src, "messageId"))
       let message = readString(src, "message")
       let replyComment = readString(src, "replyComment")
-      let requestBody = AddMessageCommentMutation(messageId: messageId, message: message, replyComment: replyComment)
+      let mentions = notNullListItems(readMentionInputList(src, "mentions"))
+      let fileAttachments = notNullListItems(readFileAttachmentInputList(src, "fileAttachments"))
+      let requestBody = AddMessageCommentMutation(messageId: messageId, message: message, replyComment: replyComment, mentions: mentions, fileAttachments: fileAttachments)
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -5027,6 +5029,90 @@ class ApiFactory: ApiFactoryBase {
      } else {
        return Optional.none
      }
+  }
+  func parseMentionInput(_ src: NSDictionary) -> MentionInput {
+    let chatId = readOptionalString(src, "chatId")
+    let userId = readOptionalString(src, "userId")
+    let userIds = notNullListItems(readStringList(src, "userIds"))
+    let offset = optionalNotNull(readOptionalInt(src, "offset"))
+    let length = optionalNotNull(readOptionalInt(src, "length"))
+    return MentionInput(chatId: chatId, userId: userId, userIds: userIds, offset: offset, length: length)
+  }
+  func readMentionInput(_ src: NSDictionary, _ name: String) -> MentionInput? {
+    let v = src[name]
+    if v != nil && !(v is NSNull) {
+      return self.parseMentionInput(v as! NSDictionary)
+    } else {
+      return nil
+    }
+  }
+  func readMentionInputOptional(_ src: NSDictionary, _ name: String) -> Optional<MentionInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseMentionInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
+    }
+  }
+  func readMentionInputList(_ src: NSDictionary, _ name: String) -> [MentionInput?]? {
+    let v = src[name]
+    if v != nil && !(v is NSNull) {
+      let items = v as! [NSDictionary?]
+      var res: [MentionInput?] = []
+      for i in 0..<items.count {
+        let itm = items[i]
+        if itm != nil && !(itm is NSNull) {
+          res.append(self.parseMentionInput(itm!))
+        } else {
+          res.append(nil)
+        }
+      }
+      return res
+    } else {
+      return nil
+    }
+  }
+  func parseFileAttachmentInput(_ src: NSDictionary) -> FileAttachmentInput {
+    let fileId = optionalNotNull(readOptionalString(src, "fileId"))
+    return FileAttachmentInput(fileId: fileId)
+  }
+  func readFileAttachmentInput(_ src: NSDictionary, _ name: String) -> FileAttachmentInput? {
+    let v = src[name]
+    if v != nil && !(v is NSNull) {
+      return self.parseFileAttachmentInput(v as! NSDictionary)
+    } else {
+      return nil
+    }
+  }
+  func readFileAttachmentInputOptional(_ src: NSDictionary, _ name: String) -> Optional<FileAttachmentInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseFileAttachmentInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
+    }
+  }
+  func readFileAttachmentInputList(_ src: NSDictionary, _ name: String) -> [FileAttachmentInput?]? {
+    let v = src[name]
+    if v != nil && !(v is NSNull) {
+      let items = v as! [NSDictionary?]
+      var res: [FileAttachmentInput?] = []
+      for i in 0..<items.count {
+        let itm = items[i]
+        if itm != nil && !(itm is NSNull) {
+          res.append(self.parseFileAttachmentInput(itm!))
+        } else {
+          res.append(nil)
+        }
+      }
+      return res
+    } else {
+      return nil
+    }
   }
   func parseAppProfileInput(_ src: NSDictionary) -> AppProfileInput {
     let name = readOptionalString(src, "name")

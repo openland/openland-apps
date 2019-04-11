@@ -8,7 +8,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { MessageInputBar } from './components/MessageInputBar';
 import { DefaultConversationTheme, ConversationTheme } from './themes/ConversationThemeResolver';
-import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
+import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomMembers_members_user, MentionInput, UserShort } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
@@ -24,11 +24,13 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Prompt } from 'openland-mobile/components/Prompt';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { MentionsRender } from './components/MentionsRender';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
     comments: MessageComments_messageComments_comments[];
     messenger: MobileMessenger;
+    chatId: string;
 }
 
 interface MessageCommentsInnerState {
@@ -40,7 +42,12 @@ interface MessageCommentsInnerState {
         start: number,
         end: number
     },
-    sending: boolean
+    sending: boolean,
+    mentions: ({
+        user: UserShort;
+        offset: number;
+        length: number;
+    })[],
 }
 
 class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, MessageCommentsInnerState> {
@@ -55,7 +62,8 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                 end: 0.
             },
             inputFocused: false,
-            sending: false
+            sending: false,
+            mentions: [],
         };
     }
 
@@ -69,13 +77,28 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         if (text.trim().length > 0) {
             this.setState({ sending: true });
 
+            let mentionsCleared: MentionInput[] = [];
+
+            if (this.state.mentions.length > 0) {
+                this.state.mentions.map(mention => {
+                    if (text.indexOf(mention.user.name) >= 0) {
+                        mentionsCleared.push({
+                            userId: mention.user.id,
+                            offset: mention.offset,
+                            length: mention.length
+                        });
+                    }
+                })
+            }
+
             await getClient().mutateAddMessageComment({
                 messageId: this.props.message.id,
                 message: this.state.text,
                 replyComment: this.state.replyTo ? this.state.replyTo.id : null,
+                mentions: mentionsCleared.length > 0 ? mentionsCleared : null
             });
 
-            this.setState({ text: '', replyTo: undefined, sending: false });
+            this.setState({ text: '', replyTo: undefined, sending: false, mentions: [] });
         }
     }
 
@@ -114,6 +137,28 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         let newText = text.substring(0, selection.start - word.length) + emoji + ' ' + text.substring(selection.start, text.length);
 
         this.setState({ text: newText });
+    }
+
+    handleMentionPress = (word: string | undefined, user: RoomMembers_members_user) => {
+        if (typeof word !== 'string') {
+            return;
+        }
+
+        let { text, selection } = this.state;
+
+        let newText = text.substring(0, selection.start - word.length) + '@' + user.name + ' ' + text.substring(selection.start, text.length);
+        let mentionedUsers = this.state.mentions;
+
+        mentionedUsers.push({
+            user: user,
+            offset: this.state.selection.start - 1,
+            length: user.name.length + 1
+        });
+
+        this.setState({
+            text: newText,
+            mentions: mentionedUsers
+        });
     }
 
     handleReactionPress = () => {
@@ -271,6 +316,16 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             );
         }
 
+        if (this.state.inputFocused && activeWord && activeWord.startsWith('@')) {
+            suggestions = (
+                <MentionsRender
+                    activeWord={activeWord}
+                    onMentionPress={this.handleMentionPress}
+                    groupId={this.props.chatId}
+                />
+            );
+        }
+
         if (this.state.inputFocused && activeWord && activeWord.startsWith(':')) {
             let findedEmoji = findEmojiByShortname(activeWord);
 
@@ -363,6 +418,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
 }
 
 const MessageCommentsComponent = XMemo<PageProps>((props) => {
+    let chatId = props.router.params.chatId;
     let messageId = props.router.params.messageId;
 
     let messenger = getMessenger();
@@ -390,6 +446,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
             message={message}
             comments={comments}
             messenger={messenger}
+            chatId={chatId}
         />
     );
 });

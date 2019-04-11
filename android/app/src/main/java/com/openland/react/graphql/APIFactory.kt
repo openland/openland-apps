@@ -906,6 +906,144 @@ fun readEventListOptional(src: ReadableMap, name: String): Input<List<Event?>> {
         return Input.absent()
     }
 }
+fun parseMentionInput(src: ReadableMap): MentionInput {
+    val builder = MentionInput.builder()
+    builder.chatIdInput(readOptionalString(src, "chatId"))
+    builder.userIdInput(readOptionalString(src, "userId"))
+    builder.userIdsInput(notNullListItems(readOptionalStringList(src, "userIds")))
+    builder.offset(notNull(readOptionalInt(src, "offset")))
+    builder.length(notNull(readOptionalInt(src, "length")))
+    return builder.build()
+}
+fun readMentionInput(src: ReadableMap, name: String): MentionInput? {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return null
+        } else {
+            return parseMentionInput(src.getMap(name))
+        }
+    } else {
+        return null
+    }
+}
+fun readMentionInputList(src: ReadableMap, name: String): List<MentionInput?>? {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return null
+        } else {
+            val items = src.getArray(name)
+            val res = mutableListOf<MentionInput?>()
+            for(i in 0 until items.size()) {
+                if (items.isNull(i)) {
+                    res.add(null)
+                } else {
+                    res.add(parseMentionInput(items.getMap(i)))
+                }
+            }
+            return res
+        }
+    } else {
+        return null
+    }
+}
+fun readMentionInputOptional(src: ReadableMap, name: String): Input<MentionInput> {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return Input.fromNullable(null)
+        } else {
+            return Input.fromNullable(parseMentionInput(src.getMap(name)))
+        }
+    } else {
+        return Input.absent()
+    }
+}
+fun readMentionInputListOptional(src: ReadableMap, name: String): Input<List<MentionInput?>> {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return Input.fromNullable(null)
+        } else {
+            val items = src.getArray(name)
+            val res = mutableListOf<MentionInput?>()
+            for(i in 0 until items.size()) {
+                if (items.isNull(i)) {
+                    res.add(null)
+                } else {
+                    res.add(parseMentionInput(items.getMap(i)))
+                }
+            }
+            return Input.fromNullable(res)
+        }
+    } else {
+        return Input.absent()
+    }
+}
+fun parseFileAttachmentInput(src: ReadableMap): FileAttachmentInput {
+    val builder = FileAttachmentInput.builder()
+    builder.fileId(notNull(readOptionalString(src, "fileId")))
+    return builder.build()
+}
+fun readFileAttachmentInput(src: ReadableMap, name: String): FileAttachmentInput? {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return null
+        } else {
+            return parseFileAttachmentInput(src.getMap(name))
+        }
+    } else {
+        return null
+    }
+}
+fun readFileAttachmentInputList(src: ReadableMap, name: String): List<FileAttachmentInput?>? {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return null
+        } else {
+            val items = src.getArray(name)
+            val res = mutableListOf<FileAttachmentInput?>()
+            for(i in 0 until items.size()) {
+                if (items.isNull(i)) {
+                    res.add(null)
+                } else {
+                    res.add(parseFileAttachmentInput(items.getMap(i)))
+                }
+            }
+            return res
+        }
+    } else {
+        return null
+    }
+}
+fun readFileAttachmentInputOptional(src: ReadableMap, name: String): Input<FileAttachmentInput> {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return Input.fromNullable(null)
+        } else {
+            return Input.fromNullable(parseFileAttachmentInput(src.getMap(name)))
+        }
+    } else {
+        return Input.absent()
+    }
+}
+fun readFileAttachmentInputListOptional(src: ReadableMap, name: String): Input<List<FileAttachmentInput?>> {
+    if (src.hasKey(name)) {
+        if (src.isNull(name)) {
+            return Input.fromNullable(null)
+        } else {
+            val items = src.getArray(name)
+            val res = mutableListOf<FileAttachmentInput?>()
+            for(i in 0 until items.size()) {
+                if (items.isNull(i)) {
+                    res.add(null)
+                } else {
+                    res.add(parseFileAttachmentInput(items.getMap(i)))
+                }
+            }
+            return Input.fromNullable(res)
+        }
+    } else {
+        return Input.absent()
+    }
+}
 fun parseAppProfileInput(src: ReadableMap): AppProfileInput {
     val builder = AppProfileInput.builder()
     builder.nameInput(readOptionalString(src, "name"))
@@ -2067,6 +2205,8 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
        builder.messageId(notNull(readString(src, "messageId")))
        builder.message(readString(src, "message"))
        builder.replyComment(readString(src, "replyComment"))
+       builder.mentions(notNullListItems(readMentionInputList(src, "mentions")))
+       builder.fileAttachments(notNullListItems(readFileAttachmentInputList(src, "fileAttachments")))
        return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
     }
     if (name == "EditComment") {

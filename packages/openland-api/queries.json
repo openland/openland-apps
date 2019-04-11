@@ -5823,9 +5823,17 @@
 				{
 					"name": "replyComment",
 					"type": "ID"
+				},
+				{
+					"name": "mentions",
+					"type": "[MentionInput!]"
+				},
+				{
+					"name": "fileAttachments",
+					"type": "[FileAttachmentInput!]"
 				}
 			],
-			"source": "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID) {\n  addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment)\n}",
+			"source": "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments)\n}",
 			"fields": [
 				{
 					"responseName": "addMessageComment",
@@ -5855,6 +5863,22 @@
 								"variableName": "replyComment"
 							},
 							"type": "ID"
+						},
+						{
+							"name": "mentions",
+							"value": {
+								"kind": "Variable",
+								"variableName": "mentions"
+							},
+							"type": "[MentionInput!]"
+						},
+						{
+							"name": "fileAttachments",
+							"value": {
+								"kind": "Variable",
+								"variableName": "fileAttachments"
+							},
+							"type": "[FileAttachmentInput!]"
 						}
 					],
 					"isConditional": false,
@@ -5864,8 +5888,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID) {\n  addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment)\n}",
-			"operationId": "4a31b335d38217ca17df3f075e63780519235597f746e4a6db864962b6e92575"
+			"sourceWithFragments": "mutation AddMessageComment($messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!]) {\n  addMessageComment(messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments)\n}",
+			"operationId": "21f3cb89c6b96d50728808377d08010ff733d89514699badbd01cdc68e035731"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -19275,6 +19299,42 @@
 				{
 					"name": "lastName",
 					"type": "String"
+				}
+			]
+		},
+		{
+			"kind": "InputObjectType",
+			"name": "MentionInput",
+			"fields": [
+				{
+					"name": "chatId",
+					"type": "ID"
+				},
+				{
+					"name": "userId",
+					"type": "ID"
+				},
+				{
+					"name": "userIds",
+					"type": "[ID!]"
+				},
+				{
+					"name": "offset",
+					"type": "Int!"
+				},
+				{
+					"name": "length",
+					"type": "Int!"
+				}
+			]
+		},
+		{
+			"kind": "InputObjectType",
+			"name": "FileAttachmentInput",
+			"fields": [
+				{
+					"name": "fileId",
+					"type": "String!"
 				}
 			]
 		},

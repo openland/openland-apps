@@ -23728,6 +23728,8 @@ export interface AddMessageCommentVariables {
   messageId: string;
   message?: string | null;
   replyComment?: string | null;
+  mentions?: MentionInput[] | null;
+  fileAttachments?: FileAttachmentInput[] | null;
 }
 
 /* tslint:disable */
@@ -39950,6 +39952,10 @@ export interface Event {
   params?: string | null;
 }
 
+export interface FileAttachmentInput {
+  fileId: string;
+}
+
 export interface ImageCropInput {
   x: number;
   y: number;
@@ -39968,6 +39974,14 @@ export interface InviteRequest {
   role: OrganizationMemberRole;
   firstName?: string | null;
   lastName?: string | null;
+}
+
+export interface MentionInput {
+  chatId?: string | null;
+  userId?: string | null;
+  userIds?: string[] | null;
+  offset: number;
+  length: number;
 }
 
 export interface ProfileInput {

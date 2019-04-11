@@ -520,10 +520,10 @@
       }
     },
     {
-      "signature": "4b18a9b209cb53ce71a55b14211f0a4b78439ca165fca6f1d0b93908c4074682",
-      "document": "mutation AddMessageComment($message:String,$messageId:ID!,$replyComment:ID){addMessageComment(message:$message,messageId:$messageId,replyComment:$replyComment)}",
+      "signature": "11f5bea17802b6797b1ca981a52f1ffdfb046079fbd9c9d6b24cf686cb66da55",
+      "document": "mutation AddMessageComment($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$messageId:ID!,$replyComment:ID){addMessageComment(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,messageId:$messageId,replyComment:$replyComment)}",
       "metadata": {
-        "engineSignature": "mutation AddMessageComment($message:String,$messageId:ID!,$replyComment:ID){addMessageComment(message:$message,messageId:$messageId,replyComment:$replyComment)}"
+        "engineSignature": "mutation AddMessageComment($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$messageId:ID!,$replyComment:ID){addMessageComment(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,messageId:$messageId,replyComment:$replyComment)}"
       }
     },
     {
