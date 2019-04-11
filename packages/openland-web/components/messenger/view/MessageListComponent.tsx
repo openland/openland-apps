@@ -66,7 +66,7 @@ interface MessageListProps {
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
     conversationId: string;
-    editPostHandler?: (data: EditPostProps) => void;
+    scrollPosition?: (data: number) => void;
     isActive: boolean;
 }
 
@@ -111,8 +111,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                     key={i.key}
                     message={i}
                     isChannel={this.props.isChannel}
-                    conversation={this.props.conversation}
-                    editPostHandler={this.props.editPostHandler}
+                    conversationId={this.props.conversationId}
                     me={this.props.me}
                 />
             );

@@ -4,8 +4,6 @@ import { css, cx } from 'linaria';
 import { SpannedStringView } from './SpannedStringView';
 import { spansPreprocess } from '../../data/spansPreprocess';
 import { SpannedString } from '../../data/SpannedString';
-import { XButton } from 'openland-x/XButton';
-import { XView } from 'react-mental';
 
 export interface MessageTextComponentProps {
     spans?: FullMessage_GeneralMessage_spans[];

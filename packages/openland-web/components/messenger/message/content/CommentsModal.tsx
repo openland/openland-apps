@@ -10,6 +10,7 @@ import {
     UserShort,
     RoomMembers_members,
     CommentWatch_event_CommentUpdateSingle_update,
+    FullMessage,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { useHandleSend } from 'openland-web/fragments/MessageComposeComponent/useHandleSend';
@@ -23,6 +24,41 @@ import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatch
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { MessageModalBody } from 'openland-web/fragments/chat/MessageModal';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
+import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+
+function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
+    let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
+    let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
+
+    return {
+        chatId: '',
+        type: 'message',
+        id: src.id,
+        key: src.repeatKey || src.id,
+        date: parseInt(src.date, 10),
+        isOut: true,
+        senderId: src.sender.id,
+        senderName: src.sender.name,
+        senderPhoto: src.sender.photo || undefined,
+        sender: src.sender,
+        text: src.message || undefined,
+        isSending: false,
+        attachTop: false,
+        attachBottom: false,
+        reactions: generalMessage && generalMessage.reactions,
+        serviceMetaData: (serviceMessage && serviceMessage.serviceMetadata) || undefined,
+        isService: !!serviceMessage,
+        attachments: generalMessage && generalMessage.attachments,
+        reply:
+            generalMessage && generalMessage.quotedMessages
+                ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date)
+                : undefined,
+        isEdited: generalMessage && generalMessage.edited,
+        spans: src.spans || [],
+        commentsCount: generalMessage ? generalMessage.commentsCount : null,
+    };
+}
 
 type CommentsInputProps = {
     minimal?: boolean;
@@ -166,7 +202,11 @@ const CommentsInner = () => {
     for (let item of result) {
         commentsElements.push(
             <XView key={item.id} marginLeft={10 * getDepthOfComment(item, commentsMap)}>
-                {item.comment.message}
+                <MessageComponent
+                    message={convertMessage(item.comment)}
+                    isChannel={true}
+                    me={null}
+                />
                 <XView width={500}>
                     <XButton
                         size="default"

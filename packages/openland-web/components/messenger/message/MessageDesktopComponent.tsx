@@ -10,7 +10,6 @@ import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageVideoComponent } from './content/MessageVideoComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
-import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
 import {
     UserShort,
@@ -22,7 +21,6 @@ import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContextProps } from '../MessagesStateContext';
 import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
-import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
 import { DesktopMessageContainer } from './MessageContainer';
@@ -118,10 +116,10 @@ const IconButton = Glamorous.div({
 
 export interface MessageComponentProps {
     message: DataSourceWebMessageItem;
-    conversation: ConversationEngine;
-    me?: UserShort | null;
+    isChannel: boolean;
+    conversationId?: string;
     conversationType?: SharedRoomKind | 'PRIVATE';
-    editPostHandler?: (data: EditPostProps) => void;
+    me?: UserShort | null;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
@@ -256,17 +254,21 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 >
                     <XHorizontal alignItems="center" separator={8}>
                         <ReactionComponent messageId={message.id!} />
-                        {!this.props.conversation.isChannel && (
+                        {!this.props.isChannel && (
                             <IconButton onClick={this.setReplyMessages}>
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {out &&
-                            message.text && (
-                                <IconButton onClick={this.setEditMessage}>
-                                    <EditIcon />
-                                </IconButton>
-                            )}
+                        {out && message.text && (
+                            <IconButton onClick={this.setEditMessage}>
+                                <EditIcon />
+                            </IconButton>
+                        )}
+                        {out && message.text && (
+                            <IconButton onClick={this.setEditMessage}>
+                                <EditIcon />
+                            </IconButton>
+                        )}
                     </XHorizontal>
                 </XHorizontal>
             );
@@ -311,14 +313,14 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         }
 
         if (!message.isSending) {
-            if (this.state.isEditView && message.text) {
+            if (this.state.isEditView && message.text && this.props.conversationId) {
                 content.push(
                     <EditMessageInlineWrapper
                         message={message}
                         key={'editForm'}
                         onClose={this.hideEditView}
                         variables={{
-                            roomId: this.props.conversation.conversationId,
+                            roomId: this.props.conversationId,
                         }}
                     />,
                 );

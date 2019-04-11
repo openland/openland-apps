@@ -7,34 +7,32 @@ import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDe
 import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 
-const MessageComponentInner = (
-    props: MessageComponentProps & {
-        isChannel: boolean;
-        isMobile: boolean;
-        messagesContextProps: MessagesStateContextProps;
-    },
-) => {
-    return props.isMobile ? (
-        <MobileMessageComponentInner
-            message={props.message}
-            conversation={props.conversation}
-            me={props.me}
-            conversationType={props.conversationType}
-            editPostHandler={props.editPostHandler}
-        />
-    ) : (
-        <>
-            <DesktopMessageComponentInner
+const MessageComponentInner = React.memo(
+    (
+        props: MessageComponentProps & {
+            isChannel: boolean;
+            isMobile: boolean;
+            messagesContextProps: MessagesStateContextProps;
+        },
+    ) => {
+        return props.isMobile ? (
+            <MobileMessageComponentInner
                 message={props.message}
-                conversation={props.conversation}
                 me={props.me}
                 conversationType={props.conversationType}
-                editPostHandler={props.editPostHandler}
-                messagesContext={props.messagesContextProps}
             />
-            <XWithRole role={['feature-non-production']}>
-                {props.isChannel &&
-                    !props.message.isService && (
+        ) : (
+            <>
+                <DesktopMessageComponentInner
+                    message={props.message}
+                    conversationId={props.conversationId}
+                    isChannel={props.isChannel}
+                    me={props.me}
+                    conversationType={props.conversationType}
+                    messagesContext={props.messagesContextProps}
+                />
+                <XWithRole role={['feature-non-production']}>
+                    {props.isChannel && !props.message.isService && (
                         <XView width={150}>
                             <XButton
                                 text={
@@ -47,26 +45,29 @@ const MessageComponentInner = (
                             />
                         </XView>
                     )}
-            </XWithRole>
-        </>
-    );
-};
-
-export const MessageComponent = React.memo(
-    (
-        props: MessageComponentProps & {
-            isChannel: boolean;
-        },
-    ) => {
-        const messagesContextProps = React.useContext(MessagesStateContext);
-        const isMobile = React.useContext(IsMobileContext);
-
-        return (
-            <MessageComponentInner
-                {...props}
-                messagesContextProps={messagesContextProps}
-                isMobile={isMobile}
-            />
+                </XWithRole>
+            </>
         );
     },
 );
+
+export const MessageComponent = (
+    props: MessageComponentProps & {
+        isChannel: boolean;
+    },
+) => {
+    const messagesContextProps = React.useContext(MessagesStateContext);
+    const isMobile = React.useContext(IsMobileContext);
+
+    return (
+        <MessageComponentInner
+            isChannel={props.isChannel}
+            message={props.message}
+            conversationId={props.conversationId}
+            me={props.me}
+            conversationType={props.conversationType}
+            messagesContextProps={messagesContextProps}
+            isMobile={isMobile}
+        />
+    );
+};

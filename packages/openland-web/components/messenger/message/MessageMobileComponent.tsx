@@ -9,10 +9,6 @@ import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageVideoComponent } from './content/MessageVideoComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
-import {
-    ConversationEngine,
-    DataSourceMessageItem,
-} from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
 import {
     UserShort,
@@ -20,7 +16,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
 } from 'openland-api/Types';
-import { EditPostProps } from 'openland-web/fragments/MessengerRootComponent';
+
 import { MobileMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { Reactions } from './MessageReaction';
@@ -91,10 +87,8 @@ const ReplyMessageWrapper = Glamorous.div({
 
 interface MessageComponentProps {
     message: DataSourceWebMessageItem;
-    conversation: ConversationEngine;
     me?: UserShort | null;
     conversationType?: SharedRoomKind | 'PRIVATE';
-    editPostHandler?: (data: EditPostProps) => void;
 }
 
 export const MobileMessageComponentInner = React.memo((props: MessageComponentProps) => {

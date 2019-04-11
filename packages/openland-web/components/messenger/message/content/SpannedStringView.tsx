@@ -63,20 +63,6 @@ const TextRotatingStyle = css`
     }
 `;
 
-function emojiChecker(messageText: string) {
-    if (isEmoji(messageText)) {
-        return true;
-    }
-    const messageArray = Array.from(messageText);
-    const pattern = /^([a-zа-яё\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]+|\d+)$/i;
-    for (let i = 0; i < messageArray.length; i++) {
-        if (messageArray[i].match(pattern) && messageArray[i] !== '‍' && messageArray[i] !== '️') {
-            return false;
-        }
-    }
-    return true;
-}
-
 const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserShort; text: any; isYou: boolean }) => {
         return (
