@@ -13,6 +13,8 @@ import { UploadContext } from './FileUploading/UploadContext';
 import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 
 export type TextInputComponentT = {
+    fullWidth?: boolean;
+    justInput?: boolean;
     handleChange: (a: { text: string; mentions: MentionDataT[] }) => void;
     handleSend: () => any;
     inputValue: string;
@@ -43,12 +45,13 @@ export const DumpSendMessage = React.memo(({
     enabled,
     quoteState,
     closeEditor,
+    fullWidth,
 }: DumpSendMessageT) => {
     const { handleDrop } = React.useContext(UploadContext);
     return (
-        <SendMessageWrapper>
+        <SendMessageWrapper fullWidth={fullWidth}>
             <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
-            <SendMessageContent separator={4} alignItems="center">
+            <SendMessageContent separator={4} fullWidth={fullWidth} alignItems="center">
                 <XVertical separator={6} flexGrow={1} maxWidth="100%">
                     {closeEditor && quoteState && quoteState.quoteMessageReply && (
                         <EditView

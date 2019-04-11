@@ -25,6 +25,7 @@ import { MessageModalBody } from 'openland-web/fragments/chat/MessageModal';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 
 type CommentsInputProps = {
+    justInput?: boolean;
     onSend?: (text: string, mentions: UserShort[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
@@ -32,7 +33,13 @@ type CommentsInputProps = {
     members?: RoomMembers_members[];
 };
 
-const CommentsInput = ({ members, onSend, onSendFile, onChange }: CommentsInputProps) => {
+const CommentsInput = ({
+    justInput,
+    members,
+    onSend,
+    onSendFile,
+    onChange,
+}: CommentsInputProps) => {
     const inputRef = React.useRef<XRichTextInput2RefMethods>(null);
     const inputMethodsState = useInputMethods({ inputRef, enabled: true });
     const { file } = React.useContext(UploadContext);
@@ -70,6 +77,8 @@ const CommentsInput = ({ members, onSend, onSendFile, onChange }: CommentsInputP
 
     return (
         <DumpSendMessage
+            fullWidth
+            justInput={justInput}
             TextInputComponent={DesktopSendMessage}
             quoteState={quoteState}
             handleChange={handleChange}
@@ -174,6 +183,7 @@ const CommentsInner = () => {
                     />
                     {showInputId === item.comment.id && (
                         <CommentsInput
+                            justInput
                             onSend={msgToSend => {
                                 addComment({
                                     messageId: curMesssageId,
@@ -205,6 +215,7 @@ const CommentsInner = () => {
             </MessageModalBody>
             <XView>
                 <CommentsInput
+                    justInput
                     onSend={msgToSend => {
                         addComment({
                             messageId: curMesssageId,
@@ -222,6 +233,7 @@ const CommentsInner = () => {
 export const CommentsModal = () => {
     return (
         <XModalForm
+            width={800}
             noPadding
             targetQuery="comments"
             defaultData={{
