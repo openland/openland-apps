@@ -51,8 +51,6 @@ import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { AvatarModal } from './UserProfileComponent';
 import { XPopper } from 'openland-x/XPopper';
 import { XMemo } from 'openland-y-utils/XMemo';
-import CreateRoomIcon from 'openland-icons/ic-create-room.svg';
-import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -816,7 +814,7 @@ class CreateGroupButton extends React.PureComponent<{ onClick: () => void }> {
     }
 }
 
-export const CreateGroupPopperButton = XMemo(() => {
+export const CreateGroupPopperButton = XMemo((props: {orgId: string}) => {
     const [show, setShow] = React.useState(false);
 
     const closer = () => {
@@ -832,7 +830,7 @@ export const CreateGroupPopperButton = XMemo(() => {
             contentContainer={<XMenuVertical />}
             placement="bottom-start"
             show={show}
-            marginTop={10}
+            marginTop={5}
             marginRight={-5}
             arrow={null}
             onClickOutside={closer}
@@ -840,23 +838,13 @@ export const CreateGroupPopperButton = XMemo(() => {
                 <>
                     <XMenuItem
                         style="gray"
-                        path="/mail/create"
-                        icon={
-                            <XView marginRight={14} marginTop={-4}>
-                                <CreateRoomIcon />
-                            </XView>
-                        }
+                        path={'/mail/create?org=' + props.orgId}
                     >
                         New group
                     </XMenuItem>
                     <XMenuItem
                         style="gray"
-                        path="/mail/create?channel=true"
-                        icon={
-                            <XView marginRight={14} marginTop={-4}>
-                                <CreateChannelIcon />
-                            </XView>
-                        }
+                        path={'/mail/create?orgchannel=' + props.orgId}
                     >
                         New channel
                     </XMenuItem>
@@ -882,7 +870,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
                     paddingBottom={0}
                 />
                 <SectionContent>
-                    <CreateGroupPopperButton />
+                    <CreateGroupPopperButton orgId={organization.id} />
                     <XMoreCards>
                         {groups.map((c: any, i: any) => (
                             <XRoomCard key={i} room={c} />

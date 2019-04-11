@@ -330,9 +330,11 @@ const OrganizationsList = (props: {
     // organizations?: MyOrganizations_myOrganizations[];
     onSelect: (v: string) => void;
     selectedOrg: string | null;
+    inOrgId?: string;
 }) => {
     const client = useClient();
     const orgs = client.useWithoutLoaderMyOrganizations();
+    const userContext = React.useContext(UserInfoContext);
     if (!orgs) {
         return (
             <XView
@@ -346,11 +348,19 @@ const OrganizationsList = (props: {
             </XView>
         );
     }
-
-    const userContext = React.useContext(UserInfoContext);
     let primaryOrganizationId = '';
     if (userContext && userContext.organization) {
         primaryOrganizationId = userContext.organization.id;
+    }
+
+    const inOrgId = props.inOrgId ? props.inOrgId : null;
+    let selectedOrg: MyOrganizations_myOrganizations | undefined | null = null;
+    let primaryOrg: MyOrganizations_myOrganizations | undefined | null = null;
+    if (inOrgId) {
+        selectedOrg = orgs.myOrganizations.find(a => a.id === inOrgId);
+    }
+    if (primaryOrganizationId) {
+        primaryOrg = orgs.myOrganizations.find(a => a.id === primaryOrganizationId);
     }
 
     return (
@@ -359,9 +369,38 @@ const OrganizationsList = (props: {
                 Share with
             </XView>
             <div className={SelectOrganizationWrapperClassName}>
-                {orgs.myOrganizations
-                    .sort((a, b) => a.name.localeCompare(b.name))
-                    .map(i => (
+                {inOrgId &&
+                    selectedOrg && (
+                        <OrganizationItem
+                            organization={selectedOrg}
+                            onSelect={props.onSelect}
+                            isSelected={
+                                props.selectedOrg
+                                    ? props.selectedOrg === inOrgId
+                                    : primaryOrganizationId === inOrgId
+                            }
+                        />
+                    )}
+                {!inOrgId &&
+                    primaryOrg && (
+                        <OrganizationItem
+                            organization={primaryOrg}
+                            onSelect={props.onSelect}
+                            isSelected={
+                                props.selectedOrg
+                                    ? props.selectedOrg === primaryOrganizationId
+                                    : true
+                            }
+                        />
+                    )}
+                {orgs.myOrganizations.sort((a, b) => a.name.localeCompare(b.name)).map(i => {
+                    if (inOrgId && i.id === inOrgId) {
+                        return;
+                    }
+                    if (primaryOrganizationId === i.id && !inOrgId) {
+                        return;
+                    }
+                    return (
                         <OrganizationItem
                             organization={i}
                             key={'org_' + i.id}
@@ -372,7 +411,8 @@ const OrganizationsList = (props: {
                                     : primaryOrganizationId === i.id
                             }
                         />
-                    ))}
+                    );
+                })}
             </div>
         </XView>
     );
@@ -539,6 +579,7 @@ const SelectGroupTypeClassName = css`
 interface CreateGroupInnerProps {
     myId: string;
     myOrgId: string;
+    inOrgId?: string;
     isChannel: boolean;
 }
 
@@ -562,10 +603,10 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
             settingsPage: true,
             title: '',
             titleError: false,
-            type: SharedRoomKind.GROUP,
+            type: props.inOrgId ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP,
             coverSrc: '',
             coverUploading: false,
-            selectedOrg: null,
+            selectedOrg: props.inOrgId ? props.inOrgId : null,
             searchPeopleQuery: '',
             selectedUsers: null,
         };
@@ -579,12 +620,14 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
     };
 
     handleChatTypeChange = (data: SharedRoomKind) => {
-        if (data === SharedRoomKind.GROUP) {
+        const { inOrgId } = this.props;
+        if (data === SharedRoomKind.GROUP && !inOrgId) {
             this.setState({
                 selectedOrg: null,
             });
         }
         this.setState({
+            selectedOrg: inOrgId ? inOrgId : null,
             type: data,
         });
     };
@@ -676,7 +719,7 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
             selectedUsers,
         } = this.state;
 
-        const { myId, myOrgId, isChannel } = this.props;
+        const { myId, myOrgId, isChannel, inOrgId } = this.props;
 
         let chatTypeStr = isChannel ? 'Channel' : 'Group';
 
@@ -799,6 +842,7 @@ class CreateGroupInner extends React.Component<CreateGroupInnerProps, CreateGrou
                             <OrganizationsList
                                 onSelect={this.onOrganizationSelect}
                                 selectedOrg={selectedOrg}
+                                inOrgId={inOrgId}
                             />
                         )}
                     </XView>
@@ -879,14 +923,17 @@ export default withApp(
     'viewer',
     withUserInfo(props => {
         const router = React.useContext(XRouterContext) as XRouter;
-
+        const { routeQuery } = router;
+        const isChannel = routeQuery.channel || routeQuery.orgchannel;
+        const inOrganization = routeQuery.orgchannel || routeQuery.org;
         return (
             <>
                 <XDocumentHead title="Create Room" />
                 <CreateGroupInner
                     myId={props.user ? props.user.id : ''}
                     myOrgId={props.organization ? props.organization.id : ''}
-                    isChannel={router.routeQuery.channel === 'true'}
+                    inOrgId={inOrganization}
+                    isChannel={isChannel !== undefined}
                 />
             </>
         );
