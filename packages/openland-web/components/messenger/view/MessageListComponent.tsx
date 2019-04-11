@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { MessageComponent } from '../message/MessageComponent';
-import { XScrollViewReversed, XScrollViewReversedInner } from 'openland-x/XScrollViewReversed';
 import {
     ConversationEngine,
     DataSourceDateItem,
@@ -14,12 +12,13 @@ import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
 import glamorous from 'glamorous';
-import { getMessagesWrapperClassName } from './MessagesContainer';
 import { DataSource } from 'openland-y-utils/DataSource';
 import {
     DataSourceWebMessageItem,
     buildMessagesDataSource,
 } from '../data/WebMessageItemDataSource';
+import { XScrollViewReverse2 } from 'openland-x/XScrollViewReversed2';
+import { XScrollValues } from 'openland-x/XScrollView3';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -27,7 +26,7 @@ const messagesWrapperClassName = css`
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    justify-self: center;
+    align-self: center;
     padding-top: 96px;
     padding-bottom: 40px;
     width: 100%;
@@ -72,28 +71,6 @@ interface MessageListProps {
     isActive: boolean;
 }
 
-const getScrollElement = (src: any) => {
-    return src;
-};
-
-const getScrollView = (conversationId: string) => {
-    const wrapperElement = document.getElementsByClassName(
-        getMessagesWrapperClassName(conversationId),
-    )[0];
-
-    if (!wrapperElement) {
-        return null;
-    }
-
-    const simpleBarElement = wrapperElement.getElementsByClassName('simplebar-scroll-content')[0];
-
-    if (!simpleBarElement) {
-        return null;
-    }
-
-    return getScrollElement(simpleBarElement);
-};
-
 const LoadingWrapper = glamorous.div({
     height: 50,
     display: 'flex',
@@ -101,8 +78,6 @@ const LoadingWrapper = glamorous.div({
 });
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
-    private scroller = React.createRef<XScrollViewReversedInner>();
-    unshifted = false;
     private dataSource: DataSource<DataSourceWebMessageItem | DataSourceDateItem>;
 
     constructor(props: MessageListProps) {
@@ -111,34 +86,40 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     }
 
     scrollToBottom = () => {
-        this.scroller.current!!.scrollToBottom();
+        // this.scroller.current!!.scrollToBottom();
     };
 
     componentDidMount() {
-        if (!canUseDOM) {
-            return;
-        }
-        getScrollView(this.props.conversationId).addEventListener('scroll', this.handleScroll, {
-            passive: true,
-        });
+        // if (!canUseDOM) {
+        //     return;
+        // }
+        // getScrollView(this.props.conversationId).addEventListener('scroll', this.handleScroll, {
+        //     passive: true,
+        // });
 
-        setTimeout(() => {
-            const scrollViewElem = getScrollView(this.props.conversationId);
-            if (scrollViewElem && scrollViewElem.scrollTop < 50) {
-                this.props.conversation.loadBefore();
-            }
-        }, 1000);
+        // setTimeout(() => {
+        //     const scrollViewElem = getScrollView(this.props.conversationId);
+        //     if (scrollViewElem && scrollViewElem.scrollTop < 50) {
+        //         this.props.conversation.loadBefore();
+        //     }
+        // }, 1000);
     }
 
-    componentWillUnmount() {
-        getScrollView(this.props.conversationId).removeEventListener('scroll', this.handleScroll);
-    }
-
-    handleScroll = (e: any) => {
-        if (e.target.scrollTop < 50) {
+    handlerScroll = (e: XScrollValues) => {
+        if (e.scrollTop < 200) {
             this.props.conversation.loadBefore();
         }
-    };
+    }
+
+    // componentWillUnmount() {
+    //     getScrollView(this.props.conversationId).removeEventListener('scroll', this.handleScroll);
+    // }
+
+    // handleScroll = (e: any) => {
+    //     if (e.target.scrollTop < 50) {
+    //         this.props.conversation.loadBefore();
+    //     }
+    // };
 
     isEmpty = () => {
         return (
@@ -147,11 +128,11 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         );
     };
 
-    resizeHandler = (width: number, height: number) => {
-        if (canUseDOM && this.scroller && this.scroller.current) {
-            this.scroller.current.restorePreviousScroll();
-        }
-    };
+    // resizeHandler = (width: number, height: number) => {
+    //     if (canUseDOM && this.scroller && this.scroller.current) {
+    //         this.scroller.current.restorePreviousScroll();
+    //     }
+    // };
 
     renderMessage = React.memo((i: DataSourceWebMessageItem | DataSourceDateItem) => {
         if (i.type === 'message') {
@@ -215,12 +196,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     dataSourceWrapper = React.memo((props: any) => {
         return (
             <>
-                <XScrollViewReversed
-                    ref={this.scroller}
-                    flexGrow={1}
-                    getScrollElement={getScrollElement}
-                    scrollPosition={this.props.scrollPosition}
-                >
+                <XScrollViewReverse2 flexGrow={1} flexShrink={1} onScroll={this.handlerScroll}>
                     {this.isEmpty() && (
                         <MessagesWrapperEmpty>
                             <EmptyBlock
@@ -231,7 +207,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                     )}
 
                     {!this.isEmpty() && <MessagesWrapper>{props.children}</MessagesWrapper>}
-                </XScrollViewReversed>
+                </XScrollViewReverse2>
             </>
         );
     });

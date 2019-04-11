@@ -46,7 +46,7 @@ export const MessagesContainer = ({ children, conversationId }: MessagesContaine
             flexDirection="column"
             flexGrow={1}
             flexShrink={1}
-            paddingHorizontal={isMobile ? 6 : 16}
+            // paddingHorizontal={isMobile ? 6 : 16}
             overflow="hidden"
         >
             <div className={`${getMessagesWrapperClassName(conversationId)} ` + styleInner}>
