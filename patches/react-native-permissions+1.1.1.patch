@@ -1,0 +1,419 @@
+diff --git a/node_modules/react-native-permissions/ios/Permissions/RNPBluetooth.m b/node_modules/react-native-permissions/ios/Permissions/RNPBluetooth.m
+index 4f6a6b6..a12874b 100644
+--- a/node_modules/react-native-permissions/ios/Permissions/RNPBluetooth.m
++++ b/node_modules/react-native-permissions/ios/Permissions/RNPBluetooth.m
+@@ -7,60 +7,62 @@
+ //
+ 
+ #import "RNPBluetooth.h"
+-#import <CoreBluetooth/CoreBluetooth.h>
++// #import <CoreBluetooth/CoreBluetooth.h>
+ 
+-@interface RNPBluetooth() <CBPeripheralDelegate>
+-@property (strong, nonatomic) CBPeripheralManager* peripheralManager;
+-@property (copy) void (^completionHandler)(NSString *);
+-@end
++// @interface RNPBluetooth() <CBPeripheralDelegate>
++// @property (strong, nonatomic) CBPeripheralManager* peripheralManager;
++// @property (copy) void (^completionHandler)(NSString *);
++// @end
+ 
+ @implementation RNPBluetooth
+ 
+ + (NSString *)getStatus
+ {
+-    int status = [CBPeripheralManager authorizationStatus];
+-    switch (status) {
+-        case CBPeripheralManagerAuthorizationStatusAuthorized:
+-            return RNPStatusAuthorized;
+-        case CBPeripheralManagerAuthorizationStatusDenied:
+-            return RNPStatusDenied;
+-        case CBPeripheralManagerAuthorizationStatusRestricted:
+-            return RNPStatusRestricted;
+-        default:
+-            return RNPStatusUndetermined;
+-    }
++    return RNPStatusAuthorized;
++
++    // int status = [CBPeripheralManager authorizationStatus];
++    // switch (status) {
++    //     case CBPeripheralManagerAuthorizationStatusAuthorized:
++    //         return RNPStatusAuthorized;
++    //     case CBPeripheralManagerAuthorizationStatusDenied:
++    //         return RNPStatusDenied;
++    //     case CBPeripheralManagerAuthorizationStatusRestricted:
++    //         return RNPStatusRestricted;
++    //     default:
++    //         return RNPStatusUndetermined;
++    // }
+ }
+ 
+ - (void)request:(void (^)(NSString *))completionHandler
+ {
+-    NSString *status = [RNPBluetooth getStatus];
++    // NSString *status = [RNPBluetooth getStatus];
+     
+-    if (status == RNPStatusUndetermined) {
+-        self.completionHandler = completionHandler;
++    // if (status == RNPStatusUndetermined) {
++    //     self.completionHandler = completionHandler;
+         
+-        self.peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
+-        [self.peripheralManager startAdvertising:@{}];
+-    } else {
+-        completionHandler(status);
+-    }
++    //     self.peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
++    //     [self.peripheralManager startAdvertising:@{}];
++    // } else {
++    //     completionHandler(status);
++    // }
+ }
+ 
+-- (void) peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheralManager
+-{
+-    if (self.peripheralManager) {
+-        [self.peripheralManager stopAdvertising];
+-        self.peripheralManager.delegate = nil;
+-        self.peripheralManager = nil;
+-    }
++// - (void) peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheralManager
++// {
++//     if (self.peripheralManager) {
++//         [self.peripheralManager stopAdvertising];
++//         self.peripheralManager.delegate = nil;
++//         self.peripheralManager = nil;
++//     }
+     
+-    if (self.completionHandler) {
+-        //for some reason, checking permission right away returns denied. need to wait a tiny bit
+-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+-            self.completionHandler([self.class getStatus]);
+-            self.completionHandler = nil;
+-        });
+-    }
++//     if (self.completionHandler) {
++//         //for some reason, checking permission right away returns denied. need to wait a tiny bit
++//         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
++//             self.completionHandler([self.class getStatus]);
++//             self.completionHandler = nil;
++//         });
++//     }
+     
+-}
++// }
+ 
+ @end
+diff --git a/node_modules/react-native-permissions/ios/Permissions/RNPEvent.m b/node_modules/react-native-permissions/ios/Permissions/RNPEvent.m
+index 2f3d746..275baa2 100644
+--- a/node_modules/react-native-permissions/ios/Permissions/RNPEvent.m
++++ b/node_modules/react-native-permissions/ios/Permissions/RNPEvent.m
+@@ -7,42 +7,44 @@
+ //
+ 
+ #import "RNPEvent.h"
+-#import <EventKit/EventKit.h>
++// #import <EventKit/EventKit.h>
+ 
+ @implementation RNPEvent
+ 
+ + (NSString *)getStatus:(NSString *)type
+ {
+-    int status = [EKEventStore authorizationStatusForEntityType:[self typeFromString:type]];
+-
+-    switch (status) {
+-        case EKAuthorizationStatusAuthorized:
+-            return RNPStatusAuthorized;
+-        case EKAuthorizationStatusDenied:
+-            return RNPStatusDenied;
+-        case EKAuthorizationStatusRestricted:
+-            return RNPStatusRestricted;
+-        default:
+-            return RNPStatusUndetermined;
+-    }
++    return RNPStatusAuthorized;
++
++    // int status = [EKEventStore authorizationStatusForEntityType:[self typeFromString:type]];
++
++    // switch (status) {
++    //     case EKAuthorizationStatusAuthorized:
++    //         return RNPStatusAuthorized;
++    //     case EKAuthorizationStatusDenied:
++    //         return RNPStatusDenied;
++    //     case EKAuthorizationStatusRestricted:
++    //         return RNPStatusRestricted;
++    //     default:
++    //         return RNPStatusUndetermined;
++    // }
+ }
+ 
+ + (void)request:(NSString *)type completionHandler:(void (^)(NSString *))completionHandler
+ {
+-    EKEventStore *aStore = [[EKEventStore alloc] init];
+-    [aStore requestAccessToEntityType:[self typeFromString:type] completion:^(BOOL granted, NSError *error) {
+-        dispatch_async(dispatch_get_main_queue(), ^{
+-            completionHandler([self getStatus:type]);
+-        });
+-    }];
++    // EKEventStore *aStore = [[EKEventStore alloc] init];
++    // [aStore requestAccessToEntityType:[self typeFromString:type] completion:^(BOOL granted, NSError *error) {
++    //     dispatch_async(dispatch_get_main_queue(), ^{
++    //         completionHandler([self getStatus:type]);
++    //     });
++    // }];
+ }
+ 
+-+(EKEntityType)typeFromString:(NSString *)string {
+-    if ([string isEqualToString:@"reminder"]) {
+-        return EKEntityTypeReminder;
+-    } else {
+-        return EKEntityTypeEvent;
+-    }
+-}
++// +(EKEntityType)typeFromString:(NSString *)string {
++//     if ([string isEqualToString:@"reminder"]) {
++//         return EKEntityTypeReminder;
++//     } else {
++//         return EKEntityTypeEvent;
++//     }
++// }
+ 
+ @end
+diff --git a/node_modules/react-native-permissions/ios/Permissions/RNPMediaLibrary.m b/node_modules/react-native-permissions/ios/Permissions/RNPMediaLibrary.m
+index 85f6192..31b325c 100644
+--- a/node_modules/react-native-permissions/ios/Permissions/RNPMediaLibrary.m
++++ b/node_modules/react-native-permissions/ios/Permissions/RNPMediaLibrary.m
+@@ -7,35 +7,36 @@
+ //
+ 
+ #import "RNPMediaLibrary.h"
+-#import <MediaPlayer/MediaPlayer.h>
++// #import <MediaPlayer/MediaPlayer.h>
+ 
+ @implementation RNPMediaLibrary
+ 
+ + (NSString *)getStatus
+ {
+-    int status = [MPMediaLibrary authorizationStatus];
+-    switch (status) {
+-        case MPMediaLibraryAuthorizationStatusAuthorized:
+-            return RNPStatusAuthorized;
+-        case MPMediaLibraryAuthorizationStatusDenied:
+-            return RNPStatusDenied;
+-        case MPMediaLibraryAuthorizationStatusRestricted:
+-            return RNPStatusRestricted;
+-        default:
+-            return RNPStatusUndetermined;
+-    }
++    return RNPStatusAuthorized;
++    // int status = [MPMediaLibrary authorizationStatus];
++    // switch (status) {
++    //     case MPMediaLibraryAuthorizationStatusAuthorized:
++    //         return RNPStatusAuthorized;
++    //     case MPMediaLibraryAuthorizationStatusDenied:
++    //         return RNPStatusDenied;
++    //     case MPMediaLibraryAuthorizationStatusRestricted:
++    //         return RNPStatusRestricted;
++    //     default:
++    //         return RNPStatusUndetermined;
++    // }
+ }
+ 
+ + (void)request:(void (^)(NSString *))completionHandler
+ {
+-    void (^handler)(void) =  ^(void) {
+-        dispatch_async(dispatch_get_main_queue(), ^{
+-            completionHandler([self.class getStatus]);
+-        });
+-    };
++    // void (^handler)(void) =  ^(void) {
++    //     dispatch_async(dispatch_get_main_queue(), ^{
++    //         completionHandler([self.class getStatus]);
++    //     });
++    // };
+     
+-    [MPMediaLibrary requestAuthorization:^(MPMediaLibraryAuthorizationStatus status){
+-        handler();
+-    }];
++    // [MPMediaLibrary requestAuthorization:^(MPMediaLibraryAuthorizationStatus status){
++    //     handler();
++    // }];
+ }
+ @end
+diff --git a/node_modules/react-native-permissions/ios/Permissions/RNPMotion.m b/node_modules/react-native-permissions/ios/Permissions/RNPMotion.m
+index 8847af4..1ce4734 100644
+--- a/node_modules/react-native-permissions/ios/Permissions/RNPMotion.m
++++ b/node_modules/react-native-permissions/ios/Permissions/RNPMotion.m
+@@ -4,59 +4,60 @@
+ //
+ 
+ #import "RNPMotion.h"
+-#import <CoreMotion/CoreMotion.h>
++// #import <CoreMotion/CoreMotion.h>
+ 
+ @implementation RNPMotion
+ 
+ + (NSString *)getStatus
+ {
+-    if (![CMMotionActivityManager isActivityAvailable]) {
+-        return RNPStatusRestricted;
+-    }
+-    
+-    if (@available(iOS 11.0, *)) {
+-        CMAuthorizationStatus status = [CMMotionActivityManager authorizationStatus];
+-        
+-        switch (status) {
+-            case CMAuthorizationStatusAuthorized:
+-                return RNPStatusAuthorized;
+-            case CMAuthorizationStatusDenied:
+-                return RNPStatusDenied;
+-            case CMAuthorizationStatusNotDetermined:
+-                return RNPStatusUndetermined;
+-            case CMAuthorizationStatusRestricted:
+-                return RNPStatusRestricted;
+-            default:
+-                return RNPStatusUndetermined;
+-        }
+-    } else {
+-        return RNPStatusRestricted;
+-    }
++    return RNPStatusAuthorized;
++    // if (![CMMotionActivityManager isActivityAvailable]) {
++    //     return RNPStatusRestricted;
++    // }
++    
++    // if (@available(iOS 11.0, *)) {
++    //     CMAuthorizationStatus status = [CMMotionActivityManager authorizationStatus];
++        
++    //     switch (status) {
++    //         case CMAuthorizationStatusAuthorized:
++    //             return RNPStatusAuthorized;
++    //         case CMAuthorizationStatusDenied:
++    //             return RNPStatusDenied;
++    //         case CMAuthorizationStatusNotDetermined:
++    //             return RNPStatusUndetermined;
++    //         case CMAuthorizationStatusRestricted:
++    //             return RNPStatusRestricted;
++    //         default:
++    //             return RNPStatusUndetermined;
++    //     }
++    // } else {
++    //     return RNPStatusRestricted;
++    // }
+ }
+ 
+ + (void)request:(void (^)(NSString *))completionHandler
+ {
+-    __block NSString *status = [RNPMotion getStatus];
+-    
+-    if ([status isEqual: RNPStatusUndetermined]) {
+-        __block CMMotionActivityManager *activityManager = [[CMMotionActivityManager alloc] init];
+-        __block NSOperationQueue *motionActivityQueue = [[NSOperationQueue alloc] init];
+-        [activityManager queryActivityStartingFromDate:[NSDate distantPast] toDate:[NSDate date] toQueue:motionActivityQueue withHandler:^(NSArray *activities, NSError *error) {
+-            if (error) {
+-                status = RNPStatusDenied;
+-            } else if (activities || !error) {
+-                status = RNPStatusAuthorized;
+-            }
+-            
+-            dispatch_async(dispatch_get_main_queue(), ^{
+-                completionHandler(status);
+-            });
+-            
+-            activityManager = nil;
+-            motionActivityQueue = nil;
+-        }];
+-    } else {
+-        completionHandler(status);
+-    }
++    // __block NSString *status = [RNPMotion getStatus];
++    
++    // if ([status isEqual: RNPStatusUndetermined]) {
++    //     __block CMMotionActivityManager *activityManager = [[CMMotionActivityManager alloc] init];
++    //     __block NSOperationQueue *motionActivityQueue = [[NSOperationQueue alloc] init];
++    //     [activityManager queryActivityStartingFromDate:[NSDate distantPast] toDate:[NSDate date] toQueue:motionActivityQueue withHandler:^(NSArray *activities, NSError *error) {
++    //         if (error) {
++    //             status = RNPStatusDenied;
++    //         } else if (activities || !error) {
++    //             status = RNPStatusAuthorized;
++    //         }
++            
++    //         dispatch_async(dispatch_get_main_queue(), ^{
++    //             completionHandler(status);
++    //         });
++            
++    //         activityManager = nil;
++    //         motionActivityQueue = nil;
++    //     }];
++    // } else {
++    //     completionHandler(status);
++    // }
+ }
+ @end
+diff --git a/node_modules/react-native-permissions/ios/Permissions/RNPSpeechRecognition.m b/node_modules/react-native-permissions/ios/Permissions/RNPSpeechRecognition.m
+index ea5f55b..1ee4132 100644
+--- a/node_modules/react-native-permissions/ios/Permissions/RNPSpeechRecognition.m
++++ b/node_modules/react-native-permissions/ios/Permissions/RNPSpeechRecognition.m
+@@ -7,38 +7,39 @@
+ //
+ 
+ #import "RNPSpeechRecognition.h"
+-#import <Speech/Speech.h>
++// #import <Speech/Speech.h>
+ 
+ @implementation RNPSpeechRecognition
+ 
+ + (NSString *)getStatus
+ {
+-
+-  int status = [SFSpeechRecognizer authorizationStatus];
+-
+-  switch (status) {
+-      case SFSpeechRecognizerAuthorizationStatusAuthorized:
+-          return RNPStatusAuthorized;
+-      case SFSpeechRecognizerAuthorizationStatusDenied:
+-          return RNPStatusDenied;
+-      case SFSpeechRecognizerAuthorizationStatusRestricted:
+-          return RNPStatusRestricted;
+-      default:
+-          return RNPStatusUndetermined;
+-  }
++  return RNPStatusAuthorized;
++
++//   int status = [SFSpeechRecognizer authorizationStatus];
++
++//   switch (status) {
++//       case SFSpeechRecognizerAuthorizationStatusAuthorized:
++//           return RNPStatusAuthorized;
++//       case SFSpeechRecognizerAuthorizationStatusDenied:
++//           return RNPStatusDenied;
++//       case SFSpeechRecognizerAuthorizationStatusRestricted:
++//           return RNPStatusRestricted;
++//       default:
++//           return RNPStatusUndetermined;
++//   }
+ }
+ 
+ + (void)request:(void (^)(NSString *))completionHandler
+ {
+-    void (^handler)(void) =  ^(void) {
+-        dispatch_async(dispatch_get_main_queue(), ^{
+-            completionHandler([self.class getStatus]);
+-        });
+-    };
+-
+-    [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus status) {
+-        handler();
+-    }];
++    // void (^handler)(void) =  ^(void) {
++    //     dispatch_async(dispatch_get_main_queue(), ^{
++    //         completionHandler([self.class getStatus]);
++    //     });
++    // };
++
++    // [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus status) {
++    //     handler();
++    // }];
+ }
+ 
+ @end
