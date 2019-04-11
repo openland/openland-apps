@@ -31,7 +31,7 @@ export let isInvite = (attach?: FullMessage_GeneralMessage_attachments_MessageRi
     return attach && attach.titleLink && (attach.titleLink.includes('openland.com/invite') || attach.titleLink.includes('openland.com/joinChannel'));
 }
 
-export let ricjAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {
+export let richAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {
     return attach && attach.image &&
         (
             (attach.image.metadata && attach.image.metadata.imageHeight === attach.image.metadata.imageWidth)
@@ -51,7 +51,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         if (this.props.attach && this.props.attach.image && this.props.imageLayout) {
 
             this.augLayout = this.props.imageLayout;
-            if (ricjAttachImageShouldBeCompact(this.props.attach)) {
+            if (richAttachImageShouldBeCompact(this.props.attach)) {
                 this.imageCompact = true;
                 this.augLayout = { width: 36, height: 36 };
             }
@@ -102,7 +102,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         let imageSource = { uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined };
 
         // invite link image placeholder
-        if (ricjAttachImageShouldBeCompact(this.props.attach)) {
+        if (richAttachImageShouldBeCompact(this.props.attach)) {
             imgCompact = true;
             imgLayout = !!imgLayout ? { width: 36, height: 36 } : undefined;
 

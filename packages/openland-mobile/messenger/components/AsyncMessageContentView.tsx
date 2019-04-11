@@ -14,7 +14,7 @@ import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { ReplyContent } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
 import { Span } from 'openland-mobile/utils/TextProcessor';
-import { RichAttachContent, ricjAttachImageShouldBeCompact } from './content/RichAttachContent';
+import { RichAttachContent, richAttachImageShouldBeCompact } from './content/RichAttachContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
@@ -64,7 +64,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     if (augmenationAttach && augmenationAttach.image && augmenationAttach.image.metadata) {
         richAttachImageLayout = layoutImage(augmenationAttach.image.metadata, maxSize);
     }
-    let richAttachIsCompact = ricjAttachImageShouldBeCompact(augmenationAttach);
+    let richAttachIsCompact = richAttachImageShouldBeCompact(augmenationAttach);
 
     let hasDocument = !!(fileAttach && !hasImage);
     let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
