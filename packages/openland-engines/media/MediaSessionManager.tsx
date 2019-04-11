@@ -9,7 +9,8 @@ import { ConferenceMediaWatch_media_streams } from 'openland-api/Types';
 export class MediaSessionManager {
     readonly conversationId: string;
     private readonly client: OpenlandClient;
-    private readonly onReady: () => void;
+    private readonly onStatusChange: (status: 'waiting' | 'connected') => void;
+    private readonly onDestroyRequested: () => void;
     private mediaStream!: AppMediaStream;
     private streamConfigs!: ConferenceMediaWatch_media_streams[];
     private iceServers!: any[];
@@ -18,12 +19,15 @@ export class MediaSessionManager {
     private destroyed = false;
     private streams = new Map<string, MediaStreamManager>();
     private mute: boolean;
+    private isPrivate: boolean;
 
-    constructor(client: OpenlandClient, conversationId: string, mute: boolean, onReady: () => void) {
+    constructor(client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected') => void, onDestroyRequested: () => void) {
         this.client = client;
         this.conversationId = conversationId;
         this.mute = mute;
-        this.onReady = onReady;
+        this.onStatusChange = onStatusChange;
+        this.onDestroyRequested = onDestroyRequested;
+        this.isPrivate = isPrivate;
         this.doInit();
     }
 
@@ -104,7 +108,7 @@ export class MediaSessionManager {
             this.iceServers = joinConference.conference.iceServers;
             this.conferenceId = conferenceId;
             this.peerId = joinConference.peerId;
-            this.onReady();
+            this.onStatusChange(this.isPrivate ? 'waiting' : 'connected');
             this.doStart();
             return;
         })();
@@ -159,6 +163,9 @@ export class MediaSessionManager {
                 console.log('[WEBRTC] Destroy stream ' + s);
                 this.streams.get(s)!.destroy();
                 this.streams.delete(s);
+                if (this.isPrivate && this.streams.keys.length === 0) {
+                    this.onDestroyRequested();
+                }
             }
         }
 
@@ -168,6 +175,9 @@ export class MediaSessionManager {
                 ex.onStateChanged(s);
             } else {
                 console.log('[WEBRTC] Create stream ' + s.id);
+                if (this.isPrivate) {
+                    this.onStatusChange('connected');
+                }
                 let ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, s);
                 this.streams.set(s.id, ms);
             }

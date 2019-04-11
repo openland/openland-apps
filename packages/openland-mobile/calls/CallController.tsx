@@ -2,10 +2,10 @@ import * as React from 'react';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 
-export const CallController = XMemo<{ id: string, mute: boolean }>((props) => {
+export const CallController = XMemo<{ id: string, mute: boolean, isPrivate: boolean }>((props) => {
     let calls = getMessenger().engine.calls;
     React.useEffect(() => {
-        calls.joinCall(props.id);
+        calls.joinCall(props.id, props.isPrivate);
         return () => {
             calls.leaveCall();
         }

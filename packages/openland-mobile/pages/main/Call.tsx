@@ -17,15 +17,20 @@ import { RNSDevice } from 'react-native-s/RNSDevice';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import { CallStatus } from 'openland-engines/CallsEngine';
+import { formatTime, formatTimerTime } from 'openland-mobile/utils/formatTime';
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let [mute, setMute] = React.useState(false);
     let [speaker, setSpeaker] = React.useState(false);
+    let [status, setStatus] = React.useState<CallStatus>('initial');
+    let [timer, setTimer] = React.useState(0);
+    let [initialTime, setInitialTime] = React.useState(0);
     let room = getClient().useRoomTiny({ id: props.id }).room!!;
 
     let title = room.__typename === 'PrivateRoom' ? room.user.name : room.title;
     let photo = room.__typename === 'PrivateRoom' ? room.user.photo : room.photo;
-    let placeholderKey = room.id
+    let placeholderKey = room.id;
 
     React.useLayoutEffect(() => {
         SStatusBar.setBarStyle('light-content');
@@ -47,10 +52,28 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
     React.useEffect(() => {
         if (callsState.status === 'connected') {
+            setInitialTime(new Date().getTime());
+            setStatus('connected');
             ReactNativeHapticFeedback.trigger('impactMedium', { ignoreAndroidSystemSettings: false });
+        } else if (callsState.status === 'end') {
+            setStatus('end');
+            setTimeout(() => {
+                props.hide();
+            }, 2000)
+        } else if (callsState.status === 'waiting') {
+            setStatus('waiting');
         }
 
     }, [callsState.status])
+
+    React.useEffect(() => {
+        if (status === 'connected') {
+            setTimeout(() => {
+                setTimer(initialTime ? new Date().getTime() - initialTime : 0);
+            }, 100);
+        }
+
+    }, [timer, initialTime, status])
 
     return (
         <ASSafeAreaView flexDirection="column" alignItems="stretch" flexGrow={1}>
@@ -62,9 +85,14 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                 <View style={{ marginLeft: 16, flexShrink: 1, flexGrow: 1, flexBasis: 0, minWidth: 0 }}>
                     <Text
                         style={{ fontSize: 28, fontWeight: '600', color: 'white' }}
-                        numberOfLines={2}
+                        numberOfLines={4}
                     >
-                        {(callsState && callsState.status) === 'connecting' ? 'Connecting...' : title}
+                        {
+                            status === 'end' ? 'Call ended' :
+                                ['connected', 'waiting'].includes(status) ? (status === 'waiting' ? 'Waiting for ' : '') + title :
+                                    'Connecting...'
+                        }
+                        {room.__typename === 'PrivateRoom' && ['connected', 'end'].includes(status) ? '\n' + formatTimerTime(timer) : ''}
                     </Text>
                 </View>
             </View>
@@ -107,7 +135,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     </View>
                 </TouchableOpacity>
             </View>
-            <CallController id={props.id} mute={mute} />
+            <CallController id={props.id} mute={mute} isPrivate={room.__typename === 'PrivateRoom'} />
             {/* <View flexDirection="row" paddingHorizontal={16} paddingVertical={16}>
                 {conference.peers.map((v) => (<View><Text>{v.user.name}</Text></View>))}
             </View> */}

@@ -48,7 +48,7 @@ const DocumentHeadTitleUpdater = ({ title }: { title: string }) => {
 
 class MessagengerFragmentInner extends React.PureComponent<
     MessengerComponentLoaderProps & { client: OpenlandClient; id: string }
-> {
+    > {
     onChatLostAccess = () => {
         this.props.client.refetchRoom({ id: this.props.id });
         // this.props.apollo.client.reFetchObservableQueries();
@@ -66,8 +66,8 @@ class MessagengerFragmentInner extends React.PureComponent<
             data.room.__typename === 'PrivateRoom' ? data.room : null;
         let pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null =
             sharedRoom &&
-            sharedRoom.pinnedMessage &&
-            sharedRoom.pinnedMessage.__typename === 'GeneralMessage'
+                sharedRoom.pinnedMessage &&
+                sharedRoom.pinnedMessage.__typename === 'GeneralMessage'
                 ? sharedRoom.pinnedMessage
                 : null;
 
@@ -93,7 +93,7 @@ class MessagengerFragmentInner extends React.PureComponent<
                     alignItems="stretch"
                 >
                     {state.useForwardPlaceholder && <ForwardPlaceholder state={state} />}
-                    <TalkBarComponent conversationId={data.room.id} />
+                    <TalkBarComponent conversationId={data.room.id} isPrivate={data.room.__typename === 'PrivateRoom'} />
                     <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
                         <MessengerRootComponent
                             onChatLostAccess={this.onChatLostAccess}

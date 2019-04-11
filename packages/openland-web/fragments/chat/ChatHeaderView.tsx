@@ -110,7 +110,7 @@ const CallButton = ({ room }: { room: Room_room_SharedRoom | Room_room_PrivateRo
     // const ctx = React.useContext(TalkContext);
 
     return callsState.conversationId !== room.id ? (
-        <XButton text="Call" size="small" onClick={() => calls.joinCall(room.id)} />
+        <XButton text="Call" size="small" onClick={() => calls.joinCall(room.id, room.__typename === 'PrivateRoom')} />
     ) : null;
 };
 
