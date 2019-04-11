@@ -17,6 +17,12 @@ const styles = StyleSheet.create({
         color: '#0084fe',
         lineHeight: 15
     } as TextStyle,
+    senderNameDeleted: {
+        fontSize: 13,
+        fontWeight: TextStyles.weight.medium,
+        color: 'rgba(0, 0, 0, 0.5)',
+        lineHeight: 15
+    } as TextStyle,
     date: {
         color: '#99a2b0',
         fontSize: 13,
@@ -35,12 +41,14 @@ const styles = StyleSheet.create({
 export interface CommentViewProps {
     comment: MessageComments_messageComments_comments_comment;
     depth: number;
+    deleted: boolean;
+
     onReplyPress: (comment: MessageComments_messageComments_comments_comment) => void;
     onLongPress: (comment: MessageComments_messageComments_comments_comment) => void;
 }
 
 export const CommentView = React.memo<CommentViewProps>((props) => {
-    const { comment, depth } = props;
+    const { comment, deleted, depth } = props;
     const { sender, date, reactions } = comment;
 
     let messenger = getMessenger();
@@ -78,14 +86,19 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let avatar = (
         <View marginRight={depth === 0 ? 10 : 6}>
-            <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
-                <ZAvatar
-                    size={depth === 0 ? 32 : 16}
-                    src={sender.photo}
-                    placeholderKey={sender.id}
-                    placeholderTitle={sender.name}
-                />
-            </TouchableWithoutFeedback>
+            {deleted && (
+                <View width={depth === 0 ? 32 : 16} height={depth === 0 ? 32 : 16} borderRadius={depth === 0 ? 16 : 8} backgroundColor="rgba(0, 0, 0, 0.05)" />
+            )}
+            {!deleted && (
+                <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
+                    <ZAvatar
+                        size={depth === 0 ? 32 : 16}
+                        src={sender.photo}
+                        placeholderKey={sender.id}
+                        placeholderTitle={sender.name}
+                    />
+                </TouchableWithoutFeedback>
+            )}
         </View>
     );
 
@@ -111,24 +124,32 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         </View>
     );
 
-    let likes = (
+    let likes =  !deleted ? (
         <TouchableWithoutFeedback onPress={handleReactionPress}>
             <View width={44} marginRight={-16} alignItems="center" justifyContent="center">
                 <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? '#f6564e' : 'rgba(129, 137, 149, 0.3)', width: 18, height: 18 }} />
                 {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? '#000000' : 'rgba(0, 0, 0, 0.6)' } as TextStyle}>{likesCount}</Text>}
             </View>
         </TouchableWithoutFeedback>
-    );
+    ) : undefined;
 
     if (depth === 0) {
         return (
-            <TouchableWithoutFeedback onLongPress={() => props.onLongPress(comment)}>
+            <TouchableWithoutFeedback onLongPress={!deleted ? () => props.onLongPress(comment) : undefined}>
                 <View marginLeft={marginLeft} flexDirection="row" marginBottom={16}>
                     {avatar}
 
                     <View flexGrow={1} flexShrink={1}>
-                        <Text style={[styles.senderName, { marginBottom: 1 }]} onPress={() => router.push('ProfileUser', { id: sender.id })}>{sender.name}</Text>
-                        <ZMessageView message={comment} size="small" />
+                        {deleted && (
+                            <Text style={[styles.senderNameDeleted, { marginBottom: 1 }]}>{sender.name}</Text>
+                        )}
+                        {!deleted && (
+                            <Text style={[styles.senderName, { marginBottom: 1 }]} onPress={() => router.push('ProfileUser', { id: sender.id })}>{sender.name}</Text>
+                        )}
+
+                        <View style={{ opacity: deleted ? 0.5 : undefined }}>
+                            <ZMessageView message={comment} small={true} />
+                        </View>
 
                         {tools}
                     </View>
@@ -140,18 +161,20 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     }
 
     return (
-        <TouchableWithoutFeedback onLongPress={() => props.onLongPress(comment)}>
+        <TouchableWithoutFeedback onLongPress={!deleted ? () => props.onLongPress(comment) : undefined}>
             <View marginLeft={marginLeft} flexDirection="row" marginBottom={16}>
                 <View flexGrow={1} flexShrink={1}>
-                    <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
+                    <TouchableWithoutFeedback onPress={!deleted ? () => router.push('ProfileUser', { id: sender.id }) : undefined}>
                         <View flexDirection="row" marginBottom={3}>
                             {avatar}
 
-                            <Text style={styles.senderName}>{sender.name}</Text>
+                            <Text style={!deleted ? styles.senderName : styles.senderNameDeleted}>{sender.name}</Text>
                         </View>
                     </TouchableWithoutFeedback>
 
-                    <ZMessageView message={comment} size="small" />
+                    <View style={{ opacity: deleted ? 0.5 : undefined }}>
+                        <ZMessageView message={comment} small={true} />
+                    </View>
 
                     {tools}
                 </View>

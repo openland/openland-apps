@@ -2075,6 +2075,11 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
        builder.message(readString(src, "message"))
        return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "DeleteComment") {
+       val builder = DeleteCommentMutation.builder()
+       builder.id(notNull(readString(src, "id")))
+       return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "CommentSetReaction") {
        val builder = CommentSetReactionMutation.builder()
        builder.commentId(notNull(readString(src, "commentId")))

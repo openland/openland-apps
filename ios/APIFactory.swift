@@ -2302,6 +2302,22 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "DeleteComment") {
+      let id = notNull(readString(src, "id"))
+      let requestBody = DeleteCommentMutation(id: id)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "CommentSetReaction") {
       let commentId = notNull(readString(src, "commentId"))
       let reaction = notNull(readMessageReactionType(src, "reaction"))

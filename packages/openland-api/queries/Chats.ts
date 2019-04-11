@@ -770,6 +770,12 @@ export const EditCommentMutation = gql`
     }
 `;
 
+export const DeleteCommentMutation = gql`
+    mutation DeleteComment($id: ID!) {
+        deleteComment(id: $id)
+    }
+`;
+
 export const MessageCommentsQuery = gql`
     query MessageComments($messageId: ID!) {
         messageComments(messageId: $messageId) {

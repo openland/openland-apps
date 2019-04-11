@@ -7,7 +7,7 @@ import { extractContent } from './extractContent';
 
 export interface ZMessageViewProps {
     message: FullMessage_GeneralMessage;
-    size?: 'small' | 'default';
+    small?: boolean;
 }
 
 export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
@@ -20,7 +20,6 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         router.push('ProfileUser', { id });
     }, []);
 
-    const isSmall = props.size && props.size === 'small' ? true : false;
     const content = extractContent({
         theme,
         message,
@@ -28,7 +27,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         onUserPress: handleUserPress,
         onMediaPress: (fileMeta, event) => { return; },
         onDocumentPress: (document) => { return; },
-    }, isSmall);
+    }, props.small);
 
     return (
         <View>

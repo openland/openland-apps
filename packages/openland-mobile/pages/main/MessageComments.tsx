@@ -167,22 +167,22 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                 Clipboard.setString(comment.message!!);
             });
         }
-
-        // if (comment.sender.id === engine.user.id) {
-        //     builder.action('Delete', async () => {
-        //         try {
-        //             Alert.builder()
-        //                 .title('Delete comment')
-        //                 .message('Delete this comment for everyone? This cannot be undone.')
-        //                 .button('Cancel', 'cancel')
-        //                 .action('Delete', 'destructive', async () => {
-        //                     await engine.client.mutateDeleteComment({ id: comment.id! });
-        //                 }).show();
-        //         } catch (e) {
-        //             Alert.alert(e.message);
-        //         }
-        //     }, true);
-        // }
+        
+        if (comment.sender.id === engine.user.id) {
+            builder.action('Delete', async () => {
+                try {
+                    Alert.builder()
+                        .title('Delete comment')
+                        .message('Delete this comment for everyone? This cannot be undone.')
+                        .button('Cancel', 'cancel')
+                        .action('Delete', 'destructive', async () => {
+                            await engine.client.mutateDeleteComment({ id: comment.id! });
+                        }).show();
+                } catch (e) {
+                    Alert.alert(e.message);
+                }
+            }, true);
+        }
 
         builder.show();
     }
@@ -210,6 +210,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                     <CommentView
                         key={commentEntry.id}
                         comment={commentEntry.comment}
+                        deleted={commentEntry.deleted}
                         depth={getDepthOfComment(commentEntry, commentsMap)}
                         onReplyPress={this.handleReplyPress}
                         onLongPress={this.handleCommentLongPress}

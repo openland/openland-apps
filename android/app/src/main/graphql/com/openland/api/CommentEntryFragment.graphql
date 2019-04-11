@@ -9,6 +9,7 @@ fragment CommentEntryFragment on CommentEntry {
     id
     ...FullMessage
   }
+  deleted
   id
   parentComment {
     __typename

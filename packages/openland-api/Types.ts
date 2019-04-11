@@ -1560,6 +1560,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment {
   __typename: "CommentEntry";
   id: string;
+  deleted: boolean;
   comment: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment;
   parentComment: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_parentComment | null;
   childComments: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_childComments[];
@@ -2187,6 +2188,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment {
   __typename: "CommentEntry";
   id: string;
+  deleted: boolean;
   comment: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment;
   parentComment: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_parentComment | null;
   childComments: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_childComments[];
@@ -2823,6 +2825,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment {
   __typename: "CommentEntry";
   id: string;
+  deleted: boolean;
   comment: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment;
   parentComment: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_parentComment | null;
   childComments: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_childComments[];
@@ -3450,6 +3453,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment {
   __typename: "CommentEntry";
   id: string;
+  deleted: boolean;
   comment: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment;
   parentComment: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_parentComment | null;
   childComments: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_childComments[];
@@ -23748,6 +23752,22 @@ export interface EditCommentVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: DeleteComment
+// ====================================================
+
+export interface DeleteComment {
+  deleteComment: boolean;
+}
+
+export interface DeleteCommentVariables {
+  id: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: MessageComments
 // ====================================================
 
@@ -24373,6 +24393,7 @@ export interface MessageComments_messageComments_comments_childComments {
 export interface MessageComments_messageComments_comments {
   __typename: "CommentEntry";
   id: string;
+  deleted: boolean;
   comment: MessageComments_messageComments_comments_comment;
   parentComment: MessageComments_messageComments_comments_parentComment | null;
   childComments: MessageComments_messageComments_comments_childComments[];
@@ -31363,6 +31384,7 @@ export interface CommentEntryFragment_childComments {
 export interface CommentEntryFragment {
   __typename: "CommentEntry";
   id: string;
+  deleted: boolean;
   comment: CommentEntryFragment_comment;
   parentComment: CommentEntryFragment_parentComment | null;
   childComments: CommentEntryFragment_childComments[];
@@ -36062,6 +36084,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_childComments {
 export interface CommentUpdateFragment_CommentReceived_comment {
   __typename: "CommentEntry";
   id: string;
+  deleted: boolean;
   comment: CommentUpdateFragment_CommentReceived_comment_comment;
   parentComment: CommentUpdateFragment_CommentReceived_comment_parentComment | null;
   childComments: CommentUpdateFragment_CommentReceived_comment_childComments[];
@@ -36689,6 +36712,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_childComments {
 export interface CommentUpdateFragment_CommentUpdated_comment {
   __typename: "CommentEntry";
   id: string;
+  deleted: boolean;
   comment: CommentUpdateFragment_CommentUpdated_comment_comment;
   parentComment: CommentUpdateFragment_CommentUpdated_comment_parentComment | null;
   childComments: CommentUpdateFragment_CommentUpdated_comment_childComments[];

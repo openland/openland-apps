@@ -10470,6 +10470,48 @@ public final class EditCommentMutation: GraphQLMutation {
   }
 }
 
+public final class DeleteCommentMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation DeleteComment($id: ID!) {\n  deleteComment(id: $id)\n}"
+
+  public var id: GraphQLID
+
+  public init(id: GraphQLID) {
+    self.id = id
+  }
+
+  public var variables: GraphQLMap? {
+    return ["id": id]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("deleteComment", arguments: ["id": GraphQLVariable("id")], type: .nonNull(.scalar(Bool.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(deleteComment: Bool) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "deleteComment": deleteComment])
+    }
+
+    public var deleteComment: Bool {
+      get {
+        return resultMap["deleteComment"]! as! Bool
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "deleteComment")
+      }
+    }
+  }
+}
+
 public final class MessageCommentsQuery: GraphQLQuery {
   public let operationDefinition =
     "query MessageComments($messageId: ID!) {\n  messageComments(messageId: $messageId) {\n    __typename\n    id\n    state {\n      __typename\n      state\n    }\n    count\n    comments {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n}"
@@ -20829,13 +20871,14 @@ public struct AppFull: GraphQLFragment {
 
 public struct CommentEntryFragment: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment CommentEntryFragment on CommentEntry {\n  __typename\n  id\n  comment {\n    __typename\n    ...FullMessage\n    id\n  }\n  parentComment {\n    __typename\n    id\n  }\n  childComments {\n    __typename\n    id\n  }\n}"
+    "fragment CommentEntryFragment on CommentEntry {\n  __typename\n  id\n  deleted\n  comment {\n    __typename\n    ...FullMessage\n    id\n  }\n  parentComment {\n    __typename\n    id\n  }\n  childComments {\n    __typename\n    id\n  }\n}"
 
   public static let possibleTypes = ["CommentEntry"]
 
   public static let selections: [GraphQLSelection] = [
     GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
     GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+    GraphQLField("deleted", type: .nonNull(.scalar(Bool.self))),
     GraphQLField("comment", type: .nonNull(.object(Comment.selections))),
     GraphQLField("parentComment", type: .object(ParentComment.selections)),
     GraphQLField("childComments", type: .nonNull(.list(.nonNull(.object(ChildComment.selections))))),
@@ -20847,8 +20890,8 @@ public struct CommentEntryFragment: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(id: GraphQLID, comment: Comment, parentComment: ParentComment? = nil, childComments: [ChildComment]) {
-    self.init(unsafeResultMap: ["__typename": "CommentEntry", "id": id, "comment": comment.resultMap, "parentComment": parentComment.flatMap { (value: ParentComment) -> ResultMap in value.resultMap }, "childComments": childComments.map { (value: ChildComment) -> ResultMap in value.resultMap }])
+  public init(id: GraphQLID, deleted: Bool, comment: Comment, parentComment: ParentComment? = nil, childComments: [ChildComment]) {
+    self.init(unsafeResultMap: ["__typename": "CommentEntry", "id": id, "deleted": deleted, "comment": comment.resultMap, "parentComment": parentComment.flatMap { (value: ParentComment) -> ResultMap in value.resultMap }, "childComments": childComments.map { (value: ChildComment) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -20866,6 +20909,15 @@ public struct CommentEntryFragment: GraphQLFragment {
     }
     set {
       resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  public var deleted: Bool {
+    get {
+      return resultMap["deleted"]! as! Bool
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "deleted")
     }
   }
 

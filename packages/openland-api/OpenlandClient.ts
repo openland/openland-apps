@@ -790,6 +790,9 @@ export class OpenlandClient extends BaseApiClient {
     async mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
         return this.client.mutate(Source.EditCommentMutation, variables);
     }
+    async mutateDeleteComment(variables: Types.DeleteCommentVariables): Promise<Types.DeleteComment> {
+        return this.client.mutate(Source.DeleteCommentMutation, variables);
+    }
     async mutateCommentSetReaction(variables: Types.CommentSetReactionVariables): Promise<Types.CommentSetReaction> {
         return this.client.mutate(Source.CommentSetReactionMutation, variables);
     }

@@ -112,6 +112,7 @@ export const RoomInviteInfoQuery = typedQuery<Types.RoomInviteInfo, Types.RoomIn
 export const ResolvedInviteQuery = typedQuery<Types.ResolvedInvite, Types.ResolvedInviteVariables>(Chats.ResolvedInviteQuery);
 export const AddMessageCommentMutation = typedMutation<Types.AddMessageComment, Types.AddMessageCommentVariables>(Chats.AddMessageCommentMutation);
 export const EditCommentMutation = typedMutation<Types.EditComment, Types.EditCommentVariables>(Chats.EditCommentMutation);
+export const DeleteCommentMutation = typedMutation<Types.DeleteComment, Types.DeleteCommentVariables>(Chats.DeleteCommentMutation);
 export const MessageCommentsQuery = typedQuery<Types.MessageComments, Types.MessageCommentsVariables>(Chats.MessageCommentsQuery);
 export const CommentSetReactionMutation = typedMutation<Types.CommentSetReaction, Types.CommentSetReactionVariables>(Chats.CommentSetReactionMutation);
 export const CommentUnsetReactionMutation = typedMutation<Types.CommentUnsetReaction, Types.CommentUnsetReactionVariables>(Chats.CommentUnsetReactionMutation);
