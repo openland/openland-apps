@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData, ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { androidMessageInputListOverlap } from './ConversationView';
 import { ASView } from 'react-native-async-view/ASView';
@@ -49,6 +49,7 @@ export interface MessageInputBarProps {
     placeholder: string;
 
     topContent?: any;
+    showLoader?: boolean;
 }
 
 export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
@@ -122,36 +123,45 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                                 editable={this.props.enabled !== false}
                                 multiline={true}
                             />
-                            <TouchableOpacity
-                                disabled={!hasText}
-                                onPress={this.props.onSubmitPress}
-                                style={{
-                                    position: 'absolute',
-                                    right: 0,
-                                    bottom: 5,
-                                    zIndex: 2
-                                }}
-                            >
-                                <View
-                                    alignItems="center"
-                                    justifyContent="center"
-                                    width={30}
-                                    height={30}
-                                    borderRadius={30}
-                                    backgroundColor={hasText && this.props.enabled !== false ? this.props.theme.mainColor : '#ebebeb'}
-                                    marginHorizontal={6}
+
+                            {!this.props.showLoader && (
+                                <TouchableOpacity
+                                    disabled={!hasText}
+                                    onPress={this.props.onSubmitPress}
+                                    style={{
+                                        position: 'absolute',
+                                        right: 0,
+                                        bottom: 5,
+                                        zIndex: 2
+                                    }}
                                 >
-                                    <Image
-                                        source={icon}
-                                        style={{
-                                            width: 17,
-                                            height: 17,
-                                            marginRight: -4,
-                                            tintColor: hasText && this.props.enabled !== false ? '#fff' : '#b0b0b0'
-                                        }}
-                                    />
+                                    <View
+                                        alignItems="center"
+                                        justifyContent="center"
+                                        width={30}
+                                        height={30}
+                                        borderRadius={30}
+                                        backgroundColor={hasText && this.props.enabled !== false ? this.props.theme.mainColor : '#ebebeb'}
+                                        marginHorizontal={6}
+                                    >
+                                        <Image
+                                            source={icon}
+                                            style={{
+                                                width: 17,
+                                                height: 17,
+                                                marginRight: -4,
+                                                tintColor: hasText && this.props.enabled !== false ? '#fff' : '#b0b0b0'
+                                            }}
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+
+                            {this.props.showLoader && (
+                                <View width={30} height={30} marginRight={6} alignItems="center" justifyContent="center">
+                                    <ActivityIndicator height="100%" color="#000000" />
                                 </View>
-                            </TouchableOpacity>
+                            )}
                         </View>
 
                     </View>

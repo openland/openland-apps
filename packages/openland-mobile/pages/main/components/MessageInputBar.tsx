@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData, Text, ActivityIndicator } from 'react-native';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 import { ConversationTheme } from '../themes/ConversationThemeResolver';
 import { SDevice } from 'react-native-s/SDevice';
@@ -40,6 +40,7 @@ export interface MessageInputBarProps {
     placeholder: string;
 
     topContent?: any;
+    showLoader?: boolean;
 }
 
 export const MessageInputBar = XMemo<MessageInputBarProps>(props => {
@@ -86,11 +87,18 @@ export const MessageInputBar = XMemo<MessageInputBarProps>(props => {
                         allowFontScaling={false}
                         keyboardAppearance={theme.keyboardAppearance}
                     />
-                    <TouchableOpacity disabled={!hasText} onPress={props.onSubmitPress}>
-                        <View alignItems="center" justifyContent="center" width={52} height={50} paddingLeft={2}>
-                            <Image source={icon} style={{ width: 26, height: 26, tintColor: hasText && props.enabled !== false ? props.theme.mainColor : '#C8C7CC' }} />
+                    {!props.showLoader && (
+                        <TouchableOpacity disabled={!hasText} onPress={props.onSubmitPress}>
+                            <View alignItems="center" justifyContent="center" width={52} height={50} paddingLeft={2}>
+                                <Image source={icon} style={{ width: 26, height: 26, tintColor: hasText && props.enabled !== false ? props.theme.mainColor : '#C8C7CC' }} />
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    {props.showLoader && (
+                        <View width={52} height={50} alignItems="center" justifyContent="center">
+                            <ActivityIndicator height="100%" color="#0084fe" />
                         </View>
-                    </TouchableOpacity>
+                    )}
                 </View>
             </View>
         </ZKeyboardAwareBar>
