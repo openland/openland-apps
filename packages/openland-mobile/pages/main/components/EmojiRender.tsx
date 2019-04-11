@@ -29,7 +29,7 @@ export const findEmojiByShortname = (activeWord: string) => {
         }
     }
 
-    return emojiFiltered;
+    return emojiFiltered.reverse();
 }
 
 export const EmojiRender = (props: EmojiRenderProps) => {
