@@ -40,15 +40,13 @@ export const ReplyContent = (props: ReplyContentProps) => {
                     })}
 
                     return (
-                        <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor="red">
+                        <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor="#0084fe" paddingLeft={8}>
                             <Text
                                 style={{
                                     marginTop: -2,
                                     height: 15,
-                                    textAlign: 'center',
                                     lineHeight: 15,
-                                    marginLeft: 10,
-                                    color: 'red',
+                                    color: '#0084fe',
                                     letterSpacing: -0.3,
                                     fontSize: 13,
                                     fontWeight: TextStyles.weight.medium,
