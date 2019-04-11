@@ -174,7 +174,7 @@ export const SpannedStringView = React.memo<{ spannedString: SpannedString }>(pr
             });
             res.push(
                 <OthersPopper items={otherItems}>
-                    {s.users.length - 1} others
+                    {s.users.length} others
                 </OthersPopper>,
             );
         }

@@ -3,7 +3,6 @@ import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import UploadCare from 'uploadcare-widget';
 import { getConfig } from '../../../config';
-import { MyOrganizationsQuery } from 'openland-api';
 import { MyOrganizations_myOrganizations, SharedRoomKind } from 'openland-api/Types';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
