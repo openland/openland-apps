@@ -53,7 +53,6 @@ export const ImagePreviewModal = (props: ImagePreviewModal) => {
                 <XView backgroundColor="#000" borderRadius={8}>
                     <XCloudImage
                         srcCloud={props.file}
-                        resize={'fill'}
                         width={width}
                         height={height}
                         className={ModalImage}
