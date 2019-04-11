@@ -3,7 +3,9 @@ import * as ReactDOM from 'react-dom';
 import { EmojiData } from 'emoji-mart';
 import { EditorState } from 'draft-js';
 import Glamorous from 'glamorous';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
+import { XView } from 'react-mental';
+import { XIcon } from 'openland-x/XIcon';
 import { extractFlexProps, XFlexStyles, applyFlex } from '../../basics/Flex';
 import { EmojiSuggestions } from './EmojiSuggestions';
 import { MentionSuggestions, SizeT } from './MentionSuggestions';
@@ -44,14 +46,87 @@ type EditorContainerContainer = XRichTextInput2Props & {
     children: any;
 };
 
-const fileIconWrapperClassName = css`
-    & > *: {
-        fill: props.disable ? '#c1c7cf' : rgba(0, 0, 0, 0.2)
+const photoIconClassName = css`
+    & * {
+        width: 18px;
+        height: 18px;
     }
 `;
 
+const fileIconClassName = css`
+    & * {
+        width: 18px;
+        height: 18px;
+    }
+`;
+
+const sendIconClassName = css`
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+    color: white;
+    position: absolute;
+    left: 3px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+`;
+
+const sendIconWrapperClassName = css`
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    &:hover {
+        background-color: #1790ff;
+    }
+    border-radius: 15px;
+`;
+
+const iconWrapperClassName = css`
+    z-index: 100;
+    & * {
+        cursor: pointer;
+        fill: #c1c7cf;
+    }
+
+    &:hover * {
+        fill: #1790ff;
+    }
+`;
+
+const PhotoIconWrapper = () => {
+    return (
+        <div className={cx(photoIconClassName, iconWrapperClassName)}>
+            <PhotoIcon />
+        </div>
+    );
+};
+
 const FileIconWrapper = () => {
-    return <div className={fileIconWrapperClassName}>123</div>;
+    return (
+        <div className={cx(fileIconClassName, iconWrapperClassName)}>
+            <FileIcon />
+        </div>
+    );
+};
+
+const SendIconWrapper = () => {
+    return (
+        <div className={cx(iconWrapperClassName, sendIconWrapperClassName)}>
+            <XIcon icon="send" className={sendIconClassName} />
+        </div>
+    );
+};
+
+const IconsWrapper = ({ children }: { children: any }) => {
+    return (
+        <XView position="absolute" top={11} right={0} flexDirection="row">
+            {children}
+        </XView>
+    );
 };
 
 export const EditorContainer = (props: EditorContainerContainer) => {
@@ -143,23 +218,12 @@ export const EditorContainer = (props: EditorContainerContainer) => {
             />
 
             {children}
-            <EmojiButton onEmojiPicked={onEmojiPicked} />
-            <PhotoIcon />
-            <FileIcon />
-            {/* <PhotoButton
-                minimal
-                enabled={true}
-                onClick={() => {
-                    console.log('PhotoButton');
-                }}
-            />
-            <DocumentButton
-                minimal
-                enabled={true}
-                onClick={() => {
-                    console.log('DocumentButton');
-                }}
-            /> */}
+            <IconsWrapper>
+                <PhotoIconWrapper />
+                <FileIconWrapper />
+                <EmojiButton onEmojiPicked={onEmojiPicked} />
+                <SendIconWrapper />
+            </IconsWrapper>
         </ContainerWrapper>
     );
 };
