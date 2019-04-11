@@ -33,7 +33,7 @@ type DumpSendMessageT = {
     TextInputComponent: React.ComponentType<TextInputComponentInnerT>;
 } & DumpSendMessagePropsT;
 
-export const DumpSendMessage = ({
+export const DumpSendMessage = React.memo(({
     TextInputComponent,
     mentionsState,
     handleChange,
@@ -82,4 +82,4 @@ export const DumpSendMessage = ({
             </SendMessageContent>
         </SendMessageWrapper>
     );
-};
+});
