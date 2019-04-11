@@ -420,13 +420,11 @@ const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization
                 id={user!!.id}
                 primaryOrganization={organization || undefined}
                 organizations={
-                    myorgs && myorgs.myOrganizations
-                        ? myorgs.myOrganizations
-                        : undefined
+                    myorgs && myorgs.myOrganizations ? myorgs.myOrganizations : undefined
                 }
             />
         </XVertical>
-    )
+    );
 });
 
 export const DesktopScaffold = ({

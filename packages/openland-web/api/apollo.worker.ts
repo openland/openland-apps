@@ -14,7 +14,7 @@ var host;
 
 const initHandler = (ev: MessageEvent) => {
     console.log('handler!');
-    let msg = ev.data
+    let msg = ev.data;
     if (msg.type !== 'init') {
         throwFatalError('Worker need to be inited first!');
     }
@@ -25,13 +25,13 @@ const initHandler = (ev: MessageEvent) => {
     let client = buildClient({
         token: token,
         endpoint: msg.endpoint,
-        wsEndpoint: msg.wsEndpoint
+        wsEndpoint: msg.wsEndpoint,
     });
 
     let workerInterface: WorkerInterface = {
-        post: (src) => ctx.postMessage(src),
-        setHandler: (handler) => ctx.addEventListener('message', (src: any) => handler(src.data))
-    }
+        post: src => ctx.postMessage(src),
+        setHandler: handler => ctx.addEventListener('message', (src: any) => handler(src.data)),
+    };
 
     host = new WorkerApolloHost(new DirectApollolClient(client), workerInterface);
 };

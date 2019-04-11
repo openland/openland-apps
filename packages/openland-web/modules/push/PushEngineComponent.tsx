@@ -19,7 +19,7 @@ class PushEngineComponentMounted extends React.PureComponent<{
 export const PushEngineComponent = (props: { enable: boolean }) => {
     if (canUseDOM) {
         let client = useClient();
-        return (<PushEngineComponentMounted enabled={props.enable} client={client} />)
+        return <PushEngineComponentMounted enabled={props.enable} client={client} />;
     } else {
         return null;
     }
