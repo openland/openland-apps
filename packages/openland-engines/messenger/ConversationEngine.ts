@@ -19,8 +19,6 @@ export interface ConversationStateHandler {
     onChatLostAccess(): void;
 }
 
-const CONVERSATION_PAGE_SIZE = 15;
-
 const timeGroup = 1000 * 60 * 60;
 
 export interface DataSourceMessageItem {
@@ -150,7 +148,7 @@ export class ConversationEngine implements MessageSendHandler {
         log.log('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
-                let history = await this.engine.client.client.query(ChatInitQuery, { chatId: this.conversationId, first: 15 }, { fetchPolicy: 'network-only' });
+                let history = await this.engine.client.client.query(ChatInitQuery, { chatId: this.conversationId, first: this.engine.options.conversationBatchSize }, { fetchPolicy: 'network-only' });
                 return history;
             } catch (e) {
                 log.warn(e);
@@ -169,7 +167,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.isChannel = initialChat.room && initialChat.room.__typename === 'SharedRoom' ? initialChat.room.isChannel : false;
 
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
-        this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
+        this.historyFullyLoaded = this.messages.length < this.engine.options.conversationBatchSize;
         log.log('Initial state for ' + this.conversationId);
         this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: initialChat.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
         this.onMessagesUpdated();
@@ -229,13 +227,13 @@ export class ConversationEngine implements MessageSendHandler {
             this.loadingHistory = id;
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, true, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
-            let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: id, first: 15 }));
+            let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: id, first: this.engine.options.conversationBatchSize }));
 
             let history = [...(loaded.messages as any as FullMessage[])].filter((remote: FullMessage) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
             history.reverse();
 
             this.messages = [...history, ...this.messages];
-            this.historyFullyLoaded = history.length < CONVERSATION_PAGE_SIZE;
+            this.historyFullyLoaded = history.length < this.engine.options.conversationBatchSize;
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, false, this.historyFullyLoaded);
             this.onMessagesUpdated();
             this.loadingHistory = undefined;

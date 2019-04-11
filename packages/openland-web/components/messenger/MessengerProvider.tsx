@@ -11,7 +11,9 @@ const Messenger = (props: { currentUser: UserShort; children?: any }) => {
         let client = useClient();
         if (!cachedMessenger) {
             let platform = 'web ' + location.hostname;
-            cachedMessenger = new MessengerEngine(client, props.currentUser, platform);
+            cachedMessenger = new MessengerEngine(client, props.currentUser, platform, {
+                conversationBatchSize: 30
+            });
         }
         return (
             <MessengerContext.Provider value={cachedMessenger!}>

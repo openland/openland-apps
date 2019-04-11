@@ -13,6 +13,7 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { CallsEngine } from './CallsEngine';
 import { createLogger } from 'mental-log';
 import { UserStorageEngine } from './UserStorageEngine';
+import { EngineOptions } from './EnginesOptions';
 
 const log = createLogger('Engine');
 
@@ -26,6 +27,7 @@ export class MessengerEngine {
     readonly notifications: NotificationsEngine;
     readonly calls: CallsEngine;
     readonly userStorage: UserStorageEngine;
+    readonly options: EngineOptions;
     private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number; unread: number }>();
     private readonly activeTypings = new Map<string, TypingEngine>();
@@ -37,7 +39,10 @@ export class MessengerEngine {
     private typingsWatcher?: TypingsWatcher;
     private onlineWatcher: OnlineWatcher;
 
-    constructor(client: OpenlandClient, user: UserShort, platform: string) {
+    constructor(client: OpenlandClient, user: UserShort, platform: string, options?: Partial<EngineOptions>) {
+        this.options = {
+            conversationBatchSize: options && options.conversationBatchSize ? options.conversationBatchSize : 15
+        }
         this.client = client;
         this.user = user;
         this.calls = new CallsEngine(this);
