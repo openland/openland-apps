@@ -11,7 +11,7 @@ const contentWrapperClassName = css`
     color: #1790ff;
 `;
 
-type JoinedUserPopperRowProps = {
+export type JoinedUserPopperRowProps = {
     title: string;
     subtitle: string;
     photo: string;
@@ -67,11 +67,11 @@ export const JoinedUserPopperRow = ({ title, subtitle, photo, id }: JoinedUserPo
     );
 };
 
-export const OthersPopper = (props: any) => {
+export const OthersPopper = (props: { items: JoinedUserPopperRowProps[]; children: any }) => {
     return (
         <XPopper
             contentContainer={<XPopperContent />}
-            content={props.items.map((item: any, key: any) => (
+            content={props.items.map((item, key) => (
                 <JoinedUserPopperRow {...item} key={key} />
             ))}
             showOnHover={true}

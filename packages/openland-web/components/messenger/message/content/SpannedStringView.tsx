@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { FullMessage_ServiceMessage_spans } from 'openland-api/Types';
 import { MentionComponentInnerText } from 'openland-x/XRichTextInput';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { UserShort } from 'openland-api/Types';
 import { css, cx } from 'linaria';
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { LinkToRoom } from './service/views/LinkToRoom';
+import { OthersPopper, JoinedUserPopperRowProps } from './service/views/OthersPopper';
 import { SpannedString } from '../../data/SpannedString';
-import { spansPreprocess } from '../../data/spansPreprocess';
 
 const EmojiSpaceStyle = css`
     & img {
@@ -79,9 +78,7 @@ const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserShort; text: any; isYou: boolean }) => {
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
-                <MentionComponentInnerText isYou={isYou}>
-                    {text}
-                </MentionComponentInnerText>
+                <MentionComponentInnerText isYou={isYou}>{text}</MentionComponentInnerText>
             </UserPopper>
         );
     },
@@ -96,7 +93,7 @@ const LinkText = css`
     }
 `;
 
-export const SpannedStringView = React.memo<{ spannedString: SpannedString }>((props) => {
+export const SpannedStringView = React.memo<{ spannedString: SpannedString }>(props => {
     let res: any[] = [];
     let i = 0;
     for (let s of props.spannedString.spans) {
@@ -113,7 +110,7 @@ export const SpannedStringView = React.memo<{ spannedString: SpannedString }>((p
                     )}
                 >
                     {s.textEmoji}
-                </span>
+                </span>,
             );
         } else if (s.type === 'link') {
             res.push(
@@ -126,17 +123,21 @@ export const SpannedStringView = React.memo<{ spannedString: SpannedString }>((p
                     >
                         <SpannedStringView spannedString={s.child} />
                     </XView>
-                </span>
+                </span>,
             );
         } else if (s.type === 'bold') {
             res.push(
                 <span key={'bold-' + i} className={boldTextClassName}>
                     <SpannedStringView spannedString={s.child} />
-                </span>
+                </span>,
             );
         } else if (s.type === 'group') {
             res.push(
-                <LinkToRoom key={'room-' + i} text={<SpannedStringView spannedString={s.child} />} roomId={s.group.id} />,
+                <LinkToRoom
+                    key={'room-' + i}
+                    text={<SpannedStringView spannedString={s.child} />}
+                    roomId={s.group.id}
+                />,
             );
         } else if (s.type === 'user') {
             res.push(
@@ -161,9 +162,24 @@ export const SpannedStringView = React.memo<{ spannedString: SpannedString }>((p
                     }}
                 />,
             );
+        } else if (s.type === 'users') {
+            let otherItems: JoinedUserPopperRowProps[] = [];
+            s.users.map(j => {
+                otherItems.push({
+                    title: j.name,
+                    subtitle: '',
+                    photo: j.photo || '',
+                    id: j.id,
+                });
+            });
+            res.push(
+                <OthersPopper items={otherItems}>
+                    {s.users.length - 1} others
+                </OthersPopper>,
+            );
         }
 
         i++;
     }
     return <>{res}</>;
-})
+});
