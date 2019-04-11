@@ -38,6 +38,7 @@ import { ChannelMuteButton } from './components/ChannelMuteButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showCallModal } from './Call';
 import { NON_PRODUCTION } from '../Init';
+import { EmojiRender } from './components/EmojiRender';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -276,6 +277,20 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         });
     }
 
+    handleEmojiPress = (word: string | undefined, emoji: string) => {
+        if (typeof word !== 'string') {
+            return;
+        }
+
+        let { text, selection } = this.state;
+
+        let newText = text.substring(0, selection.start - word.length) + emoji + ' ' + text.substring(selection.start, text.length);
+
+        this.setState({ text: newText }, () => {
+            this.saveDraft();
+        });
+    }
+
     handlePinnedMessagePress = (mid: string) => {
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
 
@@ -299,14 +314,23 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             </TouchableOpacity>
         );
 
-        let mentions = null;
+        let suggestions = null;
         let activeWord = findActiveWord(this.state.text, this.state.selection);
         if (this.props.chat.__typename === 'SharedRoom' && this.state.inputFocused && activeWord && activeWord.startsWith('@')) {
-            mentions = (
+            suggestions = (
                 <MentionsRender
                     activeWord={activeWord}
                     onMentionPress={this.handleMentionPress}
                     groupId={this.props.chat.id}
+                />
+            );
+        }
+
+        if (this.state.inputFocused && activeWord && activeWord.startsWith(':')) {
+            suggestions = (
+                <EmojiRender
+                    activeWord={activeWord}
+                    onEmojiPress={this.handleEmojiPress}
                 />
             );
         }
@@ -367,7 +391,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     onBlur={this.handleBlur}
                                     text={this.state.text}
                                     theme={this.state.theme}
-                                    topContent={mentions}
+                                    topContent={suggestions}
                                     placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message...'}
                                 />
                             )}
