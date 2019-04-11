@@ -24,7 +24,7 @@ export const SettingsNavigation = XMemo(({ title, children }: { title: string; c
             }
             secondFragment={
                 <XView flexGrow={1} position="relative" flexShrink={1}>
-                    <XScrollView3 height="100%" flexGrow={1}>
+                    <XScrollView3 flexGrow={1} flexShrink={1}>
                         {children}
                     </XScrollView3>
                 </XView>

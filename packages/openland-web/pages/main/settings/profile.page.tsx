@@ -104,7 +104,6 @@ export default withApp('Profile', 'viewer', () => {
         <SettingsNavigation title="Profile">
             <Content>
                 <XVertical separator={21}>
-
                     <XVertical separator={25}>
                         <XForm
                             defaultData={{

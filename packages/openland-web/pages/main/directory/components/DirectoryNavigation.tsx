@@ -196,7 +196,7 @@ export const DirectoryNavigation = XMemo(
                         position="relative"
                         flexShrink={1}
                     >
-                        <XScrollView3 height="100%" flexGrow={1} flexShrink={1}>
+                        <XScrollView3 flexGrow={1} flexShrink={1}>
                             <XView flexGrow={1} flexShrink={1}>
                                 <React.Suspense
                                     fallback={
