@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
-import Glamorous from 'glamorous';
 import FileIcon from 'openland-icons/ic-file-3.svg';
+import Glamorous from 'glamorous';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import { XLink } from 'openland-x/XLink';
 import { ShortcutsModal } from 'openland-web/components/messenger/view/ShortcutsModal';
@@ -58,6 +58,49 @@ export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props =>
     },
 }));
 
+export const PhotoButton = ({
+    enabled,
+    minimal,
+    onClick,
+}: {
+    enabled?: boolean;
+    minimal?: boolean;
+    onClick: ((event: React.MouseEvent<any, MouseEvent>) => void) | undefined;
+}) => {
+    return (
+        <AttachmentButton
+            onClick={!enabled ? undefined : onClick}
+            enabled={!enabled}
+            disable={!enabled}
+        >
+            <PhotoIcon />
+            {!minimal && <span>Photo</span>}
+        </AttachmentButton>
+    );
+};
+
+export const DocumentButton = ({
+    enabled,
+    minimal,
+    onClick,
+}: {
+    enabled?: boolean;
+    minimal?: boolean;
+    onClick: ((event: React.MouseEvent<any, MouseEvent>) => void) | undefined;
+}) => {
+    return (
+        <AttachmentButton
+            onClick={!enabled ? undefined : onClick}
+            enabled={!enabled}
+            disable={!enabled}
+            className="document-button"
+        >
+            <FileIcon />
+            {!minimal && <span>Document</span>}
+        </AttachmentButton>
+    );
+};
+
 export const AttachmentButtons = ({ enabled }: { enabled?: boolean }) => {
     const fileInput: React.RefObject<HTMLInputElement> = React.createRef();
     const { handleDrop } = React.useContext(UploadContext);
@@ -77,23 +120,8 @@ export const AttachmentButtons = ({ enabled }: { enabled?: boolean }) => {
     return (
         <XHorizontal separator="none">
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
-            <AttachmentButton
-                onClick={!enabled ? undefined : fileSelector}
-                enabled={!enabled}
-                disable={!enabled}
-            >
-                <PhotoIcon />
-                <span>Photo</span>
-            </AttachmentButton>
-            <AttachmentButton
-                onClick={!enabled ? undefined : fileSelector}
-                enabled={!enabled}
-                disable={!enabled}
-                className="document-button"
-            >
-                <FileIcon />
-                <span>Document</span>
-            </AttachmentButton>
+            <PhotoButton enabled={enabled} onClick={fileSelector} />
+            <DocumentButton enabled={enabled} onClick={fileSelector} />
             <ShortcutsModal
                 target={
                     <AttachmentButton className="shortcuts-button">

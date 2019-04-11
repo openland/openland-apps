@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { EmojiData } from 'emoji-mart';
 import { EditorState } from 'draft-js';
 import Glamorous from 'glamorous';
+import { css } from 'linaria';
 import { extractFlexProps, XFlexStyles, applyFlex } from '../../basics/Flex';
 import { EmojiSuggestions } from './EmojiSuggestions';
 import { MentionSuggestions, SizeT } from './MentionSuggestions';
@@ -12,6 +13,8 @@ import { EmojiButton } from './EmojiButton';
 import { EmojiSuggestionsStateT, EmojiDataT } from '../useEmojiSuggestions';
 import { MentionSuggestionsStateT } from '../useMentionSuggestions';
 import { XRichTextInput2Props } from '..';
+import PhotoIcon from 'openland-icons/ic-photo-2.svg';
+import FileIcon from 'openland-icons/ic-file-3.svg';
 import * as constants from '../constants';
 
 const Container = Glamorous.div<XFlexStyles>([
@@ -39,6 +42,16 @@ type EditorContainerContainer = XRichTextInput2Props & {
     onEmojiPicked: (emoji: EmojiData) => void;
     finalAddEmoji: (emoji: { shortName: string; unified: string }) => void;
     children: any;
+};
+
+const fileIconWrapperClassName = css`
+    & > *: {
+        fill: props.disable ? '#c1c7cf' : rgba(0, 0, 0, 0.2)
+    }
+`;
+
+const FileIconWrapper = () => {
+    return <div className={fileIconWrapperClassName}>123</div>;
 };
 
 export const EditorContainer = (props: EditorContainerContainer) => {
@@ -131,6 +144,22 @@ export const EditorContainer = (props: EditorContainerContainer) => {
 
             {children}
             <EmojiButton onEmojiPicked={onEmojiPicked} />
+            <PhotoIcon />
+            <FileIcon />
+            {/* <PhotoButton
+                minimal
+                enabled={true}
+                onClick={() => {
+                    console.log('PhotoButton');
+                }}
+            />
+            <DocumentButton
+                minimal
+                enabled={true}
+                onClick={() => {
+                    console.log('DocumentButton');
+                }}
+            /> */}
         </ContainerWrapper>
     );
 };

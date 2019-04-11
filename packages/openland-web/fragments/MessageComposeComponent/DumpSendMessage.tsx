@@ -4,7 +4,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { FileUploader } from './FileUploading/FileUploader';
 import { SendMessageWrapper, SendMessageContent } from './Components';
-import { AttachmentButtons } from './AttachmentButtons';
+import { AttachmentButtons, PhotoButton, DocumentButton } from './AttachmentButtons';
 import { EditView } from './EditView';
 import { MentionsStateT } from './useMentions';
 import { QuoteStateT } from './useQuote';
@@ -14,7 +14,7 @@ import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSugge
 
 export type TextInputComponentT = {
     fullWidth?: boolean;
-    justInput?: boolean;
+    minimal?: boolean;
     handleChange: (a: { text: string; mentions: MentionDataT[] }) => void;
     handleSend: () => any;
     inputValue: string;
@@ -46,6 +46,7 @@ export const DumpSendMessage = React.memo(({
     quoteState,
     closeEditor,
     fullWidth,
+    minimal,
 }: DumpSendMessageT) => {
     const { handleDrop } = React.useContext(UploadContext);
     return (
@@ -71,7 +72,7 @@ export const DumpSendMessage = React.memo(({
                         handleDrop={handleDrop}
                     />
                     <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
-                        <AttachmentButtons enabled={enabled} />
+                        {!minimal && <AttachmentButtons enabled={enabled} />}
 
                         <XButton
                             text="Send"

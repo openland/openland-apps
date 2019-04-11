@@ -25,7 +25,7 @@ import { MessageModalBody } from 'openland-web/fragments/chat/MessageModal';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 
 type CommentsInputProps = {
-    justInput?: boolean;
+    minimal?: boolean;
     onSend?: (text: string, mentions: UserShort[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
@@ -33,13 +33,7 @@ type CommentsInputProps = {
     members?: RoomMembers_members[];
 };
 
-const CommentsInput = ({
-    justInput,
-    members,
-    onSend,
-    onSendFile,
-    onChange,
-}: CommentsInputProps) => {
+const CommentsInput = ({ minimal, members, onSend, onSendFile, onChange }: CommentsInputProps) => {
     const inputRef = React.useRef<XRichTextInput2RefMethods>(null);
     const inputMethodsState = useInputMethods({ inputRef, enabled: true });
     const { file } = React.useContext(UploadContext);
@@ -78,7 +72,7 @@ const CommentsInput = ({
     return (
         <DumpSendMessage
             fullWidth
-            justInput={justInput}
+            minimal={minimal}
             TextInputComponent={DesktopSendMessage}
             quoteState={quoteState}
             handleChange={handleChange}
@@ -183,7 +177,7 @@ const CommentsInner = () => {
                     />
                     {showInputId === item.comment.id && (
                         <CommentsInput
-                            justInput
+                            minimal
                             onSend={msgToSend => {
                                 addComment({
                                     messageId: curMesssageId,
@@ -215,7 +209,7 @@ const CommentsInner = () => {
             </MessageModalBody>
             <XView>
                 <CommentsInput
-                    justInput
+                    minimal
                     onSend={msgToSend => {
                         addComment({
                             messageId: curMesssageId,
