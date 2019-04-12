@@ -23,7 +23,7 @@
 		A0153A96222426F400C026A4 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0153A95222426F400C026A4 /* ShareViewController.swift */; };
 		A0153A99222426F400C026A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0153A97222426F400C026A4 /* MainInterface.storyboard */; };
 		A0DDD9B62226BE8B00AA3061 /* openland-share-ex.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A0153A93222426F400C026A4 /* openland-share-ex.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		AA0FAAEC225CCB220002C6FB /* RNGraphqlSQLCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0FAAEB225CCB220002C6FB /* RNGraphqlSQLCache.swift */; };
+		AA0FAAEC225CCB220002C6FB /* RNGraphQLPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0FAAEB225CCB220002C6FB /* RNGraphQLPersistence.swift */; };
 		AA2365582244EBBA000AA3A7 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23654F2244EBB9000AA3A7 /* API.swift */; };
 		AA23655B2244EBFF000AA3A7 /* RNGraphqlModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655A2244EBFF000AA3A7 /* RNGraphqlModule.swift */; };
 		AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */; };
@@ -69,6 +69,10 @@
 		AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B51215AE40C005E09BA /* RNSAuth0.swift */; };
 		AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */; };
 		AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAC60B56215AF2D3005E09BA /* Auth0.plist */; };
+		AACF26262260987200C565E4 /* RNGraphQLPersistenceSQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACF26252260987200C565E4 /* RNGraphQLPersistenceSQL.swift */; };
+		AACF262822609B7E00C565E4 /* RNGraphQLPersistenceLevelDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACF262722609B7E00C565E4 /* RNGraphQLPersistenceLevelDB.swift */; };
+		AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; };
+		AACF26442260A90100C565E4 /* SwiftStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AAD8F14A2208A5DF007C4FE3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1492208A5DF007C4FE3 /* AVFoundation.framework */; };
 		AAD8F14C2208A5E5007C4FE3 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14B2208A5E5007C4FE3 /* AudioToolbox.framework */; };
 		AAD8F14E2208A5EA007C4FE3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14D2208A5EA007C4FE3 /* CoreGraphics.framework */; };
@@ -115,6 +119,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = A0153A92222426F400C026A4;
 			remoteInfo = "openland-share-ex";
+		};
+		AACF263822609C7400C565E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2EAADF261AF6F94600783BAD;
+			remoteInfo = SwiftStore;
+		};
+		AACF263A22609C7400C565E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2EAADF311AF6F94600783BAD;
+			remoteInfo = SwiftStoreTests;
+		};
+		AACF26452260A90100C565E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2EAADF251AF6F94600783BAD;
+			remoteInfo = SwiftStore;
 		};
 		AAE56DD2212A0CAC003706B3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -206,6 +231,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				AACF26442260A90100C565E4 /* SwiftStore.framework in Embed Frameworks */,
 				AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -254,7 +280,7 @@
 		A0153AAA2224559800C026A4 /* openland-share-ex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "openland-share-ex.entitlements"; sourceTree = "<group>"; };
 		A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Pods/Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		A938EF8C563947299EE77727 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
-		AA0FAAEB225CCB220002C6FB /* RNGraphqlSQLCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlSQLCache.swift; sourceTree = "<group>"; };
+		AA0FAAEB225CCB220002C6FB /* RNGraphQLPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphQLPersistence.swift; sourceTree = "<group>"; };
 		AA23654F2244EBB9000AA3A7 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		AA23655A2244EBFF000AA3A7 /* RNGraphqlModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlModule.swift; sourceTree = "<group>"; };
 		AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlClient.swift; sourceTree = "<group>"; };
@@ -317,6 +343,9 @@
 		AAC60B53215AE422005E09BA /* RNSAuth0-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSAuth0-Bridge.h"; sourceTree = "<group>"; };
 		AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNSAuth0-Bridge.m"; sourceTree = "<group>"; };
 		AAC60B56215AF2D3005E09BA /* Auth0.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Auth0.plist; sourceTree = "<group>"; };
+		AACF26252260987200C565E4 /* RNGraphQLPersistenceSQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphQLPersistenceSQL.swift; sourceTree = "<group>"; };
+		AACF262722609B7E00C565E4 /* RNGraphQLPersistenceLevelDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphQLPersistenceLevelDB.swift; sourceTree = "<group>"; };
+		AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftStore.xcodeproj; path = Vendor/SwiftStore/SwiftStore.xcodeproj; sourceTree = "<group>"; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
 		AAD8F1492208A5DF007C4FE3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AAD8F14B2208A5E5007C4FE3 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -367,6 +396,7 @@
 				AAD8F15E2208A7C3007C4FE3 /* WebRTC.framework in Frameworks */,
 				AAD8F1562208A601007C4FE3 /* VideoToolbox.framework in Frameworks */,
 				AAD8F1542208A5FC007C4FE3 /* CoreVideo.framework in Frameworks */,
+				AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */,
 				AAD8F1522208A5F7007C4FE3 /* CoreAudio.framework in Frameworks */,
 				AAD8F1502208A5F2007C4FE3 /* GLKit.framework in Frameworks */,
 				AAD8F14E2208A5EA007C4FE3 /* CoreGraphics.framework in Frameworks */,
@@ -481,6 +511,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */,
 				AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */,
 			);
 			name = Libraries;
@@ -545,7 +576,9 @@
 				AA2365692246D950000AA3A7 /* APIFactoryBase.swift */,
 				AA2365752247CE78000AA3A7 /* RNGraphQL-Bridge.h */,
 				AA2365762247CE87000AA3A7 /* RNGraphQL-Bridge.m */,
-				AA0FAAEB225CCB220002C6FB /* RNGraphqlSQLCache.swift */,
+				AA0FAAEB225CCB220002C6FB /* RNGraphQLPersistence.swift */,
+				AACF26252260987200C565E4 /* RNGraphQLPersistenceSQL.swift */,
+				AACF262722609B7E00C565E4 /* RNGraphQLPersistenceLevelDB.swift */,
 			);
 			name = RNGraphql;
 			sourceTree = "<group>";
@@ -656,6 +689,15 @@
 			name = RNSAuth0;
 			sourceTree = "<group>";
 		};
+		AACF262B22609C7400C565E4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AACF263922609C7400C565E4 /* SwiftStore.framework */,
+				AACF263B22609C7400C565E4 /* SwiftStoreTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		AAE104CF212C2A440034DA0F /* RNAsyncView */ = {
 			isa = PBXGroup;
 			children = (
@@ -761,6 +803,7 @@
 			dependencies = (
 				AAE56DE7212A0CDC003706B3 /* PBXTargetDependency */,
 				A0DDD9B82226BE8B00AA3061 /* PBXTargetDependency */,
+				AACF26462260A90100C565E4 /* PBXTargetDependency */,
 			);
 			name = openland;
 			productName = "Hello World";
@@ -894,6 +937,10 @@
 					ProductGroup = AAE56DC7212A0CAC003706B3 /* Products */;
 					ProjectRef = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
 				},
+				{
+					ProductGroup = AACF262B22609C7400C565E4 /* Products */;
+					ProjectRef = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -907,6 +954,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		AACF263922609C7400C565E4 /* SwiftStore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftStore.framework;
+			remoteRef = AACF263822609C7400C565E4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AACF263B22609C7400C565E4 /* SwiftStoreTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftStoreTests.xctest;
+			remoteRef = AACF263A22609C7400C565E4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		AAE56DD3212A0CAC003706B3 /* Nuke.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1216,6 +1277,7 @@
 				AAA4DA6522145D2300BB1781 /* WorkerSelfManager.m in Sources */,
 				AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */,
 				AA300DC7220186A400C54930 /* RNBackgroundTask.swift in Sources */,
+				AACF26262260987200C565E4 /* RNGraphQLPersistenceSQL.swift in Sources */,
 				AAA47DC3212CB2BC00E71A74 /* RNAsyncColor.swift in Sources */,
 				AAB0EF852137197B00FBCB75 /* RNAsyncConfigManager.swift in Sources */,
 				AA23656A2246D950000AA3A7 /* APIFactoryBase.swift in Sources */,
@@ -1227,6 +1289,7 @@
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
 				AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
+				AACF262822609B7E00C565E4 /* RNGraphQLPersistenceLevelDB.swift in Sources */,
 				AAA4DA6322145CF800BB1781 /* ThreadManager.m in Sources */,
 				AA2FBA2B22247D0E000915F7 /* RNSDevice.swift in Sources */,
 				AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */,
@@ -1241,7 +1304,7 @@
 				AAB021962142ACB300927CF0 /* RNPatchNode.swift in Sources */,
 				AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */,
 				AAE5017E2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift in Sources */,
-				AA0FAAEC225CCB220002C6FB /* RNGraphqlSQLCache.swift in Sources */,
+				AA0FAAEC225CCB220002C6FB /* RNGraphQLPersistence.swift in Sources */,
 				AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */,
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
 				AAA4DA512214585E00BB1781 /* AppCenterReactNativeCrashes.m in Sources */,
@@ -1302,6 +1365,11 @@
 			isa = PBXTargetDependency;
 			target = A0153A92222426F400C026A4 /* openland-share-ex */;
 			targetProxy = A0DDD9B72226BE8B00AA3061 /* PBXContainerItemProxy */;
+		};
+		AACF26462260A90100C565E4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwiftStore;
+			targetProxy = AACF26452260A90100C565E4 /* PBXContainerItemProxy */;
 		};
 		AAE56DE7212A0CDC003706B3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

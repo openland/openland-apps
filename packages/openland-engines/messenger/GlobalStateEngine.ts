@@ -6,6 +6,7 @@ import { RoomQuery } from 'openland-api';
 import { MarkSequenceReadMutation } from 'openland-api';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
+import { currentTimeMillis } from 'openland-y-utils/currentTime';
 
 const log = createLogger('Engine-Global');
 
@@ -119,6 +120,8 @@ export class GlobalStateEngine {
     }
 
     private handleGlobalEvent = async (event: any) => {
+        let start = currentTimeMillis();
+        log.log('Event Received');
         // console.log('handleGlobalEvent', event);
         if (event.__typename === 'DialogMessageReceived') {
             let visible = this.visibleConversations.has(event.cid);
@@ -127,15 +130,15 @@ export class GlobalStateEngine {
             await this.writeGlobalCounter(event.globalUnread, visible);
 
             // Notifications
-            let res = this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
+            let start2 = currentTimeMillis();
+            this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
             if (!visible && event.message.sender.id !== this.engine.user.id) {
                 this.engine.notifications.handleIncomingMessage(event.cid, event.message);
             }
+            log.log('Notifications handled in ' + (currentTimeMillis() - start2) + ' ms');
 
             // Dialogs List
-            let res2 = this.engine.dialogList.handleNewMessage(event, visible);
-            await res;
-            await res2;
+            await this.engine.dialogList.handleNewMessage(event, visible);
         } else if (event.__typename === 'DialogMessageRead') {
             let visible = this.visibleConversations.has(event.conversationId);
 
@@ -203,6 +206,7 @@ export class GlobalStateEngine {
         } else {
             log.log('Unhandled update: ' + event.__typename);
         }
+        log.log('Event Processed in ' + (currentTimeMillis() - start) + ' ms');
     }
 
     // looks like thmth is broken in apollo query with react alpha - Query not updated  after writeQuery
@@ -222,6 +226,7 @@ export class GlobalStateEngine {
 
     private writeGlobalCounter = async (counter: number, visible: boolean) => {
 
+        let start = currentTimeMillis();
         //
         // Update counter anywhere in the app
         //
@@ -235,6 +240,8 @@ export class GlobalStateEngine {
             data.alphaNotificationCounter.unreadCount = counter;
             return data;
         }, GlobalCounterQuery);
+
+        log.log('Counter written in ' + (currentTimeMillis() - start) + ' ms');
 
         for (let l of this.counterListeners) {
             l(counter, visible);

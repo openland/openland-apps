@@ -76,8 +76,6 @@ class ActiveSubscription {
 
 var sqlCaches: [String: NormalizedCache] = [:]
 
-let CLIENT_VERSION = 2
-
 class RNGraphqlClient: WebSocketTransportDelegate {
   
   let key: String
@@ -110,10 +108,12 @@ class RNGraphqlClient: WebSocketTransportDelegate {
         if ex != nil {
           cache = ex!
         } else {
-          let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-          let url = URL(fileURLWithPath: s + ".sqlite", relativeTo: path)
-          print("Loading storage: \(storage) at \(url.absoluteURL)")
-          let c = try RNGraphqlSQLSQLCache(fileURL: URL(fileURLWithPath: s + "-\(CLIENT_VERSION).sqlite", relativeTo: path))
+//           let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+//           let url = URL(fileURLWithPath: s + "-\(RNGraphQLPersistenceSQL.VERSION).sqlite", relativeTo: path)
+//           print("Loading storage: \(storage) at \(path.absoluteURL)")
+//           let engine = try RNGraphQLPersistenceSQL(fileURL:  url)
+          let engine = try RNGraphQLPersistenceLevelDB(name: "\(s)-\(RNGraphQLPersistenceLevelDB.VERSION)")
+          let c = try RNGraphqlSQLSQLCache(engine: engine)
           sqlCaches[s] = c
           cache = c
         }
