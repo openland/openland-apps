@@ -831,6 +831,7 @@ export const CreateGroupPopperButton = XMemo((props: {orgId: string}) => {
             placement="bottom-start"
             show={show}
             marginTop={-3}
+            marginBottom={-3}
             marginRight={-5}
             arrow={null}
             onClickOutside={closer}
