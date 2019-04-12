@@ -91,12 +91,14 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
             )}
             {!deleted && (
                 <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
-                    <ZAvatar
-                        size={depth === 0 ? 32 : 16}
-                        src={sender.photo}
-                        placeholderKey={sender.id}
-                        placeholderTitle={sender.name}
-                    />
+                    <View>
+                        <ZAvatar
+                            size={depth === 0 ? 32 : 16}
+                            src={sender.photo}
+                            placeholderKey={sender.id}
+                            placeholderTitle={sender.name}
+                        />
+                    </View>
                 </TouchableWithoutFeedback>
             )}
         </View>
