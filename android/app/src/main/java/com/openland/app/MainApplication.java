@@ -16,6 +16,7 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.distribute.Distribute;
 import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
+import org.pgsqlite.SQLitePluginPackage;
 
 import cl.json.RNSharePackage;
 import cl.json.ShareApplication;
@@ -85,7 +86,8 @@ public class MainApplication extends Application implements ShareApplication, Re
                     new ImagePickerPackage(),
                     new RNDeviceInfo(),
                     new ReactNativePushNotificationPackage(),
-                    new RNSPackage()
+                    new RNSPackage(),
+                    new SQLitePluginPackage()
             );
         }
 
