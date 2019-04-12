@@ -22,7 +22,6 @@ import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarCompone
 import { ForwardPlaceholder } from './chat/ForwardPlaceholder';
 import { useClient } from 'openland-web/utils/useClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { CommentsModal } from '../components/messenger/message/content/CommentsModal';
 
 interface MessengerComponentLoaderProps {
     isActive: boolean;
@@ -115,7 +114,6 @@ class MessagengerFragmentInner extends React.PureComponent<
                             room={data.room}
                         />
                     </XView>
-                    <CommentsModal />
                 </XView>
             </>
         );
