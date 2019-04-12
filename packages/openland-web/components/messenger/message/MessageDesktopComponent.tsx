@@ -535,7 +535,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 <>
                     {this.props.isComment && (
                         <>
-                            <XView flexDirection="row" marginTop={4}>
+                            <XView flexDirection="row" paddingTop={6} marginTop={4}>
                                 <XView
                                     paddingRight={12}
                                     fontSize={12}
@@ -564,19 +564,25 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         <XView flexDirection="row">
                             <XHorizontal alignItems="center" separator={5}>
                                 {this.props.hasComments && (
-                                    <DiscussButton
-                                        commentsCount={this.props.message.commentsCount}
-                                        messageId={this.props.message.id!!}
-                                        conversationId={this.props.conversationId!!}
-                                    />
+                                    <XView paddingTop={6}>
+                                        <DiscussButton
+                                            commentsCount={this.props.message.commentsCount}
+                                            messageId={this.props.message.id!!}
+                                            conversationId={this.props.conversationId!!}
+                                        />
+                                    </XView>
                                 )}
-                                {!message.isSending ? (
-                                    <Reactions
-                                        onlyLikes={this.props.onlyLikes}
-                                        messageId={message.id!}
-                                        reactions={message.reactions || []}
-                                        meId={(this.props.me && this.props.me.id) || ''}
-                                    />
+                                {!message.isSending &&
+                                message.reactions &&
+                                message.reactions.length ? (
+                                    <XView paddingTop={6}>
+                                        <Reactions
+                                            onlyLikes={this.props.onlyLikes}
+                                            messageId={message.id!}
+                                            reactions={message.reactions || []}
+                                            meId={(this.props.me && this.props.me.id) || ''}
+                                        />
+                                    </XView>
                                 ) : null}
                             </XHorizontal>
                         </XView>
@@ -603,7 +609,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 >
                     {content}
                     {this.props.isModal && <XView paddingTop={12}>{postMessageButtons}</XView>}
-                    {!this.props.isModal && <XView paddingTop={6}>{postMessageButtons}</XView>}
+                    {!this.props.isModal && postMessageButtons}
                 </DesktopMessageContainer>
             );
         }
