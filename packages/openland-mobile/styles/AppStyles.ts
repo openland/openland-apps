@@ -14,7 +14,7 @@ export const TextStyles = {
         thin: '100',
         light: '300',
         regular: '400',
-        medium: Platform.OS === 'ios' ? '600' : '500',
+        medium: Platform.OS === 'ios' ? '600' : '500' as ('600' | '500'),
         bold: '700',
         black: '900',
     }
