@@ -535,7 +535,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 <>
                     {this.props.isComment && (
                         <>
-                            <XView flexDirection="row" paddingTop={6} marginTop={4}>
+                            <XView flexDirection="row" marginTop={4}>
                                 <XView
                                     paddingRight={12}
                                     fontSize={12}
