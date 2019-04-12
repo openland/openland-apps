@@ -229,7 +229,6 @@ const ReactionsWrapper = Glamorous.div({
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'center',
-    paddingTop: 4,
 });
 
 const ReactionsInnerWrapper = Glamorous.div({

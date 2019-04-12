@@ -26,6 +26,9 @@ import EditIcon from 'openland-icons/ic-edit.svg';
 import { DesktopMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
+import { XView } from 'react-mental';
+import { XButton } from 'openland-x/XButton';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
     flexShrink: 0,
@@ -282,23 +285,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         }
     };
 
-    private reactionsRender = () => {
-        let { message } = this.props;
-
-        if (!message.isSending) {
-            return (
-                <Reactions
-                    onlyLikes={this.props.onlyLikes}
-                    messageId={message.id!}
-                    reactions={message.reactions || []}
-                    meId={(this.props.me && this.props.me.id) || ''}
-                />
-            );
-        }
-
-        return null;
-    };
-
     render() {
         let { message } = this.props;
         let content: any[] = [];
@@ -517,7 +503,31 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     selected={selected}
                 >
                     {content}
-                    {this.reactionsRender()}
+                    <XView flexDirection="row" paddingTop={4}>
+                        <XWithRole role={['feature-non-production']}>
+                            {this.props.hasComments && (
+                                <XView width={150} height={28}>
+                                    <XButton
+                                        text={
+                                            !this.props.message.commentsCount
+                                                ? `Discuss`
+                                                : `${this.props.message.commentsCount} Comments`
+                                        }
+                                        size="default"
+                                        query={{ field: 'comments', value: this.props.message.id }}
+                                    />
+                                </XView>
+                            )}
+                        </XWithRole>
+                        {!message.isSending ? (
+                            <Reactions
+                                onlyLikes={this.props.onlyLikes}
+                                messageId={message.id!}
+                                reactions={message.reactions || []}
+                                meId={(this.props.me && this.props.me.id) || ''}
+                            />
+                        ) : null}
+                    </XView>
                 </DesktopMessageContainer>
             );
         }

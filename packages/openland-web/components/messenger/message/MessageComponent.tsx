@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { MobileMessageComponentInner } from './MessageMobileComponent';
 import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDesktopComponent';
-import { XButton } from 'openland-x/XButton';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const MessageComponentInner = React.memo(
     (
@@ -24,6 +21,7 @@ const MessageComponentInner = React.memo(
         ) : (
             <>
                 <DesktopMessageComponentInner
+                    hasComments={props.hasComments}
                     message={props.message}
                     conversationId={props.conversationId}
                     isChannel={props.isChannel}
@@ -32,21 +30,6 @@ const MessageComponentInner = React.memo(
                     conversationType={props.conversationType}
                     messagesContext={props.messagesContextProps}
                 />
-                <XWithRole role={['feature-non-production']}>
-                    {props.hasComments && (
-                        <XView width={150}>
-                            <XButton
-                                text={
-                                    !props.message.commentsCount
-                                        ? `Discuss`
-                                        : `${props.message.commentsCount} Comments`
-                                }
-                                size="default"
-                                query={{ field: 'comments', value: props.message.id }}
-                            />
-                        </XView>
-                    )}
-                </XWithRole>
             </>
         );
     },
