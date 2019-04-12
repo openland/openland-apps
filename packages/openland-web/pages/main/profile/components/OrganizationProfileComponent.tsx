@@ -857,7 +857,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
 
     let groups = organization.rooms;
 
-    if (!organization.isMine) {
+    if (!organization.isMine && organization.isCommunity) {
         return (
             <Section separator={0}>
                 <XSubHeader
@@ -869,15 +869,30 @@ const Rooms = (props: { organization: Organization_organization }) => {
                     <XWithRole role="super-admin">
                         <CreateGroupPopperButton orgId={organization.id} />
                     </XWithRole>
-                    {organization.isCommunity && (
-                        <XMoreCards>
-                            {groups.map((c: any, i: any) => (
-                                <XRoomCard key={i} room={c} />
-                            ))}
-                        </XMoreCards>
-                    )}
+                    <XMoreCards>
+                        {groups.map((c: any, i: any) => (
+                            <XRoomCard key={i} room={c} />
+                        ))}
+                    </XMoreCards>
                 </SectionContent>
             </Section>
+        );
+    }
+
+    if (!organization.isMine && !organization.isCommunity) {
+        return (
+            <XWithRole role="super-admin">
+                <Section separator={0}>
+                    <XSubHeader
+                        title={TextProfiles.Organization.publicGroups}
+                        counter={groups.length}
+                        paddingBottom={0}
+                    />
+                    <SectionContent>
+                        <CreateGroupPopperButton orgId={organization.id} />
+                    </SectionContent>
+                </Section>
+            </XWithRole>
         );
     }
 
@@ -891,13 +906,11 @@ const Rooms = (props: { organization: Organization_organization }) => {
                 />
                 <SectionContent>
                     <CreateGroupPopperButton orgId={organization.id} />
-                    {organization.isCommunity && (
-                        <XMoreCards>
-                            {groups.map((c: any, i: any) => (
-                                <XRoomCard key={i} room={c} />
-                            ))}
-                        </XMoreCards>
-                    )}
+                    <XMoreCards>
+                        {groups.map((c: any, i: any) => (
+                            <XRoomCard key={i} room={c} />
+                        ))}
+                    </XMoreCards>
                 </SectionContent>
             </Section>
         );
