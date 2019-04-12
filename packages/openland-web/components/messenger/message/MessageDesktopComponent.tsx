@@ -575,7 +575,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 {!message.isSending &&
                                 message.reactions &&
                                 message.reactions.length ? (
-                                    <XView paddingTop={6}>
+                                    <XView paddingTop={4}>
                                         <Reactions
                                             onlyLikes={this.props.onlyLikes}
                                             messageId={message.id!}

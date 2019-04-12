@@ -401,7 +401,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
         MessageContainerWrapper = NotCompactShortMessageContainerWrapper;
     } else if (props.isModal) {
         MessageContainerWrapper = NotCompactModaltMessageContainerWrapper;
-    } else {
+    } else if (!props.compact) {
         MessageContainerWrapper = NotCompactMessageContainerWrapper;
     }
 
