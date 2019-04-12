@@ -25,8 +25,6 @@ export class MobileMessenger {
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
-    private currentConv: ConversationEngine | undefined;
-    private currentConvId: string;
 
     constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
@@ -36,20 +34,17 @@ export class MobileMessenger {
                 <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
             );
         });
-        this.currentConv = undefined;
-        this.currentConvId = '';
     }
 
     getConversation(id: string) {
         if (!this.conversations.has(id)) {
-            this.currentConvId = id;
-            this.currentConv = this.engine.getConversation(id);
-            this.conversations.set(id, new ASDataView(this.currentConv.dataSource, (item) => {
+            let eng = this.engine.getConversation(id);
+            this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
                     if (item.serviceMetaData || item.isService) {
                         return (<ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} />);
                     } else {
-                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={this.currentConv!!} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} />);
+                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} />);
                     }
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
@@ -83,8 +78,8 @@ export class MobileMessenger {
         });
     }
 
-    handleCommentsClick = (message: DataSourceMessageItem) => {
-        this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId: this.currentConvId });
+    handleCommentsClick = (message: DataSourceMessageItem, chatId: string) => {
+        this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId });
     }
 
     handleDocumentClick = (document: DataSourceMessageItem) => {
@@ -115,7 +110,7 @@ export class MobileMessenger {
         stopLoader();
     }
 
-    private handleMessageLongPress = (message: DataSourceMessageItem) => {
+    private handleMessageLongPress = (message: DataSourceMessageItem, chatId: string) => {
         let builder = new ActionSheetBuilder();
 
         builder.view((ctx: ZModalController) => (
@@ -133,11 +128,9 @@ export class MobileMessenger {
             </View>
         ));
 
-        if (this.currentConv && !this.currentConv.isPrivate) {
-            builder.action('Comment', () => {
-                this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId: this.currentConvId });
-            });
-        }
+        builder.action('Comment', () => {
+            this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId });
+        });
 
         if (message.text) {
             if (message.senderId === this.engine.user.id) {

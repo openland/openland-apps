@@ -17,12 +17,12 @@ import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
     engine: ConversationEngine;
-    onMessageLongPress: (message: DataSourceMessageItem) => void;
+    onMessageLongPress: (message: DataSourceMessageItem, chatId: string) => void;
     onAvatarPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onReactionPress: (message: DataSourceMessageItem, r: string) => void;
-    onCommentsPress: (message: DataSourceMessageItem) => void;
+    onCommentsPress: (message: DataSourceMessageItem, chatId: string) => void;
     navigationManager: NavigationManager;
 }
 
@@ -34,10 +34,10 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         props.onAvatarPress(props.message.senderId);
     }
     let handleLongPress = () => {
-        props.onMessageLongPress(props.message);
+        props.onMessageLongPress(props.message, props.engine.conversationId);
     }
     let handleCommentsPress = () => {
-        props.onCommentsPress(props.message);
+        props.onCommentsPress(props.message, props.engine.conversationId);
     }
 
     let res;
