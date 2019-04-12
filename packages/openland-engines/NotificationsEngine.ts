@@ -7,18 +7,29 @@ import {
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { doSimpleHash } from 'openland-y-utils/hash';
+import { AppVisibility } from 'openland-y-runtime/AppVisibility';
+import { Platform } from 'react-native';
 
 export class NotificationsEngine {
     readonly engine: MessengerEngine;
+    private counter?: number;
     // private blinkingAlreadyStarted: boolean;
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
 
+        AppVisibility.watch((isVisible) => {
+            if (isVisible) {
+                if (this.counter !== undefined) {
+                    AppBadge.setBadge(this.counter);
+                }
+            }
+        });
         // this.blinkingAlreadyStarted = false;
     }
 
     handleGlobalCounterChanged = (counter: number) => {
+        this.counter = counter;
         AppBadge.setBadge(counter);
     };
 
