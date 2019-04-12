@@ -86,7 +86,6 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
     }, [timer, initialTime, status])
 
-
     return (
         <ASSafeAreaView flexDirection="column" alignItems="stretch" flexGrow={1}>
             <View alignItems="center" justifyContent="center" flexDirection="column">
