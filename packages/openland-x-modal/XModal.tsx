@@ -200,9 +200,10 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
         if (this.props.scrollableContent) {
             body = <XModalBodyScrollableContent>{body}</XModalBodyScrollableContent>;
         }
+
         return (
             <Root>
-                {this.props.heading === undefined && (this.props.title || this.props.useTopCloser) && (
+                {this.props.heading === undefined && this.props.title && (
                     <XModalHeader alignItems="center" justifyContent="space-between">
                         <XHorizontal alignItems="center" separator={4}>
                             <XModalTitle>{this.props.title}</XModalTitle>
@@ -211,6 +212,7 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
                         {this.props.useTopCloser && <XModalCloser autoClose={true} />}
                     </XModalHeader>
                 )}
+                {this.props.useTopCloser && !this.props.title && <XModalCloser autoClose={true} />}
                 {this.props.heading !== undefined && this.props.heading}
                 {body}
                 {this.props.footer === undefined && !this.props.useTopCloser && (

@@ -370,17 +370,10 @@ const MembersProvider = ({
         }
 
         return (
-<<<<<<< HEAD
             <Section separator={0} flexGrow={1}>
                 {isOwner && (requests || []).length > 0 && (
                     <XSwitcher style="button">
                         <XSwitcher.Item query={{ field: 'requests' }} counter={membersCount}>
-=======
-            <Section separator={0}>
-                {isOwner && (requests || []).length > 0 && (
-                    <XSwitcher style="button">
-                        <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
->>>>>>> chore(web): format web
                             Members
                         </XSwitcher.Item>
                         <XSwitcher.Item

@@ -1,20 +1,16 @@
 import * as React from 'react';
-import { css } from 'linaria';
-import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
 import { MutationFunc } from 'react-apollo';
 import {
-    RoomWithoutMembers_room_SharedRoom,
-    Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile,
     Room_room_PrivateRoom,
     Room_room_SharedRoom,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
+    RoomWithoutMembers_room_SharedRoom,
 } from 'openland-api/Types';
 import { XMutation } from 'openland-x/XMutation';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
-import { XLink } from 'openland-x/XLink';
 import { useClient } from 'openland-web/utils/useClient';
 import { MessageModal } from './MessageModal';
 
@@ -41,8 +37,6 @@ const UnpinButton = (props: {
         </XMutation>
     );
 };
-
-type attachmentType = Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile;
 
 export interface PinMessageComponentProps {
     pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage;
@@ -105,6 +99,7 @@ export const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
             }
             target={target}
             generalMessage={pinMessage}
+            footer={null}
         />
     );
 });

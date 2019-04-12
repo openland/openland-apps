@@ -27,8 +27,9 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
+import { css } from 'linaria';
 
-function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
+export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
 
@@ -68,6 +69,16 @@ type CommentsInputProps = {
     onChange?: (text: string) => void;
     getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
+};
+
+const separatorClassName = css`
+    height: 1px;
+    background-color: rgba(216, 218, 229, 0.45);
+    width: 100%;
+`;
+
+const Separator = () => {
+    return <div className={separatorClassName} />;
 };
 
 const CommentsInput = ({ minimal, members, onSend, onSendFile, onChange }: CommentsInputProps) => {
@@ -198,12 +209,12 @@ const CommentsInner = () => {
 
     const result = sortComments(messageComments.messageComments.comments, commentsMap);
 
-    const commentsElements = [];
-
     const dsMessages = result.map(item => {
         const res = convertDsMessage(convertMessage(item.comment));
         return { ...res, depth: getDepthOfComment(item, commentsMap) };
     });
+
+    const commentsElements = [];
 
     for (let message of dsMessages) {
         commentsElements.push(
@@ -238,7 +249,6 @@ const CommentsInner = () => {
     const commentsElems = (
         <XView flexDirection="row" marginBottom={16}>
             <XView flexGrow={1} paddingLeft={16}>
-                <XView>count: {messageComments.messageComments.count}</XView>
                 <XView>{commentsElements}</XView>
             </XView>
         </XView>
@@ -247,6 +257,8 @@ const CommentsInner = () => {
     return (
         <>
             <MessageModalBody generalMessage={maybeGeneralMessage}>
+                <XView>Comments {messageComments.messageComments.count}</XView>
+                <Separator />
                 {commentsElems}
             </MessageModalBody>
             <XView>
@@ -268,6 +280,7 @@ const CommentsInner = () => {
 export const CommentsModal = () => {
     return (
         <XModalForm
+            useTopCloser
             width={800}
             noPadding
             targetQuery="comments"
