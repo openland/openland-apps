@@ -11,6 +11,7 @@ import { MessageVideoComponent } from './content/MessageVideoComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import {
     UserShort,
     SharedRoomKind,
@@ -27,8 +28,9 @@ import { DesktopMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { XView } from 'react-mental';
-import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
+import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
     flexShrink: 0,
@@ -130,6 +132,45 @@ export interface MessageComponentProps {
 interface MessageComponentInnerProps extends MessageComponentProps {
     messagesContext: MessagesStateContextProps;
 }
+
+const DiscussButton = ({
+    commentsCount,
+    messageId,
+    conversationId,
+}: {
+    commentsCount: number | null;
+    messageId: string;
+    conversationId: string;
+}) => {
+    let router = React.useContext(XRouterContext)!;
+    return (
+        <XView
+            cursor="pointer"
+            borderRadius={14}
+            backgroundColor="rgba(23, 144, 255, 0.1)"
+            height={28}
+            fontSize={13}
+            justifyContent="center"
+            alignItems="center"
+            color="#1790ff"
+            paddingLeft={12}
+            paddingRight={12}
+            onClick={() => {
+                router.pushQuery('comments', `${messageId}&${conversationId}`);
+            }}
+        >
+            {commentsCount ? (
+                <XView flexDirection="row">
+                    <CommentChannelIcon /> <XView marginLeft={4}>{commentsCount} comments</XView>
+                </XView>
+            ) : (
+                <XView flexDirection="row">
+                    <CommentEmptyChannelIcon /> <XView marginLeft={4}>Discuss</XView>
+                </XView>
+            )}
+        </XView>
+    );
+};
 
 export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
@@ -506,22 +547,11 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     <XView flexDirection="row" paddingTop={4}>
                         <XWithRole role={['feature-non-production']}>
                             {this.props.hasComments && (
-                                <XView width={150} height={28}>
-                                    <XButton
-                                        text={
-                                            !this.props.message.commentsCount
-                                                ? `Discuss`
-                                                : `${this.props.message.commentsCount} Comments`
-                                        }
-                                        size="default"
-                                        query={{
-                                            field: 'comments',
-                                            value: `${this.props.message.id}&${
-                                                this.props.conversationId
-                                            }`,
-                                        }}
-                                    />
-                                </XView>
+                                <DiscussButton
+                                    commentsCount={this.props.message.commentsCount}
+                                    messageId={this.props.message.id!!}
+                                    conversationId={this.props.conversationId!!}
+                                />
                             )}
                         </XWithRole>
                         {!message.isSending ? (

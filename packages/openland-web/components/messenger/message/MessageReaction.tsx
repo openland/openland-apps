@@ -7,6 +7,8 @@ import ReactionIcon from 'openland-icons/ic-reactions.svg';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
+import CommentLikeChannelIcon from 'openland-icons/ic-like-channel.svg';
+import CommentLikeEmptyChannelIcon from 'openland-icons/ic-like-empty-channel.svg';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 10px',
@@ -393,22 +395,30 @@ const Label = XMemo(
 
 const OnlyLikesReactionsInner = React.memo(
     ({ reactions, meId, messageId }: ReactionsInnerProps) => {
-        const emojifiedReaction = emojifyReactions({
-            src: `❤️ ${reactions.length} ${reactions.length > 1 ? 'likes' : 'like'}`,
-            size: 18,
-        });
+        let text = 'Like';
+        if (reactions.length === 1) {
+            text = `${reactions.length} like`;
+        } else if (reactions.length > 1) {
+            text = `${reactions.length} likes`;
+        }
 
         if (reactions.find((r: any) => r.user.id === meId)) {
             return (
-                <SingleReactionUnset messageId={messageId} reaction={'❤️'} isMy={true}>
-                    {emojifiedReaction}
-                </SingleReactionUnset>
+                <>
+                    <SingleReactionUnset messageId={messageId} reaction={'❤️'} isMy={true}>
+                        <CommentLikeChannelIcon />
+                        {text}
+                    </SingleReactionUnset>
+                </>
             );
         }
         return (
-            <SingleReactionSet messageId={messageId} reaction={'❤️'} isMy={false}>
-                {emojifiedReaction}
-            </SingleReactionSet>
+            <>
+                <SingleReactionSet messageId={messageId} reaction={'❤️'} isMy={false}>
+                    <CommentLikeEmptyChannelIcon />
+                    {text}
+                </SingleReactionSet>
+            </>
         );
     },
 );
@@ -539,22 +549,25 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
         const { reactions, meId, messageId, onlyLikes } = this.props;
         return (
             <>
-                {reactions && reactions.length > 0 ? (
+                {onlyLikes && (
                     <ReactionsWrapper className="reactions-wrapper">
                         <ReactionsInnerWrapper>
-                            {onlyLikes ? (
-                                <OnlyLikesReactionsInner
-                                    reactions={reactions}
-                                    meId={meId}
-                                    messageId={messageId}
-                                />
-                            ) : (
-                                <ReactionsInner
-                                    reactions={reactions}
-                                    meId={meId}
-                                    messageId={messageId}
-                                />
-                            )}
+                            <OnlyLikesReactionsInner
+                                reactions={reactions}
+                                meId={meId}
+                                messageId={messageId}
+                            />
+                        </ReactionsInnerWrapper>
+                    </ReactionsWrapper>
+                )}
+                {!onlyLikes && reactions && reactions.length > 0 ? (
+                    <ReactionsWrapper className="reactions-wrapper">
+                        <ReactionsInnerWrapper>
+                            <ReactionsInner
+                                reactions={reactions}
+                                meId={meId}
+                                messageId={messageId}
+                            />
                         </ReactionsInnerWrapper>
                     </ReactionsWrapper>
                 ) : null}

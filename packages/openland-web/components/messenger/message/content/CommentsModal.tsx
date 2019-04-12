@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
-import { XButton } from 'openland-x/XButton';
 import { DumpSendMessage } from 'openland-web/fragments/MessageComposeComponent/DumpSendMessage';
 import { DesktopSendMessage } from 'openland-web/fragments/MessageComposeComponent/SendMessage/DesktopSendMessage';
 import UploadCare from 'uploadcare-widget';

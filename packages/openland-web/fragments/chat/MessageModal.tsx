@@ -40,8 +40,6 @@ const Close = Glamorous(XLink)({
     },
 });
 
-type attachmentType = FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
-
 export const MessageModalBody = (props: MessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
     const { generalMessage, nearCrossButtons, afterDateElems } = props;
