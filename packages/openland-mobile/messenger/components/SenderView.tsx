@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_sender } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_sender } from 'openland-api/Types';
 import { View, Text, TouchableWithoutFeedback, TextStyle, Platform } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
@@ -17,25 +17,25 @@ export const SenderView = React.memo<SenderViewProps>((props) => {
 
     return (
         <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
-                <View alignItems="stretch" marginTop={15} marginBottom={15} flexDirection="row">
-                    <View marginRight={15}>
-                        <ZAvatar
-                            size={40}
-                            src={sender.photo}
-                            placeholderKey={sender.id}
-                            placeholderTitle={sender.name}
-                        />
-                    </View>
-                    <View flexDirection="column">
-                        <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.medium, color: '#000' } as TextStyle}>{sender.name}
-                            {sender.primaryOrganization &&
-                                <Text style={{ fontSize: 13, fontWeight: TextStyles.weight.medium, color: '#99a2b0'} as TextStyle}>
-                                    {' ' + sender.primaryOrganization.name}
-                                </Text>}
-                        </Text>
-                        <Text style={{ fontSize: 14, marginTop: Platform.OS === 'android' ? 2 : 5, color: '#99a2b0' }}>{formatDate(parseInt(date, 10))}</Text>
-                    </View>
+            <View alignItems="stretch" marginTop={15} marginBottom={15} flexDirection="row">
+                <View marginRight={15}>
+                    <ZAvatar
+                        size={40}
+                        src={sender.photo}
+                        placeholderKey={sender.id}
+                        placeholderTitle={sender.name}
+                    />
                 </View>
-            </TouchableWithoutFeedback>
+                <View flexDirection="column">
+                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.medium, color: '#000' } as TextStyle} allowFontScaling={false}>{sender.name}
+                        {sender.primaryOrganization &&
+                            <Text style={{ fontSize: 13, fontWeight: TextStyles.weight.medium, color: '#99a2b0'} as TextStyle} allowFontScaling={false}>
+                                {' ' + sender.primaryOrganization.name}
+                            </Text>}
+                    </Text>
+                    <Text style={{ fontSize: 14, marginTop: Platform.OS === 'android' ? 2 : 5, color: '#99a2b0' }} allowFontScaling={false}>{formatDate(parseInt(date, 10))}</Text>
+                </View>
+            </View>
+        </TouchableWithoutFeedback>
     );
 });
