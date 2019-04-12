@@ -230,13 +230,17 @@ const CommentsInner = () => {
             <XView key={message.key} marginLeft={10 * message.depth}>
                 <MessageComponent message={message} onlyLikes={true} isChannel={true} me={null} />
                 <XView width={500}>
-                    <XButton
-                        size="default"
-                        text="Reply"
+                    <XView
+                        color="#1790ff"
+                        fontWeight="600"
+                        fontSize={12}
                         onClick={() => {
                             setShowInputId(message.key);
                         }}
-                    />
+                    >
+                        Reply
+                    </XView>
+
                     {showInputId === message.key && (
                         <CommentsInput
                             members={members.members}
