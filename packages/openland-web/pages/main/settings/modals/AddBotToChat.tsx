@@ -16,10 +16,6 @@ export const AddBotToChat = ({ apps }: { apps: AppFull[] }) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const addAppToChat = async (variables: any) => {
-        await client.mutateAddAppToChat(variables);
-    };
-
     let [app] = apps.filter((a: AppFull) => a.id === router.query.addBotToChat || '');
 
     if (!app) {
@@ -39,11 +35,9 @@ export const AddBotToChat = ({ apps }: { apps: AppFull[] }) => {
                             onClick={(e: any) => {
                                 e.stopPropagation();
 
-                                addAppToChat({
-                                    variables: {
-                                        appId: app.id,
-                                        chatId: xRoomCardProps.room.id,
-                                    },
+                                client.mutateAddAppToChat({
+                                    appId: app.id,
+                                    chatId: xRoomCardProps.room.id,
                                 });
                                 // hack to navigate after modal closing navigation
                                 setTimeout(() => {
