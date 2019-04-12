@@ -57,7 +57,7 @@ export const ReplyContent = (props: ReplyContentProps) => {
                                 {generalMesage!.sender.name || ''}
                             </Text>
 
-                            {!!generalMesage!.message && <TextContent message={generalMesage!} onUserPress={props.onUserPress} />}
+                            {!!generalMesage!.message && <TextContent message={generalMesage!} onUserPress={props.onUserPress} isSmall={true} />}
                             {contentAttach}
                         </View>
                     );
