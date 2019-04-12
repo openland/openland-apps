@@ -266,6 +266,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                         depth={getDepthOfComment(commentEntry, commentsMap)}
                         onReplyPress={this.handleReplyPress}
                         onLongPress={this.handleCommentLongPress}
+                        highlighted={((this.state.replyTo && this.state.replyTo.id) === commentEntry.id) || false}
                     />
                 );
             }
