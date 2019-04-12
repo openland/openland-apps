@@ -402,7 +402,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
     let client = getClient();
 
     let message = client.useMessage({ messageId: messageId }).message as FullMessage_GeneralMessage;
-    let comments = client.useMessageComments({ messageId: messageId }, { fetchPolicy: 'network-only' }).messageComments.comments;
+    let comments = client.useMessageComments({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).messageComments.comments;
 
     let room = client.useRoomTiny({ id: chatId }).room;
     let sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomShort_SharedRoom : undefined;
@@ -431,4 +431,4 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
     );
 });
 
-export const MessageComments = withApp(MessageCommentsComponent, { navigationAppearance: 'small', hideHairline: false });
+export const MessageComments = withApp(MessageCommentsComponent, { navigationAppearance: 'small' });
