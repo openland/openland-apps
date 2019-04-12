@@ -84,7 +84,7 @@ function keyBinding(e: React.KeyboardEvent<any>): string | null {
     return getDefaultKeyBinding(e);
 }
 
-export type MentionDataT = {
+export type UserWithOffset = {
     name: string;
     title: string;
     avatar: string;
@@ -267,7 +267,7 @@ export interface XRichTextInputProps extends XFlexStyles {
     onSubmit?: () => void;
     placeholder?: string;
     autofocus?: boolean;
-    mentionsData?: MentionDataT[];
+    mentionsData?: UserWithOffset[];
     onPasteFile?: (file: any) => void;
 }
 

@@ -31,13 +31,14 @@ import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
 import { UploadContext } from './FileUploading/UploadContext';
 import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { useClient } from 'openland-web/utils/useClient';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId?: string;
     conversation?: ConversationEngine;
     enabled?: boolean;
     minimal?: boolean;
-    onSend?: (text: string, mentions: UserShort[] | null) => void;
+    onSend?: (text: string, mentions: UserWithOffset[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
     getMessages?: () => ModelMessage[];
@@ -129,20 +130,17 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         );
     };
 
-    React.useEffect(
-        () => {
-            if (isActive) {
-                const newInputValue = hasReply()
-                    ? draftState.getNextDraft()
-                    : { text: '', mentions: [] };
-                messagesContext.changeForwardConverstion();
-                setInputValue(newInputValue.text);
-                draftState.setBeDrafted(hasReply());
-                inputMethodsState.focusIfNeeded();
-            }
-        },
-        [isActive, currentConversationId],
-    );
+    React.useEffect(() => {
+        if (isActive) {
+            const newInputValue = hasReply()
+                ? draftState.getNextDraft()
+                : { text: '', mentions: [] };
+            messagesContext.changeForwardConverstion();
+            setInputValue(newInputValue.text);
+            draftState.setBeDrafted(hasReply());
+            inputMethodsState.focusIfNeeded();
+        }
+    }, [isActive, currentConversationId]);
 
     return (
         <>

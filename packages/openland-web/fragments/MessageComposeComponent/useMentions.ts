@@ -1,27 +1,35 @@
 import * as React from 'react';
+<<<<<<< HEAD
 import { MentionsMembers_members } from 'openland-api/Types';
 import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
+=======
+import { RoomMembers_members } from 'openland-api/Types';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserShort } from 'openland-api/Types';
+>>>>>>> wip(web): web move to new mentions api
 
 export type MentionsStateT = {
-    mentionsData: MentionDataT[];
+    mentionsData: UserWithOffset[];
     listOfMembersNames: string[];
-    getMentions: () => MentionDataT[];
-    setCurrentMentions: (a: MentionDataT[]) => void;
+    getMentions: () => UserWithOffset[];
+    setCurrentMentions: (a: UserWithOffset[]) => void;
 };
 
+<<<<<<< HEAD
 export const convertChannelMembersDataToMentionsData = (data?: MentionsMembers_members[]) => {
+=======
+export const convertChannelMembersDataToMentionsData = (
+    data?: RoomMembers_members[],
+): UserWithOffset[] => {
+>>>>>>> wip(web): web move to new mentions api
     if (!data) {
         return [];
     }
     return data.map(({ user }: any) => {
-        const { id, name, photo, online, isYou, primaryOrganization } = user;
         return {
-            id,
-            name: name,
-            avatar: photo,
-            title: primaryOrganization ? primaryOrganization.name : '',
-            online,
-            isYou,
+            user: user,
+            length: 0,
+            offset: 0,
         };
     });
 };
@@ -38,18 +46,16 @@ type useMentionsT = {
 
 export function useMentions({ members }: useMentionsT) {
     const [listOfMembersNames, setListOfMembersNames] = React.useState(getMembers(members));
-    const [currentMentions, setCurrentMentions] = React.useState<MentionDataT[]>([]);
+    const [currentMentions, setCurrentMentions] = React.useState<UserWithOffset[]>([]);
 
-    React.useEffect(
-        () => {
-            setListOfMembersNames(getMembers(members));
-        },
-        [members],
-    );
+    React.useEffect(() => {
+        setListOfMembersNames(getMembers(members));
+    }, [members]);
 
     const mentionsData = convertChannelMembersDataToMentionsData(members);
 
     const getMentions = () => {
+        console.log(currentMentions);
         return currentMentions;
     };
 

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { EditorState, ContentState } from 'draft-js';
-import { MentionDataT } from './components/MentionSuggestionsEntry';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 export type XRichTextInput2RefMethods = {
     focus: () => void;
     resetAndFocus: () => void;
     getHasFocus: () => boolean;
-    setInputValue: (a: { text: string; mentions: MentionDataT[] }) => void;
-    getMentions: () => MentionDataT[];
+    setInputValue: (a: { text: string; mentions: UserWithOffset[] }) => void;
+    getMentions: () => UserWithOffset[];
 };
 
 type useInputMethodsT = {
@@ -15,8 +15,8 @@ type useInputMethodsT = {
     editorRef?: any;
     setEditorState: (a: EditorState) => void;
     editorState: EditorState;
-    getMentions: () => MentionDataT[];
-    updateEditorStateFromTextAndMentions: (a: { text: string; mentions: MentionDataT[] }) => void;
+    getMentions: () => UserWithOffset[];
+    updateEditorStateFromTextAndMentions: (a: { text: string; mentions: UserWithOffset[] }) => void;
 };
 
 export function useInputMethods({

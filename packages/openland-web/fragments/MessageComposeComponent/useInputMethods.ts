@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
-import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 export type InputMethodsStateT = XRichTextInput2RefMethods & {
     focusIfNeeded: Function;
@@ -38,7 +38,7 @@ export function useInputMethods({
         return [];
     };
 
-    const setInputValue = ({ text, mentions }: { text: string; mentions: MentionDataT[] }) => {
+    const setInputValue = ({ text, mentions }: { text: string; mentions: UserWithOffset[] }) => {
         if (inputRef.current) {
             return inputRef.current.setInputValue({
                 text,

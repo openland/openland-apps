@@ -4,18 +4,18 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { FileUploader } from './FileUploading/FileUploader';
 import { SendMessageWrapper, SendMessageContent } from './Components';
-import { AttachmentButtons, PhotoButton, DocumentButton } from './AttachmentButtons';
+import { AttachmentButtons } from './AttachmentButtons';
 import { EditView } from './EditView';
 import { MentionsStateT } from './useMentions';
 import { QuoteStateT } from './useQuote';
 import { DropZone } from './FileUploading/DropZone';
 import { UploadContext } from './FileUploading/UploadContext';
-import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 export type TextInputComponentT = {
     fullWidth?: boolean;
     minimal?: boolean;
-    handleChange: (a: { text: string; mentions: MentionDataT[] }) => void;
+    handleChange: (a: { text: string; mentions: UserWithOffset[] }) => void;
     handleSend: () => any;
     inputValue: string;
     handleDrop?: ((file: any) => void) | undefined;

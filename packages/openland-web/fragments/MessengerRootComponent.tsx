@@ -33,6 +33,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { trackEvent } from 'openland-x-analytics';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 export interface File {
     uuid: string;
@@ -254,12 +255,16 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.messageText = text;
     };
 
-    handleSend = (text: string, mentions: UserShort[] | null) => {
+    handleSend = (text: string, mentions: UserWithOffset[] | null) => {
+        console.log(mentions);
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
 
-        this.conversation.sendMessage(text, mentions);
+        this.conversation.sendMessage(
+            text,
+            mentions ? mentions.map(mention => mention.user) : null,
+        );
     };
 
     handleSendFile = (file: UploadCare.File) => {

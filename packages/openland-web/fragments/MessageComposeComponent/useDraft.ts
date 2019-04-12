@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SaveDraftMessageVariables, SaveDraftMessage } from 'openland-api/Types';
-import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import * as DraftStore from './DraftStore';
 
 export type DraftStateT = {
@@ -23,7 +23,7 @@ export function useDraft({
 }) {
     const [beDrafted, setBeDrafted] = React.useState(false);
 
-    const changeDraft = async (message: string, mentions: MentionDataT[]) => {
+    const changeDraft = async (message: string, mentions: UserWithOffset[]) => {
         if (!beDrafted) {
             setBeDrafted(true);
         }
@@ -40,7 +40,7 @@ export function useDraft({
 
     const getNextDraft = () => {
         let text = '';
-        let mentions: MentionDataT[] = [];
+        let mentions: UserWithOffset[] = [];
         const storedDraft = DraftStore.getDraftMessage(conversationId);
 
         if (storedDraft.text === null) {

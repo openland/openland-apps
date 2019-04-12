@@ -4,14 +4,15 @@ import { EmojiData } from 'emoji-mart';
 import { addEmoji } from './modifiers/addEmoji';
 import { getSearchText } from './utils/getSearchText';
 import { addMention, findActiveWord } from './modifiers/addMention';
-import { MentionDataT } from './components/MentionSuggestionsEntry';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
 import { decorator } from './decorator';
+import { UserShort } from 'openland-api/Types';
 
 type useHandleEditorChangeT = {
-    onChange?: (a: { text: string; mentions: MentionDataT[] }) => void;
+    onChange?: (a: { text: string; mentions: UserWithOffset[] }) => void;
     value: string;
-    mentionsData?: MentionDataT[];
+    mentionsData?: UserWithOffset[];
 };
 
 export const getEditorStateFromText = ({
@@ -19,7 +20,7 @@ export const getEditorStateFromText = ({
     mentions,
 }: {
     text: string;
-    mentions: MentionDataT[];
+    mentions: UserWithOffset[];
 }) => {
     return EditorState.moveFocusToEnd(
         EditorState.createWithContent(
@@ -48,7 +49,7 @@ export function useHandleEditorChange({ onChange, value, mentionsData }: useHand
         mentions,
     }: {
         text: string;
-        mentions: MentionDataT[];
+        mentions: UserWithOffset[];
     }) => {
         updateEditorState(
             getEditorStateFromText({
@@ -79,10 +80,15 @@ export function useHandleEditorChange({ onChange, value, mentionsData }: useHand
         );
     };
 
-    const finalAddMention = (mention: MentionDataT) => {
+    const finalAddMention = (mention: UserShort) => {
+        console.log(mention);
         const newEditorState = addMention({
             editorState,
-            mention,
+            mention: {
+                user: mention,
+                offset: 0,
+                length: 0,
+            },
         });
         if (newEditorState) {
             updateEditorState(newEditorState);
@@ -114,7 +120,7 @@ export function useHandleEditorChange({ onChange, value, mentionsData }: useHand
             .filter(({ type }) => type === 'MENTION')
             .map(({ data }) => data);
 
-        return (result as any) as MentionDataT[];
+        return (result as any) as UserWithOffset[];
     };
 
     React.useLayoutEffect(() => {

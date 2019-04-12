@@ -3,16 +3,16 @@ import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import { emoji } from 'openland-y-utils/emoji';
 
-export type MentionDataT = {
+export type MentionData = {
     id: string;
     name: string;
     title: string;
-    avatar: string;
+    avatar: string | null;
     isYou?: boolean;
     online?: boolean;
 };
 
-type MentionEntryT = MentionDataT & {
+type MentionEntryT = MentionData & {
     isSelected: boolean;
     onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
@@ -28,25 +28,19 @@ export const MentionEntry = ({
 }: MentionEntryT) => {
     const [isFocused, setIsFocused] = React.useState(false);
 
-    React.useEffect(
-        () => {
-            setIsFocused(isSelected);
-        },
-        [isSelected],
-    );
+    React.useEffect(() => {
+        setIsFocused(isSelected);
+    }, [isSelected]);
 
     const onMouseLeave = () => setIsFocused(false);
     const onMouseEnter = () => setIsFocused(true);
 
-    const emojifiedName = React.useMemo(
-        () => {
-            return emoji({
-                src: name,
-                size: 15,
-            });
-        },
-        [name],
-    );
+    const emojifiedName = React.useMemo(() => {
+        return emoji({
+            src: name,
+            size: 15,
+        });
+    }, [name]);
 
     return (
         <div
@@ -72,7 +66,7 @@ export const MentionEntry = ({
                 <XAvatar
                     size={'m-small'}
                     style={'user'}
-                    src={avatar}
+                    src={avatar ? avatar : undefined}
                     objectName={name}
                     objectId={id}
                     online={online}

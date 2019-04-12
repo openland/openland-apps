@@ -284,7 +284,6 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     sendMessage = (text: string, mentions: UserShort[] | null) => {
-
         if (text.trim().length > 0) {
             let message = text.trim();
             let date = (new Date().getTime()).toString();

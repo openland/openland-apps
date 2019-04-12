@@ -9,7 +9,8 @@ import { XIcon } from 'openland-x/XIcon';
 import { extractFlexProps, XFlexStyles, applyFlex } from '../../basics/Flex';
 import { EmojiSuggestions } from './EmojiSuggestions';
 import { MentionSuggestions, SizeT } from './MentionSuggestions';
-import { MentionEntry, MentionDataT } from './MentionSuggestionsEntry';
+import { MentionEntry } from './MentionSuggestionsEntry';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { EmojiSuggestionsEntry } from './EmojiSuggestionsEntry';
 import { EmojiButton } from './EmojiButton';
 import { EmojiSuggestionsStateT, EmojiDataT } from '../useEmojiSuggestions';
@@ -18,6 +19,7 @@ import { XRichTextInput2Props } from '..';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
 import * as constants from '../constants';
+import { UserShort } from 'openland-api/Types';
 
 const Container = Glamorous.div<XFlexStyles>([
     {
@@ -40,7 +42,7 @@ type EditorContainerContainer = XRichTextInput2Props & {
     editorState: EditorState;
     setEditorState: (a: EditorState) => void;
     mentionState: MentionSuggestionsStateT;
-    onMentionPicked: (mention: MentionDataT) => void;
+    onMentionPicked: (mention: UserShort) => void;
     emojiState: EmojiSuggestionsStateT;
     onEmojiPicked: (emoji: EmojiData) => void;
     finalAddEmoji: (emoji: { shortName: string; unified: string }) => void;
@@ -177,10 +179,16 @@ export const EditorContainer = (props: EditorContainerContainer) => {
     } = props;
 
     const mentionSuggestionsItems = mentionState.suggestions.map(
-        (mention: MentionDataT, key: number) => {
+        (mention: UserShort, key: number) => {
+            console.log(mention);
             return (
                 <MentionEntry
-                    {...mention}
+                    id={mention.id}
+                    name={mention.name}
+                    title={mention.primaryOrganization ? mention.primaryOrganization.name : ''}
+                    avatar={mention.photo}
+                    isYou={mention.isYou}
+                    online={mention.online}
                     key={key}
                     isSelected={key === mentionState.selectedEntryIndex}
                     onClick={() => {

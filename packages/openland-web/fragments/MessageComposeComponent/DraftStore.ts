@@ -1,15 +1,15 @@
-import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 const getDraftKey = (conversationId?: string): string => {
     if (!conversationId) {
         return '';
     }
-    return 'conversation_draft_2_' + conversationId;
+    return 'conversation_draft_3_' + conversationId;
 };
 
 export const getDraftMessage = (
     conversationId?: string,
-): { text: string | null; mentions: MentionDataT[] } => {
+): { text: string | null; mentions: UserWithOffset[] } => {
     let text, mentions;
     if (!conversationId) {
         text = null;
@@ -35,7 +35,7 @@ export const getDraftMessage = (
 export const setDraftMessage = (
     conversationId?: string,
     src?: string,
-    mentions?: MentionDataT[],
+    mentions?: UserWithOffset[],
 ): void => {
     if (!conversationId) {
         return;

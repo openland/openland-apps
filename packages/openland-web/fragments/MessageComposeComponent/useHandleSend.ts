@@ -9,12 +9,12 @@ import { QuoteStateT } from './useQuote';
 import { DraftStateT } from './useDraft';
 import { InputMethodsStateT } from './useInputMethods';
 import { MentionsStateT } from './useMentions';
-import { UserShort } from 'openland-api/Types';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { useReplyPropsT } from './useReply';
 import { UploadContext } from './FileUploading/UploadContext';
 
 export type useHandleSendT = {
-    onSend?: (text: string, mentions: UserShort[] | null) => void;
+    onSend?: (text: string, mentions: UserWithOffset[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     mentionsState?: MentionsStateT;
     inputMethodsState?: InputMethodsStateT;
@@ -114,7 +114,7 @@ export function useHandleSend({
         if (msg.length > 0) {
             if (onSend && !hasQuoteInState()) {
                 if (supportMentions() && mentionsState) {
-                    onSend(msg, mentionsState.getMentions() as any);
+                    onSend(msg, mentionsState.getMentions());
                     mentionsState.setCurrentMentions([]);
                 } else {
                     onSend(msg, null);

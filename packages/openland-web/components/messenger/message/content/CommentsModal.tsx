@@ -7,10 +7,10 @@ import { DesktopSendMessage } from 'openland-web/fragments/MessageComposeCompone
 import UploadCare from 'uploadcare-widget';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
 import {
-    UserShort,
     RoomMembers_members,
     CommentWatch_event_CommentUpdateSingle_update,
     FullMessage,
+    MentionInput,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { useHandleSend } from 'openland-web/fragments/MessageComposeComponent/useHandleSend';
@@ -27,6 +27,7 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
+import { convertToMentionInput, UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { css } from 'linaria';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
@@ -64,7 +65,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
 
 type CommentsInputProps = {
     minimal?: boolean;
-    onSend?: (text: string, mentions: UserShort[] | null) => void;
+    onSend?: (text: string, mentions: UserWithOffset[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
     getMessages?: () => ModelMessage[];
@@ -181,16 +182,19 @@ const CommentsInner = () => {
         messageId,
         message,
         replyComment,
+        mentions,
     }: {
         messageId: string;
         message: string;
         replyComment: string | null;
+        mentions: MentionInput[] | null;
     }) => {
         try {
             await client.mutateAddMessageComment({
                 messageId,
                 message,
                 replyComment,
+                mentions,
             });
 
             await client.refetchMessageComments({
@@ -231,8 +235,14 @@ const CommentsInner = () => {
                     {showInputId === message.key && (
                         <CommentsInput
                             minimal
-                            onSend={msgToSend => {
+                            onSend={(msgToSend, mentions) => {
+                                const finalMentions = convertToMentionInput({
+                                    mentions: mentions ? mentions : [],
+                                    text: msgToSend,
+                                });
+
                                 addComment({
+                                    mentions: finalMentions,
                                     messageId: curMesssageId,
                                     message: msgToSend,
                                     replyComment: message.text ? message.text : null,
@@ -263,8 +273,13 @@ const CommentsInner = () => {
             </MessageModalBody>
             <XView>
                 <CommentsInput
-                    onSend={msgToSend => {
+                    onSend={(msgToSend, mentions) => {
+                        const finalMentions = convertToMentionInput({
+                            mentions: mentions ? mentions : [],
+                            text: msgToSend,
+                        });
                         addComment({
+                            mentions: finalMentions,
                             messageId: curMesssageId,
                             message: msgToSend,
                             replyComment: null,

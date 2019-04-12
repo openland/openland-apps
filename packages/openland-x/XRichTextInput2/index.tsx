@@ -10,15 +10,15 @@ import { useHandleEditorChange } from './useHandleEditorChange';
 import { useDraftKeyHandling } from './useDraftKeyHandling';
 import { usePasteFiles } from './usePasteFiles';
 import { useHandlePastedText } from './useHandlePastedText';
-import { MentionDataT } from './components/MentionSuggestionsEntry';
-
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserShort } from 'openland-api/Types';
 export interface XRichTextInput2Props extends XFlexStyles {
-    onChange?: (a: { text: string; mentions?: MentionDataT[] }) => void;
+    onChange?: (a: { text: string; mentions?: UserWithOffset[] }) => void;
     value: string;
     onSubmit?: () => void;
     placeholder?: string;
     autofocus?: boolean;
-    mentionsData?: MentionDataT[];
+    mentionsData?: UserWithOffset[];
     onPasteFile?: (file: any) => void;
     onCurrentWordChanged?: (word: string | undefined) => void;
     minimal?: boolean;
@@ -116,7 +116,7 @@ export const XRichTextInput2 = React.memo(
                     onEmojiPicked={onEmojiPicked}
                     finalAddEmoji={applyEmoji}
                     mentionState={mentionState}
-                    onMentionPicked={(mentionEntry: MentionDataT) => {
+                    onMentionPicked={(mentionEntry: UserShort) => {
                         if (mentionEntry) {
                             addMention(mentionEntry);
                             setActiveWord('');

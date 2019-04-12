@@ -1,7 +1,7 @@
 import { ReplyMessageVariables, ReplyMessage, MentionsMembers_members } from 'openland-api/Types';
 import { QuoteStateT } from './useQuote';
 import { MentionsStateT } from './useMentions';
-import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 export type useReplyPropsT = {
     replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
@@ -39,16 +39,16 @@ export function useReply({
 
     const replyMessagesProc = async () => {
         if (finalQuoteMessagesId.length > 0) {
-            let mentions: MentionDataT[] = [];
+            let mentions: UserWithOffset[] = [];
             // TODO simplify here
             if (supportMentions() && mentionsState!!.getMentions) {
-                mentions = mentionsState!!.getMentions();
+                mentions = mentionsState!!.getMentions().map((user: any) => user);
             }
 
             await replyMessage!!({
                 roomId: conversationId!!,
                 message: inputValue,
-                mentions: mentions.map(m => m.id),
+                mentions: mentions.map(m => m.user.id),
                 replyMessages: finalQuoteMessagesId,
             });
         }

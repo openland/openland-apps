@@ -1,5 +1,5 @@
 import { DraftStateT } from './useDraft';
-import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { MentionsStateT } from './useMentions';
 
 export type GeneralComposeStateT = {
@@ -21,7 +21,7 @@ export function useHandleChange({
         return !!draftState;
     };
 
-    const handleChange = ({ text, mentions }: { text: string; mentions: MentionDataT[] }) => {
+    const handleChange = ({ text, mentions }: { text: string; mentions: UserWithOffset[] }) => {
         if (mentionsState) {
             mentionsState.setCurrentMentions(mentions);
         }

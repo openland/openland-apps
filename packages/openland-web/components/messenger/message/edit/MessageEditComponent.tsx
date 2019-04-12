@@ -9,9 +9,9 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 import { convertChannelMembersDataToMentionsData } from 'openland-web/fragments/MessageComposeComponent/useMentions';
 import { useClient } from 'openland-web/utils/useClient';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -48,7 +48,7 @@ export type XTextInputProps =
       } & XRichTextInput2Props;
 
 class XRichTextInputStored extends React.PureComponent<
-    XTextInputProps & { store: XStoreState; mentionsData?: MentionDataT[] }
+    XTextInputProps & { store: XStoreState; mentionsData?: UserWithOffset[] }
 > {
     onChangeHandler = (value: any) => {
         if (this.props.kind === 'from_store') {
@@ -78,7 +78,7 @@ class XRichTextInputStored extends React.PureComponent<
     }
 }
 
-class XTextInput extends React.PureComponent<XTextInputProps & { mentionsData?: MentionDataT[] }> {
+class XTextInput extends React.PureComponent<XTextInputProps & { mentionsData?: UserWithOffset[] }> {
     render() {
         if (this.props.kind === 'from_store') {
             const { valueStoreKey, ...other } = this.props;
@@ -114,7 +114,7 @@ type EditMessageInlineT = {
     id: string;
     message: any;
     onClose: any;
-    mentionsData: MentionDataT[];
+    mentionsData: UserWithOffset[];
 };
 
 const EditMessageInline = (props: EditMessageInlineT) => {
@@ -159,7 +159,7 @@ const EditMessageInline = (props: EditMessageInlineT) => {
 };
 
 type EditMessageInlineWrapperInnerT = {
-    mentionsData: MentionDataT[];
+    mentionsData: UserWithOffset[];
 } & EditMessageInlineWrapperT;
 class EditMessageInlineWrapperInner extends React.Component<EditMessageInlineWrapperInnerT> {
     onCloseHandler = () => {

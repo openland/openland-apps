@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 const TextArea = css`
     border-radius: 10px;
@@ -54,7 +54,7 @@ export const ContentEditableTextInput = React.forwardRef(
             placeholder: string;
             onPasteFile?: Function;
             onSubmit?: Function;
-            onChange: (a: { text: string; mentions: MentionDataT[] }) => void;
+            onChange: (a: { text: string; mentions: UserWithOffset[] }) => void;
         },
         ref: any,
     ) => {
