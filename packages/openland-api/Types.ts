@@ -25487,6 +25487,7 @@ export interface Conference_conference_iceServers {
 export interface Conference_conference {
   __typename: "Conference";
   id: string;
+  startTime: any | null;
   peers: Conference_conference_peers[];
   iceServers: Conference_conference_iceServers[];
 }
@@ -25594,6 +25595,7 @@ export interface ConferenceJoin_conferenceJoin_conference_iceServers {
 export interface ConferenceJoin_conferenceJoin_conference {
   __typename: "Conference";
   id: string;
+  startTime: any | null;
   peers: ConferenceJoin_conferenceJoin_conference_peers[];
   iceServers: ConferenceJoin_conferenceJoin_conference_iceServers[];
 }
@@ -25668,6 +25670,7 @@ export interface ConferenceLeave_conferenceLeave_iceServers {
 export interface ConferenceLeave_conferenceLeave {
   __typename: "Conference";
   id: string;
+  startTime: any | null;
   peers: ConferenceLeave_conferenceLeave_peers[];
   iceServers: ConferenceLeave_conferenceLeave_iceServers[];
 }
@@ -25737,6 +25740,7 @@ export interface ConferenceKeepAlive_conferenceKeepAlive_iceServers {
 export interface ConferenceKeepAlive_conferenceKeepAlive {
   __typename: "Conference";
   id: string;
+  startTime: any | null;
   peers: ConferenceKeepAlive_conferenceKeepAlive_peers[];
   iceServers: ConferenceKeepAlive_conferenceKeepAlive_iceServers[];
 }
@@ -25806,6 +25810,7 @@ export interface ConferenceOffer_peerConnectionOffer_iceServers {
 export interface ConferenceOffer_peerConnectionOffer {
   __typename: "Conference";
   id: string;
+  startTime: any | null;
   peers: ConferenceOffer_peerConnectionOffer_peers[];
   iceServers: ConferenceOffer_peerConnectionOffer_iceServers[];
 }
@@ -25877,6 +25882,7 @@ export interface ConferenceAnswer_peerConnectionAnswer_iceServers {
 export interface ConferenceAnswer_peerConnectionAnswer {
   __typename: "Conference";
   id: string;
+  startTime: any | null;
   peers: ConferenceAnswer_peerConnectionAnswer_peers[];
   iceServers: ConferenceAnswer_peerConnectionAnswer_iceServers[];
 }
@@ -25948,6 +25954,7 @@ export interface ConferenceCandidate_peerConnectionCandidate_iceServers {
 export interface ConferenceCandidate_peerConnectionCandidate {
   __typename: "Conference";
   id: string;
+  startTime: any | null;
   peers: ConferenceCandidate_peerConnectionCandidate_peers[];
   iceServers: ConferenceCandidate_peerConnectionCandidate_iceServers[];
 }
@@ -26146,6 +26153,7 @@ export interface ConferenceWatch_alphaConferenceWatch_iceServers {
 export interface ConferenceWatch_alphaConferenceWatch {
   __typename: "Conference";
   id: string;
+  startTime: any | null;
   peers: ConferenceWatch_alphaConferenceWatch_peers[];
   iceServers: ConferenceWatch_alphaConferenceWatch_iceServers[];
 }
@@ -31472,6 +31480,7 @@ export interface ConferenceFull_iceServers {
 export interface ConferenceFull {
   __typename: "Conference";
   id: string;
+  startTime: any | null;
   peers: ConferenceFull_peers[];
   iceServers: ConferenceFull_iceServers[];
 }

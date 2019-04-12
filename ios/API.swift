@@ -21281,13 +21281,14 @@ public struct CommunitySearch: GraphQLFragment {
 
 public struct ConferenceFull: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment ConferenceFull on Conference {\n  __typename\n  id\n  peers {\n    __typename\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    connection {\n      __typename\n      state\n      sdp\n      ice\n    }\n  }\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}"
+    "fragment ConferenceFull on Conference {\n  __typename\n  id\n  startTime\n  peers {\n    __typename\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    connection {\n      __typename\n      state\n      sdp\n      ice\n    }\n  }\n  iceServers {\n    __typename\n    urls\n    username\n    credential\n  }\n}"
 
   public static let possibleTypes = ["Conference"]
 
   public static let selections: [GraphQLSelection] = [
     GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
     GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+    GraphQLField("startTime", type: .scalar(String.self)),
     GraphQLField("peers", type: .nonNull(.list(.nonNull(.object(Peer.selections))))),
     GraphQLField("iceServers", type: .nonNull(.list(.nonNull(.object(IceServer.selections))))),
   ]
@@ -21298,8 +21299,8 @@ public struct ConferenceFull: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(id: GraphQLID, peers: [Peer], iceServers: [IceServer]) {
-    self.init(unsafeResultMap: ["__typename": "Conference", "id": id, "peers": peers.map { (value: Peer) -> ResultMap in value.resultMap }, "iceServers": iceServers.map { (value: IceServer) -> ResultMap in value.resultMap }])
+  public init(id: GraphQLID, startTime: String? = nil, peers: [Peer], iceServers: [IceServer]) {
+    self.init(unsafeResultMap: ["__typename": "Conference", "id": id, "startTime": startTime, "peers": peers.map { (value: Peer) -> ResultMap in value.resultMap }, "iceServers": iceServers.map { (value: IceServer) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -21317,6 +21318,15 @@ public struct ConferenceFull: GraphQLFragment {
     }
     set {
       resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  public var startTime: String? {
+    get {
+      return resultMap["startTime"] as? String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "startTime")
     }
   }
 

@@ -18,7 +18,8 @@ import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermiss
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { CallStatus } from 'openland-engines/CallsEngine';
-import { formatTime, formatTimerTime } from 'openland-mobile/utils/formatTime';
+import { formatTimerTime } from 'openland-mobile/utils/formatTime';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let [mute, setMute] = React.useState(false);
@@ -50,16 +51,26 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let calls = getMessenger().engine.calls;
     let callsState = calls.useState();
 
+    let onCallEnd = React.useCallback(() => {
+        setStatus('end');
+        setTimeout(() => {
+            SStatusBar.setBarStyle('dark-content');
+            props.hide();
+        }, 2000)
+    }, [])
+
     React.useEffect(() => {
         if (callsState.status === 'connected') {
-            setInitialTime(new Date().getTime());
+            if (callsState.private) {
+                setInitialTime(new Date().getTime());
+            } else if (callsState.startTime) {
+                setInitialTime(callsState.startTime);
+                console.warn('boom', callsState.startTime)
+            }
             setStatus('connected');
             ReactNativeHapticFeedback.trigger('impactMedium', { ignoreAndroidSystemSettings: false });
         } else if (callsState.status === 'end') {
-            setStatus('end');
-            setTimeout(() => {
-                props.hide();
-            }, 2000)
+            onCallEnd();
         } else if (callsState.status === 'waiting') {
             setStatus('waiting');
         }
@@ -69,7 +80,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     React.useEffect(() => {
         if (status === 'connected') {
             setTimeout(() => {
-                setTimer(initialTime ? new Date().getTime() - initialTime : 0);
+                setTimer(initialTime ? Date.now() - initialTime : 0);
             }, 100);
         }
 
@@ -77,25 +88,29 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
     return (
         <ASSafeAreaView flexDirection="column" alignItems="stretch" flexGrow={1}>
-            <View alignItems="center" justifyContent="center" paddingTop={82} paddingHorizontal={16} flexDirection="row">
-                <ZAvatar size={80} placeholderKey={placeholderKey} placeholderTitle={title} src={photo} />
-                {/* <View style={{ marginLeft: 16 }}>
-                    <Text style={{ fontSize: 32, height: 36, color: 'white' }} numberOfLines={1}>{title}</Text>
-                </View> */}
-                <View style={{ marginLeft: 16, flexShrink: 1, flexGrow: 1, flexBasis: 0, minWidth: 0 }}>
-                    <Text
-                        style={{ fontSize: 28, fontWeight: '600', color: 'white' }}
-                        numberOfLines={4}
-                    >
-                        {
-                            status === 'end' ? 'Call ended' :
-                                ['connected', 'waiting'].includes(status) ? (status === 'waiting' ? 'Waiting for ' : '') + title :
-                                    'Connecting...'
-                        }
-                        {room.__typename === 'PrivateRoom' && ['connected', 'end'].includes(status) ? '\n' + formatTimerTime(timer) : ''}
-                    </Text>
+            <View alignItems="center" justifyContent="center" flexDirection="column">
+                <View marginTop={67} flexDirection="row" borderWidth={10} borderRadius={120} borderColor="rgba(0, 0, 0, 0.05)">
+                    <ZAvatar size={120} placeholderKey={placeholderKey} placeholderTitle={title} src={photo} />
+
                 </View>
+                <Text
+                    style={{ fontSize: 28, fontWeight: TextStyles.weight.medium, color: 'white', textAlign: 'center', marginTop: 25 }}
+                    numberOfLines={4}
+                >
+                    {title}
+                </Text>
+                <Text
+                    style={{ fontSize: 16, color: 'white', textAlign: 'center', marginTop: 8, opacity: 0.8 }}
+                >
+                    {
+                        status === 'end' ? 'Call ended ' :
+                            status === 'waiting' ? 'Waiting...' :
+                                status === 'connected' ? '' : 'Connecting...'
+                    }
+                    {['connected', 'end'].includes(status) ? formatTimerTime(timer) : ''}
+                </Text>
             </View>
+
             <View flexGrow={1} />
             <View justifyContent="center" alignItems="center" marginBottom={56} flexDirection="row">
 
@@ -113,10 +128,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => {
-                        SStatusBar.setBarStyle('dark-content');
-                        props.hide();
-                    }}
+                    onPress={onCallEnd}
                     style={{ width: 70, height: 70 }}
                 >
                     <View backgroundColor="#f6564e" width={70} height={70} borderRadius={35} alignItems="center" justifyContent="center">

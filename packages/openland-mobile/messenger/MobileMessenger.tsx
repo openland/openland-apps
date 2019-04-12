@@ -133,9 +133,11 @@ export class MobileMessenger {
             </View>
         ));
 
-        builder.action('Comments', () => {
-            this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId: this.currentConvId });
-        });
+        if (this.currentConv && !this.currentConv.isPrivate) {
+            builder.action('Comments', () => {
+                this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId: this.currentConvId });
+            });
+        }
 
         if (message.text) {
             if (message.senderId === this.engine.user.id) {

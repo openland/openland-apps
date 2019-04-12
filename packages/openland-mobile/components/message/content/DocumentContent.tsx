@@ -5,6 +5,7 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage } from 'openland-api/Types';
+import { formatBytes } from 'openland-mobile/utils/formatBytes';
 
 interface DocumentContentProps {
     message: FullMessage_GeneralMessage;
@@ -46,8 +47,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                     <View
                         width={40}
                         height={40}
-                        backgroundColor="rgba(185,192,202,0.20)"
-                        opacity={0.2}
+                        backgroundColor="#f7f7f7"
                         borderRadius={20}
                         marginRight={10}
                         alignItems="center"
@@ -74,6 +74,36 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                                 <Text style={{ color: '#fff', opacity: 0.8, textAlign: 'center' }}>{Math.round(this.state.downloadState.progress * 100)}</Text>
                             </View>
                         )}
+                    </View>
+
+                    <View
+                        flexGrow={1}
+                        flexDirection="column"
+                        marginTop={4}
+                        marginRight={14}
+                        alignSelf="center"
+                    >
+                        <Text
+                            style={{
+                                fontSize: 15,
+                                lineHeight: 18,
+                            }}
+                            numberOfLines={1}
+                        >
+                            {this.props.attach!!.fileMetadata.name}
+                        </Text>
+                        <Text
+                            style={{
+                                color: '#8a8a8f',
+                                lineHeight: 15,
+                                fontSize: 13,
+                                marginTop: 3,
+                                opacity: 0.7,
+                            }}
+                            numberOfLines={1}
+                        >
+                            {formatBytes(this.props.attach!!.fileMetadata.size)}
+                        </Text>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
