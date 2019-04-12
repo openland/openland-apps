@@ -42,13 +42,14 @@ export interface CommentViewProps {
     comment: MessageComments_messageComments_comments_comment;
     depth: number;
     deleted: boolean;
+    highlighted: boolean;
 
     onReplyPress: (comment: MessageComments_messageComments_comments_comment) => void;
     onLongPress: (comment: MessageComments_messageComments_comments_comment) => void;
 }
 
 export const CommentView = React.memo<CommentViewProps>((props) => {
-    const { comment, deleted, depth } = props;
+    const { comment, deleted, depth, highlighted } = props;
     const { sender, date, reactions } = comment;
 
     let messenger = getMessenger();
@@ -135,54 +136,46 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         </TouchableWithoutFeedback>
     ) : undefined;
 
-    if (depth === 0) {
-        return (
+    return (
+        <View style={ highlighted ? { backgroundColor: 'rgba(255, 255, 102, 0.15)', margin: -10, marginBottom: 6, marginLeft: marginLeft - 10, padding: 10 } : { marginBottom: 16, marginLeft: marginLeft }}>
             <TouchableWithoutFeedback onLongPress={!deleted ? () => props.onLongPress(comment) : undefined}>
-                <View marginLeft={marginLeft} flexDirection="row" marginBottom={16}>
-                    {avatar}
+                <View flexDirection="row">
+                    {depth === 0 && (
+                        <>
+                            {avatar}
 
-                    <View flexGrow={1} flexShrink={1}>
-                        {deleted && (
-                            <Text style={[styles.senderNameDeleted, { marginBottom: 1 }]}>{sender.name}</Text>
-                        )}
-                        {!deleted && (
-                            <Text style={[styles.senderName, { marginBottom: 1 }]} onPress={() => router.push('ProfileUser', { id: sender.id })}>{sender.name}</Text>
-                        )}
+                            <View flexGrow={1} flexShrink={1}>
+                                {deleted && <Text style={[styles.senderNameDeleted, { marginBottom: 1 }]}>{sender.name}</Text>}
+                                {!deleted && <Text style={[styles.senderName, { marginBottom: 1 }]} onPress={() => router.push('ProfileUser', { id: sender.id })}>{sender.name}</Text>}
 
-                        <View style={{ opacity: deleted ? 0.5 : undefined }}>
-                            <ZMessageView message={comment} small={true} />
+                                <View style={{ opacity: deleted ? 0.5 : undefined }}>
+                                    <ZMessageView message={comment} small={true} />
+                                </View>
+
+                                {tools}
+                            </View>
+                        </>
+                    )}
+                    {depth !== 0 && (
+                        <View flexGrow={1} flexShrink={1}>
+                            <TouchableWithoutFeedback onPress={!deleted ? () => router.push('ProfileUser', { id: sender.id }) : undefined}>
+                                <View flexDirection="row" marginBottom={3}>
+                                    {avatar}
+
+                                    <Text style={!deleted ? styles.senderName : styles.senderNameDeleted}>{sender.name}</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+
+                            <View style={{ opacity: deleted ? 0.5 : undefined }}>
+                                <ZMessageView message={comment} small={true} />
+                            </View>
+
+                            {tools}
                         </View>
-
-                        {tools}
-                    </View>
-
+                    )}
                     {likes}
                 </View>
             </TouchableWithoutFeedback>
-        );
-    }
-
-    return (
-        <TouchableWithoutFeedback onLongPress={!deleted ? () => props.onLongPress(comment) : undefined}>
-            <View marginLeft={marginLeft} flexDirection="row" marginBottom={16}>
-                <View flexGrow={1} flexShrink={1}>
-                    <TouchableWithoutFeedback onPress={!deleted ? () => router.push('ProfileUser', { id: sender.id }) : undefined}>
-                        <View flexDirection="row" marginBottom={3}>
-                            {avatar}
-
-                            <Text style={!deleted ? styles.senderName : styles.senderNameDeleted}>{sender.name}</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-
-                    <View style={{ opacity: deleted ? 0.5 : undefined }}>
-                        <ZMessageView message={comment} small={true} />
-                    </View>
-
-                    {tools}
-                </View>
-
-                {likes}
-            </View>
-        </TouchableWithoutFeedback>
+        </View>
     );
 });
