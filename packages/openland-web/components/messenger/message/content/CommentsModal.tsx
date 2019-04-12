@@ -219,7 +219,7 @@ const CommentsInner = () => {
     for (let message of dsMessages) {
         commentsElements.push(
             <XView key={message.key} marginLeft={10 * message.depth}>
-                <MessageComponent message={message} isChannel={true} me={null} />
+                <MessageComponent message={message} onlyLikes={true} isChannel={true} me={null} />
                 <XView width={500}>
                     <XButton
                         size="default"

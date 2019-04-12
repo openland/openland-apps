@@ -137,6 +137,7 @@ class ReactionPicker extends React.PureComponent<{
 }
 
 class ReactionComponentInner extends React.PureComponent<{
+    onlyLikes?: boolean;
     messageId: string;
     marginTop?: number;
     marginLeft?: number;
@@ -160,6 +161,21 @@ class ReactionComponentInner extends React.PureComponent<{
     };
 
     render() {
+        const onlyLikes = this.props.onlyLikes;
+        if (onlyLikes) {
+            return (
+                <ReactionButton
+                    className="reaction-button"
+                    onClick={this.handleClick}
+                    marginTop={this.props.marginTop}
+                    marginLeft={this.props.marginLeft}
+                    hovered={this.state.hovered}
+                >
+                    <ReactionIcon />
+                </ReactionButton>
+            );
+        }
+
         return (
             <XPopper
                 content={
@@ -188,6 +204,7 @@ class ReactionComponentInner extends React.PureComponent<{
 }
 
 type ReactionComponentT = {
+    onlyLikes?: boolean;
     messageId: string;
     marginTop?: number;
     marginLeft?: number;
@@ -200,6 +217,7 @@ export const ReactionComponent = React.memo((props: ReactionComponentT) => {
             handler={it =>
                 client.mutateMessageSetReaction({ messageId: props.messageId, reaction: it })
             }
+            onlyLikes={props.onlyLikes}
             messageId={props.messageId}
             marginTop={props.marginTop}
             marginLeft={props.marginLeft}
@@ -332,6 +350,7 @@ interface ReactionsInnerProps {
     messageId: string;
     meId: string;
     reactions: FullMessage_GeneralMessage_reactions[];
+    onlyLikes?: boolean;
 }
 
 const Label = XMemo(
@@ -370,6 +389,28 @@ const Label = XMemo(
                 })}
             </UsersLabel>
         ) : null;
+    },
+);
+
+const OnlyLikesReactionsInner = React.memo(
+    ({ reactions, meId, messageId }: ReactionsInnerProps) => {
+        const emojifiedReaction = emojifyReactions({
+            src: `❤️ ${reactions.length} ${reactions.length > 1 ? 'likes' : 'like'}`,
+            size: 18,
+        });
+
+        if (reactions.find((r: any) => r.user.id === meId)) {
+            return (
+                <SingleReactionUnset messageId={messageId} reaction={'❤️'} isMy={true}>
+                    {emojifiedReaction}
+                </SingleReactionUnset>
+            );
+        }
+        return (
+            <SingleReactionSet messageId={messageId} reaction={'❤️'} isMy={false}>
+                {emojifiedReaction}
+            </SingleReactionSet>
+        );
     },
 );
 
@@ -496,17 +537,25 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
 
 export class Reactions extends React.PureComponent<ReactionsInnerProps> {
     render() {
-        const { reactions, meId, messageId } = this.props;
+        const { reactions, meId, messageId, onlyLikes } = this.props;
         return (
             <>
                 {reactions && reactions.length > 0 ? (
                     <ReactionsWrapper className="reactions-wrapper">
                         <ReactionsInnerWrapper>
-                            <ReactionsInner
-                                reactions={reactions}
-                                meId={meId}
-                                messageId={messageId}
-                            />
+                            {onlyLikes ? (
+                                <OnlyLikesReactionsInner
+                                    reactions={reactions}
+                                    meId={meId}
+                                    messageId={messageId}
+                                />
+                            ) : (
+                                <ReactionsInner
+                                    reactions={reactions}
+                                    meId={meId}
+                                    messageId={messageId}
+                                />
+                            )}
                         </ReactionsInnerWrapper>
                     </ReactionsWrapper>
                 ) : null}

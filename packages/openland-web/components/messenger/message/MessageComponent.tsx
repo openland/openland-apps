@@ -27,6 +27,7 @@ const MessageComponentInner = React.memo(
                     message={props.message}
                     conversationId={props.conversationId}
                     isChannel={props.isChannel}
+                    onlyLikes={props.onlyLikes}
                     me={props.me}
                     conversationType={props.conversationType}
                     messagesContext={props.messagesContextProps}
@@ -62,6 +63,7 @@ export const MessageComponent = (
     return (
         <MessageComponentInner
             hasComments={props.hasComments}
+            onlyLikes={props.onlyLikes}
             isChannel={props.isChannel}
             message={props.message}
             conversationId={props.conversationId}

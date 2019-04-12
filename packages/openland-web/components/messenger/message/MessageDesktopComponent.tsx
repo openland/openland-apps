@@ -121,6 +121,7 @@ export interface MessageComponentProps {
     conversationId?: string;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me?: UserShort | null;
+    onlyLikes?: boolean;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
@@ -254,7 +255,10 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     className="menu-wrapper"
                 >
                     <XHorizontal alignItems="center" separator={8}>
-                        <ReactionComponent messageId={message.id!} />
+                        <ReactionComponent
+                            messageId={message.id!}
+                            onlyLikes={this.props.onlyLikes}
+                        />
                         {!this.props.isChannel && (
                             <IconButton onClick={this.setReplyMessages}>
                                 <ReplyIcon />
@@ -284,6 +288,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (!message.isSending) {
             return (
                 <Reactions
+                    onlyLikes={this.props.onlyLikes}
                     messageId={message.id!}
                     reactions={message.reactions || []}
                     meId={(this.props.me && this.props.me.id) || ''}

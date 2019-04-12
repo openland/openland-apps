@@ -109,6 +109,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             return (
                 <MessageComponent
                     hasComments={this.props.isChannel && !i.isService}
+                    onlyLikes={this.props.isChannel}
                     key={i.key}
                     message={i}
                     isChannel={this.props.isChannel}
