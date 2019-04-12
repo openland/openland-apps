@@ -8,7 +8,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { MessageInputBar } from './components/MessageInputBar';
 import { DefaultConversationTheme, ConversationTheme } from './themes/ConversationThemeResolver';
-import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomMembers_members_user, MentionInput, UserShort, RoomShort, RoomShort_SharedRoom } from 'openland-api/Types';
+import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomMembers_members_user, MentionInput, UserShort, RoomShort_SharedRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
@@ -25,8 +25,6 @@ import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { MentionsRender } from './components/MentionsRender';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { SRouterContext } from 'react-native-s/SRouterContext';
-import { SRouter } from 'react-native-s/SRouter';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -366,7 +364,9 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         return (
             <>
                 <SHeader title="Comments" />
+
                 {room && room.canEdit && room.pinnedMessage && (room.pinnedMessage.id === message.id) && <SHeaderButton title="Manage" icon={manageIcon} onPress={this.handleManageClick} />}
+
                 <ASSafeAreaContext.Consumer>
                     {area => (
                         <>
