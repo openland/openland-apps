@@ -3,7 +3,11 @@ import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import UploadCare from 'uploadcare-widget';
 import { getConfig } from '../../../config';
-import { MyOrganizations_myOrganizations, SharedRoomKind } from 'openland-api/Types';
+import {
+    MyOrganizations_myOrganizations,
+    SharedRoomKind,
+    Organization_organization,
+} from 'openland-api/Types';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { UserInfoContext, withUserInfo } from 'openland-web/components/UserInfo';
@@ -262,7 +266,7 @@ const CoverUpload = (props: CoverUploadProps) => {
 };
 
 interface OrganizationItemProps {
-    organization: MyOrganizations_myOrganizations;
+    organization: MyOrganizations_myOrganizations | Organization_organization;
     onSelect: (v: string) => void;
     isSelected: boolean;
 }
@@ -326,6 +330,39 @@ const SelectOrganizationWrapperClassName = css`
     -webkit-overflow-scrolling: touch;
 `;
 
+const InOtherOrganization = (props: { inOrgId: string }) => {
+    const client = useClient();
+    const data = client.useOrganization({ organizationId: props.inOrgId });
+    if (!data.organization) {
+        return (
+            <XView
+                flexShrink={0}
+                flexGrow={1}
+                flexDirection="column"
+                justifyContent="center"
+                marginTop={40}
+            >
+                <XLoader loading={true} height={40} />
+            </XView>
+        );
+    }
+
+    return (
+        <XView flexShrink={1} flexGrow={1} flexDirection="column">
+            <XView fontSize={18} fontWeight="600" marginBottom={20} marginTop={40} paddingLeft={16}>
+                Share with
+            </XView>
+            <div className={SelectOrganizationWrapperClassName}>
+                <OrganizationItem
+                    organization={data.organization}
+                    isSelected={true}
+                    onSelect={() => null}
+                />
+            </div>
+        </XView>
+    );
+};
+
 const OrganizationsList = (props: {
     // organizations?: MyOrganizations_myOrganizations[];
     onSelect: (v: string) => void;
@@ -358,6 +395,9 @@ const OrganizationsList = (props: {
     let primaryOrg: MyOrganizations_myOrganizations | undefined | null = null;
     if (inOrgId) {
         selectedOrg = orgs.myOrganizations.find(a => a.id === inOrgId);
+        if (!selectedOrg) {
+            return <InOtherOrganization inOrgId={inOrgId} />;
+        }
     }
     if (primaryOrganizationId) {
         primaryOrg = orgs.myOrganizations.find(a => a.id === primaryOrganizationId);

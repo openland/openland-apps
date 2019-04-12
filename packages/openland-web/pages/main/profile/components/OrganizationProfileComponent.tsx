@@ -814,7 +814,7 @@ class CreateGroupButton extends React.PureComponent<{ onClick: () => void }> {
     }
 }
 
-export const CreateGroupPopperButton = XMemo((props: {orgId: string}) => {
+export const CreateGroupPopperButton = XMemo((props: { orgId: string }) => {
     const [show, setShow] = React.useState(false);
 
     const closer = () => {
@@ -838,16 +838,10 @@ export const CreateGroupPopperButton = XMemo((props: {orgId: string}) => {
             width={178}
             content={
                 <>
-                    <XMenuItem
-                        style="gray"
-                        path={'/mail/create?org=' + props.orgId}
-                    >
+                    <XMenuItem style="gray" path={'/mail/create?org=' + props.orgId}>
                         New group
                     </XMenuItem>
-                    <XMenuItem
-                        style="gray"
-                        path={'/mail/create?orgchannel=' + props.orgId}
-                    >
+                    <XMenuItem style="gray" path={'/mail/create?orgchannel=' + props.orgId}>
                         New channel
                     </XMenuItem>
                 </>
@@ -863,7 +857,31 @@ const Rooms = (props: { organization: Organization_organization }) => {
 
     let groups = organization.rooms;
 
-    if (organization.isCommunity || organization.isMine) {
+    if (!organization.isMine) {
+        return (
+            <Section separator={0}>
+                <XSubHeader
+                    title={TextProfiles.Organization.publicGroups}
+                    counter={groups.length}
+                    paddingBottom={0}
+                />
+                <SectionContent>
+                    <XWithRole role="super-admin">
+                        <CreateGroupPopperButton orgId={organization.id} />
+                    </XWithRole>
+                    {organization.isCommunity && (
+                        <XMoreCards>
+                            {groups.map((c: any, i: any) => (
+                                <XRoomCard key={i} room={c} />
+                            ))}
+                        </XMoreCards>
+                    )}
+                </SectionContent>
+            </Section>
+        );
+    }
+
+    if (organization.isMine) {
         return (
             <Section separator={0}>
                 <XSubHeader
@@ -873,11 +891,13 @@ const Rooms = (props: { organization: Organization_organization }) => {
                 />
                 <SectionContent>
                     <CreateGroupPopperButton orgId={organization.id} />
-                    <XMoreCards>
-                        {groups.map((c: any, i: any) => (
-                            <XRoomCard key={i} room={c} />
-                        ))}
-                    </XMoreCards>
+                    {organization.isCommunity && (
+                        <XMoreCards>
+                            {groups.map((c: any, i: any) => (
+                                <XRoomCard key={i} room={c} />
+                            ))}
+                        </XMoreCards>
+                    )}
                 </SectionContent>
             </Section>
         );
