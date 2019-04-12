@@ -128,6 +128,7 @@ export class ConversationEngine implements MessageSendHandler {
     canEdit?: boolean;
     canSendMessage?: boolean;
     isChannel?: boolean;
+    isPrivate?: boolean;
 
     constructor(engine: MessengerEngine, conversationId: string) {
         this.engine = engine;
@@ -165,6 +166,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.canEdit = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canEdit || false;
         this.canSendMessage = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.kind !== 'INTERNAL' ? initialChat.room.canSendMessage : true;
         this.isChannel = initialChat.room && initialChat.room.__typename === 'SharedRoom' ? initialChat.room.isChannel : false;
+        this.isPrivate = initialChat.room && initialChat.room.__typename === 'PrivateRoom' ? true : false;
 
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < this.engine.options.conversationBatchSize;

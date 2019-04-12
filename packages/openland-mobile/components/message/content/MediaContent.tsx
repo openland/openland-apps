@@ -83,7 +83,6 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 borderRadius={18}
                 alignItems="center"
             >
-                <Text>{this.state.downloadState && this.state.downloadState.path}</Text>
                 <TouchableWithoutFeedback onPress={this.handlePress}>
                     <Image
                         style={{ width: imageLayout.width, height: imageLayout.height }}

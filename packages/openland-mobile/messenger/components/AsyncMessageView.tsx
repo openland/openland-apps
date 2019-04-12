@@ -92,7 +92,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-right" backgroundColor={theme.backgroundColor} width={4} />
                 </ASFlex>
 
-                <AsyncMessageReactionsView theme={theme} message={props.message} isChannel={props.engine.isChannel} onCommentsPress={handleCommentsPress} />
+                <AsyncMessageReactionsView theme={theme} message={props.message} isChannel={props.engine.isChannel} isPrivate={props.engine.isPrivate} onCommentsPress={handleCommentsPress} />
 
                 <ASFlex backgroundColor={theme.backgroundColor} height={50} marginBottom={-50} />
             </ASFlex>

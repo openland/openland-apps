@@ -34,6 +34,7 @@ interface AsyncMessageReactionsViewProps {
     theme: AppTheme;
     message: DataSourceMessageItem;
     isChannel?: boolean;
+    isPrivate?: boolean;
 
     onCommentsPress: () => void;
 }
@@ -83,7 +84,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
     return (
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33} backgroundColor={theme.backgroundColor} >
             <ASFlex flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 14 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={5} alignItems="center">
-                {(props.isChannel || commentsCount > 0) && (
+                {(!props.isPrivate && (props.isChannel || commentsCount > 0)) && (
                     <ASFlex backgroundColor="rgba(0, 132, 254, 0.1)" borderRadius={14} marginRight={4} onPress={props.onCommentsPress}>
                         <ASFlex marginLeft={7} marginRight={7} height={28} alignItems="center" justifyContent="center">
                             {commentsCount <= 0 && <ASImage source={require('assets/ic-comments-24.png')} width={24} height={24} />}
