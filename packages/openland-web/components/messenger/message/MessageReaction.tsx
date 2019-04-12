@@ -9,6 +9,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
 import CommentLikeChannelIcon from 'openland-icons/ic-like-channel.svg';
 import CommentLikeEmptyChannelIcon from 'openland-icons/ic-like-empty-channel.svg';
+import { XView } from 'react-mental';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 10px',
@@ -227,21 +228,6 @@ export const ReactionComponent = React.memo((props: ReactionComponentT) => {
     );
 });
 
-const ReactionsWrapper = Glamorous.div({
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-});
-
-const ReactionsInnerWrapper = Glamorous.div({
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    backgroundColor: '#f4f4f4',
-    borderRadius: 18,
-    padding: '0 10px 0 10px',
-});
-
 const UsersLabel = Glamorous.div({
     color: 'rgba(0, 0, 0, 0.5)',
     fontSize: 12,
@@ -402,12 +388,18 @@ const OnlyLikesReactionsInner = React.memo(
             text = `${reactions.length} likes`;
         }
 
+        const textElem = (
+            <XView marginLeft={4} color="#000000" opacity={0.8} fontSize={13} fontWeight={'400'}>
+                {text}
+            </XView>
+        );
+
         if (reactions.find((r: any) => r.user.id === meId)) {
             return (
                 <>
                     <SingleReactionUnset messageId={messageId} reaction={'❤️'} isMy={true}>
                         <CommentLikeChannelIcon />
-                        {text}
+                        {textElem}
                     </SingleReactionUnset>
                 </>
             );
@@ -416,7 +408,7 @@ const OnlyLikesReactionsInner = React.memo(
             <>
                 <SingleReactionSet messageId={messageId} reaction={'❤️'} isMy={false}>
                     <CommentLikeEmptyChannelIcon />
-                    {text}
+                    {textElem}
                 </SingleReactionSet>
             </>
         );
@@ -548,30 +540,34 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
     render() {
         const { reactions, meId, messageId, onlyLikes } = this.props;
         return (
-            <>
+            <XView flexWrap="wrap" alignItems="center">
                 {onlyLikes && (
-                    <ReactionsWrapper className="reactions-wrapper">
-                        <ReactionsInnerWrapper>
-                            <OnlyLikesReactionsInner
-                                reactions={reactions}
-                                meId={meId}
-                                messageId={messageId}
-                            />
-                        </ReactionsInnerWrapper>
-                    </ReactionsWrapper>
+                    <XView
+                        flexWrap="wrap"
+                        alignItems="center"
+                        backgroundColor="#f4f4f4"
+                        borderRadius={18}
+                        paddingRight={13}
+                        paddingLeft={10}
+                    >
+                        <OnlyLikesReactionsInner
+                            reactions={reactions}
+                            meId={meId}
+                            messageId={messageId}
+                        />
+                    </XView>
                 )}
                 {!onlyLikes && reactions && reactions.length > 0 ? (
-                    <ReactionsWrapper className="reactions-wrapper">
-                        <ReactionsInnerWrapper>
-                            <ReactionsInner
-                                reactions={reactions}
-                                meId={meId}
-                                messageId={messageId}
-                            />
-                        </ReactionsInnerWrapper>
-                    </ReactionsWrapper>
+                    <XView
+                        flexWrap="wrap"
+                        alignItems="center"
+                        backgroundColor="#f4f4f4"
+                        borderRadius={18}
+                    >
+                        <ReactionsInner reactions={reactions} meId={meId} messageId={messageId} />
+                    </XView>
                 ) : null}
-            </>
+            </XView>
         );
     }
 }

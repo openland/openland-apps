@@ -45,10 +45,7 @@ const MessageWrapper = Glamorous(XHorizontal)<{
     '& .menu-wrapper': {
         marginTop: props.compact ? 0 : 6,
     },
-    '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
-        opacity: 0,
-        pointerEvents: 'none',
-    },
+
     '& .check-icon': {
         opacity: props.startSelected ? 1 : 0,
         cursor: 'pointer',
@@ -62,10 +59,6 @@ const MessageWrapper = Glamorous(XHorizontal)<{
         },
         '& .time': {
             opacity: props.isEditView ? 0 : 1,
-        },
-        '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
-            opacity: props.startSelected ? 0 : props.isEditView ? 0 : 1,
-            pointerEvents: props.startSelected ? 'none' : props.isEditView ? 'none' : 'auto',
         },
     },
 }));

@@ -125,7 +125,7 @@ const CallButton = ({
     ) : null;
 };
 
-const RowWithSeparators = ({
+export const RowWithSeparators = ({
     separatorWidth,
     children,
 }: {

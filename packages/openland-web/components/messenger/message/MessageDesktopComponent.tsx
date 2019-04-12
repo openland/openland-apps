@@ -28,7 +28,6 @@ import { DesktopMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { XView } from 'react-mental';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
 import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
 
@@ -67,10 +66,7 @@ const MessageWrapper = Glamorous(XHorizontal)<{
     '& .menu-wrapper': {
         marginTop: props.compact ? 0 : 6,
     },
-    '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
-        opacity: 0,
-        pointerEvents: 'none',
-    },
+
     '& .check-icon': {
         opacity: props.startSelected ? 1 : 0,
         cursor: 'pointer',
@@ -84,10 +80,6 @@ const MessageWrapper = Glamorous(XHorizontal)<{
         },
         '& .time': {
             opacity: props.isEditView ? 0 : 1,
-        },
-        '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
-            opacity: props.startSelected ? 0 : props.isEditView ? 0 : 1,
-            pointerEvents: props.startSelected ? 'none' : props.isEditView ? 'none' : 'auto',
         },
     },
 }));
@@ -299,10 +291,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     className="menu-wrapper"
                 >
                     <XHorizontal alignItems="center" separator={8}>
-                        <ReactionComponent
-                            messageId={message.id!}
-                            onlyLikes={this.props.onlyLikes}
-                        />
+                        {!this.props.hasComments && <ReactionComponent messageId={message.id!} />}
                         {!this.props.isChannel && (
                             <IconButton onClick={this.setReplyMessages}>
                                 <ReplyIcon />
@@ -544,8 +533,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     selected={selected}
                 >
                     {content}
-                    <XView flexDirection="row" paddingTop={4}>
-                        <XWithRole role={['feature-non-production']}>
+                    <XView flexDirection="row" paddingTop={6}>
+                        <XHorizontal alignItems="center" separator={5}>
                             {this.props.hasComments && (
                                 <DiscussButton
                                     commentsCount={this.props.message.commentsCount}
@@ -553,15 +542,15 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                     conversationId={this.props.conversationId!!}
                                 />
                             )}
-                        </XWithRole>
-                        {!message.isSending ? (
-                            <Reactions
-                                onlyLikes={this.props.onlyLikes}
-                                messageId={message.id!}
-                                reactions={message.reactions || []}
-                                meId={(this.props.me && this.props.me.id) || ''}
-                            />
-                        ) : null}
+                            {!message.isSending ? (
+                                <Reactions
+                                    onlyLikes={this.props.onlyLikes}
+                                    messageId={message.id!}
+                                    reactions={message.reactions || []}
+                                    meId={(this.props.me && this.props.me.id) || ''}
+                                />
+                            ) : null}
+                        </XHorizontal>
                     </XView>
                 </DesktopMessageContainer>
             );
