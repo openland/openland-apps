@@ -563,6 +563,8 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                         alignItems="center"
                         backgroundColor="#f4f4f4"
                         borderRadius={18}
+                        flexDirection="row"
+                        paddingHorizontal={10}
                     >
                         <ReactionsInner reactions={reactions} meId={meId} messageId={messageId} />
                     </XView>
