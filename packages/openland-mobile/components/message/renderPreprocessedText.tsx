@@ -15,6 +15,7 @@ export const renderPreprocessedText = (v: Span, i: number, onUserPress: (id: str
                 key={'link-' + i}
                 style={{ color: DefaultConversationTheme.linkColorIn, }}
                 onPress={resolveInternalLink(v.link!, async () => await Linking.openURL(v.link!))}
+                allowFontScaling={false}
             >
                 {v.text}
             </Text>
@@ -25,6 +26,7 @@ export const renderPreprocessedText = (v: Span, i: number, onUserPress: (id: str
                 key={'mention-' + i}
                 style={{ color: DefaultConversationTheme.linkColorIn, }}
                 onPress={() => onUserPress(v.id)}
+                allowFontScaling={false}
             >
                 {useNonBreakingSpaces(v.text)}
             </Text>
@@ -32,6 +34,6 @@ export const renderPreprocessedText = (v: Span, i: number, onUserPress: (id: str
     } else if (v.type === 'mention_users') {
         return <OthersUsersWrapper onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={false} />
     } else {
-        return <Text key={'text-' + i}>{v.text}</Text>;
+        return <Text key={'text-' + i} allowFontScaling={false}>{v.text}</Text>;
     }
 }

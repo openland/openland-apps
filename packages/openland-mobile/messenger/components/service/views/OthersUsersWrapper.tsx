@@ -51,6 +51,7 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
                     marginRight: 6,
                 }}
                 onPress={() => this.handlePress()}
+                allowFontScaling={false}
             >
                 {this.props.text}
             </Text>

@@ -71,7 +71,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                                 right={0}
                                 bottom={0}
                             >
-                                <Text style={{ color: '#fff', opacity: 0.8, textAlign: 'center' }}>{Math.round(this.state.downloadState.progress * 100)}</Text>
+                                <Text style={{ color: '#fff', opacity: 0.8, textAlign: 'center' }} allowFontScaling={false}>{Math.round(this.state.downloadState.progress * 100)}</Text>
                             </View>
                         )}
                     </View>
@@ -89,6 +89,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                                 lineHeight: 18,
                             }}
                             numberOfLines={1}
+                            allowFontScaling={false}
                         >
                             {this.props.attach!!.fileMetadata.name}
                         </Text>
@@ -101,6 +102,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                                 opacity: 0.7,
                             }}
                             numberOfLines={1}
+                            allowFontScaling={false}
                         >
                             {formatBytes(this.props.attach!!.fileMetadata.size)}
                         </Text>

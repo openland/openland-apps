@@ -113,7 +113,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                     <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
                         <View flexDirection="row">
                             <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: '#0084fe', width: 16, height: 16 }} />
-                            <Text style={styles.reply}>Reply</Text>
+                            <Text style={styles.reply} allowFontScaling={false}>Reply</Text>
                         </View>
                     </TouchableWithoutFeedback>
                 )}
@@ -131,7 +131,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         <TouchableWithoutFeedback onPress={handleReactionPress}>
             <View width={44} marginRight={-16} alignItems="center" justifyContent="center">
                 <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? '#f6564e' : 'rgba(129, 137, 149, 0.3)', width: 18, height: 18 }} />
-                {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? '#000000' : 'rgba(0, 0, 0, 0.6)' } as TextStyle}>{likesCount}</Text>}
+                {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? '#000000' : 'rgba(0, 0, 0, 0.6)' } as TextStyle} allowFontScaling={false}>{likesCount}</Text>}
             </View>
         </TouchableWithoutFeedback>
     ) : undefined;
@@ -145,8 +145,8 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                             {avatar}
 
                             <View flexGrow={1} flexShrink={1}>
-                                {deleted && <Text style={[styles.senderNameDeleted, { marginBottom: 1 }]}>{sender.name}</Text>}
-                                {!deleted && <Text style={[styles.senderName, { marginBottom: 1 }]} onPress={() => router.push('ProfileUser', { id: sender.id })}>{sender.name}</Text>}
+                                {deleted && <Text style={[styles.senderNameDeleted, { marginBottom: 1 }]} allowFontScaling={false}>{sender.name}</Text>}
+                                {!deleted && <Text style={[styles.senderName, { marginBottom: 1 }]} onPress={() => router.push('ProfileUser', { id: sender.id })} allowFontScaling={false}>{sender.name}</Text>}
 
                                 <View style={{ opacity: deleted ? 0.5 : undefined }}>
                                     <ZMessageView message={comment} small={true} />
@@ -162,7 +162,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                                 <View flexDirection="row" marginBottom={3}>
                                     {avatar}
 
-                                    <Text style={!deleted ? styles.senderName : styles.senderNameDeleted}>{sender.name}</Text>
+                                    <Text style={!deleted ? styles.senderName : styles.senderNameDeleted} allowFontScaling={false}>{sender.name}</Text>
                                 </View>
                             </TouchableWithoutFeedback>
 

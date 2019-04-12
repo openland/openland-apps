@@ -49,6 +49,7 @@ export const TextContent = (props: TextContentProps) => {
                     fontWeight: TextStyles.weight.regular,
                     fontStyle: props.fontStyle,
                 } as TextStyle}
+                allowFontScaling={false}
             >
                 {parts}
             </Text>

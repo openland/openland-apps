@@ -92,6 +92,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             fontWeight: TextStyles.weight.regular,
                         } as TextStyle}
                         numberOfLines={1}
+                        allowFontScaling={false}
                     >
                         {this.props.attach.titleLinkHostname}
                     </Text>
@@ -123,7 +124,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                 alignItems="center"
                             >
                                 <View backgroundColor="#0008" borderRadius={20}>
-                                    <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center'}}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
+                                    <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center'}} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
                                 </View>
                             </View>
                         }
@@ -140,6 +141,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             fontWeight: TextStyles.weight.regular
                         } as TextStyle}
                         numberOfLines={1}
+                        allowFontScaling={false}
                     >
                         {this.props.attach.titleLinkHostname}
                     </Text>
@@ -187,6 +189,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                 } as TextStyle}
                                 numberOfLines={this.imageCompact ? 1 : 3}
                                 onPress={this.onTitleClick}
+                                allowFontScaling={false}
                             >
                                 {this.props.attach.title}
                             </Text>
@@ -202,6 +205,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                     fontWeight: TextStyles.weight.regular,
                                 } as TextStyle}
                                 numberOfLines={1}
+                                allowFontScaling={false}
                             >
                                 {subTitle}
                             </Text>
@@ -221,6 +225,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             zIndex: 1,
                         } as TextStyle}
                         numberOfLines={5}
+                        allowFontScaling={false}
                     >
                         {!subTitle && this.imageCompact && imgLayout && paddedTextPrefix}
                         {text}
@@ -249,6 +254,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                             fontSize: 14,
                                             fontWeight: TextStyles.weight.medium,
                                         } as TextStyle}
+                                        allowFontScaling={false}
                                     >
                                         {button.title}
                                     </Text>

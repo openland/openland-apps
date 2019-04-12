@@ -54,6 +54,7 @@ export const ReplyContent = (props: ReplyContentProps) => {
                                     marginBottom: 2,
                                 } as TextStyle}
                                 onPress={() => props.onUserPress(generalMesage!.sender.id!)}
+                                allowFontScaling={false}
                             >
                                 {generalMesage!.sender.name || ''}
                             </Text>

@@ -289,8 +289,8 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             suggestions = (
                 <View marginLeft={Platform.OS === 'android' ? 12 : 15} paddingLeft={8} marginRight={Platform.OS === 'android' ? 12 : 52} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
                     <View flexGrow={1}>
-                        <Text style={{ color: '#0084fe', fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1}>{replyTo.sender.name}</Text>
-                        <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1}>{replyTo.message}</Text>
+                        <Text style={{ color: '#0084fe', fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1} allowFontScaling={false}>{replyTo.sender.name}</Text>
+                        <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1} allowFontScaling={false}>{replyTo.message}</Text>
                     </View>
                     <TouchableWithoutFeedback onPress={this.handleReplyClear}>
                         <View marginLeft={11} width={18} height={38} alignItems="center" justifyContent="center">
@@ -336,7 +336,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                             <View height={1} backgroundColor="#eff0f2" marginTop={20} />
 
                             <View marginTop={20} marginBottom={20}>
-                                <Text style={{ fontSize: 16, color: '#99a2b0', fontWeight: TextStyles.weight.medium } as TextStyle}>COMMENTS: <Text style={{ color: '#b9c1cd' }}>{this.props.comments.length}</Text></Text>
+                                <Text style={{ fontSize: 16, color: '#99a2b0', fontWeight: TextStyles.weight.medium } as TextStyle} allowFontScaling={false}>COMMENTS: <Text style={{ color: '#b9c1cd' }}>{this.props.comments.length}</Text></Text>
                             </View>
 
                             {commentsElements}
@@ -346,7 +346,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                     {comments.length === 0 && (
                         <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40}>
                             <Image source={require('assets/img-empty.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
-                            <Text style={{ fontSize: 15, color: 'rgba(0, 0, 0, 0.4)' }}>Write the first comment</Text>
+                            <Text style={{ fontSize: 15, color: 'rgba(0, 0, 0, 0.4)' }} allowFontScaling={false}>Write the first comment</Text>
                         </View>
                     )}
                 </View>

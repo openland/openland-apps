@@ -31,6 +31,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
                         color: '#99a2b0'
                     } as TextStyle}
                     numberOfLines={1}
+                    allowFontScaling={false}
                 >
                     {usersString}
                 </Text>

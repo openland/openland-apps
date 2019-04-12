@@ -95,7 +95,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                         right={0}
                         bottom={0}
                     >
-                        <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center'}}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
+                        <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center'}} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
                     </View>
                 )}
             </View>
