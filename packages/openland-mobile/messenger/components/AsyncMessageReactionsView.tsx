@@ -81,7 +81,11 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
         return null;
     }
 
-    const { reactionsSorted, usersString } = extractReactionsSorted(props.message.reactions!);
+    let reactions: any = { reactionsSorted: [], usersString: '' };
+
+    if (props.message.reactions && props.message.reactions.length > 0) {
+        reactions = extractReactionsSorted(props.message.reactions!);
+    }
 
     sw.next();
     return (
@@ -97,13 +101,13 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
                     </ASFlex>
                 )}
                 
-                {[...reactionsSorted].map((i) =>
+                {[...reactions.reactionsSorted].map((i) =>
                     (
                         <ASImage key={'k' + i.reaction} marginLeft={3} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
                     )
                 )}
 
-                {usersString.length > 0 && <ASText fontWeight={TextStyles.weight.medium} marginLeft={5} marginRight={7} marginTop={2} fontSize={13} key={'users'} color={'#99a2b0'}>{usersString}</ASText>}
+                {reactions.usersString.length > 0 && <ASText fontWeight={TextStyles.weight.medium} marginLeft={5} marginRight={7} marginTop={2} fontSize={13} key={'users'} color={'#99a2b0'}>{reactions.usersString}</ASText>}
             </ASFlex>
         </ ASFlex>
     );
