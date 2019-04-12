@@ -53,10 +53,21 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
     let onCallEnd = React.useCallback(() => {
         setStatus('end');
+        var Sound = require('react-native-sound');
+        Sound.setCategory('Playback');
+        Sound.setMode('SpokenAudio');
+        var whoosh = new Sound('call_end.mp3', Sound.MAIN_BUNDLE, (error: any) => {
+            if (error) {
+                console.log('failed to load the sound', error);
+                return;
+            }
+            whoosh.play();
+        });
+
         setTimeout(() => {
             SStatusBar.setBarStyle('dark-content');
             props.hide();
-        }, 2000)
+        }, 1000)
     }, [])
 
     React.useEffect(() => {

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.zmxv.RNSound.RNSoundPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
 import com.zxcpoiu.incallmanager.InCallManagerPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
@@ -64,6 +65,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RNSoundPackage(),
             new RNReactNativeHapticFeedbackPackage(),
             new InCallManagerPackage(),
             new ExtraDimensionsPackage(),

@@ -20,6 +20,7 @@ export class MediaStreamManager {
     private remoteDescription?: string;
     private appliedCandidates = new Set<string>();
     private destroyed = false;
+    private onReady?: () => void;
 
     constructor(
         client: OpenlandClient,
@@ -27,7 +28,8 @@ export class MediaStreamManager {
         peerId: string,
         iceServers: ConferenceMedia_conferenceMedia_iceServers[],
         stream: AppMediaStream,
-        streamConfig: ConferenceMedia_conferenceMedia_streams
+        streamConfig: ConferenceMedia_conferenceMedia_streams,
+        onReady?: () => void
     ) {
         this.id = id;
         this.client = client;
@@ -35,7 +37,7 @@ export class MediaStreamManager {
         this.iceServers = iceServers;
         this.streamConfig = streamConfig;
         this.stream = stream;
-
+        this.onReady = onReady;
         this.peerConnection = AppPeerConnectionFactory.createConnection({
             iceServers: this.iceServers.map(v => ({
                 urls: v.urls,
@@ -151,6 +153,10 @@ export class MediaStreamManager {
                         this.remoteDescription = offer;
 
                         console.log('[WEBRTC]: Received answer');
+                    }
+
+                    if (this.onReady) {
+                        this.onReady();
                     }
 
                     this.handleState();

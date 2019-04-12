@@ -175,10 +175,8 @@ export class MediaSessionManager {
                 ex.onStateChanged(s);
             } else {
                 console.log('[WEBRTC] Create stream ' + s.id);
-                if (this.isPrivate) {
-                    this.onStatusChange('connected');
-                }
-                let ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, s);
+
+                let ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined);
                 this.streams.set(s.id, ms);
             }
         }

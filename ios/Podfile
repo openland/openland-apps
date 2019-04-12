@@ -80,6 +80,7 @@ target 'openland' do
   pod 'react-native-haptic-feedback', :path => '../node_modules/react-native-haptic-feedback'
 
   pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
+  pod 'RNSound', :path => '../node_modules/react-native-sound'
 
 end
 
