@@ -9,6 +9,7 @@ import { Stopwatch } from 'openland-y-utils/stopwatch';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 
 export const defaultReactions = ['LIKE', 'THUMB_UP', 'JOY', 'SCREAM', 'CRYING', 'ANGRY'];
 
@@ -30,6 +31,33 @@ export let reactionMap = {
     'ANGRY': '🤬',
 };
 
+export const extractReactionsSorted = (reactions: FullMessage_GeneralMessage_reactions[]) => {
+    let reactionsReduced = reactions.reduce(
+            (res, r) => {
+                let data = res.get(r.reaction) || { reaction: r.reaction, count: 0, my: false };
+                data.count++;
+                data.my = data.my || r.user.id === getMessenger().engine.user.id;
+                res.set(r.reaction, data);
+                return res;
+            },
+            new Map<string, { count: number, my: boolean, reaction: string }>()
+        );
+    let reactionsSorted = [...reactionsReduced.values()].sort((a, b) => a.count - b.count);
+    let users = reactions
+        .reduce(
+            (res, r) => res.find(u => u.id === r.user.id) ? res : [...res, r.user],
+            [] as { id: string, name: string }[]
+        )
+        // 'You' first
+        .sort((a, b) => a.id === getMessenger().engine.user.id ? -1 : 1)
+        // replace user name to 'You';
+        .map(u => u.id === getMessenger().engine.user.id ? { ...u, name: 'You' } : u);
+        // reduce
+    let usersString = (users.find(r => r.name === 'You') ? 'You' : users[0].name) + (users.length > 1 ? ' + ' + (users.length - 1) : '');
+
+    return { reactionsSorted, usersString };
+}
+
 interface AsyncMessageReactionsViewProps {
     theme: AppTheme;
     message: DataSourceMessageItem;
@@ -50,35 +78,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
         return null;
     }
 
-    let reactions = new Map;
-    let reactionsSorted = [];
-    let users = [];
-    let usersString = '';
-
-    if (props.message.reactions && props.message.reactions.length > 0) {
-        reactions = props.message.reactions!.reduce(
-                (res, r) => {
-                    let data = res.get(r.reaction) || { reaction: r.reaction, count: 0, my: false };
-                    data.count++;
-                    data.my = data.my || r.user.id === getMessenger().engine.user.id;
-                    res.set(r.reaction, data);
-                    return res;
-                },
-                new Map<string, { count: number, my: boolean, reaction: string }>()
-            );
-        reactionsSorted = [...reactions.values()].sort((a, b) => a.count - b.count);
-        users = props.message.reactions!
-            .reduce(
-                (res, r) => res.find(u => u.id === r.user.id) ? res : [...res, r.user],
-                [] as { id: string, name: string }[]
-            )
-            // 'You' first
-            .sort((a, b) => a.id === getMessenger().engine.user.id ? -1 : 1)
-            // replace user name to 'You';
-            .map(u => u.id === getMessenger().engine.user.id ? { ...u, name: 'You' } : u);
-        // reduce
-        usersString = (users.find(r => r.name === 'You') ? 'You' : users[0].name) + (users.length > 1 ? ' + ' + (users.length - 1) : '');
-    }
+    const { reactionsSorted, usersString } = extractReactionsSorted(props.message.reactions!);
 
     sw.next();
     return (
@@ -100,7 +100,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
                     )
                 )}
 
-                {users.length > 0 && <ASText fontWeight={TextStyles.weight.medium} marginLeft={5} marginRight={7} marginTop={2} fontSize={13} key={'users'} color={'#99a2b0'}>{usersString}</ASText>}
+                {usersString.length > 0 && <ASText fontWeight={TextStyles.weight.medium} marginLeft={5} marginRight={7} marginTop={2} fontSize={13} key={'users'} color={'#99a2b0'}>{usersString}</ASText>}
             </ASFlex>
         </ ASFlex>
     );

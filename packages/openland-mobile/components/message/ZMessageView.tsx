@@ -4,10 +4,13 @@ import { View } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { extractContent } from './extractContent';
+import { ReactionsView } from './content/ReactionsView';
 
 export interface ZMessageViewProps {
     message: FullMessage_GeneralMessage;
+
     small?: boolean;
+    showReactions?: boolean;
 }
 
 export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
@@ -33,9 +36,12 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         onDocumentPress: handleDocumentPress,
     }, props.small);
 
+    const reactions = props.showReactions ? <ReactionsView reactions={message.reactions} /> : undefined;
+
     return (
         <View>
             {content}
+            {reactions}
         </View>
     );
 });

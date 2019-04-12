@@ -161,26 +161,6 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         });
     }
 
-    handleReactionPress = () => {
-        let r = 'LIKE';
-        let message = this.props.message;
-        let engine = this.props.messenger.engine;
-        let client = engine.client;
-
-        startLoader();
-        try {
-            let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;
-            if (remove) {
-                client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: reactionMap[r] });
-            } else {
-                client.mutateMessageSetReaction({ messageId: message.id!, reaction: reactionMap[r] });
-            }
-        } catch (e) {
-            Alert.alert(e.message);
-        }
-        stopLoader();
-    }
-
     handleReplyPress = (comment: MessageComments_messageComments_comments_comment) => {
         this.setState({ replyTo: comment });
     }
@@ -264,39 +244,6 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             }
         }
 
-        let likesCount = message.reactions.length;
-        let myLike = false;
-
-        message.reactions.map(r => {
-            if (r.user.id === getMessenger().engine.user.id) {
-                myLike = true;
-            }
-        });
-
-        const toolButtons = (
-            <View alignItems="stretch" flexDirection="row" marginTop={10} flexGrow={1} justifyContent="flex-start">
-                <TouchableWithoutFeedback onPress={this.handleReactionPress}>
-                    <View backgroundColor="#f3f5f7" borderRadius={14} paddingHorizontal={7} height={28} flexDirection="row" alignItems="center" justifyContent="center">
-                        {!myLike && <Image source={require('assets/ic-likes-24.png')} style={{ width: 24, height: 24 }} />}
-                        {myLike && <Image source={require('assets/ic-likes-full-24.png')} style={{ width: 24, height: 24 }} />}
-                        {likesCount > 0 && (
-                            <Text
-                                style={{
-                                    fontSize: 14,
-                                    fontWeight: TextStyles.weight.medium,
-                                    marginLeft: 2,
-                                    marginRight: 1,
-                                    opacity: 0.8
-                                } as TextStyle}
-                            >
-                                {likesCount}
-                            </Text>
-                        )}
-                    </View>
-                </TouchableWithoutFeedback>
-            </View>
-        );
-
         let suggestions = null;
         let activeWord = findActiveWord(this.state.text, this.state.selection);
 
@@ -344,9 +291,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             <ScrollView flexGrow={1} keyboardDismissMode="interactive">
                 <View paddingHorizontal={16} paddingBottom={Platform.OS === 'ios' ? 68 : undefined}>
                     <SenderView sender={message.sender} date={message.date} />
-                    <ZMessageView message={message} />
-
-                    {toolButtons}
+                    <ZMessageView message={message} showReactions={true} />
 
                     {comments.length > 0 && (
                         <>
