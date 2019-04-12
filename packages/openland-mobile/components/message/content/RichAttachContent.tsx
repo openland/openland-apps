@@ -8,6 +8,7 @@ import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage } from 'openland-api/Types';
 import { richAttachImageShouldBeCompact, isInvite } from 'openland-mobile/messenger/components/content/RichAttachContent';
+import FastImage from 'react-native-fast-image';
 
 interface RichAttachContentProps {
     message: FullMessage_GeneralMessage;
@@ -16,6 +17,8 @@ interface RichAttachContentProps {
 
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string }, radius?: number) => void;
 }
+
+const paddedTextPrefix = <Text>{' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 11 }))}</Text>;
 
 export class RichAttachContent extends React.PureComponent<RichAttachContentProps, { downloadState?: DownloadState }> {
     private augLayout?: { width: number, height: number };
@@ -72,7 +75,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
         // prepare image
         let imgCompact = this.imageCompact;
         let imgLayout = this.augLayout;
-        let imageSource = { uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined };
+        let imageSource = { uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : '', priority: 'normal', ...{ disableAnimations: true } as any };
 
         // invite link image placeholder
         if (richAttachImageShouldBeCompact(this.props.attach)) {
@@ -88,7 +91,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
         }
 
         return (
-            <View flexDirection="column" alignItems="stretch" alignSelf="stretch">
+            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={10}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <Text
                         style={{
@@ -106,11 +109,11 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 {!imgCompact && this.props.attach.image && imgLayout && (
                     <View backgroundColor="#dbdce1" marginTop={5} justifyContent="center" borderRadius={8}>
                         <TouchableWithoutFeedback onPress={() => this.onMediaPress(8)}>
-                            <Image
+                            <FastImage
                                 source={imageSource}
                                 style={{
-                                    width: imgLayout!.width,
-                                    height: imgLayout!.height,
+                                    width: imgLayout.width,
+                                    height: imgLayout.height,
                                     borderRadius: 8
                                 }}
                             />
@@ -154,13 +157,13 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 <View flexDirection="row" marginTop={5}>
                     {imgCompact && imgLayout && imageSource && (
                         <TouchableWithoutFeedback onPress={() => this.onMediaPress(10)}>
-                            <Image
+                            <FastImage
                                 source={imageSource}
                                 style={{
-                                    width: imgLayout!.width,
-                                    height: imgLayout!.height,
+                                    width: imgLayout.width,
+                                    height: imgLayout.height,
                                     borderRadius: 10,
-                                    marginRight: 9
+                                    marginRight: 9,
                                 }}
                             />
                         </TouchableWithoutFeedback>
@@ -213,17 +216,18 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                         } as TextStyle}
                         numberOfLines={5}
                     >
+                        {!subTitle && this.imageCompact && imgLayout && paddedTextPrefix}
                         {text}
                     </Text>
                 )}
 
                 {!!keyboard && keyboard.buttons.map((line, i) =>
-                    <View key={'attch-btn-' + i} flexDirection="row" marginTop={4} alignSelf="stretch" marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
+                    <View key={'attch-btn-' + i} flexDirection="row" marginTop={10} alignSelf="stretch" marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
                         {!!line && line.map((button, j) =>
                             <TouchableWithoutFeedback key={'button-' + i + '-' + j} onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}>
                                 <View
                                     marginTop={i !== 0 ? 4 : 0}
-                                    backgroundColor='#fff'
+                                    backgroundColor="#F7F7F7"
                                     borderRadius={8}
                                     marginLeft={j > 0 ? 4 : 0}
                                     marginRight={j < line.length - 1 ? 4 : 0}

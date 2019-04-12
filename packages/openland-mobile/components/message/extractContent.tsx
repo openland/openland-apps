@@ -7,6 +7,7 @@ import { TextContent } from './content/TextContent';
 import { DocumentContent } from './content/DocumentContent';
 import { RichAttachContent } from './content/RichAttachContent';
 import { layoutImage } from 'openland-mobile/messenger/components/content/MediaContent';
+import { Dimensions } from 'react-native';
 
 interface ExtractContentProps {
     theme: AppTheme;
@@ -19,6 +20,7 @@ interface ExtractContentProps {
 
 export let extractContent = (props: ExtractContentProps, isSmall?: boolean) => {
     let message = props.message;
+    let maxWidth = Dimensions.get('screen').width - 32;
 
     let attaches = (message.attachments || []);
     let fileAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile') as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
@@ -40,7 +42,7 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean) => {
         let isImage = file.fileMetadata.isImage;
     
         if (isImage) {
-            let imageLayout = layoutImage(file.fileMetadata);
+            let imageLayout = layoutImage(file.fileMetadata, maxWidth);
     
             if (imageLayout) {
                 content.push(<MediaContent key={'msg-media-' + index} imageLayout={imageLayout} message={message} attach={file} onMediaPress={props.onMediaPress} />);
@@ -54,7 +56,7 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean) => {
         let imageLayout;
 
         if (attach.image && attach.image.metadata) {
-            imageLayout = layoutImage(attach.image.metadata);
+            imageLayout = layoutImage(attach.image.metadata, maxWidth);
         }
 
         content.push(<RichAttachContent key={'msg-rich-' + index} attach={attach} imageLayout={imageLayout} message={message} onMediaPress={props.onMediaPress} />);
