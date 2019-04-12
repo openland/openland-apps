@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_sender } from 'openland-api/Types';
-import { View, Text, TouchableWithoutFeedback, TextStyle } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, TextStyle, Platform } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -33,7 +33,7 @@ export const SenderView = React.memo<SenderViewProps>((props) => {
                                     {' ' + sender.primaryOrganization.name}
                                 </Text>}
                         </Text>
-                        <Text style={{ fontSize: 14, marginTop: 5, color: '#99a2b0' }}>{formatDate(parseInt(date, 10))}</Text>
+                        <Text style={{ fontSize: 14, marginTop: Platform.OS === 'android' ? 2 : 5, color: '#99a2b0' }}>{formatDate(parseInt(date, 10))}</Text>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
