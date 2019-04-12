@@ -69,6 +69,8 @@ PODS:
     - React
   - react-native-image-picker (0.14.3):
     - React
+  - react-native-sqlite-storage (3.3.10):
+    - React
   - react-native-webrtc (1.69.0):
     - React
   - React/Core (0.57.8):
@@ -180,6 +182,7 @@ DEPENDENCIES:
   - react-native-fast-image (from `../node_modules/react-native-fast-image`)
   - react-native-haptic-feedback (from `../node_modules/react-native-haptic-feedback`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - react-native-webrtc (from `../node_modules/react-native-webrtc`)
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
@@ -257,6 +260,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-haptic-feedback"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-sqlite-storage:
+    :path: "../node_modules/react-native-sqlite-storage"
   react-native-webrtc:
     :path: "../node_modules/react-native-webrtc"
   ReactNativeIncallManager:
@@ -303,6 +308,7 @@ SPEC CHECKSUMS:
   react-native-fast-image: cba3d9bf9c2cf8ddb643d887a686c53a5dd90a2c
   react-native-haptic-feedback: f675486e3889e3229272158943c1e9e075247e5a
   react-native-image-picker: b303e31c3c4ada1d7cb1342423d328d2efb07fb3
+  react-native-sqlite-storage: 848fb96c0b6d17b3f70e169ac41f84434cdad94c
   react-native-webrtc: 31b6d3f1e3e2ce373aa43fd682b04367250f807d
   ReactNativeIncallManager: c79b48e706ba3e495c747ea9ff5962378a65c04a
   ReactNativePermissions: 9f2d9c45c98800795e6c2ed330e25d11a66a8169
@@ -321,6 +327,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 7200b1b5af68eb3b87375652939a26117942c2da
+PODFILE CHECKSUM: 9c296f3df32e696fef436a3e1cee893bfd6451fa
 
 COCOAPODS: 1.5.3
