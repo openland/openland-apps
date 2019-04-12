@@ -78,7 +78,9 @@ class XRichTextInputStored extends React.PureComponent<
     }
 }
 
-class XTextInput extends React.PureComponent<XTextInputProps & { mentionsData?: UserWithOffset[] }> {
+class XTextInput extends React.PureComponent<
+    XTextInputProps & { mentionsData?: UserWithOffset[] }
+> {
     render() {
         if (this.props.kind === 'from_store') {
             const { valueStoreKey, ...other } = this.props;
@@ -202,7 +204,7 @@ export const EditMessageInlineWrapper = (
 ) => {
     const client = useClient();
 
-    const data = client.useMentionsMembers(props.variables);
+    const data = client.useRoomMembers(props.variables);
 
     const mentionsData =
         data && data.members ? convertChannelMembersDataToMentionsData(data.members) : [];

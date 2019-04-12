@@ -1,12 +1,6 @@
 import * as React from 'react';
-<<<<<<< HEAD
-import { MentionsMembers_members } from 'openland-api/Types';
-import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
-=======
 import { RoomMembers_members } from 'openland-api/Types';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
-import { UserShort } from 'openland-api/Types';
->>>>>>> wip(web): web move to new mentions api
 
 export type MentionsStateT = {
     mentionsData: UserWithOffset[];
@@ -15,13 +9,9 @@ export type MentionsStateT = {
     setCurrentMentions: (a: UserWithOffset[]) => void;
 };
 
-<<<<<<< HEAD
-export const convertChannelMembersDataToMentionsData = (data?: MentionsMembers_members[]) => {
-=======
 export const convertChannelMembersDataToMentionsData = (
     data?: RoomMembers_members[],
 ): UserWithOffset[] => {
->>>>>>> wip(web): web move to new mentions api
     if (!data) {
         return [];
     }
@@ -34,14 +24,14 @@ export const convertChannelMembersDataToMentionsData = (
     });
 };
 
-const getMembers = (members?: MentionsMembers_members[]) => {
+const getMembers = (members?: RoomMembers_members[]) => {
     return members
         ? members.map(({ user: { name } }: { user: { name: string } }) => `@${name}`)
         : [];
 };
 
 type useMentionsT = {
-    members?: MentionsMembers_members[];
+    members?: RoomMembers_members[];
 };
 
 export function useMentions({ members }: useMentionsT) {

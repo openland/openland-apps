@@ -113,6 +113,8 @@ const IconButton = Glamorous.div({
 });
 
 export interface MessageComponentProps {
+    isPinned?: boolean;
+    isModal?: boolean;
     commentDepth?: number;
     message: DataSourceWebMessageItem;
     isChannel: boolean;
@@ -124,6 +126,8 @@ export interface MessageComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me?: UserShort | null;
     onlyLikes?: boolean;
+    haveReactions?: boolean;
+    isSelect?: boolean;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
@@ -321,7 +325,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     };
 
     render() {
-        let { message, onCommentReplyClick } = this.props;
+        let { message, onCommentReplyClick, isSelect, haveReactions } = this.props;
         let content: any[] = [];
         let edited = message.isEdited;
 
@@ -526,21 +530,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         }
 
         if (!message.isService) {
-            return (
-                <DesktopMessageContainer
-                    commentDepth={this.props.commentDepth}
-                    isComment={this.props.isComment}
-                    noSelector={this.props.noSelector}
-                    compact={message.attachTop}
-                    selecting={hideMenu}
-                    sender={message.sender}
-                    senderNameEmojify={message.senderNameEmojify}
-                    date={this.props.message.date}
-                    renderMenu={this.menuRender}
-                    onSelected={this.selectMessage}
-                    selected={selected}
-                >
-                    {content}
+            const postMessageButtons = (
+                <>
                     {this.props.isComment && (
                         <>
                             <XView flexDirection="row" marginTop={4}>
@@ -569,7 +560,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         </>
                     )}
                     {!this.props.isComment && (
-                        <XView flexDirection="row" paddingTop={6}>
+                        <XView flexDirection="row">
                             <XHorizontal alignItems="center" separator={5}>
                                 {this.props.hasComments && (
                                     <DiscussButton
@@ -589,6 +580,28 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                             </XHorizontal>
                         </XView>
                     )}
+                </>
+            );
+            return (
+                <DesktopMessageContainer
+                    haveReactions={haveReactions}
+                    isPinned={this.props.isPinned}
+                    isModal={this.props.isModal}
+                    commentDepth={this.props.commentDepth}
+                    isComment={this.props.isComment}
+                    noSelector={this.props.noSelector}
+                    compact={message.attachTop}
+                    selecting={hideMenu}
+                    sender={message.sender}
+                    senderNameEmojify={message.senderNameEmojify}
+                    date={this.props.message.date}
+                    renderMenu={this.menuRender}
+                    onSelected={this.selectMessage}
+                    selected={!!isSelect}
+                >
+                    {content}
+                    {this.props.isModal && <XView paddingTop={12}>{postMessageButtons}</XView>}
+                    {!this.props.isModal && <XView>{postMessageButtons}</XView>}
                 </DesktopMessageContainer>
             );
         }
@@ -601,12 +614,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 alignItems="center"
                 startSelected={hideMenu}
             >
-<<<<<<< HEAD
-                <Check onClick={this.selectMessage} select={selected} className="check-icon" />
-=======
-                <Check onClick={this.selectMessage} select={isSelect} className="check-icon" />
+                <Check onClick={this.selectMessage} select={!!isSelect} className="check-icon" />
 
->>>>>>> wip(web): work on Comments Modal
                 <XVertical
                     separator={0}
                     className="message-container"

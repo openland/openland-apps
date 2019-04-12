@@ -10,6 +10,8 @@ import { XMemo } from 'openland-y-utils/XMemo';
 
 export interface DesktopMessageContainerProps {
     compact: boolean;
+    isModal?: boolean;
+    isPinned?: boolean;
     commentDepth?: number;
     isComment?: boolean;
     noSelector?: boolean;
@@ -24,6 +26,7 @@ export interface DesktopMessageContainerProps {
     onSelected: () => void;
     selecting: boolean;
     selected: boolean;
+    haveReactions: boolean;
 
     children?: any;
 }
@@ -294,7 +297,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                             </XView>
                         )}
                     </XView>
-                    {!props.isComment && (
+                    {!props.isComment && !props.isModal && (
                         <XView
                             paddingLeft={8}
                             fontSize={12}
@@ -325,7 +328,36 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
             ) : (
                 <>
                     {notCompactHeader}
-                    <XView flexDirection="column">{props.children}</XView>
+                    {props.isModal && (
+                        <XView
+                            marginBottom={8}
+                            flexDirection="row"
+                            alignItems="center"
+                            color="rgba(0, 0, 0, 0.4)"
+                            fontWeight="600"
+                            fontSize={12}
+                        >
+                            <XDate value={props.date.toString()} format="datetime_short" />
+                            {props.isPinned && (
+                                <XView
+                                    width={3}
+                                    height={3}
+                                    opacity={0.3}
+                                    backgroundColor="#000"
+                                    borderRadius="100%"
+                                    flexShrink={0}
+                                    marginHorizontal={5}
+                                />
+                            )}
+                            {props.isPinned && <XView>Pinned</XView>}
+                        </XView>
+                    )}
+                    {props.isModal && (
+                        <XView flexDirection="column" marginLeft={-55}>
+                            {props.children}
+                        </XView>
+                    )}
+                    {!props.isModal && <XView flexDirection="column">{props.children}</XView>}
                 </>
             )}
         </XView>

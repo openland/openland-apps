@@ -274,8 +274,8 @@ const CommentsInner = () => {
     return (
         <>
             <MessageModalBody generalMessage={maybeGeneralMessage}>
-                <XView>Comments {messageComments.messageComments.count}</XView>
                 <Separator />
+                <XView>Comments {messageComments.messageComments.count}</XView>
                 {commentsElems}
             </MessageModalBody>
             <XView>

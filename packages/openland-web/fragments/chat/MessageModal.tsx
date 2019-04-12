@@ -3,10 +3,7 @@ import { XView } from 'react-mental';
 import Glamorous from 'glamorous';
 import { XModal } from 'openland-x-modal/XModal';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
-import {
-    FullMessage_GeneralMessage,
-    FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
-} from 'openland-api/Types';
+import { FullMessage_GeneralMessage } from 'openland-api/Types';
 import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { XLink } from 'openland-x/XLink';
@@ -42,7 +39,7 @@ const Close = Glamorous(XLink)({
 
 export const MessageModalBody = (props: MessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
-    const { generalMessage, nearCrossButtons, afterDateElems } = props;
+    const { generalMessage } = props;
 
     const dsMessages = convertDsMessage(convertMessage(generalMessage));
 
@@ -54,6 +51,7 @@ export const MessageModalBody = (props: MessageComponentProps) => {
                 onlyLikes={true}
                 isChannel={true}
                 me={null}
+                isModal={true}
             />
             <XView
                 paddingHorizontal={32}

@@ -106,7 +106,6 @@ export const RoomMembersShortQuery = typedQuery<Types.RoomMembersShort, Types.Ro
 export const RoomMemberShortQuery = typedQuery<Types.RoomMemberShort, Types.RoomMemberShortVariables>(Chats.RoomMemberShortQuery);
 export const RoomMembersQuery = typedQuery<Types.RoomMembers, Types.RoomMembersVariables>(Chats.RoomMembersQuery);
 export const RoomMembersPaginatedQuery = typedQuery<Types.RoomMembersPaginated, Types.RoomMembersPaginatedVariables>(Chats.RoomMembersPaginatedQuery);
-export const MentionsMembersQuery = typedQuery<Types.MentionsMembers, Types.MentionsMembersVariables>(Chats.MentionsMembersQuery);
 export const RoomSettingsUpdateMutation = typedMutation<Types.RoomSettingsUpdate, Types.RoomSettingsUpdateVariables>(Chats.RoomSettingsUpdateMutation);
 export const RoomJoinMutation = typedMutation<Types.RoomJoin, Types.RoomJoinVariables>(Chats.RoomJoinMutation);
 export const RoomSendEmailInviteMutation = typedMutation<Types.RoomSendEmailInvite, Types.RoomSendEmailInviteVariables>(Chats.RoomSendEmailInviteMutation);

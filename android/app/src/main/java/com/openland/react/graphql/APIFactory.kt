@@ -1748,11 +1748,6 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        builder.after(readString(src, "after"))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
-    if (name == "MentionsMembers") {
-       val builder = MentionsMembersQuery.builder()
-       builder.roomId(notNull(readString(src, "roomId")))
-       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
-    }
     if (name == "RoomInviteLink") {
        val builder = RoomInviteLinkQuery.builder()
        builder.roomId(notNull(readString(src, "roomId")))
