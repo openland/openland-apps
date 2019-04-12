@@ -7,6 +7,7 @@ import { MarkSequenceReadMutation } from 'openland-api';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 import { currentTimeMillis } from 'openland-y-utils/currentTime';
+import { InvalidationQueue } from 'openland-y-utils/InvalidationQueue';
 
 const log = createLogger('Engine-Global');
 
@@ -17,9 +18,12 @@ export class GlobalStateEngine {
     private isVisible = true;
     private maxSeq = 0;
     private lastReportedSeq = 0;
+    private counterQueue: InvalidationQueue;
+    private counterState!: Types.GlobalCounter;
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
+        this.counterQueue = new InvalidationQueue(this.flushGlobalCounter);
     }
 
     start = async () => {
@@ -32,7 +36,7 @@ export class GlobalStateEngine {
         this.engine.client.querySettings({ fetchPolicy: 'network-only' });
 
         let counter = backoff(async () => {
-            await this.engine.client.queryGlobalCounter({ fetchPolicy: 'cache-first' });
+            return await this.engine.client.queryGlobalCounter({ fetchPolicy: 'cache-first' });
         })
 
         // Loading initial chat state
@@ -41,7 +45,7 @@ export class GlobalStateEngine {
             return await this.engine.client.queryDialogs({}, { fetchPolicy: 'network-only' });
         }));
         await settings;
-        await counter;
+        this.counterState = await counter;
         log.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
         this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
@@ -226,25 +230,24 @@ export class GlobalStateEngine {
 
     private writeGlobalCounter = async (counter: number, visible: boolean) => {
 
-        let start = currentTimeMillis();
         //
         // Update counter anywhere in the app
         //
-
-        await this.engine.client.client.updateQuery((data) => {
-            if (visible) {
-                if (data.alphaNotificationCounter.unreadCount < counter) {
-                    return null;
-                }
+        if (visible) {
+            if (this.counterState.alphaNotificationCounter.unreadCount < counter) {
+                return;
             }
-            data.alphaNotificationCounter.unreadCount = counter;
-            return data;
-        }, GlobalCounterQuery);
+        }
+        this.counterState.alphaNotificationCounter.unreadCount = counter;
+        this.counterQueue.invalidate();
 
-        log.log('Counter written in ' + (currentTimeMillis() - start) + ' ms');
-
+        // Notofy listeners
         for (let l of this.counterListeners) {
             l(counter, visible);
         }
+    }
+
+    private flushGlobalCounter = async () => {
+        await this.engine.client.client.writeQuery(JSON.parse(JSON.stringify(this.counterState)), GlobalCounterQuery);
     }
 }
