@@ -43,7 +43,6 @@ import { EditGroup } from './pages/main/EditGroup';
 import { EditGroupAdvanced } from './pages/main/EditGroupAdvanced';
 import { GroupInvite } from './pages/main/GroupInvite';
 import { UserPicker } from './pages/main/modals/UserPicker';
-import { PinnedMessage } from './pages/main/PinnedMessage';
 import Tasks from './pages/apps/Tasks';
 import { MessageComments } from './pages/main/MessageComments';
 
@@ -75,7 +74,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('ExploreOrganizations', ExploreOrganizations)
   .addRoute('GroupList', GroupList)
   .addRoute('GroupInvite', GroupInvite)
-  .addRoute('PinnedMessage', PinnedMessage)
   .addRoute('MessageComments', MessageComments)
 
   .addRoute('SetUserShortname', SetUserShortname)

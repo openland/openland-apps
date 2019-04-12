@@ -18,13 +18,13 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
 
     return (
         <View alignItems="stretch" justifyContent="flex-start" flexDirection="row" marginTop={10}>
-            {[...reactionsSorted].map((i) => <Image key={'k' + i.reaction} marginLeft={3} source={reactionsImagesMap[i.reaction]} style={{ width: 20, height: 20 }} />)}
+            {[...reactionsSorted].map((i) => <Image key={'k' + i.reaction} marginRight={3} source={reactionsImagesMap[i.reaction]} style={{ width: 20, height: 20 }} />)}
 
             {usersString.length > 0 && (
                 <Text
                     style={{
                         fontWeight: TextStyles.weight.medium,
-                        marginLeft: 5,
+                        marginLeft: 2,
                         marginRight: 7,
                         marginTop: 2,
                         fontSize: 13,

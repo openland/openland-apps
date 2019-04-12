@@ -8,12 +8,11 @@ import { SHeader } from 'react-native-s/SHeader';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { MessageInputBar } from './components/MessageInputBar';
 import { DefaultConversationTheme, ConversationTheme } from './themes/ConversationThemeResolver';
-import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomMembers_members_user, MentionInput, UserShort } from 'openland-api/Types';
+import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomMembers_members_user, MentionInput, UserShort, RoomShort, RoomShort_SharedRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { reactionMap } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SenderView } from 'openland-mobile/messenger/components/SenderView';
 import { CommentView } from 'openland-mobile/messenger/components/CommentView';
@@ -25,12 +24,16 @@ import { Prompt } from 'openland-mobile/components/Prompt';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { MentionsRender } from './components/MentionsRender';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { SRouterContext } from 'react-native-s/SRouterContext';
+import { SRouter } from 'react-native-s/SRouter';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
     comments: MessageComments_messageComments_comments[];
     messenger: MobileMessenger;
-    chatId: string;
+
+    room?: RoomShort_SharedRoom;
 }
 
 interface MessageCommentsInnerState {
@@ -216,8 +219,34 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         this.setState({ replyTo: undefined });
     }
 
+    handleManageClick = () => {
+        let room = this.props.room;
+        let messenger = this.props.messenger;
+        let client = messenger.engine.client;
+        let router = messenger.history.navigationManager;
+
+        if (room) {
+            let builder = new ActionSheetBuilder();
+    
+            if (room.canEdit) {
+                builder.action('Unpin', async () => {
+                    startLoader();
+                    try {
+                        await client.mutateUnpinMessage({ chatId: room!.id });
+                        
+                        router.pop();
+                    } finally {
+                        stopLoader();
+                    }
+                });
+            }
+    
+            builder.show();
+        }
+    }
+
     render () {
-        const { message, comments } = this.props;
+        const { message, comments, room } = this.props;
         const { replyTo } = this.state;
         const commentsElements: JSX.Element[] = [];
 
@@ -268,7 +297,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                 <MentionsRender
                     activeWord={activeWord}
                     onMentionPress={this.handleMentionPress}
-                    groupId={this.props.chatId}
+                    groupId={room!.id}
                 />
             );
         }
@@ -332,9 +361,12 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             />
         );
 
+        const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
+
         return (
             <>
                 <SHeader title="Comments" />
+                {room && room.canEdit && room.pinnedMessage && (room.pinnedMessage.id === message.id) && <SHeaderButton title="Manage" icon={manageIcon} onPress={this.handleManageClick} />}
                 <ASSafeAreaContext.Consumer>
                     {area => (
                         <>
@@ -372,6 +404,9 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
     let message = client.useMessage({ messageId: messageId }).message as FullMessage_GeneralMessage;
     let comments = client.useMessageComments({ messageId: messageId }, { fetchPolicy: 'network-only' }).messageComments.comments;
 
+    let room = client.useRoomTiny({ id: chatId }).room;
+    let sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomShort_SharedRoom : undefined;
+
     const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
         if (event.__typename === 'CommentReceived') {
             await client.refetchMessageComments({ messageId });
@@ -391,7 +426,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
             message={message}
             comments={comments}
             messenger={messenger}
-            chatId={chatId}
+            room={sharedRoom}
         />
     );
 });
