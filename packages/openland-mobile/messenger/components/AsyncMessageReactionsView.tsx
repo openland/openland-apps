@@ -52,8 +52,11 @@ export const extractReactionsSorted = (reactions: FullMessage_GeneralMessage_rea
         .sort((a, b) => a.id === getMessenger().engine.user.id ? -1 : 1)
         // replace user name to 'You';
         .map(u => u.id === getMessenger().engine.user.id ? { ...u, name: 'You' } : u);
-        // reduce
-    let usersString = (users.find(r => r.name === 'You') ? 'You' : users[0].name) + (users.length > 1 ? ' + ' + (users.length - 1) : '');
+
+    let usersString = '';
+    if (users.length > 0) {
+        usersString = users[0].name + (users.length > 1 ? ' + ' + (users.length - 1) : '');
+    }
 
     return { reactionsSorted, usersString };
 }
