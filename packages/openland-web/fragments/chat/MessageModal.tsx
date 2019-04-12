@@ -12,7 +12,7 @@ import { XButton } from 'openland-x/XButton';
 import { convertMessage } from 'openland-web/components/messenger/message/content/CommentsModal';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
-
+import { css } from 'linaria';
 export interface MessageComponentProps {
     footer?: any;
     afterDateElems?: any;
@@ -37,6 +37,16 @@ const Close = Glamorous(XLink)({
     },
 });
 
+const separatorClassName = css`
+    height: 1px;
+    background-color: rgba(216, 218, 229, 0.45);
+    width: 100%;
+`;
+
+const Separator = () => {
+    return <div className={separatorClassName} />;
+};
+
 export const MessageModalBody = (props: MessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
     const { generalMessage } = props;
@@ -54,9 +64,16 @@ export const MessageModalBody = (props: MessageComponentProps) => {
                 isModal={true}
             />
             <XView
+                marginTop={28}
+                height={1}
+                backgroundColor={'rgba(216, 218, 229, 0.45)'}
+                width="100%"
+            />
+            <Separator />
+            <XView
                 paddingHorizontal={32}
                 paddingTop={isMobile ? 0 : 30}
-                paddingBottom={30}
+                paddingBottom={28}
                 flexDirection="column"
             >
                 {isMobile && (

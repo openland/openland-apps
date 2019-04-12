@@ -156,6 +156,29 @@ const NotCompactMessageContainerWrapper = ({
     );
 };
 
+const NotCompactModaltMessageContainerWrapper = ({
+    children,
+    onMouseEnter,
+    onMouseLeave,
+}: {
+    children: any;
+    onMouseEnter: (event: React.MouseEvent<any>) => void;
+    onMouseLeave: (event: React.MouseEvent<any>) => void;
+}) => {
+    return (
+        <XView
+            alignItems="center"
+            flexDirection="row"
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            paddingRight={20}
+            paddingBottom={3}
+        >
+            {children}
+        </XView>
+    );
+};
+
 const NotCompactShortMessageContainerWrapper = ({
     children,
     onMouseEnter,
@@ -371,11 +394,17 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     );
 
     // Result
-    const MessageContainerWrapper = compact
-        ? CompactMessageContainerWrapper
-        : props.isComment
-        ? NotCompactShortMessageContainerWrapper
-        : NotCompactMessageContainerWrapper;
+
+    let MessageContainerWrapper = CompactMessageContainerWrapper;
+
+    if (props.isComment) {
+        MessageContainerWrapper = NotCompactShortMessageContainerWrapper;
+    } else if (props.isModal) {
+        MessageContainerWrapper = NotCompactModaltMessageContainerWrapper;
+    } else {
+        MessageContainerWrapper = NotCompactMessageContainerWrapper;
+    }
+
     return (
         <MessageContainerWrapper
             onMouseEnter={onMouseEnter}

@@ -45,11 +45,12 @@ const Check = Glamorous.div<{ select: boolean }>(props => ({
 }));
 
 const MessageWrapper = Glamorous(XHorizontal)<{
+    isModal?: boolean;
     compact: boolean;
     isEditView: boolean;
     startSelected: boolean;
 }>(props => ({
-    marginTop: props.compact ? 0 : 12,
+    marginTop: props.compact || props.isModal ? 0 : 12,
     paddingLeft: 20,
     paddingRight: 20,
     '& .message-container': {
@@ -582,6 +583,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     )}
                 </>
             );
+
             return (
                 <DesktopMessageContainer
                     haveReactions={haveReactions}
@@ -608,6 +610,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
         return (
             <MessageWrapper
+                isModal={this.props.isModal}
                 compact={false}
                 isEditView={this.state.isEditView}
                 separator={6}

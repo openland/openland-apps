@@ -21,7 +21,7 @@ import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/Fi
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
-import { MessageModalBody } from 'openland-web/fragments/chat/MessageModal';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
@@ -69,16 +69,6 @@ type CommentsInputProps = {
     onChange?: (text: string) => void;
     getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
-};
-
-const separatorClassName = css`
-    height: 1px;
-    background-color: rgba(216, 218, 229, 0.45);
-    width: 100%;
-`;
-
-const Separator = () => {
-    return <div className={separatorClassName} />;
 };
 
 const CommentsInput = ({ minimal, members, onSend, onSendFile, onChange }: CommentsInputProps) => {
@@ -134,8 +124,19 @@ const CommentsInput = ({ minimal, members, onSend, onSendFile, onChange }: Comme
     );
 };
 
+const separatorClassName = css`
+    height: 1px;
+    background-color: rgba(216, 218, 229, 0.45);
+    width: 100%;
+`;
+
+const Separator = () => {
+    return <div className={separatorClassName} />;
+};
+
 const CommentsInner = () => {
     const client = useClient();
+    const isMobile = React.useContext(IsMobileContext);
     let router = React.useContext(XRouterContext)!;
     const [curMesssageId, roomId] = router.routeQuery.comments.split('&');
 
@@ -263,21 +264,65 @@ const CommentsInner = () => {
         );
     }
 
-    const commentsElems = (
-        <XView flexDirection="row" marginBottom={16}>
-            <XView flexGrow={1}>
-                <XView>{commentsElements}</XView>
-            </XView>
-        </XView>
-    );
+    const finalMessages = convertDsMessage(convertMessage(maybeGeneralMessage));
 
     return (
         <>
-            <MessageModalBody generalMessage={maybeGeneralMessage}>
-                <Separator />
-                <XView>Comments {messageComments.messageComments.count}</XView>
-                {commentsElems}
-            </MessageModalBody>
+            <XView paddingHorizontal={32}>
+                <MessageComponent
+                    noSelector
+                    message={finalMessages}
+                    onlyLikes={true}
+                    isChannel={true}
+                    me={null}
+                    isModal={true}
+                />
+            </XView>
+            <XView
+                marginTop={28}
+                height={1}
+                backgroundColor={'rgba(216, 218, 229, 0.45)'}
+                width="100%"
+            />
+            {commentsElements.length ? (
+                <>
+                    <Separator />
+                    <XView
+                        paddingHorizontal={32}
+                        paddingTop={isMobile ? 0 : 30}
+                        paddingBottom={28}
+                        flexDirection="column"
+                    >
+                        {commentsElements.length ? (
+                            <>
+                                <XView flexDirection="row" alignItems="center">
+                                    <XView fontSize={16} fontWeight="600">
+                                        Comments
+                                    </XView>
+                                    <XView
+                                        fontSize={15}
+                                        fontWeight="600"
+                                        opacity={0.3}
+                                        marginLeft={7}
+                                    >
+                                        {messageComments.messageComments.count}
+                                    </XView>
+                                </XView>
+                                <XView flexDirection="row" marginBottom={16}>
+                                    <XView flexGrow={1}>
+                                        <XView>{commentsElements}</XView>
+                                    </XView>
+                                </XView>
+                            </>
+                        ) : (
+                            undefined
+                        )}
+                    </XView>
+                </>
+            ) : (
+                undefined
+            )}
+
             <XView>
                 <CommentsInput
                     members={members.members}
