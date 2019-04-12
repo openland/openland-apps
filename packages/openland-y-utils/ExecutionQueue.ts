@@ -13,11 +13,11 @@ export class ExecutionQueue {
         }
         if (this._queue.length > 0) {
             this._executing = true;
-            let action = this._queue.pop();
+            let action = this._queue.pop()!;
             (async () => {
                 await null; // Always use next tick
                 try {
-                    await action;
+                    await action();
                 } finally {
                     this._executing = false;
                     this._startIfNeeded();
