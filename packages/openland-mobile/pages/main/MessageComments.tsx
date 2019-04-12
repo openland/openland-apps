@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { View, Text, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData, TouchableWithoutFeedback, Image, Platform, Clipboard, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData, TouchableWithoutFeedback, Image, Platform, Clipboard, ScrollView, KeyboardAvoidingView, Keyboard, TextInput } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -52,6 +52,8 @@ interface MessageCommentsInnerState {
 }
 
 class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, MessageCommentsInnerState> {
+    private inputRef = React.createRef<TextInput>();
+
     constructor(props: MessageCommentsInnerProps) {
         super(props);
         this.state = {
@@ -164,6 +166,10 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
 
     handleReplyPress = (comment: MessageComments_messageComments_comments_comment) => {
         this.setState({ replyTo: comment });
+
+        if (this.inputRef.current) {
+            this.inputRef.current.focus();
+        }
     }
 
     handleCommentLongPress = (comment: MessageComments_messageComments_comments_comment) => {
@@ -214,6 +220,10 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
     }
 
     handleReplyClear = () => {
+        if (this.state.text.length <= 0) {
+            Keyboard.dismiss();
+        }
+
         this.setState({ replyTo: undefined });
     }
 
@@ -316,7 +326,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
         }
 
         let content = (
-            <ScrollView flexGrow={1} keyboardDismissMode="interactive">
+            <ScrollView flexGrow={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
                 <View paddingHorizontal={16} paddingBottom={Platform.OS === 'ios' ? 68 : undefined}>
                     <SenderView sender={message.sender} date={message.date} />
                     <ZMessageView message={message} showReactions={true} />
@@ -357,6 +367,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
                 placeholder="Write a comment..."
                 topContent={suggestions}
                 showLoader={this.state.sending}
+                ref={this.inputRef}
             />
         );
 

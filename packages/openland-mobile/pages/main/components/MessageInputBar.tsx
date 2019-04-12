@@ -43,7 +43,7 @@ export interface MessageInputBarProps {
     showLoader?: boolean;
 }
 
-export const MessageInputBar = XMemo<MessageInputBarProps>(props => {
+export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, ref: any) => {
     let theme = React.useContext(ThemeContext);
     let hasText = props.text.trim().length > 0;
 
@@ -72,6 +72,7 @@ export const MessageInputBar = XMemo<MessageInputBarProps>(props => {
                         <View width={15} />
                     )}
                     <TextInput
+                        ref={ref}
                         flexGrow={1}
                         flexBasis={0}
                         placeholder={props.placeholder}
