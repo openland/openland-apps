@@ -7,6 +7,7 @@ export type CallStatus = 'initial' | 'connecting' | 'connected' | 'end' | 'waiti
 export interface CallState {
     conversationId?: string;
     private?: boolean;
+    startTime?: number;
     status: CallStatus;
     mute: boolean;
 }
@@ -32,7 +33,7 @@ export class CallsEngine {
         if (this.mediaSession) {
             this.mediaSession.destroy();
         }
-        this.mediaSession = new MediaSessionManager(this.client, conversationId, this._state.mute, !!isPrivate, (status) => this.setState({ ...this._state, status, private: !!isPrivate }), this.leaveCall);
+        this.mediaSession = new MediaSessionManager(this.client, conversationId, this._state.mute, !!isPrivate, (status, startTime) => this.setState({ ...this._state, status, private: !!isPrivate, startTime }), this.leaveCall);
         this.setState({ mute: false, status: 'connecting', conversationId, private: isPrivate });
     }
 

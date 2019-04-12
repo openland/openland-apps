@@ -9,7 +9,7 @@ import { ConferenceMediaWatch_media_streams } from 'openland-api/Types';
 export class MediaSessionManager {
     readonly conversationId: string;
     private readonly client: OpenlandClient;
-    private readonly onStatusChange: (status: 'waiting' | 'connected') => void;
+    private readonly onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void;
     private readonly onDestroyRequested: () => void;
     private mediaStream!: AppMediaStream;
     private streamConfigs!: ConferenceMediaWatch_media_streams[];
@@ -21,7 +21,7 @@ export class MediaSessionManager {
     private mute: boolean;
     private isPrivate: boolean;
 
-    constructor(client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected') => void, onDestroyRequested: () => void) {
+    constructor(client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void) {
         this.client = client;
         this.conversationId = conversationId;
         this.mute = mute;
@@ -108,7 +108,7 @@ export class MediaSessionManager {
             this.iceServers = joinConference.conference.iceServers;
             this.conferenceId = conferenceId;
             this.peerId = joinConference.peerId;
-            this.onStatusChange(this.isPrivate ? 'waiting' : 'connected');
+            this.onStatusChange(this.isPrivate ? 'waiting' : 'connected', !this.isPrivate ? joinConference.conference.startTime : undefined);
             this.doStart();
             return;
         })();

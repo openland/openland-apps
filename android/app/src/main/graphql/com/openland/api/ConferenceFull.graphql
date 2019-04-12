@@ -21,4 +21,5 @@ fragment ConferenceFull on Conference {
       ...UserShort
     }
   }
+  startTime
 }

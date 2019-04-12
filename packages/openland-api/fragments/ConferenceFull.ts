@@ -3,6 +3,7 @@ import { UserShort } from './UserShort';
 export const ConferenceFull = gql`
     fragment ConferenceFull on Conference {
         id
+        startTime
         peers {
             id
             user {
