@@ -601,7 +601,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 >
                     {content}
                     {this.props.isModal && <XView paddingTop={12}>{postMessageButtons}</XView>}
-                    {!this.props.isModal && <XView>{postMessageButtons}</XView>}
+                    {!this.props.isModal && <XView paddingTop={6}>{postMessageButtons}</XView>}
                 </DesktopMessageContainer>
             );
         }
