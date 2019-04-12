@@ -542,20 +542,22 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
         return (
             <XView flexWrap="wrap" alignItems="center">
                 {onlyLikes && (
-                    <XView
-                        flexWrap="wrap"
-                        alignItems="center"
-                        backgroundColor="#f4f4f4"
-                        borderRadius={18}
-                        paddingRight={13}
-                        paddingLeft={10}
-                    >
-                        <OnlyLikesReactionsInner
-                            reactions={reactions}
-                            meId={meId}
-                            messageId={messageId}
-                        />
-                    </XView>
+                    <>
+                        <XView
+                            flexWrap="wrap"
+                            alignItems="center"
+                            backgroundColor="#f4f4f4"
+                            borderRadius={18}
+                            paddingRight={13}
+                            paddingLeft={10}
+                        >
+                            <OnlyLikesReactionsInner
+                                reactions={reactions}
+                                meId={meId}
+                                messageId={messageId}
+                            />
+                        </XView>
+                    </>
                 )}
                 {!onlyLikes && reactions && reactions.length > 0 ? (
                     <XView

@@ -573,8 +573,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                     </XView>
                                 )}
                                 {!message.isSending &&
-                                message.reactions &&
-                                message.reactions.length ? (
+                                ((message.reactions && message.reactions.length) ||
+                                    this.props.isChannel) ? (
                                     <XView paddingTop={4}>
                                         <Reactions
                                             onlyLikes={this.props.onlyLikes}
