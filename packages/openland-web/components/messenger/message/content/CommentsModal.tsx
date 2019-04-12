@@ -226,8 +226,9 @@ const CommentsInner = () => {
 
     for (let message of dsMessages) {
         commentsElements.push(
-            <XView key={message.key} marginLeft={10 * message.depth}>
+            <XView key={message.key} marginLeft={(message.depth > 0 ? 44 : 55) * message.depth}>
                 <MessageComponent
+                    commentDepth={message.depth}
                     noSelector
                     isComment
                     onCommentReplyClick={() => setShowInputId(message.key)}
@@ -264,7 +265,7 @@ const CommentsInner = () => {
 
     const commentsElems = (
         <XView flexDirection="row" marginBottom={16}>
-            <XView flexGrow={1} paddingLeft={16}>
+            <XView flexGrow={1}>
                 <XView>{commentsElements}</XView>
             </XView>
         </XView>

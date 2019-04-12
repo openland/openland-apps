@@ -28,6 +28,7 @@ import { DesktopMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { XView } from 'react-mental';
+import { XDate } from 'openland-x/XDate';
 import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
 import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
 
@@ -112,6 +113,7 @@ const IconButton = Glamorous.div({
 });
 
 export interface MessageComponentProps {
+    commentDepth?: number;
     message: DataSourceWebMessageItem;
     isChannel: boolean;
     hasComments?: boolean;
@@ -526,6 +528,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (!message.isService) {
             return (
                 <DesktopMessageContainer
+                    commentDepth={this.props.commentDepth}
+                    isComment={this.props.isComment}
                     noSelector={this.props.noSelector}
                     compact={message.attachTop}
                     selecting={hideMenu}
@@ -538,15 +542,31 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 >
                     {content}
                     {this.props.isComment && (
-                        <XView
-                            color="#1790ff"
-                            fontWeight="600"
-                            fontSize={12}
-                            cursor="pointer"
-                            onClick={onCommentReplyClick}
-                        >
-                            Reply
-                        </XView>
+                        <>
+                            <XView flexDirection="row" marginTop={4}>
+                                <XView
+                                    paddingRight={12}
+                                    fontSize={12}
+                                    opacity={0.4}
+                                    color="#000"
+                                    fontWeight="600"
+                                >
+                                    <XDate
+                                        value={this.props.message.date.toString()}
+                                        format="time"
+                                    />
+                                </XView>
+                                <XView
+                                    color="#1790ff"
+                                    fontWeight="600"
+                                    fontSize={12}
+                                    cursor="pointer"
+                                    onClick={onCommentReplyClick}
+                                >
+                                    Reply
+                                </XView>
+                            </XView>
+                        </>
                     )}
                     {!this.props.isComment && (
                         <XView flexDirection="row" paddingTop={6}>

@@ -21,6 +21,7 @@ const MessageComponentInner = React.memo(
         ) : (
             <>
                 <DesktopMessageComponentInner
+                    commentDepth={props.commentDepth}
                     isComment={props.isComment}
                     onCommentReplyClick={props.onCommentReplyClick}
                     noSelector={props.noSelector}
@@ -48,6 +49,7 @@ export const MessageComponent = (
 
     return (
         <MessageComponentInner
+            commentDepth={props.commentDepth}
             isComment={props.isComment}
             onCommentReplyClick={props.onCommentReplyClick}
             noSelector={props.noSelector}

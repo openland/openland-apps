@@ -10,6 +10,8 @@ import { XMemo } from 'openland-y-utils/XMemo';
 
 export interface DesktopMessageContainerProps {
     compact: boolean;
+    commentDepth?: number;
+    isComment?: boolean;
     noSelector?: boolean;
     sender: UserShort;
     senderNameEmojify?: any;
@@ -29,6 +31,7 @@ export interface DesktopMessageContainerProps {
 interface PreambulaContainerProps {
     children: any;
     onClick?: () => void;
+    haveReactions?: boolean;
 }
 
 const CompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
@@ -43,6 +46,22 @@ const CompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
             fontWeight={'600'}
             lineHeight={'22px'}
             color="rgba(0, 0, 0, 0.4)"
+        >
+            {children}
+        </XView>
+    );
+};
+
+const NotCompactShortPreambulaContainer = ({ children }: PreambulaContainerProps) => {
+    return (
+        <XView
+            alignSelf="flex-start"
+            minHeight={23}
+            width={44}
+            fontSize={12}
+            whiteSpace={'nowrap'}
+            paddingTop={3}
+            paddingLeft={3}
         >
             {children}
         </XView>
@@ -134,6 +153,31 @@ const NotCompactMessageContainerWrapper = ({
     );
 };
 
+const NotCompactShortMessageContainerWrapper = ({
+    children,
+    onMouseEnter,
+    onMouseLeave,
+}: {
+    children: any;
+    onMouseEnter: (event: React.MouseEvent<any>) => void;
+    onMouseLeave: (event: React.MouseEvent<any>) => void;
+}) => {
+    return (
+        <XView
+            alignItems="center"
+            flexDirection="row"
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            marginTop={12}
+            paddingTop={7}
+            paddingRight={20}
+            paddingBottom={3}
+        >
+            {children}
+        </XView>
+    );
+};
+
 export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props => {
     let [hover, onHover] = React.useState(false);
     let userPopperRef = React.useRef<UserPopper>(null);
@@ -181,7 +225,11 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     // Left side of message
     const { compact, sender, date } = props;
 
-    const PreambulaContainer = compact ? CompactPreambulaContainer : NotCompactPreambulaContainer;
+    const PreambulaContainer = compact
+        ? CompactPreambulaContainer
+        : props.commentDepth && props.commentDepth > 0
+        ? NotCompactShortPreambulaContainer
+        : NotCompactPreambulaContainer;
 
     const preambula = React.useMemo(
         () => (
@@ -193,7 +241,12 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                         user={props.sender}
                         ref={userPopperRef}
                     >
-                        <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
+                        <XAvatar2
+                            id={sender.id}
+                            title={sender.name}
+                            src={sender.photo}
+                            size={props.commentDepth && props.commentDepth > 0 ? 28 : 36}
+                        />
                     </UserPopper>
                 ) : (
                     <XView lineHeight="23px">
@@ -241,16 +294,18 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                             </XView>
                         )}
                     </XView>
-                    <XView
-                        paddingLeft={8}
-                        fontSize={12}
-                        color="rgba(0, 0, 0, 0.4)"
-                        fontWeight="600"
-                        alignSelf="flex-end"
-                        marginBottom={-1}
-                    >
-                        <XDate value={props.date.toString()} format="time" />
-                    </XView>
+                    {!props.isComment && (
+                        <XView
+                            paddingLeft={8}
+                            fontSize={12}
+                            color="rgba(0, 0, 0, 0.4)"
+                            fontWeight="600"
+                            alignSelf="flex-end"
+                            marginBottom={-1}
+                        >
+                            <XDate value={props.date.toString()} format="time" />
+                        </XView>
+                    )}
                 </XView>
             ),
             [props.date, props.sender, props.sender.primaryOrganization, props.selecting],
@@ -286,6 +341,8 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     // Result
     const MessageContainerWrapper = compact
         ? CompactMessageContainerWrapper
+        : props.isComment
+        ? NotCompactShortMessageContainerWrapper
         : NotCompactMessageContainerWrapper;
     return (
         <MessageContainerWrapper
