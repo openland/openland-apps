@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { View, Text, TextStyle } from 'react-native';
+import { View, Text, TextStyle, Dimensions } from 'react-native';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages } from 'openland-api/Types';
 import { TextContent } from './TextContent';
 import { MediaContent } from './MediaContent';
@@ -11,11 +11,12 @@ interface ReplyContentProps {
     quotedMessages: FullMessage_GeneralMessage_quotedMessages[];
 
     onUserPress: (id: string) => void;
-    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string }) => void;
     onDocumentPress: (document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => void;
 }
 
 export const ReplyContent = (props: ReplyContentProps) => {
+    let maxWidth = Dimensions.get('screen').width - 100;
+
     return (
         <>
             {props.quotedMessages.map((quote) => {
@@ -29,10 +30,10 @@ export const ReplyContent = (props: ReplyContentProps) => {
                         let isImage = file.fileMetadata.isImage;
                     
                         if (isImage) {
-                            let imageLayout = layoutImage(file.fileMetadata);
+                            let imageLayout = layoutImage(file.fileMetadata, maxWidth);
                     
                             if (imageLayout) {
-                                contentAttach.push(<MediaContent key={'msg-reply-' + quote.id + '-media-' + index} imageLayout={imageLayout} message={generalMesage!} attach={file} onMediaPress={props.onMediaPress} />);
+                                contentAttach.push(<MediaContent key={'msg-reply-' + quote.id + '-media-' + index} imageLayout={imageLayout} message={generalMesage!} attach={file} />);
                             }
                         } else {
                             contentAttach.push(<DocumentContent key={'msg-reply-' + quote.id + '-document-' + index} attach={file} message={generalMesage!} onDocumentPress={props.onDocumentPress} />);

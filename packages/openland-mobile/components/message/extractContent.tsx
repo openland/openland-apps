@@ -14,7 +14,6 @@ interface ExtractContentProps {
     message: FullMessage_GeneralMessage;
 
     onUserPress: (id: string) => void;
-    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string }) => void;
     onDocumentPress: (document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => void;
 }
 
@@ -32,7 +31,7 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean) => {
     let content: JSX.Element[] = [];
 
     if (hasReply) {
-        content.push(<ReplyContent key="msg-reply" quotedMessages={message.quotedMessages} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        content.push(<ReplyContent key="msg-reply" quotedMessages={message.quotedMessages} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} />);
     }
     if (hasText) {
         content.push(<TextContent key="msg-text" message={message} onUserPress={props.onUserPress} isSmall={isSmall} />);
@@ -45,7 +44,7 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean) => {
             let imageLayout = layoutImage(file.fileMetadata, maxWidth);
     
             if (imageLayout) {
-                content.push(<MediaContent key={'msg-media-' + index} imageLayout={imageLayout} message={message} attach={file} onMediaPress={props.onMediaPress} />);
+                content.push(<MediaContent key={'msg-media-' + index} imageLayout={imageLayout} message={message} attach={file} />);
             }
         } else {
             content.push(<DocumentContent key={'msg-document-' + index} attach={file} message={message} onDocumentPress={props.onDocumentPress} />);
@@ -59,7 +58,7 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean) => {
             imageLayout = layoutImage(attach.image.metadata, maxWidth);
         }
 
-        content.push(<RichAttachContent key={'msg-rich-' + index} attach={attach} imageLayout={imageLayout} message={message} onMediaPress={props.onMediaPress} />);
+        content.push(<RichAttachContent key={'msg-rich-' + index} attach={attach} imageLayout={imageLayout} message={message} />);
     });
 
     return content;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Platform, Linking, PixelRatio, View, Text, TextStyle, TouchableWithoutFeedback, Image } from 'react-native';
+import { Platform, Linking, PixelRatio, View, Text, TextStyle, TouchableWithoutFeedback } from 'react-native';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
@@ -9,13 +9,12 @@ import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver'
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage } from 'openland-api/Types';
 import { richAttachImageShouldBeCompact, isInvite } from 'openland-mobile/messenger/components/content/RichAttachContent';
 import FastImage from 'react-native-fast-image';
+import { PreviewWrapper } from './PreviewWrapper';
 
 interface RichAttachContentProps {
     message: FullMessage_GeneralMessage;
     attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
     imageLayout?: { width: number, height: number };
-
-    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string }, radius?: number) => void;
 }
 
 const paddedTextPrefix = <Text>{' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 11 }))}</Text>;
@@ -52,15 +51,6 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
         }
     }
 
-    onMediaPress = (radius?: number) => {
-        if (this.state && this.state.downloadState && this.state.downloadState.path && this.props.attach.image && this.props.attach.image.metadata && this.props.attach.image.metadata.imageHeight && this.props.attach.image.metadata.imageWidth) {
-            let w = this.props.attach.image.metadata.imageWidth;
-            let h = this.props.attach.image.metadata.imageHeight;
-
-            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { path: this.state.downloadState.path }, radius);
-        }
-    }
-
     onTitleClick = async () => {
         if (this.props.attach.titleLink) {
             (await resolveInternalLink(this.props.attach.titleLink, () => Linking.openURL(this.props.attach.titleLink!)))();
@@ -75,7 +65,8 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
         // prepare image
         let imgCompact = this.imageCompact;
         let imgLayout = this.augLayout;
-        let imageSource = { uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : '', priority: 'normal', ...{ disableAnimations: true } as any };
+        let imagePath = (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined;
+        let imageSource = { uri: imagePath, priority: 'normal', ...{ disableAnimations: true } as any };
 
         // invite link image placeholder
         if (richAttachImageShouldBeCompact(this.props.attach)) {
@@ -107,8 +98,8 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 )}
 
                 {!imgCompact && this.props.attach.image && imgLayout && (
-                    <View backgroundColor="#dbdce1" marginTop={5} justifyContent="center" borderRadius={8}>
-                        <TouchableWithoutFeedback onPress={() => this.onMediaPress(8)}>
+                    <View marginTop={5} justifyContent="center" borderRadius={8}>
+                        <PreviewWrapper path={imagePath} metadata={this.props.attach.image!.metadata!} radius={8}>
                             <FastImage
                                 source={imageSource}
                                 style={{
@@ -117,7 +108,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                     borderRadius: 8
                                 }}
                             />
-                        </TouchableWithoutFeedback>
+                        </PreviewWrapper>
 
                         {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
                             <View
@@ -154,19 +145,33 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                     </Text>
                 )}
 
-                <View flexDirection="row" marginTop={5}>
-                    {imgCompact && imgLayout && imageSource && (
-                        <TouchableWithoutFeedback onPress={() => this.onMediaPress(10)}>
+                <View flexDirection="row" marginTop={5} zIndex={2}>
+                    {imgCompact && imgLayout && imageSource && this.props.attach.image && (
+                        <View marginRight={9}>
+                            <PreviewWrapper path={imagePath} metadata={this.props.attach.image.metadata!} radius={10}>
+                                <FastImage
+                                    source={imageSource}
+                                    style={{
+                                        width: imgLayout.width,
+                                        height: imgLayout.height,
+                                        borderRadius: 10,
+                                    }}
+                                />
+                            </PreviewWrapper>
+                        </View>
+                    )}
+
+                    {imgCompact && imgLayout && imageSource && !this.props.attach.image && (
+                        <View marginRight={9}>
                             <FastImage
                                 source={imageSource}
                                 style={{
                                     width: imgLayout.width,
                                     height: imgLayout.height,
                                     borderRadius: 10,
-                                    marginRight: 9,
                                 }}
                             />
-                        </TouchableWithoutFeedback>
+                        </View>
                     )}
 
                     <View flexDirection="column">
@@ -213,6 +218,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             marginBottom: 4,
                             lineHeight: 19,
                             fontWeight: TextStyles.weight.regular,
+                            zIndex: 1,
                         } as TextStyle}
                         numberOfLines={5}
                     >

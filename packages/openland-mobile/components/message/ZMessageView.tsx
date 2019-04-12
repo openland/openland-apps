@@ -32,7 +32,6 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         message,
 
         onUserPress: handleUserPress,
-        onMediaPress: (fileMeta, event) => { return; },
         onDocumentPress: handleDocumentPress,
     }, props.small);
 

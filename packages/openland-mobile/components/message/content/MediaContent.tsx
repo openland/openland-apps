@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { Image, View, TouchableWithoutFeedback, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
 import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage } from 'openland-api/Types';
+import FastImage from 'react-native-fast-image';
+import { PreviewWrapper } from './PreviewWrapper';
 
 interface MediaContentProps {
     message: FullMessage_GeneralMessage;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
     imageLayout: { width: number, height: number },
-
-    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string }) => void;
 }
 
 export class MediaContent extends React.PureComponent<MediaContentProps, { downloadState?: DownloadState }> {
@@ -23,16 +23,6 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     private downloadManagerWatch?: WatchSubscription;
-    private handlePress = () => {
-        // Ignore clicks for not-downloaded files
-        let path = (this.state.downloadState && this.state.downloadState.path);
-        if (path && this.props.attach.fileMetadata.imageHeight && this.props.attach.fileMetadata.imageWidth) {
-            let w = this.props.attach.fileMetadata.imageWidth;
-            let h = this.props.attach.fileMetadata.imageHeight;
-
-            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { path });
-        }
-    }
 
     bindDownloadManager = () => {
         let fileAttach = this.props.attach;
@@ -75,20 +65,21 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     render() {
         let { imageLayout } = this.props;
 
+        let imagePath = (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined;
+
         return (
             <View
                 flexDirection="column"
                 width={imageLayout.width}
                 height={imageLayout.height}
-                borderRadius={18}
                 alignItems="center"
             >
-                <TouchableWithoutFeedback onPress={this.handlePress}>
-                    <Image
-                        style={{ width: imageLayout.width, height: imageLayout.height }}
-                        source={{ uri: (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path + '.jpg') : undefined }}
+                <PreviewWrapper path={imagePath} metadata={this.props.attach.fileMetadata} radius={10}>
+                    <FastImage
+                        style={{ backgroundColor: 'red', borderRadius: 10, width: imageLayout.width, height: imageLayout.height }}
+                        source={{ uri: imagePath, priority: 'normal', ...{ disableAnimations: true } as any }}
                     />
-                </TouchableWithoutFeedback>
+                </PreviewWrapper>
 
                 {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && (
                     <View
