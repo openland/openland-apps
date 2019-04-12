@@ -301,7 +301,7 @@ class MessageCommentsInner extends React.Component<MessageCommentsInnerProps, Me
             );
         }
 
-        if (this.state.inputFocused && activeWord && activeWord.startsWith('@')) {
+        if (this.props.room && this.state.inputFocused && activeWord && activeWord.startsWith('@')) {
             suggestions = (
                 <MentionsRender
                     activeWord={activeWord}
