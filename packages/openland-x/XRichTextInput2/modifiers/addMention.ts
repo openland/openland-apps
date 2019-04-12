@@ -1,5 +1,5 @@
 import { EditorState, Modifier } from 'draft-js';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserShort } from 'openland-api/Types';
 
 export function findActiveWordStart(state: EditorState): number {
     let content = state.getCurrentContent();
@@ -64,7 +64,7 @@ const getSearchText = (editorState: EditorState, selection: any, trigger: any) =
 
 type addMentionT = {
     editorState: EditorState;
-    mention: UserWithOffset;
+    mention: UserShort;
     mentionPrefix?: any;
     mentionTrigger?: any;
     entityMutability?: any;
@@ -94,7 +94,7 @@ export const addMention = ({
     let mentionReplacedContent = Modifier.replaceText(
         editorState.getCurrentContent(),
         mentionTextSelection as any,
-        `${mentionPrefix}${mention.user.name}`,
+        `${mentionPrefix}${mention.name}`,
         null as any, // no inline style needed
         entityKey,
     );

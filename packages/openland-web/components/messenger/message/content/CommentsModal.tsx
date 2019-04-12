@@ -138,11 +138,16 @@ const CommentsInput = ({ minimal, members, onSend, onSendFile, onChange }: Comme
 const CommentsInner = () => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
-    const curMesssageId = router.routeQuery.comments;
+    const [curMesssageId, roomId] = router.routeQuery.comments.split('&');
+
     const [showInputId, setShowInputId] = React.useState<string | null>(null);
 
     const commentedMessage = client.useMessage({
         messageId: curMesssageId,
+    });
+
+    const members = client.useRoomMembers({
+        roomId,
     });
 
     const maybeGeneralMessage = commentedMessage.message;
@@ -234,6 +239,7 @@ const CommentsInner = () => {
                     />
                     {showInputId === message.key && (
                         <CommentsInput
+                            members={members.members}
                             minimal
                             onSend={(msgToSend, mentions) => {
                                 const finalMentions = convertToMentionInput({
@@ -273,11 +279,14 @@ const CommentsInner = () => {
             </MessageModalBody>
             <XView>
                 <CommentsInput
+                    members={members.members}
                     onSend={(msgToSend, mentions) => {
                         const finalMentions = convertToMentionInput({
                             mentions: mentions ? mentions : [],
                             text: msgToSend,
                         });
+
+                        console.log(finalMentions);
                         addComment({
                             mentions: finalMentions,
                             messageId: curMesssageId,

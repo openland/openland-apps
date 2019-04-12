@@ -8,6 +8,7 @@ import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
 import { decorator } from './decorator';
 import { UserShort } from 'openland-api/Types';
+import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 
 type useHandleEditorChangeT = {
     onChange?: (a: { text: string; mentions: UserWithOffset[] }) => void;
@@ -81,14 +82,9 @@ export function useHandleEditorChange({ onChange, value, mentionsData }: useHand
     };
 
     const finalAddMention = (mention: UserShort) => {
-        console.log(mention);
         const newEditorState = addMention({
             editorState,
-            mention: {
-                user: mention,
-                offset: 0,
-                length: 0,
-            },
+            mention,
         });
         if (newEditorState) {
             updateEditorState(newEditorState);
@@ -120,7 +116,7 @@ export function useHandleEditorChange({ onChange, value, mentionsData }: useHand
             .filter(({ type }) => type === 'MENTION')
             .map(({ data }) => data);
 
-        return (result as any) as UserWithOffset[];
+        return (prepareLegacyMentions(plainText, result as any) as any) as UserWithOffset[];
     };
 
     React.useLayoutEffect(() => {

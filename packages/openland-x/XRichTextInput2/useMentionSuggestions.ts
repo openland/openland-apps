@@ -36,7 +36,6 @@ export const useMentionSuggestions = ({
         const alphabetSort = activeWord.startsWith('@') && activeWord.length === 1;
         const searchText = activeWord.slice(1).toLowerCase();
 
-        console.log(mentionsData);
         let filteredSuggestions = (mentionsData ? mentionsData : [])
             .filter(({ user: { name } }: { user: { name: string } }) => {
                 const validator = activeWord !== '' && activeWord[0] === '@';

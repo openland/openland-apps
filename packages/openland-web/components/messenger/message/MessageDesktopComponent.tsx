@@ -514,7 +514,12 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                                 : `${this.props.message.commentsCount} Comments`
                                         }
                                         size="default"
-                                        query={{ field: 'comments', value: this.props.message.id }}
+                                        query={{
+                                            field: 'comments',
+                                            value: `${this.props.message.id}&${
+                                                this.props.conversationId
+                                            }`,
+                                        }}
                                     />
                                 </XView>
                             )}
