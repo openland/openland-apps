@@ -289,7 +289,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     private menuRender = () => {
         let { message, messagesContext } = this.props;
         let out = message.isOut;
-        if (!message.isSending && !messagesContext.useForwardHeader) {
+
+        if (!message.isSending && !messagesContext.useForwardHeader && !this.props.isModal) {
             return (
                 <XHorizontal
                     alignItems="center"
