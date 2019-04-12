@@ -227,19 +227,16 @@ const CommentsInner = () => {
     for (let message of dsMessages) {
         commentsElements.push(
             <XView key={message.key} marginLeft={10 * message.depth}>
-                <MessageComponent message={message} onlyLikes={true} isChannel={true} me={null} />
+                <MessageComponent
+                    noSelector
+                    isComment
+                    onCommentReplyClick={() => setShowInputId(message.key)}
+                    message={message}
+                    onlyLikes={true}
+                    isChannel={true}
+                    me={null}
+                />
                 <XView width={500}>
-                    <XView
-                        color="#1790ff"
-                        fontWeight="600"
-                        fontSize={12}
-                        onClick={() => {
-                            setShowInputId(message.key);
-                        }}
-                    >
-                        Reply
-                    </XView>
-
                     {showInputId === message.key && (
                         <CommentsInput
                             members={members.members}
@@ -289,7 +286,6 @@ const CommentsInner = () => {
                             text: msgToSend,
                         });
 
-                        console.log(finalMentions);
                         addComment({
                             mentions: finalMentions,
                             messageId: curMesssageId,

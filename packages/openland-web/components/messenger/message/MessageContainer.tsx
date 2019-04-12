@@ -7,10 +7,10 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { SpannedString } from '../data/SpannedString';
 
 export interface DesktopMessageContainerProps {
     compact: boolean;
+    noSelector?: boolean;
     sender: UserShort;
     senderNameEmojify?: any;
     date: number;
@@ -301,7 +301,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                 }
             }}
         >
-            {selector}
+            {!props.noSelector && selector}
             {preambula}
             {content}
             {actions}

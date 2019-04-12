@@ -48,7 +48,13 @@ export const MessageModalBody = (props: MessageComponentProps) => {
 
     return (
         <>
-            <MessageComponent message={dsMessages} onlyLikes={true} isChannel={true} me={null} />
+            <MessageComponent
+                noSelector
+                message={dsMessages}
+                onlyLikes={true}
+                isChannel={true}
+                me={null}
+            />
             <XView
                 paddingHorizontal={32}
                 paddingTop={isMobile ? 0 : 30}

@@ -115,6 +115,9 @@ export interface MessageComponentProps {
     message: DataSourceWebMessageItem;
     isChannel: boolean;
     hasComments?: boolean;
+    noSelector?: boolean;
+    isComment?: boolean;
+    onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
     conversationId?: string;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me?: UserShort | null;
@@ -297,7 +300,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {out && message.text && (
+                        {!this.props.isComment && out && message.text && (
                             <IconButton onClick={this.setEditMessage}>
                                 <EditIcon />
                             </IconButton>
@@ -316,7 +319,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     };
 
     render() {
-        let { message } = this.props;
+        let { message, onCommentReplyClick } = this.props;
         let content: any[] = [];
         let edited = message.isEdited;
 
@@ -523,6 +526,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (!message.isService) {
             return (
                 <DesktopMessageContainer
+                    noSelector={this.props.noSelector}
                     compact={message.attachTop}
                     selecting={hideMenu}
                     sender={message.sender}
@@ -533,25 +537,38 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     selected={selected}
                 >
                     {content}
-                    <XView flexDirection="row" paddingTop={6}>
-                        <XHorizontal alignItems="center" separator={5}>
-                            {this.props.hasComments && (
-                                <DiscussButton
-                                    commentsCount={this.props.message.commentsCount}
-                                    messageId={this.props.message.id!!}
-                                    conversationId={this.props.conversationId!!}
-                                />
-                            )}
-                            {!message.isSending ? (
-                                <Reactions
-                                    onlyLikes={this.props.onlyLikes}
-                                    messageId={message.id!}
-                                    reactions={message.reactions || []}
-                                    meId={(this.props.me && this.props.me.id) || ''}
-                                />
-                            ) : null}
-                        </XHorizontal>
-                    </XView>
+                    {this.props.isComment && (
+                        <XView
+                            color="#1790ff"
+                            fontWeight="600"
+                            fontSize={12}
+                            cursor="pointer"
+                            onClick={onCommentReplyClick}
+                        >
+                            Reply
+                        </XView>
+                    )}
+                    {!this.props.isComment && (
+                        <XView flexDirection="row" paddingTop={6}>
+                            <XHorizontal alignItems="center" separator={5}>
+                                {this.props.hasComments && (
+                                    <DiscussButton
+                                        commentsCount={this.props.message.commentsCount}
+                                        messageId={this.props.message.id!!}
+                                        conversationId={this.props.conversationId!!}
+                                    />
+                                )}
+                                {!message.isSending ? (
+                                    <Reactions
+                                        onlyLikes={this.props.onlyLikes}
+                                        messageId={message.id!}
+                                        reactions={message.reactions || []}
+                                        meId={(this.props.me && this.props.me.id) || ''}
+                                    />
+                                ) : null}
+                            </XHorizontal>
+                        </XView>
+                    )}
                 </DesktopMessageContainer>
             );
         }
@@ -564,7 +581,12 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 alignItems="center"
                 startSelected={hideMenu}
             >
+<<<<<<< HEAD
                 <Check onClick={this.selectMessage} select={selected} className="check-icon" />
+=======
+                <Check onClick={this.selectMessage} select={isSelect} className="check-icon" />
+
+>>>>>>> wip(web): work on Comments Modal
                 <XVertical
                     separator={0}
                     className="message-container"

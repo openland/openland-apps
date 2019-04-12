@@ -21,6 +21,9 @@ const MessageComponentInner = React.memo(
         ) : (
             <>
                 <DesktopMessageComponentInner
+                    isComment={props.isComment}
+                    onCommentReplyClick={props.onCommentReplyClick}
+                    noSelector={props.noSelector}
                     hasComments={props.hasComments}
                     message={props.message}
                     conversationId={props.conversationId}
@@ -45,6 +48,9 @@ export const MessageComponent = (
 
     return (
         <MessageComponentInner
+            isComment={props.isComment}
+            onCommentReplyClick={props.onCommentReplyClick}
+            noSelector={props.noSelector}
             hasComments={props.hasComments}
             onlyLikes={props.onlyLikes}
             isChannel={props.isChannel}
