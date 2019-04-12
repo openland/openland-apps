@@ -11,6 +11,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import CloseIcon from './ic-close.svg';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { XView } from 'react-mental';
 
 interface ModalRenderProps {
     size: 'x-large' | 's-large' | 'large' | 'default' | 'small';
@@ -212,7 +213,11 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
                         {this.props.useTopCloser && <XModalCloser autoClose={true} />}
                     </XModalHeader>
                 )}
-                {this.props.useTopCloser && !this.props.title && <XModalCloser autoClose={true} />}
+                {this.props.useTopCloser && !this.props.title && (
+                    <XView position="absolute" zIndex={100} right={32} top={28}>
+                        <XModalCloser autoClose={true} />
+                    </XView>
+                )}
                 {this.props.heading !== undefined && this.props.heading}
                 {body}
                 {this.props.footer === undefined && !this.props.useTopCloser && (

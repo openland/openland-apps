@@ -268,7 +268,7 @@ const CommentsInner = () => {
 
     return (
         <>
-            <XView paddingHorizontal={32}>
+            <XView paddingHorizontal={32} paddingTop={28}>
                 <MessageComponent
                     noSelector
                     message={finalMessages}
