@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XModalProps, XModal, XModalFooter } from './XModal';
 import { XForm, XFormProps } from 'openland-x-forms/XForm2';
+import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XFormSubmit, XFormSubmitProps } from 'openland-x-forms/XFormSubmit';

@@ -361,7 +361,21 @@ export const CommentsModal = () => {
             }}
             customFooter={null}
         >
-            <CommentsInner />
+            <React.Suspense
+                fallback={
+                    <XView
+                        top={0}
+                        left={0}
+                        width="100%"
+                        height="100%"
+                        backgroundColor="background-color: rgba(0, 0, 0, 0.4)"
+                        position="fixed"
+                        zIndex={100}
+                    />
+                }
+            >
+                <CommentsInner />
+            </React.Suspense>
         </XModalForm>
     );
 };
