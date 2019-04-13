@@ -19,6 +19,7 @@ import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
 import * as constants from '../constants';
 import { UserShort } from 'openland-api/Types';
+import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 
 const Container = Glamorous.div<XFlexStyles & { round?: boolean }>(({ round }) => {
     return [
@@ -113,17 +114,29 @@ const iconWrapperClassName = css`
     }
 `;
 
-const PhotoIconWrapper = () => {
+const PhotoButton = ({
+    fileInput,
+    fileSelector,
+}: {
+    fileInput: React.RefObject<HTMLInputElement>;
+    fileSelector: (event: React.MouseEvent<HTMLDivElement>) => void;
+}) => {
     return (
-        <div className={cx(photoIconClassName, iconWrapperClassName)}>
+        <div className={cx(photoIconClassName, iconWrapperClassName)} onClick={fileSelector}>
             <PhotoIcon />
         </div>
     );
 };
 
-const FileIconWrapper = () => {
+const DocumentButton = ({
+    fileInput,
+    fileSelector,
+}: {
+    fileInput: React.RefObject<HTMLInputElement>;
+    fileSelector: (event: React.MouseEvent<HTMLDivElement>) => void;
+}) => {
     return (
-        <div className={cx(fileIconClassName, iconWrapperClassName)}>
+        <div className={cx(fileIconClassName, iconWrapperClassName)} onClick={fileSelector}>
             <FileIcon />
         </div>
     );
@@ -137,7 +150,33 @@ const SendIconWrapper = () => {
     );
 };
 
-const IconsWrapper = ({ children, minimal }: { children: any; minimal?: boolean }) => {
+const FileInput = Glamorous.input({
+    display: 'none',
+});
+
+const Icons = ({
+    minimal,
+    onEmojiPicked,
+}: {
+    minimal?: boolean;
+    onEmojiPicked: (emoji: EmojiData) => void;
+}) => {
+    const fileInput: React.RefObject<HTMLInputElement> = React.createRef();
+    const { handleDrop } = React.useContext(UploadContext);
+
+    const fileSelector = () => {
+        if (fileInput.current) {
+            fileInput.current.click();
+        }
+    };
+
+    const handleInputChange = (e: any) => {
+        handleDrop(e.target.files[0]);
+        if (fileInput.current) {
+            fileInput.current.value = '';
+        }
+    };
+
     return (
         <XView
             position="absolute"
@@ -145,9 +184,31 @@ const IconsWrapper = ({ children, minimal }: { children: any; minimal?: boolean 
             alignItems="center"
             top={0}
             right={minimal ? 6 : 16}
+            zIndex={100}
             flexDirection="row"
         >
-            {children}
+            <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
+            {minimal && (
+                <XView marginRight={20}>
+                    <PhotoButton fileInput={fileInput} fileSelector={fileSelector} />
+                </XView>
+            )}
+            {minimal && (
+                <XView marginRight={18}>
+                    <DocumentButton fileInput={fileInput} fileSelector={fileSelector} />
+                </XView>
+            )}
+            {minimal && (
+                <XView marginRight={16}>
+                    <EmojiButton onEmojiPicked={onEmojiPicked} />
+                </XView>
+            )}
+            {!minimal && (
+                <XView>
+                    <EmojiButton onEmojiPicked={onEmojiPicked} />
+                </XView>
+            )}
+            {minimal && <SendIconWrapper />}
         </XView>
     );
 };
@@ -250,29 +311,7 @@ export const EditorContainer = (props: EditorContainerContainer) => {
             />
 
             {children}
-            <IconsWrapper minimal={minimal}>
-                {minimal && (
-                    <XView marginRight={20}>
-                        <PhotoIconWrapper />
-                    </XView>
-                )}
-                {minimal && (
-                    <XView marginRight={18}>
-                        <FileIconWrapper />
-                    </XView>
-                )}
-                {minimal && (
-                    <XView marginRight={16}>
-                        <EmojiButton onEmojiPicked={onEmojiPicked} />
-                    </XView>
-                )}
-                {!minimal && (
-                    <XView>
-                        <EmojiButton onEmojiPicked={onEmojiPicked} />
-                    </XView>
-                )}
-                {minimal && <SendIconWrapper />}
-            </IconsWrapper>
+            <Icons minimal={minimal} onEmojiPicked={onEmojiPicked} />
         </ContainerWrapper>
     );
 };

@@ -573,6 +573,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                         />
                                     </XView>
                                 )}
+
                                 {!message.isSending &&
                                 ((message.reactions && message.reactions.length) ||
                                     this.props.isChannel) ? (
