@@ -3,6 +3,7 @@ import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { DumpSendMessage } from 'openland-web/fragments/MessageComposeComponent/DumpSendMessage';
 import { DesktopSendMessage } from 'openland-web/fragments/MessageComposeComponent/SendMessage/DesktopSendMessage';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 import UploadCare from 'uploadcare-widget';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
 import {
@@ -139,6 +140,8 @@ const CommentsInner = () => {
     const client = useClient();
     const isMobile = React.useContext(IsMobileContext);
     let router = React.useContext(XRouterContext)!;
+    let messenger = React.useContext(MessengerContext);
+
     const [curMesssageId, roomId] = router.routeQuery.comments.split('&');
 
     const [showInputId, setShowInputId] = React.useState<string | null>(null);
@@ -157,9 +160,12 @@ const CommentsInner = () => {
         return null;
     }
 
-    const messageComments = client.useMessageComments({
-        messageId: curMesssageId,
-    });
+    const messageComments = client.useMessageComments(
+        {
+            messageId: curMesssageId,
+        },
+        { fetchPolicy: 'network-only' },
+    );
 
     const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
         if (event.__typename === 'CommentReceived') {
@@ -237,7 +243,7 @@ const CommentsInner = () => {
                     message={message}
                     onlyLikes={true}
                     isChannel={true}
-                    me={null}
+                    me={messenger.user}
                 />
 
                 {showInputId === message.key && (
@@ -254,7 +260,7 @@ const CommentsInner = () => {
                                 mentions: finalMentions,
                                 messageId: curMesssageId,
                                 message: msgToSend,
-                                replyComment: message.text ? message.text : null,
+                                replyComment: message.key,
                             });
                             setShowInputId(null);
                         }}
@@ -274,7 +280,7 @@ const CommentsInner = () => {
                     message={finalMessages}
                     onlyLikes={true}
                     isChannel={true}
-                    me={null}
+                    me={messenger.user}
                     isModal={true}
                 />
             </XView>

@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import Glamorous from 'glamorous';
-import { XModal } from 'openland-x-modal/XModal';
+import { XModal, XModalFooter } from 'openland-x-modal/XModal';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { FullMessage_GeneralMessage } from 'openland-api/Types';
 import ExpandIcon from 'openland-icons/ic-expand-pinmessage.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { XLink } from 'openland-x/XLink';
-import { XModalFooter } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
 import { convertMessage } from 'openland-web/components/messenger/message/content/CommentsModal';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css } from 'linaria';
 export interface MessageComponentProps {
     footer?: any;
@@ -49,6 +49,7 @@ const Separator = () => {
 
 export const MessageModalBody = (props: MessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
+    let messenger = React.useContext(MessengerContext);
     const { generalMessage } = props;
 
     const dsMessages = convertDsMessage(convertMessage(generalMessage));
@@ -60,8 +61,8 @@ export const MessageModalBody = (props: MessageComponentProps) => {
                 message={dsMessages}
                 onlyLikes={true}
                 isChannel={true}
-                me={null}
                 isModal={true}
+                me={messenger.user}
             />
             <XView
                 marginTop={28}
