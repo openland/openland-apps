@@ -22,6 +22,7 @@ export interface XRichTextInput2Props extends XFlexStyles {
     onPasteFile?: (file: any) => void;
     onCurrentWordChanged?: (word: string | undefined) => void;
     minimal?: boolean;
+    round?: boolean;
 }
 
 export const XRichTextInput2 = React.memo(

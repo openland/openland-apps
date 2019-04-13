@@ -10,7 +10,6 @@ import { extractFlexProps, XFlexStyles, applyFlex } from '../../basics/Flex';
 import { EmojiSuggestions } from './EmojiSuggestions';
 import { MentionSuggestions, SizeT } from './MentionSuggestions';
 import { MentionEntry } from './MentionSuggestionsEntry';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { EmojiSuggestionsEntry } from './EmojiSuggestionsEntry';
 import { EmojiButton } from './EmojiButton';
 import { EmojiSuggestionsStateT, EmojiDataT } from '../useEmojiSuggestions';
@@ -21,15 +20,24 @@ import FileIcon from 'openland-icons/ic-file-3.svg';
 import * as constants from '../constants';
 import { UserShort } from 'openland-api/Types';
 
-const Container = Glamorous.div<XFlexStyles>([
-    {
-        position: 'relative',
-        '& .public-DraftEditorPlaceholder-root:not(.public-DraftEditorPlaceholder-hasFocus)': {
-            color: 'rgba(0, 0, 0, 0.5)',
+const Container = Glamorous.div<XFlexStyles & { round?: boolean }>(({ round }) => {
+    return [
+        {
+            position: 'relative',
+            ...(round
+                ? {
+                      '& .DraftEditor-root': {
+                          borderRadius: '20px !important',
+                      },
+                  }
+                : {}),
+            '& .public-DraftEditorPlaceholder-root:not(.public-DraftEditorPlaceholder-hasFocus)': {
+                color: 'rgba(0, 0, 0, 0.5)',
+            },
         },
-    },
-    applyFlex,
-]);
+        applyFlex,
+    ];
+});
 
 class ContainerWrapper extends React.PureComponent {
     render() {
@@ -39,6 +47,7 @@ class ContainerWrapper extends React.PureComponent {
 
 type EditorContainerContainer = XRichTextInput2Props & {
     minimal?: boolean;
+    round?: boolean;
     editorState: EditorState;
     setEditorState: (a: EditorState) => void;
     mentionState: MentionSuggestionsStateT;
@@ -225,7 +234,10 @@ export const EditorContainer = (props: EditorContainerContainer) => {
     });
 
     return (
-        <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
+        <ContainerWrapper
+            {...{ ...extractFlexProps(props), ...{ round: props.round } }}
+            ref={containerRef}
+        >
             <MentionSuggestions
                 show={mentionState.isSelecting}
                 items={mentionSuggestionsItems}
