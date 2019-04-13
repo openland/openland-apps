@@ -189,7 +189,6 @@ export const EditorContainer = (props: EditorContainerContainer) => {
 
     const mentionSuggestionsItems = mentionState.suggestions.map(
         (mention: UserShort, key: number) => {
-            console.log(mention);
             return (
                 <MentionEntry
                     id={mention.id}

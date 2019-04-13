@@ -195,20 +195,16 @@ const CommentsInner = () => {
         replyComment: string | null;
         mentions: MentionInput[] | null;
     }) => {
-        try {
-            await client.mutateAddMessageComment({
-                messageId,
-                message,
-                replyComment,
-                mentions,
-            });
+        await client.mutateAddMessageComment({
+            messageId,
+            message,
+            replyComment,
+            mentions,
+        });
 
-            await client.refetchMessageComments({
-                messageId,
-            });
-        } catch (err) {
-            console.log(err);
-        }
+        await client.refetchMessageComments({
+            messageId,
+        });
     };
 
     const commentsMap = {};
@@ -227,13 +223,17 @@ const CommentsInner = () => {
     const commentsElements = [];
 
     for (let message of dsMessages) {
+        const onCommentReplyClick = () => {
+            setShowInputId(showInputId === message.key ? null : message.key);
+        };
+
         commentsElements.push(
             <XView key={message.key} marginLeft={(message.depth > 0 ? 44 : 55) * message.depth}>
                 <MessageComponent
                     commentDepth={message.depth}
                     noSelector
                     isComment
-                    onCommentReplyClick={() => setShowInputId(message.key)}
+                    onCommentReplyClick={onCommentReplyClick}
                     message={message}
                     onlyLikes={true}
                     isChannel={true}
