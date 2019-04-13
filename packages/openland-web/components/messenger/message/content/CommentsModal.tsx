@@ -109,6 +109,7 @@ const CommentsInput = ({ minimal, members, onSend, onSendFile, onChange }: Comme
 
     return (
         <DumpSendMessage
+            round
             fullWidth
             minimal={minimal}
             TextInputComponent={DesktopSendMessage}
@@ -238,28 +239,27 @@ const CommentsInner = () => {
                     isChannel={true}
                     me={null}
                 />
-                <XView width={500}>
-                    {showInputId === message.key && (
-                        <CommentsInput
-                            members={members.members}
-                            minimal
-                            onSend={(msgToSend, mentions) => {
-                                const finalMentions = convertToMentionInput({
-                                    mentions: mentions ? mentions : [],
-                                    text: msgToSend,
-                                });
 
-                                addComment({
-                                    mentions: finalMentions,
-                                    messageId: curMesssageId,
-                                    message: msgToSend,
-                                    replyComment: message.text ? message.text : null,
-                                });
-                                setShowInputId(null);
-                            }}
-                        />
-                    )}
-                </XView>
+                {showInputId === message.key && (
+                    <CommentsInput
+                        members={members.members}
+                        minimal
+                        onSend={(msgToSend, mentions) => {
+                            const finalMentions = convertToMentionInput({
+                                mentions: mentions ? mentions : [],
+                                text: msgToSend,
+                            });
+
+                            addComment({
+                                mentions: finalMentions,
+                                messageId: curMesssageId,
+                                message: msgToSend,
+                                replyComment: message.text ? message.text : null,
+                            });
+                            setShowInputId(null);
+                        }}
+                    />
+                )}
             </XView>,
         );
     }

@@ -137,14 +137,14 @@ const SendIconWrapper = () => {
     );
 };
 
-const IconsWrapper = ({ children }: { children: any }) => {
+const IconsWrapper = ({ children, minimal }: { children: any; minimal?: boolean }) => {
     return (
         <XView
             position="absolute"
             height="100%"
             alignItems="center"
             top={0}
-            right={0}
+            right={minimal ? 6 : 16}
             flexDirection="row"
         >
             {children}
@@ -251,10 +251,27 @@ export const EditorContainer = (props: EditorContainerContainer) => {
             />
 
             {children}
-            <IconsWrapper>
-                {minimal && <PhotoIconWrapper />}
-                {minimal && <FileIconWrapper />}
-                <EmojiButton onEmojiPicked={onEmojiPicked} />
+            <IconsWrapper minimal={minimal}>
+                {minimal && (
+                    <XView marginRight={20}>
+                        <PhotoIconWrapper />
+                    </XView>
+                )}
+                {minimal && (
+                    <XView marginRight={18}>
+                        <FileIconWrapper />
+                    </XView>
+                )}
+                {minimal && (
+                    <XView marginRight={16}>
+                        <EmojiButton onEmojiPicked={onEmojiPicked} />
+                    </XView>
+                )}
+                {!minimal && (
+                    <XView>
+                        <EmojiButton onEmojiPicked={onEmojiPicked} />
+                    </XView>
+                )}
                 {minimal && <SendIconWrapper />}
             </IconsWrapper>
         </ContainerWrapper>

@@ -33,24 +33,13 @@ export const DesktopSendMessage = ({
     handleDrop,
     mentionsState,
     minimal,
+    round,
 }: TextInputComponentInnerT) => {
     return (
         <TextInputWrapper>
             <XRichTextInput2
-                minimal={true}
-                round={true}
-                flexGrow={1}
-                mentionsData={mentionsState!!.mentionsData}
-                placeholder="Write a message..."
-                onChange={handleChange}
-                onSubmit={handleSend}
-                ref={inputRef}
-                value={inputValue}
-                onPasteFile={handleDrop}
-            />
-            <XRichTextInput2
-                minimal={false}
-                round={false}
+                minimal={minimal}
+                round={round}
                 flexGrow={1}
                 mentionsData={mentionsState!!.mentionsData}
                 placeholder="Write a message..."
