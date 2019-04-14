@@ -2,23 +2,27 @@ import { MessageComments_messageComments_comments } from 'openland-api/Types';
 
 export const sortComments = (
     comments: MessageComments_messageComments_comments[],
-    commentsMap: { [key: string]: MessageComments_messageComments_comments },
+    commentsMap: { [key: string]: MessageComments_messageComments_comments | undefined },
 ): MessageComments_messageComments_comments[] => {
     function treeSortHelper(node: any, explored: any, s: any) {
-        const curNode = commentsMap[node.id];
+        if (node && node.id) {
+            const curNode = commentsMap[node.id];
 
-        if (!curNode.parentComment && !explored.has(curNode.id)) {
-            explored.add(node.id);
-            s.push(curNode);
-        }
-
-        if (curNode.parentComment && explored.has(curNode.parentComment.id)) {
-            explored.add(node.id);
-            s.push(curNode);
-        }
-
-        for (let child of curNode.childComments) {
-            treeSortHelper(commentsMap[child.id], explored, s);
+            if (curNode) {
+                if (!curNode.parentComment && !explored.has(curNode.id)) {
+                    explored.add(node.id);
+                    s.push(curNode);
+                }
+        
+                if (curNode.parentComment && explored.has(curNode.parentComment.id)) {
+                    explored.add(node.id);
+                    s.push(curNode);
+                }
+        
+                for (let child of curNode.childComments) {
+                    treeSortHelper(commentsMap[child.id], explored, s);
+                }
+            }
         }
     }
 
