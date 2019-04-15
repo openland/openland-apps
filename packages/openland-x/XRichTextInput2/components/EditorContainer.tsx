@@ -48,6 +48,7 @@ class ContainerWrapper extends React.PureComponent {
 
 type EditorContainerContainer = XRichTextInput2Props & {
     minimal?: boolean;
+    hideAttach?: boolean;
     round?: boolean;
     editorState: EditorState;
     setEditorState: (a: EditorState) => void;
@@ -152,9 +153,11 @@ const FileInput = Glamorous.input({
 
 const Icons = ({
     minimal,
+    hideAttach,
     onEmojiPicked,
 }: {
     minimal?: boolean;
+    hideAttach?: boolean;
     onEmojiPicked: (emoji: EmojiData) => void;
 }) => {
     const fileInput: React.RefObject<HTMLInputElement> = React.createRef();
@@ -184,12 +187,12 @@ const Icons = ({
             flexDirection="row"
         >
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
-            {minimal && (
+            {minimal && !hideAttach && (
                 <XView marginRight={20}>
                     <PhotoButton fileSelector={fileSelector} />
                 </XView>
             )}
-            {minimal && (
+            {minimal && !hideAttach && (
                 <XView marginRight={18}>
                     <DocumentButton fileSelector={fileSelector} />
                 </XView>
@@ -242,6 +245,7 @@ export const EditorContainer = (props: EditorContainerContainer) => {
         finalAddEmoji,
         onMentionPicked,
         minimal,
+        hideAttach,
     } = props;
 
     const mentionSuggestionsItems = mentionState.suggestions.map(
@@ -307,7 +311,7 @@ export const EditorContainer = (props: EditorContainerContainer) => {
             />
 
             {children}
-            <Icons minimal={minimal} onEmojiPicked={onEmojiPicked} />
+            <Icons minimal={minimal} hideAttach={hideAttach} onEmojiPicked={onEmojiPicked} />
         </ContainerWrapper>
     );
 };

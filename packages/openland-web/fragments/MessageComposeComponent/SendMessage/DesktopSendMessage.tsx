@@ -33,12 +33,14 @@ export const DesktopSendMessage = ({
     handleDrop,
     mentionsState,
     minimal,
+    hideAttach,
     round,
 }: TextInputComponentInnerT) => {
     return (
         <TextInputWrapper>
             <XRichTextInput2
                 minimal={minimal}
+                hideAttach={hideAttach}
                 round={round}
                 flexGrow={1}
                 mentionsData={mentionsState!!.mentionsData}

@@ -15,6 +15,7 @@ import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 export type TextInputComponentT = {
     fullWidth?: boolean;
     minimal?: boolean;
+    hideAttach?: boolean;
     round?: boolean;
     handleChange: (a: { text: string; mentions: UserWithOffset[] }) => void;
     handleSend: () => any;
@@ -50,6 +51,7 @@ export const DumpSendMessage = React.memo(
         fullWidth,
         minimal,
         round,
+        hideAttach,
     }: DumpSendMessageT) => {
         const { handleDrop } = React.useContext(UploadContext);
         return (
@@ -75,13 +77,14 @@ export const DumpSendMessage = React.memo(
                             handleDrop={handleDrop}
                             round={round}
                             minimal={minimal}
+                            hideAttach={hideAttach}
                         />
                         <XHorizontal
                             alignItems="center"
                             justifyContent="space-between"
                             flexGrow={1}
                         >
-                            {!minimal && <AttachmentButtons enabled={enabled} />}
+                            {!minimal && !hideAttach && <AttachmentButtons enabled={enabled} />}
 
                             {!minimal && (
                                 <XButton

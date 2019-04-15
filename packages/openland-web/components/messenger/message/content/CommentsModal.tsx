@@ -12,6 +12,7 @@ import {
     CommentWatch_event_CommentUpdateSingle_update,
     FullMessage,
     MentionInput,
+    FileAttachmentInput,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { useHandleSend } from 'openland-web/fragments/MessageComposeComponent/useHandleSend';
@@ -113,6 +114,7 @@ const CommentsInput = ({ minimal, members, onSend, onSendFile, onChange }: Comme
         <DumpSendMessage
             round
             fullWidth
+            hideAttach
             minimal={minimal}
             TextInputComponent={DesktopSendMessage}
             quoteState={quoteState}
@@ -196,17 +198,20 @@ const CommentsInner = () => {
         message,
         replyComment,
         mentions,
+        fileAttachments,
     }: {
         messageId: string;
         message: string;
         replyComment: string | null;
         mentions: MentionInput[] | null;
+        fileAttachments?: FileAttachmentInput[] | null;
     }) => {
         await client.mutateAddMessageComment({
             messageId,
             message,
             replyComment,
             mentions,
+            fileAttachments,
         });
 
         await client.refetchMessageComments({
@@ -263,6 +268,7 @@ const CommentsInner = () => {
                                     messageId: curMesssageId,
                                     message: msgToSend,
                                     replyComment: message.key,
+                                    // fileAttachments: [],
                                 });
                                 setShowInputId(null);
                             }}
@@ -347,6 +353,7 @@ const CommentsInner = () => {
                                 messageId: curMesssageId,
                                 message: msgToSend,
                                 replyComment: null,
+                                // fileAttachments: [],
                             });
                             setShowInputId(null);
                         }}

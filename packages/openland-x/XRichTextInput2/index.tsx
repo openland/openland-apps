@@ -23,6 +23,7 @@ export interface XRichTextInput2Props extends XFlexStyles {
     onCurrentWordChanged?: (word: string | undefined) => void;
     minimal?: boolean;
     round?: boolean;
+    hideAttach?: boolean;
 }
 
 export const XRichTextInput2 = React.memo(
