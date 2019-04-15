@@ -536,13 +536,13 @@ const Header = (props: { organization: Organization_organization }) => {
 
     const deleteOrganizationButton = (
         <XMenuItem style="danger" query={{ field: 'deleteOrganization', value: 'true' }}>
-            Delete organization
+            {organization.isCommunity ? 'Delete community' : 'Delete organization'}
         </XMenuItem>
     );
 
     const leaveOrganizationButton = (
         <XMenuItem style="danger" query={{ field: 'leaveOrganization', value: 'true' }}>
-            Leave organization
+            {organization.isCommunity ? 'Leave community' : 'Leave organization'}
         </XMenuItem>
     );
 
