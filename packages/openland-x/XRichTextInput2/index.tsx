@@ -112,6 +112,7 @@ export const XRichTextInput2 = React.memo(
             return (
                 <EditorContainer
                     {...props}
+                    onSubmit={onSubmit}
                     editorState={editorState}
                     setEditorState={setEditorState}
                     emojiState={emojiState}

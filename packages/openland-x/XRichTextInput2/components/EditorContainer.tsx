@@ -54,6 +54,7 @@ type EditorContainerContainer = XRichTextInput2Props & {
     setEditorState: (a: EditorState) => void;
     mentionState: MentionSuggestionsStateT;
     onMentionPicked: (mention: UserShort) => void;
+    onSubmit: () => void;
     emojiState: EmojiSuggestionsStateT;
     onEmojiPicked: (emoji: EmojiData) => void;
     finalAddEmoji: (emoji: { shortName: string; unified: string }) => void;
@@ -115,11 +116,7 @@ const iconWrapperClassName = css`
     }
 `;
 
-const PhotoButton = ({
-    fileSelector,
-}: {
-    fileSelector: (event: React.MouseEvent<HTMLDivElement>) => void;
-}) => {
+const PhotoButton = ({ fileSelector }: { fileSelector: () => void }) => {
     return (
         <div className={cx(photoIconClassName, iconWrapperClassName)} onClick={fileSelector}>
             <PhotoIcon />
@@ -127,11 +124,7 @@ const PhotoButton = ({
     );
 };
 
-const DocumentButton = ({
-    fileSelector,
-}: {
-    fileSelector: (event: React.MouseEvent<HTMLDivElement>) => void;
-}) => {
+const DocumentButton = ({ fileSelector }: { fileSelector: () => void }) => {
     return (
         <div className={cx(fileIconClassName, iconWrapperClassName)} onClick={fileSelector}>
             <FileIcon />
@@ -139,9 +132,9 @@ const DocumentButton = ({
     );
 };
 
-const SendIconWrapper = () => {
+const SendIconWrapper = ({ onSubmit }: { onSubmit: () => void }) => {
     return (
-        <div className={cx(iconWrapperClassName, sendIconWrapperClassName)}>
+        <div className={cx(iconWrapperClassName, sendIconWrapperClassName)} onClick={onSubmit}>
             <XIcon icon="send" className={sendIconClassName} />
         </div>
     );
@@ -155,10 +148,12 @@ const Icons = ({
     minimal,
     hideAttach,
     onEmojiPicked,
+    onSubmit,
 }: {
     minimal?: boolean;
     hideAttach?: boolean;
     onEmojiPicked: (emoji: EmojiData) => void;
+    onSubmit: () => void;
 }) => {
     const fileInput: React.RefObject<HTMLInputElement> = React.createRef();
     const { handleDrop } = React.useContext(UploadContext);
@@ -207,7 +202,7 @@ const Icons = ({
                     <EmojiButton onEmojiPicked={onEmojiPicked} />
                 </XView>
             )}
-            {minimal && <SendIconWrapper />}
+            {minimal && <SendIconWrapper onSubmit={onSubmit} />}
         </XView>
     );
 };
@@ -246,6 +241,7 @@ export const EditorContainer = (props: EditorContainerContainer) => {
         onMentionPicked,
         minimal,
         hideAttach,
+        onSubmit,
     } = props;
 
     const mentionSuggestionsItems = mentionState.suggestions.map(
@@ -311,7 +307,12 @@ export const EditorContainer = (props: EditorContainerContainer) => {
             />
 
             {children}
-            <Icons minimal={minimal} hideAttach={hideAttach} onEmojiPicked={onEmojiPicked} />
+            <Icons
+                minimal={minimal}
+                hideAttach={hideAttach}
+                onEmojiPicked={onEmojiPicked}
+                onSubmit={onSubmit}
+            />
         </ContainerWrapper>
     );
 };
