@@ -5,6 +5,7 @@ import { AdminTools } from 'openland-web/pages/main/profile/components/RoomProfi
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { RoomWithoutMembers_room_SharedRoom } from 'openland-api/Types';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
+import { XLoader } from 'openland-x/XLoader';
 
 export const HeaderMenu = ({ room }: { room: RoomWithoutMembers_room_SharedRoom }) => {
     const { id, canEdit } = room;
@@ -16,7 +17,7 @@ export const HeaderMenu = ({ room }: { room: RoomWithoutMembers_room_SharedRoom 
             small={true}
             placement="bottom-end"
             content={
-                <>
+                <React.Suspense fallback={<XLoader loading={true} />}>
                     <XWithRole role="super-admin" or={canEdit}>
                         <XMenuItem
                             query={{
@@ -51,7 +52,7 @@ export const HeaderMenu = ({ room }: { room: RoomWithoutMembers_room_SharedRoom 
                             <AdminTools id={id} variables={{ id }} />
                         </XWithRole>
                     </XWithRole>
-                </>
+                </React.Suspense>
             }
         />
     );
