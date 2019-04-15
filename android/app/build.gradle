@@ -178,9 +178,9 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy {
-        force 'org.webkit:android-jsc:r224109'
-    }
+//    resolutionStrategy {
+//        force 'org.webkit:android-jsc:r224109'
+//    }
     // exclude group: 'com.facebook.infer.annotation', module: 'infer-annotation'
     exclude group: 'com.facebook.yoga', module: 'yoga'
     // exclude group: 'com.facebook.litho', module: 'litho-annotations'
