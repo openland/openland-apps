@@ -4,12 +4,14 @@ import { PagePagination } from './components/PagePagination';
 import { UserProfile } from '../profile/components/UserProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
 import { withApp } from 'openland-web/components/withApp';
+import { XListView } from 'openland-web/components/XListView';
+import { useInfiniteScroll } from 'openland-web/hooks/useInfiniteScroll';
+import { XView } from 'react-mental';
 interface PeopleCardsProps {
     variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
@@ -43,6 +45,7 @@ export const PeopleCards = ({ variables, error, tagsCount }: PeopleCardsProps) =
                     {data.items.edges.map((i: any, j: any) => (
                         <XUserCard key={'_org_card_' + i.node.id} user={i.node} />
                     ))}
+
                     <PagePagination
                         pageInfo={data.items.pageInfo}
                         currentRoute="/directory/people"
@@ -69,21 +72,71 @@ const SearchUserProfileComponent = XMemo(({ id }: { id: string }) => (
 
 export default withApp('People', 'viewer', () => {
     const router = React.useContext(XRouterContext) as XRouter;
+    const client = useClient();
+
     const page = router.routeQuery.page;
 
-    let CardsComponent = ComponentWithSort({ Component: PeopleCards });
+    const { dataSource, renderLoading } = useInfiniteScroll({
+        initialLoadFunction: () => {
+            return client.useExplorePeople(variables, {
+                fetchPolicy: 'network-only',
+            });
+        },
+        queryOnNeedMore: async ({ currentPage }: { currentPage: any }) => {
+            return await client.queryExplorePeople({
+                ...variables,
+                page: currentPage,
+            });
+        },
+    });
+
+    const variables = {
+        query: '',
+        page,
+        // sort: JSON.stringify([
+        //     ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
+        //     { [orderBy]: { order: 'desc' } },
+        // ]),
+    };
+
+    const renderItem = React.useMemo(() => {
+        return (item: any) => {
+            return <XUserCard key={'_org_card_' + item.id} user={item} />;
+        };
+    }, []);
 
     return (
-        <DirectoryNavigation
-            id={getPeopleProfile(router.path)}
-            title={'People'}
-            ProfileComponent={SearchUserProfileComponent}
-            CardsComponent={CardsComponent}
-            searchPlaceholder={'Search people'}
-            noQueryText={'All people'}
-            hasQueryText={'People'}
-            withoutFeatured
-            page={page}
-        />
+        <XView justifyContent="center" alignItems="center" flexGrow={1}>
+            <XView height={500} alignSelf="center" overflow="hidden">
+                <XListView
+                    dataSource={dataSource}
+                    itemHeight={72}
+                    loadingHeight={60}
+                    renderItem={renderItem}
+                    renderLoading={renderLoading}
+                />
+            </XView>
+        </XView>
     );
 });
+
+// export default withApp('People', 'viewer', () => {
+//     const router = React.useContext(XRouterContext) as XRouter;
+//     const page = router.routeQuery.page;
+
+//     let CardsComponent = ComponentWithSort({ Component: PeopleCards });
+
+//     return (
+//         <DirectoryNavigation
+//             id={getPeopleProfile(router.path)}
+//             title={'People'}
+//             ProfileComponent={SearchUserProfileComponent}
+//             CardsComponent={CardsComponent}
+//             searchPlaceholder={'Search people'}
+//             noQueryText={'All people'}
+//             hasQueryText={'People'}
+//             withoutFeatured
+//             page={page}
+//         />
+//     );
+// });

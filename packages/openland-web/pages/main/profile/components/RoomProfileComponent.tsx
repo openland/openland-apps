@@ -18,6 +18,7 @@ import { XOverflow } from 'openland-web/components/XOverflow';
 import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
 import { RemoveMemberModal } from 'openland-web/fragments/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
+import { XListView } from 'openland-web/components/XListView';
 import {
     HeaderAvatar,
     HeaderTitle,
@@ -57,6 +58,7 @@ import Glamorous from 'glamorous';
 import { canUseDOM } from '../../../../../openland-y-utils/canUseDOM';
 import { XIcon } from '../../../../../openland-x/XIcon';
 import { TextProfiles } from '../../../../../openland-text/TextProfiles';
+import { useInfiniteScroll } from 'openland-web/hooks/useInfiniteScroll';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -336,11 +338,32 @@ const MembersProvider = ({
     isChannel,
 }: MembersProviderProps & XWithRouter) => {
     const client = useClient();
-    const data = client.useRoomMembers({
-        roomId: chatId,
+
+    const variables = {
+        query: '',
+        page: 1,
+    };
+    const { dataSource, renderLoading } = useInfiniteScroll({
+        initialLoadFunction: () => {
+            return client.useExplorePeople(variables, {
+                fetchPolicy: 'network-only',
+            });
+        },
+        queryOnNeedMore: async ({ currentPage }: { currentPage: any }) => {
+            return await client.queryExplorePeople({
+                ...variables,
+                page: currentPage,
+            });
+        },
     });
 
-    const members = data.members;
+    const members: any = [1];
+
+    const renderItem = React.useMemo(() => {
+        return (member: any) => {
+            return <MemberCard key={member.id} member={{ user: member }} />;
+        };
+    }, []);
 
     if (members && members.length > 0) {
         let tab: tabsT =
@@ -379,9 +402,18 @@ const MembersProvider = ({
                                 text="Add members"
                                 query={{ field: 'inviteMembers', value: 'true' }}
                             />
-                            {members.map((member, i) => {
+                            <XView height={500}>
+                                <XListView
+                                    dataSource={dataSource}
+                                    itemHeight={72}
+                                    loadingHeight={60}
+                                    renderItem={renderItem}
+                                    renderLoading={renderLoading}
+                                />
+                            </XView>
+                            {/* {members.map((member, i) => {
                                 return <MemberCard key={i} member={member} />;
-                            })}
+                            })} */}
                         </>
                     )}
 
@@ -392,7 +424,7 @@ const MembersProvider = ({
                             <RequestCard key={i} member={req} roomId={chatId} />
                         ))}
                 </SectionContent>
-                <RemoveMemberModal members={members} roomId={chatId} roomTitle={chatTitle} />
+                {/* <RemoveMemberModal members={members} roomId={chatId} roomTitle={chatTitle} /> */}
             </Section>
         );
     } else {

@@ -155,21 +155,17 @@ export class XMenuItem extends React.Component<XMenuItemProps> {
         return (
             <XMenuItemStyled {...this.props} colorTheme={this.props.style}>
                 {icon && this.isCustomIcon(icon) && this.getCustomIcon(icon, 'left')}
-                {icon &&
-                    typeof icon === 'string' &&
-                    !this.isCustomIcon(icon) && (
-                        <XMenuItemIcon icon={icon} className="icon icon-left" />
-                    )}
+                {icon && typeof icon === 'string' && !this.isCustomIcon(icon) && (
+                    <XMenuItemIcon icon={icon} className="icon icon-left" />
+                )}
                 {icon && typeof icon !== 'string' && !this.isCustomIcon(icon) && icon}
 
                 <XMenuItemText>{children}</XMenuItemText>
 
                 {iconRight && this.isCustomIcon(iconRight) && this.getCustomIcon(iconRight)}
-                {iconRight &&
-                    typeof iconRight === 'string' &&
-                    !this.isCustomIcon(iconRight) && (
-                        <XMenuItemIcon icon={iconRight} className="icon icon-right" />
-                    )}
+                {iconRight && typeof iconRight === 'string' && !this.isCustomIcon(iconRight) && (
+                    <XMenuItemIcon icon={iconRight} className="icon icon-right" />
+                )}
                 {iconRight &&
                     typeof iconRight !== 'string' &&
                     !this.isCustomIcon(iconRight) &&
