@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol RNAsyncKeyboardManagerDelegate {
+@objc protocol RNAsyncKeyboardManagerDelegate {
   func keyboardWillChangeHeight(ctx: String, kbHeight: CGFloat, acHeight: CGFloat)
   func keyboardWillShow(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int)
   func keyboardWillHide(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int)

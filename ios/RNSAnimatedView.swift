@@ -30,7 +30,7 @@ class RNSAnimatedView: RCTView {
   }
   
   // Initizliaze animated view
-  func setAnimatedKey(_ value: String) {
+  @objc func setAnimatedKey(_ value: String) {
     self.animatedKeyValue = value
   }
   

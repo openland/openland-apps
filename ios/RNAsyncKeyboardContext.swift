@@ -17,20 +17,20 @@ class RNAsyncKeyboardContextView: RCTView, RNAsyncKeyboardManagerDelegate {
   private var onKeyboardCallback: RCTDirectEventBlock?
   private var subscription: (() -> Void)? = nil
   
-  public func setContextKey(_ contextKey: String) {
+  @objc public func setContextKey(_ contextKey: String) {
     self.keyboardContextKey = contextKey
     self.subscription = RNAsyncKeyboardManager.sharedInstance.watch(delegate: self)
   }
   
-  public func setBottomSafeInset(_ inset: CGFloat) {
+  @objc public func setBottomSafeInset(_ inset: CGFloat) {
     self.safeInset = inset
   }
   
-  func keyboardWillChangeHeight(ctx: String, kbHeight: CGFloat, acHeight: CGFloat) {
+  @objc func keyboardWillChangeHeight(ctx: String, kbHeight: CGFloat, acHeight: CGFloat) {
     
   }
   
-  func keyboardWillHide(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
+  @objc func keyboardWillHide(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
     if let clb = self.onKeyboardCallback {
       if ctx == self.keyboardContextKey {
         let contentOffset = NSMutableDictionary()
@@ -52,7 +52,7 @@ class RNAsyncKeyboardContextView: RCTView, RNAsyncKeyboardManagerDelegate {
     }
   }
   
-  func keyboardWillShow(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
+  @objc func keyboardWillShow(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
     if let clb = self.onKeyboardCallback {
       if ctx == self.keyboardContextKey {
         let contentOffset = NSMutableDictionary()
@@ -74,7 +74,7 @@ class RNAsyncKeyboardContextView: RCTView, RNAsyncKeyboardManagerDelegate {
     }
   }
   
-  public func setOnKeyboardChanged(_ callback: RCTDirectEventBlock?) {
+  @objc public func setOnKeyboardChanged(_ callback: RCTDirectEventBlock?) {
     self.onKeyboardCallback = callback
   }
 }
