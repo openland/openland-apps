@@ -52,7 +52,9 @@ class RNSAnimatedView: RCTView {
     self.bounds = CGRect(origin: CGPoint.zero, size: sourceSize)
     
     // Register View
-    self.manager?.registerView(key: self.animatedKeyValue, view: self)
+    if let k = self.animatedKeyValue {
+      self.manager?.registerView(key: k, view: self)
+    }
   }
   
   private func viewDidUpdated() {
