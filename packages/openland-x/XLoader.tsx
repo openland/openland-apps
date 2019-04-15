@@ -7,7 +7,7 @@ interface XLoaderProps {
     height?: number | string;
 }
 
-const XCardLoaderDiv = Glamorous.div<XLoaderProps>((props) => ({
+const XCardLoaderDiv = Glamorous.div<XLoaderProps>(props => ({
     display: props.loading ? 'flex' : 'none',
     justifyContent: 'center',
     alignItems: 'center',
@@ -18,6 +18,7 @@ const XCardLoaderDiv = Glamorous.div<XLoaderProps>((props) => ({
     top: 0,
     left: 0,
     backgroundColor: '#fff',
+    borderRadius: 8,
     zIndex: 2,
     overflow: 'hidden',
     '> .loading': {
@@ -25,7 +26,7 @@ const XCardLoaderDiv = Glamorous.div<XLoaderProps>((props) => ({
         height: 30,
         lineHeight: 'normal',
         top: 'calc(50% - 15px)',
-        left: 'calc(50% - 15px)'
+        left: 'calc(50% - 15px)',
     },
 }));
 
