@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -132,43 +133,39 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
 > {
-    static getDerivedStateFromProps = (props: MessageComponentInnerProps) => {
-        if (!props.message.isSending) {
-            if (props.messagesContext.editMessageId === props.message.id) {
-                return {
-                    isEditView: true,
-                };
-            } else {
-                return {
-                    isEditView: false,
-                };
-            }
-        }
-
-        return null;
-    };
-
-    componentDidUpdate() {
-        if (this.state.isEditView) {
-            let el = ReactDOM.findDOMNode(this);
-            if (el) {
-                (el as Element).scrollIntoView();
-            }
-        }
-    }
-
-    componentWillUnmount() {
-        this.setState({
-            isEditView: false,
-        });
-    }
-
     constructor(props: MessageComponentInnerProps) {
         super(props);
 
         this.state = {
             isEditView: false,
         };
+    }
+
+    componentDidUpdate() {
+        const isEditView = this.props.messagesContext.editMessageId === this.props.message.id;
+
+        if (isEditView) {
+            if (canUseDOM) {
+                let el = ReactDOM.findDOMNode(this);
+                if (el) {
+                    (el as Element).scrollIntoView();
+                }
+            }
+            this.setState({
+                isEditView: true,
+            });
+        } else {
+            this.setState({
+                isEditView: false,
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        this.props.messagesContext.resetAll();
+        this.setState({
+            isEditView: false,
+        });
     }
 
     private setEditMessage = (e: any) => {
