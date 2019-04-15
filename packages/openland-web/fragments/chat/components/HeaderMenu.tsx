@@ -16,6 +16,7 @@ export const HeaderMenu = ({ room }: { room: RoomWithoutMembers_room_SharedRoom 
             flat={true}
             small={true}
             placement="bottom-end"
+            width={152}
             content={
                 <React.Suspense fallback={<XLoader loading={true} />}>
                     <XWithRole role="super-admin" or={canEdit}>

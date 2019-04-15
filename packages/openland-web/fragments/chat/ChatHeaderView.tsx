@@ -26,7 +26,6 @@ import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContex
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { useClient } from 'openland-web/utils/useClient';
 import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 
@@ -154,8 +153,10 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const userContext = React.useContext(UserInfoContext);
     const myId = userContext!!.user!!.id!!;
 
-    let sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomWithoutMembers_room_SharedRoom) : null;
-    let privateRoom = room.__typename === 'PrivateRoom' ? (room as RoomWithoutMembers_room_PrivateRoom) : null;
+    let sharedRoom =
+        room.__typename === 'SharedRoom' ? (room as RoomWithoutMembers_room_SharedRoom) : null;
+    let privateRoom =
+        room.__typename === 'PrivateRoom' ? (room as RoomWithoutMembers_room_PrivateRoom) : null;
 
     if (state.useForwardHeader) {
         return (
