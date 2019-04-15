@@ -146,9 +146,13 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
         if (isEditView) {
             if (canUseDOM) {
-                let el = ReactDOM.findDOMNode(this);
-                if (el) {
-                    (el as Element).scrollIntoView();
+                try {
+                    let el = ReactDOM.findDOMNode(this);
+                    if (el) {
+                        (el as Element).scrollIntoView();
+                    }
+                } catch (e) {
+                    console.warn('oops....')
                 }
             }
             this.setState({

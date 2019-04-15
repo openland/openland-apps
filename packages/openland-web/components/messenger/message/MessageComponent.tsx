@@ -62,21 +62,11 @@ export const MessageComponent = React.memo(
         const isMobile = React.useContext(IsMobileContext);
 
         return (
-            <React.Suspense
-                fallback={
-                    <MessageComponentInner
-                        {...props}
-                        messagesContextProps={messagesContextProps}
-                        isMobile={isMobile}
-                    />
-                }
-            >
-                <MessageComponentInner
-                    {...props}
-                    messagesContextProps={messagesContextProps}
-                    isMobile={isMobile}
-                />
-            </React.Suspense>
+            <MessageComponentInner
+                {...props}
+                messagesContextProps={messagesContextProps}
+                isMobile={isMobile}
+            />
         );
     },
 );
