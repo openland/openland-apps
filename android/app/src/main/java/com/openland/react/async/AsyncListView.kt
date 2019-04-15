@@ -1,5 +1,6 @@
 package com.openland.react.async
 
+import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.FrameLayout
@@ -9,6 +10,7 @@ import com.facebook.litho.*
 import com.facebook.litho.sections.SectionContext
 import com.facebook.litho.sections.widget.*
 import com.facebook.litho.utils.IncrementalMountUtils
+import com.facebook.litho.widget.SolidColor
 import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.openland.react.async.views.LithoSection
@@ -20,7 +22,9 @@ import com.facebook.react.views.scroll.ScrollEventType
 
 
 class AsyncListView(context: ReactContext) : FrameLayout(context) {
+
     private val asyncContext = ComponentContext(context)
+    private var componentTree: ComponentTree? = null
     private val lithoView = LithoView(context)
     private var inited = false
     private var dataView: AsyncDataView? = null
@@ -113,16 +117,17 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                 .onScrollListener(this.scrollListener)
                 .itemAnimator(null)
                 .build()
-//        lithoView.componentTree = ComponentTree.create(lithoView.componentContext, recycler)
-//                // .incrementalMount(false)
-//                .build()
-        lithoView.setComponentAsync(recycler)
-        // this.lithoView.performIncrementalMount()
-    }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
-        // this.lithoView.performIncrementalMount()
+        if (componentTree == null) {
+            componentTree = ComponentTree.create(asyncContext,
+                    SolidColor.create(asyncContext)
+                            .color(Color.TRANSPARENT).build())
+                    .incrementalMount(false)
+                    .build()
+            this.lithoView.componentTree = componentTree
+        } else {
+            componentTree!!.setRootAsync(recycler)
+        }
     }
 
     fun dispose() {

@@ -11,7 +11,13 @@ import com.facebook.react.uimanager.annotations.ReactProp
 
 
 class AsyncView(context: ReactContext) : FrameLayout(context) {
+
     private val asyncContext = ComponentContext(context)
+    private val componentTree = ComponentTree.create(asyncContext,
+            SolidColor.create(asyncContext)
+                    .color(Color.TRANSPARENT).build())
+            .incrementalMount(false)
+            .build()
     private val lithoView = LithoView(context)
     private var spec: AsyncViewSpec? = null
     private var prevSpec: AsyncViewSpec? = null
@@ -21,16 +27,13 @@ class AsyncView(context: ReactContext) : FrameLayout(context) {
                 android.widget.FrameLayout.LayoutParams(
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT))
-        lithoView.setComponent(SolidColor.create(asyncContext).color(Color.TRANSPARENT).build())
+        lithoView.componentTree = componentTree
     }
 
     fun setConfigKey(src: String) {
         specViews[src] = this
         this.spec = specs[src]
         setComponentIfReady()
-//        if (specs.containsKey(src)) {
-//            this.setConfig(specs[src]!!)
-//        }
     }
 
     fun setConfig(config: AsyncViewSpec) {
@@ -43,10 +46,10 @@ class AsyncView(context: ReactContext) : FrameLayout(context) {
         setComponentIfReady()
     }
 
-    private fun setComponentIfReady(){
+    private fun setComponentIfReady() {
         if (this.spec != null && this.spec != this.prevSpec) {
             this.prevSpec = this.spec
-            this.lithoView.setComponentAsync(resolveNode(this.asyncContext, this.spec!!, context as ReactContext))
+            componentTree.setRootAsync(resolveNode(this.asyncContext, this.spec!!, context as ReactContext))
         }
     }
 }
