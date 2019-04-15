@@ -324,7 +324,9 @@ class SignInComponent extends React.Component<
                 'no_code',
             ].includes(error)
         ) {
-            trackEvent('signup_code_error', { error_type: error });
+            let e = (error === 'wrong_code_length' || error === 'invalid_user_password') ? 'wrong_code' : error;
+
+            trackEvent('signup_code_error', { error_type: e });
         } else {
             trackEvent('signup_error', { error_type: error });
         }
