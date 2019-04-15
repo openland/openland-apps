@@ -464,10 +464,10 @@
       }
     },
     {
-      "signature": "6767ec2a02cffd20f34c9dbf9515627397c375ceb7cf0da61cde3d8a1c0a9f58",
-      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomMembers($roomId:ID!){members:roomMembers(roomId:$roomId){__typename membership role user{__typename...UserShort}}}",
+      "signature": "255a9f411518e9ce9ff047469dbee5abb777ea494c894be415a46de27e4453be",
+      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomMembers($roomId:ID!){members:roomMembers(roomId:$roomId){__typename canKick membership role user{__typename...UserShort}}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomMembers($roomId:ID!){roomMembers(roomId:$roomId){__typename membership role user{__typename...UserShort}}}"
+        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomMembers($roomId:ID!){roomMembers(roomId:$roomId){__typename canKick membership role user{__typename...UserShort}}}"
       }
     },
     {

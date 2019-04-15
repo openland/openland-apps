@@ -9129,7 +9129,7 @@ public final class RoomMembersShortQuery: GraphQLQuery {
 
 public final class RoomMembersQuery: GraphQLQuery {
   public let operationDefinition =
-    "query RoomMembers($roomId: ID!) {\n  members: roomMembers(roomId: $roomId) {\n    __typename\n    user {\n      __typename\n      ...UserShort\n    }\n    role\n    membership\n  }\n}"
+    "query RoomMembers($roomId: ID!) {\n  members: roomMembers(roomId: $roomId) {\n    __typename\n    user {\n      __typename\n      ...UserShort\n    }\n    role\n    membership\n    canKick\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
 
@@ -9177,6 +9177,7 @@ public final class RoomMembersQuery: GraphQLQuery {
         GraphQLField("user", type: .nonNull(.object(User.selections))),
         GraphQLField("role", type: .nonNull(.scalar(RoomMemberRole.self))),
         GraphQLField("membership", type: .nonNull(.scalar(SharedRoomMembershipStatus.self))),
+        GraphQLField("canKick", type: .nonNull(.scalar(Bool.self))),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -9185,8 +9186,8 @@ public final class RoomMembersQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public init(user: User, role: RoomMemberRole, membership: SharedRoomMembershipStatus) {
-        self.init(unsafeResultMap: ["__typename": "RoomMember", "user": user.resultMap, "role": role, "membership": membership])
+      public init(user: User, role: RoomMemberRole, membership: SharedRoomMembershipStatus, canKick: Bool) {
+        self.init(unsafeResultMap: ["__typename": "RoomMember", "user": user.resultMap, "role": role, "membership": membership, "canKick": canKick])
       }
 
       public var __typename: String {
@@ -9222,6 +9223,15 @@ public final class RoomMembersQuery: GraphQLQuery {
         }
         set {
           resultMap.updateValue(newValue, forKey: "membership")
+        }
+      }
+
+      public var canKick: Bool {
+        get {
+          return resultMap["canKick"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "canKick")
         }
       }
 

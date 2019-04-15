@@ -646,6 +646,7 @@ export const RoomMembersQuery = gql`
             }
             role
             membership
+            canKick
         }
     }
     ${UserShort}
@@ -771,8 +772,8 @@ export const ResolvedInviteQuery = gql`
 
 export const AddMessageCommentMutation = gql`
     mutation AddMessageComment(
-        $messageId: ID!,
-        $message: String,
+        $messageId: ID!
+        $message: String
         $replyComment: ID
         $mentions: [MentionInput!]
         $fileAttachments: [FileAttachmentInput!]

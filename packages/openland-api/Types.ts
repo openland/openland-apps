@@ -22367,6 +22367,7 @@ export interface RoomMembers_members {
   user: RoomMembers_members_user;
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
+  canKick: boolean;
 }
 
 export interface RoomMembers {
