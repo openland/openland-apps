@@ -231,7 +231,6 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
                         <View paddingBottom={Platform.OS === 'android' ? area.keyboardHeight : undefined}>
                             <MessageInputBar
-                                attachesEnabled={NON_PRODUCTION ? true : false}
                                 onAttachPress={handleAttach}
                                 onSubmitPress={handleSubmit}
                                 onChangeText={handleInputTextChange}
