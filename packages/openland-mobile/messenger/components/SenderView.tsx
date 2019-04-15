@@ -26,8 +26,8 @@ export const SenderView = React.memo<SenderViewProps>((props) => {
                         placeholderTitle={sender.name}
                     />
                 </View>
-                <View flexDirection="column">
-                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.medium, color: '#000' } as TextStyle} allowFontScaling={false}>{sender.name}
+                <View flexDirection="column" flexGrow={1} flexShrink={1}>
+                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.medium, color: '#000' } as TextStyle} allowFontScaling={false} numberOfLines={1}>{sender.name}
                         {sender.primaryOrganization &&
                             <Text style={{ fontSize: 13, fontWeight: TextStyles.weight.medium, color: '#99a2b0'} as TextStyle} allowFontScaling={false}>
                                 {' ' + sender.primaryOrganization.name}
