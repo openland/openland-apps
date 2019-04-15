@@ -8,6 +8,8 @@ import { isEmoji } from 'openland-y-utils/isEmoji';
 import { LinkToRoom } from './service/views/LinkToRoom';
 import { OthersPopper, JoinedUserPopperRowProps } from './service/views/OthersPopper';
 import { SpannedString } from '../../data/SpannedString';
+import { isInternalLink } from 'openland-web/utils/isInternalLink';
+import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 
 const EmojiSpaceStyle = css`
     & img {
@@ -113,12 +115,24 @@ export const SpannedStringView = React.memo<{ spannedString: SpannedString }>(pr
                 </span>,
             );
         } else if (s.type === 'link') {
+            let href: string | undefined = s.url || undefined;
+            let path: string | undefined = undefined;
+
+            let internalLink = isInternalLink(href || '');
+
+            if (internalLink) {
+                path = makeInternalLinkRelative(href || '');
+                href = undefined;
+            }
+            let openlandLink: boolean = !!internalLink;
+
             res.push(
                 <span key={'link-' + i} className={LinkText}>
                     <XView
                         as="a"
-                        target="_blank"
-                        href={s.url}
+                        target={openlandLink ? undefined : '_blank'}
+                        href={href}
+                        path={path}
                         onClick={(e: any) => e.stopPropagation()}
                     >
                         <SpannedStringView spannedString={s.child} />
@@ -172,11 +186,7 @@ export const SpannedStringView = React.memo<{ spannedString: SpannedString }>(pr
                     id: j.id,
                 });
             });
-            res.push(
-                <OthersPopper items={otherItems}>
-                    {s.users.length} others
-                </OthersPopper>,
-            );
+            res.push(<OthersPopper items={otherItems}>{s.users.length} others</OthersPopper>);
         }
 
         i++;
