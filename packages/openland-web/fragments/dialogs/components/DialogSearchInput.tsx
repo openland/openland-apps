@@ -21,8 +21,8 @@ let searchStyle = css`
         height: 20px;
     }
     & a > svg {
-        width: 20px;
-        height: 20px;
+        width: 10px;
+        height: 10px;
     }
     &:focus-within,
     &:focus {
