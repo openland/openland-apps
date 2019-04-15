@@ -61,3 +61,51 @@ export const RoomFull = gql`
     }
     ${FullMessage}
 `;
+
+export const RoomFullWithoutMembers = gql`
+    fragment RoomFullWithoutMembers on Room {
+        ... on PrivateRoom {
+            id
+            user {
+                ...UserShort
+            }
+            settings {
+                id
+                mute
+            }
+        }
+        ... on SharedRoom {
+            id
+            kind
+            isChannel
+            title
+            photo
+            socialImage
+            description
+            organization {
+                ...OrganizationMedium
+            }
+            membership
+            role
+            membersCount
+            settings {
+                id
+                mute
+            }
+            canEdit
+            canSendMessage
+            welcomeMessage {
+                isOn
+                sender {
+                    id
+                    name
+                }
+                message
+            }
+            pinnedMessage{
+                ...FullMessage
+            }
+        }
+    }
+    ${FullMessage}
+`;

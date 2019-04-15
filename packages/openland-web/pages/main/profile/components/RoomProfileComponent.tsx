@@ -92,10 +92,6 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
 
     const canEdit = chat.canEdit;
 
-    const canChangeAdvancedSettingsMembersUsers = getWelcomeMessageSenders({
-        chat,
-    });
-
     const canSeeAdvancedSettings = checkCanSeeAdvancedSettings({ chat });
     return (
         <HeaderWrapper>
@@ -173,9 +169,6 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                 <AdvancedSettingsModal
                                     roomId={chat.id}
                                     socialImage={chat.socialImage}
-                                    canChangeAdvancedSettingsMembersUsers={
-                                        canChangeAdvancedSettingsMembersUsers
-                                    }
                                     welcomeMessageText={chat.welcomeMessage!!.message}
                                     welcomeMessageSender={chat.welcomeMessage!!.sender}
                                     welcomeMessageIsOn={chat.welcomeMessage!!.isOn}

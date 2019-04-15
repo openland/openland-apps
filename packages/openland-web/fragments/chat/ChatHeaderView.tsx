@@ -3,7 +3,11 @@ import { css } from 'linaria';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
-import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
+import {
+    UserShort,
+    RoomWithoutMembers_room_SharedRoom,
+    RoomWithoutMembers_room_PrivateRoom,
+} from 'openland-api/Types';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { RoomEditModal } from './RoomEditModal';
 import { AdvancedSettingsModal } from './AdvancedSettingsModal';
@@ -41,7 +45,7 @@ const inviteButtonClass = css`
 `;
 
 export interface ChatHeaderViewProps {
-    room: Room_room_SharedRoom | Room_room_PrivateRoom;
+    room: RoomWithoutMembers_room_SharedRoom | RoomWithoutMembers_room_PrivateRoom;
     me: UserShort;
 }
 
@@ -104,13 +108,21 @@ const ChatHeaderViewAbstract = XMemo(
     },
 );
 
-const CallButton = ({ room }: { room: Room_room_SharedRoom | Room_room_PrivateRoom }) => {
+const CallButton = ({
+    room,
+}: {
+    room: RoomWithoutMembers_room_SharedRoom | RoomWithoutMembers_room_PrivateRoom;
+}) => {
     let calls = React.useContext(MessengerContext).calls;
     let callsState = calls.useState();
     // const ctx = React.useContext(TalkContext);
 
     return callsState.conversationId !== room.id ? (
-        <XButton text="Call" size="small" onClick={() => calls.joinCall(room.id, room.__typename === 'PrivateRoom')} />
+        <XButton
+            text="Call"
+            size="small"
+            onClick={() => calls.joinCall(room.id, room.__typename === 'PrivateRoom')}
+        />
     ) : null;
 };
 
@@ -142,18 +154,17 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const userContext = React.useContext(UserInfoContext);
     const myId = userContext!!.user!!.id!!;
 
-    let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;
-    let privateRoom = room.__typename === 'PrivateRoom' ? (room as Room_room_PrivateRoom) : null;
+    let sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomWithoutMembers_room_SharedRoom) : null;
+    let privateRoom = room.__typename === 'PrivateRoom' ? (room as RoomWithoutMembers_room_PrivateRoom) : null;
 
     if (state.useForwardHeader) {
-        let canMePinMessage = !!(sharedRoom && sharedRoom.canEdit);
         return (
             <ChatForwardHeaderView
                 roomId={room.id}
                 me={me}
                 privateRoom={room.__typename === 'PrivateRoom'}
                 isChannel={!!(sharedRoom && sharedRoom.isChannel)}
-                canMePinMessage={canMePinMessage}
+                canMePinMessage={!!(sharedRoom && sharedRoom.canEdit)}
                 myId={myId}
             />
         );
@@ -195,14 +206,11 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                         id={room.id}
                         isRoom={true}
                         isOrganization={false}
-                        isChannel={(room as Room_room_SharedRoom).isChannel}
+                        isChannel={(room as RoomWithoutMembers_room_SharedRoom).isChannel}
                     />
                 </>
             );
         }
-        const canChangeAdvancedSettingsMembersUsers = getWelcomeMessageSenders({
-            chat: sharedRoom,
-        });
 
         modals = (
             <>
@@ -210,9 +218,6 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                     <AdvancedSettingsModal
                         roomId={sharedRoom.id}
                         socialImage={sharedRoom.socialImage}
-                        canChangeAdvancedSettingsMembersUsers={
-                            canChangeAdvancedSettingsMembersUsers
-                        }
                         welcomeMessageText={sharedRoom.welcomeMessage!!.message}
                         welcomeMessageSender={sharedRoom.welcomeMessage!!.sender}
                         welcomeMessageIsOn={sharedRoom.welcomeMessage!!.isOn}
@@ -247,13 +252,13 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const title = sharedRoom ? (
         <HeaderTitle key={sharedRoom.id} value={sharedRoom.title} />
     ) : (
-            <HeaderTitle
-                key={privateRoom!!.user.id}
-                value={privateRoom!!.user.name}
-                path={'/mail/u/' + privateRoom!!.user.id}
-                organization={privateRoom!!.user.primaryOrganization}
-            />
-        );
+        <HeaderTitle
+            key={privateRoom!!.user.id}
+            value={privateRoom!!.user.name}
+            path={'/mail/u/' + privateRoom!!.user.id}
+            organization={privateRoom!!.user.primaryOrganization}
+        />
+    );
 
     return (
         <ChatHeaderViewAbstract
@@ -316,7 +321,7 @@ export const ChatHeaderViewLoader = (props: {
     }
     const client = useClient();
 
-    let room = client.useWithoutLoaderRoom({ id: props.variables.id })!!;
+    let room = client.useRoomWithoutMembers({ id: props.variables.id })!!;
     let ctx = React.useContext(UserInfoContext);
     const user = ctx!!.user!!;
 

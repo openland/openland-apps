@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { OrganizationMedium } from '../fragments/OrganizationMedium';
-import { RoomFull } from '../fragments/RoomFull';
+import { RoomFull, RoomFullWithoutMembers } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { TinyMessage, FullMessage } from 'openland-api/fragments/Message';
@@ -236,6 +236,17 @@ export const RoomQuery = gql`
         }
     }
     ${RoomFull}
+    ${UserShort}
+    ${OrganizationMedium}
+`;
+
+export const RoomWithoutMembersQuery = gql`
+    query RoomWithoutMembers($id: ID!) {
+        room(id: $id) {
+            ...RoomFullWithoutMembers
+        }
+    }
+    ${RoomFullWithoutMembers}
     ${UserShort}
     ${OrganizationMedium}
 `;

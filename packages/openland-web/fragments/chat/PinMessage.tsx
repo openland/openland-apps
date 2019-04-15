@@ -7,17 +7,15 @@ import { XModal, XModalCloser } from 'openland-x-modal/XModal';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
-    Room_room_PrivateRoom,
-    Room_room_SharedRoom,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile,
+    RoomWithoutMembers_room_PrivateRoom,
+    RoomWithoutMembers_room_SharedRoom,
 } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { MessageTextComponent } from 'openland-web/components/messenger/message/content/MessageTextComponent';
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
 import { XMutation } from 'openland-x/XMutation';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
-import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import IconFile from 'openland-icons/ic-pinfile-doc.svg';
 import IconImage from 'openland-icons/ic-pinfile-photo.svg';
 import ForwardIcon from 'openland-icons/ic-reply-2.svg';
@@ -95,7 +93,7 @@ type attachmentType = Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachme
 export interface PinMessageComponentProps {
     pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage;
     chatId: string;
-    room: Room_room_SharedRoom | Room_room_PrivateRoom;
+    room: RoomWithoutMembers_room_SharedRoom | RoomWithoutMembers_room_PrivateRoom;
     target?: any;
 }
 
@@ -104,7 +102,8 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
     const { room } = props;
     const { pinMessage } = props;
     const { sender, message } = pinMessage;
-    let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;
+    let sharedRoom =
+        room.__typename === 'SharedRoom' ? (room as RoomWithoutMembers_room_SharedRoom) : null;
     let canMeUnpinMessage = sharedRoom && sharedRoom.canEdit;
     let attachment: attachmentType | null = null;
 
@@ -291,7 +290,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                                 hoverTextDecoration="none"
                                 href={`https://ucarecdn.com/${attachment.fileId}/${
                                     attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
-                                    }`}
+                                }`}
                             >
                                 <XView
                                     alignItems="center"

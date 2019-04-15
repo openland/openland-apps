@@ -8,17 +8,18 @@ import { XCheckbox } from 'openland-x/XCheckbox';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import {
-    Room_room_SharedRoom_members_user,
     Room_room_SharedRoom_welcomeMessage_sender,
+    Room_room_SharedRoom,
 } from 'openland-api/Types';
 import { useClient } from 'openland-web/utils/useClient';
 import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
+import { XLoader } from 'openland-x/XLoader';
 
 interface AdvancedSettingsInnerProps {
     socialImage: string | null;
     roomId: string;
-    canChangeAdvancedSettingsMembersUsers: Room_room_SharedRoom_members_user[];
     welcomeMessageIsOn: boolean;
     welcomeMessageText: string | null;
     welcomeMessageSender: Room_room_SharedRoom_welcomeMessage_sender | null;
@@ -52,6 +53,174 @@ const SocialImageWrapperClassName = css`
         object-fit: cover;
     }
 `;
+
+interface ModalBodyProps {
+    welcomeMessageIsOn: boolean;
+    setWelcomeMessageIsOn: (data: boolean) => void;
+    isOpenUsers: boolean;
+    setIsOpenUsers: (data: boolean) => void;
+    msgSender: any;
+    welcomeMsgSenderOnChange: (data: { value: string; label: string }) => void;
+    finalWelcomeMessageSenderError: boolean;
+    finalWelcomeMessageTextError: boolean;
+    welcomeMsgOnChange: (data: string) => void;
+    welcomeMessageText: string | null;
+    variables: {
+        id: string;
+    };
+}
+
+const ModalBody = (props: ModalBodyProps) => {
+    const {
+        welcomeMessageIsOn,
+        setWelcomeMessageIsOn,
+        isOpenUsers,
+        setIsOpenUsers,
+        msgSender,
+        welcomeMsgSenderOnChange,
+        finalWelcomeMessageSenderError,
+        finalWelcomeMessageTextError,
+        welcomeMsgOnChange,
+        welcomeMessageText,
+        variables,
+    } = props;
+
+    const client = useClient();
+    let room = client.useWithoutLoaderRoom(variables);
+
+    if (!room || !room.room) {
+        return <XLoader loading={true} />;
+    }
+
+    let sharedRoom =
+        room.room.__typename === 'SharedRoom' ? (room.room as Room_room_SharedRoom) : null;
+
+    if (sharedRoom) {
+        const canChangeAdvancedSettingsMembersUsers = getWelcomeMessageSenders({
+            chat: sharedRoom,
+        });
+
+        return (
+            <XView>
+                <XView fontSize={16} fontWeight="600">
+                    Welcome message
+                </XView>
+                <XView marginTop={4}>
+                    Send an automatic message in 1:1 chat to every new member who joins this group
+                </XView>
+                <XView marginTop={17} alignSelf="flex-start">
+                    <XCheckbox
+                        label={welcomeMessageIsOn ? 'On' : 'Off'}
+                        checked={welcomeMessageIsOn}
+                        onChange={() => setWelcomeMessageIsOn(!welcomeMessageIsOn)}
+                        switcher={true}
+                    />
+                </XView>
+                {welcomeMessageIsOn && (
+                    <>
+                        <XView marginTop={25} zIndex={3}>
+                            <XView
+                                onClick={() => setIsOpenUsers(!isOpenUsers)}
+                                height={52}
+                                paddingHorizontal={16}
+                                backgroundColor="#f2f3f4"
+                                borderRadius={8}
+                                flexDirection="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                cursor="pointer"
+                            >
+                                <XView flexDirection="column" marginTop={-3}>
+                                    <XView color="#1488f3" fontSize={12}>
+                                        Sender
+                                    </XView>
+                                    <XView
+                                        fontSize={14}
+                                        marginTop={-4}
+                                        color={msgSender ? '#000' : 'rgba(0, 0, 0, 0.5)'}
+                                    >
+                                        {msgSender ? msgSender.label : 'Select'}
+                                    </XView>
+                                </XView>
+                                <ArrowIcon />
+                            </XView>
+                            {isOpenUsers && (
+                                <XView
+                                    position="absolute"
+                                    left={0}
+                                    top={60}
+                                    zIndex={1}
+                                    width="100%"
+                                >
+                                    <div className={UsersWrapperClassName}>
+                                        {canChangeAdvancedSettingsMembersUsers.map(i => {
+                                            let userData = {
+                                                value: i.id,
+                                                label: i.name,
+                                            };
+                                            return (
+                                                <XUserCard
+                                                    key={'user_card' + i.id}
+                                                    user={i}
+                                                    customButton={null}
+                                                    onClick={() => {
+                                                        welcomeMsgSenderOnChange(userData);
+                                                        setIsOpenUsers(!isOpenUsers);
+                                                    }}
+                                                    noPath={true}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                </XView>
+                            )}
+                            {finalWelcomeMessageSenderError && (
+                                <XView color="#d75454" paddingLeft={17} marginTop={8}>
+                                    Please choose who will send the Welcome message
+                                </XView>
+                            )}
+                        </XView>
+                        <XView marginTop={16}>
+                            <XTextArea
+                                resize={false}
+                                title="Text message"
+                                mode="modern"
+                                invalid={finalWelcomeMessageTextError}
+                                onChange={welcomeMsgOnChange}
+                                value={welcomeMessageText || ''}
+                            />
+                            {finalWelcomeMessageTextError && (
+                                <XView color="#d75454" paddingLeft={17} marginTop={8}>
+                                    Please enter the Welcome message text
+                                </XView>
+                            )}
+                        </XView>
+                    </>
+                )}
+                <XView marginTop={24} fontSize={16} fontWeight="600">
+                    Social sharing image
+                </XView>
+                <XView marginTop={4} fontSize={14}>
+                    Choose an image to display when sharing invite to this group on social networks
+                </XView>
+                <XView marginTop={16}>
+                    <div className={SocialImageWrapperClassName}>
+                        <XAvatarUpload
+                            cropParams="16:9"
+                            field="input.socialImageRef"
+                            placeholder={{
+                                add: 'Add image',
+                                change: 'Change image',
+                            }}
+                        />
+                    </div>
+                </XView>
+            </XView>
+        );
+    }
+
+    return null;
+};
 
 export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
     const api = useClient();
@@ -183,121 +352,21 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
                 },
             }}
         >
-            <XView>
-                <XView fontSize={16} fontWeight="600">
-                    Welcome message
-                </XView>
-                <XView marginTop={4}>
-                    Send an automatic message in 1:1 chat to every new member who joins this group
-                </XView>
-                <XView marginTop={17} alignSelf="flex-start">
-                    <XCheckbox
-                        label={welcomeMessageIsOn ? 'On' : 'Off'}
-                        checked={welcomeMessageIsOn}
-                        onChange={() => setWelcomeMessageIsOn(!welcomeMessageIsOn)}
-                        switcher={true}
-                    />
-                </XView>
-                {welcomeMessageIsOn && (
-                    <>
-                        <XView marginTop={25} zIndex={3}>
-                            <XView
-                                onClick={() => setIsOpenUsers(!isOpenUsers)}
-                                height={52}
-                                paddingHorizontal={16}
-                                backgroundColor="#f2f3f4"
-                                borderRadius={8}
-                                flexDirection="row"
-                                justifyContent="space-between"
-                                alignItems="center"
-                                cursor="pointer"
-                            >
-                                <XView flexDirection="column" marginTop={-3}>
-                                    <XView color="#1488f3" fontSize={12}>
-                                        Sender
-                                    </XView>
-                                    <XView
-                                        fontSize={14}
-                                        marginTop={-4}
-                                        color={msgSender ? '#000' : 'rgba(0, 0, 0, 0.5)'}
-                                    >
-                                        {msgSender ? msgSender.label : 'Select'}
-                                    </XView>
-                                </XView>
-                                <ArrowIcon />
-                            </XView>
-                            {isOpenUsers && (
-                                <XView
-                                    position="absolute"
-                                    left={0}
-                                    top={60}
-                                    zIndex={1}
-                                    width="100%"
-                                >
-                                    <div className={UsersWrapperClassName}>
-                                        {props.canChangeAdvancedSettingsMembersUsers.map(i => {
-                                            let userData = {
-                                                value: i.id,
-                                                label: i.name,
-                                            };
-                                            return (
-                                                <XUserCard
-                                                    key={'user_card' + i.id}
-                                                    user={i}
-                                                    customButton={null}
-                                                    onClick={() => {
-                                                        welcomeMsgSenderOnChange(userData);
-                                                        setIsOpenUsers(!isOpenUsers);
-                                                    }}
-                                                    noPath={true}
-                                                />
-                                            );
-                                        })}
-                                    </div>
-                                </XView>
-                            )}
-                            {finalWelcomeMessageSenderError && (
-                                <XView color="#d75454" paddingLeft={17} marginTop={8}>
-                                    Please choose who will send the Welcome message
-                                </XView>
-                            )}
-                        </XView>
-                        <XView marginTop={16}>
-                            <XTextArea
-                                resize={false}
-                                title="Text message"
-                                mode="modern"
-                                invalid={finalWelcomeMessageTextError}
-                                onChange={welcomeMsgOnChange}
-                                value={welcomeMessageText || ''}
-                            />
-                            {finalWelcomeMessageTextError && (
-                                <XView color="#d75454" paddingLeft={17} marginTop={8}>
-                                    Please enter the Welcome message text
-                                </XView>
-                            )}
-                        </XView>
-                    </>
-                )}
-                <XView marginTop={24} fontSize={16} fontWeight="600">
-                    Social sharing image
-                </XView>
-                <XView marginTop={4} fontSize={14}>
-                    Choose an image to display when sharing invite to this group on social networks
-                </XView>
-                <XView marginTop={16}>
-                    <div className={SocialImageWrapperClassName}>
-                        <XAvatarUpload
-                            cropParams="16:9"
-                            field="input.socialImageRef"
-                            placeholder={{
-                                add: 'Add image',
-                                change: 'Change image',
-                            }}
-                        />
-                    </div>
-                </XView>
-            </XView>
+            {isOpen && (
+                <ModalBody
+                    welcomeMessageIsOn={welcomeMessageIsOn}
+                    setWelcomeMessageIsOn={setWelcomeMessageIsOn}
+                    isOpenUsers={isOpenUsers}
+                    setIsOpenUsers={setIsOpenUsers}
+                    msgSender={msgSender}
+                    welcomeMsgSenderOnChange={welcomeMsgSenderOnChange}
+                    finalWelcomeMessageSenderError={finalWelcomeMessageSenderError}
+                    finalWelcomeMessageTextError={finalWelcomeMessageTextError}
+                    welcomeMsgOnChange={welcomeMsgOnChange}
+                    welcomeMessageText={welcomeMessageText}
+                    variables={{ id: props.roomId }}
+                />
+            )}
         </XModalForm>
     );
 };

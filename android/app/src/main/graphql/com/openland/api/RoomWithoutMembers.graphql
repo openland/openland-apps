@@ -1,0 +1,6 @@
+query RoomWithoutMembers($id: ID!) {
+  room(id: $id) {
+    __typename
+    ...RoomFullWithoutMembers
+  }
+}

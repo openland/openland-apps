@@ -163,6 +163,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderRoom(variables: Types.RoomVariables): Types.Room | null {
         return this.useQuery(Source.RoomQuery, variables);
     }
+    async queryRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: OperationParameters): Promise<Types.RoomWithoutMembers> {
+        return this.client.query(Source.RoomWithoutMembersQuery, variables, opts);
+    }
+    async refetchRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables): Promise<Types.RoomWithoutMembers> {
+        return this.refetch(Source.RoomWithoutMembersQuery, variables);
+    }
+    useRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: QueryWatchParameters): Types.RoomWithoutMembers {
+        return this.useQuerySuspense(Source.RoomWithoutMembersQuery, variables, opts);
+    }
+    useWithoutLoaderRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables): Types.RoomWithoutMembers | null {
+        return this.useQuery(Source.RoomWithoutMembersQuery, variables);
+    }
     async queryRoomTiny(variables: Types.RoomTinyVariables, opts?: OperationParameters): Promise<Types.RoomTiny> {
         return this.client.query(Source.RoomTinyQuery, variables, opts);
     }
@@ -1002,6 +1014,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     writeRoomFull(data: Types.RoomFull) {
       return this.client.writeFragment(data, Source.RoomFullFragment);
+    }
+    writeRoomFullWithoutMembers(data: Types.RoomFullWithoutMembers) {
+      return this.client.writeFragment(data, Source.RoomFullWithoutMembersFragment);
     }
     writeRoomShort(data: Types.RoomShort) {
       return this.client.writeFragment(data, Source.RoomShortFragment);
