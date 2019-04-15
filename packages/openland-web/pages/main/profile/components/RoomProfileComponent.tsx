@@ -318,7 +318,6 @@ const RequestCard = ({
 };
 
 interface MembersProviderProps {
-    members: RoomFull_SharedRoom_members[];
     requests?: RoomFull_SharedRoom_requests[] | null;
     chatId: string;
     isOwner: boolean;
@@ -328,7 +327,6 @@ interface MembersProviderProps {
 }
 
 const MembersProvider = ({
-    members,
     router,
     requests,
     isOwner,
@@ -337,6 +335,13 @@ const MembersProvider = ({
     onDirectory,
     isChannel,
 }: MembersProviderProps & XWithRouter) => {
+    const client = useClient();
+    const data = client.useRoomMembers({
+        roomId: chatId,
+    });
+
+    const members = data.members;
+
     if (members && members.length > 0) {
         let tab: tabsT =
             router.query.requests === '1' && (requests || []).length > 0
@@ -466,16 +471,17 @@ const RoomGroupProfileInner = ({
                             <XCommunityCard community={chat.organization} />
                         </XView>
                     )}
-                    <MembersProvider
-                        router={router}
-                        members={chat.members}
-                        requests={chat.requests}
-                        chatId={conversationId}
-                        isOwner={chat.role === 'OWNER'}
-                        chatTitle={chat.title}
-                        onDirectory={onDirectory}
-                        isChannel={chat.isChannel}
-                    />
+                    <React.Suspense fallback={<XLoader loading={true} />}>
+                        <MembersProvider
+                            router={router}
+                            requests={chat.requests}
+                            chatId={conversationId}
+                            isOwner={chat.role === 'OWNER'}
+                            chatTitle={chat.title}
+                            onDirectory={onDirectory}
+                            isChannel={chat.isChannel}
+                        />
+                    </React.Suspense>
                 </XScrollView3>
             </XView>
         </>
@@ -494,11 +500,7 @@ const RoomGroupProfileProvider = ({
     let router = React.useContext(XRouterContext)!;
     const client = useClient();
 
-    const data = client.useWithoutLoaderRoom(variables);
-
-    if (!data) {
-        return <XLoader loading={true} />;
-    }
+    const data = client.useRoomWithoutMembers(variables);
 
     let chat = data.room as Room_room_SharedRoom;
 
@@ -515,9 +517,11 @@ const RoomGroupProfileProvider = ({
 };
 
 export const RoomProfile = (props: { conversationId: string; onDirectory?: boolean }) => (
-    <RoomGroupProfileProvider
-        variables={{ id: props.conversationId }}
-        onDirectory={props.onDirectory}
-        conversationId={props.conversationId}
-    />
+    <React.Suspense fallback={<XLoader loading={true} />}>
+        <RoomGroupProfileProvider
+            variables={{ id: props.conversationId }}
+            onDirectory={props.onDirectory}
+            conversationId={props.conversationId}
+        />
+    </React.Suspense>
 );
