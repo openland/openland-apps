@@ -43,42 +43,42 @@ class RNAsyncListView: RCTView {
     self.node = nil
   }
   
-  public func setDataViewKey(_ key: String) {
+  @objc public func setDataViewKey(_ key: String) {
     if self.datatViewKey != nil && self.datatViewKey != key {
       fatalError("Unable to change data view")
     }
     self.node.setDataView(dataView: RNAsyncDataView.getDataView(key: key))
   }
   
-  public func setInverted(_ inverted: Bool) {
+  @objc public func setInverted(_ inverted: Bool) {
     self.node.setInverted(inverted: inverted)
   }
   
-  public func setContentPaddingBottom(_ padding: NSNumber) {
+  @objc public func setContentPaddingBottom(_ padding: NSNumber) {
     self.node.setContentPaddingBottom(value: Float(padding))
   }
   
-  public func setHeaderPadding(_ padding: NSNumber) {
+  @objc public func setHeaderPadding(_ padding: NSNumber) {
     self.node.setHeaderPadding(padding: Float(padding))
   }
   
-  public func setOverflowColor(_ color: NSNumber) {
+  @objc public func setOverflowColor(_ color: NSNumber) {
     self.node.setOverflowColor(color: UInt64(color))
   }
   
-  public func setContentPaddingTop(_ padding: NSNumber) {
+  @objc public func setContentPaddingTop(_ padding: NSNumber) {
     self.node.setContentPaddingTop(value: Float(padding))
   }
   
-  public func setOnScroll(_ callback: RCTDirectEventBlock?) {
+  @objc public func setOnScroll(_ callback: RCTDirectEventBlock?) {
     self.node.setOnScroll(callback: callback)
   }
   
-  public func setOverscrollCompensation(_ enabled: Bool) {
+  @objc public func setOverscrollCompensation(_ enabled: Bool) {
     self.node.setOverscrollCompensation(enabled)
   }
   
-  override func reactSetFrame(_ frame: CGRect) {
+  @objc override func reactSetFrame(_ frame: CGRect) {
     super.reactSetFrame(frame)
     self.node.frame = frame
     self.node.start()
