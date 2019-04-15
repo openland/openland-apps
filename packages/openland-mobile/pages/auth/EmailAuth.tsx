@@ -153,7 +153,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
     }
 
     private resendCode = async () => {
-        trackEvent('signup_code_resend_action');
+        trackEvent('code_resend_action');
 
         await requestActivationCode();
 
@@ -162,7 +162,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
 
     render() {
         return (
-            <ZTrack event="signup_code_view">
+            <ZTrack event="code_view">
                 <SHeader title="Confirm email" />
                 <SHeaderButton title="Next" onPress={this.submitForm} />
                 <ZForm

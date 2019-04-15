@@ -326,7 +326,7 @@ class SignInComponent extends React.Component<
         ) {
             let e = (error === 'wrong_code_length' || error === 'invalid_user_password') ? 'wrong_code' : error;
 
-            trackEvent('signup_code_error', { error_type: e });
+            trackEvent('code_error', { error_type: e });
         } else {
             trackEvent('signup_error', { error_type: error });
         }
@@ -426,12 +426,12 @@ class SignInComponent extends React.Component<
                     )}
 
                     {pageMode === 'ActivationCode' && (
-                        <XTrack event="signup_code_view">
+                        <XTrack event="code_view">
                             <MyActivationCode
                                 signin={signin}
                                 emailWasResend={this.state.emailWasResend}
                                 resendCodeClick={() => {
-                                    trackEvent('signup_code_resend_action');
+                                    trackEvent('code_resend_action');
 
                                     this.setState({
                                         emailSending: true,
