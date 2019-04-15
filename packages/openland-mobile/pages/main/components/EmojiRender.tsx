@@ -7,12 +7,6 @@ import { isAndroid } from 'openland-mobile/utils/isAndroid';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import emojiData from 'openland-y-utils/data/emoji-data';
 
-interface EmojiRenderProps {
-    activeWord: string;
-    onEmojiPress: (word: string | undefined, emoji: string) => void;
-    redefineItems?: ({ shortname: string; unicode: string })[];
-}
-
 export const findEmojiByShortname = (activeWord: string) => {
     let emojiMap = emojiData.shortToUnicode;
     let emojiFiltered: ({ shortname: string; unicode: string })[] = [];
@@ -30,6 +24,13 @@ export const findEmojiByShortname = (activeWord: string) => {
     }
 
     return emojiFiltered.reverse();
+}
+
+interface EmojiRenderProps {
+    activeWord: string;
+    redefineItems?: ({ shortname: string; unicode: string })[];
+
+    onEmojiPress: (word: string | undefined, emoji: string) => void;
 }
 
 export const EmojiRender = (props: EmojiRenderProps) => {
