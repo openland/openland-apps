@@ -257,7 +257,7 @@ fun readImageRefInput(src: ReadableMap, name: String): ImageRefInput? {
         if (src.isNull(name)) {
             return null
         } else {
-            return parseImageRefInput(src.getMap(name))
+            return parseImageRefInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -268,13 +268,13 @@ fun readImageRefInputList(src: ReadableMap, name: String): List<ImageRefInput?>?
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<ImageRefInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseImageRefInput(items.getMap(i)))
+                    res.add(parseImageRefInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -288,7 +288,7 @@ fun readImageRefInputOptional(src: ReadableMap, name: String): Input<ImageRefInp
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseImageRefInput(src.getMap(name)))
+            return Input.fromNullable(parseImageRefInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -299,13 +299,13 @@ fun readImageRefInputListOptional(src: ReadableMap, name: String): Input<List<Im
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<ImageRefInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseImageRefInput(items.getMap(i)))
+                    res.add(parseImageRefInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -327,7 +327,7 @@ fun readImageCropInput(src: ReadableMap, name: String): ImageCropInput? {
         if (src.isNull(name)) {
             return null
         } else {
-            return parseImageCropInput(src.getMap(name))
+            return parseImageCropInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -338,13 +338,13 @@ fun readImageCropInputList(src: ReadableMap, name: String): List<ImageCropInput?
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<ImageCropInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseImageCropInput(items.getMap(i)))
+                    res.add(parseImageCropInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -358,7 +358,7 @@ fun readImageCropInputOptional(src: ReadableMap, name: String): Input<ImageCropI
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseImageCropInput(src.getMap(name)))
+            return Input.fromNullable(parseImageCropInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -369,13 +369,13 @@ fun readImageCropInputListOptional(src: ReadableMap, name: String): Input<List<I
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<ImageCropInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseImageCropInput(items.getMap(i)))
+                    res.add(parseImageCropInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -404,7 +404,7 @@ fun readProfileInput(src: ReadableMap, name: String): ProfileInput? {
         if (src.isNull(name)) {
             return null
         } else {
-            return parseProfileInput(src.getMap(name))
+            return parseProfileInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -415,13 +415,13 @@ fun readProfileInputList(src: ReadableMap, name: String): List<ProfileInput?>? {
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<ProfileInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseProfileInput(items.getMap(i)))
+                    res.add(parseProfileInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -435,7 +435,7 @@ fun readProfileInputOptional(src: ReadableMap, name: String): Input<ProfileInput
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseProfileInput(src.getMap(name)))
+            return Input.fromNullable(parseProfileInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -446,13 +446,13 @@ fun readProfileInputListOptional(src: ReadableMap, name: String): Input<List<Pro
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<ProfileInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseProfileInput(items.getMap(i)))
+                    res.add(parseProfileInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -481,7 +481,7 @@ fun readCreateProfileInput(src: ReadableMap, name: String): CreateProfileInput? 
         if (src.isNull(name)) {
             return null
         } else {
-            return parseCreateProfileInput(src.getMap(name))
+            return parseCreateProfileInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -492,13 +492,13 @@ fun readCreateProfileInputList(src: ReadableMap, name: String): List<CreateProfi
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<CreateProfileInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseCreateProfileInput(items.getMap(i)))
+                    res.add(parseCreateProfileInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -512,7 +512,7 @@ fun readCreateProfileInputOptional(src: ReadableMap, name: String): Input<Create
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseCreateProfileInput(src.getMap(name)))
+            return Input.fromNullable(parseCreateProfileInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -523,13 +523,13 @@ fun readCreateProfileInputListOptional(src: ReadableMap, name: String): Input<Li
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<CreateProfileInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseCreateProfileInput(items.getMap(i)))
+                    res.add(parseCreateProfileInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -563,7 +563,7 @@ fun readUpdateProfileInput(src: ReadableMap, name: String): UpdateProfileInput? 
         if (src.isNull(name)) {
             return null
         } else {
-            return parseUpdateProfileInput(src.getMap(name))
+            return parseUpdateProfileInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -574,13 +574,13 @@ fun readUpdateProfileInputList(src: ReadableMap, name: String): List<UpdateProfi
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<UpdateProfileInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseUpdateProfileInput(items.getMap(i)))
+                    res.add(parseUpdateProfileInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -594,7 +594,7 @@ fun readUpdateProfileInputOptional(src: ReadableMap, name: String): Input<Update
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseUpdateProfileInput(src.getMap(name)))
+            return Input.fromNullable(parseUpdateProfileInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -605,13 +605,13 @@ fun readUpdateProfileInputListOptional(src: ReadableMap, name: String): Input<Li
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<UpdateProfileInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseUpdateProfileInput(items.getMap(i)))
+                    res.add(parseUpdateProfileInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -636,7 +636,7 @@ fun readCreateOrganizationInput(src: ReadableMap, name: String): CreateOrganizat
         if (src.isNull(name)) {
             return null
         } else {
-            return parseCreateOrganizationInput(src.getMap(name))
+            return parseCreateOrganizationInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -647,13 +647,13 @@ fun readCreateOrganizationInputList(src: ReadableMap, name: String): List<Create
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<CreateOrganizationInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseCreateOrganizationInput(items.getMap(i)))
+                    res.add(parseCreateOrganizationInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -667,7 +667,7 @@ fun readCreateOrganizationInputOptional(src: ReadableMap, name: String): Input<C
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseCreateOrganizationInput(src.getMap(name)))
+            return Input.fromNullable(parseCreateOrganizationInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -678,13 +678,13 @@ fun readCreateOrganizationInputListOptional(src: ReadableMap, name: String): Inp
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<CreateOrganizationInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseCreateOrganizationInput(items.getMap(i)))
+                    res.add(parseCreateOrganizationInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -709,7 +709,7 @@ fun readUpdateSettingsInput(src: ReadableMap, name: String): UpdateSettingsInput
         if (src.isNull(name)) {
             return null
         } else {
-            return parseUpdateSettingsInput(src.getMap(name))
+            return parseUpdateSettingsInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -720,13 +720,13 @@ fun readUpdateSettingsInputList(src: ReadableMap, name: String): List<UpdateSett
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<UpdateSettingsInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseUpdateSettingsInput(items.getMap(i)))
+                    res.add(parseUpdateSettingsInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -740,7 +740,7 @@ fun readUpdateSettingsInputOptional(src: ReadableMap, name: String): Input<Updat
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseUpdateSettingsInput(src.getMap(name)))
+            return Input.fromNullable(parseUpdateSettingsInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -751,13 +751,13 @@ fun readUpdateSettingsInputListOptional(src: ReadableMap, name: String): Input<L
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<UpdateSettingsInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseUpdateSettingsInput(items.getMap(i)))
+                    res.add(parseUpdateSettingsInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -780,7 +780,7 @@ fun readInviteRequest(src: ReadableMap, name: String): InviteRequest? {
         if (src.isNull(name)) {
             return null
         } else {
-            return parseInviteRequest(src.getMap(name))
+            return parseInviteRequest(src.getMap(name)!!)
         }
     } else {
         return null
@@ -791,13 +791,13 @@ fun readInviteRequestList(src: ReadableMap, name: String): List<InviteRequest?>?
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<InviteRequest?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseInviteRequest(items.getMap(i)))
+                    res.add(parseInviteRequest(items.getMap(i)!!))
                 }
             }
             return res
@@ -811,7 +811,7 @@ fun readInviteRequestOptional(src: ReadableMap, name: String): Input<InviteReque
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseInviteRequest(src.getMap(name)))
+            return Input.fromNullable(parseInviteRequest(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -822,13 +822,13 @@ fun readInviteRequestListOptional(src: ReadableMap, name: String): Input<List<In
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<InviteRequest?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseInviteRequest(items.getMap(i)))
+                    res.add(parseInviteRequest(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -849,7 +849,7 @@ fun readEvent(src: ReadableMap, name: String): Event? {
         if (src.isNull(name)) {
             return null
         } else {
-            return parseEvent(src.getMap(name))
+            return parseEvent(src.getMap(name)!!)
         }
     } else {
         return null
@@ -860,13 +860,13 @@ fun readEventList(src: ReadableMap, name: String): List<Event?>? {
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<Event?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseEvent(items.getMap(i)))
+                    res.add(parseEvent(items.getMap(i)!!))
                 }
             }
             return res
@@ -880,7 +880,7 @@ fun readEventOptional(src: ReadableMap, name: String): Input<Event> {
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseEvent(src.getMap(name)))
+            return Input.fromNullable(parseEvent(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -891,13 +891,13 @@ fun readEventListOptional(src: ReadableMap, name: String): Input<List<Event?>> {
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<Event?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseEvent(items.getMap(i)))
+                    res.add(parseEvent(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -920,7 +920,7 @@ fun readMentionInput(src: ReadableMap, name: String): MentionInput? {
         if (src.isNull(name)) {
             return null
         } else {
-            return parseMentionInput(src.getMap(name))
+            return parseMentionInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -931,13 +931,13 @@ fun readMentionInputList(src: ReadableMap, name: String): List<MentionInput?>? {
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<MentionInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseMentionInput(items.getMap(i)))
+                    res.add(parseMentionInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -951,7 +951,7 @@ fun readMentionInputOptional(src: ReadableMap, name: String): Input<MentionInput
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseMentionInput(src.getMap(name)))
+            return Input.fromNullable(parseMentionInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -962,13 +962,13 @@ fun readMentionInputListOptional(src: ReadableMap, name: String): Input<List<Men
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<MentionInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseMentionInput(items.getMap(i)))
+                    res.add(parseMentionInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -987,7 +987,7 @@ fun readFileAttachmentInput(src: ReadableMap, name: String): FileAttachmentInput
         if (src.isNull(name)) {
             return null
         } else {
-            return parseFileAttachmentInput(src.getMap(name))
+            return parseFileAttachmentInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -998,13 +998,13 @@ fun readFileAttachmentInputList(src: ReadableMap, name: String): List<FileAttach
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<FileAttachmentInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseFileAttachmentInput(items.getMap(i)))
+                    res.add(parseFileAttachmentInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -1018,7 +1018,7 @@ fun readFileAttachmentInputOptional(src: ReadableMap, name: String): Input<FileA
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseFileAttachmentInput(src.getMap(name)))
+            return Input.fromNullable(parseFileAttachmentInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -1029,13 +1029,13 @@ fun readFileAttachmentInputListOptional(src: ReadableMap, name: String): Input<L
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<FileAttachmentInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseFileAttachmentInput(items.getMap(i)))
+                    res.add(parseFileAttachmentInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -1057,7 +1057,7 @@ fun readAppProfileInput(src: ReadableMap, name: String): AppProfileInput? {
         if (src.isNull(name)) {
             return null
         } else {
-            return parseAppProfileInput(src.getMap(name))
+            return parseAppProfileInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -1068,13 +1068,13 @@ fun readAppProfileInputList(src: ReadableMap, name: String): List<AppProfileInpu
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<AppProfileInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseAppProfileInput(items.getMap(i)))
+                    res.add(parseAppProfileInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -1088,7 +1088,7 @@ fun readAppProfileInputOptional(src: ReadableMap, name: String): Input<AppProfil
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseAppProfileInput(src.getMap(name)))
+            return Input.fromNullable(parseAppProfileInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -1099,13 +1099,13 @@ fun readAppProfileInputListOptional(src: ReadableMap, name: String): Input<List<
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<AppProfileInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseAppProfileInput(items.getMap(i)))
+                    res.add(parseAppProfileInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -1125,7 +1125,7 @@ fun readAppStorageValueInput(src: ReadableMap, name: String): AppStorageValueInp
         if (src.isNull(name)) {
             return null
         } else {
-            return parseAppStorageValueInput(src.getMap(name))
+            return parseAppStorageValueInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -1136,13 +1136,13 @@ fun readAppStorageValueInputList(src: ReadableMap, name: String): List<AppStorag
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<AppStorageValueInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseAppStorageValueInput(items.getMap(i)))
+                    res.add(parseAppStorageValueInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -1156,7 +1156,7 @@ fun readAppStorageValueInputOptional(src: ReadableMap, name: String): Input<AppS
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseAppStorageValueInput(src.getMap(name)))
+            return Input.fromNullable(parseAppStorageValueInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -1167,13 +1167,13 @@ fun readAppStorageValueInputListOptional(src: ReadableMap, name: String): Input<
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<AppStorageValueInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseAppStorageValueInput(items.getMap(i)))
+                    res.add(parseAppStorageValueInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -1204,7 +1204,7 @@ fun readUpdateOrganizationProfileInput(src: ReadableMap, name: String): UpdateOr
         if (src.isNull(name)) {
             return null
         } else {
-            return parseUpdateOrganizationProfileInput(src.getMap(name))
+            return parseUpdateOrganizationProfileInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -1215,13 +1215,13 @@ fun readUpdateOrganizationProfileInputList(src: ReadableMap, name: String): List
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<UpdateOrganizationProfileInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseUpdateOrganizationProfileInput(items.getMap(i)))
+                    res.add(parseUpdateOrganizationProfileInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -1235,7 +1235,7 @@ fun readUpdateOrganizationProfileInputOptional(src: ReadableMap, name: String): 
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseUpdateOrganizationProfileInput(src.getMap(name)))
+            return Input.fromNullable(parseUpdateOrganizationProfileInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -1246,13 +1246,13 @@ fun readUpdateOrganizationProfileInputListOptional(src: ReadableMap, name: Strin
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<UpdateOrganizationProfileInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseUpdateOrganizationProfileInput(items.getMap(i)))
+                    res.add(parseUpdateOrganizationProfileInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -1277,7 +1277,7 @@ fun readContactPersonInput(src: ReadableMap, name: String): ContactPersonInput? 
         if (src.isNull(name)) {
             return null
         } else {
-            return parseContactPersonInput(src.getMap(name))
+            return parseContactPersonInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -1288,13 +1288,13 @@ fun readContactPersonInputList(src: ReadableMap, name: String): List<ContactPers
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<ContactPersonInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseContactPersonInput(items.getMap(i)))
+                    res.add(parseContactPersonInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -1308,7 +1308,7 @@ fun readContactPersonInputOptional(src: ReadableMap, name: String): Input<Contac
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseContactPersonInput(src.getMap(name)))
+            return Input.fromNullable(parseContactPersonInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -1319,13 +1319,13 @@ fun readContactPersonInputListOptional(src: ReadableMap, name: String): Input<Li
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<ContactPersonInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseContactPersonInput(items.getMap(i)))
+                    res.add(parseContactPersonInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -1348,7 +1348,7 @@ fun readRoomUpdateInput(src: ReadableMap, name: String): RoomUpdateInput? {
         if (src.isNull(name)) {
             return null
         } else {
-            return parseRoomUpdateInput(src.getMap(name))
+            return parseRoomUpdateInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -1359,13 +1359,13 @@ fun readRoomUpdateInputList(src: ReadableMap, name: String): List<RoomUpdateInpu
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<RoomUpdateInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseRoomUpdateInput(items.getMap(i)))
+                    res.add(parseRoomUpdateInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -1379,7 +1379,7 @@ fun readRoomUpdateInputOptional(src: ReadableMap, name: String): Input<RoomUpdat
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseRoomUpdateInput(src.getMap(name)))
+            return Input.fromNullable(parseRoomUpdateInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -1390,13 +1390,13 @@ fun readRoomUpdateInputListOptional(src: ReadableMap, name: String): Input<List<
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<RoomUpdateInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseRoomUpdateInput(items.getMap(i)))
+                    res.add(parseRoomUpdateInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -1416,7 +1416,7 @@ fun readRoomInviteInput(src: ReadableMap, name: String): RoomInviteInput? {
         if (src.isNull(name)) {
             return null
         } else {
-            return parseRoomInviteInput(src.getMap(name))
+            return parseRoomInviteInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -1427,13 +1427,13 @@ fun readRoomInviteInputList(src: ReadableMap, name: String): List<RoomInviteInpu
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<RoomInviteInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseRoomInviteInput(items.getMap(i)))
+                    res.add(parseRoomInviteInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -1447,7 +1447,7 @@ fun readRoomInviteInputOptional(src: ReadableMap, name: String): Input<RoomInvit
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseRoomInviteInput(src.getMap(name)))
+            return Input.fromNullable(parseRoomInviteInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -1458,13 +1458,13 @@ fun readRoomInviteInputListOptional(src: ReadableMap, name: String): Input<List<
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<RoomInviteInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseRoomInviteInput(items.getMap(i)))
+                    res.add(parseRoomInviteInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -1486,7 +1486,7 @@ fun readRoomInviteEmailRequest(src: ReadableMap, name: String): RoomInviteEmailR
         if (src.isNull(name)) {
             return null
         } else {
-            return parseRoomInviteEmailRequest(src.getMap(name))
+            return parseRoomInviteEmailRequest(src.getMap(name)!!)
         }
     } else {
         return null
@@ -1497,13 +1497,13 @@ fun readRoomInviteEmailRequestList(src: ReadableMap, name: String): List<RoomInv
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<RoomInviteEmailRequest?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseRoomInviteEmailRequest(items.getMap(i)))
+                    res.add(parseRoomInviteEmailRequest(items.getMap(i)!!))
                 }
             }
             return res
@@ -1517,7 +1517,7 @@ fun readRoomInviteEmailRequestOptional(src: ReadableMap, name: String): Input<Ro
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseRoomInviteEmailRequest(src.getMap(name)))
+            return Input.fromNullable(parseRoomInviteEmailRequest(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -1528,13 +1528,13 @@ fun readRoomInviteEmailRequestListOptional(src: ReadableMap, name: String): Inpu
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<RoomInviteEmailRequest?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseRoomInviteEmailRequest(items.getMap(i)))
+                    res.add(parseRoomInviteEmailRequest(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)
@@ -1553,7 +1553,7 @@ fun readRoomUserNotificaionSettingsInput(src: ReadableMap, name: String): RoomUs
         if (src.isNull(name)) {
             return null
         } else {
-            return parseRoomUserNotificaionSettingsInput(src.getMap(name))
+            return parseRoomUserNotificaionSettingsInput(src.getMap(name)!!)
         }
     } else {
         return null
@@ -1564,13 +1564,13 @@ fun readRoomUserNotificaionSettingsInputList(src: ReadableMap, name: String): Li
         if (src.isNull(name)) {
             return null
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<RoomUserNotificaionSettingsInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseRoomUserNotificaionSettingsInput(items.getMap(i)))
+                    res.add(parseRoomUserNotificaionSettingsInput(items.getMap(i)!!))
                 }
             }
             return res
@@ -1584,7 +1584,7 @@ fun readRoomUserNotificaionSettingsInputOptional(src: ReadableMap, name: String)
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            return Input.fromNullable(parseRoomUserNotificaionSettingsInput(src.getMap(name)))
+            return Input.fromNullable(parseRoomUserNotificaionSettingsInput(src.getMap(name)!!))
         }
     } else {
         return Input.absent()
@@ -1595,13 +1595,13 @@ fun readRoomUserNotificaionSettingsInputListOptional(src: ReadableMap, name: Str
         if (src.isNull(name)) {
             return Input.fromNullable(null)
         } else {
-            val items = src.getArray(name)
+            val items = src.getArray(name)!!
             val res = mutableListOf<RoomUserNotificaionSettingsInput?>()
             for(i in 0 until items.size()) {
                 if (items.isNull(i)) {
                     res.add(null)
                 } else {
-                    res.add(parseRoomUserNotificaionSettingsInput(items.getMap(i)))
+                    res.add(parseRoomUserNotificaionSettingsInput(items.getMap(i)!!))
                 }
             }
             return Input.fromNullable(res)

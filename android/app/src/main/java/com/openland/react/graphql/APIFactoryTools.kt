@@ -47,7 +47,7 @@ fun readOptionalStringList(src: ReadableMap, key: String): Input<List<String?>> 
             Input.fromNullable(null)
         } else {
             val res = mutableListOf<String?>()
-            val arr = src.getArray(key)
+            val arr = src.getArray(key)!!
             for (i in 0 until arr.size()) {
                 if (arr.isNull(i)) {
                     res.add(null)
@@ -67,7 +67,7 @@ fun readStringList(src: ReadableMap, key: String): List<String?>? {
             return null
         } else {
             val res = mutableListOf<String?>()
-            val arr = src.getArray(key)
+            val arr = src.getArray(key)!!
             for (i in 0 until arr.size()) {
                 if (arr.isNull(i)) {
                     res.add(null)

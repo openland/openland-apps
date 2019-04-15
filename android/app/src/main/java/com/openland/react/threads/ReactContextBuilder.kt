@@ -118,10 +118,7 @@ class ReactContextBuilder(private val parentContext: Context) {
 
     private fun addNativeModules(reactContext: ReactApplicationContext, nativeRegistryBuilder: NativeModuleRegistryBuilder) {
         for (i in reactPackages!!.indices) {
-            val reactPackage = reactPackages!![i]
-            for (nativeModule in reactPackage.createNativeModules(reactContext)) {
-                nativeRegistryBuilder.addNativeModule(nativeModule)
-            }
+            nativeRegistryBuilder.processPackage(reactPackages!![i])
         }
     }
 }
