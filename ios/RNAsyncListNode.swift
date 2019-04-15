@@ -48,7 +48,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     let layout = UICollectionViewFlowLayout()
     layout.minimumLineSpacing = 0.0
     layout.minimumInteritemSpacing = 0.0
-    layout.scrollDirection = UICollectionViewScrollDirection.vertical
+    layout.scrollDirection = UICollectionView.ScrollDirection.vertical
     self.node = ASCollectionNode(collectionViewLayout: layout)
     self.node.alwaysBounceVertical = true
     self.node.backgroundColor = UIColor.clear
@@ -115,7 +115,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         self.keyboardHeight = kbHeight + acHeight
         self.keyboardAcHeight = acHeight
         print("keyboardWillShow")
-        UIView.animate(withDuration: duration, delay: 0.0, options: UIViewAnimationOptions(rawValue: UInt(curve)), animations: {
+        UIView.animate(withDuration: duration, delay: 0.0, options: UIView.AnimationOptions(rawValue: UInt(curve)), animations: {
           self.fixContentInset(interactive: false)
         }, completion: nil)
       }
@@ -129,7 +129,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         self.keyboardHeight = kbHeight + acHeight
         self.keyboardAcHeight = acHeight
         print("keyboardWillHide")
-        UIView.animate(withDuration: duration, delay: 0.0, options: [UIViewAnimationOptions(rawValue: UInt(curve)), UIViewAnimationOptions.beginFromCurrentState], animations: {
+        UIView.animate(withDuration: duration, delay: 0.0, options: [UIView.AnimationOptions(rawValue: UInt(curve)), UIView.AnimationOptions.beginFromCurrentState], animations: {
           self.fixContentInset(interactive: false)
         }, completion: nil)
       }

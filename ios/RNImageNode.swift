@@ -28,7 +28,7 @@ class RNImageNode: ASDisplayNode {
     RNAsyncConfigManager.instances.set(key: self.instanceKey, value: self)
   }
   
-  func handleTouch() {
+  @objc func handleTouch() {
     let res = self.layer.superlayer!.convert(self.layer.frame, to: nil)
     AsyncViewEventEmitter.sharedInstance.dispatchOnPress(key: self.touchableKey!, frame: res, instanceKey: self.instanceKey)
   }

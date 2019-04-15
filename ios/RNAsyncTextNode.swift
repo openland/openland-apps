@@ -8,24 +8,24 @@
 
 import Foundation
 
-private func createAttributedText(spec: AsyncTextSpec, attributes: [String: Any]) -> NSAttributedString {
+private func createAttributedText(spec: AsyncTextSpec, attributes: [NSAttributedString.Key: Any]) -> NSAttributedString {
   let res = NSMutableAttributedString(string: "", attributes: attributes)
   
   var innerAttributes = attributes
   if spec.color != nil {
-    innerAttributes[NSForegroundColorAttributeName] = spec.color
+    innerAttributes[NSAttributedString.Key.foregroundColor] = spec.color
   }
   
   if spec.textDecorationLine != nil {
     if spec.textDecorationLine == AsyncTextDecorationLine.none {
-      innerAttributes[NSUnderlineStyleAttributeName] = NSUnderlineStyle.styleNone.rawValue
+      innerAttributes[NSAttributedString.Key.underlineStyle] = []
     } else {
-      innerAttributes[NSUnderlineStyleAttributeName] = NSUnderlineStyle.styleSingle.rawValue
+      innerAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     }
   }
   
   if spec.touchableKey != nil {
-    innerAttributes["RNClickableText"] = spec.touchableKey!
+    innerAttributes[NSAttributedString.Key(rawValue: "RNClickableText")] = spec.touchableKey!
   }
   
   // innerAttributes[NSLinkAttributeName]

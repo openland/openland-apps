@@ -18,7 +18,7 @@ protocol RNAsyncKeyboardManagerDelegate {
 
 @objc class RNAsyncKeyboardManager: NSObject {
   
-  static var sharedInstance: RNAsyncKeyboardManager = RNAsyncKeyboardManager()
+  @objc static var sharedInstance: RNAsyncKeyboardManager = RNAsyncKeyboardManager()
   
   var keyboardHeight: Float = 0.0
   var keyboardAcHeight: Float = 0.0
@@ -34,10 +34,10 @@ protocol RNAsyncKeyboardManagerDelegate {
   }
   
   @objc func start() {
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide), name: UIResponder.keyboardDidHideNotification, object: nil)
   }
   
   @objc func stop() {
@@ -53,10 +53,10 @@ protocol RNAsyncKeyboardManagerDelegate {
     }
   }
   
-  func keyboardWillShow(aNotification: Notification) {
-    let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
-    let curve = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! Int
-    let duration = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
+  @objc func keyboardWillShow(aNotification: Notification) {
+    let endRect = aNotification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+    let curve = aNotification.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! Int
+    let duration = aNotification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
     let context = (UIResponder.current as? UIView)?.resolveKeyboardContextKey()
     if self.lastWillShowRect != nil && endRect.equalTo(self.lastWillShowRect!) {
       return
@@ -78,17 +78,17 @@ protocol RNAsyncKeyboardManagerDelegate {
     }
   }
   
-  func keyboardDidShow(aNotification: Notification) {
-    let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
+  @objc func keyboardDidShow(aNotification: Notification) {
+    let endRect = aNotification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
     print("[KEYBOARD] didShow: \(endRect)")
     
     self.lastWillShowRect = nil
   }
   
-  func keyboardWillHide(aNotification: Notification) {
-    let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
-    let curve = aNotification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! Int
-    let duration = aNotification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
+  @objc func keyboardWillHide(aNotification: Notification) {
+    let endRect = aNotification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+    let curve = aNotification.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! Int
+    let duration = aNotification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
     if self.lastWillHideRect != nil && endRect.equalTo(self.lastWillHideRect!) {
       return
     }
@@ -106,8 +106,8 @@ protocol RNAsyncKeyboardManagerDelegate {
     }
   }
   
-  func keyboardDidHide(aNotification: Notification) {
-    let endRect = aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! CGRect
+  @objc func keyboardDidHide(aNotification: Notification) {
+    let endRect = aNotification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
     print("[KEYBOARD] didHide: \(endRect)")
     
     self.lastWillHideRect = nil

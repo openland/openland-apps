@@ -29,7 +29,7 @@ class RNAsyncLoadingIndicator: ASDisplayNode {
     super.init()
     self.node = ASDisplayNode(viewBlock: { () -> UIView in
       let res = UIActivityIndicatorView()
-      res.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+      res.style = UIActivityIndicatorView.Style.gray
       self.weakIndicator = res
       return res
     })

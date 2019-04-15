@@ -135,7 +135,7 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
           }
         }
       }
-      CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+      CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut))
       CATransaction.setAnimationDuration(resolveDuration(source: spec.duration))
       for s in spec.animations {
         if let view = views[s.viewKey] {
@@ -189,7 +189,7 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
             spring.stiffness = 1000.0
             spring.damping = 500.0
             spring.duration = resolveDuration(source: 0.5)
-            spring.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+            spring.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
             if let velocity = s.velocity {
               spring.initialVelocity = velocity
             }

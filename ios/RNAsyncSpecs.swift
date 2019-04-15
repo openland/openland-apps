@@ -70,7 +70,7 @@ class AsyncTextSpec: AsyncViewSpec {
   var fontSize: Float? = nil
   var lineHeight: Float?
   var letterSpacing: Float?
-  var fontWeight: UIFontWeight? = nil
+  var fontWeight: UIFont.Weight? = nil
   var fontStyle: String?
   var color: UIColor? = nil
   var numberOfLines: Int?
@@ -280,25 +280,25 @@ func resolveSpec(_ src: JSON) -> AsyncViewSpec {
       res.fontWeight = {
         switch(v){
         case "100":
-          return UIFontWeightUltraLight
+          return UIFont.Weight.ultraLight
         case "200":
-          return UIFontWeightThin
+          return UIFont.Weight.thin
         case "300":
-          return UIFontWeightLight
+          return UIFont.Weight.light
         case "400":
-          return UIFontWeightRegular
+          return UIFont.Weight.regular
         case "500":
-          return UIFontWeightMedium
+          return UIFont.Weight.medium
         case "600":
-          return UIFontWeightSemibold
+          return UIFont.Weight.semibold
         case "700":
-          return UIFontWeightBold
+          return UIFont.Weight.bold
         case "800":
-          return UIFontWeightHeavy
+          return UIFont.Weight.heavy
         case "900":
-          return UIFontWeightBlack
+          return UIFont.Weight.black
         default:
-          return UIFontWeightRegular
+          return UIFont.Weight.regular
         }
       }()
     }

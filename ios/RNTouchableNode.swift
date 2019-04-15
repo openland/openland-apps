@@ -39,14 +39,14 @@ class RNTouchableNode: ASControlNode, UIGestureRecognizerDelegate {
     view.addGestureRecognizer(singleTap)
   }
   
-  func longPressHandler(sender: UILongPressGestureRecognizer) {
+  @objc func longPressHandler(sender: UILongPressGestureRecognizer) {
     if sender.state == .began {
       let res = self.layer.superlayer!.convert(self.layer.frame, to: nil)
       AsyncViewEventEmitter.sharedInstance.dispatchOnLongPress(key: self.key, frame: res, instanceKey: nil)
     }
   }
   
-  func handler() {
+  @objc func handler() {
     let res = self.layer.superlayer!.convert(self.layer.frame, to: nil)
     AsyncViewEventEmitter.sharedInstance.dispatchOnPress(key: self.key, frame: res, instanceKey: nil)
     self.backgroundColor = self.higlightColor

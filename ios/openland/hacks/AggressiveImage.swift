@@ -42,7 +42,7 @@ class AggressiveImage: RCTView {
       if UIEdgeInsetsEqualToEdgeInsets(self._insets, UIEdgeInsets.zero) {
         imageView.image = _baseImage
       } else {
-        imageView.image = _baseImage!.resizableImage(withCapInsets: self._insets, resizingMode: UIImageResizingMode.stretch)
+        imageView.image = _baseImage!.resizableImage(withCapInsets: self._insets, resizingMode: UIImage.ResizingMode.stretch)
       }
     } else {
       imageView.image = nil
@@ -55,7 +55,7 @@ class AggressiveImage: RCTView {
       if UIEdgeInsetsEqualToEdgeInsets(self._insets, UIEdgeInsets.zero) {
         imageView.image = _baseImage
       } else {
-        imageView.image = _baseImage!.resizableImage(withCapInsets: self._insets, resizingMode: UIImageResizingMode.stretch)
+        imageView.image = _baseImage!.resizableImage(withCapInsets: self._insets, resizingMode: UIImage.ResizingMode.stretch)
       }
     }
   }

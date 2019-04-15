@@ -171,7 +171,7 @@ func resolveStyle(_ spec: AsyncViewSpec, _ source: ASLayoutElement, _ context: R
   let marginLeft: Float = spec.style.marginLeft ?? 0.0
   let marginRight: Float = spec.style.marginRight ?? 0.0
   if marginTop != 0 || marginBottom != 0 || marginRight != 0 || marginLeft != 0 {
-    res = ASInsetLayoutSpec(insets: UIEdgeInsetsMake(CGFloat(marginTop), CGFloat(marginLeft), CGFloat(marginBottom), CGFloat(marginRight)), child: res)
+    res = ASInsetLayoutSpec(insets: UIEdgeInsets(top: CGFloat(marginTop), left: CGFloat(marginLeft), bottom: CGFloat(marginBottom), right: CGFloat(marginRight)), child: res)
   }
   
   // Apply flex params
@@ -195,9 +195,9 @@ func resolveNodes(_ specs: [AsyncViewSpec], _ context: RNAsyncViewContext) -> [A
 }
 
 func resolveTextForTextSpec(spec: AsyncTextSpec) {
-  var attributes: [String: Any] = [:]
-  attributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12), weight: spec.fontWeight != nil ? spec.fontWeight! : UIFontWeightRegular)
-  attributes[NSForegroundColorAttributeName] = spec.color != nil ? spec.color : UIColor.black
+  var attributes: [NSAttributedString.Key: Any] = [:]
+  attributes[NSAttributedString.Key.font] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize != nil ? spec.fontSize! : 12), weight: spec.fontWeight != nil ? spec.fontWeight! : UIFont.Weight.regular)
+  attributes[NSAttributedString.Key.foregroundColor] = spec.color != nil ? spec.color : UIColor.black
   let style = NSMutableParagraphStyle();
   style.headIndent = 0.0
   style.tailIndent = 0.0
@@ -218,31 +218,31 @@ func resolveTextForTextSpec(spec: AsyncTextSpec) {
     style.minimumLineHeight = CGFloat(v)
     style.maximumLineHeight = CGFloat(v)
   }
-  attributes[NSParagraphStyleAttributeName] = style
+  attributes[NSAttributedString.Key.paragraphStyle] = style
   if let v = spec.letterSpacing {
-    attributes[NSKernAttributeName] = CGFloat(v)
+    attributes[NSAttributedString.Key.kern] = CGFloat(v)
   }
   spec.attributedText = resolveAttributedText(spec: spec, parent: nil, attributes: attributes)
 }
 
-private func resolveAttributedText(spec: AsyncTextSpec, parent: AsyncTextSpec?, attributes: [String: Any]) -> NSAttributedString {
+private func resolveAttributedText(spec: AsyncTextSpec, parent: AsyncTextSpec?, attributes: [NSAttributedString.Key: Any]) -> NSAttributedString {
   let res = NSMutableAttributedString(string: "", attributes: attributes)
   
   var innerAttributes = attributes
   if spec.color != nil {
-    innerAttributes[NSForegroundColorAttributeName] = spec.color
+    innerAttributes[NSAttributedString.Key.foregroundColor] = spec.color
   }
   
   if spec.textDecorationLine != nil {
     if spec.textDecorationLine == AsyncTextDecorationLine.none {
-      innerAttributes[NSUnderlineStyleAttributeName] = NSUnderlineStyle.styleNone.rawValue
+      innerAttributes[NSAttributedString.Key.underlineStyle] = []
     } else {
-      innerAttributes[NSUnderlineStyleAttributeName] = NSUnderlineStyle.styleSingle.rawValue
+      innerAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
     }
   }
   
   if spec.touchableKey != nil {
-    innerAttributes["RNClickableText"] = spec.touchableKey!
+    innerAttributes[NSAttributedString.Key(rawValue: "RNClickableText")] = spec.touchableKey!
   }
   
   // innerAttributes[NSLinkAttributeName]
@@ -252,9 +252,9 @@ private func resolveAttributedText(spec: AsyncTextSpec, parent: AsyncTextSpec?, 
 
   if fontSize != nil || fontWeight != nil {
     if fontStyle == "italic" {
-      innerAttributes[NSFontAttributeName] = UIFont.italicSystemFont(ofSize: CGFloat(fontSize != nil ? fontSize! : 12))
+      innerAttributes[NSAttributedString.Key.font] = UIFont.italicSystemFont(ofSize: CGFloat(fontSize != nil ? fontSize! : 12))
     } else {
-      innerAttributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(fontSize != nil ? fontSize! : 12), weight: fontWeight != nil ? fontWeight!  :UIFontWeightRegular)
+      innerAttributes[NSAttributedString.Key.font] = UIFont.systemFont(ofSize: CGFloat(fontSize != nil ? fontSize! : 12), weight: fontWeight != nil ? fontWeight!  :UIFont.Weight.regular)
     }
   }
   
