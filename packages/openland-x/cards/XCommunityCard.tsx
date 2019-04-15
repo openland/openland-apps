@@ -69,12 +69,6 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
                                 {TextDirectory.buttonViewProfile}
                             </XMenuItem>
 
-                            {community.isMine && (
-                                <XMenuItem query={{ field: 'createRoom', value: community.id }}>
-                                    {TextDirectory.buttonCreateRoom}
-                                </XMenuItem>
-                            )}
-
                             <XWithRole role="admin" orgPermission={community.id}>
                                 <XMenuItem href="/settings/organization">
                                     {TextDirectory.buttonEdit}
