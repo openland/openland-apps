@@ -131,7 +131,7 @@ interface MessageComponentInnerProps extends MessageComponentProps {
 export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
-    > {
+> {
     static getDerivedStateFromProps = (props: MessageComponentInnerProps) => {
         if (!props.message.isSending) {
             if (props.messagesContext.editMessageId === props.message.id) {
@@ -151,8 +151,17 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     componentDidUpdate() {
         if (this.state.isEditView) {
             let el = ReactDOM.findDOMNode(this);
-            (el as Element).scrollIntoView();
+            if (el) {
+                (el as Element).scrollIntoView();
+            }
         }
+    }
+
+    componentWillUnmount() {
+        this.props.messagesContext.resetAll();
+        this.setState({
+            isEditView: false,
+        });
     }
 
     constructor(props: MessageComponentInnerProps) {
@@ -256,14 +265,17 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 >
                     <XHorizontal alignItems="center" separator={8}>
                         <ReactionComponent messageId={message.id!} />
-                        {!this.props.conversation.isChannel && <IconButton onClick={this.setReplyMessages}>
-                            <ReplyIcon />
-                        </IconButton>}
-                        {out && message.text && (
-                            <IconButton onClick={this.setEditMessage}>
-                                <EditIcon />
+                        {!this.props.conversation.isChannel && (
+                            <IconButton onClick={this.setReplyMessages}>
+                                <ReplyIcon />
                             </IconButton>
                         )}
+                        {out &&
+                            message.text && (
+                                <IconButton onClick={this.setEditMessage}>
+                                    <EditIcon />
+                                </IconButton>
+                            )}
                     </XHorizontal>
                 </XHorizontal>
             );
@@ -335,8 +347,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
                                 let qfileAttach = (item.__typename === 'GeneralMessage'
                                     ? (item.attachments || []).filter(
-                                        a => a.__typename === 'MessageAttachmentFile',
-                                    )[0]
+                                          a => a.__typename === 'MessageAttachmentFile',
+                                      )[0]
                                     : undefined) as
                                     | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
                                     | undefined;
