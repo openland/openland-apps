@@ -171,31 +171,26 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
     let activeWord = findActiveWord(inputText, inputSelection);
 
-    let suggestions: JSX.Element;
+    let suggestions: JSX.Element[] = [];
 
     if (replied) {
-        if (attachments.length > 0) {
-            suggestions = (
-                <>
-                    <ReplyView comment={replied} onClearPress={handleReplyClear} />
-                    <AttachmentsView attachments={attachments} />
-                </>
-            );
-        } else {
-            suggestions = <ReplyView comment={replied} onClearPress={handleReplyClear} />;
-        }
-    } else {
-        if (attachments.length > 0) {
-            suggestions = <AttachmentsView attachments={attachments} />
-        }
+        suggestions.push(<ReplyView comment={replied} onClearPress={handleReplyClear} />);
+    }
+    
+    if (attachments.length > 0) {
+        suggestions.push(<AttachmentsView attachments={attachments} />);
     }
 
     if (room && inputFocused && activeWord && activeWord.startsWith('@')) {
-        suggestions = <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={room!.id} />;
+        suggestions.push(
+            <React.Suspense fallback={null}>
+                <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={room!.id} />
+            </React.Suspense>
+        );
     }
 
     if (inputFocused && activeWord && activeWord.startsWith(':')) {
-        suggestions = <EmojiRender activeWord={activeWord!} onEmojiPress={handleEmojiPress} />;
+        suggestions.push(<EmojiRender activeWord={activeWord!} onEmojiPress={handleEmojiPress} />);
     }
 
     let content = (
