@@ -115,10 +115,8 @@ const iconWrapperClassName = css`
 `;
 
 const PhotoButton = ({
-    fileInput,
     fileSelector,
 }: {
-    fileInput: React.RefObject<HTMLInputElement>;
     fileSelector: (event: React.MouseEvent<HTMLDivElement>) => void;
 }) => {
     return (
@@ -129,10 +127,8 @@ const PhotoButton = ({
 };
 
 const DocumentButton = ({
-    fileInput,
     fileSelector,
 }: {
-    fileInput: React.RefObject<HTMLInputElement>;
     fileSelector: (event: React.MouseEvent<HTMLDivElement>) => void;
 }) => {
     return (
@@ -190,12 +186,12 @@ const Icons = ({
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
             {minimal && (
                 <XView marginRight={20}>
-                    <PhotoButton fileInput={fileInput} fileSelector={fileSelector} />
+                    <PhotoButton fileSelector={fileSelector} />
                 </XView>
             )}
             {minimal && (
                 <XView marginRight={18}>
-                    <DocumentButton fileInput={fileInput} fileSelector={fileSelector} />
+                    <DocumentButton fileSelector={fileSelector} />
                 </XView>
             )}
             {minimal && (

@@ -77,6 +77,7 @@ const FileImage = Glamorous.div({
 export const FileUploader = () => {
     const { file, fileSrc, fileName, fileRemover } = React.useContext(UploadContext);
 
+    console.log({ file, fileSrc, fileName, fileRemover });
     return (
         <>
             {file && fileSrc && (

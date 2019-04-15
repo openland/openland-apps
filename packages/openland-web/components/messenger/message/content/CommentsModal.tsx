@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 import { DumpSendMessage } from 'openland-web/fragments/MessageComposeComponent/DumpSendMessage';
 import { DesktopSendMessage } from 'openland-web/fragments/MessageComposeComponent/SendMessage/DesktopSendMessage';
@@ -28,7 +29,7 @@ import { MessageComponent } from 'openland-web/components/messenger/message/Mess
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { convertToMentionInput, UserWithOffset } from 'openland-y-utils/mentionsConversion';
-import { css } from 'linaria';
+import { UploadContextProvider } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -247,24 +248,26 @@ const CommentsInner = () => {
                 />
 
                 {showInputId === message.key && (
-                    <CommentsInput
-                        members={members.members}
-                        minimal
-                        onSend={(msgToSend, mentions) => {
-                            const finalMentions = convertToMentionInput({
-                                mentions: mentions ? mentions : [],
-                                text: msgToSend,
-                            });
+                    <UploadContextProvider>
+                        <CommentsInput
+                            members={members.members}
+                            minimal
+                            onSend={(msgToSend, mentions) => {
+                                const finalMentions = convertToMentionInput({
+                                    mentions: mentions ? mentions : [],
+                                    text: msgToSend,
+                                });
 
-                            addComment({
-                                mentions: finalMentions,
-                                messageId: curMesssageId,
-                                message: msgToSend,
-                                replyComment: message.key,
-                            });
-                            setShowInputId(null);
-                        }}
-                    />
+                                addComment({
+                                    mentions: finalMentions,
+                                    messageId: curMesssageId,
+                                    message: msgToSend,
+                                    replyComment: message.key,
+                                });
+                                setShowInputId(null);
+                            }}
+                        />
+                    </UploadContextProvider>
                 )}
             </XView>,
         );
@@ -330,23 +333,25 @@ const CommentsInner = () => {
             )}
 
             <XView>
-                <CommentsInput
-                    members={members.members}
-                    onSend={(msgToSend, mentions) => {
-                        const finalMentions = convertToMentionInput({
-                            mentions: mentions ? mentions : [],
-                            text: msgToSend,
-                        });
+                <UploadContextProvider>
+                    <CommentsInput
+                        members={members.members}
+                        onSend={(msgToSend, mentions) => {
+                            const finalMentions = convertToMentionInput({
+                                mentions: mentions ? mentions : [],
+                                text: msgToSend,
+                            });
 
-                        addComment({
-                            mentions: finalMentions,
-                            messageId: curMesssageId,
-                            message: msgToSend,
-                            replyComment: null,
-                        });
-                        setShowInputId(null);
-                    }}
-                />
+                            addComment({
+                                mentions: finalMentions,
+                                messageId: curMesssageId,
+                                message: msgToSend,
+                                replyComment: null,
+                            });
+                            setShowInputId(null);
+                        }}
+                    />
+                </UploadContextProvider>
             </XView>
         </>
     );
