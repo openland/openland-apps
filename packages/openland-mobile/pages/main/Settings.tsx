@@ -95,7 +95,7 @@ let SettingsContent = ((props: PageProps) => {
                     />
                 ))}
             </ZListItemGroup>
-            {isSuper && (
+            {isSuper || __DEV__ && (
                 <ZListItemGroup header={null} divider={false}>
                     <ZListItem text="Developer Menu" path="Dev" />
                 </ZListItemGroup>

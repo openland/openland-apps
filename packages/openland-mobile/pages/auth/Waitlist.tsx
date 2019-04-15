@@ -10,8 +10,10 @@ import { joinInviteIfHave } from 'openland-mobile/utils/internalLnksResolver';
 import { ZText } from 'openland-mobile/components/ZText';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { getClient } from 'openland-mobile/utils/apolloClient';
 
 export class WaitlistComponent extends React.PureComponent<PageProps> {
+    mounted = false;
 
     handleLogout = () => {
         (async () => {
@@ -21,7 +23,27 @@ export class WaitlistComponent extends React.PureComponent<PageProps> {
     }
 
     componentDidMount() {
+        this.mounted = true;
         (async () => { await joinInviteIfHave(); })()
+        this.checkWaitlistPassed();
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
+    checkWaitlistPassed = async () => {
+        if (!this.mounted) {
+            return;
+        }
+        let res = await getClient().queryAccount({ fetchPolicy: 'network-only' });
+        if (res.sessionState.isAccountActivated) {
+            RNRestart.Restart();
+        } else {
+            setTimeout(() => {
+                this.checkWaitlistPassed()
+            }, 5000);
+        }
     }
 
     render() {
