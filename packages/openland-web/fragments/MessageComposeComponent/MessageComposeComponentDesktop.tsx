@@ -15,7 +15,7 @@ import {
     EditPostMessageVariables,
     EditPostMessage,
     SharedRoomKind,
-    RoomMembers_members,
+    MentionsMembers_members,
     UserShort,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
@@ -62,7 +62,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     );
     const [currentConversation, setCurrentConversation] = React.useState<
         ConversationEngine | undefined
-        >(undefined);
+    >(undefined);
 
     React.useEffect(() => {
         if (isActive && messageComposeProps.conversationId) {
@@ -162,7 +162,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
 };
 
 type MessageComposeComponentT = MessageComposeWithDraft & {
-    members?: RoomMembers_members[];
+    members?: MentionsMembers_members[];
 };
 
 export const MessageComposeComponent = (props => {
@@ -204,7 +204,7 @@ export const MessageComposeComponentDraft = (props: MessageComposeComponentDraft
         conversationId: props.conversationId!!,
     });
 
-    const members = client.useWithoutLoaderRoomMembers({
+    const members = client.useMentionsMembers({
         roomId: props.conversationId!!,
     });
 

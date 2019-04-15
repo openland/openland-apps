@@ -22383,6 +22383,41 @@ export interface RoomMembersVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: MentionsMembers
+// ====================================================
+
+export interface MentionsMembers_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface MentionsMembers_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: MentionsMembers_members_user_primaryOrganization | null;
+}
+
+export interface MentionsMembers_members {
+  __typename: "RoomMember";
+  user: MentionsMembers_members_user;
+}
+
+export interface MentionsMembers {
+  members: MentionsMembers_members[];
+}
+
+export interface MentionsMembersVariables {
+  roomId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: RoomSettingsUpdate
 // ====================================================
 

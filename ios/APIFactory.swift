@@ -349,6 +349,20 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "MentionsMembers") {
+      let roomId = notNull(readString(src, "roomId"))
+      let requestBody = MentionsMembersQuery(roomId: roomId)
+      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "RoomInviteLink") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomInviteLinkQuery(roomId: roomId)
@@ -1113,6 +1127,20 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomMembers") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomMembersQuery(roomId: roomId)
+      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
+    if (name == "MentionsMembers") {
+      let roomId = notNull(readString(src, "roomId"))
+      let requestBody = MentionsMembersQuery(roomId: roomId)
       let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -3499,6 +3527,14 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "MentionsMembers") {
+      let roomId = notNull(readString(src, "roomId"))
+      let requestBody = MentionsMembersQuery(roomId: roomId)
+      store.withinReadTransaction { (tx) in
+        handler((try tx.read(query: requestBody)).resultMap, nil)
+      }
+      return
+    }
     if (name == "RoomInviteLink") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomInviteLinkQuery(roomId: roomId)
@@ -3988,6 +4024,16 @@ class ApiFactory: ApiFactoryBase {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomMembersQuery(roomId: roomId)
       let data = RoomMembersQuery.Data(unsafeResultMap: self.convertData(src: data))
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(data: data, forQuery: requestBody)
+        handler(nil, nil)
+      }
+      return
+    }
+    if (name == "MentionsMembers") {
+      let roomId = notNull(readString(src, "roomId"))
+      let requestBody = MentionsMembersQuery(roomId: roomId)
+      let data = MentionsMembersQuery.Data(unsafeResultMap: self.convertData(src: data))
       store.withinReadWriteTransaction { (tx) in
         try tx.write(data: data, forQuery: requestBody)
         handler(nil, nil)

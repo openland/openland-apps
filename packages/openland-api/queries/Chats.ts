@@ -652,6 +652,22 @@ export const RoomMembersQuery = gql`
     ${UserShort}
 `;
 
+export const MentionsMembersQuery = gql`
+    query MentionsMembers($roomId: ID!) {
+        members: roomMembers(roomId: $roomId) {
+            user {
+                id
+                name
+                photo
+                primaryOrganization {
+                    id
+                    name
+                }
+            }
+        }
+    }
+`;
+
 export const RoomSettingsUpdateMutation = gql`
     mutation RoomSettingsUpdate($settings: RoomUserNotificaionSettingsInput!, $roomId: ID!) {
         betaRoomUpdateUserNotificationSettings(settings: $settings, roomId: $roomId) {
