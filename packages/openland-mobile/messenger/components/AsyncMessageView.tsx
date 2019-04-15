@@ -34,7 +34,9 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         props.onAvatarPress(props.message.senderId);
     }
     let handleLongPress = () => {
-        props.onMessageLongPress(props.message, props.engine.conversationId);
+        if (!props.message.isSending) {
+            props.onMessageLongPress(props.message, props.engine.conversationId);
+        }
     }
     let handleCommentsPress = () => {
         props.onCommentsPress(props.message, props.engine.conversationId);
@@ -92,7 +94,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-right" backgroundColor={theme.backgroundColor} width={4} />
                 </ASFlex>
 
-                <AsyncMessageReactionsView theme={theme} message={props.message} isChannel={props.engine.isChannel} onCommentsPress={handleCommentsPress} />
+                {!props.message.isSending && (<AsyncMessageReactionsView theme={theme} message={props.message} isChannel={props.engine.isChannel} onCommentsPress={handleCommentsPress} />)}
 
                 <ASFlex backgroundColor={theme.backgroundColor} height={50} marginBottom={-50} />
             </ASFlex>
