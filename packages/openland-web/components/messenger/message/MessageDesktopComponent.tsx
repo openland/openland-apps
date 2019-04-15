@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -145,16 +144,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         const isEditView = this.props.messagesContext.editMessageId === this.props.message.id;
 
         if (isEditView) {
-            if (canUseDOM) {
-                try {
-                    let el = ReactDOM.findDOMNode(this);
-                    if (el) {
-                        (el as Element).scrollIntoView();
-                    }
-                } catch (e) {
-                    console.warn('oops....')
-                }
-            }
+            let el = ReactDOM.findDOMNode(this);
+            (el as Element).scrollIntoView();
             this.setState({
                 isEditView: true,
             });
