@@ -158,7 +158,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     }
 
     componentWillUnmount() {
-        this.props.messagesContext.resetAll();
         this.setState({
             isEditView: false,
         });
