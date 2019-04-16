@@ -117,8 +117,9 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                             <XOverflow
                                 placement="bottom-end"
                                 flat={true}
+                                width={152}
                                 content={
-                                    <>
+                                    <React.Suspense fallback={<XLoader loading={true}/>}>
                                         <XWithRole role="super-admin" or={canEdit}>
                                             <XMenuItem
                                                 query={{
@@ -157,7 +158,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                                 />
                                             </XWithRole>
                                         </XWithRole>
-                                    </>
+                                    </React.Suspense>
                                 }
                             />
                             <LeaveChatComponent />
