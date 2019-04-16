@@ -38,7 +38,7 @@ export class NativeKeyValue implements KeyValueStore {
             this.queue.post(async () => {
                 try {
                     if (value != null) {
-                        await this.db.executeSql('INSERT INTO records(key, value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=?', [key, value, key]);
+                        await this.db.executeSql('INSERT INTO records(key, value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=?', [key, value, value]);
                     } else {
                         await this.db.executeSql('DELETE FROM records WHERE key=?', [key]);
                     }

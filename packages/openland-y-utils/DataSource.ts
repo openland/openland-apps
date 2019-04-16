@@ -31,7 +31,16 @@ export interface DataSourceWatcher<T extends DataSourceItem> {
     onDataSourceCompleted(): void;
 }
 
-export class DataSource<T extends DataSourceItem> {
+export interface ReadableDataSource<T extends DataSourceItem> {
+    needMore(): void;
+    hasItem(key: string): boolean;
+    findIndex(key: string): number;
+    getAt(index: number): T;
+    getSize(): number;
+    watch(handler: DataSourceWatcher<T>): WatchSubscription;
+}
+
+export class DataSource<T extends DataSourceItem> implements ReadableDataSource<T> {
     private watchers: DataSourceWatcher<T>[] = [];
     private data: T[] = [];
     private dataByKey = new Map<string, T>();
@@ -56,10 +65,6 @@ export class DataSource<T extends DataSourceItem> {
 
     findIndex(key: string) {
         return this.data.findIndex(({ key: dataKey }: { key: string }) => dataKey === key);
-    }
-
-    getItemByIndex(index: number) {
-        return this.data[index];
     }
 
     getItem(key: string) {

@@ -52,7 +52,7 @@ class ActiveSubscription {
           
           self.stop()
           self.start()
-        } else {
+        } else if (data != nil) {
           self.module.reportResult(key: self.key, id: self.id, result: data!.jsonObject as NSDictionary)
         }
       }

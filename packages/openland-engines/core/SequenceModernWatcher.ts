@@ -7,12 +7,13 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
     readonly client: GraphqlClient;
     private readonly handler: (src: any) => void;
     private readonly seqHandler?: (seq: number) => void;
+    private readonly stateHandler?: (seq: string) => void;
     private readonly sequenceHandler: SequenceHandler;
     private readonly variables?: any;
     private currentState: string | null;
     private subscription: GraphqlActiveSubscription<TSubscription, TVars>;
 
-    constructor(name: string, subscription: GraphqlActiveSubscription<TSubscription, TVars>, client: GraphqlClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: TVars, state?: string | null) {
+    constructor(name: string, subscription: GraphqlActiveSubscription<TSubscription, TVars>, client: GraphqlClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: TVars, state?: string | null, stateHandler?: (seq: string) => void) {
         this.name = name;
         this.handler = handler;
         this.seqHandler = seqHandler;
@@ -20,6 +21,7 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
         this.currentState = null;
         this.variables = variables;
         this.sequenceHandler = new SequenceHandler(this.handleInternal);
+        this.stateHandler = stateHandler;
 
         if (state) {
             this.currentState = state;
@@ -57,6 +59,9 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
             if (this.seqHandler) {
                 this.seqHandler(event.seq);
             }
+            if (this.stateHandler) {
+                this.stateHandler(event.state);
+            }
         } else {
             // Do single update
             this.currentState = event.state;
@@ -64,6 +69,9 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
             this.sequenceHandler.push(event.update);
             if (this.seqHandler) {
                 this.seqHandler(event.seq);
+            }
+            if (this.stateHandler) {
+                this.stateHandler(event.state);
             }
         }
     }

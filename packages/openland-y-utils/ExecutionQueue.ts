@@ -7,6 +7,18 @@ export class ExecutionQueue {
         this._startIfNeeded();
     }
 
+    sync = <T>(action: () => Promise<T>) => {
+        return new Promise<T>((resolve, reject) => {
+            this.post(async () => {
+                try {
+                    resolve(await action());
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
+    }
+
     private _startIfNeeded = () => {
         if (this._executing) {
             return;

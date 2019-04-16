@@ -93,7 +93,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             dataSource.getSize() - 1,
         );
 
-        return dataSource.getItemByIndex(nextIndex).key;
+        return dataSource.getAt(nextIndex).key;
     };
 
     const handleOptionUp = () => {
