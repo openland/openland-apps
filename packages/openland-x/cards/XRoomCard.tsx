@@ -9,6 +9,7 @@ import { TextProfiles } from 'openland-text/TextProfiles';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
 const RoomTitleInner = css`
     height: 22px;
@@ -20,10 +21,6 @@ const RoomTitleInner = css`
 const ButtonWrapper = css`
     opacity: 0;
     pointer-events: none;
-    @media (max-width: 700px) {
-        opacity: 1;
-        pointer-events: auto;
-    }
 `;
 
 const ButtonHoverWrapper = css`
@@ -44,6 +41,7 @@ interface XRoomCardProps {
 export const XRoomCard = XMemo<XRoomCardProps>(props => {
     const { customButton, customMenu, CustomButtonComponent, ...noCustomizationProps } = props;
     const { room, path, extraMenu, isMember } = noCustomizationProps;
+    const isMobile = React.useContext(IsMobileContext);
     let [isHovered, onHover] = React.useState(false);
     // debugger;
     let onMouseEnter = React.useMemo(
@@ -173,7 +171,7 @@ export const XRoomCard = XMemo<XRoomCardProps>(props => {
                     </XView>
                 </XView>
             </XView>
-            {button}
+            {!isMobile && button}
             <XView marginLeft={10}>{menu}</XView>
         </XView>
     );
