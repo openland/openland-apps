@@ -24,6 +24,7 @@ export class DataSourceStored<T extends DataSourceItem> {
     private _inited = false;
     private _loadingMore = false;
     private _storage: KeyValueStore;
+    private _pendingUpdates = new Map<string, T>();
 
     constructor(name: string, storage: KeyValueStore, pageSize: number, provider: DataSourceStoredProvider<T>) {
         this._queue = new ExecutionQueue();
@@ -100,6 +101,80 @@ export class DataSourceStored<T extends DataSourceItem> {
             log.log(this.name + '| Inited in ' + (currentTimeMillis() - start) + ' ms');
         });
     }
+
+    updateState = async (state: string) => {
+        await this._queue.sync(async () => {
+            await this._storage.writeKey('ds.' + this.name + '.state', state);
+            this._state = state;
+        });
+    }
+
+    getItem = async (id: string) => {
+        return await this._queue.sync(async () => {
+            let v = await this._storage.readKey('ds.' + this.name + '.item.' + id);
+            if (v) {
+                return JSON.parse(v) as T;
+            } else {
+                return null;
+            }
+        });
+    }
+
+    updateItem = async (item: T) => {
+        await this._queue.sync(async () => {
+            await this._storage.writeKey('ds.' + this.name + '.item.' + item.key, JSON.stringify(item));
+            this.dataSource.updateItem(item);
+        });
+    }
+
+    moveItem = async (key: string, index: number) => {
+        await this._queue.sync(async () => {
+            let i = this._index.findIndex(v => v === key);
+            if (i >= 0) {
+                if (i === index) {
+                    return;
+                }
+                if (index >= this._index.length) {
+                    throw Error('Invalid Index');
+                }
+                if (index < 0) {
+                    throw Error('Invalid Index');
+                }
+                let res = [...this._index];
+                let ex = res[i];
+                res.splice(i, 1);
+                res.splice(index, 0, ex);
+                this._index = res;
+                await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
+            } else {
+                throw Error('Trying to move non-existent item');
+            }
+
+            this.dataSource.moveItem(key, index);
+        });
+    }
+
+    addItem = async (item: T, index: number) => {
+        await this._queue.sync(async () => {
+            // Write record
+            await this._storage.writeKey('ds.' + this.name + '.item.' + item.key, JSON.stringify(item))
+
+            // Write index
+            if (index > this._index.length) {
+                throw Error('Invalid Index');
+            }
+            if (index < 0) {
+                throw Error('Invalid Index');
+            }
+            let r = [...this._index];
+            r.splice(index, 0, item.key);
+            this._index = r;
+            await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
+
+            this.dataSource.addItem(item, index);
+        });
+    }
+
     private needMore = () => {
         log.log(this.name + '| Need more');
         if (!this._inited) {

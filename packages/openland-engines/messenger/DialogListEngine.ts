@@ -219,25 +219,29 @@ export class DialogListEngine {
     //     this.next = next;
     // };
 
-    handleUserRead = (conversationId: string, unread: number, visible: boolean) => {
+    handleStateProcessed = async (state: string) => {
+        await this._dataSourceStored.updateState(state);
+    }
+
+    handleUserRead = async (conversationId: string, unread: number, visible: boolean) => {
         // Write counter to datasource
-        // let res = this.dataSource.getItem(conversationId);
-        // if (res) {
-        //     this.dataSource.updateItem({
-        //         ...res,
-        //         unread: unread,
-        //     });
-        // }
+        let res = await this._dataSourceStored.getItem(conversationId);
+        if (res) {
+            await this._dataSourceStored.updateItem({
+                ...res,
+                unread: unread,
+            });
+        }
     };
 
-    handleIsMuted = (conversationId: string, isMuted: boolean) => {
-        // let res = this.dataSource.getItem(conversationId);
-        // if (res) {
-        //     this.dataSource.updateItem({
-        //         ...res,
-        //         isMuted,
-        //     });
-        // }
+    handleIsMuted = async (conversationId: string, isMuted: boolean) => {
+        let res = await this._dataSourceStored.getItem(conversationId);
+        if (res) {
+            await this._dataSourceStored.updateItem({
+                ...res,
+                isMuted,
+            });
+        }
     };
 
     handleDialogDeleted = async (event: any) => {
@@ -248,157 +252,157 @@ export class DialogListEngine {
     };
 
     handleMessageUpdated = async (event: any) => {
-        // const conversationId = event.cid as string;
-        // let existing = this.dataSource.getItem(conversationId);
+        const conversationId = event.cid as string;
+        let existing = await this._dataSourceStored.getItem(conversationId);
 
-        // if (existing) {
-        //     if (existing.messageId === event.message.id) {
-        //         const message = formatMessage(event.message);
+        if (existing) {
+            if (existing.messageId === event.message.id) {
+                const message = formatMessage(event.message);
 
-        //         this.dataSource.updateItem({
-        //             ...existing,
-        //             message,
-        //             attachments: event.message.attachments,
-        //         });
-        //     }
-        // }
+                await this._dataSourceStored.updateItem({
+                    ...existing,
+                    message,
+                    attachments: event.message.attachments,
+                });
+            }
+        }
     };
 
     handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage, unread: number, haveMention: boolean, uid: string) => {
-        // let existing = this.dataSource.getItem(cid);
+        let existing = await this._dataSourceStored.getItem(cid);
 
-        // if (existing && existing.messageId === mid) {
-        //     this.dataSource.updateItem(extractDialog({
-        //         cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, isChannel: !!existing.isChannel, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
-        //     }, uid));
-        // }
+        if (existing && existing.messageId === mid) {
+            await this._dataSourceStored.updateItem(extractDialog({
+                cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, isChannel: !!existing.isChannel, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
+            }, uid));
+        }
     };
 
-    handleTitleUpdated = (cid: string, title: string) => {
-        // let existing = this.dataSource.getItem(cid);
-        // if (existing) {
-        //     this.dataSource.updateItem({
-        //         ...existing,
-        //         title: title,
-        //     });
-        // }
+    handleTitleUpdated = async (cid: string, title: string) => {
+        let existing = await this._dataSourceStored.getItem(cid);
+        if (existing) {
+            await this._dataSourceStored.updateItem({
+                ...existing,
+                title: title,
+            });
+        }
     };
 
-    handleMuteUpdated = (cid: string, mute: boolean) => {
-        // let existing = this.dataSource.getItem(cid);
-        // if (existing) {
-        //     this.dataSource.updateItem({
-        //         ...existing,
-        //         isMuted: mute,
-        //     });
-        // }
+    handleMuteUpdated = async (cid: string, mute: boolean) => {
+        let existing = await this._dataSourceStored.getItem(cid);
+        if (existing) {
+            await this._dataSourceStored.updateItem({
+                ...existing,
+                isMuted: mute,
+            });
+        }
     };
 
-    handleHaveMentionUpdated = (cid: string, haveMention: boolean) => {
-        // let existing = this.dataSource.getItem(cid);
-        // if (existing) {
-        //     this.dataSource.updateItem({
-        //         ...existing,
-        //         haveMention: haveMention,
-        //     });
-        // }
+    handleHaveMentionUpdated = async (cid: string, haveMention: boolean) => {
+        let existing = await this._dataSourceStored.getItem(cid);
+        if (existing) {
+            await this._dataSourceStored.updateItem({
+                ...existing,
+                haveMention: haveMention,
+            });
+        }
     };
 
-    handlePhotoUpdated = (cid: string, photo: string) => {
-        // let existing = this.dataSource.getItem(cid);
-        // if (existing) {
-        //     this.dataSource.updateItem({
-        //         ...existing,
-        //         photo: photo,
-        //     });
-        // }
+    handlePhotoUpdated = async (cid: string, photo: string) => {
+        let existing = await this._dataSourceStored.getItem(cid);
+        if (existing) {
+            await this._dataSourceStored.updateItem({
+                ...existing,
+                photo: photo,
+            });
+        }
     };
 
     handleNewMessage = async (event: any, visible: boolean) => {
-        // const conversationId = event.cid as string;
-        // const unreadCount = event.unread as number;
+        const conversationId = event.cid as string;
+        const unreadCount = event.unread as number;
 
-        // let res = this.dataSource.getItem(conversationId);
-        // let isOut = event.message.sender.id === this.engine.user.id;
-        // let sender = isOut ? 'You' : event.message.sender.firstName;
-        // let isService = event.message.__typename === 'ServiceMessage';
-        // if (res) {
-        //     let msg = formatMessage(event.message);
-        //     this.dataSource.updateItem({
-        //         ...res,
-        //         isService,
-        //         unread: !visible || res.unread > unreadCount ? unreadCount : res.unread,
-        //         isOut: isOut,
-        //         sender: sender,
-        //         messageId: event.message.id,
-        //         message: event.message && event.message.message ? msg : undefined,
-        //         fallback: msg,
-        //         date: parseInt(event.message.date, 10),
-        //         attachments: event.message.attachments,
-        //         forward: !event.message.message && event.message.quotedMessages && event.message.quotedMessages.length,
-        //         showSenderName:
-        //             !!(msg && (isOut || res.kind !== 'PRIVATE') && sender) &&
-        //             !isService,
-        //     });
-        //     this.dataSource.moveItem(res.key, 0);
-        // } else {
-        //     if (
-        //         event.message.serviceMetadata &&
-        //         event.message.serviceMetadata.__typename === 'KickServiceMetadata'
-        //     ) {
-        //         return;
-        //     }
+        let res = await this._dataSourceStored.getItem(conversationId);
+        let isOut = event.message.sender.id === this.engine.user.id;
+        let sender = isOut ? 'You' : event.message.sender.firstName;
+        let isService = event.message.__typename === 'ServiceMessage';
+        if (res) {
+            let msg = formatMessage(event.message);
+            await this._dataSourceStored.updateItem({
+                ...res,
+                isService,
+                unread: !visible || res.unread > unreadCount ? unreadCount : res.unread,
+                isOut: isOut,
+                sender: sender,
+                messageId: event.message.id,
+                message: event.message && event.message.message ? msg : undefined,
+                fallback: msg,
+                date: parseInt(event.message.date, 10),
+                attachments: event.message.attachments,
+                forward: !event.message.message && event.message.quotedMessages && event.message.quotedMessages.length,
+                showSenderName:
+                    !!(msg && (isOut || res.kind !== 'PRIVATE') && sender) &&
+                    !isService,
+            });
+            await this._dataSourceStored.moveItem(res.key, 0);
+        } else {
+            if (
+                event.message.serviceMetadata &&
+                event.message.serviceMetadata.__typename === 'KickServiceMetadata'
+            ) {
+                return;
+            }
 
-        //     let info = await this.engine.client.client.query(RoomQuery, {
-        //         id: conversationId,
-        //     });
+            let info = await this.engine.client.client.query(RoomQuery, {
+                id: conversationId,
+            });
 
-        //     let sharedRoom =
-        //         info.room!.__typename === 'SharedRoom' ? (info.room as Room_room_SharedRoom) : null;
-        //     let privateRoom =
-        //         info.room!.__typename === 'PrivateRoom'
-        //             ? (info.room as Room_room_PrivateRoom)
-        //             : null;
-        //     let room = (sharedRoom || privateRoom)!;
+            let sharedRoom =
+                info.room!.__typename === 'SharedRoom' ? (info.room as Room_room_SharedRoom) : null;
+            let privateRoom =
+                info.room!.__typename === 'PrivateRoom'
+                    ? (info.room as Room_room_PrivateRoom)
+                    : null;
+            let room = (sharedRoom || privateRoom)!;
 
-        //     let msg = formatMessage(event.message);
+            let msg = formatMessage(event.message);
 
-        //     this.dataSource.addItem(
-        //         {
-        //             key: conversationId,
-        //             isService,
-        //             isMuted: !!room.settings.mute,
-        //             haveMention: event.message.haveMention,
-        //             flexibleId: privateRoom ? privateRoom.user.id : room.id,
-        //             kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
-        //             isChannel: sharedRoom ? sharedRoom.isChannel : false,
-        //             title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
-        //             photo:
-        //                 (sharedRoom
-        //                     ? sharedRoom.photo
-        //                     : privateRoom
-        //                         ? privateRoom.user.photo
-        //                         : undefined) || undefined,
-        //             unread: unreadCount,
-        //             isOut: isOut,
-        //             sender: sender,
-        //             messageId: event.message.id,
-        //             message: event.message && event.message.message ? msg : undefined,
-        //             fallback: msg,
-        //             date: parseInt(event.message.date, 10),
-        //             forward: event.message.quotedMessages && !!event.message.quotedMessages.length,
-        //             attachments: event.message.attachments,
-        //             online: privateRoom ? privateRoom.user.online : false,
-        //             showSenderName:
-        //                 !!(
-        //                     msg &&
-        //                     (isOut || (sharedRoom ? sharedRoom.kind : 'PRIVATE') !== 'PRIVATE') &&
-        //                     sender
-        //                 ) && !isService,
-        //         },
-        //         0,
-        //     );
-        // }
+            await this._dataSourceStored.addItem(
+                {
+                    key: conversationId,
+                    isService,
+                    isMuted: !!room.settings.mute,
+                    haveMention: event.message.haveMention,
+                    flexibleId: privateRoom ? privateRoom.user.id : room.id,
+                    kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
+                    isChannel: sharedRoom ? sharedRoom.isChannel : false,
+                    title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
+                    photo:
+                        (sharedRoom
+                            ? sharedRoom.photo
+                            : privateRoom
+                                ? privateRoom.user.photo
+                                : undefined) || undefined,
+                    unread: unreadCount,
+                    isOut: isOut,
+                    sender: sender,
+                    messageId: event.message.id,
+                    message: event.message && event.message.message ? msg : undefined,
+                    fallback: msg,
+                    date: parseInt(event.message.date, 10),
+                    forward: event.message.quotedMessages && !!event.message.quotedMessages.length,
+                    attachments: event.message.attachments,
+                    online: privateRoom ? privateRoom.user.online : false,
+                    showSenderName:
+                        !!(
+                            msg &&
+                            (isOut || (sharedRoom ? sharedRoom.kind : 'PRIVATE') !== 'PRIVATE') &&
+                            sender
+                        ) && !isService,
+                },
+                0,
+            );
+        }
     };
 
     // loadNext = async () => {

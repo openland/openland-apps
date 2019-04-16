@@ -63,7 +63,9 @@ export class GlobalStateEngine {
     }
 
     handleDialogsStarted = (state: string) => {
-        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state);
+        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state, (st) => {
+            this.engine.dialogList.handleStateProcessed(st);
+        });
     }
 
     resolvePrivateConversation = async (uid: string) => {
@@ -141,10 +143,10 @@ export class GlobalStateEngine {
             await this.writeGlobalCounter(event.globalUnread, visible);
 
             // Notifications
-            this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
+            await this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
 
             // Dialogs List
-            this.engine.dialogList.handleUserRead(event.cid, event.unread, visible);
+            await this.engine.dialogList.handleUserRead(event.cid, event.unread, visible);
         } else if (event.__typename === 'DialogMessageDeleted') {
             let visible = this.visibleConversations.has(event.conversationId);
 
@@ -152,9 +154,9 @@ export class GlobalStateEngine {
             await this.writeGlobalCounter(event.globalUnread, visible);
 
             // Notifications
-            this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
+            await this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
 
-            this.engine.dialogList.handleMessageDeleted(event.cid, event.message.id, event.prevMessage, event.unread, event.haveMention, this.engine.user.id);
+            await this.engine.dialogList.handleMessageDeleted(event.cid, event.message.id, event.prevMessage, event.unread, event.haveMention, this.engine.user.id);
         } else if (event.__typename === 'DialogTitleUpdated') {
             log.warn('new title ' + event);
             this.engine.dialogList.handleTitleUpdated(event.cid, event.title);
@@ -173,15 +175,15 @@ export class GlobalStateEngine {
             await res2;
         } else if (event.__typename === 'DialogMuteChanged') {
             log.warn('new mute ' + event);
-            this.engine.dialogList.handleMuteUpdated(event.cid, event.mute);
+            await this.engine.dialogList.handleMuteUpdated(event.cid, event.mute);
             log.log(event.cid);
             this.engine.getConversation(event.cid).handleMuteUpdated(event.mute)
         } else if (event.__typename === 'DialogMentionedChanged') {
             log.warn('new haveMention ' + event);
-            this.engine.dialogList.handleHaveMentionUpdated(event.cid, event.haveMention);
+            await this.engine.dialogList.handleHaveMentionUpdated(event.cid, event.haveMention);
         } else if (event.__typename === 'DialogPhotoUpdated') {
             log.warn('new photo ' + event);
-            this.engine.dialogList.handlePhotoUpdated(event.cid, event.photo);
+            await this.engine.dialogList.handlePhotoUpdated(event.cid, event.photo);
             this.engine.getConversation(event.cid).handlePhotoUpdated(event.photo)
         } else if (event.__typename === 'DialogMessageUpdated') {
             // Dialogs List
@@ -197,7 +199,7 @@ export class GlobalStateEngine {
             this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
 
             // Remove dialog from lust
-            this.engine.dialogList.handleDialogDeleted(event);
+            await this.engine.dialogList.handleDialogDeleted(event);
         } else {
             log.log('Unhandled update: ' + event.__typename);
         }
