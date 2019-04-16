@@ -99,7 +99,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 )}
 
                 {!imgCompact && this.props.attach.image && imgLayout && (
-                    <View justifyContent="center" borderRadius={8} marginTop={-10} marginHorizontal={-13} marginBottom={6}>
+                    <View justifyContent="center" borderRadius={8} marginTop={-10} marginHorizontal={-13} marginBottom={6} backgroundColor="rgba(0, 0, 0, 0.03)">
                         <View width={imgLayout.width} height={imgLayout.height} alignSelf="center">
                             <PreviewWrapper path={imagePath} metadata={this.props.attach.image!.metadata!} radius={8}>
                                 <FastImage
