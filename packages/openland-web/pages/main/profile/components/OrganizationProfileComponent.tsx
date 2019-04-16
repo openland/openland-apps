@@ -491,14 +491,18 @@ export const Section = Glamorous(XVertical)({
     flexShrink: 0,
 });
 
-export const SectionContent = Glamorous(XContentWrapper)({
-    paddingTop: 7,
-    paddingBottom: 24,
-    fontSize: 14,
-    lineHeight: '22px',
-    letterSpacing: 0,
-    color: '#000000',
-});
+export const SectionContent = Glamorous(XContentWrapper)(
+    ({ noPaddingBottom }: { noPaddingBottom?: boolean }) => {
+        return {
+            paddingTop: 7,
+            paddingBottom: noPaddingBottom ? 0 : 24,
+            fontSize: 14,
+            lineHeight: '22px',
+            letterSpacing: 0,
+            color: '#000000',
+        };
+    },
+);
 
 export let extractHostname = (url: string) => {
     var hostname = url;

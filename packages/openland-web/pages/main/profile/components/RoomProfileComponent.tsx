@@ -433,7 +433,13 @@ const MembersProvider = ({
                 {((requests || []).length === 0 || !isOwner) && (
                     <XSubHeader title={'Members'} counter={membersCount} paddingBottom={0} />
                 )}
-                <SectionContent withFlex flexDirection="column" flexGrow={1} flexShrink={1}>
+                <SectionContent
+                    noPaddingBottom
+                    withFlex
+                    flexDirection="column"
+                    flexGrow={1}
+                    flexShrink={1}
+                >
                     {sectionElems}
                 </SectionContent>
 
