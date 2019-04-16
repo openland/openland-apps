@@ -7,6 +7,7 @@ import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { XLink2 } from 'openland-x/XLink2';
+import { MessagesStateContext } from './messenger/MessagesStateContext';
 
 const ModalBody = css`
     display: flex;
@@ -32,6 +33,7 @@ interface ImagePreviewModal extends XModalProps {
 }
 
 export const ImagePreviewModal = (props: ImagePreviewModal) => {
+    const messagesContextProps = React.useContext(MessagesStateContext);
     const modalBody = (width: number, height: number) => (
         <div className={ModalBody}>
             <XLink2
@@ -79,6 +81,11 @@ export const ImagePreviewModal = (props: ImagePreviewModal) => {
         </div>
     );
     let dimensions = layoutMedia(props.width, props.height, 1000, 1000);
+
+    if (messagesContextProps.useForwardHeader) {
+        return props.target as React.ReactElement;
+    }
+
     return (
         <XModal
             useTopCloser={true}

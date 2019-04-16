@@ -74,7 +74,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         stopLoader();
     }, [ comment, reactions ])
 
-    const marginLeft = (depth > 0) ? ((15 * depth) + 57) : 0;
+    const branchIndent = (depth > 0) ? ((15 * (depth - 1)) + 69) : 12;
 
     let likesCount = reactions.length;
     let myLike = false;
@@ -129,7 +129,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let likes =  !deleted ? (
         <TouchableWithoutFeedback onPress={handleReactionPress}>
-            <View width={44} marginRight={-16} alignItems="center" justifyContent="center">
+            <View width={46} alignItems="center" justifyContent="center" paddingLeft={8}>
                 <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? '#f6564e' : 'rgba(129, 137, 149, 0.3)', width: 18, height: 18 }} />
                 {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? '#000000' : 'rgba(0, 0, 0, 0.6)' } as TextStyle} allowFontScaling={false}>{likesCount}</Text>}
             </View>
@@ -137,7 +137,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     ) : undefined;
 
     return (
-        <View style={ highlighted ? { backgroundColor: 'rgba(255, 255, 102, 0.15)', margin: -10, marginBottom: 6, marginLeft: marginLeft - 10, padding: 10 } : { marginBottom: 16, marginLeft: marginLeft }}>
+        <View style={ highlighted ? { backgroundColor: 'rgba(255, 255, 102, 0.15)', marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 } : { marginBottom: 16, paddingLeft: branchIndent }}>
             <TouchableWithoutFeedback onLongPress={!deleted ? () => props.onLongPress(comment) : undefined}>
                 <View flexDirection="row">
                     {depth === 0 && (

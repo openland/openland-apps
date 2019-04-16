@@ -10,6 +10,17 @@ import { SHeader } from 'react-native-s/SHeader';
 import Rate from 'react-native-rate';
 import { CenteredHeader } from './components/CenteredHeader';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { useClient } from 'openland-mobile/utils/useClient';
+
+let useOnlineState = () => {
+    let [status, setStatus] = React.useState(useClient().client.status);
+    React.useEffect(() => {
+        return useClient().client.watchStatus((s) => {
+            setStatus(s);
+        })
+    }, [])
+    return status;
+}
 
 let SettingsContent = ((props: PageProps) => {
 
@@ -22,6 +33,8 @@ let SettingsContent = ((props: PageProps) => {
         secondaryFiltered.push(secondary[i]);
     }
     let isSuper = (resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ'));
+    let status = useOnlineState();
+
     return (
         <SScrollView>
             <ZListItemHeader
@@ -29,7 +42,7 @@ let SettingsContent = ((props: PageProps) => {
                 id={resp!!.me!!.id}
                 userId={resp!!.me!!.id}
                 title={resp!!.me!!.name}
-                subtitle={primary ? primary.name : undefined}
+                subtitle={status.status}
                 path="SettingsProfile"
                 action="Edit profile"
             />

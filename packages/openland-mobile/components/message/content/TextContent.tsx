@@ -44,7 +44,6 @@ export const TextContent = (props: TextContentProps) => {
                 style={{
                     color: mainTextColor,
                     lineHeight: big ? undefined : (props.isSmall ? 20 : 22),
-                    letterSpacing: -0.3,
                     fontSize: big ? 52 : (props.isSmall ? 15 : 16),
                     fontWeight: TextStyles.weight.regular,
                     fontStyle: props.fontStyle,

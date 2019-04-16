@@ -10,6 +10,7 @@ import { OthersPopper, JoinedUserPopperRowProps } from './service/views/OthersPo
 import { SpannedString } from '../../data/SpannedString';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
+import { MessagesStateContext } from '../../MessagesStateContext';
 
 const EmojiSpaceStyle = css`
     & img {
@@ -96,6 +97,7 @@ const LinkText = css`
 `;
 
 export const SpannedStringView = React.memo<{ spannedString: SpannedString }>(props => {
+    const messagesContextProps = React.useContext(MessagesStateContext);
     let res: any[] = [];
     let i = 0;
     for (let s of props.spannedString.spans) {
@@ -126,6 +128,11 @@ export const SpannedStringView = React.memo<{ spannedString: SpannedString }>(pr
             }
             let openlandLink: boolean = !!internalLink;
 
+            if (messagesContextProps.useForwardHeader) {
+                path = undefined;
+                href = undefined;
+            }
+
             res.push(
                 <span key={'link-' + i} className={LinkText}>
                     <XView
@@ -133,7 +140,6 @@ export const SpannedStringView = React.memo<{ spannedString: SpannedString }>(pr
                         target={openlandLink ? undefined : '_blank'}
                         href={href}
                         path={path}
-                        onClick={(e: any) => e.stopPropagation()}
                     >
                         <SpannedStringView spannedString={s.child} />
                     </XView>

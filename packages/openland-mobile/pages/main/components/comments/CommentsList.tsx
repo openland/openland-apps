@@ -92,16 +92,18 @@ export const CommentsList = (props: CommentsListProps) => {
                 <Text style={{ fontSize: 16, color: '#99a2b0', fontWeight: TextStyles.weight.medium } as TextStyle} allowFontScaling={false}>COMMENTS: <Text style={{ color: '#b9c1cd' }}>{comments.length}</Text></Text>
             </View>
 
-            {commentsSorted.map(commentEntry => (
-                <CommentView
-                    comment={commentEntry.comment}
-                    deleted={commentEntry.deleted}
-                    depth={getDepthOfComment(commentEntry, commentsMap)}
-                    onReplyPress={onReplyPress}
-                    onLongPress={handleLongPress}
-                    highlighted={(typeof highlightedId === 'string' && highlightedId === commentEntry.id) ? true : false}
-                />
-            ))}
+            <View marginHorizontal={-16}>
+                {commentsSorted.map(commentEntry => (
+                    <CommentView
+                        comment={commentEntry.comment}
+                        deleted={commentEntry.deleted}
+                        depth={getDepthOfComment(commentEntry, commentsMap)}
+                        onReplyPress={onReplyPress}
+                        onLongPress={handleLongPress}
+                        highlighted={(typeof highlightedId === 'string' && highlightedId === commentEntry.id) ? true : false}
+                    />
+                ))}
+            </View>
         </>
     );
 }

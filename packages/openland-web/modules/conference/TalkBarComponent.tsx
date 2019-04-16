@@ -6,7 +6,7 @@ import { XView } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 
-export const TalkBarComponent = (props: { conversationId: string, isPrivate: boolean }) => {
+export const TalkBarComponent = (props: { conversationId: string; isPrivate: boolean }) => {
     let calls = React.useContext(MessengerContext).calls;
     let callState = calls.useState();
     let client = useClient();
@@ -16,15 +16,15 @@ export const TalkBarComponent = (props: { conversationId: string, isPrivate: boo
     }
     return (
         <XView height={0} alignSelf="stretch">
-            {(data.conference.peers.length === 0) && <TalkWatchComponent id={data.conference.id} />}
-            {(data.conference.peers.length !== 0) && (
+            {data.conference.peers.length === 0 && <TalkWatchComponent id={data.conference.id} />}
+            {data.conference.peers.length !== 0 && (
                 <>
                     <XView
                         position="absolute"
                         top={0}
                         left={0}
                         right={0}
-                        zIndex={1}
+                        zIndex={2}
                         flexShrink={0}
                         paddingTop={8}
                         paddingBottom={8}
@@ -60,9 +60,7 @@ export const TalkBarComponent = (props: { conversationId: string, isPrivate: boo
                                 <XButton
                                     style="success"
                                     text={
-                                        callState.status === 'connecting'
-                                            ? 'Connecting'
-                                            : 'Leave'
+                                        callState.status === 'connecting' ? 'Connecting' : 'Leave'
                                     }
                                     onClick={() => calls.leaveCall()}
                                 />
@@ -75,13 +73,14 @@ export const TalkBarComponent = (props: { conversationId: string, isPrivate: boo
                                 onClick={
                                     callState.conversationId
                                         ? () => calls.leaveCall()
-                                        : () => calls.joinCall(props.conversationId, props.isPrivate)
+                                        : () =>
+                                              calls.joinCall(props.conversationId, props.isPrivate)
                                 }
                             />
                         )}
                     </XView>
                     )}
-                <TalkWatchComponent id={data.conference.id} />
+                    <TalkWatchComponent id={data.conference.id} />
                 </>
             )}
         </XView>
