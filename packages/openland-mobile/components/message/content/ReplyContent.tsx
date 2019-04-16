@@ -64,7 +64,11 @@ export const ReplyContent = (props: ReplyContentProps) => {
                         </View>
                     );
                 } else {
-                    return (<TextContent message={quote} onUserPress={props.onUserPress} />)
+                    return (
+                        <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor="#0084fe" paddingLeft={8}>
+                            <TextContent message={quote} onUserPress={props.onUserPress} />
+                        </View>
+                    )
                 }
             })}
         </>
