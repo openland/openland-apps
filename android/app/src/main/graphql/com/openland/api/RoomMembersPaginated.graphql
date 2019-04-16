@@ -1,0 +1,12 @@
+query RoomMembersPaginated($after: ID, $first: Int, $roomId: ID!) {
+  members: roomMembers(after: $after, first: $first, roomId: $roomId) {
+    __typename
+    canKick
+    membership
+    role
+    user {
+      __typename
+      ...UserShort
+    }
+  }
+}

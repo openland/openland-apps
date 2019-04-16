@@ -31,6 +31,7 @@ export const SearchCardsOrShowProfile = XMemo(
         ProfileComponent,
         sortOptions,
         withoutFeatured,
+        page,
     }: {
         id?: string | null;
         searchPlaceholder: string;
@@ -43,6 +44,7 @@ export const SearchCardsOrShowProfile = XMemo(
             values: { label: string; value: string }[];
         };
         withoutFeatured?: boolean;
+        page?: number;
     }) => {
         const [itemCount, setItemCount] = React.useState(0);
         const [query, setQuery] = React.useState('');
@@ -79,26 +81,26 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 &&
-                            itemCount > 0 && (
-                                <XSubHeader
-                                    title={hasQueryText}
-                                    counter={itemCount}
-                                    right={
-                                        <SortPicker
-                                            sort={sort}
-                                            onPick={setSort}
-                                            withoutFeatured={withoutFeatured}
-                                        />
-                                    }
-                                />
-                            )}
+                        {query.length > 0 && itemCount > 0 && (
+                            <XSubHeader
+                                title={hasQueryText}
+                                counter={itemCount}
+                                right={
+                                    <SortPicker
+                                        sort={sort}
+                                        onPick={setSort}
+                                        withoutFeatured={withoutFeatured}
+                                    />
+                                }
+                            />
+                        )}
                         <CardsComponent
                             featuredFirst={sort.featured}
                             orderBy={sort.orderBy}
                             tagsCount={tagsCount}
                             variables={{
                                 query,
+                                page,
                             }}
                         />
                     </XVertical>
@@ -121,6 +123,7 @@ export const DirectoryNavigation = XMemo(
         hasQueryText,
         children,
         withoutFeatured,
+        page,
     }: {
         title: string;
         id?: string | null;
@@ -131,6 +134,7 @@ export const DirectoryNavigation = XMemo(
         hasQueryText?: string;
         children?: any;
         withoutFeatured?: boolean;
+        page?: number;
     }) => {
         const [isMobile] = useIsMobile();
         return (
@@ -216,6 +220,7 @@ export const DirectoryNavigation = XMemo(
                                             noQueryText={noQueryText || ''}
                                             hasQueryText={hasQueryText || ''}
                                             withoutFeatured={withoutFeatured}
+                                            page={page}
                                         />
                                     )}
                                 </React.Suspense>
@@ -246,6 +251,7 @@ export const ComponentWithSort = ({
     orderBy: string;
     variables: {
         query: string;
+        page?: string;
     };
     tagsCount: Function;
     customMenu: any;
@@ -267,6 +273,7 @@ export const ComponentWithSort = ({
                         ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
                         { [orderBy]: { order: 'desc' } },
                     ]),
+                    ...(variables.page ? { page: variables.page } : {}),
                 }}
                 customMenu={customMenu}
                 CustomButtonComponent={CustomButtonComponent}

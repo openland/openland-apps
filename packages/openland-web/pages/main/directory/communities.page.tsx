@@ -65,6 +65,8 @@ const SearchOrganizationProfileComponent = XMemo(({ id }: { id: string }) => (
 
 export default withApp('Communities', 'viewer', () => {
     const { path } = React.useContext(XRouterContext) as XRouter;
+    const router = React.useContext(XRouterContext) as XRouter;
+    const page = router.routeQuery.page;
 
     let CardsComponent = ComponentWithSort({ Component: CommunitiesCards });
 
@@ -77,6 +79,7 @@ export default withApp('Communities', 'viewer', () => {
             searchPlaceholder={'Search communities'}
             noQueryText={'All communities'}
             hasQueryText={'Communities'}
+            page={page}
         />
     );
 });
