@@ -89,7 +89,7 @@ export const CommentsList = (props: CommentsListProps) => {
             <View height={1} backgroundColor="#eff0f2" marginTop={20} />
 
             <View marginTop={20} marginBottom={20}>
-                <Text style={{ fontSize: 16, color: '#99a2b0', fontWeight: TextStyles.weight.medium } as TextStyle} allowFontScaling={false}>COMMENTS: <Text style={{ color: '#b9c1cd' }}>{comments.length}</Text></Text>
+                <Text style={{ fontSize: 16, color: '#99a2b0', fontWeight: TextStyles.weight.medium } as TextStyle} allowFontScaling={false}>COMMENTS <Text style={{ color: '#b9c1cd' }}>{comments.length}</Text></Text>
             </View>
 
             <View marginHorizontal={-16}>
