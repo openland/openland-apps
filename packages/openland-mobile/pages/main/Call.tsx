@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { View, Text, TouchableOpacity, Image, BackHandler } from 'react-native';
+import { View, Text, TouchableOpacity, Image, BackHandler, TouchableWithoutFeedbackComponent, TouchableHighlight } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { CallController } from 'openland-mobile/calls/CallController';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -21,7 +21,7 @@ import { CallStatus } from 'openland-engines/CallsEngine';
 import { formatTimerTime } from 'openland-mobile/utils/formatTime';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { NativeModules } from 'react-native';
-const IOSKeepAlive = NativeModules.RNKeepAlive;
+import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let [mute, setMute] = React.useState(false);
@@ -52,14 +52,18 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let calls = getMessenger().engine.calls;
     let callsState = calls.useState();
 
+    let conference = getClient().useWithoutLoaderConference({ id: props.id })
+    useWatchCall(conference && conference.conference.id);
+
     let onCallEnd = React.useCallback(() => {
-        setStatus('end');
         InCallManager.stop({ busytone: '_BUNDLE_' });
+        calls.leaveCall();
+        setStatus('end');
 
         setTimeout(() => {
             SStatusBar.setBarStyle('dark-content');
             props.hide();
-        }, 1000)
+        }, 2000)
     }, []);
 
     React.useEffect(() => {
@@ -113,6 +117,15 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     {['connected', 'end'].includes(status) ? formatTimerTime(timer) : ''}
                 </Text>
             </View>
+
+            {room.__typename === 'SharedRoom' && <View flexDirection="row" flexWrap="wrap" marginHorizontal={18} marginTop={40}>
+                {conference && conference.conference.peers.map(p => {
+                    return <View key={p.id} margin={10}>
+                        <ZAvatar size={45} placeholderKey={p.id} placeholderTitle={p.user.name} src={p.user.photo} />
+                    </View>
+
+                })}
+            </View>}
 
             <View flexGrow={1} />
             <View justifyContent="center" alignItems="center" marginBottom={56} flexDirection="row">
