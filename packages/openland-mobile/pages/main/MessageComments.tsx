@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, KeyboardAvoidingView, Keyboard, TextInput } from 'react-native';
+import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, KeyboardAvoidingView, Keyboard, TextInput, Text } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { MessageInputBar } from './components/MessageInputBar';
 import { DefaultConversationTheme } from './themes/ConversationThemeResolver';
@@ -21,10 +21,8 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { MentionsRender } from './components/MentionsRender';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showAttachMenu } from '../../files/showAttachMenu';
-import { NON_PRODUCTION } from '../Init';
 import { CommentsList } from './components/comments/CommentsList';
 import { ReplyView } from './components/comments/ReplyView';
-import { Attachment, AttachmentsView } from './components/comments/AttachmentsView';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -46,7 +44,6 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         const [ inputSelection, setInputSelection ] = React.useState<{ start: number, end: number }>({ start: 0, end: 0});
         const [ sending, setSending ] = React.useState<boolean>(false);
         const [ mentions, setMentions ] = React.useState<({ user: UserShort, offset: number, length: number })[]>([]);
-        const [ attachments, setAttachments ] = React.useState<Attachment[]>([]);
 
     // callbacks
         const handleSubmit = React.useCallback(async () => {
@@ -78,7 +75,6 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                 setReplied(undefined);
                 setSending(false);
                 setMentions([]);
-                setAttachments([]);
             }
         }, [message, inputText, mentions, replied]);
 
@@ -133,9 +129,9 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
         const handleAttach = React.useCallback(() => {
             showAttachMenu((type, name, path, size) => {
-                setAttachments([...attachments, { type, name, path, size }]);
+                // temp ignore
             });
-        }, [attachments]);
+        }, []);
 
         const handleReplyPress = React.useCallback((comment: MessageComments_messageComments_comments_comment) => {
             setReplied(comment);
@@ -171,40 +167,30 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
     let activeWord = findActiveWord(inputText, inputSelection);
 
-    let suggestions: JSX.Element[] = [];
+    let suggestions: JSX.Element;
 
     if (replied) {
-        suggestions.push(<ReplyView comment={replied} onClearPress={handleReplyClear} />);
-    }
-    
-    if (attachments.length > 0) {
-        suggestions.push(<AttachmentsView attachments={attachments} />);
+        suggestions = <ReplyView comment={replied} onClearPress={handleReplyClear} />;
     }
 
     if (room && inputFocused && activeWord && activeWord.startsWith('@')) {
-        suggestions.push(
-            <React.Suspense fallback={null}>
-                <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={room!.id} />
-            </React.Suspense>
-        );
+        suggestions = <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={room!.id} />;
     }
 
     if (inputFocused && activeWord && activeWord.startsWith(':')) {
-        suggestions.push(<EmojiRender activeWord={activeWord!} onEmojiPress={handleEmojiPress} />);
+        suggestions = <EmojiRender activeWord={activeWord!} onEmojiPress={handleEmojiPress} />;
     }
 
     let content = (
-        <ScrollView flexGrow={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
-            <View paddingHorizontal={16} paddingBottom={Platform.OS === 'ios' ? 68 : undefined}>
-                <SenderView sender={message.sender} date={message.date} />
-                <ZMessageView message={message} showReactions={true} />
-                <CommentsList
-                    comments={comments}
-                    onReplyPress={handleReplyPress}
-                    highlightedId={replied ? replied.id : undefined}
-                />
-            </View>
-        </ScrollView>
+        <View paddingHorizontal={16} paddingBottom={Platform.OS === 'ios' ? 68 : undefined}>
+            <SenderView sender={message.sender} date={message.date} />
+            <ZMessageView message={message} showReactions={true} />
+            <CommentsList
+                comments={comments}
+                onReplyPress={handleReplyPress}
+                highlightedId={replied ? replied.id : undefined}
+            />
+        </View>
     );
 
     return (
@@ -218,19 +204,20 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                     <>
                         <View flexGrow={1} flexShrink={1} paddingTop={area.top}>
                             {Platform.OS === 'ios' && (
-                                <KeyboardAvoidingView flexGrow={1} behavior="padding">
+                                <ScrollView flexGrow={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingBottom: area.keyboardHeight }} scrollIndicatorInsets={{ bottom: area.keyboardHeight }}>
                                     {content}
-                                </KeyboardAvoidingView>
+                                </ScrollView>
                             )}
-                            {Platform.OS !== 'ios' && (
-                                <>
+                            {Platform.OS === 'android' && (
+                                <ScrollView flexGrow={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
                                     {content}
-                                </>
+                                </ScrollView>
                             )}
                         </View>
 
                         <View paddingBottom={Platform.OS === 'android' ? area.keyboardHeight : undefined}>
                             <MessageInputBar
+                                attachesEnabled={false}
                                 onAttachPress={handleAttach}
                                 onSubmitPress={handleSubmit}
                                 onChangeText={handleInputTextChange}
