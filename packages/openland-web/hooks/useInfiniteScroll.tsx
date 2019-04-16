@@ -3,14 +3,17 @@ import { XLoader } from 'openland-x/XLoader';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { XView } from 'react-mental';
 
-export function useInfiniteScroll({
+export function useInfiniteScroll<FetchDataT, DataSourseT>({
     initialLoadFunction,
     queryOnNeedMore,
     convertToDataSource,
 }: {
-    initialLoadFunction: any;
-    queryOnNeedMore: any;
-    convertToDataSource: Function;
+    initialLoadFunction: () => FetchDataT;
+    queryOnNeedMore: (a: {
+        currentPage: number;
+        getLastItem: () => DataSourseT;
+    }) => Promise<FetchDataT>;
+    convertToDataSource: (a: FetchDataT) => DataSourseT[];
 }) {
     const [currentPage, setCurrentPage] = React.useState(0);
     const data = initialLoadFunction();
