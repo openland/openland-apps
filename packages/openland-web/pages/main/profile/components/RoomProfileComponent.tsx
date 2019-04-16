@@ -349,7 +349,7 @@ const MembersProvider = ({
         let sectionElems;
         if (tab === tabs.members) {
             sectionElems = (
-                <XView flexBasis={0} flexGrow={1} flexShrink={1} overflow="hidden">
+                <XView flexGrow={1} flexShrink={1}>
                     <AddMembersModal
                         id={chatId}
                         isRoom={true}
