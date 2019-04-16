@@ -91,22 +91,28 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33} backgroundColor={theme.backgroundColor} >
             <ASFlex flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 14 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={5} alignItems="center">
                 {(props.isChannel || commentsCount > 0) && (
-                    <ASFlex backgroundColor="rgba(0, 132, 254, 0.1)" borderRadius={14} marginRight={4} onPress={props.onCommentsPress}>
-                        <ASFlex marginLeft={7} marginRight={7} height={28} alignItems="center" justifyContent="center">
+                    <ASFlex backgroundColor="rgba(0, 132, 254, 0.1)" borderRadius={13} marginRight={5} onPress={props.onCommentsPress}>
+                        <ASFlex marginLeft={7} marginRight={7} height={26} alignItems="center" justifyContent="center">
                             {commentsCount <= 0 && <ASImage source={require('assets/ic-comments-24.png')} width={24} height={24} />}
                             {commentsCount > 0 && <ASImage source={require('assets/ic-comments-full-24.png')} width={24} height={24} />}
                             {commentsCount > 0 && <ASText fontSize={14} fontWeight={TextStyles.weight.medium} marginLeft={2} marginRight={1} opacity={0.8}>{commentsCount}</ASText>}
                         </ASFlex>
                     </ASFlex>
                 )}
-                
-                {[...reactions.reactionsSorted].map((i) =>
-                    (
-                        <ASImage key={'k' + i.reaction} marginLeft={3} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
-                    )
-                )}
 
-                {reactions.usersString.length > 0 && <ASText fontWeight={TextStyles.weight.medium} marginLeft={5} marginRight={7} marginTop={2} fontSize={13} key={'users'} color={'#99a2b0'}>{reactions.usersString}</ASText>}
+                {reactions.reactionsSorted.length > 0 && (
+                    <ASFlex backgroundColor="#f3f5f7" borderRadius={13}>
+                        <ASFlex marginLeft={5} marginRight={1} height={26} alignItems="center" justifyContent="center">
+                            {[...reactions.reactionsSorted].map((i) =>
+                                (
+                                    <ASImage key={'k' + i.reaction} marginLeft={3} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
+                                )
+                            )}
+
+                            {reactions.usersString.length > 0 && <ASText fontWeight={TextStyles.weight.medium} marginLeft={5} marginRight={7} fontSize={13} key={'users'} color={'#99a2b0'}>{reactions.usersString}</ASText>}
+                        </ASFlex>
+                    </ASFlex>
+                )}
             </ASFlex>
         </ ASFlex>
     );
