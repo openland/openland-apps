@@ -48,6 +48,8 @@ export class NativeApolloClient extends BridgedClient {
                         }
                     } else if (src.type === 'response') {
                         this.operationUpdated(src.id, src.data);
+                    } else if (src.type === 'status') {
+                        this.statusWatcher.setState({ status: src.status });
                     }
                 }
             });

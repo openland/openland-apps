@@ -323,6 +323,7 @@ class RNGraphqlClient: WebSocketTransportDelegate {
       }
       if !self.connected {
         self.connected = true
+        self.module.reportStatus(key: self.key, status: "connected")
         for s in self.subscriptions.values {
           s.start()
         }
@@ -336,6 +337,7 @@ class RNGraphqlClient: WebSocketTransportDelegate {
       }
       if !self.connected {
         self.connected = true
+        self.module.reportStatus(key: self.key, status: "connected")
         for s in self.subscriptions.values {
           s.start()
         }
@@ -349,6 +351,7 @@ class RNGraphqlClient: WebSocketTransportDelegate {
       }
       if self.connected {
         self.connected = false
+        self.module.reportStatus(key: self.key, status: "connecting")
         for s in self.subscriptions.values {
           s.stop()
         }

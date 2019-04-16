@@ -1,4 +1,4 @@
-import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription, GraphqlQueryWatch, OperationParameters, ApiError, InvalidField, GraphqlFragment } from '../GraphqlClient';
+import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription, GraphqlQueryWatch, OperationParameters, ApiError, InvalidField, GraphqlFragment, GraphqlClientStatus } from '../GraphqlClient';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { FetchPolicy } from 'apollo-client';
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
@@ -7,15 +7,25 @@ import { DirectApolloSubscription } from './DirectApolloSubscription';
 import { defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { createLogger } from 'mental-log';
 import { getQueryName } from 'openland-graphql/utils/getQueryName';
+import { Watcher } from 'openland-y-utils/Watcher';
 
 const log = createLogger('GraphQL-Direct');
 
 export class DirectApollolClient implements GraphqlClient {
 
     readonly client: OpenApolloClient;
+    private readonly statusWatcher: Watcher<GraphqlClientStatus> = new Watcher();
+    get status(): GraphqlClientStatus {
+        return this.statusWatcher.getState()!!;
+    }
 
     constructor(client: OpenApolloClient) {
         this.client = client;
+        this.statusWatcher.setState(this.client.status.isConnected ? { status: 'connected' } : { status: 'connecting' });
+    }
+
+    watchStatus(handler: (status: GraphqlClientStatus) => void) {
+        return this.statusWatcher.watch(handler);
     }
 
     async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): Promise<TQuery> {
