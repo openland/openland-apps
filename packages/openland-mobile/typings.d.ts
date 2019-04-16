@@ -14,7 +14,7 @@ declare module 'react-native-incall-manager' {
     const InCallManager: {
         start: (args?: { media?: 'audio' | 'video' }) => void;
         setForceSpeakerphoneOn: (on: boolean) => void;
-        stop: () => void;
+        stop: (options?: { busytone?: '_DTMF_' | '_BUNDLE_' | '_DEFAULT_' }) => void;
     }
 
     export default InCallManager;

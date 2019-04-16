@@ -20,6 +20,8 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { CallStatus } from 'openland-engines/CallsEngine';
 import { formatTimerTime } from 'openland-mobile/utils/formatTime';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { NativeModules } from 'react-native';
+const IOSKeepAlive = NativeModules.RNKeepAlive;
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let [mute, setMute] = React.useState(false);
@@ -38,7 +40,6 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         InCallManager.start({ media: 'audio' });
         RNSDevice.proximityEnable();
         return () => {
-            InCallManager.stop();
             RNSDevice.proximityDisable();
             SStatusBar.setBarStyle('dark-content');
         }
@@ -53,22 +54,13 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
     let onCallEnd = React.useCallback(() => {
         setStatus('end');
-        var Sound = require('react-native-sound');
-        Sound.setCategory('Playback');
-        Sound.setMode('SpokenAudio');
-        var whoosh = new Sound('call_end.mp3', Sound.MAIN_BUNDLE, (error: any) => {
-            if (error) {
-                console.log('failed to load the sound', error);
-                return;
-            }
-            whoosh.play();
-        });
+        InCallManager.stop({ busytone: '_BUNDLE_' });
 
         setTimeout(() => {
             SStatusBar.setBarStyle('dark-content');
             props.hide();
         }, 1000)
-    }, [])
+    }, []);
 
     React.useEffect(() => {
         if (callsState.status === 'connected') {
@@ -86,7 +78,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
             setStatus('waiting');
         }
 
-    }, [callsState.status])
+    }, [callsState.status]);
 
     React.useEffect(() => {
         if (status === 'connected') {
@@ -95,7 +87,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
             }, 100);
         }
 
-    }, [timer, initialTime, status])
+    }, [timer, initialTime, status]);
 
     return (
         <ASSafeAreaView flexDirection="column" alignItems="stretch" flexGrow={1}>

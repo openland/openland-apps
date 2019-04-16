@@ -22,7 +22,7 @@
 		7A78E95582A54B76A967E43B /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */; };
 		A0153A96222426F400C026A4 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0153A95222426F400C026A4 /* ShareViewController.swift */; };
 		A0153A99222426F400C026A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0153A97222426F400C026A4 /* MainInterface.storyboard */; };
-		A0579EF42260D2BE00457B66 /* call_end.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0579EF32260D2BE00457B66 /* call_end.mp3 */; };
+		A0579EF42260D2BE00457B66 /* incallmanager_busytone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0579EF32260D2BE00457B66 /* incallmanager_busytone.mp3 */; };
 		A0DDD9B62226BE8B00AA3061 /* openland-share-ex.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A0153A93222426F400C026A4 /* openland-share-ex.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		AA0FAAEC225CCB220002C6FB /* RNGraphQLPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0FAAEB225CCB220002C6FB /* RNGraphQLPersistence.swift */; };
 		AA2365582244EBBA000AA3A7 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23654F2244EBB9000AA3A7 /* API.swift */; };
@@ -279,7 +279,7 @@
 		A0153A98222426F400C026A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		A0153A9A222426F400C026A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0153AAA2224559800C026A4 /* openland-share-ex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "openland-share-ex.entitlements"; sourceTree = "<group>"; };
-		A0579EF32260D2BE00457B66 /* call_end.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = call_end.mp3; sourceTree = "<group>"; };
+		A0579EF32260D2BE00457B66 /* incallmanager_busytone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = incallmanager_busytone.mp3; sourceTree = "<group>"; };
 		A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Pods/Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		A938EF8C563947299EE77727 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 		AA0FAAEB225CCB220002C6FB /* RNGraphQLPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphQLPersistence.swift; sourceTree = "<group>"; };
@@ -474,7 +474,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
-				A0579EF32260D2BE00457B66 /* call_end.mp3 */,
+				A0579EF32260D2BE00457B66 /* incallmanager_busytone.mp3 */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */,
 				AA6281AA2151C8BC007C8200 /* VERSION */,
@@ -1054,7 +1054,7 @@
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */,
 				AA26084B22008C8300A69D84 /* index.thread.jsbundle in Resources */,
-				A0579EF42260D2BE00457B66 /* call_end.mp3 in Resources */,
+				A0579EF42260D2BE00457B66 /* incallmanager_busytone.mp3 in Resources */,
 				440BD442C9014A379447F506 /* AppCenter-Config.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
