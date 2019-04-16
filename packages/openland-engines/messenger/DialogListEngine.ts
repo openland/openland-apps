@@ -8,15 +8,16 @@ import {
     TinyMessage,
     DialogKind,
 } from 'openland-api/Types';
-import { backoff } from 'openland-y-utils/timer';
 import { RoomQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { createLogger } from 'mental-log';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
+import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
+import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 
 const log = createLogger('Engine-Dialogs');
 
-export interface DialogDataSourceItem {
+export interface DialogDataSourceItemStored {
     key: string;
     flexibleId: string;
 
@@ -28,8 +29,6 @@ export interface DialogDataSourceItem {
     isOrganization?: boolean;
 
     unread: number;
-    online?: boolean;
-    typing?: string;
     isMuted?: boolean;
     haveMention?: boolean;
 
@@ -43,6 +42,11 @@ export interface DialogDataSourceItem {
     isOut?: boolean;
     attachments?: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments[];
     showSenderName?: boolean;
+}
+
+export interface DialogDataSourceItem extends DialogDataSourceItemStored {
+    online?: boolean;
+    typing?: string;
 }
 
 export function formatMessage(message: Dialogs_dialogs_items_topMessage | null): string {
@@ -93,7 +97,7 @@ export const extractDialog = (
         haveMention,
     }: Dialogs_dialogs_items,
     uid: string,
-): DialogDataSourceItem => {
+): DialogDataSourceItemStored => {
     let msg = formatMessage(topMessage);
     let isOut = topMessage ? topMessage!!.sender.id === uid : undefined;
     let sender = topMessage
@@ -103,7 +107,6 @@ export const extractDialog = (
         : undefined;
     let isService = (topMessage && topMessage.__typename === 'ServiceMessage') || undefined;
     return {
-        online: undefined,
         haveMention,
         isMuted,
         kind,
@@ -129,20 +132,25 @@ export const extractDialog = (
 export class DialogListEngine {
     readonly engine: MessengerEngine;
     private dialogs: Dialogs_dialogs_items[] = [];
-    readonly _dataSourceStored: DataSourceStored<DialogDataSourceItem>;
+    readonly _dataSourceStored: DataSourceStored<DialogDataSourceItemStored>;
     readonly dataSource: DataSource<DialogDataSourceItem>;
-    // private dataSourceLogger: DataSourceLogger<DialogDataSourceItem>;
-    private next?: string | null;
-    private loading: boolean = true;
+    private userConversationMap = new Map<string, string>();
+    private useOnlines = new Map<string, boolean>();
+    private loadedConversations = new Set<string>();
     private dialogListCallback: (convs: string[]) => void;
 
     constructor(engine: MessengerEngine, cb: (convs: string[]) => void) {
         this.engine = engine;
         this.dialogListCallback = cb;
 
-        let provider: DataSourceStoredProvider<DialogDataSourceItem> = {
+        let provider: DataSourceStoredProvider<DialogDataSourceItemStored> = {
             loadMore: async (cursor?: string) => {
                 let res = await this.engine.client.queryDialogs({ after: cursor });
+                // for (let c of res.dialogs.items) {
+                //     if (c.kind === 'PRIVATE' && c.fid) {
+                //         this.userConversationMap.set(c.fid, c.cid);
+                //     }
+                // }
                 return {
                     items: res.dialogs.items.map((v) => extractDialog(v, engine.user.id)),
                     cursor: res.dialogs.cursor ? res.dialogs.cursor : undefined,
@@ -154,70 +162,77 @@ export class DialogListEngine {
             }
         }
         this._dataSourceStored = new DataSourceStored('dialogs', engine.options.store, 20, provider);
-        this.dataSource = this._dataSourceStored.dataSource;
+        let typingsAugmentator = new DataSourceAugmentor<DialogDataSourceItemStored, { typing: string }>(this._dataSourceStored.dataSource);
+        let onlineAugmentator = new DataSourceAugmentor<DialogDataSourceItemStored & { typing?: string }, { online: boolean }>(typingsAugmentator.dataSource);
+        this.dataSource = onlineAugmentator.dataSource;
 
-        // engine.getOnlines().onSingleChangeChange((user, online) => {
-        //     let conversationId = this.userConversationMap.get(user);
-        //     if (!conversationId) {
-        //         return;
-        //     }
-        //     let res = this.dataSource.getItem(conversationId);
-        //     if (res && res.online !== online) {
-        //         this.dataSource.updateItem({
-        //             ...res,
-        //             online: online,
-        //         });
-        //     }
-        // });
+        this.dataSource.watch({
+            onDataSourceInited: (items) => {
+                for (let i of items) {
+                    if (i.kind === 'PRIVATE') {
+                        this.userConversationMap.set(i.flexibleId, i.key);
+                        if (this.useOnlines.has(i.flexibleId)) {
+                            onlineAugmentator.setAugmentation(i.flexibleId, { online: this.useOnlines.get(i.flexibleId)!! })
+                        }
+                    }
+                    this.loadedConversations.add(i.key);
+                }
+                this.dialogListCallback(Array.from(this.loadedConversations))
+            },
+            onDataSourceLoadedMore: (items) => {
+                for (let i of items) {
+                    if (i.kind === 'PRIVATE') {
+                        this.userConversationMap.set(i.flexibleId, i.key);
+                        if (this.useOnlines.has(i.flexibleId)) {
+                            onlineAugmentator.setAugmentation(i.flexibleId, { online: this.useOnlines.get(i.flexibleId)!! })
+                        }
+                    }
+                    this.loadedConversations.add(i.key);
+                }
+                this.dialogListCallback(Array.from(this.loadedConversations))
+            },
+            onDataSourceItemAdded: (item) => {
+                if (item.kind === 'PRIVATE') {
+                    this.userConversationMap.set(item.flexibleId, item.key);
+                    if (this.useOnlines.has(item.flexibleId)) {
+                        onlineAugmentator.setAugmentation(item.flexibleId, { online: this.useOnlines.get(item.flexibleId)!! })
+                    }
+                }
+                this.loadedConversations.add(item.key);
+                this.dialogListCallback(Array.from(this.loadedConversations))
+            },
+            onDataSourceItemRemoved: (item) => {
+                this.loadedConversations.delete(item.key);
+                this.dialogListCallback(Array.from(this.loadedConversations))
+            },
+            onDataSourceItemMoved: () => {
+                // Nothing to do
+            },
+            onDataSourceItemUpdated: () => {
+                // Nothing to do
+            },
+            onDataSourceCompleted: () => {
+                // Nothing to do
+            }
+        });
+        // let a = new DataSourceLogger('dialogs', this.dataSource);
 
-        // engine.getTypings().subcribe((typing, users, conversationId) => {
-        //     let res = this.dataSource.getItem(conversationId);
-        //     if (res && res.typing !== typing) {
-        //         this.dataSource.updateItem({
-        //             ...res,
-        //             typing: typing && (res.kind === 'PRIVATE' ? 'typing...' : typing),
-        //         });
-        //     }
-        // });
+        engine.getOnlines().onSingleChangeChange((user, online) => {
+            let conversationId = this.userConversationMap.get(user);
+            if (!conversationId) {
+                return;
+            }
+            onlineAugmentator.setAugmentation(conversationId, { online })
+        });
 
-        // this.dataSource = new DataSource<DialogDataSourceItem>(() => {
-        //     this.loadNext();
-        // });
-        // this.dataSourceLogger = new DataSourceLogger<DialogDataSourceItem>('[DIALOGS]', this.dataSource);
+        engine.getTypings().subcribe((typing, users, conversationId) => {
+            if (typing) {
+                typingsAugmentator.setAugmentation(conversationId, { typing });
+            } else {
+                typingsAugmentator.removeAugmentation(conversationId);
+            }
+        });
     }
-
-    //
-    // Update Handlers
-    //
-
-    // handleInitialDialogs = (dialogs: any[], next: string | null) => {
-    //     this.dialogs = dialogs;
-
-    //     this.dialogListCallback(this.dialogs.map(i => i.cid));
-
-    //     // Improve conversation resolving
-    //     // for (let c of this.dialogs) {
-    //     //     ConversationRepository.improveRoomResolving(
-    //     //         this.engine.client,
-    //     //         c.cid,
-    //     //     );
-    //     // }
-
-    //     // Update data source
-    //     this.dataSource.initialize(
-    //         this.dialogs.map(c => {
-    //             if (c.kind === 'PRIVATE' && c.fid) {
-    //                 this.userConversationMap.set(c.fid, c.cid);
-    //             }
-    //             return extractDialog(c, this.engine.user.id);
-    //         }),
-    //         next === null,
-    //     );
-
-    //     // Start engine
-    //     this.loading = false;
-    //     this.next = next;
-    // };
 
     handleStateProcessed = async (state: string) => {
         await this._dataSourceStored.updateState(state);
@@ -245,10 +260,10 @@ export class DialogListEngine {
     };
 
     handleDialogDeleted = async (event: any) => {
-        // const cid = event.cid as string;
-        // if (this.dataSource.hasItem(cid)) {
-        //     this.dataSource.removeItem(cid);
-        // }
+        const cid = event.cid as string;
+        if (await this._dataSourceStored.hasItem(cid)) {
+            await this._dataSourceStored.removeItem(cid);
+        }
     };
 
     handleMessageUpdated = async (event: any) => {
@@ -367,6 +382,10 @@ export class DialogListEngine {
 
             let msg = formatMessage(event.message);
 
+            if (privateRoom) {
+                this.userConversationMap.set(privateRoom!.user.id, privateRoom.id);
+            }
+
             await this._dataSourceStored.addItem(
                 {
                     key: conversationId,
@@ -392,7 +411,6 @@ export class DialogListEngine {
                     date: parseInt(event.message.date, 10),
                     forward: event.message.quotedMessages && !!event.message.quotedMessages.length,
                     attachments: event.message.attachments,
-                    online: privateRoom ? privateRoom.user.online : false,
                     showSenderName:
                         !!(
                             msg &&
@@ -404,44 +422,4 @@ export class DialogListEngine {
             );
         }
     };
-
-    // loadNext = async () => {
-    //     if (!this.loading && this.next !== null) {
-    //         this.loading = true;
-    //         let start = Date.now();
-    //         let res = await backoff(async () => {
-    //             try {
-    //                 return await backoff(async () => {
-    //                     return await this.engine.client.queryDialogs({
-    //                         ...(this.next !== undefined ? { after: this.next } : {})
-    //                     }, { fetchPolicy: 'network-only' });
-    //                 });
-    //             } catch (e) {
-    //                 log.warn(e);
-    //                 throw e;
-    //             }
-    //         });
-    //         log.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
-
-    //         this.next = res.dialogs.cursor;
-    //         this.dialogs = [...this.dialogs, ...res.dialogs.items];
-
-    //         res.dialogs.items.map(c => {
-    //             if (c.kind === 'PRIVATE' && c.fid) {
-    //                 this.userConversationMap.set(c.fid, c.cid);
-    //             }
-    //         });
-
-    //         this.dialogListCallback(this.dialogs.map(i => i.cid));
-
-    //         // Write to datasource
-    //         let converted = res.dialogs.items.map((c: any) =>
-    //             extractDialog(c, this.engine.user.id),
-    //         );
-
-    //         this.dataSource.loadedMore(converted, !this.next);
-
-    //         this.loading = false;
-    //     }
-    // };
 }

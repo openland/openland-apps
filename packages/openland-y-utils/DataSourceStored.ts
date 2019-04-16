@@ -109,6 +109,20 @@ export class DataSourceStored<T extends DataSourceItem> {
         });
     }
 
+    hasItem = async (key: string) => {
+        return await this._queue.sync(async () => {
+            return !!this._index.find((v) => v === key);
+        });
+    }
+
+    removeItem = async (key: string) => {
+        await this._queue.sync(async () => {
+            this._index = this._index.filter((v) => v !== key);
+            await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
+            this.dataSource.removeItem(key);
+        });
+    }
+
     getItem = async (id: string) => {
         return await this._queue.sync(async () => {
             let v = await this._storage.readKey('ds.' + this.name + '.item.' + id);
