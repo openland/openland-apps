@@ -61,7 +61,14 @@ export interface XListViewProps<T extends DataSourceItem> {
     loadingHeight: number;
     renderItem: (item: T) => React.ReactElement<any>;
     renderLoading: () => React.ReactElement<any>;
+    beforeChildren?: any;
+    afterChildren?: any;
+    WrapChildrenComponent?: any;
 }
+
+const DefaultWrapChildrenComponent = ({ children }: { children: any }) => {
+    return <XView flexDirection="column">{children}</XView>;
+};
 
 export const XListView = React.memo(function<T extends DataSourceItem>(props: XListViewProps<T>) {
     let [items, completed] = useDataSource(props.dataSource);
@@ -83,14 +90,20 @@ export const XListView = React.memo(function<T extends DataSourceItem>(props: XL
         [needMore],
     );
 
+    const WrapChildrenComponent = props.WrapChildrenComponent
+        ? props.WrapChildrenComponent
+        : DefaultWrapChildrenComponent;
+
     return (
         <XScrollView3 onScroll={onScroll} flexGrow={1} flexShrink={1}>
-            <XView flexDirection="column">
+            <WrapChildrenComponent>
+                {props.beforeChildren}
                 {items.map(v => (
                     <XView key={'item-' + v.key}>{props.renderItem(v)}</XView>
                 ))}
                 {!completed && props.renderLoading()}
-            </XView>
+                {props.afterChildren}
+            </WrapChildrenComponent>
         </XScrollView3>
     );
 });

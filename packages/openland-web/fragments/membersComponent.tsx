@@ -53,13 +53,14 @@ class DeclineButton extends React.Component<{
     }
 }
 
-export const RemoveMemberModal = (props: { members: any[]; roomId: string; roomTitle: string }) => {
+export const RemoveMemberModal = (props: { roomId: string }) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
     let member = props.members.filter(
         (m: any) => (m.user && m.user.id === router.query.remove) || '',
     )[0];
+
     if (!member) {
         return null;
     }
