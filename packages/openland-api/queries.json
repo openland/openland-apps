@@ -9347,6 +9347,63 @@
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
+			"operationName": "OrganizationWithoutMembers",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "organizationId",
+					"type": "ID!"
+				}
+			],
+			"source": "query OrganizationWithoutMembers($organizationId: ID!) {\n  organization(id: $organizationId) {\n    __typename\n    ...OrganizationWithoutMembers\n  }\n}",
+			"fields": [
+				{
+					"responseName": "organization",
+					"fieldName": "organization",
+					"type": "Organization!",
+					"args": [
+						{
+							"name": "id",
+							"value": {
+								"kind": "Variable",
+								"variableName": "organizationId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"OrganizationWithoutMembers"
+					],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"OrganizationWithoutMembers",
+				"UserFull",
+				"OrganizationShort",
+				"RoomShort",
+				"UserShort",
+				"FullMessage",
+				"UserTiny"
+			],
+			"sourceWithFragments": "query OrganizationWithoutMembers($organizationId: ID!) {\n  organization(id: $organizationId) {\n    __typename\n    ...OrganizationWithoutMembers\n  }\n}\nfragment OrganizationWithoutMembers on Organization {\n  __typename\n  id\n  superAccountId\n  isMine\n  isOwner: betaIsOwner\n  isAdmin: betaIsAdmin\n  featured: alphaFeatured\n  isCommunity: alphaIsCommunity\n  name\n  photo\n  shortname\n  website\n  about\n  twitter\n  facebook\n  linkedin\n  requests: alphaOrganizationMemberRequests {\n    __typename\n    role\n    user {\n      __typename\n      ...UserFull\n    }\n  }\n  rooms: betaPublicRooms {\n    __typename\n    ...RoomShort\n  }\n}\nfragment UserFull on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  phone\n  email\n  website\n  about\n  location\n  isBot\n  isYou\n  online\n  lastSeen\n  linkedin\n  twitter\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  isCommunity: alphaIsCommunity\n}\nfragment RoomShort on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      ...UserShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    membership\n    role\n    canEdit\n    canSendMessage\n    membersCount\n    pinnedMessage {\n      __typename\n      ...FullMessage\n    }\n    organization {\n      __typename\n      ...OrganizationShort\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}",
+			"operationId": "12fd2f8dabe68816c4c46f537713a23c7b5c5e2ffe4781c2e50eafe267ba3ff9"
+		},
+		{
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Organization.ts",
 			"operationName": "OrganizationMembersShort",
 			"operationType": "query",
 			"rootType": "Query",
@@ -17504,6 +17561,193 @@
 					"type": "Boolean!",
 					"isConditional": false,
 					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": []
+		},
+		{
+			"typeCondition": "Organization",
+			"possibleTypes": [
+				"Organization"
+			],
+			"fragmentName": "OrganizationWithoutMembers",
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/fragments/OrganizationWithoutMembers.ts",
+			"source": "fragment OrganizationWithoutMembers on Organization {\n  __typename\n  id\n  superAccountId\n  isMine\n  isOwner: betaIsOwner\n  isAdmin: betaIsAdmin\n  featured: alphaFeatured\n  isCommunity: alphaIsCommunity\n  name\n  photo\n  shortname\n  website\n  about\n  twitter\n  facebook\n  linkedin\n  requests: alphaOrganizationMemberRequests {\n    __typename\n    role\n    user {\n      __typename\n      ...UserFull\n    }\n  }\n  rooms: betaPublicRooms {\n    __typename\n    ...RoomShort\n  }\n}",
+			"fields": [
+				{
+					"responseName": "__typename",
+					"fieldName": "__typename",
+					"type": "String!",
+					"isConditional": false
+				},
+				{
+					"responseName": "id",
+					"fieldName": "id",
+					"type": "ID!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "superAccountId",
+					"fieldName": "superAccountId",
+					"type": "ID!",
+					"isConditional": false,
+					"description": "# Refactor?",
+					"isDeprecated": false
+				},
+				{
+					"responseName": "isMine",
+					"fieldName": "isMine",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "isOwner",
+					"fieldName": "betaIsOwner",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "isAdmin",
+					"fieldName": "betaIsAdmin",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "featured",
+					"fieldName": "alphaFeatured",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "isCommunity",
+					"fieldName": "alphaIsCommunity",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "name",
+					"fieldName": "name",
+					"type": "String!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "photo",
+					"fieldName": "photo",
+					"type": "String",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "shortname",
+					"fieldName": "shortname",
+					"type": "String",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "website",
+					"fieldName": "website",
+					"type": "String",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "about",
+					"fieldName": "about",
+					"type": "String",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "twitter",
+					"fieldName": "twitter",
+					"type": "String",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "facebook",
+					"fieldName": "facebook",
+					"type": "String",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "linkedin",
+					"fieldName": "linkedin",
+					"type": "String",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "requests",
+					"fieldName": "alphaOrganizationMemberRequests",
+					"type": "[OrganizationRequestedMember!]!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "role",
+							"fieldName": "role",
+							"type": "OrganizationMemberRole!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "user",
+							"fieldName": "user",
+							"type": "User!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserFull"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				},
+				{
+					"responseName": "rooms",
+					"fieldName": "betaPublicRooms",
+					"type": "[SharedRoom!]!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"RoomShort"
+					],
+					"inlineFragments": []
 				}
 			],
 			"fragmentSpreads": [],

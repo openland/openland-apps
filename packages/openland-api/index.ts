@@ -28,6 +28,7 @@ import * as OrganizationMedium from './fragments/OrganizationMedium';
 import * as OrganizationProfileFull from './fragments/OrganizationProfileFull';
 import * as OrganizationSearch from './fragments/OrganizationSearch';
 import * as OrganizationShort from './fragments/OrganizationShort';
+import * as OrganizationWithoutMembers from './fragments/OrganizationWithoutMembers';
 import * as RoomFull from './fragments/RoomFull';
 import * as RoomShort from './fragments/RoomShort';
 import * as SessionStateFull from './fragments/SessionStateFull';
@@ -154,6 +155,7 @@ export const MyOrganizationsQuery = typedQuery<Types.MyOrganizations, {}>(Organi
 export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganization, Types.UpdateOrganizationVariables>(Organization.UpdateOrganizationMutation);
 export const SetOrgShortnameMutation = typedMutation<Types.SetOrgShortname, Types.SetOrgShortnameVariables>(Organization.SetOrgShortnameMutation);
 export const OrganizationQuery = typedQuery<Types.Organization, Types.OrganizationVariables>(Organization.OrganizationQuery);
+export const OrganizationWithoutMembersQuery = typedQuery<Types.OrganizationWithoutMembers, Types.OrganizationWithoutMembersVariables>(Organization.OrganizationWithoutMembersQuery);
 export const OrganizationMembersShortQuery = typedQuery<Types.OrganizationMembersShort, Types.OrganizationMembersShortVariables>(Organization.OrganizationMembersShortQuery);
 export const OrganizationProfileQuery = typedQuery<Types.OrganizationProfile, Types.OrganizationProfileVariables>(Organization.OrganizationProfileQuery);
 export const ExploreOrganizationsQuery = typedQuery<Types.ExploreOrganizations, Types.ExploreOrganizationsVariables>(Organization.ExploreOrganizationsQuery);
@@ -209,6 +211,7 @@ export const OrganizationMediumFragment = typedFragment<Types.OrganizationMedium
 export const OrganizationProfileFullFragment = typedFragment<Types.OrganizationProfileFull>(OrganizationProfileFull.OrganizationProfileFull);
 export const OrganizationSearchFragment = typedFragment<Types.OrganizationSearch>(OrganizationSearch.OrganizationSearch);
 export const OrganizationShortFragment = typedFragment<Types.OrganizationShort>(OrganizationShort.OrganizationShort);
+export const OrganizationWithoutMembersFragment = typedFragment<Types.OrganizationWithoutMembers>(OrganizationWithoutMembers.OrganizationWithoutMembers);
 export const RoomFullFragment = typedFragment<Types.RoomFull>(RoomFull.RoomFull);
 export const RoomFullWithoutMembersFragment = typedFragment<Types.RoomFullWithoutMembers>(RoomFull.RoomFullWithoutMembers);
 export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomShort);

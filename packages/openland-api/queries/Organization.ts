@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { OrganizationFull } from '../fragments/OrganizationFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
+import { OrganizationWithoutMembers } from '../fragments/OrganizationWithoutMembers';
 import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
 import { OrganizationSearch } from '../fragments/OrganizationSearch';
 import { CommunitySearch } from '../fragments/CommunitySearch';
@@ -40,6 +41,15 @@ export const OrganizationQuery = gql`
     }
     ${OrganizationFull}
     ${UserShort}
+`;
+
+export const OrganizationWithoutMembersQuery = gql`
+    query OrganizationWithoutMembers($organizationId: ID!) {
+        organization(id: $organizationId) {
+            ...OrganizationWithoutMembers
+        }
+    }
+    ${OrganizationWithoutMembers}
 `;
 
 export const OrganizationMembersShortQuery = gql`

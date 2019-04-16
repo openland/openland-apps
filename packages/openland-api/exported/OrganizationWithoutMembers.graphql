@@ -1,0 +1,6 @@
+query OrganizationWithoutMembers($organizationId: ID!) {
+  organization(id: $organizationId) {
+    __typename
+    ...OrganizationWithoutMembers
+  }
+}

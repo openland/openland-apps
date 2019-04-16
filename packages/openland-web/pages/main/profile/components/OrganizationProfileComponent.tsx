@@ -3,9 +3,9 @@ import Glamorous from 'glamorous';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import {
     OrganizationMemberRole,
-    Organization_organization,
     Organization_organization_members,
-    Organization_organization_requests,
+    OrganizationWithoutMembers_organization,
+    OrganizationWithoutMembers_organization_requests,
 } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -156,7 +156,7 @@ export const EditButton = (props: XButtonProps & { big?: boolean }) => {
 
 interface MemberJoinedProps {
     member: Organization_organization_members;
-    organization: Organization_organization;
+    organization: OrganizationWithoutMembers_organization;
 }
 
 const MemberJoinedCard = (props: MemberJoinedProps) => {
@@ -256,8 +256,8 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
 };
 
 interface MemberRequestCardProps {
-    member: Organization_organization_requests;
-    organization: Organization_organization;
+    member: OrganizationWithoutMembers_organization_requests;
+    organization: OrganizationWithoutMembers_organization;
 }
 
 interface MemberRequestCardState {
@@ -519,7 +519,7 @@ export let extractHostname = (url: string) => {
     return hostname;
 };
 
-const Header = (props: { organization: Organization_organization }) => {
+const Header = (props: { organization: OrganizationWithoutMembers_organization }) => {
     let { organization } = props;
 
     const editButton = (
@@ -628,7 +628,7 @@ const Header = (props: { organization: Organization_organization }) => {
     );
 };
 
-const About = (props: { organization: Organization_organization }) => {
+const About = (props: { organization: OrganizationWithoutMembers_organization }) => {
     let { organization } = props;
 
     return (
@@ -678,7 +678,7 @@ const tabs: { [K in tabsT]: tabsT } = {
 };
 
 interface MembersProps {
-    organization: Organization_organization;
+    organization: OrganizationWithoutMembers_organization;
     router: XRouter;
     onDirectory?: boolean;
 }
@@ -841,7 +841,7 @@ export const CreateGroupPopperButton = XMemo((props: { orgId: string }) => {
     );
 });
 
-const Rooms = (props: { organization: Organization_organization }) => {
+const Rooms = (props: { organization: OrganizationWithoutMembers_organization }) => {
     let { organization } = props;
 
     let groups = organization.rooms;
@@ -909,7 +909,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
 };
 
 interface OrganizationProfileInnerProps extends XWithRouter {
-    organization: Organization_organization;
+    organization: OrganizationWithoutMembers_organization;
     onDirectory?: boolean;
     hideBack?: boolean;
 }
@@ -947,24 +947,24 @@ const OrganizationProvider = ({
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const data = client.useWithoutLoaderOrganization(variables);
+    const data = client.useOrganization(variables);
 
-    return data && data.organization ? (
+    return (
         <OrganizationProfileInner
             organization={data.organization}
             router={router}
             onDirectory={onDirectory}
         />
-    ) : (
-        <XLoader loading={true} />
     );
 };
 
 export const OrganizationProfile = (props: { organizationId: string; onDirectory?: boolean }) => {
     return (
-        <OrganizationProvider
-            variables={{ organizationId: props.organizationId }}
-            onDirectory={props.onDirectory}
-        />
+        <React.Suspense fallback={<XLoader loading={true} />}>
+            <OrganizationProvider
+                variables={{ organizationId: props.organizationId }}
+                onDirectory={props.onDirectory}
+            />
+        </React.Suspense>
     );
 };

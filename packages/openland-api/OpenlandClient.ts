@@ -499,6 +499,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderOrganization(variables: Types.OrganizationVariables): Types.Organization | null {
         return this.useQuery(Source.OrganizationQuery, variables);
     }
+    async queryOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationWithoutMembers> {
+        return this.client.query(Source.OrganizationWithoutMembersQuery, variables, opts);
+    }
+    async refetchOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables): Promise<Types.OrganizationWithoutMembers> {
+        return this.refetch(Source.OrganizationWithoutMembersQuery, variables);
+    }
+    useOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: QueryWatchParameters): Types.OrganizationWithoutMembers {
+        return this.useQuerySuspense(Source.OrganizationWithoutMembersQuery, variables, opts);
+    }
+    useWithoutLoaderOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables): Types.OrganizationWithoutMembers | null {
+        return this.useQuery(Source.OrganizationWithoutMembersQuery, variables);
+    }
     async queryOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: OperationParameters): Promise<Types.OrganizationMembersShort> {
         return this.client.query(Source.OrganizationMembersShortQuery, variables, opts);
     }
@@ -1047,6 +1059,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     writeOrganizationShort(data: Types.OrganizationShort) {
       return this.client.writeFragment(data, Source.OrganizationShortFragment);
+    }
+    writeOrganizationWithoutMembers(data: Types.OrganizationWithoutMembers) {
+      return this.client.writeFragment(data, Source.OrganizationWithoutMembersFragment);
     }
     writeRoomFull(data: Types.RoomFull) {
       return this.client.writeFragment(data, Source.RoomFullFragment);
