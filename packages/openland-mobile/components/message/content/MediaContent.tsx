@@ -69,17 +69,17 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
 
         return (
             <View
-                flexDirection="column"
-                width={imageLayout.width}
-                height={imageLayout.height}
-                alignItems="center"
+                backgroundColor="#f3f5f7"
+                borderRadius={8}
             >
-                <PreviewWrapper path={imagePath} metadata={this.props.attach.fileMetadata} radius={10}>
-                    <FastImage
-                        style={{ backgroundColor: 'red', borderRadius: 10, width: imageLayout.width, height: imageLayout.height }}
-                        source={{ uri: imagePath, priority: 'normal', ...{ disableAnimations: true } as any }}
-                    />
-                </PreviewWrapper>
+                <View width={imageLayout.width} height={imageLayout.height} alignSelf="center">
+                    <PreviewWrapper path={imagePath} metadata={this.props.attach.fileMetadata} radius={8}>
+                        <FastImage
+                            style={{ backgroundColor: 'red', borderRadius: 8, width: imageLayout.width, height: imageLayout.height }}
+                            source={{ uri: imagePath, priority: 'normal', ...{ disableAnimations: true } as any }}
+                        />
+                    </PreviewWrapper>
+                </View>
 
                 {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && (
                     <View
