@@ -154,7 +154,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                         <XListView
                             dataSource={dataSource}
                             itemHeight={72}
-                            loadingHeight={60}
+                            loadingHeight={200}
                             renderItem={renderDialog}
                             renderLoading={renderLoading}
                         />

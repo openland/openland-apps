@@ -83,7 +83,7 @@ export const XListView = React.memo(function<T extends DataSourceItem>(props: XL
     let onScroll = React.useCallback(
         (values: XScrollValues) => {
             let d = values.scrollHeight - (values.clientHeight + values.scrollTop);
-            if (d < 1000) {
+            if (d < props.loadingHeight) {
                 needMore();
             }
         },
