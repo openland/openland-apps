@@ -397,7 +397,6 @@ const MembersProvider = ({
                         text="Add members"
                         query={{ field: 'inviteMembers', value: 'true' }}
                     />
-
                     <XView flexBasis={0} flexGrow={1} flexShrink={1} overflow="hidden">
                         <XListView
                             dataSource={dataSource}
@@ -434,8 +433,10 @@ const MembersProvider = ({
                 {((requests || []).length === 0 || !isOwner) && (
                     <XSubHeader title={'Members'} counter={membersCount} paddingBottom={0} />
                 )}
-                {sectionElems}
-                {/* <SectionContent>{sectionElems}</SectionContent> */}
+                <SectionContent withFlex flexDirection="column" flexGrow={1} flexShrink={1}>
+                    {sectionElems}
+                </SectionContent>
+
                 {/* <RemoveMemberModal members={members} roomId={chatId} roomTitle={chatTitle} /> */}
             </Section>
         );
