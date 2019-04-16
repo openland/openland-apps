@@ -74,7 +74,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         stopLoader();
     }, [ comment, reactions ])
 
-    const branchIndent = (depth > 0) ? ((15 * (depth - 1)) + 69) : 12;
+    const branchIndent = (depth > 0) ? ((15 * depth) + 16) : 16;
 
     let likesCount = reactions.length;
     let myLike = false;
@@ -86,15 +86,15 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     });
 
     let avatar = (
-        <View marginRight={depth === 0 ? 10 : 6}>
+        <View marginRight={6}>
             {deleted && (
-                <View width={depth === 0 ? 32 : 16} height={depth === 0 ? 32 : 16} borderRadius={depth === 0 ? 16 : 8} backgroundColor="rgba(0, 0, 0, 0.05)" />
+                <View width={16} height={16} borderRadius={8} backgroundColor="rgba(0, 0, 0, 0.05)" />
             )}
             {!deleted && (
                 <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
                     <View>
                         <ZAvatar
-                            size={depth === 0 ? 32 : 16}
+                            size={16}
                             src={sender.photo}
                             placeholderKey={sender.id}
                             placeholderTitle={sender.name}
@@ -112,7 +112,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                 {depth === 0 && (
                     <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
                         <View flexDirection="row">
-                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: '#0084fe', width: 16, height: 16 }} />
+                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: '#0084fe', width: 16, height: 16, opacity: 0.7 }} />
                             <Text style={styles.reply} allowFontScaling={false}>Reply</Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -120,7 +120,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
                 {depth !== 0 && (
                     <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                        <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: '#0084fe', width: 16, height: 16 }} />
+                        <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: '#0084fe', width: 16, height: 16, opacity: 0.7}} />
                     </TouchableWithoutFeedback>
                 )}
             </View>
@@ -140,39 +140,22 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         <View style={ highlighted ? { backgroundColor: 'rgba(255, 255, 102, 0.15)', marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 } : { marginBottom: 16, paddingLeft: branchIndent }}>
             <TouchableWithoutFeedback onLongPress={!deleted ? () => props.onLongPress(comment) : undefined}>
                 <View flexDirection="row">
-                    {depth === 0 && (
-                        <>
-                            {avatar}
+                    <View flexGrow={1} flexShrink={1}>
+                        <TouchableWithoutFeedback onPress={!deleted ? () => router.push('ProfileUser', { id: sender.id }) : undefined}>
+                            <View flexDirection="row" marginBottom={3}>
+                                {avatar}
 
-                            <View flexGrow={1} flexShrink={1}>
-                                {deleted && <Text style={[styles.senderNameDeleted, { marginBottom: 1 }]} allowFontScaling={false}>{sender.name}</Text>}
-                                {!deleted && <Text style={[styles.senderName, { marginBottom: 1 }]} onPress={() => router.push('ProfileUser', { id: sender.id })} allowFontScaling={false}>{sender.name}</Text>}
-
-                                <View style={{ opacity: deleted ? 0.5 : undefined }}>
-                                    <ZMessageView message={comment} small={true} />
-                                </View>
-
-                                {tools}
+                                <Text style={!deleted ? styles.senderName : styles.senderNameDeleted} allowFontScaling={false}>{sender.name}</Text>
                             </View>
-                        </>
-                    )}
-                    {depth !== 0 && (
-                        <View flexGrow={1} flexShrink={1}>
-                            <TouchableWithoutFeedback onPress={!deleted ? () => router.push('ProfileUser', { id: sender.id }) : undefined}>
-                                <View flexDirection="row" marginBottom={3}>
-                                    {avatar}
+                        </TouchableWithoutFeedback>
 
-                                    <Text style={!deleted ? styles.senderName : styles.senderNameDeleted} allowFontScaling={false}>{sender.name}</Text>
-                                </View>
-                            </TouchableWithoutFeedback>
-
-                            <View style={{ opacity: deleted ? 0.5 : undefined }}>
-                                <ZMessageView message={comment} small={true} />
-                            </View>
-
-                            {tools}
+                        <View style={{ opacity: deleted ? 0.5 : undefined }}>
+                            <ZMessageView message={comment} small={true} />
                         </View>
-                    )}
+
+                        {tools}
+                    </View>
+
                     {likes}
                 </View>
             </TouchableWithoutFeedback>
