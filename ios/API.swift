@@ -9127,6 +9127,144 @@ public final class RoomMembersShortQuery: GraphQLQuery {
   }
 }
 
+public final class RoomMemberShortQuery: GraphQLQuery {
+  public let operationDefinition =
+    "query RoomMemberShort($roomId: ID!, $memberId: ID!) {\n  member: roomMember(roomId: $roomId, memberId: $memberId) {\n    __typename\n    user {\n      __typename\n      id\n      name\n      firstName\n    }\n  }\n}"
+
+  public var roomId: GraphQLID
+  public var memberId: GraphQLID
+
+  public init(roomId: GraphQLID, memberId: GraphQLID) {
+    self.roomId = roomId
+    self.memberId = memberId
+  }
+
+  public var variables: GraphQLMap? {
+    return ["roomId": roomId, "memberId": memberId]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("roomMember", alias: "member", arguments: ["roomId": GraphQLVariable("roomId"), "memberId": GraphQLVariable("memberId")], type: .object(Member.selections)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(member: Member? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "member": member.flatMap { (value: Member) -> ResultMap in value.resultMap }])
+    }
+
+    public var member: Member? {
+      get {
+        return (resultMap["member"] as? ResultMap).flatMap { Member(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "member")
+      }
+    }
+
+    public struct Member: GraphQLSelectionSet {
+      public static let possibleTypes = ["RoomMember"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("user", type: .nonNull(.object(User.selections))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(user: User) {
+        self.init(unsafeResultMap: ["__typename": "RoomMember", "user": user.resultMap])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var user: User {
+        get {
+          return User(unsafeResultMap: resultMap["user"]! as! ResultMap)
+        }
+        set {
+          resultMap.updateValue(newValue.resultMap, forKey: "user")
+        }
+      }
+
+      public struct User: GraphQLSelectionSet {
+        public static let possibleTypes = ["User"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("name", type: .nonNull(.scalar(String.self))),
+          GraphQLField("firstName", type: .nonNull(.scalar(String.self))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: GraphQLID, name: String, firstName: String) {
+          self.init(unsafeResultMap: ["__typename": "User", "id": id, "name": name, "firstName": firstName])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        public var name: String {
+          get {
+            return resultMap["name"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "name")
+          }
+        }
+
+        public var firstName: String {
+          get {
+            return resultMap["firstName"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "firstName")
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class RoomMembersQuery: GraphQLQuery {
   public let operationDefinition =
     "query RoomMembers($roomId: ID!) {\n  members: roomMembers(roomId: $roomId) {\n    __typename\n    user {\n      __typename\n      ...UserShort\n    }\n    role\n    membership\n    canKick\n  }\n}"

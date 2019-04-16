@@ -638,6 +638,18 @@ export const RoomMembersShortQuery = gql`
     }
 `;
 
+export const RoomMemberShortQuery = gql`
+    query RoomMemberShort($roomId: ID!, $memberId: ID!) {
+        member: roomMember(roomId: $roomId, memberId: $memberId) {
+            user {
+                id
+                name
+                firstName
+            }
+        }
+    }
+`;
+
 export const RoomMembersQuery = gql`
     query RoomMembers($roomId: ID!) {
         members: roomMembers(roomId: $roomId) {

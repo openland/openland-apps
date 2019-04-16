@@ -1,0 +1,11 @@
+query RoomMemberShort($memberId: ID!, $roomId: ID!) {
+  member: roomMember(memberId: $memberId, roomId: $roomId) {
+    __typename
+    user {
+      __typename
+      firstName
+      id
+      name
+    }
+  }
+}

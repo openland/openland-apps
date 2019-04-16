@@ -1729,6 +1729,12 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        builder.roomId(notNull(readString(src, "roomId")))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "RoomMemberShort") {
+       val builder = RoomMemberShortQuery.builder()
+       builder.roomId(notNull(readString(src, "roomId")))
+       builder.memberId(notNull(readString(src, "memberId")))
+       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "RoomMembers") {
        val builder = RoomMembersQuery.builder()
        builder.roomId(notNull(readString(src, "roomId")))

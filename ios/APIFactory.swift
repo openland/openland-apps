@@ -335,6 +335,21 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "RoomMemberShort") {
+      let roomId = notNull(readString(src, "roomId"))
+      let memberId = notNull(readString(src, "memberId"))
+      let requestBody = RoomMemberShortQuery(roomId: roomId, memberId: memberId)
+      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "RoomMembers") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomMembersQuery(roomId: roomId)
@@ -1129,6 +1144,21 @@ class ApiFactory: ApiFactoryBase {
     if (name == "RoomMembersShort") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomMembersShortQuery(roomId: roomId)
+      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
+    if (name == "RoomMemberShort") {
+      let roomId = notNull(readString(src, "roomId"))
+      let memberId = notNull(readString(src, "memberId"))
+      let requestBody = RoomMemberShortQuery(roomId: roomId, memberId: memberId)
       let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -3551,6 +3581,15 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "RoomMemberShort") {
+      let roomId = notNull(readString(src, "roomId"))
+      let memberId = notNull(readString(src, "memberId"))
+      let requestBody = RoomMemberShortQuery(roomId: roomId, memberId: memberId)
+      store.withinReadTransaction { (tx) in
+        handler((try tx.read(query: requestBody)).resultMap, nil)
+      }
+      return
+    }
     if (name == "RoomMembers") {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomMembersQuery(roomId: roomId)
@@ -4056,6 +4095,17 @@ class ApiFactory: ApiFactoryBase {
       let roomId = notNull(readString(src, "roomId"))
       let requestBody = RoomMembersShortQuery(roomId: roomId)
       let data = RoomMembersShortQuery.Data(unsafeResultMap: self.convertData(src: data))
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(data: data, forQuery: requestBody)
+        handler(nil, nil)
+      }
+      return
+    }
+    if (name == "RoomMemberShort") {
+      let roomId = notNull(readString(src, "roomId"))
+      let memberId = notNull(readString(src, "memberId"))
+      let requestBody = RoomMemberShortQuery(roomId: roomId, memberId: memberId)
+      let data = RoomMemberShortQuery.Data(unsafeResultMap: self.convertData(src: data))
       store.withinReadWriteTransaction { (tx) in
         try tx.write(data: data, forQuery: requestBody)
         handler(nil, nil)
