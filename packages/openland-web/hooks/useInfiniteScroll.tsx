@@ -33,7 +33,7 @@ export function useInfiniteScroll({
     }, []);
 
     const getLastItem = () => {
-        return dataSource.getItemByIndex(dataSource.getSize() - 1);
+        return dataSource.getAt(dataSource.getSize() - 1);
     };
 
     React.useEffect(() => {
