@@ -42,7 +42,8 @@ let SettingsContent = ((props: PageProps) => {
                 id={resp!!.me!!.id}
                 userId={resp!!.me!!.id}
                 title={resp!!.me!!.name}
-                subtitle={status.status}
+                subtitle={status.status === 'connected' ? 'online' : 'connecting...'}
+                subtitleColor={status.status === 'connected' ? '#0084fe' : undefined}
                 path="SettingsProfile"
                 action="Edit profile"
             />

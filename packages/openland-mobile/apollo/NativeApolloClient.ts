@@ -33,8 +33,6 @@ export class NativeApolloClient extends BridgedClient {
 
     constructor(storageKey: string, token?: string) {
         super();
-        NativeGraphQL.createClient(this.key, '//api.openland.com/api', token, 'gql-' + storageKey);
-
         if (Platform.OS === 'ios') {
             RNGraphQLEmitter.addListener('apollo_client', (src) => {
                 if (src.key === this.key) {
@@ -72,6 +70,7 @@ export class NativeApolloClient extends BridgedClient {
                 }
             });
         }
+        NativeGraphQL.createClient(this.key, '//api.openland.com/api', token, 'gql-' + storageKey);
     }
 
     protected postQuery(id: string, query: any, vars: any, params?: OperationParameters) {
