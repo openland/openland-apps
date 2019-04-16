@@ -79,25 +79,23 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                             source={{ uri: imagePath, priority: 'normal', ...{ disableAnimations: true } as any }}
                         />
                     </PreviewWrapper>
-                </View>
 
-                {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && (
-                    <View
-                        width={imageLayout.width}
-                        height={imageLayout.height}
-                        justifyContent="center"
-                        alignItems="center"
-                        backgroundColor="#0008"
-                        borderRadius={20}
-                        position="absolute"
-                        top={0}
-                        left={0}
-                        right={0}
-                        bottom={0}
-                    >
-                        <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center'}} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
-                    </View>
-                )}
+                    {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && (
+                        <View
+                            justifyContent="center"
+                            alignItems="center"
+                            backgroundColor="#0008"
+                            borderRadius={8}
+                            position="absolute"
+                            top={0}
+                            left={0}
+                            right={0}
+                            bottom={0}
+                        >
+                            <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center'}} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
+                        </View>
+                    )}
+                </View>
             </View>
         )
     }

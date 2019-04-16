@@ -111,25 +111,23 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                     }}
                                 />
                             </PreviewWrapper>
-                        </View>
 
-                        {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
-                            <View
-                                position="absolute"
-                                top={0}
-                                left={0}
-                                right={0}
-                                bottom={0}
-                                width={imgLayout.width}
-                                height={imgLayout.height}
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <View backgroundColor="#0008" borderRadius={20}>
-                                    <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center'}} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
+                            {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
+                                <View
+                                    position="absolute"
+                                    top={0}
+                                    left={0}
+                                    right={0}
+                                    bottom={0}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <View backgroundColor="#0008" borderRadius={20}>
+                                        <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center'}} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                        }
+                            }
+                        </View>
                     </View>
                 )}
 
