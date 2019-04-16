@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, KeyboardAvoidingView, Keyboard, TextInput, Text } from 'react-native';
+import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { MessageInputBar } from './components/MessageInputBar';
 import { DefaultConversationTheme } from './themes/ConversationThemeResolver';
@@ -23,6 +23,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showAttachMenu } from '../../files/showAttachMenu';
 import { CommentsList } from './components/comments/CommentsList';
 import { ReplyView } from './components/comments/ReplyView';
+import { SDevice } from 'react-native-s/SDevice';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -204,7 +205,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                     <>
                         <View flexGrow={1} flexShrink={1} paddingTop={area.top}>
                             {Platform.OS === 'ios' && (
-                                <ScrollView flexGrow={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingBottom: area.keyboardHeight }} scrollIndicatorInsets={{ bottom: area.keyboardHeight }}>
+                                <ScrollView flexGrow={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingBottom: area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ bottom: area.bottom - SDevice.safeArea.bottom }}>
                                     {content}
                                 </ScrollView>
                             )}
