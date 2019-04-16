@@ -106,7 +106,6 @@ const KeyboardItem = ({ title, path, href, key }: KeyboardItemProps) => {
             key={key}
             href={href}
             path={path}
-            target="_blank"
             flexGrow={1}
             backgroundColor="#F7F7F7"
             hoverBackgroundColor="#E8F4FF"
@@ -470,7 +469,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             as="a"
                                             href={href}
                                             path={path}
-                                            target="_blank"
+                                            target={openlandLink ? undefined : '_blank'}
                                             fontSize={16}
                                             fontWeight="600"
                                             color="#000"

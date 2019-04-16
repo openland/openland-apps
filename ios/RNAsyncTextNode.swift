@@ -18,9 +18,9 @@ private func createAttributedText(spec: AsyncTextSpec, attributes: [NSAttributed
   
   if spec.textDecorationLine != nil {
     if spec.textDecorationLine == AsyncTextDecorationLine.none {
-      innerAttributes[NSAttributedString.Key.underlineStyle] = []
+      innerAttributes[NSAttributedString.Key.underlineStyle] = 0
     } else {
-      innerAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
+      innerAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single
     }
   }
   

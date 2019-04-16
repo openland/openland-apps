@@ -235,9 +235,9 @@ private func resolveAttributedText(spec: AsyncTextSpec, parent: AsyncTextSpec?, 
   
   if spec.textDecorationLine != nil {
     if spec.textDecorationLine == AsyncTextDecorationLine.none {
-      innerAttributes[NSAttributedString.Key.underlineStyle] = []
+      innerAttributes[NSAttributedString.Key.underlineStyle] = 0
     } else {
-      innerAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single.rawValue
+      innerAttributes[NSAttributedString.Key.underlineStyle] = NSUnderlineStyle.single
     }
   }
   

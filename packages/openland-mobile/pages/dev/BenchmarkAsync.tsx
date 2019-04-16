@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollView, SafeAreaView } from 'react-native';
+import { ScrollView, SafeAreaView, View } from 'react-native';
 import { AppStyles } from '../../styles/AppStyles';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';

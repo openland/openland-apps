@@ -202,7 +202,7 @@ export const EditMessageInlineWrapper = (
 ) => {
     const client = useClient();
 
-    const data = client.useRoomMembers(props.variables);
+    const data = client.useMentionsMembers(props.variables);
 
     const mentionsData =
         data && data.members ? convertChannelMembersDataToMentionsData(data.members) : [];

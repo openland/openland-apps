@@ -1,0 +1,16 @@
+query MentionsMembers($roomId: ID!) {
+  members: roomMembers(roomId: $roomId) {
+    __typename
+    user {
+      __typename
+      id
+      name
+      photo
+      primaryOrganization {
+        __typename
+        id
+        name
+      }
+    }
+  }
+}

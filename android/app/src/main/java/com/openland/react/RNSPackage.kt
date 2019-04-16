@@ -14,19 +14,13 @@ import com.openland.react.async.AsyncViewManager
 import com.openland.react.anim.RNSAnimatedViewManager
 import com.openland.react.anim.RNSAnimatedViewViewManager
 import com.openland.react.graphql.RNGraphQL
-import com.openland.react.threads.RNThreadModule
 import com.openland.react.window.BottomSafeAreaProvider
 import com.openland.react.window.RNSWindowManager
 
 class RNSPackage : ReactPackage {
 
     init {
-        ComponentsConfiguration.incrementalMountUsesLocalVisibleBounds = false
-        // ComponentsConfiguration.incrementalMountWhenNotVisible = false
-//        ComponentsConfiguration.prewarmImageTexture = true
-//        ComponentsConfiguration.incrementalMountWhenNotVisible = false
-//        ComponentsConfiguration.isDebugModeEnabled = true
-//        ComponentsConfiguration.NEEDS_THEME_SYNCHRONIZATION
+        ComponentsConfiguration.incrementalMountWhenNotVisible = false
     }
 
     override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {

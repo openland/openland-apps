@@ -4,7 +4,7 @@ import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleRes
 import { XFlexStyles, applyFlex } from './Flex';
 import { XPopper } from '../XPopper';
 import { XIcon } from '../XIcon';
-import ClearIcon from 'openland-icons/ic-close.svg';
+import CleanIcon from 'openland-icons/ic-close-thinner.svg';
 
 type XInputSize = 'large' | 'default' | 'small';
 type XInputAttach = 'left' | 'right' | 'both';
@@ -622,7 +622,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                                 this.handleClear();
                             }}
                         >
-                            <ClearIcon />
+                            <CleanIcon />
                         </ClearButton>
                     )}
             </RootContainer>

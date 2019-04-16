@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RoomMembers_members } from 'openland-api/Types';
+import { MentionsMembers_members } from 'openland-api/Types';
 import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 
 export type MentionsStateT = {
@@ -9,7 +9,7 @@ export type MentionsStateT = {
     setCurrentMentions: (a: MentionDataT[]) => void;
 };
 
-export const convertChannelMembersDataToMentionsData = (data?: RoomMembers_members[]) => {
+export const convertChannelMembersDataToMentionsData = (data?: MentionsMembers_members[]) => {
     if (!data) {
         return [];
     }
@@ -26,14 +26,14 @@ export const convertChannelMembersDataToMentionsData = (data?: RoomMembers_membe
     });
 };
 
-const getMembers = (members?: RoomMembers_members[]) => {
+const getMembers = (members?: MentionsMembers_members[]) => {
     return members
         ? members.map(({ user: { name } }: { user: { name: string } }) => `@${name}`)
         : [];
 };
 
 type useMentionsT = {
-    members?: RoomMembers_members[];
+    members?: MentionsMembers_members[];
 };
 
 export function useMentions({ members }: useMentionsT) {

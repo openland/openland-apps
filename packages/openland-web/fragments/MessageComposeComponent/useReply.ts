@@ -1,4 +1,4 @@
-import { ReplyMessageVariables, ReplyMessage, RoomMembers_members } from 'openland-api/Types';
+import { ReplyMessageVariables, ReplyMessage, MentionsMembers_members } from 'openland-api/Types';
 import { QuoteStateT } from './useQuote';
 import { MentionsStateT } from './useMentions';
 import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
@@ -6,7 +6,7 @@ import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSugge
 export type useReplyPropsT = {
     replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
     conversationId?: string;
-    members?: RoomMembers_members[];
+    members?: MentionsMembers_members[];
     mentionsState?: MentionsStateT;
     quoteState?: QuoteStateT;
     inputValue: string;
