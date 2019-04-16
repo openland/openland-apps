@@ -320,6 +320,7 @@ const RequestCard = ({
 };
 
 interface MembersProviderProps {
+    membersCount: number;
     requests?: RoomFull_SharedRoom_requests[] | null;
     chatId: string;
     isOwner: boolean;
@@ -333,6 +334,7 @@ const convertToDataSource = (data: any) => {
 };
 
 const MembersProvider = ({
+    membersCount,
     router,
     requests,
     isOwner,
@@ -380,11 +382,45 @@ const MembersProvider = ({
             router.query.requests === '1' && (requests || []).length > 0
                 ? tabs.requests
                 : tabs.members;
+
+        let sectionElems;
+        if (tab === tabs.members) {
+            sectionElems = (
+                <>
+                    <AddMembersModal
+                        id={chatId}
+                        isRoom={true}
+                        isChannel={isChannel}
+                        isOrganization={false}
+                    />
+                    <XCreateCard
+                        text="Add members"
+                        query={{ field: 'inviteMembers', value: 'true' }}
+                    />
+
+                    <XView flexBasis={0} flexGrow={1} flexShrink={1} overflow="hidden">
+                        <XListView
+                            dataSource={dataSource}
+                            itemHeight={72}
+                            loadingHeight={60}
+                            renderItem={renderItem}
+                            renderLoading={renderLoading}
+                        />
+                    </XView>
+                </>
+            );
+        } else {
+            sectionElems =
+                isOwner &&
+                requests &&
+                requests.map((req, i) => <RequestCard key={i} member={req} roomId={chatId} />);
+        }
+
         return (
-            <Section separator={0}>
+            <Section separator={0} flexGrow={1}>
                 {isOwner && (requests || []).length > 0 && (
                     <XSwitcher style="button">
-                        <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
+                        <XSwitcher.Item query={{ field: 'requests' }} counter={membersCount}>
                             Members
                         </XSwitcher.Item>
                         <XSwitcher.Item
@@ -396,44 +432,10 @@ const MembersProvider = ({
                     </XSwitcher>
                 )}
                 {((requests || []).length === 0 || !isOwner) && (
-                    <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
+                    <XSubHeader title={'Members'} counter={membersCount} paddingBottom={0} />
                 )}
-
-                <SectionContent>
-                    {tab === tabs.members && (
-                        <>
-                            <AddMembersModal
-                                id={chatId}
-                                isRoom={true}
-                                isChannel={isChannel}
-                                isOrganization={false}
-                            />
-                            <XCreateCard
-                                text="Add members"
-                                query={{ field: 'inviteMembers', value: 'true' }}
-                            />
-                            <XView height={500}>
-                                <XListView
-                                    dataSource={dataSource}
-                                    itemHeight={72}
-                                    loadingHeight={60}
-                                    renderItem={renderItem}
-                                    renderLoading={renderLoading}
-                                />
-                            </XView>
-                            {/* {members.map((member, i) => {
-                                return <MemberCard key={i} member={member} />;
-                            })} */}
-                        </>
-                    )}
-
-                    {isOwner &&
-                        tab === tabs.requests &&
-                        requests &&
-                        requests.map((req, i) => (
-                            <RequestCard key={i} member={req} roomId={chatId} />
-                        ))}
-                </SectionContent>
+                {sectionElems}
+                {/* <SectionContent>{sectionElems}</SectionContent> */}
                 {/* <RemoveMemberModal members={members} roomId={chatId} roomTitle={chatTitle} /> */}
             </Section>
         );
@@ -515,6 +517,7 @@ const RoomGroupProfileInner = ({
                     )}
                     <React.Suspense fallback={<XLoader loading={true} />}>
                         <MembersProvider
+                            membersCount={chat.organization!!.membersCount}
                             router={router}
                             requests={chat.requests}
                             chatId={conversationId}
