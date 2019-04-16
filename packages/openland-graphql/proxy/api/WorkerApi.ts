@@ -7,10 +7,10 @@ export type WorkerRequest = {
 } & (
         { type: 'query', body: any, variables: any, params?: OperationParameters } |
         { type: 'mutate', body: any, variables: any } |
-        
+
         { type: 'watch', body: any, variables: any, params?: OperationParameters } |
         { type: 'watch-destroy' } |
-        
+
         { type: 'subscribe', body: any, variables: any } |
         { type: 'subscribe-update', variables: any } |
         { type: 'subscribe-destroy' } |
@@ -27,5 +27,6 @@ export type WorkerResponse = {
     id: string;
 } & (
         { type: 'result', data: any } |
-        { type: 'error', data: any }
+        { type: 'error', data: any } |
+        { type: 'status', status: string }
     )

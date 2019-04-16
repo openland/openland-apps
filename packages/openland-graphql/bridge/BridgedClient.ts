@@ -1,10 +1,10 @@
-import { GraphqlClient, GraphqlQuery, GraphqlQueryWatch, OperationParameters, GraphqlSubscription, GraphqlActiveSubscription, GraphqlMutation, GraphqlFragment, ApiError } from 'openland-graphql/GraphqlClient';
+import { GraphqlClient, GraphqlQuery, GraphqlQueryWatch, OperationParameters, GraphqlSubscription, GraphqlActiveSubscription, GraphqlMutation, GraphqlFragment, ApiError, GraphqlClientStatus } from 'openland-graphql/GraphqlClient';
 import { Queue } from 'openland-graphql/utils/Queue';
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import { createLogger } from 'mental-log';
-import { getQueryName } from 'openland-graphql/utils/getQueryName';
 import { delay } from 'openland-y-utils/timer';
+import { Watcher } from 'openland-y-utils/Watcher';
 
 class BridgedQueryWatch {
 
@@ -21,6 +21,19 @@ export abstract class BridgedClient implements GraphqlClient {
     private handlersMap = new Map<string, string>();
     private handlers = new Map<string, (data?: any, error?: Error) => void>();
     private queryWatches = new Map<string, BridgedQueryWatch>();
+
+    // Status
+    protected readonly statusWatcher: Watcher<GraphqlClientStatus> = new Watcher();
+    get status(): GraphqlClientStatus {
+        return this.statusWatcher.getState()!!;
+    }
+    watchStatus(handler: (status: GraphqlClientStatus) => void) {
+        return this.statusWatcher.watch(handler);
+    }
+
+    constructor() {
+        this.statusWatcher.setState({ status: 'connecting' });
+    }
 
     //
     // Query

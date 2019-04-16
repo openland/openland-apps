@@ -3,7 +3,6 @@ import { withApp } from '../../components/withApp';
 import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image, TouchableHighlight } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import Picker from 'react-native-image-picker';
 import { MessageInputBar } from './components/MessageInputBar';
 import { ConversationView } from './components/ConversationView';
 import { PageProps } from '../../components/PageProps';
@@ -14,22 +13,17 @@ import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members_user, UserShort, SharedRoomKind } from 'openland-api/Types';
-import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ConversationTheme, ConversationThemeResolver, DefaultConversationTheme } from './themes/ConversationThemeResolver';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
-import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { formatMessage } from 'openland-engines/messenger/DialogListEngine';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
@@ -37,8 +31,8 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { ChannelMuteButton } from './components/ChannelMuteButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showCallModal } from './Call';
-import { NON_PRODUCTION } from '../Init';
 import { EmojiRender } from './components/EmojiRender';
+import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -157,104 +151,9 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleAttach = () => {
-        let builder = new ActionSheetBuilder();
-        builder.action(Platform.OS === 'android' ? 'Take Photo' : 'Camera', async () => {
-            if (await checkPermissions('camera')) {
-                Picker.launchCamera({ title: 'Camera', mediaType: 'mixed' }, (response) => {
-                    if (response.error) {
-                        handlePermissionDismiss('camera');
-                        return;
-                    }
-
-                    if (response.didCancel) {
-                        return;
-                    }
-
-                    let isPhoto = checkFileIsPhoto(response.uri);
-
-                    UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.path ? 'file://' + response.path : response.uri, response.fileSize);
-                });
-            }
-        }, false, Platform.OS === 'android' ? require('assets/ic-camera-24.png') : undefined);
-        if (Platform.OS === 'android') {
-            builder.action('Record Video', async () => {
-                if (await checkPermissions('camera')) {
-                    Picker.launchCamera({
-                        mediaType: 'video',
-                    }, (response) => {
-                        if (response.error) {
-                            handlePermissionDismiss('camera');
-                            return;
-                        }
-
-                        if (response.didCancel) {
-                            return;
-                        }
-                        UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
-                    });
-                }
-            }, false, Platform.OS === 'android' ? require('assets/ic-video-24.png') : undefined);
-        }
-        builder.action(Platform.select({ ios: 'Photo & Video Library', android: 'Photo Gallery' }), async () => {
-            if (await checkPermissions('gallery')) {
-                Picker.launchImageLibrary(
-                    {
-                        maxWidth: 1024,
-                        maxHeight: 1024,
-                        quality: 1,
-                        videoQuality: Platform.OS === 'ios' ? 'medium' : undefined,
-                        mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed'
-                    },
-                    (response) => {
-                        if (response.error) {
-                            handlePermissionDismiss('gallery');
-                            return;
-                        }
-
-                        if (response.didCancel) {
-                            return;
-                        }
-
-                        let isPhoto = checkFileIsPhoto(response.uri);
-
-                        UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
-                    }
-                );
-            }
-        }, false, Platform.OS === 'android' ? require('assets/ic-gallery-24.png') : undefined);
-        if (Platform.OS === 'android') {
-            builder.action('Video Gallery', async () => {
-                if (await checkPermissions('gallery')) {
-                    Picker.launchImageLibrary({
-                        mediaType: 'video',
-                    }, (response) => {
-                        if (response.error) {
-                            handlePermissionDismiss('gallery');
-                            return;
-                        }
-
-                        if (response.didCancel) {
-                            return;
-                        }
-                        UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
-                    });
-                }
-            }, false, Platform.OS === 'android' ? require('assets/ic-gallery-video-24.png') : undefined);
-        }
-
-        builder.action('Document', () => {
-            DocumentPicker.show({ filetype: [DocumentPickerUtil.allFiles()] },
-                (error, res) => {
-                    if (!res) {
-                        return;
-                    }
-
-                    UploadManagerInstance.registerUpload(this.props.chat.id, res.fileName, res.uri, res.fileSize);
-                }
-            );
-        }, false, Platform.OS === 'android' ? require('assets/ic-document-24.png') : undefined);
-
-        builder.show();
+        showAttachMenu((type, name, path, size) => {
+            UploadManagerInstance.registerUpload(this.props.chat.id, name, path, size);
+        });
     }
 
     handleMentionPress = (word: string | undefined, user: RoomMembers_members_user) => {

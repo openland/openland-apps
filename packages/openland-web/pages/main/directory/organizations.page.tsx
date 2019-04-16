@@ -10,6 +10,7 @@ import { XRouter } from 'openland-x-routing/XRouter';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
 import { withApp } from 'openland-web/components/withApp';
+
 interface OrganizationCardsProps {
     onPageChange?: () => void;
     variables: { query?: string; prefix?: string; sort?: string };
@@ -97,18 +98,19 @@ const SearchOrganizationProfileComponent = XMemo(({ id }: { id: string }) => (
 ));
 
 export default withApp('Organizations', 'viewer', () => {
-    const { path } = React.useContext(XRouterContext) as XRouter;
-
+    const router = React.useContext(XRouterContext) as XRouter;
+    const page = router.routeQuery.page;
     let CardsComponent = ComponentWithSort({ Component: OrganizationCards, queryToPrefix: true });
     return (
         <DirectoryNavigation
-            id={getOrganizationProfile(path)}
+            id={getOrganizationProfile(router.path)}
             title={'Organizations'}
             ProfileComponent={SearchOrganizationProfileComponent}
             CardsComponent={CardsComponent}
             searchPlaceholder={'Search organizations'}
             noQueryText={'All organizations'}
             hasQueryText={'Organizations'}
+            page={page}
         />
     );
 });

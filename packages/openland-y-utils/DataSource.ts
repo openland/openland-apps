@@ -2,7 +2,9 @@ import { WatchSubscription } from './Watcher';
 import { Queue } from 'openland-graphql/utils/Queue';
 
 async function throttle() {
-    return new Promise((r) => { setTimeout(r, 10); });
+    return new Promise(r => {
+        setTimeout(r, 10);
+    });
 }
 
 async function throttledMap<T, V>(src: T[], map: (item: T) => V): Promise<V[]> {
@@ -277,7 +279,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             },
             onDataSourceCompleted() {
                 res.complete();
-            }
+            },
         });
 
         return res;
@@ -346,14 +348,13 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                 schedule(async () => {
                     res.complete();
                 });
-            }
+            },
         });
 
         return res;
     }
 
     batched(): DataSource<T> {
-
         let res = new DataSource<T>(() => {
             this.needMore();
         });
@@ -363,10 +364,10 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         }
 
         let batch: {
-            op: 'added' | 'updated' | 'removed' | 'moved'
-            item: T,
-            index: number,
-            toIndex?: number,
+            op: 'added' | 'updated' | 'removed' | 'moved';
+            item: T;
+            index: number;
+            toIndex?: number;
         }[] = [];
 
         let batchScheduled = false;
@@ -387,10 +388,10 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             // Collect values
             for (let b of latestBatch) {
                 if (b.op === 'added') {
-                    values[b.item!.key] = b.item!
-                    added[b.item!.key] = true
-                    removed[b.item!.key] = false
-                    updated[b.item!.key] = false
+                    values[b.item!.key] = b.item!;
+                    added[b.item!.key] = true;
+                    removed[b.item!.key] = false;
+                    updated[b.item!.key] = false;
                 } else if (b.op === 'removed') {
                     if (added[b.item!.key]) {
                         added[b.item!.key] = false;
@@ -399,11 +400,11 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                         added[b.item!.key] = false;
                     }
                 } else if (b.op === 'updated') {
-                    values[b.item!.key] = b.item!
+                    values[b.item!.key] = b.item!;
                     if (!added[b.item!.key]) {
-                        added[b.item!.key] = false
-                        updated[b.item!.key] = true
-                        removed[b.item!.key] = false
+                        added[b.item!.key] = false;
+                        updated[b.item!.key] = true;
+                        removed[b.item!.key] = false;
                     }
                 }
             }
@@ -428,7 +429,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                     }
                 }
             }
-        }
+        };
 
         function scheduleFlush() {
             if (!batchScheduled) {
@@ -470,7 +471,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                     doDlush();
                 }
                 res.complete();
-            }
+            },
         });
 
         return res;

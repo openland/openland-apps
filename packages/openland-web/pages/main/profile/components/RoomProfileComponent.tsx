@@ -18,6 +18,7 @@ import { XOverflow } from 'openland-web/components/XOverflow';
 import { LeaveChatComponent } from 'openland-web/fragments/MessengerRootComponent';
 import { RemoveMemberModal } from 'openland-web/fragments/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
+import { XListView } from 'openland-web/components/XListView';
 import {
     HeaderAvatar,
     HeaderTitle,
@@ -57,6 +58,7 @@ import Glamorous from 'glamorous';
 import { canUseDOM } from '../../../../../openland-y-utils/canUseDOM';
 import { XIcon } from '../../../../../openland-x/XIcon';
 import { TextProfiles } from '../../../../../openland-text/TextProfiles';
+import { useInfiniteScroll } from 'openland-web/hooks/useInfiniteScroll';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -318,6 +320,7 @@ const RequestCard = ({
 };
 
 interface MembersProviderProps {
+    membersCount: number | null;
     requests?: RoomFull_SharedRoom_requests[] | null;
     chatId: string;
     isOwner: boolean;
@@ -326,7 +329,12 @@ interface MembersProviderProps {
     isChannel: boolean;
 }
 
+const convertToDataSource = (data: any) => {
+    return data.members.map((member: any) => ({ ...member, key: member.user.id, canKick: true }));
+};
+
 const MembersProvider = ({
+    membersCount,
     router,
     requests,
     isOwner,
@@ -336,22 +344,80 @@ const MembersProvider = ({
     isChannel,
 }: MembersProviderProps & XWithRouter) => {
     const client = useClient();
-    const data = client.useRoomMembers({
-        roomId: chatId,
+    const pageSize = 20;
+
+    const { dataSource, renderLoading } = useInfiniteScroll({
+        convertToDataSource,
+        initialLoadFunction: () => {
+            return client.useRoomMembersPaginated(
+                {
+                    roomId: chatId,
+                    first: pageSize,
+                },
+                {
+                    fetchPolicy: 'network-only',
+                },
+            );
+        },
+        queryOnNeedMore: async ({ getLastItem }: { getLastItem: () => any }) => {
+            const lastItem = getLastItem();
+            return await client.queryRoomMembersPaginated({
+                roomId: chatId,
+                first: pageSize,
+                after: lastItem.user.id,
+            });
+        },
     });
 
-    const members = data.members;
+    const renderItem = React.useMemo(() => {
+        return (member: any) => {
+            return <MemberCard key={member.id} member={member} />;
+        };
+    }, []);
 
-    if (members && members.length > 0) {
+    if (membersCount && membersCount > 0) {
         let tab: tabsT =
             router.query.requests === '1' && (requests || []).length > 0
                 ? tabs.requests
                 : tabs.members;
+
+        let sectionElems;
+        if (tab === tabs.members) {
+            sectionElems = (
+                <>
+                    <AddMembersModal
+                        id={chatId}
+                        isRoom={true}
+                        isChannel={isChannel}
+                        isOrganization={false}
+                    />
+                    <XCreateCard
+                        text="Add members"
+                        query={{ field: 'inviteMembers', value: 'true' }}
+                    />
+                    <XView flexBasis={0} flexGrow={1} flexShrink={1} overflow="hidden">
+                        <XListView
+                            dataSource={dataSource}
+                            itemHeight={72}
+                            loadingHeight={60}
+                            renderItem={renderItem}
+                            renderLoading={renderLoading}
+                        />
+                    </XView>
+                </>
+            );
+        } else {
+            sectionElems =
+                isOwner &&
+                requests &&
+                requests.map((req, i) => <RequestCard key={i} member={req} roomId={chatId} />);
+        }
+
         return (
-            <Section separator={0}>
+            <Section separator={0} flexGrow={1}>
                 {isOwner && (requests || []).length > 0 && (
                     <XSwitcher style="button">
-                        <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
+                        <XSwitcher.Item query={{ field: 'requests' }} counter={membersCount}>
                             Members
                         </XSwitcher.Item>
                         <XSwitcher.Item
@@ -363,36 +429,19 @@ const MembersProvider = ({
                     </XSwitcher>
                 )}
                 {((requests || []).length === 0 || !isOwner) && (
-                    <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
+                    <XSubHeader title={'Members'} counter={membersCount} paddingBottom={0} />
                 )}
-
-                <SectionContent>
-                    {tab === tabs.members && (
-                        <>
-                            <AddMembersModal
-                                id={chatId}
-                                isRoom={true}
-                                isChannel={isChannel}
-                                isOrganization={false}
-                            />
-                            <XCreateCard
-                                text="Add members"
-                                query={{ field: 'inviteMembers', value: 'true' }}
-                            />
-                            {members.map((member, i) => {
-                                return <MemberCard key={i} member={member} />;
-                            })}
-                        </>
-                    )}
-
-                    {isOwner &&
-                        tab === tabs.requests &&
-                        requests &&
-                        requests.map((req, i) => (
-                            <RequestCard key={i} member={req} roomId={chatId} />
-                        ))}
+                <SectionContent
+                    noPaddingBottom
+                    withFlex
+                    flexDirection="column"
+                    flexGrow={1}
+                    flexShrink={1}
+                >
+                    {sectionElems}
                 </SectionContent>
-                <RemoveMemberModal members={members} roomId={chatId} roomTitle={chatTitle} />
+
+                {/* <RemoveMemberModal members={members} roomId={chatId} roomTitle={chatTitle} /> */}
             </Section>
         );
     } else {
@@ -447,6 +496,7 @@ const RoomGroupProfileInner = ({
     conversationId,
     router,
 }: RoomGroupProfileInnerProps) => {
+    const membersCount = chat.organization ? chat.organization.membersCount : chat.membersCount;
     return (
         <>
             <XDocumentHead title={chat.title} />
@@ -473,6 +523,7 @@ const RoomGroupProfileInner = ({
                     )}
                     <React.Suspense fallback={<XLoader loading={true} />}>
                         <MembersProvider
+                            membersCount={membersCount}
                             router={router}
                             requests={chat.requests}
                             chatId={conversationId}

@@ -52,7 +52,15 @@ export interface QueryWatchParameters {
     fetchPolicy?: 'cache-first' | 'network-only' | 'cache-and-network'
 }
 
+export interface GraphqlClientStatus {
+    status: 'connecting' | 'connected';
+}
+
 export interface GraphqlClient {
+
+    status: GraphqlClientStatus;
+    watchStatus(handler: (status: GraphqlClientStatus) => void): () => void
+
     query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): Promise<TQuery>;
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery>;
     mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation>;

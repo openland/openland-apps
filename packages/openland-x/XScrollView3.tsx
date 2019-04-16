@@ -109,7 +109,6 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
 
     render() {
         const { props } = this;
-        let { onScroll, children } = props;
 
         // scrollbarRadius = scrollbarRadius || 4;
         // scrollbarWidth = scrollbarWidth || 8;

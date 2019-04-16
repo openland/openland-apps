@@ -652,6 +652,20 @@ export const RoomMembersQuery = gql`
     ${UserShort}
 `;
 
+export const RoomMembersPaginatedQuery = gql`
+    query RoomMembersPaginated($roomId: ID!, $first: Int, $after: ID) {
+        members: roomMembers(roomId: $roomId, first: $first, after: $after) {
+            user {
+                ...UserShort
+            }
+            role
+            membership
+            canKick
+        }
+    }
+    ${UserShort}
+`;
+
 export const MentionsMembersQuery = gql`
     query MentionsMembers($roomId: ID!) {
         members: roomMembers(roomId: $roomId) {

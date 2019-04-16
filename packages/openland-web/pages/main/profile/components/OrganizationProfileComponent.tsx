@@ -171,31 +171,27 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
             flat={true}
             content={
                 <>
-                    {isMeOwner &&
-                        !isYou &&
-                        role === 'ADMIN' && (
-                            <XMenuItem
-                                style="danger"
-                                query={{
-                                    field: 'changeRole',
-                                    value: user.id,
-                                }}
-                            >
-                                {TextProfiles.Organization.members.revokeAdminStatus}
-                            </XMenuItem>
-                        )}
-                    {isMeOwner &&
-                        !isYou &&
-                        role !== 'ADMIN' && (
-                            <XMenuItem
-                                query={{
-                                    field: 'changeRole',
-                                    value: user.id,
-                                }}
-                            >
-                                {TextProfiles.Organization.members.makeAdmin}
-                            </XMenuItem>
-                        )}
+                    {isMeOwner && !isYou && role === 'ADMIN' && (
+                        <XMenuItem
+                            style="danger"
+                            query={{
+                                field: 'changeRole',
+                                value: user.id,
+                            }}
+                        >
+                            {TextProfiles.Organization.members.revokeAdminStatus}
+                        </XMenuItem>
+                    )}
+                    {isMeOwner && !isYou && role !== 'ADMIN' && (
+                        <XMenuItem
+                            query={{
+                                field: 'changeRole',
+                                value: user.id,
+                            }}
+                        >
+                            {TextProfiles.Organization.members.makeAdmin}
+                        </XMenuItem>
+                    )}
                     <XWithRole role={['super-admin']}>
                         <XMenuItem
                             query={{
@@ -206,45 +202,39 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
                             {TextProfiles.Organization.members.edit}
                         </XMenuItem>
                     </XWithRole>
-                    {isMeAdmin &&
-                        !isYou &&
-                        role !== 'OWNER' && (
-                            <XMenuItem
-                                style="danger"
-                                query={{
-                                    field: 'remove',
-                                    value: user.id,
-                                }}
-                            >
-                                {TextProfiles.Organization.members.removeFromOrganization}
-                            </XMenuItem>
-                        )}
-                    {role !== 'ADMIN' &&
-                        role !== 'OWNER' &&
-                        isYou && (
-                            <XMenuItem
-                                style="danger"
-                                query={{
-                                    field: 'remove',
-                                    value: user.id,
-                                }}
-                            >
-                                {TextProfiles.Organization.members.leaveFromOrganization}
-                            </XMenuItem>
-                        )}
-                    {isMeAdmin &&
-                        role !== 'OWNER' &&
-                        isYou && (
-                            <XMenuItem
-                                style="danger"
-                                query={{
-                                    field: 'remove',
-                                    value: user.id,
-                                }}
-                            >
-                                {TextProfiles.Organization.members.leaveFromOrganization}
-                            </XMenuItem>
-                        )}
+                    {isMeAdmin && !isYou && role !== 'OWNER' && (
+                        <XMenuItem
+                            style="danger"
+                            query={{
+                                field: 'remove',
+                                value: user.id,
+                            }}
+                        >
+                            {TextProfiles.Organization.members.removeFromOrganization}
+                        </XMenuItem>
+                    )}
+                    {role !== 'ADMIN' && role !== 'OWNER' && isYou && (
+                        <XMenuItem
+                            style="danger"
+                            query={{
+                                field: 'remove',
+                                value: user.id,
+                            }}
+                        >
+                            {TextProfiles.Organization.members.leaveFromOrganization}
+                        </XMenuItem>
+                    )}
+                    {isMeAdmin && role !== 'OWNER' && isYou && (
+                        <XMenuItem
+                            style="danger"
+                            query={{
+                                field: 'remove',
+                                value: user.id,
+                            }}
+                        >
+                            {TextProfiles.Organization.members.leaveFromOrganization}
+                        </XMenuItem>
+                    )}
                 </>
             }
         />
@@ -501,14 +491,18 @@ export const Section = Glamorous(XVertical)({
     flexShrink: 0,
 });
 
-export const SectionContent = Glamorous(XContentWrapper)({
-    paddingTop: 7,
-    paddingBottom: 24,
-    fontSize: 14,
-    lineHeight: '22px',
-    letterSpacing: 0,
-    color: '#000000',
-});
+export const SectionContent = Glamorous(XContentWrapper)(
+    ({ noPaddingBottom }: { noPaddingBottom?: boolean }) => {
+        return {
+            paddingTop: 7,
+            paddingBottom: noPaddingBottom ? 0 : 24,
+            fontSize: 14,
+            lineHeight: '22px',
+            letterSpacing: 0,
+            color: '#000000',
+        };
+    },
+);
 
 export let extractHostname = (url: string) => {
     var hostname = url;
@@ -651,28 +645,27 @@ const About = (props: { organization: Organization_organization }) => {
                     <SectionContent>{organization.about}</SectionContent>
                 </Section>
             )}
-            {!organization.about &&
-                organization.isMine && (
-                    <XWithRole role="admin" orgPermission={organization.id}>
-                        <Section separator={0}>
-                            <XSubHeader
-                                title={TextProfiles.Organization.aboutTitle}
-                                paddingBottom={0}
-                                marginBottom={-5}
+            {!organization.about && organization.isMine && (
+                <XWithRole role="admin" orgPermission={organization.id}>
+                    <Section separator={0}>
+                        <XSubHeader
+                            title={TextProfiles.Organization.aboutTitle}
+                            paddingBottom={0}
+                            marginBottom={-5}
+                        />
+                        <SectionContent style={{ paddingBottom: 16 }}>
+                            <AboutPlaceholder
+                                target={
+                                    <EditButton
+                                        text={TextProfiles.Organization.addAbout}
+                                        big={true}
+                                    />
+                                }
                             />
-                            <SectionContent style={{ paddingBottom: 16 }}>
-                                <AboutPlaceholder
-                                    target={
-                                        <EditButton
-                                            text={TextProfiles.Organization.addAbout}
-                                            big={true}
-                                        />
-                                    }
-                                />
-                            </SectionContent>
-                        </Section>
-                    </XWithRole>
-                )}
+                        </SectionContent>
+                    </Section>
+                </XWithRole>
+            )}
         </>
     );
 };
@@ -740,39 +733,35 @@ const Members = ({ organization, router }: MembersProps) => {
 
         return (
             <Section separator={0}>
-                {organization.isMine &&
-                    requestMembers.length > 0 && (
-                        <>
-                            <XSwitcher style="button">
-                                <XSwitcher.Item
-                                    query={{ field: 'tab' }}
-                                    counter={joinedMembers.length}
-                                >
-                                    {TextProfiles.Organization.membersTitle}
-                                </XSwitcher.Item>
-                                <XSwitcher.Item
-                                    query={{ field: 'tab', value: 'requests' }}
-                                    counter={requestMembers.length}
-                                    highlight={true}
-                                >
-                                    {TextProfiles.Organization.requestsTitle}
-                                </XSwitcher.Item>
-                            </XSwitcher>
+                {organization.isMine && requestMembers.length > 0 && (
+                    <>
+                        <XSwitcher style="button">
+                            <XSwitcher.Item query={{ field: 'tab' }} counter={joinedMembers.length}>
+                                {TextProfiles.Organization.membersTitle}
+                            </XSwitcher.Item>
+                            <XSwitcher.Item
+                                query={{ field: 'tab', value: 'requests' }}
+                                counter={requestMembers.length}
+                                highlight={true}
+                            >
+                                {TextProfiles.Organization.requestsTitle}
+                            </XSwitcher.Item>
+                        </XSwitcher>
 
-                            {tab === tabs.members && joinedMembersBox(false)}
-                            {tab === tabs.requests && (
-                                <SectionContent>
-                                    {requestMembers.map((member, i) => (
-                                        <MemberRequestCard
-                                            key={i}
-                                            member={member}
-                                            organization={organization}
-                                        />
-                                    ))}
-                                </SectionContent>
-                            )}
-                        </>
-                    )}
+                        {tab === tabs.members && joinedMembersBox(false)}
+                        {tab === tabs.requests && (
+                            <SectionContent>
+                                {requestMembers.map((member, i) => (
+                                    <MemberRequestCard
+                                        key={i}
+                                        member={member}
+                                        organization={organization}
+                                    />
+                                ))}
+                            </SectionContent>
+                        )}
+                    </>
+                )}
 
                 {(!organization.isMine || (organization.isMine && requestMembers.length <= 0)) &&
                     joinedMembersBox(true)}

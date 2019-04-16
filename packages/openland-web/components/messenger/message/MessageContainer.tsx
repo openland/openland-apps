@@ -26,7 +26,12 @@ export interface DesktopMessageContainerProps {
     children?: any;
 }
 
-const CompactPreambulaContainer = ({ children }: { children: any }) => {
+interface PreambulaContainerProps {
+    children: any;
+    onClick?: () => void;
+}
+
+const CompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
     return (
         <XView
             alignSelf="flex-start"
@@ -46,7 +51,7 @@ const CompactPreambulaContainer = ({ children }: { children: any }) => {
     );
 };
 
-const NotCompactPreambulaContainer = ({ children }: { children: any }) => {
+const NotCompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
     return (
         <XView
             alignSelf="flex-start"
@@ -62,15 +67,21 @@ const NotCompactPreambulaContainer = ({ children }: { children: any }) => {
     );
 };
 
+interface MessageContainerWrapperProps {
+    children: any;
+    onMouseEnter: (event: React.MouseEvent<any>) => void;
+    onMouseLeave: (event: React.MouseEvent<any>) => void;
+    onClick?: (e: any) => void;
+    cursorPointer: boolean;
+}
+
 const CompactMessageContainerWrapper = ({
     children,
     onMouseEnter,
     onMouseLeave,
-}: {
-    children: any;
-    onMouseEnter: (event: React.MouseEvent<any>) => void;
-    onMouseLeave: (event: React.MouseEvent<any>) => void;
-}) => {
+    onClick,
+    cursorPointer,
+}: MessageContainerWrapperProps) => {
     return (
         <XView
             alignItems="center"
@@ -82,6 +93,8 @@ const CompactMessageContainerWrapper = ({
             paddingLeft={18}
             paddingRight={20}
             paddingBottom={3}
+            onClick={onClick}
+            cursor={cursorPointer ? 'pointer' : undefined}
         >
             {children}
         </XView>
@@ -92,11 +105,9 @@ const NotCompactMessageContainerWrapper = ({
     children,
     onMouseEnter,
     onMouseLeave,
-}: {
-    children: any;
-    onMouseEnter: (event: React.MouseEvent<any>) => void;
-    onMouseLeave: (event: React.MouseEvent<any>) => void;
-}) => {
+    onClick,
+    cursorPointer,
+}: MessageContainerWrapperProps) => {
     return (
         <XView
             alignItems="center"
@@ -108,6 +119,8 @@ const NotCompactMessageContainerWrapper = ({
             paddingLeft={18}
             paddingRight={20}
             paddingBottom={3}
+            onClick={onClick}
+            cursor={cursorPointer ? 'pointer' : undefined}
         >
             {children}
         </XView>
@@ -146,7 +159,14 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     let selector = (
         <XView marginRight={20} width={19} height={22} alignSelf="center" padding={2}>
             {(hover || props.selecting) && (
-                <MessageSelector selected={props.selected} onClick={props.onSelected} />
+                <MessageSelector
+                    selected={props.selected}
+                    onClick={() => {
+                        if (!props.selecting) {
+                            props.onSelected();
+                        }
+                    }}
+                />
             )}
         </XView>
     );
@@ -169,57 +189,59 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                         <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
                     </UserPopper>
                 ) : (
-                        <XView>{hover && <XDate value={date.toString()} format="time" />}</XView>
-                    )}
+                    <XView>{hover && <XDate value={date.toString()} format="time" />}</XView>
+                )}
             </PreambulaContainer>
         ),
         [props.sender.isYou, props.sender, sender.id, sender.name, sender.photo, date, hover],
     );
 
-    const notCompactHeader = !props.compact && React.useMemo(
-        () => (
-            <XView flexDirection="row" marginBottom={4}>
-                <XView flexDirection="row">
-                    <XView
-                        flexDirection="row"
-                        fontSize={14}
-                        fontWeight="600"
-                        color="rgba(0, 0, 0, 0.8)"
-                        onMouseEnter={onAvatarOrUserNameMouseEnter}
-                        onMouseLeave={onAvatarOrUserNameMouseLeave}
-                    >
-                        {props.senderNameEmojify}
-                    </XView>
-                    {props.sender.primaryOrganization && (
+    const notCompactHeader =
+        !props.compact &&
+        React.useMemo(
+            () => (
+                <XView flexDirection="row" marginBottom={4}>
+                    <XView flexDirection="row">
                         <XView
-                            as="a"
-                            fontSize={12}
+                            flexDirection="row"
+                            fontSize={14}
                             fontWeight="600"
-                            color="rgba(0, 0, 0, 0.4)"
-                            paddingLeft={8}
-                            alignSelf="flex-end"
-                            marginBottom={-1}
-                            path={`/mail/o/${props.sender.primaryOrganization.id}`}
-                            hoverTextDecoration="none"
+                            color="rgba(0, 0, 0, 0.8)"
+                            onMouseEnter={onAvatarOrUserNameMouseEnter}
+                            onMouseLeave={onAvatarOrUserNameMouseLeave}
                         >
-                            {props.sender.primaryOrganization.name}
+                            {props.senderNameEmojify}
                         </XView>
-                    )}
+                        {props.sender.primaryOrganization && (
+                            <XView
+                                as="a"
+                                fontSize={12}
+                                fontWeight="600"
+                                color="rgba(0, 0, 0, 0.4)"
+                                paddingLeft={8}
+                                alignSelf="flex-end"
+                                marginBottom={-1}
+                                path={`/mail/o/${props.sender.primaryOrganization.id}`}
+                                hoverTextDecoration="none"
+                            >
+                                {props.sender.primaryOrganization.name}
+                            </XView>
+                        )}
+                    </XView>
+                    <XView
+                        paddingLeft={8}
+                        fontSize={12}
+                        color="rgba(0, 0, 0, 0.4)"
+                        fontWeight="600"
+                        alignSelf="flex-end"
+                        marginBottom={-1}
+                    >
+                        <XDate value={props.date.toString()} format="time" />
+                    </XView>
                 </XView>
-                <XView
-                    paddingLeft={8}
-                    fontSize={12}
-                    color="rgba(0, 0, 0, 0.4)"
-                    fontWeight="600"
-                    alignSelf="flex-end"
-                    marginBottom={-1}
-                >
-                    <XDate value={props.date.toString()} format="time" />
-                </XView>
-            </XView>
-        ),
-        [props.date, props.sender, props.sender.primaryOrganization],
-    );
+            ),
+            [props.date, props.sender, props.sender.primaryOrganization],
+        );
     // Content
     const content = (
         <XView
@@ -229,15 +251,21 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
             flexBasis={0}
             minWidth={0}
             alignItems="stretch"
+            backgroundColor={props.selected ? '#f7f7f7' : undefined}
+            marginVertical={-2}
+            marginHorizontal={-8}
+            paddingVertical={2}
+            paddingHorizontal={8}
+            borderRadius={6}
         >
             {props.compact ? (
                 props.children
             ) : (
-                    <>
-                        {notCompactHeader}
-                        <XView flexDirection="column">{props.children}</XView>
-                    </>
-                )}
+                <>
+                    {notCompactHeader}
+                    <XView flexDirection="column">{props.children}</XView>
+                </>
+            )}
         </XView>
     );
 
@@ -253,7 +281,18 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
         ? CompactMessageContainerWrapper
         : NotCompactMessageContainerWrapper;
     return (
-        <MessageContainerWrapper onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <MessageContainerWrapper
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            cursorPointer={props.selecting}
+            onClick={(e: any) => {
+                if (props.selecting) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    props.onSelected();
+                }
+            }}
+        >
             {selector}
             {preambula}
             {content}

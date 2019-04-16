@@ -47,6 +47,7 @@ export const RoomsCards = (props: RoomsCardsProps) => {
 
 export default withApp('Explore', 'viewer', () => {
     let CardsComponent = ComponentWithSort({ Component: RoomsCards, queryToPrefix: true });
+
     return (
         <DirectoryNavigation
             title={'Explore'}

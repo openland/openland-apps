@@ -25,12 +25,12 @@ class RNAsyncView: RCTView {
   
   private var node = RNAsyncViewNode()
   
-  override init(frame: CGRect) {
+  @objc override init(frame: CGRect) {
     super.init(frame: frame);
     self.addSubview(node.view);
   }
   
-  required init?(coder aDecoder: NSCoder) {
+  @objc required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented");
   }
   
@@ -38,14 +38,14 @@ class RNAsyncView: RCTView {
     self.node.setConfig(spec: config)
   }
   
-  public func setConfigKey(_ configKey: String) {
+  @objc public func setConfigKey(_ configKey: String) {
     RNAsyncConfigManager.views.set(key: configKey, value: self)
     if let ex = RNAsyncConfigManager.configs[configKey] {
       self.setConfig(config: ex)
     }
   }
   
-  override func reactSetFrame(_ frame: CGRect) {
+  @objc override func reactSetFrame(_ frame: CGRect) {
     super.reactSetFrame(frame);
     node.setFrame(frame: frame)
   }

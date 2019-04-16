@@ -60,6 +60,8 @@ export class WorkerApolloClient extends BridgedClient {
             } else {
                 this.operationFailed(msg.id, msg.data);
             }
+        } else if (msg.type === 'status') {
+            this.statusWatcher.setState({ status: msg.status as any });
         }
     }
 

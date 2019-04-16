@@ -471,6 +471,13 @@
       }
     },
     {
+      "signature": "ba5fb38925e80e7fc3403c701820a795671e35aca04d87ce8118c4aea166acf5",
+      "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomMembersPaginated($after:ID,$first:Int,$roomId:ID!){members:roomMembers(after:$after,first:$first,roomId:$roomId){__typename canKick membership role user{__typename...UserShort}}}",
+      "metadata": {
+        "engineSignature": "fragment OrganizationShort on Organization{__typename alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomMembersPaginated($after:ID,$first:Int,$roomId:ID!){roomMembers(after:$after,first:$first,roomId:$roomId){__typename canKick membership role user{__typename...UserShort}}}"
+      }
+    },
+    {
       "signature": "d1220a3e62724b06206383d989c64dc4f103a5745e9c72082bfe0fe5b0f5dfa3",
       "document": "query MentionsMembers($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id name photo primaryOrganization{__typename id name}}}}",
       "metadata": {

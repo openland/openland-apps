@@ -68,13 +68,14 @@ const SearchUserProfileComponent = XMemo(({ id }: { id: string }) => (
 ));
 
 export default withApp('People', 'viewer', () => {
-    const { path } = React.useContext(XRouterContext) as XRouter;
+    const router = React.useContext(XRouterContext) as XRouter;
+    const page = router.routeQuery.page;
 
     let CardsComponent = ComponentWithSort({ Component: PeopleCards });
 
     return (
         <DirectoryNavigation
-            id={getPeopleProfile(path)}
+            id={getPeopleProfile(router.path)}
             title={'People'}
             ProfileComponent={SearchUserProfileComponent}
             CardsComponent={CardsComponent}
@@ -82,6 +83,7 @@ export default withApp('People', 'viewer', () => {
             noQueryText={'All people'}
             hasQueryText={'People'}
             withoutFeatured
+            page={page}
         />
     );
 });

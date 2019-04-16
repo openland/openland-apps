@@ -1,6 +1,7 @@
 import { GraphqlClient, GraphqlQueryWatch, GraphqlActiveSubscription, ApiError } from "openland-graphql/GraphqlClient";
 import { WorkerInterface } from './WorkerInterface';
 import { WorkerRequest, WorkerResponse } from './api/WorkerApi';
+import { randomKey } from 'openland-graphql/utils/randomKey';
 
 export class WorkerApolloHost {
     private worker: WorkerInterface;
@@ -11,6 +12,9 @@ export class WorkerApolloHost {
     constructor(client: GraphqlClient, worker: WorkerInterface) {
         this.worker = worker;
         this.client = client;
+        this.client.watchStatus((status) => {
+            this.postMessage({ id: randomKey(), type: 'status', status: status.status });
+        })
         this.worker.setHandler((msg) => {
             this.handleMessage(msg);
         });
