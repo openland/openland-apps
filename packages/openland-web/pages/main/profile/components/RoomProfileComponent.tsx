@@ -320,7 +320,7 @@ const RequestCard = ({
 };
 
 interface MembersProviderProps {
-    membersCount: number;
+    membersCount: number | null;
     requests?: RoomFull_SharedRoom_requests[] | null;
     chatId: string;
     isOwner: boolean;
@@ -369,15 +369,13 @@ const MembersProvider = ({
         },
     });
 
-    const members: any = [1];
-
     const renderItem = React.useMemo(() => {
         return (member: any) => {
             return <MemberCard key={member.id} member={member} />;
         };
     }, []);
 
-    if (members && members.length > 0) {
+    if (membersCount && membersCount > 0) {
         let tab: tabsT =
             router.query.requests === '1' && (requests || []).length > 0
                 ? tabs.requests
@@ -498,6 +496,7 @@ const RoomGroupProfileInner = ({
     conversationId,
     router,
 }: RoomGroupProfileInnerProps) => {
+    const membersCount = chat.organization ? chat.organization.membersCount : chat.membersCount;
     return (
         <>
             <XDocumentHead title={chat.title} />
@@ -524,7 +523,7 @@ const RoomGroupProfileInner = ({
                     )}
                     <React.Suspense fallback={<XLoader loading={true} />}>
                         <MembersProvider
-                            membersCount={chat.organization!!.membersCount}
+                            membersCount={membersCount}
                             router={router}
                             requests={chat.requests}
                             chatId={conversationId}

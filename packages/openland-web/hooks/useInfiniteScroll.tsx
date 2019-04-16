@@ -39,8 +39,10 @@ export function useInfiniteScroll({
     React.useEffect(() => {
         (async () => {
             const loadedData = await queryOnNeedMore({ currentPage, getLastItem });
+            const converted = convertToDataSource(loadedData);
+            const isCompleted = converted.length === 0;
 
-            dataSource.loadedMore(convertToDataSource(loadedData), false);
+            dataSource.loadedMore(convertToDataSource(loadedData), isCompleted);
         })();
     }, [currentPage]);
 
