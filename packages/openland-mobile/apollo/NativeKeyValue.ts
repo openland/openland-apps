@@ -41,7 +41,6 @@ export class NativeKeyValue implements KeyValueStore {
                     let res: { key: string, value: string | null }[] = [];
                     let d = await this.db.executeSql('SELECT key, value FROM records WHERE key in (' + keys.map(() => '?').join() + ');', keys);
                     outer: for (let k of keys) {
-                        console.log(k);
                         for (let j = 0; j < d.length; j++) {
                             let dr = d[j];
                             for (let i = 0; i < dr.rows.length; i++) {
