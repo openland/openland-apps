@@ -29,9 +29,7 @@ export default withApp(
         return (
             <DirectoryNavigation title={'Groups'}>
                 {tab === tabs.invite && <MessengerFragment id={conversationId} isActive={true} />}
-                {tab === tabs.profile && (
-                    <RoomProfile conversationId={conversationId} onDirectory={true} />
-                )}
+                {tab === tabs.profile && <RoomProfile conversationId={conversationId} />}
                 {tab === tabs.rooms && <RoomsExploreComponent />}
             </DirectoryNavigation>
         );

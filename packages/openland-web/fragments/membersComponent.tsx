@@ -57,36 +57,38 @@ export const RemoveMemberModal = (props: { roomId: string }) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    let member = props.members.filter(
-        (m: any) => (m.user && m.user.id === router.query.remove) || '',
-    )[0];
+    return null;
 
-    if (!member) {
-        return null;
-    }
-    return (
-        <XModalForm
-            submitProps={{
-                text: 'Remove',
-                style: 'danger',
-            }}
-            title={'Remove ' + member.user.name + ' from ' + props.roomTitle}
-            targetQuery="remove"
-            defaultAction={async () => {
-                await client.mutateRoomKick({
-                    userId: member.user.id,
-                    roomId: props.roomId,
-                });
+    // let member = props.members.filter(
+    //     (m: any) => (m.user && m.user.id === router.query.remove) || '',
+    // )[0];
 
-                await client.refetchRoom({
-                    id: props.roomId,
-                });
-            }}
-        >
-            <XText>
-                Are you sure you want to remove {member.user.firstName}? They will no longer be able
-                to participate in the discussion.
-            </XText>
-        </XModalForm>
-    );
+    // if (!member) {
+    //     return null;
+    // }
+    // return (
+    //     <XModalForm
+    //         submitProps={{
+    //             text: 'Remove',
+    //             style: 'danger',
+    //         }}
+    //         title={'Remove ' + member.user.name + ' from ' + props.roomTitle}
+    //         targetQuery="remove"
+    //         defaultAction={async () => {
+    //             await client.mutateRoomKick({
+    //                 userId: member.user.id,
+    //                 roomId: props.roomId,
+    //             });
+
+    //             await client.refetchRoom({
+    //                 id: props.roomId,
+    //             });
+    //         }}
+    //     >
+    //         <XText>
+    //             Are you sure you want to remove {member.user.firstName}? They will no longer be able
+    //             to participate in the discussion.
+    //         </XText>
+    //     </XModalForm>
+    // );
 };
