@@ -330,7 +330,7 @@ interface MembersProviderProps {
 }
 
 const convertToDataSource = (data: any) => {
-    return data.members.map(({ user }: any) => ({ ...user, key: user.id }));
+    return data.members.map((member: any) => ({ ...member, key: member.user.id, canKick: true }));
 };
 
 const MembersProvider = ({
@@ -364,7 +364,7 @@ const MembersProvider = ({
             return await client.queryRoomMembersPaginated({
                 roomId: chatId,
                 first: pageSize,
-                after: lastItem.id,
+                after: lastItem.user.id,
             });
         },
     });
@@ -373,7 +373,7 @@ const MembersProvider = ({
 
     const renderItem = React.useMemo(() => {
         return (member: any) => {
-            return <MemberCard key={member.id} member={{ user: member }} />;
+            return <MemberCard key={member.id} member={member} />;
         };
     }, []);
 
