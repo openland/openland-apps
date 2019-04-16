@@ -447,8 +447,6 @@ const BackButton = () => (
 );
 
 const RoomGroupProfileInner = ({ chat, conversationId, router }: RoomGroupProfileInnerProps) => {
-    const membersCount = chat.organization ? chat.organization.membersCount : chat.membersCount;
-
     return (
         <XScrollView3 flexGrow={1} flexShrink={1}>
             <About chat={chat} />
@@ -470,7 +468,7 @@ const RoomGroupProfileInner = ({ chat, conversationId, router }: RoomGroupProfil
             )}
 
             <MembersProvider
-                membersCount={membersCount}
+                membersCount={chat.membersCount}
                 roomTitle={chat.title}
                 router={router}
                 requests={chat.requests}
