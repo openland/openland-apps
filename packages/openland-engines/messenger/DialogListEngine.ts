@@ -12,6 +12,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { RoomQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { createLogger } from 'mental-log';
+import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
 
 const log = createLogger('Engine-Dialogs');
 
@@ -128,44 +129,60 @@ export const extractDialog = (
 export class DialogListEngine {
     readonly engine: MessengerEngine;
     private dialogs: Dialogs_dialogs_items[] = [];
+    readonly _dataSourceStored: DataSourceStored<DialogDataSourceItem>;
     readonly dataSource: DataSource<DialogDataSourceItem>;
     // private dataSourceLogger: DataSourceLogger<DialogDataSourceItem>;
     private next?: string | null;
     private loading: boolean = true;
     private dialogListCallback: (convs: string[]) => void;
-    private userConversationMap = new Map<string, string>();
 
     constructor(engine: MessengerEngine, cb: (convs: string[]) => void) {
         this.engine = engine;
         this.dialogListCallback = cb;
 
-        engine.getOnlines().onSingleChangeChange((user, online) => {
-            let conversationId = this.userConversationMap.get(user);
-            if (!conversationId) {
-                return;
+        let provider: DataSourceStoredProvider<DialogDataSourceItem> = {
+            loadMore: async (cursor?: string) => {
+                let res = await this.engine.client.queryDialogs({ after: cursor });
+                return {
+                    items: res.dialogs.items.map((v) => extractDialog(v, engine.user.id)),
+                    cursor: res.dialogs.cursor ? res.dialogs.cursor : undefined,
+                    state: res.state.state!!
+                }
+            },
+            onStarted: (state: string) => {
+                engine.global.handleDialogsStarted(state);
             }
-            let res = this.dataSource.getItem(conversationId);
-            if (res && res.online !== online) {
-                this.dataSource.updateItem({
-                    ...res,
-                    online: online,
-                });
-            }
-        });
+        }
+        this._dataSourceStored = new DataSourceStored('dialogs', engine.options.store, 20, provider);
+        this.dataSource = this._dataSourceStored.dataSource;
 
-        engine.getTypings().subcribe((typing, users, conversationId) => {
-            let res = this.dataSource.getItem(conversationId);
-            if (res && res.typing !== typing) {
-                this.dataSource.updateItem({
-                    ...res,
-                    typing: typing && (res.kind === 'PRIVATE' ? 'typing...' : typing),
-                });
-            }
-        });
+        // engine.getOnlines().onSingleChangeChange((user, online) => {
+        //     let conversationId = this.userConversationMap.get(user);
+        //     if (!conversationId) {
+        //         return;
+        //     }
+        //     let res = this.dataSource.getItem(conversationId);
+        //     if (res && res.online !== online) {
+        //         this.dataSource.updateItem({
+        //             ...res,
+        //             online: online,
+        //         });
+        //     }
+        // });
 
-        this.dataSource = new DataSource<DialogDataSourceItem>(() => {
-            this.loadNext();
-        });
+        // engine.getTypings().subcribe((typing, users, conversationId) => {
+        //     let res = this.dataSource.getItem(conversationId);
+        //     if (res && res.typing !== typing) {
+        //         this.dataSource.updateItem({
+        //             ...res,
+        //             typing: typing && (res.kind === 'PRIVATE' ? 'typing...' : typing),
+        //         });
+        //     }
+        // });
+
+        // this.dataSource = new DataSource<DialogDataSourceItem>(() => {
+        //     this.loadNext();
+        // });
         // this.dataSourceLogger = new DataSourceLogger<DialogDataSourceItem>('[DIALOGS]', this.dataSource);
     }
 
@@ -173,254 +190,254 @@ export class DialogListEngine {
     // Update Handlers
     //
 
-    handleInitialDialogs = (dialogs: any[], next: string | null) => {
-        this.dialogs = dialogs;
+    // handleInitialDialogs = (dialogs: any[], next: string | null) => {
+    //     this.dialogs = dialogs;
 
-        this.dialogListCallback(this.dialogs.map(i => i.cid));
+    //     this.dialogListCallback(this.dialogs.map(i => i.cid));
 
-        // Improve conversation resolving
-        // for (let c of this.dialogs) {
-        //     ConversationRepository.improveRoomResolving(
-        //         this.engine.client,
-        //         c.cid,
-        //     );
-        // }
+    //     // Improve conversation resolving
+    //     // for (let c of this.dialogs) {
+    //     //     ConversationRepository.improveRoomResolving(
+    //     //         this.engine.client,
+    //     //         c.cid,
+    //     //     );
+    //     // }
 
-        // Update data source
-        this.dataSource.initialize(
-            this.dialogs.map(c => {
-                if (c.kind === 'PRIVATE' && c.fid) {
-                    this.userConversationMap.set(c.fid, c.cid);
-                }
-                return extractDialog(c, this.engine.user.id);
-            }),
-            next === null,
-        );
+    //     // Update data source
+    //     this.dataSource.initialize(
+    //         this.dialogs.map(c => {
+    //             if (c.kind === 'PRIVATE' && c.fid) {
+    //                 this.userConversationMap.set(c.fid, c.cid);
+    //             }
+    //             return extractDialog(c, this.engine.user.id);
+    //         }),
+    //         next === null,
+    //     );
 
-        // Start engine
-        this.loading = false;
-        this.next = next;
-    };
+    //     // Start engine
+    //     this.loading = false;
+    //     this.next = next;
+    // };
 
     handleUserRead = (conversationId: string, unread: number, visible: boolean) => {
         // Write counter to datasource
-        let res = this.dataSource.getItem(conversationId);
-        if (res) {
-            this.dataSource.updateItem({
-                ...res,
-                unread: unread,
-            });
-        }
+        // let res = this.dataSource.getItem(conversationId);
+        // if (res) {
+        //     this.dataSource.updateItem({
+        //         ...res,
+        //         unread: unread,
+        //     });
+        // }
     };
 
     handleIsMuted = (conversationId: string, isMuted: boolean) => {
-        let res = this.dataSource.getItem(conversationId);
-        if (res) {
-            this.dataSource.updateItem({
-                ...res,
-                isMuted,
-            });
-        }
+        // let res = this.dataSource.getItem(conversationId);
+        // if (res) {
+        //     this.dataSource.updateItem({
+        //         ...res,
+        //         isMuted,
+        //     });
+        // }
     };
 
     handleDialogDeleted = async (event: any) => {
-        const cid = event.cid as string;
-        if (this.dataSource.hasItem(cid)) {
-            this.dataSource.removeItem(cid);
-        }
+        // const cid = event.cid as string;
+        // if (this.dataSource.hasItem(cid)) {
+        //     this.dataSource.removeItem(cid);
+        // }
     };
 
     handleMessageUpdated = async (event: any) => {
-        const conversationId = event.cid as string;
-        let existing = this.dataSource.getItem(conversationId);
+        // const conversationId = event.cid as string;
+        // let existing = this.dataSource.getItem(conversationId);
 
-        if (existing) {
-            if (existing.messageId === event.message.id) {
-                const message = formatMessage(event.message);
+        // if (existing) {
+        //     if (existing.messageId === event.message.id) {
+        //         const message = formatMessage(event.message);
 
-                this.dataSource.updateItem({
-                    ...existing,
-                    message,
-                    attachments: event.message.attachments,
-                });
-            }
-        }
+        //         this.dataSource.updateItem({
+        //             ...existing,
+        //             message,
+        //             attachments: event.message.attachments,
+        //         });
+        //     }
+        // }
     };
 
     handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage, unread: number, haveMention: boolean, uid: string) => {
-        let existing = this.dataSource.getItem(cid);
+        // let existing = this.dataSource.getItem(cid);
 
-        if (existing && existing.messageId === mid) {
-            this.dataSource.updateItem(extractDialog({
-                cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, isChannel: !!existing.isChannel, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
-            }, uid));
-        }
+        // if (existing && existing.messageId === mid) {
+        //     this.dataSource.updateItem(extractDialog({
+        //         cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, isChannel: !!existing.isChannel, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
+        //     }, uid));
+        // }
     };
 
     handleTitleUpdated = (cid: string, title: string) => {
-        let existing = this.dataSource.getItem(cid);
-        if (existing) {
-            this.dataSource.updateItem({
-                ...existing,
-                title: title,
-            });
-        }
+        // let existing = this.dataSource.getItem(cid);
+        // if (existing) {
+        //     this.dataSource.updateItem({
+        //         ...existing,
+        //         title: title,
+        //     });
+        // }
     };
 
     handleMuteUpdated = (cid: string, mute: boolean) => {
-        let existing = this.dataSource.getItem(cid);
-        if (existing) {
-            this.dataSource.updateItem({
-                ...existing,
-                isMuted: mute,
-            });
-        }
+        // let existing = this.dataSource.getItem(cid);
+        // if (existing) {
+        //     this.dataSource.updateItem({
+        //         ...existing,
+        //         isMuted: mute,
+        //     });
+        // }
     };
 
     handleHaveMentionUpdated = (cid: string, haveMention: boolean) => {
-        let existing = this.dataSource.getItem(cid);
-        if (existing) {
-            this.dataSource.updateItem({
-                ...existing,
-                haveMention: haveMention,
-            });
-        }
+        // let existing = this.dataSource.getItem(cid);
+        // if (existing) {
+        //     this.dataSource.updateItem({
+        //         ...existing,
+        //         haveMention: haveMention,
+        //     });
+        // }
     };
 
     handlePhotoUpdated = (cid: string, photo: string) => {
-        let existing = this.dataSource.getItem(cid);
-        if (existing) {
-            this.dataSource.updateItem({
-                ...existing,
-                photo: photo,
-            });
-        }
+        // let existing = this.dataSource.getItem(cid);
+        // if (existing) {
+        //     this.dataSource.updateItem({
+        //         ...existing,
+        //         photo: photo,
+        //     });
+        // }
     };
 
     handleNewMessage = async (event: any, visible: boolean) => {
-        const conversationId = event.cid as string;
-        const unreadCount = event.unread as number;
+        // const conversationId = event.cid as string;
+        // const unreadCount = event.unread as number;
 
-        let res = this.dataSource.getItem(conversationId);
-        let isOut = event.message.sender.id === this.engine.user.id;
-        let sender = isOut ? 'You' : event.message.sender.firstName;
-        let isService = event.message.__typename === 'ServiceMessage';
-        if (res) {
-            let msg = formatMessage(event.message);
-            this.dataSource.updateItem({
-                ...res,
-                isService,
-                unread: !visible || res.unread > unreadCount ? unreadCount : res.unread,
-                isOut: isOut,
-                sender: sender,
-                messageId: event.message.id,
-                message: event.message && event.message.message ? msg : undefined,
-                fallback: msg,
-                date: parseInt(event.message.date, 10),
-                attachments: event.message.attachments,
-                forward: !event.message.message && event.message.quotedMessages && event.message.quotedMessages.length,
-                showSenderName:
-                    !!(msg && (isOut || res.kind !== 'PRIVATE') && sender) &&
-                    !isService,
-            });
-            this.dataSource.moveItem(res.key, 0);
-        } else {
-            if (
-                event.message.serviceMetadata &&
-                event.message.serviceMetadata.__typename === 'KickServiceMetadata'
-            ) {
-                return;
-            }
+        // let res = this.dataSource.getItem(conversationId);
+        // let isOut = event.message.sender.id === this.engine.user.id;
+        // let sender = isOut ? 'You' : event.message.sender.firstName;
+        // let isService = event.message.__typename === 'ServiceMessage';
+        // if (res) {
+        //     let msg = formatMessage(event.message);
+        //     this.dataSource.updateItem({
+        //         ...res,
+        //         isService,
+        //         unread: !visible || res.unread > unreadCount ? unreadCount : res.unread,
+        //         isOut: isOut,
+        //         sender: sender,
+        //         messageId: event.message.id,
+        //         message: event.message && event.message.message ? msg : undefined,
+        //         fallback: msg,
+        //         date: parseInt(event.message.date, 10),
+        //         attachments: event.message.attachments,
+        //         forward: !event.message.message && event.message.quotedMessages && event.message.quotedMessages.length,
+        //         showSenderName:
+        //             !!(msg && (isOut || res.kind !== 'PRIVATE') && sender) &&
+        //             !isService,
+        //     });
+        //     this.dataSource.moveItem(res.key, 0);
+        // } else {
+        //     if (
+        //         event.message.serviceMetadata &&
+        //         event.message.serviceMetadata.__typename === 'KickServiceMetadata'
+        //     ) {
+        //         return;
+        //     }
 
-            let info = await this.engine.client.client.query(RoomQuery, {
-                id: conversationId,
-            });
+        //     let info = await this.engine.client.client.query(RoomQuery, {
+        //         id: conversationId,
+        //     });
 
-            let sharedRoom =
-                info.room!.__typename === 'SharedRoom' ? (info.room as Room_room_SharedRoom) : null;
-            let privateRoom =
-                info.room!.__typename === 'PrivateRoom'
-                    ? (info.room as Room_room_PrivateRoom)
-                    : null;
-            let room = (sharedRoom || privateRoom)!;
+        //     let sharedRoom =
+        //         info.room!.__typename === 'SharedRoom' ? (info.room as Room_room_SharedRoom) : null;
+        //     let privateRoom =
+        //         info.room!.__typename === 'PrivateRoom'
+        //             ? (info.room as Room_room_PrivateRoom)
+        //             : null;
+        //     let room = (sharedRoom || privateRoom)!;
 
-            let msg = formatMessage(event.message);
+        //     let msg = formatMessage(event.message);
 
-            this.dataSource.addItem(
-                {
-                    key: conversationId,
-                    isService,
-                    isMuted: !!room.settings.mute,
-                    haveMention: event.message.haveMention,
-                    flexibleId: privateRoom ? privateRoom.user.id : room.id,
-                    kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
-                    isChannel: sharedRoom ? sharedRoom.isChannel : false,
-                    title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
-                    photo:
-                        (sharedRoom
-                            ? sharedRoom.photo
-                            : privateRoom
-                                ? privateRoom.user.photo
-                                : undefined) || undefined,
-                    unread: unreadCount,
-                    isOut: isOut,
-                    sender: sender,
-                    messageId: event.message.id,
-                    message: event.message && event.message.message ? msg : undefined,
-                    fallback: msg,
-                    date: parseInt(event.message.date, 10),
-                    forward: event.message.quotedMessages && !!event.message.quotedMessages.length,
-                    attachments: event.message.attachments,
-                    online: privateRoom ? privateRoom.user.online : false,
-                    showSenderName:
-                        !!(
-                            msg &&
-                            (isOut || (sharedRoom ? sharedRoom.kind : 'PRIVATE') !== 'PRIVATE') &&
-                            sender
-                        ) && !isService,
-                },
-                0,
-            );
-        }
+        //     this.dataSource.addItem(
+        //         {
+        //             key: conversationId,
+        //             isService,
+        //             isMuted: !!room.settings.mute,
+        //             haveMention: event.message.haveMention,
+        //             flexibleId: privateRoom ? privateRoom.user.id : room.id,
+        //             kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
+        //             isChannel: sharedRoom ? sharedRoom.isChannel : false,
+        //             title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
+        //             photo:
+        //                 (sharedRoom
+        //                     ? sharedRoom.photo
+        //                     : privateRoom
+        //                         ? privateRoom.user.photo
+        //                         : undefined) || undefined,
+        //             unread: unreadCount,
+        //             isOut: isOut,
+        //             sender: sender,
+        //             messageId: event.message.id,
+        //             message: event.message && event.message.message ? msg : undefined,
+        //             fallback: msg,
+        //             date: parseInt(event.message.date, 10),
+        //             forward: event.message.quotedMessages && !!event.message.quotedMessages.length,
+        //             attachments: event.message.attachments,
+        //             online: privateRoom ? privateRoom.user.online : false,
+        //             showSenderName:
+        //                 !!(
+        //                     msg &&
+        //                     (isOut || (sharedRoom ? sharedRoom.kind : 'PRIVATE') !== 'PRIVATE') &&
+        //                     sender
+        //                 ) && !isService,
+        //         },
+        //         0,
+        //     );
+        // }
     };
 
-    loadNext = async () => {
-        if (!this.loading && this.next !== null) {
-            this.loading = true;
-            let start = Date.now();
-            let res = await backoff(async () => {
-                try {
-                    return await backoff(async () => {
-                        return await this.engine.client.queryDialogs({
-                            ...(this.next !== undefined ? { after: this.next } : {})
-                        }, { fetchPolicy: 'network-only' });
-                    });
-                } catch (e) {
-                    log.warn(e);
-                    throw e;
-                }
-            });
-            log.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
+    // loadNext = async () => {
+    //     if (!this.loading && this.next !== null) {
+    //         this.loading = true;
+    //         let start = Date.now();
+    //         let res = await backoff(async () => {
+    //             try {
+    //                 return await backoff(async () => {
+    //                     return await this.engine.client.queryDialogs({
+    //                         ...(this.next !== undefined ? { after: this.next } : {})
+    //                     }, { fetchPolicy: 'network-only' });
+    //                 });
+    //             } catch (e) {
+    //                 log.warn(e);
+    //                 throw e;
+    //             }
+    //         });
+    //         log.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
-            this.next = res.dialogs.cursor;
-            this.dialogs = [...this.dialogs, ...res.dialogs.items];
+    //         this.next = res.dialogs.cursor;
+    //         this.dialogs = [...this.dialogs, ...res.dialogs.items];
 
-            res.dialogs.items.map(c => {
-                if (c.kind === 'PRIVATE' && c.fid) {
-                    this.userConversationMap.set(c.fid, c.cid);
-                }
-            });
+    //         res.dialogs.items.map(c => {
+    //             if (c.kind === 'PRIVATE' && c.fid) {
+    //                 this.userConversationMap.set(c.fid, c.cid);
+    //             }
+    //         });
 
-            this.dialogListCallback(this.dialogs.map(i => i.cid));
+    //         this.dialogListCallback(this.dialogs.map(i => i.cid));
 
-            // Write to datasource
-            let converted = res.dialogs.items.map((c: any) =>
-                extractDialog(c, this.engine.user.id),
-            );
+    //         // Write to datasource
+    //         let converted = res.dialogs.items.map((c: any) =>
+    //             extractDialog(c, this.engine.user.id),
+    //         );
 
-            this.dataSource.loadedMore(converted, !this.next);
+    //         this.dataSource.loadedMore(converted, !this.next);
 
-            this.loading = false;
-        }
-    };
+    //         this.loading = false;
+    //     }
+    // };
 }

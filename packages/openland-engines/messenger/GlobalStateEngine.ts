@@ -28,32 +28,11 @@ export class GlobalStateEngine {
     start = async () => {
         log.log('Loading initial state');
 
-        // Loading settings
-        let settings = backoff(async () => {
+        // Settings Watch
+        await backoff(async () => {
             return await this.engine.client.querySettings({ fetchPolicy: 'cache-first' });
         });
         this.engine.client.querySettings({ fetchPolicy: 'network-only' });
-
-        let counter = backoff(async () => {
-            return await this.engine.client.queryGlobalCounter({ fetchPolicy: 'cache-first' });
-        })
-
-        // Loading initial chat state
-        let start = Date.now();
-        let res = (await backoff(async () => {
-            return await this.engine.client.queryDialogs({}, { fetchPolicy: 'network-only' });
-        }));
-        await settings;
-        this.counterState = await counter;
-        log.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
-
-        this.engine.notifications.handleGlobalCounterChanged(res.counter.unreadCount);
-        this.engine.dialogList.handleInitialDialogs(res.dialogs.items, res.dialogs.cursor);
-
-        // Starting Sequence Watcher
-        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state: res.state.state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, res.state.state);
-
-        // Subscribe for settings update
         let settingsSubscription = this.engine.client.subscribeSettingsWatch();
         (async () => {
             while (true) {
@@ -61,6 +40,30 @@ export class GlobalStateEngine {
                 log.log('New settings received');
             }
         })();
+
+        // Global Counter
+        let counter = backoff(async () => {
+            return await this.engine.client.queryGlobalCounter({ fetchPolicy: 'cache-first' });
+        });
+        this.counterState = await counter;
+        // Why?
+        this.engine.notifications.handleGlobalCounterChanged(this.counterState.alphaNotificationCounter.unreadCount);
+
+        // Loading initial chat state
+        // let start = Date.now();
+        // let res = (await backoff(async () => {
+        //     return await this.engine.client.queryDialogs({}, { fetchPolicy: 'network-only' });
+        // }));
+        // log.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
+
+        // this.engine.dialogList.handleInitialDialogs(res.dialogs.items, res.dialogs.cursor);
+
+        // Starting Sequence Watcher
+        // this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state: res.state.state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, res.state.state);
+    }
+
+    handleDialogsStarted = (state: string) => {
+        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state);
     }
 
     resolvePrivateConversation = async (uid: string) => {
