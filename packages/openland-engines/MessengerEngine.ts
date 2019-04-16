@@ -14,6 +14,7 @@ import { CallsEngine } from './CallsEngine';
 import { createLogger } from 'mental-log';
 import { UserStorageEngine } from './UserStorageEngine';
 import { EngineOptions } from './EnginesOptions';
+import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
 
 const log = createLogger('Engine');
 
@@ -41,7 +42,8 @@ export class MessengerEngine {
 
     constructor(client: OpenlandClient, user: UserShort, platform: string, options?: Partial<EngineOptions>) {
         this.options = {
-            conversationBatchSize: options && options.conversationBatchSize ? options.conversationBatchSize : 15
+            conversationBatchSize: options && options.conversationBatchSize ? options.conversationBatchSize : 15,
+            store: options && options.store ? options.store : new InMemoryKeyValueStore()
         }
         this.client = client;
         this.user = user;

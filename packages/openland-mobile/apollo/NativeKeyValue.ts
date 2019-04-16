@@ -1,7 +1,8 @@
 import SQLite from 'react-native-sqlite-storage';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
+import { KeyValueStore } from 'openland-y-utils/KeyValueStore';
 
-export class NativeKeyValue {
+export class NativeKeyValue implements KeyValueStore {
 
     private queue = new ExecutionQueue();
     private db!: SQLite.SQLiteDatabase;
@@ -15,7 +16,7 @@ export class NativeKeyValue {
         })
     }
 
-    async load(key: string): Promise<string | null> {
+    async readKey(key: string): Promise<string | null> {
         return new Promise<string | null>((resolve, reject) => {
             this.queue.post(async () => {
                 try {
@@ -32,7 +33,7 @@ export class NativeKeyValue {
         })
     }
 
-    async persist(key: string, value: string | null): Promise<void> {
+    async writeKey(key: string, value: string | null): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.queue.post(async () => {
                 try {

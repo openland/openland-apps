@@ -1,8 +1,7 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { backoff } from 'openland-y-utils/timer';
-import { GlobalCounterQuery, ChatSearchGroupQuery } from 'openland-api';
+import { GlobalCounterQuery } from 'openland-api';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
-import { RoomQuery } from 'openland-api';
 import { MarkSequenceReadMutation } from 'openland-api';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
@@ -48,11 +47,11 @@ export class GlobalStateEngine {
         this.counterState = await counter;
         log.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
-        this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
-        this.engine.dialogList.handleInitialDialogs((res as any).dialogs.items, (res as any).dialogs.cursor);
+        this.engine.notifications.handleGlobalCounterChanged(res.counter.unreadCount);
+        this.engine.dialogList.handleInitialDialogs(res.dialogs.items, res.dialogs.cursor);
 
         // Starting Sequence Watcher
-        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state: (res as any).state.state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, (res as any).state.state);
+        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state: res.state.state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, res.state.state);
 
         // Subscribe for settings update
         let settingsSubscription = this.engine.client.subscribeSettingsWatch();
@@ -65,21 +64,10 @@ export class GlobalStateEngine {
     }
 
     resolvePrivateConversation = async (uid: string) => {
-        let res = await this.engine.client.client.query(RoomQuery, { id: uid });
+        let res = await this.engine.client.queryRoom({ id: uid });
         return {
-            id: (res as any).room.id as string,
+            id: res.room!!.id,
             flexibleId: uid
-        };
-    }
-
-    resolveGroup = async (uids: string[]) => {
-        let res = await this.engine.client.client.query(ChatSearchGroupQuery, { members: uids });
-        if (!(res as any).group) {
-            return null;
-        }
-        return {
-            id: (res as any).group.id as string,
-            flexibleId: (res as any).group.flexibleId as string
         };
     }
 

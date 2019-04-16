@@ -9,19 +9,11 @@ import {
     DialogKind,
 } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
-import { DialogsQuery, RoomQuery } from 'openland-api';
+import { RoomQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
-import { emoji } from 'openland-y-utils/emoji';
 import { createLogger } from 'mental-log';
 
 const log = createLogger('Engine-Dialogs');
-
-export const emojifyMessage = (msg: string) => {
-    return emoji({
-        src: msg,
-        size: 14,
-    });
-};
 
 export interface DialogDataSourceItem {
     key: string;
@@ -181,7 +173,7 @@ export class DialogListEngine {
     // Update Handlers
     //
 
-    handleInitialDialogs = (dialogs: any[], next: string) => {
+    handleInitialDialogs = (dialogs: any[], next: string | null) => {
         this.dialogs = dialogs;
 
         this.dialogListCallback(this.dialogs.map(i => i.cid));

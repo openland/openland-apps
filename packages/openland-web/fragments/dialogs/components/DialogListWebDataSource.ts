@@ -1,7 +1,14 @@
-import { DialogDataSourceItem, emojifyMessage } from 'openland-engines/messenger/DialogListEngine';
+import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
+
+const emojifyMessage = (msg: string) => {
+    return emoji({
+        src: msg,
+        size: 14,
+    });
+};
 
 export interface DialogListWebItem extends DialogDataSourceItem {
     titleEmojify: any;

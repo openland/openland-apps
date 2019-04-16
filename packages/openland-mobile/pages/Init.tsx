@@ -20,6 +20,7 @@ import { SDevice } from 'react-native-s/SDevice';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
+import { NativeKeyValue } from 'openland-mobile/apollo/NativeKeyValue';
 
 export let NON_PRODUCTION = false;
 
@@ -135,7 +136,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         if (res.me) {
                             NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0;
 
-                            let messenger = buildMessenger(getClient(), res.me);
+                            let messenger = buildMessenger(getClient(), res.me, { store: new NativeKeyValue('engines') });
                             setMessenger(new MobileMessenger(messenger, this.history));
                             await messenger.awaitLoading();
                         }
