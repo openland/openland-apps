@@ -82,7 +82,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
         }
 
         return (
-            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={10}>
+            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={10} backgroundColor="#f3f5f7" borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <Text
                         style={{
@@ -99,17 +99,19 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 )}
 
                 {!imgCompact && this.props.attach.image && imgLayout && (
-                    <View marginTop={5} justifyContent="center" borderRadius={8}>
-                        <PreviewWrapper path={imagePath} metadata={this.props.attach.image!.metadata!} radius={8}>
-                            <FastImage
-                                source={imageSource}
-                                style={{
-                                    width: imgLayout.width,
-                                    height: imgLayout.height,
-                                    borderRadius: 8
-                                }}
-                            />
-                        </PreviewWrapper>
+                    <View justifyContent="center" borderRadius={8} marginTop={-10} marginHorizontal={-13} marginBottom={6}>
+                        <View width={imgLayout.width} height={imgLayout.height} alignSelf="center">
+                            <PreviewWrapper path={imagePath} metadata={this.props.attach.image!.metadata!} radius={8}>
+                                <FastImage
+                                    source={imageSource}
+                                    style={{
+                                        width: imgLayout.width,
+                                        height: imgLayout.height,
+                                        borderRadius: 8
+                                    }}
+                                />
+                            </PreviewWrapper>
+                        </View>
 
                         {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
                             <View
@@ -233,12 +235,12 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 )}
 
                 {!!keyboard && keyboard.buttons.map((line, i) =>
-                    <View key={'attch-btn-' + i} flexDirection="row" marginTop={10} alignSelf="stretch" marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
+                    <View key={'attch-btn-' + i} flexDirection="row" marginTop={6} alignSelf="stretch" marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
                         {!!line && line.map((button, j) =>
                             <TouchableWithoutFeedback key={'button-' + i + '-' + j} onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}>
                                 <View
                                     marginTop={i !== 0 ? 4 : 0}
-                                    backgroundColor="#F7F7F7"
+                                    backgroundColor="#ffffff"
                                     borderRadius={8}
                                     marginLeft={j > 0 ? 4 : 0}
                                     marginRight={j < line.length - 1 ? 4 : 0}
