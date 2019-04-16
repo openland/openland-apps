@@ -9288,6 +9288,171 @@ public final class RoomMembersQuery: GraphQLQuery {
   }
 }
 
+public final class RoomMembersPaginatedQuery: GraphQLQuery {
+  public let operationDefinition =
+    "query RoomMembersPaginated($roomId: ID!, $first: Int, $after: ID) {\n  members: roomMembers(roomId: $roomId, first: $first, after: $after) {\n    __typename\n    user {\n      __typename\n      ...UserShort\n    }\n    role\n    membership\n    canKick\n  }\n}"
+
+  public var queryDocument: String { return operationDefinition.appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
+
+  public var roomId: GraphQLID
+  public var first: Int?
+  public var after: GraphQLID?
+
+  public init(roomId: GraphQLID, first: Int? = nil, after: GraphQLID? = nil) {
+    self.roomId = roomId
+    self.first = first
+    self.after = after
+  }
+
+  public var variables: GraphQLMap? {
+    return ["roomId": roomId, "first": first, "after": after]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("roomMembers", alias: "members", arguments: ["roomId": GraphQLVariable("roomId"), "first": GraphQLVariable("first"), "after": GraphQLVariable("after")], type: .nonNull(.list(.nonNull(.object(Member.selections))))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(members: [Member]) {
+      self.init(unsafeResultMap: ["__typename": "Query", "members": members.map { (value: Member) -> ResultMap in value.resultMap }])
+    }
+
+    public var members: [Member] {
+      get {
+        return (resultMap["members"] as! [ResultMap]).map { (value: ResultMap) -> Member in Member(unsafeResultMap: value) }
+      }
+      set {
+        resultMap.updateValue(newValue.map { (value: Member) -> ResultMap in value.resultMap }, forKey: "members")
+      }
+    }
+
+    public struct Member: GraphQLSelectionSet {
+      public static let possibleTypes = ["RoomMember"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("user", type: .nonNull(.object(User.selections))),
+        GraphQLField("role", type: .nonNull(.scalar(RoomMemberRole.self))),
+        GraphQLField("membership", type: .nonNull(.scalar(SharedRoomMembershipStatus.self))),
+        GraphQLField("canKick", type: .nonNull(.scalar(Bool.self))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(user: User, role: RoomMemberRole, membership: SharedRoomMembershipStatus, canKick: Bool) {
+        self.init(unsafeResultMap: ["__typename": "RoomMember", "user": user.resultMap, "role": role, "membership": membership, "canKick": canKick])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var user: User {
+        get {
+          return User(unsafeResultMap: resultMap["user"]! as! ResultMap)
+        }
+        set {
+          resultMap.updateValue(newValue.resultMap, forKey: "user")
+        }
+      }
+
+      public var role: RoomMemberRole {
+        get {
+          return resultMap["role"]! as! RoomMemberRole
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "role")
+        }
+      }
+
+      public var membership: SharedRoomMembershipStatus {
+        get {
+          return resultMap["membership"]! as! SharedRoomMembershipStatus
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "membership")
+        }
+      }
+
+      public var canKick: Bool {
+        get {
+          return resultMap["canKick"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "canKick")
+        }
+      }
+
+      public struct User: GraphQLSelectionSet {
+        public static let possibleTypes = ["User"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(UserShort.self),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var fragments: Fragments {
+          get {
+            return Fragments(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+
+        public struct Fragments {
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public var userShort: UserShort {
+            get {
+              return UserShort(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class MentionsMembersQuery: GraphQLQuery {
   public let operationDefinition =
     "query MentionsMembers($roomId: ID!) {\n  members: roomMembers(roomId: $roomId) {\n    __typename\n    user {\n      __typename\n      id\n      name\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n      }\n    }\n  }\n}"

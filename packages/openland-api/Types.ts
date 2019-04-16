@@ -22383,6 +22383,56 @@ export interface RoomMembersVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: RoomMembersPaginated
+// ====================================================
+
+export interface RoomMembersPaginated_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomMembersPaginated_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: RoomMembersPaginated_members_user_primaryOrganization | null;
+}
+
+export interface RoomMembersPaginated_members {
+  __typename: "RoomMember";
+  user: RoomMembersPaginated_members_user;
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  canKick: boolean;
+}
+
+export interface RoomMembersPaginated {
+  members: RoomMembersPaginated_members[];
+}
+
+export interface RoomMembersPaginatedVariables {
+  roomId: string;
+  first?: number | null;
+  after?: string | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: MentionsMembers
 // ====================================================
 

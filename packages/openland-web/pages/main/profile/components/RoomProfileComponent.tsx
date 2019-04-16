@@ -328,6 +328,10 @@ interface MembersProviderProps {
     isChannel: boolean;
 }
 
+const convertToDataSource = (data: any) => {
+    return data.members.map(({ user }: any) => ({ ...user, key: user.id }));
+};
+
 const MembersProvider = ({
     router,
     requests,
@@ -338,21 +342,27 @@ const MembersProvider = ({
     isChannel,
 }: MembersProviderProps & XWithRouter) => {
     const client = useClient();
+    const pageSize = 20;
 
-    const variables = {
-        query: '',
-        page: 1,
-    };
     const { dataSource, renderLoading } = useInfiniteScroll({
+        convertToDataSource,
         initialLoadFunction: () => {
-            return client.useExplorePeople(variables, {
-                fetchPolicy: 'network-only',
-            });
+            return client.useRoomMembersPaginated(
+                {
+                    roomId: chatId,
+                    first: pageSize,
+                },
+                {
+                    fetchPolicy: 'network-only',
+                },
+            );
         },
-        queryOnNeedMore: async ({ currentPage }: { currentPage: any }) => {
-            return await client.queryExplorePeople({
-                ...variables,
-                page: currentPage,
+        queryOnNeedMore: async ({ getLastItem }: { getLastItem: () => any }) => {
+            const lastItem = getLastItem();
+            return await client.queryRoomMembersPaginated({
+                roomId: chatId,
+                first: pageSize,
+                after: lastItem.id,
             });
         },
     });

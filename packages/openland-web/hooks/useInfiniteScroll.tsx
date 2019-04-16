@@ -6,12 +6,13 @@ import { XView } from 'react-mental';
 export function useInfiniteScroll({
     initialLoadFunction,
     queryOnNeedMore,
+    convertToDataSource,
 }: {
     initialLoadFunction: any;
     queryOnNeedMore: any;
+    convertToDataSource: Function;
 }) {
-    const [currentPage, setCurrentPage] = React.useState(1);
-
+    const [currentPage, setCurrentPage] = React.useState(0);
     const data = initialLoadFunction();
 
     const renderLoading = React.useMemo(() => {
@@ -26,19 +27,20 @@ export function useInfiniteScroll({
 
     let dataSource = React.useMemo(() => {
         const ds = new DataSource<any>(() => setCurrentPage((curPage: number) => curPage + 1));
-        ds.initialize(data.items.edges.map(({ node }: any) => ({ ...node, key: node.id })), false);
+        ds.initialize(convertToDataSource(data), false);
 
         return ds;
     }, []);
 
+    const getLastItem = () => {
+        return dataSource.getItemByIndex(dataSource.getSize() - 1);
+    };
+
     React.useEffect(() => {
         (async () => {
-            const loadedData = await queryOnNeedMore({ currentPage });
+            const loadedData = await queryOnNeedMore({ currentPage, getLastItem });
 
-            dataSource.loadedMore(
-                loadedData.items.edges.map(({ node }: any) => ({ ...node, key: node.id })),
-                false,
-            );
+            dataSource.loadedMore(convertToDataSource(loadedData), false);
         })();
     }, [currentPage]);
 

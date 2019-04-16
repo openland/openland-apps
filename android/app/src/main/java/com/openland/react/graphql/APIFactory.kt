@@ -1734,6 +1734,13 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        builder.roomId(notNull(readString(src, "roomId")))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "RoomMembersPaginated") {
+       val builder = RoomMembersPaginatedQuery.builder()
+       builder.roomId(notNull(readString(src, "roomId")))
+       builder.first(readInt(src, "first"))
+       builder.after(readString(src, "after"))
+       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "MentionsMembers") {
        val builder = MentionsMembersQuery.builder()
        builder.roomId(notNull(readString(src, "roomId")))
