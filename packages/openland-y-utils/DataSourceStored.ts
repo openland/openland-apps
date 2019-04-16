@@ -78,8 +78,10 @@ export class DataSourceStored<T extends DataSourceItem> {
 
                 // Load items
                 items = [];
-                for (let i of this._index) {
-                    items.push(JSON.parse((await storage.readKey('ds.' + name + '.item.' + i))!));
+
+                let loaded = await storage.readKeys(this._index.map((v) => 'ds.' + name + '.item.' + v));
+                for (let v of this._index) {
+                    items.push(JSON.parse(loaded.find((i) => ('ds.' + name + '.item.' + v) === i.key)!.value!));
                 }
 
                 // Load cursor

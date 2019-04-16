@@ -33,6 +33,37 @@ export class NativeKeyValue implements KeyValueStore {
         })
     }
 
+    async readKeys(keys: string[]): Promise<{ key: string, value: string | null }[]> {
+        return new Promise<{ key: string, value: string | null }[]>((resolve, reject) => {
+            this.queue.post(async () => {
+                try {
+                    // let r = await this.db.readTransaction(async (tx) => {
+                    let res: { key: string, value: string | null }[] = [];
+                    let d = await this.db.executeSql('SELECT key, value FROM records WHERE key in (' + keys.map(() => '?').join() + ');', keys);
+                    outer: for (let k of keys) {
+                        console.log(k);
+                        for (let j = 0; j < d.length; j++) {
+                            let dr = d[j];
+                            for (let i = 0; i < dr.rows.length; i++) {
+                                let row = dr.rows.item(i);
+                                if (row.key === k) {
+                                    res.push({ key: k, value: row.value as string });
+                                    continue outer;
+                                }
+                            }
+                        }
+                        res.push({ key: k, value: null });
+                    }
+                    resolve(res);
+                    // });
+                    // resolve(r);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
+    }
+
     async writeKey(key: string, value: string | null): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.queue.post(async () => {
@@ -48,5 +79,11 @@ export class NativeKeyValue implements KeyValueStore {
                 }
             });
         });
+    }
+
+    async writeKeys(items: { key: string, value: string | null }[]) {
+        for (let i of items) {
+            this.writeKey(i.key, i.value);
+        }
     }
 }
