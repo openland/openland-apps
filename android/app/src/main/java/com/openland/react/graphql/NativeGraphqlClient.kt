@@ -399,6 +399,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     private val client: ApolloClient
     private val watches = mutableMapOf<String, ApolloQueryWatcher<*>>()
     private var subscriptions: SubscriptionManager? = null
+    private var connected = false
 
     init {
 
@@ -462,18 +463,21 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                 override fun onOpen(webSocket: WebSocket, response: okhttp3.Response) {
                     Log.d("WS", "onOpen")
                     listener.onOpen(webSocket, response)
+                    this@NativeGraphqlClient.onConnected()
                     this@NativeGraphqlClient.subscriptions!!.onSocketStarted()
                 }
 
                 override fun onFailure(webSocket: WebSocket, t: Throwable, response: okhttp3.Response?) {
                     Log.d("WS", "onFailure")
                     listener.onFailure(webSocket, t, response)
+                    this@NativeGraphqlClient.onDisconnected()
                     this@NativeGraphqlClient.subscriptions!!.onSocketStopped()
                 }
 
                 override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                     Log.d("WS", "onClosing")
                     listener.onClosing(webSocket, code, reason)
+                    this@NativeGraphqlClient.onDisconnected()
                     this@NativeGraphqlClient.subscriptions!!.onSocketStopped()
                 }
 
@@ -571,5 +575,31 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
 
     fun dispose() {
         this.subscriptions!!.destroy()
+    }
+
+    private fun onDisconnected() {
+        if (!this.connected) {
+            return
+        }
+        this.connected = false
+        val map = WritableNativeMap()
+        map.putString("key", key)
+        map.putString("type", "status")
+        map.putString("status", "connecting")
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                .emit("apollo_client", map)
+    }
+
+    private fun onConnected() {
+        if (this.connected) {
+            return
+        }
+        this.connected = true
+        val map = WritableNativeMap()
+        map.putString("key", key)
+        map.putString("type", "status")
+        map.putString("status", "connected")
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                .emit("apollo_client", map)
     }
 }
