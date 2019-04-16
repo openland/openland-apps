@@ -9,6 +9,7 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     senderName: {
@@ -57,6 +58,8 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     let client = getClient();
     let router = messenger.history.navigationManager;
 
+    const theme = React.useContext(ThemeContext);
+
     const handleReactionPress = React.useCallback(() => {
         let r = MessageReactionType.LIKE;
 
@@ -91,16 +94,12 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                 <View width={16} height={16} borderRadius={8} backgroundColor="rgba(0, 0, 0, 0.05)" />
             )}
             {!deleted && (
-                <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
-                    <View>
-                        <ZAvatar
-                            size={16}
-                            src={sender.photo}
-                            placeholderKey={sender.id}
-                            placeholderTitle={sender.name}
-                        />
-                    </View>
-                </TouchableWithoutFeedback>
+                <ZAvatar
+                    size={16}
+                    src={sender.photo}
+                    placeholderKey={sender.id}
+                    placeholderTitle={sender.name}
+                />
             )}
         </View>
     );
@@ -127,7 +126,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         </View>
     );
 
-    let likes =  !deleted ? (
+    let likes = !deleted ? (
         <TouchableWithoutFeedback onPress={handleReactionPress}>
             <View width={46} alignItems="center" justifyContent="center" paddingLeft={8}>
                 <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? '#f6564e' : 'rgba(129, 137, 149, 0.3)', width: 18, height: 18 }} />
@@ -136,9 +135,17 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         </TouchableWithoutFeedback>
     ) : undefined;
 
+    let lines: JSX.Element[] = [];
+
+    for (var i = 1; i <= depth; i++) {
+        lines.push(<View width={1} backgroundColor={theme.separatorColor} position="absolute" left={16 * i} top={0} bottom={-8} />);
+    }
+
     return (
-        <View style={ highlighted ? { backgroundColor: 'rgba(255, 255, 102, 0.15)', marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 } : { marginBottom: 16, paddingLeft: branchIndent }}>
-            <TouchableWithoutFeedback onLongPress={!deleted ? () => props.onLongPress(comment) : undefined}>
+        <TouchableWithoutFeedback onLongPress={!deleted ? () => props.onLongPress(comment) : undefined}>
+            <View style={{ backgroundColor: highlighted ? 'rgba(255, 255, 102, 0.15)' : '#ffffff', marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
+                {lines}
+
                 <View flexDirection="row">
                     <View flexGrow={1} flexShrink={1}>
                         <TouchableWithoutFeedback onPress={!deleted ? () => router.push('ProfileUser', { id: sender.id }) : undefined}>
@@ -158,7 +165,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
                     {likes}
                 </View>
-            </TouchableWithoutFeedback>
-        </View>
+            </View>
+        </TouchableWithoutFeedback>
     );
 });
