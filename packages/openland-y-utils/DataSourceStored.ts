@@ -24,7 +24,8 @@ export class DataSourceStored<T extends DataSourceItem> {
     private _inited = false;
     private _loadingMore = false;
     private _storage: KeyValueStore;
-    private _pendingUpdates = new Map<string, T>();
+    private _loaded: number = 0;
+    private _loadCompleted = false;
 
     constructor(name: string, storage: KeyValueStore, pageSize: number, provider: DataSourceStoredProvider<T>) {
         this._queue = new ExecutionQueue();
@@ -35,9 +36,10 @@ export class DataSourceStored<T extends DataSourceItem> {
         this._storage = storage;
         this._queue.post(async () => {
             let start = currentTimeMillis();
-            let ver = await storage.readKey('ds.' + name + '.version');
-            let state = await storage.readKey('ds.' + name + '.state');
-            let index = await storage.readKey('ds.' + name + '.index');
+            let ind = await storage.readKeys(['ds.' + name + '.version', 'ds.' + name + '.state', 'ds.' + name + '.index'])
+            let ver = ind.find((v) => v.key === 'ds.' + name + '.version')!.value;
+            let state = ind.find((v) => v.key === 'ds.' + name + '.state')!.value;
+            let index = ind.find((v) => v.key === 'ds.' + name + '.index')!.value;
             let items: T[];
             if (!index || !state || !ver || (parseInt(ver, 10) !== this._wireVersion)) {
                 log.log(this.name + '| Download initial data');
@@ -70,17 +72,27 @@ export class DataSourceStored<T extends DataSourceItem> {
 
                 // Save local index
                 this._index = data.items.map((v) => v.key);
+                this._loadCompleted = true;
             } else {
                 log.log(this.name + '| Loading initial data from storage');
 
                 // Read index
                 this._index = JSON.parse(index) as string[];
 
+                // Read page
+                let toLoad = this._index;
+                if (toLoad.length > this.pageSize) {
+                    toLoad = toLoad.slice(0, this.pageSize - 1);
+                    this._loaded = this.pageSize;
+                    this._loadCompleted = false;
+                } else {
+                    this._loadCompleted = true;
+                }
+
                 // Load items
                 items = [];
-
-                let loaded = await storage.readKeys(this._index.map((v) => 'ds.' + name + '.item.' + v));
-                for (let v of this._index) {
+                let loaded = await storage.readKeys(toLoad.map((v) => 'ds.' + name + '.item.' + v));
+                for (let v of toLoad) {
                     items.push(JSON.parse(loaded.find((i) => ('ds.' + name + '.item.' + v) === i.key)!.value!));
                 }
 
@@ -99,7 +111,7 @@ export class DataSourceStored<T extends DataSourceItem> {
             this._provider.onStarted(this._state);
 
             this._inited = true; // Mark inited before data source loading to avoid "loading" hanging
-            this.dataSource.initialize(items, !this._cursor);
+            this.dataSource.initialize(items, this._loadCompleted && !this._cursor);
             log.log(this.name + '| Inited in ' + (currentTimeMillis() - start) + ' ms');
         });
     }
@@ -121,7 +133,9 @@ export class DataSourceStored<T extends DataSourceItem> {
         await this._queue.sync(async () => {
             this._index = this._index.filter((v) => v !== key);
             await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
-            this.dataSource.removeItem(key);
+            if (this.dataSource.hasItem(key)) {
+                this.dataSource.removeItem(key);
+            }
         });
     }
 
@@ -139,7 +153,9 @@ export class DataSourceStored<T extends DataSourceItem> {
     updateItem = async (item: T) => {
         await this._queue.sync(async () => {
             await this._storage.writeKey('ds.' + this.name + '.item.' + item.key, JSON.stringify(item));
-            this.dataSource.updateItem(item);
+            if (this.dataSource.hasItem(item.key)) {
+                this.dataSource.updateItem(item);
+            }
         });
     }
 
@@ -162,11 +178,25 @@ export class DataSourceStored<T extends DataSourceItem> {
                 res.splice(index, 0, ex);
                 this._index = res;
                 await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
+
+                if (this._loadCompleted) {
+                    this.dataSource.moveItem(key, index);
+                } else {
+                    if (i < this.dataSource.getSize() && index < this.dataSource.getSize()) {
+                        this.dataSource.moveItem(key, index);
+                    } else if (i < this.dataSource.getSize()) {
+                        this._loaded--;
+                        this.dataSource.removeItem(key);
+                    } else if (index < this.dataSource.getSize()) {
+                        this._loaded++;
+                        let v = JSON.parse((await this._storage.readKey('ds.' + this.name + '.item.' + key))!) as T;
+                        this.dataSource.addItem(v, index);
+                    }
+                }
             } else {
                 throw Error('Trying to move non-existent item');
             }
-
-            this.dataSource.moveItem(key, index);
+            // if (index < this.dataSource.)
         });
     }
 
@@ -187,7 +217,14 @@ export class DataSourceStored<T extends DataSourceItem> {
             this._index = r;
             await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
 
-            this.dataSource.addItem(item, index);
+            if (this._loadCompleted) {
+                this.dataSource.addItem(item, index);
+            } else {
+                if (index < this.dataSource.getSize()) {
+                    this._loaded++;
+                    this.dataSource.addItem(item, index);
+                }
+            }
         });
     }
 
@@ -199,11 +236,33 @@ export class DataSourceStored<T extends DataSourceItem> {
         if (this._loadingMore) {
             return;
         }
-        if (!this._cursor) {
+        if (!this._cursor && this._loadCompleted) {
             return;
         }
         this._loadingMore = true;
         this._queue.post(async () => {
+
+            // Load from database
+            if (!this._loadCompleted) {
+                let toLoad: string[];
+                if (this._index.length < this._loaded + this.pageSize) {
+                    toLoad = this._index.slice(this._loaded);
+                    this._loadCompleted = true;
+                } else {
+                    toLoad = this._index.slice(this._loaded, this._loaded + this.pageSize - 1);
+                    this._loaded += this.pageSize;
+                }
+
+                let items: T[] = [];
+                let loaded = await this._storage.readKeys(toLoad.map((v) => 'ds.' + this.name + '.item.' + v));
+                for (let v of toLoad) {
+                    items.push(JSON.parse(loaded.find((i) => ('ds.' + this.name + '.item.' + v) === i.key)!.value!));
+                }
+
+                this.dataSource.loadedMore(items, this._loadCompleted && !this._cursor);
+                this._loadingMore = false;
+                return;
+            }
             const cursor = this._cursor;
             let data = await this._provider.loadMore(cursor);
 
