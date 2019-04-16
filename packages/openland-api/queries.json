@@ -5048,6 +5048,103 @@
 		},
 		{
 			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
+			"operationName": "RoomMemberShort",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "roomId",
+					"type": "ID!"
+				},
+				{
+					"name": "memberId",
+					"type": "ID!"
+				}
+			],
+			"source": "query RoomMemberShort($roomId: ID!, $memberId: ID!) {\n  member: roomMember(roomId: $roomId, memberId: $memberId) {\n    __typename\n    user {\n      __typename\n      id\n      name\n      firstName\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "member",
+					"fieldName": "roomMember",
+					"type": "RoomMember",
+					"args": [
+						{
+							"name": "roomId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "roomId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "memberId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "memberId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "user",
+							"fieldName": "user",
+							"type": "User!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "name",
+									"fieldName": "name",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "firstName",
+									"fieldName": "firstName",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query RoomMemberShort($roomId: ID!, $memberId: ID!) {\n  member: roomMember(roomId: $roomId, memberId: $memberId) {\n    __typename\n    user {\n      __typename\n      id\n      name\n      firstName\n    }\n  }\n}",
+			"operationId": "242bbda7495d286463dbe2643bfa7c14731d1aff08f283b8514c807732815833"
+		},
+		{
+			"filePath": "file:///Users/sergeylapin/repos/openland/openland-apps/packages/openland-api/queries/Chats.ts",
 			"operationName": "RoomMembers",
 			"operationType": "query",
 			"rootType": "Query",

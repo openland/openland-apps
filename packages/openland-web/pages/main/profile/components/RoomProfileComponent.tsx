@@ -320,6 +320,7 @@ const RequestCard = ({
 };
 
 interface MembersProviderProps {
+    roomTitle: string;
     membersCount: number | null;
     requests?: RoomFull_SharedRoom_requests[] | null;
     chatId: string;
@@ -332,6 +333,7 @@ const convertToDataSource = (data: any) => {
 };
 
 const MembersProvider = ({
+    roomTitle,
     membersCount,
     router,
     requests,
@@ -396,7 +398,7 @@ const MembersProvider = ({
                     {sectionElems}
                 </SectionContent>
 
-                <RemoveMemberModal roomId={chatId} />
+                <RemoveMemberModal roomId={chatId} roomTitle={roomTitle} />
             </Section>
         );
     } else {
@@ -446,6 +448,7 @@ const BackButton = () => (
 
 const RoomGroupProfileInner = ({ chat, conversationId, router }: RoomGroupProfileInnerProps) => {
     const membersCount = chat.organization ? chat.organization.membersCount : chat.membersCount;
+
     return (
         <XScrollView3 flexGrow={1} flexShrink={1}>
             <About chat={chat} />
@@ -468,6 +471,7 @@ const RoomGroupProfileInner = ({ chat, conversationId, router }: RoomGroupProfil
 
             <MembersProvider
                 membersCount={membersCount}
+                roomTitle={chat.title}
                 router={router}
                 requests={chat.requests}
                 chatId={conversationId}

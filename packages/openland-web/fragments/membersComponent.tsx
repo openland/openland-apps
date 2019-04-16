@@ -3,10 +3,13 @@ import Glamorous from 'glamorous';
 import { XPopper } from 'openland-x/XPopper';
 import { XLink } from 'openland-x/XLink';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { XModalHeader, XModalTitle } from 'openland-x-modal/XModal';
 import CloseIcon from 'openland-icons/ic-close-1.svg';
 import { XText } from 'openland-x/XText';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XView } from 'react-mental';
 
 const DeclineButtonWrapper = Glamorous(XLink)<{ isHoveredWrapper?: boolean }>([
     {
@@ -53,42 +56,68 @@ class DeclineButton extends React.Component<{
     }
 }
 
-export const RemoveMemberModal = (props: { roomId: string }) => {
+const RemoveMemberModalInner = ({ roomId, roomTitle }: { roomId: string; roomTitle: string }) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    return null;
+    const data = client.useRoomMemberShort({
+        roomId,
+        memberId: router.query.remove,
+    });
 
-    // let member = props.members.filter(
-    //     (m: any) => (m.user && m.user.id === router.query.remove) || '',
-    // )[0];
+    const member = data && data.member ? data.member : null;
+    if (!member) {
+        return null;
+    }
 
-    // if (!member) {
-    //     return null;
-    // }
-    // return (
-    //     <XModalForm
-    //         submitProps={{
-    //             text: 'Remove',
-    //             style: 'danger',
-    //         }}
-    //         title={'Remove ' + member.user.name + ' from ' + props.roomTitle}
-    //         targetQuery="remove"
-    //         defaultAction={async () => {
-    //             await client.mutateRoomKick({
-    //                 userId: member.user.id,
-    //                 roomId: props.roomId,
-    //             });
+    return (
+        <XModalForm
+            submitProps={{
+                text: 'Remove',
+                style: 'danger',
+            }}
+            title={'Remove ' + member.user.name + ' from ' + roomTitle}
+            targetQuery="remove"
+            defaultAction={async () => {
+                await client.mutateRoomKick({
+                    userId: member.user.id,
+                    roomId,
+                });
 
-    //             await client.refetchRoom({
-    //                 id: props.roomId,
-    //             });
-    //         }}
-    //     >
-    //         <XText>
-    //             Are you sure you want to remove {member.user.firstName}? They will no longer be able
-    //             to participate in the discussion.
-    //         </XText>
-    //     </XModalForm>
-    // );
+                await client.refetchRoom({
+                    id: roomId,
+                });
+            }}
+        >
+            <XText>
+                Are you sure you want to remove {member.user.firstName}? They will no longer be able
+                to participate in the discussion.
+            </XText>
+        </XModalForm>
+    );
+};
+
+export const RemoveMemberModal = ({ roomId, roomTitle }: { roomId: string; roomTitle: string }) => {
+    let router = React.useContext(XRouterContext)!;
+
+    if (!router.query.remove) {
+        return null;
+    }
+    return (
+        <React.Suspense
+            fallback={
+                <XView
+                    top={0}
+                    left={0}
+                    width="100%"
+                    height="100%"
+                    backgroundColor="background-color: rgba(0, 0, 0, 0.4)"
+                    position="fixed"
+                    zIndex={100}
+                />
+            }
+        >
+            <RemoveMemberModalInner roomId={roomId} roomTitle={roomTitle} />{' '}
+        </React.Suspense>
+    );
 };

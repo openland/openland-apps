@@ -464,6 +464,13 @@
       }
     },
     {
+      "signature": "0e9e6a66aab7b8ed4cf1af5c909fffaa82b0be3c838b7015fa76610a52ac7bee",
+      "document": "query RoomMemberShort($memberId:ID!,$roomId:ID!){member:roomMember(memberId:$memberId,roomId:$roomId){__typename user{__typename firstName id name}}}",
+      "metadata": {
+        "engineSignature": "query RoomMemberShort($memberId:ID!,$roomId:ID!){roomMember(memberId:$memberId,roomId:$roomId){__typename user{__typename firstName id name}}}"
+      }
+    },
+    {
       "signature": "255a9f411518e9ce9ff047469dbee5abb777ea494c894be415a46de27e4453be",
       "document": "fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomMembers($roomId:ID!){members:roomMembers(roomId:$roomId){__typename canKick membership role user{__typename...UserShort}}}",
       "metadata": {

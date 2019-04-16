@@ -22335,6 +22335,35 @@ export interface RoomMembersShortVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: RoomMemberShort
+// ====================================================
+
+export interface RoomMemberShort_member_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+}
+
+export interface RoomMemberShort_member {
+  __typename: "RoomMember";
+  user: RoomMemberShort_member_user;
+}
+
+export interface RoomMemberShort {
+  member: RoomMemberShort_member | null;
+}
+
+export interface RoomMemberShortVariables {
+  roomId: string;
+  memberId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: RoomMembers
 // ====================================================
 

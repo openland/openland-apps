@@ -102,6 +102,7 @@ export const RoomSearchQuery = typedQuery<Types.RoomSearch, Types.RoomSearchVari
 export const RoomAlterFeaturedMutation = typedMutation<Types.RoomAlterFeatured, Types.RoomAlterFeaturedVariables>(Chats.RoomAlterFeaturedMutation);
 export const RoomAlterHiddenMutation = typedMutation<Types.RoomAlterHidden, Types.RoomAlterHiddenVariables>(Chats.RoomAlterHiddenMutation);
 export const RoomMembersShortQuery = typedQuery<Types.RoomMembersShort, Types.RoomMembersShortVariables>(Chats.RoomMembersShortQuery);
+export const RoomMemberShortQuery = typedQuery<Types.RoomMemberShort, Types.RoomMemberShortVariables>(Chats.RoomMemberShortQuery);
 export const RoomMembersQuery = typedQuery<Types.RoomMembers, Types.RoomMembersVariables>(Chats.RoomMembersQuery);
 export const RoomMembersPaginatedQuery = typedQuery<Types.RoomMembersPaginated, Types.RoomMembersPaginatedVariables>(Chats.RoomMembersPaginatedQuery);
 export const MentionsMembersQuery = typedQuery<Types.MentionsMembers, Types.MentionsMembersVariables>(Chats.MentionsMembersQuery);
