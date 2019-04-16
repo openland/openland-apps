@@ -83,7 +83,7 @@ export const ImagePreviewModal = (props: ImagePreviewModal) => {
     let dimensions = layoutMedia(props.width, props.height, 1000, 1000);
 
     if (messagesContextProps.useForwardHeader) {
-        return props.target;
+        return props.target as React.ReactElement;
     }
 
     return (
