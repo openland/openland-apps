@@ -19,8 +19,8 @@ export const SenderView = React.memo<SenderViewProps>((props) => {
 
     return (
         <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
-            <View alignItems="stretch" marginTop={15} marginBottom={15} flexDirection="row">
-                <View marginRight={15}>
+            <View alignItems="stretch" marginTop={15} marginBottom={8} flexDirection="row">
+                <View marginRight={12}>
                     <ZAvatar
                         size={40}
                         src={sender.photo}

@@ -119,7 +119,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let likes = !deleted ? (
         <TouchableWithoutFeedback onPress={handleReactionPress}>
-            <View width={46} alignItems="center" justifyContent="center" paddingLeft={8}>
+            <View width={34} alignItems="center" justifyContent="center" paddingRight={4}>
                 <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? '#f6564e' : 'rgba(129, 137, 149, 0.3)', width: 18, height: 18 }} />
                 {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? '#000000' : 'rgba(0, 0, 0, 0.6)' } as TextStyle} allowFontScaling={false}>{likesCount}</Text>}
             </View>
