@@ -241,9 +241,9 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     };
 
     private menuRender = () => {
-        let { message } = this.props;
+        let { message, messagesContext } = this.props;
         let out = message.isOut;
-        if (!message.isSending) {
+        if (!message.isSending && !messagesContext.useForwardHeader) {
             return (
                 <XHorizontal
                     alignItems="center"
@@ -305,13 +305,10 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         )[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
 
         let isSelect = false;
-        let hideMenu = false;
+        let hideMenu = this.props.messagesContext.useForwardHeader;
         let { forwardMessagesId } = this.props.messagesContext;
         if (forwardMessagesId) {
             isSelect = forwardMessagesId.has(message.id || 'none');
-            if (forwardMessagesId.size > 0) {
-                hideMenu = true;
-            }
         }
 
         if (!message.isSending) {
