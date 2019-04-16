@@ -28,9 +28,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     }, []);
 
     const content = extractContent({
-        theme,
         message,
-
         onUserPress: handleUserPress,
         onDocumentPress: handleDocumentPress,
     }, props.small);

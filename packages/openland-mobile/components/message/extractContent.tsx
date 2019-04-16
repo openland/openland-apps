@@ -10,7 +10,6 @@ import { layoutImage } from 'openland-mobile/messenger/components/content/MediaC
 import { Dimensions } from 'react-native';
 
 interface ExtractContentProps {
-    theme: AppTheme;
     message: FullMessage_GeneralMessage;
 
     onUserPress: (id: string) => void;
