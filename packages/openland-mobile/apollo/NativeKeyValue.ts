@@ -1,6 +1,7 @@
 import SQLite from 'react-native-sqlite-storage';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 import { KeyValueStore } from 'openland-y-utils/KeyValueStore';
+import { AppStorage } from 'openland-mobile/utils/AppStorage';
 
 export class NativeKeyValue implements KeyValueStore {
 
@@ -11,7 +12,7 @@ export class NativeKeyValue implements KeyValueStore {
         this.queue.post(async () => {
             SQLite.enablePromise(true);
             SQLite.DEBUG(__DEV__);
-            this.db = await SQLite.openDatabase({ name, location: 'default' });
+            this.db = await SQLite.openDatabase({ name: name + '-' + AppStorage.storage, location: 'default' });
             await this.db.executeSql('CREATE TABLE IF NOT EXISTS records(key TEXT PRIMARY KEY, value TEXT);');
         })
     }
