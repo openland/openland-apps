@@ -9,14 +9,44 @@ interface ReplyViewProps {
     onClearPress: () => void;
 }
 
+let formatComment = (comment: MessageComments_messageComments_comments_comment): string => {
+    let res = comment.fallback;
+
+    if (comment.message) {
+        res = comment.message;
+    } else {
+        if (comment.quotedMessages.length) {
+            res = 'Forward'
+        }
+
+        if (comment.attachments && comment.attachments.length === 1) {
+            let attachment = comment.attachments[0];
+            res = attachment.fallback;
+            if (attachment.__typename === 'MessageAttachmentFile') {
+                if (attachment.fileMetadata.isImage) {
+                    if (attachment.fileMetadata.imageFormat === 'GIF') {
+                        res = 'GIF';
+                    } else {
+                        res = 'Photo';
+                    }
+                } else {
+                    res = 'Document';
+                }
+            }
+        }
+    }
+
+    return res;
+}
+
 export const ReplyView = (props: ReplyViewProps) => {
     const { comment, onClearPress } = props;
-    
+
     return (
         <View marginLeft={Platform.OS === 'android' ? 12 : 15} paddingLeft={8} marginRight={Platform.OS === 'android' ? 12 : 52} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
             <View flexGrow={1}>
                 <Text style={{ color: '#0084fe', fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1} allowFontScaling={false}>{comment.sender.name}</Text>
-                <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1} allowFontScaling={false}>{comment.message}</Text>
+                <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1} allowFontScaling={false}>{formatComment(comment)}</Text>
             </View>
             <TouchableWithoutFeedback onPress={onClearPress}>
                 <View marginLeft={11} width={18} height={38} alignItems="center" justifyContent="center">
