@@ -24,14 +24,16 @@ export interface DesktopMessageContainerProps {
     selected: boolean;
 
     children?: any;
+    haveReactions: boolean;
 }
 
 interface PreambulaContainerProps {
     children: any;
     onClick?: () => void;
+    haveReactions: boolean;
 }
 
-const CompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
+const CompactPreambulaContainer = ({ children, haveReactions }: PreambulaContainerProps) => {
     return (
         <XView
             alignSelf="flex-start"
@@ -41,10 +43,10 @@ const CompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
             whiteSpace={'nowrap'}
             overflow={'hidden'}
             paddingTop={1}
-            marginTop={1}
+            marginTop={haveReactions ? undefined : 1}
             fontWeight={'600'}
             lineHeight={'22px'}
-            color={'rgba(0, 0, 0, 0.4)'}
+            color="rgba(0, 0, 0, 0.4)"
         >
             {children}
         </XView>
@@ -172,13 +174,13 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     );
 
     // Left side of message
-    const { compact, sender, date } = props;
+    const { compact, sender, date, haveReactions } = props;
 
     const PreambulaContainer = compact ? CompactPreambulaContainer : NotCompactPreambulaContainer;
 
     const preambula = React.useMemo(
         () => (
-            <PreambulaContainer>
+            <PreambulaContainer haveReactions={haveReactions}>
                 {!compact ? (
                     <UserPopper
                         isMe={props.sender.isYou}
@@ -327,7 +329,7 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
     const { sender, date } = props;
 
     const preambula = (
-        <NotCompactPreambulaContainer>
+        <NotCompactPreambulaContainer haveReactions={false}>
             <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
         </NotCompactPreambulaContainer>
     );
