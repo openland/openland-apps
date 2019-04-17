@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { showSheetModal } from './showSheetModal';
 import { ZActionSheetItem, ZActionSheetViewItem } from './ZActionSheetItem';
 import { ZModalController } from './ZModal';
+import { isPad } from 'openland-mobile/pages/Root';
 
 interface ActionSheetBuilderActionItem {
     __typename: "ActionItem";
@@ -55,11 +56,11 @@ export class ActionSheetBuilder {
                                     appearance={a.distructive ? 'danger' : 'default'}
                                     name={a.name}
                                     onPress={() => { ctx.hide(); a.callback(); }}
-                                    separator={i !== this._items.length - 1}
+                                    separator={isPad ? true : (i !== this._items.length - 1)}
                                 />
                             )}
                             {a.__typename === 'ViewItem' && (
-                                <ZActionSheetViewItem separator={i !== this._items.length - 1}>
+                                <ZActionSheetViewItem separator={isPad ? true : (i !== this._items.length - 1)}>
                                     {a.view(ctx)}
                                 </ZActionSheetViewItem>
                             )}

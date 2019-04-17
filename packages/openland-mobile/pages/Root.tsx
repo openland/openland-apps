@@ -15,7 +15,7 @@ export interface RootProps {
     padLayout?: boolean;
 }
 
-let isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
+export const isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
 
 class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme }, { masterRouting?: SRouting, masterKey?: string }> {
 

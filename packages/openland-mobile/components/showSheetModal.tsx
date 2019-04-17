@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { ZModalController, showModal, ZModal } from './ZModal';
-import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform, ScrollView, Dimensions } from 'react-native';
+import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform, ScrollView, Dimensions, PlatformIOS } from 'react-native';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
 import { ZActionSheetItem } from './ZActionSheetItem';
 import { ZBlurredView } from './ZBlurredView';
+import { isPad } from 'openland-mobile/pages/Root';
 
 class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea }> implements ZModalController {
 
@@ -45,7 +46,19 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
 
         // Prepare
         SAnimated.beginTransaction();
-        this.contentView.translateY = event.nativeEvent.layout.height;
+
+        if (!isPad) {
+            this.contentView.translateY = event.nativeEvent.layout.height;            
+        } else {
+            SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                SAnimated.spring(name, {
+                    property: prop,
+                    from: from,
+                    to: to,
+                });
+            });
+        }
+
         this.contentView.opacity = 1;
         SAnimated.commitTransaction();
 
@@ -67,7 +80,11 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                 });
             }
         });
-        this.contentView.translateY = 0;
+
+        if (!isPad) {
+            this.contentView.translateY = 0;
+        }
+
         this.bgView.opacity = 1;
         SAnimated.commitTransaction();
     }
@@ -95,15 +112,19 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                 });
             }
         });
-        this.contentView.translateY = this.contentHeight;
+
+        if (!isPad) {
+            this.contentView.translateY = this.contentHeight;
+        }
+
+        this.contentView.opacity = 0;
         this.bgView.opacity = 0;
         SAnimated.commitTransaction(() => { this.props.ctx.hide(); });
     }
 
     render() {
         return (
-            <View width="100%" height="100%" flexDirection="column" alignItems="stretch" justifyContent="flex-end">
-
+            <View width="100%" height="100%" flexDirection="column" alignItems="stretch" justifyContent={isPad ? 'center' : 'flex-end'}>
                 <TouchableWithoutFeedback onPress={this.hide}>
                     <View
                         style={{
@@ -147,7 +168,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                             </ScrollView>
                         </View>
                     )}
-                    {Platform.OS === 'ios' && (
+                    {Platform.OS === 'ios' && !isPad && (
                         <View onLayout={this.onLayout}>
                             <ZBlurredView
                                 intensity="high"
@@ -169,6 +190,24 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                             >
                                 <ZActionSheetItem name="Cancel" onPress={this.hide} appearance="cancel" separator={false} />
                             </View>
+                        </View>
+                    )}
+                    {Platform.OS === 'ios' && isPad && (
+                        <View onLayout={this.onLayout}>
+                            <ZBlurredView
+                                intensity="high"
+                                borderRadius={14}
+                                marginHorizontal={10}
+                                overflow="hidden"
+                                width={350}
+                                alignSelf="center"
+                            >
+                                <ScrollView alwaysBounceVertical={false} maxHeight={Dimensions.get('screen').height - this.props.safe.top - this.props.safe.bottom - 100}>
+                                    {this.contents}
+
+                                    <ZActionSheetItem name="Cancel" onPress={this.hide} appearance="cancel" separator={false} />
+                                </ScrollView>
+                            </ZBlurredView>
                         </View>
                     )}
                 </SAnimated.View>
