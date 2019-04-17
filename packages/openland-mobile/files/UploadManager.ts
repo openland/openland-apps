@@ -6,6 +6,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { Image } from 'react-native';
 import { DownloadManagerInstance } from './DownloadManager';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
+import UUID from 'uuid/v4';
 
 export interface UploadState {
     status: UploadStatus;
@@ -19,11 +20,18 @@ interface Task {
     uri: string;
 }
 
+interface Callbacks {
+    onProgress: (progress: number) => void;
+    onDone: (fileId: string) => void;
+    onFail: () => void;
+}
+
 export class UploadManager {
 
     private _watchers = new Map<string, Watcher<UploadState>>();
     private _started = false;
     private _queue: Task[] = [];
+    private uploadedFiles = new Map<string, string>();
 
     watch = (conversationId: string, handler: (state: UploadState) => void) => {
         return this.getWatcher(conversationId).watch(handler);
@@ -57,6 +65,48 @@ export class UploadManager {
         });
         this._watchers.set(messageId, w);
         this._queue.push({ messageId, name, uri });
+
+        if (!this._started) {
+            this._started = true;
+            this.startUpload();
+        }
+    }
+
+    registerSimpleUpload = async (name: string, uri: string, callbacks: Callbacks, fileSize?: number) => {
+        if (!(await checkPermissions('android-storage'))) {
+            return;
+        }
+
+        const w = new Watcher<UploadState>();
+        w.setState({ progress: 0, status: UploadStatus.UPLOADING });
+
+        let key = UUID();
+
+        (async () => {
+            try {
+                if (!this.uploadedFiles.has(key)) {
+                    let res = await new Promise<string>((resolver, reject) => {
+                        w.watch(state => {
+                            if (state.status === UploadStatus.FAILED) {
+                                reject();
+                            } else if (state.status === UploadStatus.UPLOADING) {
+                                callbacks.onProgress(state.progress!!);
+                            } else if (state.status === UploadStatus.COMPLETED) {
+                                resolver(state.uuid!!);
+                            }
+                        });
+                    });
+                    this.uploadedFiles.set(key, res);
+                }
+            } catch (e) {
+                callbacks.onFail();
+            }
+
+            callbacks.onDone(this.uploadedFiles.get(key)!!);
+        })();
+
+        this._watchers.set(key, w);
+        this._queue.push({ messageId: key, name, uri });
 
         if (!this._started) {
             this._started = true;
