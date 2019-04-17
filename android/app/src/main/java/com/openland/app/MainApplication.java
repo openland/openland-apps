@@ -5,7 +5,6 @@ import android.app.Application;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
 import com.ocetnik.timer.BackgroundTimerPackage;
-import com.zmxv.RNSound.RNSoundPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
 import com.zxcpoiu.incallmanager.InCallManagerPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
@@ -67,7 +66,6 @@ public class MainApplication extends Application implements ShareApplication, Re
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
             new BackgroundTimerPackage(),
-            new RNSoundPackage(),
             new RNReactNativeHapticFeedbackPackage(),
             new InCallManagerPackage(),
             new ExtraDimensionsPackage(),
