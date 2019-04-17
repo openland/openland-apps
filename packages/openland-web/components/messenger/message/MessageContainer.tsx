@@ -251,10 +251,10 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
             flexBasis={0}
             minWidth={0}
             alignItems="stretch"
-            // backgroundColor={props.selected ? '#f7f7f7' : undefined}
-            marginVertical={-2}
+            backgroundColor={props.selected ? '#f7f7f7' : undefined}
+            marginVertical={-8}
             marginHorizontal={-8}
-            paddingVertical={2}
+            paddingVertical={8}
             paddingHorizontal={8}
             borderRadius={6}
         >

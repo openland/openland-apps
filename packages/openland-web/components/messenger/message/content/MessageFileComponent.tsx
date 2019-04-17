@@ -26,15 +26,11 @@ interface MessageFileComponentProps {
     fileSize?: number;
     onClearClick?: () => void;
     clearButton?: boolean;
-    marginTop?: number;
+    marginBottom?: number
 }
 
 export const MessageFileComponent = XMemo<MessageFileComponentProps>(props => {
     let href = undefined;
-    let marginTop = 8;
-    if (props.marginTop !== undefined) {
-        marginTop = props.marginTop;
-    }
     if (props.file) {
         href = `https://ucarecdn.com/${props.file}/${props.fileName ? props.fileName!! : ''}`;
     }
@@ -45,11 +41,9 @@ export const MessageFileComponent = XMemo<MessageFileComponentProps>(props => {
             alignSelf="flex-start"
             flexDirection="row"
             alignItems="center"
-            marginTop={marginTop}
-            paddingTop={8}
-            paddingBottom={8}
-            paddingLeft={16}
-            paddingRight={16}
+            paddingVertical={8}
+            paddingHorizontal={16}
+            marginBottom={props.marginBottom}
             cursor="pointer"
             borderRadius={10}
             color="rgba(0, 0, 0, 0.8)"
@@ -59,6 +53,7 @@ export const MessageFileComponent = XMemo<MessageFileComponentProps>(props => {
             position="relative"
             hoverColor="#1790ff"
             hoverTextDecoration="none"
+            zIndex={1}
         >
             <XView
                 width={23}
