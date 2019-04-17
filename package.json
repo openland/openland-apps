@@ -260,7 +260,7 @@
         "@types/supercluster": "^3.0.2",
         "@types/tlds": "^1.199.0",
         "@types/url-parse": "^1.4.3",
-        "@types/uuid": "^3.4.3",
+        "@types/uuid": "^3.4.4",
         "@types/ws": "^5.1.2",
         "@zeit/next-bundle-analyzer": "0.1.2",
         "@zeit/next-css": "^1.0.1",
