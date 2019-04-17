@@ -223,7 +223,11 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                                 paddingLeft={8}
                                 alignSelf="flex-end"
                                 marginBottom={-1}
-                                path={`/mail/o/${props.sender.primaryOrganization.id}`}
+                                path={
+                                    props.selecting
+                                        ? undefined
+                                        : `/mail/o/${props.sender.primaryOrganization.id}`
+                                }
                                 hoverTextDecoration="none"
                             >
                                 {props.sender.primaryOrganization.name}
@@ -242,7 +246,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                     </XView>
                 </XView>
             ),
-            [props.date, props.sender, props.sender.primaryOrganization],
+            [props.date, props.sender, props.sender.primaryOrganization, props.selecting],
         );
     // Content
     const content = (
