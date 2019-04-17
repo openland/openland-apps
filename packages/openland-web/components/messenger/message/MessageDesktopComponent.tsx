@@ -425,6 +425,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 file={fileAttach.fileId}
                                 fileName={fileAttach.fileMetadata.name}
                                 fileSize={fileAttach.fileMetadata.size}
+                                marginBottom={3}
                             />,
                         );
                     }

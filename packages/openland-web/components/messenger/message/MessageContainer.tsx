@@ -75,6 +75,7 @@ interface MessageContainerWrapperProps {
     onMouseLeave: (event: React.MouseEvent<any>) => void;
     onClick?: (e: any) => void;
     cursorPointer: boolean;
+    selected: boolean;
 }
 
 const CompactMessageContainerWrapper = ({
@@ -83,6 +84,7 @@ const CompactMessageContainerWrapper = ({
     onMouseLeave,
     onClick,
     cursorPointer,
+    selected,
 }: MessageContainerWrapperProps) => {
     return (
         <XView
@@ -90,13 +92,16 @@ const CompactMessageContainerWrapper = ({
             flexDirection="row"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            marginTop={0}
-            paddingTop={2}
-            paddingLeft={18}
+            marginTop={-3}
+            marginBottom={-3}
+            paddingTop={7}
+            paddingBottom={5}
+            paddingLeft={20}
             paddingRight={20}
-            paddingBottom={3}
+            borderRadius={4}
             onClick={onClick}
             cursor={cursorPointer ? 'pointer' : undefined}
+            backgroundColor={selected ? '#f7f7f7' : undefined}
         >
             {children}
         </XView>
@@ -109,6 +114,7 @@ const NotCompactMessageContainerWrapper = ({
     onMouseLeave,
     onClick,
     cursorPointer,
+    selected,
 }: MessageContainerWrapperProps) => {
     return (
         <XView
@@ -116,13 +122,16 @@ const NotCompactMessageContainerWrapper = ({
             flexDirection="row"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            marginTop={12}
-            paddingTop={7}
-            paddingLeft={18}
+            marginTop={9}
+            marginBottom={-3}
+            paddingTop={10}
+            paddingBottom={5}
+            paddingLeft={20}
             paddingRight={20}
-            paddingBottom={3}
+            borderRadius={4}
             onClick={onClick}
             cursor={cursorPointer ? 'pointer' : undefined}
+            backgroundColor={selected ? '#f7f7f7' : undefined}
         >
             {children}
         </XView>
@@ -257,12 +266,6 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
             flexBasis={0}
             minWidth={0}
             alignItems="stretch"
-            backgroundColor={props.selected ? '#f7f7f7' : undefined}
-            marginVertical={-8}
-            marginHorizontal={-8}
-            paddingVertical={8}
-            paddingHorizontal={8}
-            borderRadius={6}
         >
             {props.compact ? (
                 props.children
@@ -291,6 +294,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             cursorPointer={props.selecting}
+            selected={props.selected}
             onClick={(e: any) => {
                 if (props.selecting) {
                     e.preventDefault();
