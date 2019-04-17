@@ -71,6 +71,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
             <View
                 backgroundColor="#f3f5f7"
                 borderRadius={8}
+                marginVertical={5}
             >
                 <View width={imageLayout.width} height={imageLayout.height} alignSelf="center">
                     <PreviewWrapper path={imagePath} metadata={this.props.attach.fileMetadata} radius={8}>

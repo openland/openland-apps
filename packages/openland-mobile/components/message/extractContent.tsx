@@ -57,7 +57,7 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
             imageLayout = layoutImage(attach.image.metadata, realMaxWidth);
         }
 
-        content.push(<RichAttachContent key={'msg-rich-' + index} attach={attach} imageLayout={imageLayout} message={message} />);
+        content.push(<RichAttachContent key={'msg-rich-' + index} attach={attach} imageLayout={imageLayout} message={message} isSmall={isSmall} />);
     });
 
     return content;

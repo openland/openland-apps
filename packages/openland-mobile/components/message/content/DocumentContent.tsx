@@ -43,7 +43,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
 
         return (
             <TouchableWithoutFeedback onPress={this.handlePress}>
-                <View height={40} flexDirection="row" marginTop={2} marginBottom={1}>
+                <View height={40} flexDirection="row" marginVertical={5}>
                     <View
                         width={40}
                         height={40}
