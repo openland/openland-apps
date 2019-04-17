@@ -8531,9 +8531,7 @@ public final class RoomSearchTextQuery: GraphQLQuery {
 
 public final class RoomSearchQuery: GraphQLQuery {
   public let operationDefinition =
-    "query RoomSearch($query: String, $sort: String, $page: Int) {\n  items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ...RoomShort\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}"
-
-  public var queryDocument: String { return operationDefinition.appending(RoomShort.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+    "query RoomSearch($query: String, $sort: String, $page: Int) {\n  items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {\n    __typename\n    edges {\n      __typename\n      node {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          membership\n          membersCount\n          organization {\n            __typename\n            photo\n            name\n          }\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n      hasPreviousPage\n      itemsCount\n      currentPage\n      pagesCount\n      openEnded\n    }\n  }\n}"
 
   public var query: String?
   public var sort: String?
@@ -8672,13 +8670,24 @@ public final class RoomSearchQuery: GraphQLQuery {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(RoomShort.self),
+            GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+            GraphQLField("kind", type: .nonNull(.scalar(SharedRoomKind.self))),
+            GraphQLField("isChannel", type: .nonNull(.scalar(Bool.self))),
+            GraphQLField("title", type: .nonNull(.scalar(String.self))),
+            GraphQLField("photo", type: .nonNull(.scalar(String.self))),
+            GraphQLField("membership", type: .nonNull(.scalar(SharedRoomMembershipStatus.self))),
+            GraphQLField("membersCount", type: .scalar(Int.self)),
+            GraphQLField("organization", type: .object(Organization.selections)),
           ]
 
           public private(set) var resultMap: ResultMap
 
           public init(unsafeResultMap: ResultMap) {
             self.resultMap = unsafeResultMap
+          }
+
+          public init(id: GraphQLID, kind: SharedRoomKind, isChannel: Bool, title: String, photo: String, membership: SharedRoomMembershipStatus, membersCount: Int? = nil, organization: Organization? = nil) {
+            self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "isChannel": isChannel, "title": title, "photo": photo, "membership": membership, "membersCount": membersCount, "organization": organization.flatMap { (value: Organization) -> ResultMap in value.resultMap }])
           }
 
           public var __typename: String {
@@ -8690,28 +8699,121 @@ public final class RoomSearchQuery: GraphQLQuery {
             }
           }
 
-          public var fragments: Fragments {
+          public var id: GraphQLID {
             get {
-              return Fragments(unsafeResultMap: resultMap)
+              return resultMap["id"]! as! GraphQLID
             }
             set {
-              resultMap += newValue.resultMap
+              resultMap.updateValue(newValue, forKey: "id")
             }
           }
 
-          public struct Fragments {
+          public var kind: SharedRoomKind {
+            get {
+              return resultMap["kind"]! as! SharedRoomKind
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "kind")
+            }
+          }
+
+          public var isChannel: Bool {
+            get {
+              return resultMap["isChannel"]! as! Bool
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "isChannel")
+            }
+          }
+
+          public var title: String {
+            get {
+              return resultMap["title"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "title")
+            }
+          }
+
+          public var photo: String {
+            get {
+              return resultMap["photo"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "photo")
+            }
+          }
+
+          public var membership: SharedRoomMembershipStatus {
+            get {
+              return resultMap["membership"]! as! SharedRoomMembershipStatus
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "membership")
+            }
+          }
+
+          public var membersCount: Int? {
+            get {
+              return resultMap["membersCount"] as? Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "membersCount")
+            }
+          }
+
+          public var organization: Organization? {
+            get {
+              return (resultMap["organization"] as? ResultMap).flatMap { Organization(unsafeResultMap: $0) }
+            }
+            set {
+              resultMap.updateValue(newValue?.resultMap, forKey: "organization")
+            }
+          }
+
+          public struct Organization: GraphQLSelectionSet {
+            public static let possibleTypes = ["Organization"]
+
+            public static let selections: [GraphQLSelection] = [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("photo", type: .scalar(String.self)),
+              GraphQLField("name", type: .nonNull(.scalar(String.self))),
+            ]
+
             public private(set) var resultMap: ResultMap
 
             public init(unsafeResultMap: ResultMap) {
               self.resultMap = unsafeResultMap
             }
 
-            public var roomShort: RoomShort {
+            public init(photo: String? = nil, name: String) {
+              self.init(unsafeResultMap: ["__typename": "Organization", "photo": photo, "name": name])
+            }
+
+            public var __typename: String {
               get {
-                return RoomShort(unsafeResultMap: resultMap)
+                return resultMap["__typename"]! as! String
               }
               set {
-                resultMap += newValue.resultMap
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var photo: String? {
+              get {
+                return resultMap["photo"] as? String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "photo")
+              }
+            }
+
+            public var name: String {
+              get {
+                return resultMap["name"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "name")
               }
             }
           }
