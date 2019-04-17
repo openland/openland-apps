@@ -677,15 +677,19 @@ export const InviteInfoInner = ({
     loginWithGoogle,
     loginWithEmail,
     signin,
+    isInvitePageSignin,
 }: {
     loginWithGoogle: Function;
     loginWithEmail: Function;
     signPath: string;
     signin: boolean;
+    isInvitePageSignin: boolean;
     inviter: { photo: string | null; name: string; id: string };
 }) => {
-    const googleButtonText = signin ? InitTexts.auth.signinGoogle : InitTexts.auth.signupGoogle;
-    const emailText = signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail;
+    const googleButtonText = isInvitePageSignin
+        ? InitTexts.auth.signinGoogle
+        : InitTexts.auth.signupGoogle;
+    const emailText = isInvitePageSignin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail;
 
     return (
         <div>
@@ -1352,7 +1356,7 @@ const organizationInputErrorClassName = css`
 `;
 
 const ShowOrgError = () => {
-    const [ onceRender, setOnceRender ] = React.useState(false);
+    const [onceRender, setOnceRender] = React.useState(false);
 
     if (!onceRender) {
         trackEvent('signup_org_error');
@@ -1361,16 +1365,11 @@ const ShowOrgError = () => {
     }
 
     return (
-        <div
-            className={cx(
-                organizationInputClassName,
-                organizationInputErrorClassName,
-            )}
-        >
+        <div className={cx(organizationInputClassName, organizationInputErrorClassName)}>
             <XFormError field="input.organization" />
         </div>
     );
-}
+};
 
 export class CreateOrganizationFormInner extends React.Component<
     {
