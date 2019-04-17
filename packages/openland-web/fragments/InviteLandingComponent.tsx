@@ -497,7 +497,8 @@ export const InviteLandingComponent = ({
         : 'Organization';
 
     return (
-        <XTrack event="invite_landing_view" params={{ invite_type: whereToInvite.toLowerCase() }}>
+        <>
+            {noLogin && <XTrack event="invite_landing_view" params={{ invite_type: whereToInvite.toLowerCase() }} />}
             <InviteLandingComponentLayout
                 button={button}
                 whereToInvite={whereToInvite}
@@ -511,6 +512,6 @@ export const InviteLandingComponent = ({
                 noLogin={noLogin}
                 signup={signup}
             />
-        </XTrack>
+        </>
     );
 };
