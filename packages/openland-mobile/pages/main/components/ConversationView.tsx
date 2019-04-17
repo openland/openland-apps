@@ -118,9 +118,9 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                         </ASSafeAreaView>
                     )
                 }
-                <ASSafeAreaView style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} pointerEvents="none">
+                {/* <ASSafeAreaView style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} pointerEvents="none">
                     <ZLoader transparent={true} enabled={this.state.conversation.loading} />
-                </ASSafeAreaView>
+                </ASSafeAreaView> */}
             </View >
         );
     }
