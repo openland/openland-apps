@@ -92,22 +92,3 @@ export class NativeKeyValue implements KeyValueStore {
         }
     }
 }
-
-
-// I / ReactNativeJS: SQLite.backgroundExecuteSqlBatch({ "dbargs": { "dbname": "engines" }, "executes": [{ "qid": 1111, "sql": "SELECT 1", "params": [] }, { "qid": 1111, "sql": "INSERT INTO records(key, value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=?", "params": ["ds.dialogs.item.4dmAE76O00FbQPpkZ7DJuJp041", "{\"haveMention\":false,\"isMuted\":false,\"kind\":\"PUBLIC\",\"isChannel\":true,\"title\":\"Reddit\",\"photo\":\"https://ucarecdn.com/99190019-726f-4bcc-9fb1-5caa84b504c8/-/crop/676x676/229,34/\",\"key\":\"4dmAE76O00FbQPpkZ7DJuJp041\",\"flexibleId\":\"4dmAE76O00FbQPpkZ7DJuJp041\",\"unread\":2,\"message\":\"https://reddit.com/be5v97\",\"fallback\":\"https://reddit.com/be5v97\",\"attachments\":[{\"id\":\"Rg3PvWQ7gBCm9ReMVW6ZTbE0Xd3WvPc6BEXLY6e4UryeQlyBg\",\"fallback\":\"r/gifs - Momma's had enough and lays down the law\",\"__typename\":\"MessageRichAttachment\"}],\"isOut\":false,\"sender\":\"😃CheckOut\",\"messageId\":\"rAOx907x1ZIlBBDA0wdnI1WXak\",\"date\":1555510131583,\"forward\":false,\"showSenderName\":true}", "{\"haveMention\":false,\"isMuted\":false,\"kind\":\"PUBLIC\",\"isChannel\":true,\"title\":\"Reddit\",\"photo\":\"https://ucarecdn.com/99190019-726f-4bcc-9fb1-5caa84b504c8/-/crop/676x676/229,34/\",\"key\":\"4dmAE76O00FbQPpkZ7DJuJp041\",\"flexibleId\":\"4dmAE76O00FbQPpkZ7DJuJp041\",\"unread\":2,\"message\":\"https://reddit.com/be5v97\",\"fallback\":\"https://reddit.com/be5v97\",\"attachments\":[{\"id\":\"Rg3PvWQ7gBCm9ReMVW6ZTbE0Xd3WvPc6BEXLY6e4UryeQlyBg\",\"fallback\":\"r/gifs - Momma's had enough and lays down the law\",\"__typename\":\"MessageRichAttachment\"}],\"isOut\":false,\"sender\":\"😃CheckOut\",\"messageId\":\"rAOx907x1ZIlBBDA0wdnI1WXak\",\"date\":1555510131583,\"forward\":false,\"showSenderName\":true}"] }] })
-// 2019 - 04 - 17 17: 11: 50.582 8726 - 8862 / com.openland.app.debug E / SQLiteLog: (1) near "ON": syntax error
-// 2019 - 04 - 17 17: 11: 50.586 8726 - 8862 / com.openland.app.debug E / unknown: SQLitePlugin: SQLitePlugin.executeSql[Batch](): failed
-// android.database.sqlite.SQLiteException: near "ON": syntax error(code 1): , while compiling: INSERT INTO records(key, value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value =?
-//     at android.database.sqlite.SQLiteConnection.nativePrepareStatement(Native Method)
-// at android.database.sqlite.SQLiteConnection.acquirePreparedStatement(SQLiteConnection.java: 890)
-// at android.database.sqlite.SQLiteConnection.prepare(SQLiteConnection.java: 501)
-// at android.database.sqlite.SQLiteSession.prepare(SQLiteSession.java: 588)
-// at android.database.sqlite.SQLiteProgram.<init>(SQLiteProgram.java: 58)
-// at android.database.sqlite.SQLiteStatement.<init>(SQLiteStatement.java: 31)
-// at android.database.sqlite.SQLiteDatabase.compileStatement(SQLiteDatabase.java: 1070)
-// at org.pgsqlite.SQLitePlugin.executeSqlBatch(SQLitePlugin.java: 643)
-// at org.pgsqlite.SQLitePlugin.access$100(SQLitePlugin.java: 49)
-// at org.pgsqlite.SQLitePlugin$DBRunner.run(SQLitePlugin.java: 927)
-// at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java: 1162)
-// at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java: 636)
-// at java.lang.Thread.run(Thread.java: 764)
