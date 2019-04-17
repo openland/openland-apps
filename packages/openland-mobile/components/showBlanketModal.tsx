@@ -5,6 +5,7 @@ import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
+import { isPad } from 'openland-mobile/pages/Root';
 
 class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea, cancelable?: boolean }> implements ZModalController {
 
@@ -149,14 +150,28 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
                     }}
                 >
                     <View flexGrow={1} flexBasis={0} minHeight={0} minWidth={0} alignItems="stretch" alignSelf="stretch" flexDirection="column" justifyContent="center" marginBottom={this.props.safe.bottom} marginTop={this.props.safe.top + 48}>
-                        <View
-                            backgroundColor="#fff"
-                            borderRadius={16}
-                            marginHorizontal={16}
-                            onLayout={this.onLayout}
-                        >
-                            {this.contents}
-                        </View>
+                        {!isPad && (
+                            <View
+                                backgroundColor="#fff"
+                                borderRadius={16}
+                                marginHorizontal={16}
+                                onLayout={this.onLayout}
+                            >
+                                {this.contents}
+                            </View>
+                        )}
+                        {isPad && (
+                            <View width={420} alignSelf="center">
+                                <View
+                                    backgroundColor="#fff"
+                                    borderRadius={16}
+                                    marginHorizontal={16}
+                                    onLayout={this.onLayout}
+                                >
+                                    {this.contents}
+                                </View>
+                            </View>
+                        )}
                     </View>
                 </SAnimated.View>
             </View>

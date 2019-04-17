@@ -48,7 +48,7 @@ export class PromptBuilder {
                     paddingVertical={20}
                 >
                     {this._title && <Text style={{ marginBottom: 12, color: '#000', fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{this._title}</Text>}
-                    <TextInput defaultValue={this._value} onChangeText={this.onTextChange} autoFocus={true} multiline={true} maxHeight={100} />
+                    <TextInput defaultValue={this._value} onChangeText={this.onTextChange} autoFocus={true} multiline={true} maxHeight={100} marginBottom={15} />
                     <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
                         {this._actions.map((a, i) => (
                             <>
