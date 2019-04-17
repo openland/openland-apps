@@ -118,7 +118,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                 </Text>
             </View>
 
-            {room.__typename === 'SharedRoom' && <View flexDirection="row" flexWrap="wrap" marginHorizontal={18} marginTop={40}>
+            {room.__typename === 'SharedRoom' && <View flexDirection="row" alignItems="center" flexWrap="wrap" marginHorizontal={18} marginTop={40}>
                 {conference && conference.conference.peers.map(p => {
                     return <View key={p.id} margin={10}>
                         <ZAvatar size={45} placeholderKey={p.id} placeholderTitle={p.user.name} src={p.user.photo} />
