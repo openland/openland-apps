@@ -209,7 +209,7 @@ class SignInComponent extends React.Component<
     }
 
     loginWithGoogle = () => {
-        trackEvent('signup_google_action');
+        trackEvent(checkIfIsSignIn(this.props.router) ? 'signin_google_action' : 'signup_google_action');
 
         this.setState({ googleStarting: true, signInInvite: false });
         this.fireGoogle();
@@ -413,7 +413,7 @@ class SignInComponent extends React.Component<
                     {pageMode === 'Loading' && <Loader />}
 
                     {pageMode === 'CreateFromEmail' && (
-                        <XTrack event="signup_email_view">
+                        <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'}>
                             <MyCreateWithEmail
                                 signin={signin}
                                 emailError={this.state.emailError}
