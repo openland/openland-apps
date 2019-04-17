@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessageComments_messageComments_comments_comment, MessageReactionType } from 'openland-api/Types';
-import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { formatDate } from 'openland-mobile/utils/formatDate';
@@ -151,7 +151,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                         </TouchableWithoutFeedback>
 
                         <View style={{ opacity: deleted ? 0.5 : undefined }}>
-                            <ZMessageView message={comment} small={true} />
+                            <ZMessageView message={comment} small={true} maxWidth={Dimensions.get('screen').width - branchIndent - 34} />
                         </View>
 
                         {tools}
