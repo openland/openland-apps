@@ -178,7 +178,7 @@ export const SpannedStringView = React.memo<{ spannedString: SpannedString }>(pr
                         isYou: s.user.isYou,
                         isBot: false,
                         shortname: null,
-                        primaryOrganization: null,
+                        primaryOrganization: s.user.primaryOrganization,
                     }}
                 />,
             );

@@ -4544,7 +4544,7 @@ public final class DialogsQuery: GraphQLQuery {
   public let operationDefinition =
     "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      cid\n      fid\n      kind\n      isChannel\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...TinyMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(TinyMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(TinyMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
 
   public var after: String?
 
@@ -5580,7 +5580,7 @@ public final class DialogsWatchSubscription: GraphQLSubscription {
   public let operationDefinition =
     "subscription DialogsWatch($state: String) {\n  event: dialogsUpdates(fromState: $state) {\n    __typename\n    ... on DialogUpdateSingle {\n      seq\n      state\n      update {\n        __typename\n        ...DialogUpdateFragment\n      }\n    }\n    ... on DialogUpdateBatch {\n      fromSeq\n      seq\n      state\n      updates {\n        __typename\n        ...DialogUpdateFragment\n      }\n    }\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(DialogUpdateFragment.fragmentDefinition).appending(TinyMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(DialogUpdateFragment.fragmentDefinition).appending(TinyMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
 
   public var state: String?
 
@@ -22376,10 +22376,6 @@ public struct TinyMessage: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-      self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
-    }
-
     public var __typename: String {
       get {
         return resultMap["__typename"]! as! String
@@ -22547,10 +22543,6 @@ public struct TinyMessage: GraphQLFragment {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
-      }
-
-      public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-        self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
       }
 
       public var __typename: String {
@@ -23126,10 +23118,6 @@ public struct FullMessage: GraphQLFragment {
           self.resultMap = unsafeResultMap
         }
 
-        public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-          self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
-        }
-
         public var __typename: String {
           get {
             return resultMap["__typename"]! as! String
@@ -23246,10 +23234,6 @@ public struct FullMessage: GraphQLFragment {
 
         public init(unsafeResultMap: ResultMap) {
           self.resultMap = unsafeResultMap
-        }
-
-        public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-          self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
         }
 
         public var __typename: String {
@@ -27115,10 +27099,6 @@ public struct FullMessage: GraphQLFragment {
             self.resultMap = unsafeResultMap
           }
 
-          public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-            self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
-          }
-
           public var __typename: String {
             get {
               return resultMap["__typename"]! as! String
@@ -27235,10 +27215,6 @@ public struct FullMessage: GraphQLFragment {
 
           public init(unsafeResultMap: ResultMap) {
             self.resultMap = unsafeResultMap
-          }
-
-          public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-            self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
           }
 
           public var __typename: String {
@@ -27982,10 +27958,6 @@ public struct FullMessage: GraphQLFragment {
             self.resultMap = unsafeResultMap
           }
 
-          public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-            self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
-          }
-
           public var __typename: String {
             get {
               return resultMap["__typename"]! as! String
@@ -28102,10 +28074,6 @@ public struct FullMessage: GraphQLFragment {
 
           public init(unsafeResultMap: ResultMap) {
             self.resultMap = unsafeResultMap
-          }
-
-          public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-            self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
           }
 
           public var __typename: String {
@@ -28659,10 +28627,6 @@ public struct FullMessage: GraphQLFragment {
             self.resultMap = unsafeResultMap
           }
 
-          public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-            self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
-          }
-
           public var __typename: String {
             get {
               return resultMap["__typename"]! as! String
@@ -28711,10 +28675,6 @@ public struct FullMessage: GraphQLFragment {
 
           public init(unsafeResultMap: ResultMap) {
             self.resultMap = unsafeResultMap
-          }
-
-          public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-            self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
           }
 
           public var __typename: String {
@@ -28825,10 +28785,6 @@ public struct FullMessage: GraphQLFragment {
             self.resultMap = unsafeResultMap
           }
 
-          public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-            self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
-          }
-
           public var __typename: String {
             get {
               return resultMap["__typename"]! as! String
@@ -28877,10 +28833,6 @@ public struct FullMessage: GraphQLFragment {
 
           public init(unsafeResultMap: ResultMap) {
             self.resultMap = unsafeResultMap
-          }
-
-          public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-            self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
           }
 
           public var __typename: String {
@@ -33012,7 +32964,7 @@ public struct UserShort: GraphQLFragment {
 
 public struct UserTiny: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n}"
+    "fragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}"
 
   public static let possibleTypes = ["User"]
 
@@ -33025,6 +32977,7 @@ public struct UserTiny: GraphQLFragment {
     GraphQLField("lastName", type: .scalar(String.self)),
     GraphQLField("photo", type: .scalar(String.self)),
     GraphQLField("shortname", type: .scalar(String.self)),
+    GraphQLField("primaryOrganization", type: .object(PrimaryOrganization.selections)),
   ]
 
   public private(set) var resultMap: ResultMap
@@ -33033,8 +32986,8 @@ public struct UserTiny: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil) {
-    self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname])
+  public init(id: GraphQLID, isYou: Bool, name: String, firstName: String, lastName: String? = nil, photo: String? = nil, shortname: String? = nil, primaryOrganization: PrimaryOrganization? = nil) {
+    self.init(unsafeResultMap: ["__typename": "User", "id": id, "isYou": isYou, "name": name, "firstName": firstName, "lastName": lastName, "photo": photo, "shortname": shortname, "primaryOrganization": primaryOrganization.flatMap { (value: PrimaryOrganization) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -33106,6 +33059,69 @@ public struct UserTiny: GraphQLFragment {
     }
     set {
       resultMap.updateValue(newValue, forKey: "shortname")
+    }
+  }
+
+  public var primaryOrganization: PrimaryOrganization? {
+    get {
+      return (resultMap["primaryOrganization"] as? ResultMap).flatMap { PrimaryOrganization(unsafeResultMap: $0) }
+    }
+    set {
+      resultMap.updateValue(newValue?.resultMap, forKey: "primaryOrganization")
+    }
+  }
+
+  public struct PrimaryOrganization: GraphQLSelectionSet {
+    public static let possibleTypes = ["Organization"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLFragmentSpread(OrganizationShort.self),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: GraphQLID, name: String, photo: String? = nil, isCommunity: Bool) {
+      self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "name": name, "photo": photo, "isCommunity": isCommunity])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var fragments: Fragments {
+      get {
+        return Fragments(unsafeResultMap: resultMap)
+      }
+      set {
+        resultMap += newValue.resultMap
+      }
+    }
+
+    public struct Fragments {
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var organizationShort: OrganizationShort {
+        get {
+          return OrganizationShort(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
     }
   }
 }

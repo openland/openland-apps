@@ -806,6 +806,14 @@ export interface UserStorageSetVariables {
 // GraphQL query operation: Dialogs
 // ====================================================
 
+export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -815,6 +823,7 @@ export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Dialogs_dialogs_items_topMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
@@ -832,6 +841,14 @@ export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
   fallback: string;
 }
 
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -841,6 +858,7 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Dialogs_dialogs_items_topMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -1448,6 +1466,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   reaction: MessageReactionType;
 }
 
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -1457,6 +1483,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention {
@@ -1464,6 +1491,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   offset: number;
   length: number;
   user: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
@@ -1475,6 +1510,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention {
@@ -2076,6 +2112,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   reaction: MessageReactionType;
 }
 
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -2085,6 +2129,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention {
@@ -2092,6 +2137,14 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   offset: number;
   length: number;
   user: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
@@ -2103,6 +2156,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention {
@@ -2713,6 +2767,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   reaction: MessageReactionType;
 }
 
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -2722,6 +2784,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention {
@@ -2729,6 +2792,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   offset: number;
   length: number;
   user: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
@@ -2740,6 +2811,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention {
@@ -3341,6 +3413,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   reaction: MessageReactionType;
 }
 
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -3350,6 +3430,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention {
@@ -3357,6 +3438,14 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   offset: number;
   length: number;
   user: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
@@ -3368,6 +3457,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention {
@@ -3517,6 +3607,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -3526,6 +3624,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -3533,6 +3632,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -3544,6 +3651,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -4121,6 +4229,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -4130,6 +4246,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -4137,6 +4254,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -4148,6 +4273,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -4199,6 +4325,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -4208,6 +4342,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -4219,12 +4362,21 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -4236,6 +4388,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -4247,6 +4408,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -4321,6 +4483,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -4330,6 +4500,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -4337,6 +4508,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -4348,6 +4527,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -4925,6 +5105,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -4934,6 +5122,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -4941,6 +5130,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -4952,6 +5149,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -5003,6 +5201,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -5012,6 +5218,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -5023,12 +5238,21 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -5040,6 +5264,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -5051,6 +5284,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -5174,6 +5408,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -5183,6 +5425,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -5190,6 +5433,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -5201,6 +5452,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -5778,6 +6030,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -5787,6 +6047,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -5794,6 +6055,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -5805,6 +6074,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -5856,6 +6126,14 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 
 export type ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -5865,6 +6143,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -5876,12 +6163,21 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -5893,6 +6189,15 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -5904,6 +6209,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -6024,6 +6330,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -6033,6 +6347,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -6040,6 +6355,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -6051,6 +6374,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -6628,6 +6952,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -6637,6 +6969,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -6644,6 +6977,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -6655,6 +6996,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -6706,6 +7048,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -6715,6 +7065,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -6726,12 +7085,21 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -6743,6 +7111,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -6754,6 +7131,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -6828,6 +7206,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -6837,6 +7223,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -6844,6 +7231,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -6855,6 +7250,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -7432,6 +7828,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -7441,6 +7845,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -7448,6 +7853,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -7459,6 +7872,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -7510,6 +7924,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -7519,6 +7941,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -7530,12 +7961,21 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -7547,6 +7987,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -7558,6 +8007,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -7681,6 +8131,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -7690,6 +8148,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -7697,6 +8156,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -7708,6 +8175,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -8285,6 +8753,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -8294,6 +8770,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -8301,6 +8778,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   offset: number;
   length: number;
   user: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -8312,6 +8797,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -8363,6 +8849,14 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 
 export type ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -8372,6 +8866,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -8383,12 +8886,21 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -8400,6 +8912,15 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -8411,6 +8932,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -8527,6 +9049,14 @@ export interface ChatWatchVariables {
 // GraphQL subscription operation: DialogsWatch
 // ====================================================
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -8536,6 +9066,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage {
@@ -8553,6 +9084,14 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
   fallback: string;
 }
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -8562,6 +9101,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -8623,6 +9163,14 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
   message: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message;
 }
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -8632,6 +9180,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage {
@@ -8649,6 +9198,14 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
   fallback: string;
 }
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -8658,6 +9215,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -8717,6 +9275,14 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdat
   message: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message;
 }
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -8726,6 +9292,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage {
@@ -8743,6 +9310,14 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   fallback: string;
 }
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -8752,6 +9327,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -8805,6 +9381,14 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
 
 export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_ServiceMessage | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_message_GeneralMessage;
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -8814,6 +9398,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_ServiceMessage {
@@ -8831,6 +9416,14 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   fallback: string;
 }
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -8840,6 +9433,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDelet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -8939,6 +9533,14 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted {
   globalUnread: number;
 }
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -8948,6 +9550,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_ServiceMessage {
@@ -8965,6 +9568,14 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMess
   fallback: string;
 }
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -8974,6 +9585,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -9044,6 +9656,14 @@ export interface DialogsWatch_event_DialogUpdateSingle {
   update: DialogsWatch_event_DialogUpdateSingle_update;
 }
 
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -9053,6 +9673,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage {
@@ -9070,6 +9691,14 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
   fallback: string;
 }
 
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -9079,6 +9708,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -9140,6 +9770,14 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
   message: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message;
 }
 
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -9149,6 +9787,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage {
@@ -9166,6 +9805,14 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
   fallback: string;
 }
 
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -9175,6 +9822,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -9234,6 +9882,14 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdat
   message: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message;
 }
 
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -9243,6 +9899,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage {
@@ -9260,6 +9917,14 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   fallback: string;
 }
 
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -9269,6 +9934,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -9322,6 +9988,14 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
 
 export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_ServiceMessage | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_message_GeneralMessage;
 
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -9331,6 +10005,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_ServiceMessage {
@@ -9348,6 +10023,14 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   fallback: string;
 }
 
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -9357,6 +10040,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDelet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -9456,6 +10140,14 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted {
   globalUnread: number;
 }
 
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -9465,6 +10157,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_ServiceMessage {
@@ -9482,6 +10175,14 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMess
   fallback: string;
 }
 
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -9491,6 +10192,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -9770,6 +10472,14 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -9779,6 +10489,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -9786,6 +10497,14 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   offset: number;
   length: number;
   user: Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -9797,6 +10516,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -10374,6 +11094,14 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -10383,6 +11111,7 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -10390,6 +11119,14 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   offset: number;
   length: number;
   user: Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -10401,6 +11138,7 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -10452,6 +11190,14 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
 
 export type Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans = Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -10461,6 +11207,15 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -10472,12 +11227,21 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -10489,6 +11253,15 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -10500,6 +11273,7 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -10713,6 +11487,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -10722,6 +11504,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -10729,6 +11512,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   offset: number;
   length: number;
   user: RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -10740,6 +11531,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -11317,6 +12109,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -11326,6 +12126,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -11333,6 +12134,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   offset: number;
   length: number;
   user: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -11344,6 +12153,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -11395,6 +12205,14 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
 
 export type RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -11404,6 +12222,15 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -11415,12 +12242,21 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -11432,6 +12268,15 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -11443,6 +12288,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -11586,6 +12432,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -11595,6 +12449,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -11602,6 +12457,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   offset: number;
   length: number;
   user: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -11613,6 +12476,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -12190,6 +13054,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -12199,6 +13071,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -12206,6 +13079,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   offset: number;
   length: number;
   user: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -12217,6 +13098,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -12268,6 +13150,14 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
 
 export type RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -12277,6 +13167,15 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -12288,12 +13187,21 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -12305,6 +13213,15 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -12316,6 +13233,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -12662,6 +13580,14 @@ export interface ChatHistory_messages_GeneralMessage_sender {
   primaryOrganization: ChatHistory_messages_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -12671,6 +13597,7 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMentio
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention {
@@ -12678,6 +13605,14 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMentio
   offset: number;
   length: number;
   user: ChatHistory_messages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -12689,6 +13624,7 @@ export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -13266,6 +14202,14 @@ export interface ChatHistory_messages_ServiceMessage_sender {
   primaryOrganization: ChatHistory_messages_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -13275,6 +14219,7 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMentio
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention {
@@ -13282,6 +14227,14 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMentio
   offset: number;
   length: number;
   user: ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -13293,6 +14246,7 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -13344,6 +14298,14 @@ export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanBold {
 
 export type ChatHistory_messages_ServiceMessage_spans = ChatHistory_messages_ServiceMessage_spans_MessageSpanUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanRoomMention | ChatHistory_messages_ServiceMessage_spans_MessageSpanLink | ChatHistory_messages_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -13353,6 +14315,15 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServi
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -13364,12 +14335,21 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServi
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatHistory_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -13381,6 +14361,15 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickService
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -13392,6 +14381,7 @@ export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickService
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatHistory_messages_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -13484,6 +14474,14 @@ export interface ChatInit_messages_GeneralMessage_sender {
   primaryOrganization: ChatInit_messages_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -13493,6 +14491,7 @@ export interface ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention_u
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention {
@@ -13500,6 +14499,14 @@ export interface ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention {
   offset: number;
   length: number;
   user: ChatInit_messages_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -13511,6 +14518,7 @@ export interface ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMent
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatInit_messages_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -14088,6 +15096,14 @@ export interface ChatInit_messages_ServiceMessage_sender {
   primaryOrganization: ChatInit_messages_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -14097,6 +15113,7 @@ export interface ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention_u
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention {
@@ -14104,6 +15121,14 @@ export interface ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention {
   offset: number;
   length: number;
   user: ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -14115,6 +15140,7 @@ export interface ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMent
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -14166,6 +15192,14 @@ export interface ChatInit_messages_ServiceMessage_spans_MessageSpanBold {
 
 export type ChatInit_messages_ServiceMessage_spans = ChatInit_messages_ServiceMessage_spans_MessageSpanUserMention | ChatInit_messages_ServiceMessage_spans_MessageSpanMultiUserMention | ChatInit_messages_ServiceMessage_spans_MessageSpanRoomMention | ChatInit_messages_ServiceMessage_spans_MessageSpanLink | ChatInit_messages_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -14175,6 +15209,15 @@ export interface ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -14186,12 +15229,21 @@ export interface ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatInit_messages_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatInit_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatInit_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -14203,6 +15255,15 @@ export interface ChatInit_messages_ServiceMessage_serviceMetadata_KickServiceMet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatInit_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatInit_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -14214,6 +15275,7 @@ export interface ChatInit_messages_ServiceMessage_serviceMetadata_KickServiceMet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_messages_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatInit_messages_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -14324,6 +15386,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -14333,6 +15403,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -14340,6 +15411,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   offset: number;
   length: number;
   user: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -14351,6 +15430,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -14928,6 +16008,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -14937,6 +16025,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -14944,6 +16033,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   offset: number;
   length: number;
   user: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -14955,6 +16052,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -15006,6 +16104,14 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
 
 export type ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -15015,6 +16121,15 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -15026,12 +16141,21 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -15043,6 +16167,15 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -15054,6 +16187,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -15521,6 +16655,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -15530,6 +16672,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -15537,6 +16680,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   offset: number;
   length: number;
   user: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -15548,6 +16699,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -16125,6 +17277,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -16134,6 +17294,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -16141,6 +17302,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   offset: number;
   length: number;
   user: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -16152,6 +17321,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -16203,6 +17373,14 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
 
 export type RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -16212,6 +17390,15 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -16223,12 +17410,21 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -16240,6 +17436,15 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -16251,6 +17456,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -16529,6 +17735,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -16538,6 +17752,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -16545,6 +17760,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   offset: number;
   length: number;
   user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -16556,6 +17779,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -17133,6 +18357,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -17142,6 +18374,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -17149,6 +18382,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   offset: number;
   length: number;
   user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -17160,6 +18401,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -17211,6 +18453,14 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 
 export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -17220,6 +18470,15 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -17231,12 +18490,21 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -17248,6 +18516,15 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -17259,6 +18536,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -17534,6 +18812,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -17543,6 +18829,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -17550,6 +18837,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   offset: number;
   length: number;
   user: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -17561,6 +18856,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -18138,6 +19434,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -18147,6 +19451,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -18154,6 +19459,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   offset: number;
   length: number;
   user: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -18165,6 +19478,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -18216,6 +19530,14 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
 
 export type RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -18225,6 +19547,15 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -18236,12 +19567,21 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -18253,6 +19593,15 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -18264,6 +19613,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -18542,6 +19892,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -18551,6 +19909,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -18558,6 +19917,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
   offset: number;
   length: number;
   user: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -18569,6 +19936,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -19146,6 +20514,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -19155,6 +20531,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -19162,6 +20539,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   offset: number;
   length: number;
   user: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -19173,6 +20558,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -19224,6 +20610,14 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
 
 export type RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -19233,6 +20627,15 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -19244,12 +20647,21 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -19261,6 +20673,15 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -19272,6 +20693,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -19547,6 +20969,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -19556,6 +20986,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -19563,6 +20994,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   offset: number;
   length: number;
   user: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -19574,6 +21013,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -20151,6 +21591,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -20160,6 +21608,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -20167,6 +21616,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   offset: number;
   length: number;
   user: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -20178,6 +21635,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -20229,6 +21687,14 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
 
 export type RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -20238,6 +21704,15 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -20249,12 +21724,21 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -20266,6 +21750,15 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -20277,6 +21770,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -20553,6 +22047,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -20562,6 +22064,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -20569,6 +22072,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   offset: number;
   length: number;
   user: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -20580,6 +22091,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -21157,6 +22669,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -21166,6 +22686,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -21173,6 +22694,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   offset: number;
   length: number;
   user: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -21184,6 +22713,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -21235,6 +22765,14 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
 
 export type RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -21244,6 +22782,15 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -21255,12 +22802,21 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -21272,6 +22828,15 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -21283,6 +22848,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -21905,6 +23471,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -21914,6 +23488,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -21921,6 +23496,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   offset: number;
   length: number;
   user: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -21932,6 +23515,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -22509,6 +24093,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -22518,6 +24110,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -22525,6 +24118,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   offset: number;
   length: number;
   user: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -22536,6 +24137,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -22587,6 +24189,14 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_Mes
 
 export type RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -22596,6 +24206,15 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -22607,12 +24226,21 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -22624,6 +24252,15 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -22635,6 +24272,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -22929,6 +24567,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -22938,6 +24584,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -22945,6 +24592,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   offset: number;
   length: number;
   user: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -22956,6 +24611,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -23533,6 +25189,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -23542,6 +25206,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -23549,6 +25214,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   offset: number;
   length: number;
   user: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -23560,6 +25233,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -23611,6 +25285,14 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
 
 export type RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -23620,6 +25302,15 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -23631,12 +25322,21 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -23648,6 +25348,15 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -23659,6 +25368,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -24528,6 +26238,14 @@ export interface MessageComments_messageComments_comments_comment_reactions {
   reaction: MessageReactionType;
 }
 
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -24537,6 +26255,7 @@ export interface MessageComments_messageComments_comments_comment_spans_MessageS
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention {
@@ -24544,6 +26263,14 @@ export interface MessageComments_messageComments_comments_comment_spans_MessageS
   offset: number;
   length: number;
   user: MessageComments_messageComments_comments_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users {
@@ -24555,6 +26282,7 @@ export interface MessageComments_messageComments_comments_comment_spans_MessageS
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface MessageComments_messageComments_comments_comment_spans_MessageSpanMultiUserMention {
@@ -24894,6 +26622,14 @@ export interface Message_message_GeneralMessage_sender {
   primaryOrganization: Message_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface Message_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Message_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -24903,6 +26639,7 @@ export interface Message_message_GeneralMessage_spans_MessageSpanUserMention_use
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Message_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface Message_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -24910,6 +26647,14 @@ export interface Message_message_GeneralMessage_spans_MessageSpanUserMention {
   offset: number;
   length: number;
   user: Message_message_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Message_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Message_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -24921,6 +26666,7 @@ export interface Message_message_GeneralMessage_spans_MessageSpanMultiUserMentio
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Message_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface Message_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -25498,6 +27244,14 @@ export interface Message_message_ServiceMessage_sender {
   primaryOrganization: Message_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface Message_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Message_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -25507,6 +27261,7 @@ export interface Message_message_ServiceMessage_spans_MessageSpanUserMention_use
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Message_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface Message_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -25514,6 +27269,14 @@ export interface Message_message_ServiceMessage_spans_MessageSpanUserMention {
   offset: number;
   length: number;
   user: Message_message_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Message_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Message_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -25525,6 +27288,7 @@ export interface Message_message_ServiceMessage_spans_MessageSpanMultiUserMentio
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Message_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface Message_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -25576,6 +27340,14 @@ export interface Message_message_ServiceMessage_spans_MessageSpanBold {
 
 export type Message_message_ServiceMessage_spans = Message_message_ServiceMessage_spans_MessageSpanUserMention | Message_message_ServiceMessage_spans_MessageSpanMultiUserMention | Message_message_ServiceMessage_spans_MessageSpanRoomMention | Message_message_ServiceMessage_spans_MessageSpanLink | Message_message_ServiceMessage_spans_MessageSpanBold;
 
+export interface Message_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Message_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -25585,6 +27357,15 @@ export interface Message_message_ServiceMessage_serviceMetadata_InviteServiceMet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Message_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface Message_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Message_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -25596,12 +27377,21 @@ export interface Message_message_ServiceMessage_serviceMetadata_InviteServiceMet
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Message_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface Message_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: Message_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: Message_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface Message_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Message_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -25613,6 +27403,15 @@ export interface Message_message_ServiceMessage_serviceMetadata_KickServiceMetad
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Message_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface Message_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Message_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -25624,6 +27423,7 @@ export interface Message_message_ServiceMessage_serviceMetadata_KickServiceMetad
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Message_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface Message_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -26865,6 +28665,14 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_se
   primaryOrganization: Organization_organization_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -26874,6 +28682,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_sp
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -26881,6 +28690,14 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_sp
   offset: number;
   length: number;
   user: Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -26892,6 +28709,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_sp
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -27469,6 +29287,14 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
   primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -27478,6 +29304,7 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_sp
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -27485,6 +29312,14 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_sp
   offset: number;
   length: number;
   user: Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -27496,6 +29331,7 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_sp
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -27547,6 +29383,14 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_sp
 
 export type Organization_organization_rooms_pinnedMessage_ServiceMessage_spans = Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -27556,6 +29400,15 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -27567,12 +29420,21 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -27584,6 +29446,15 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -27595,6 +29466,7 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -28029,6 +29901,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -28038,6 +29918,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -28045,6 +29926,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   offset: number;
   length: number;
   user: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -28056,6 +29945,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -28633,6 +30523,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -28642,6 +30540,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -28649,6 +30548,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   offset: number;
   length: number;
   user: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -28660,6 +30567,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -28711,6 +30619,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 
 export type OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans = OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -28720,6 +30636,15 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -28731,12 +30656,21 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -28748,6 +30682,15 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -28759,6 +30702,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -30095,6 +32039,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -30104,6 +32056,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -30111,6 +32064,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   offset: number;
   length: number;
   user: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -30122,6 +32083,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -30699,6 +32661,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -30708,6 +32678,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -30715,6 +32686,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   offset: number;
   length: number;
   user: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -30726,6 +32705,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -30777,6 +32757,14 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
 
 export type ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans = ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -30786,6 +32774,15 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -30797,12 +32794,21 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -30814,6 +32820,15 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -30825,6 +32840,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -31527,6 +33543,14 @@ export interface CommentEntryFragment_comment_reactions {
   reaction: MessageReactionType;
 }
 
+export interface CommentEntryFragment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface CommentEntryFragment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -31536,6 +33560,7 @@ export interface CommentEntryFragment_comment_spans_MessageSpanUserMention_user 
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentEntryFragment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface CommentEntryFragment_comment_spans_MessageSpanUserMention {
@@ -31543,6 +33568,14 @@ export interface CommentEntryFragment_comment_spans_MessageSpanUserMention {
   offset: number;
   length: number;
   user: CommentEntryFragment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentEntryFragment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface CommentEntryFragment_comment_spans_MessageSpanMultiUserMention_users {
@@ -31554,6 +33587,7 @@ export interface CommentEntryFragment_comment_spans_MessageSpanMultiUserMention_
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentEntryFragment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface CommentEntryFragment_comment_spans_MessageSpanMultiUserMention {
@@ -31738,6 +33772,14 @@ export interface ConferenceFull {
 // GraphQL fragment: TinyMessage
 // ====================================================
 
+export interface TinyMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface TinyMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -31747,6 +33789,7 @@ export interface TinyMessage_ServiceMessage_sender {
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: TinyMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface TinyMessage_ServiceMessage {
@@ -31764,6 +33807,14 @@ export interface TinyMessage_ServiceMessage {
   fallback: string;
 }
 
+export interface TinyMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface TinyMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -31773,6 +33824,7 @@ export interface TinyMessage_GeneralMessage_sender {
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: TinyMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface TinyMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -32339,6 +34391,14 @@ export interface FullMessage_GeneralMessage_reactions {
   reaction: MessageReactionType;
 }
 
+export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -32348,6 +34408,7 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -32355,6 +34416,14 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanUserMention {
   offset: number;
   length: number;
   user: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -32366,6 +34435,7 @@ export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_us
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -32462,6 +34532,14 @@ export interface FullMessage_ServiceMessage_sender {
   primaryOrganization: FullMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -32471,6 +34549,7 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: FullMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -32478,6 +34557,14 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanUserMention {
   offset: number;
   length: number;
   user: FullMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -32489,6 +34576,7 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_us
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -32540,6 +34628,14 @@ export interface FullMessage_ServiceMessage_spans_MessageSpanBold {
 
 export type FullMessage_ServiceMessage_spans = FullMessage_ServiceMessage_spans_MessageSpanUserMention | FullMessage_ServiceMessage_spans_MessageSpanMultiUserMention | FullMessage_ServiceMessage_spans_MessageSpanRoomMention | FullMessage_ServiceMessage_spans_MessageSpanLink | FullMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -32549,6 +34645,15 @@ export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadat
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -32560,12 +34665,21 @@ export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadat
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: FullMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -32577,6 +34691,15 @@ export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -32588,6 +34711,7 @@ export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface FullMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -32736,6 +34860,14 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -32745,6 +34877,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_Messa
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -32752,6 +34885,14 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_Messa
   offset: number;
   length: number;
   user: OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -32763,6 +34904,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_Messa
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -33340,6 +35482,14 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -33349,6 +35499,7 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_Messa
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -33356,6 +35507,14 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_Messa
   offset: number;
   length: number;
   user: OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -33367,6 +35526,7 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_Messa
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -33418,6 +35578,14 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_Messa
 
 export type OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans = OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanLink | OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -33427,6 +35595,15 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMeta
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -33438,12 +35615,21 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMeta
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -33455,6 +35641,15 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMeta
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -33466,6 +35661,7 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMeta
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -33911,6 +36107,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -33920,6 +36124,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageS
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -33927,6 +36132,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageS
   offset: number;
   length: number;
   user: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -33938,6 +36151,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageS
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -34515,6 +36729,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -34524,6 +36746,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageS
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -34531,6 +36754,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageS
   offset: number;
   length: number;
   user: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -34542,6 +36773,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageS
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -34593,6 +36825,14 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageS
 
 export type RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -34602,6 +36842,15 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadat
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -34613,12 +36862,21 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadat
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -34630,6 +36888,15 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadat
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -34641,6 +36908,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadat
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -34846,6 +37114,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -34855,6 +37131,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -34862,6 +37139,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   offset: number;
   length: number;
   user: RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -34873,6 +37158,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -35450,6 +37736,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -35459,6 +37753,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -35466,6 +37761,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   offset: number;
   length: number;
   user: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -35477,6 +37780,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -35528,6 +37832,14 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
 
 export type RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -35537,6 +37849,15 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -35548,12 +37869,21 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -35565,6 +37895,15 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -35576,6 +37915,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -35711,6 +38051,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_sender {
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -35720,6 +38068,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -35727,6 +38076,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   offset: number;
   length: number;
   user: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -35738,6 +38095,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_Message
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -36315,6 +38673,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_sender {
   primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -36324,6 +38690,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -36331,6 +38698,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   offset: number;
   length: number;
   user: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -36342,6 +38717,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -36393,6 +38769,14 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_Message
 
 export type RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans = RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -36402,6 +38786,15 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -36413,12 +38806,21 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -36430,6 +38832,15 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -36441,6 +38852,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetada
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -36637,6 +39049,14 @@ export interface UserShort {
 // GraphQL fragment: UserTiny
 // ====================================================
 
+export interface UserTiny_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface UserTiny {
   __typename: "User";
   id: string;
@@ -36646,6 +39066,7 @@ export interface UserTiny {
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: UserTiny_primaryOrganization | null;
 }
 
 /* tslint:disable */
@@ -37161,6 +39582,14 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_reactions
   reaction: MessageReactionType;
 }
 
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -37170,6 +39599,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention {
@@ -37177,6 +39607,14 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_Mes
   offset: number;
   length: number;
   user: CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users {
@@ -37188,6 +39626,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_Mes
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanMultiUserMention {
@@ -37789,6 +40228,14 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_reactions 
   reaction: MessageReactionType;
 }
 
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -37798,6 +40245,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_Mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention {
@@ -37805,6 +40253,14 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_Mess
   offset: number;
   length: number;
   user: CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanUserMention_user;
+}
+
+export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users {
@@ -37816,6 +40272,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_Mess
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanMultiUserMention {
@@ -37946,6 +40403,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -37955,6 +40420,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -37962,6 +40428,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   offset: number;
   length: number;
   user: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -37973,6 +40447,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -38550,6 +41025,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -38559,6 +41042,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -38566,6 +41050,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   offset: number;
   length: number;
   user: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -38577,6 +41069,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -38628,6 +41121,14 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 
 export type ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans = ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -38637,6 +41138,15 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -38648,12 +41158,21 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -38665,6 +41184,15 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -38676,6 +41204,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -38750,6 +41279,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_se
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -38759,6 +41296,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention {
@@ -38766,6 +41304,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   offset: number;
   length: number;
   user: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -38777,6 +41323,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_sp
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -39354,6 +41901,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -39363,6 +41918,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention {
@@ -39370,6 +41926,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   offset: number;
   length: number;
   user: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -39381,6 +41945,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -39432,6 +41997,14 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_sp
 
 export type ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans = ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -39441,6 +42014,15 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -39452,12 +42034,21 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -39469,6 +42060,15 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -39480,6 +42080,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -39603,6 +42204,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -39612,6 +42221,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention {
@@ -39619,6 +42229,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   offset: number;
   length: number;
   user: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users {
@@ -39630,6 +42248,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanMultiUserMention {
@@ -40207,6 +42826,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user {
   __typename: "User";
   id: string;
@@ -40216,6 +42843,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention {
@@ -40223,6 +42851,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   offset: number;
   length: number;
   user: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention_user;
+}
+
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users {
@@ -40234,6 +42870,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention_users_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention {
@@ -40285,6 +42922,14 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
 
 export type ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans = ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanMultiUserMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanRoomMention | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanLink | ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold;
 
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users {
   __typename: "User";
   id: string;
@@ -40294,6 +42939,15 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
@@ -40305,12 +42959,21 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
   invitedBy: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
+}
+
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user {
@@ -40322,6 +42985,15 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
+}
+
+export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy {
@@ -40333,6 +43005,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_serviceMetadata_KickServiceMetadata {
@@ -40430,6 +43103,14 @@ export type ChatUpdateFragment = ChatUpdateFragment_ChatMessageReceived | ChatUp
 // GraphQL fragment: DialogUpdateFragment
 // ====================================================
 
+export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -40439,6 +43120,7 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessa
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage {
@@ -40456,6 +43138,14 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessa
   fallback: string;
 }
 
+export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -40465,6 +43155,7 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessa
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -40526,6 +43217,14 @@ export interface DialogUpdateFragment_DialogMessageReceived {
   message: DialogUpdateFragment_DialogMessageReceived_message;
 }
 
+export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -40535,6 +43234,7 @@ export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessag
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage {
@@ -40552,6 +43252,14 @@ export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessag
   fallback: string;
 }
 
+export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -40561,6 +43269,7 @@ export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessag
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogUpdateFragment_DialogMessageUpdated_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -40620,6 +43329,14 @@ export interface DialogUpdateFragment_DialogMessageUpdated {
   message: DialogUpdateFragment_DialogMessageUpdated_message;
 }
 
+export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -40629,6 +43346,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessag
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage {
@@ -40646,6 +43364,14 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessag
   fallback: string;
 }
 
+export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -40655,6 +43381,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessag
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage_attachments_MessageAttachmentPost {
@@ -40708,6 +43435,14 @@ export interface DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessag
 
 export type DialogUpdateFragment_DialogMessageDeleted_message = DialogUpdateFragment_DialogMessageDeleted_message_ServiceMessage | DialogUpdateFragment_DialogMessageDeleted_message_GeneralMessage;
 
+export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -40717,6 +43452,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMessage {
@@ -40734,6 +43470,14 @@ export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_ServiceMe
   fallback: string;
 }
 
+export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -40743,6 +43487,7 @@ export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMe
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogUpdateFragment_DialogMessageDeleted_prevMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -40842,6 +43587,14 @@ export interface DialogUpdateFragment_DialogDeleted {
   globalUnread: number;
 }
 
+export interface DialogUpdateFragment_DialogBump_topMessage_ServiceMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogUpdateFragment_DialogBump_topMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
@@ -40851,6 +43604,7 @@ export interface DialogUpdateFragment_DialogBump_topMessage_ServiceMessage_sende
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogUpdateFragment_DialogBump_topMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogUpdateFragment_DialogBump_topMessage_ServiceMessage {
@@ -40868,6 +43622,14 @@ export interface DialogUpdateFragment_DialogBump_topMessage_ServiceMessage {
   fallback: string;
 }
 
+export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
@@ -40877,6 +43639,7 @@ export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_sende
   lastName: string | null;
   photo: string | null;
   shortname: string | null;
+  primaryOrganization: DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface DialogUpdateFragment_DialogBump_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
