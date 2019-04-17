@@ -98,22 +98,25 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     let tools = (
         <View flexDirection="row" marginTop={4}>
             <Text style={styles.date}>{formatDate(parseInt(date, 10))}</Text>
-            <View marginLeft={12}>
-                {depth === 0 && (
-                    <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                        <View flexDirection="row">
-                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7 }} />
-                            <Text style={[styles.reply, { color: theme.accentColor }]} allowFontScaling={false}>Reply</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                )}
 
-                {depth !== 0 && (
-                    <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                        <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7}} />
-                    </TouchableWithoutFeedback>
-                )}
-            </View>
+            {!deleted && (
+                <View marginLeft={12}>
+                    {depth === 0 && (
+                        <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
+                            <View flexDirection="row">
+                                <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7 }} />
+                                <Text style={[styles.reply, { color: theme.accentColor }]} allowFontScaling={false}>Reply</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    )}
+
+                    {depth !== 0 && (
+                        <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
+                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7}} />
+                        </TouchableWithoutFeedback>
+                    )}
+                </View>
+            )}
         </View>
     );
 
@@ -133,13 +136,13 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     }
 
     return (
-        <TouchableWithoutFeedback onLongPress={!deleted ? () => props.onLongPress(comment) : undefined}>
+        <TouchableWithoutFeedback disabled={deleted} onLongPress={() => props.onLongPress(comment)}>
             <View style={{ backgroundColor: highlighted ? 'rgba(255, 255, 102, 0.15)' : theme.backgroundColor, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
                 {lines}
 
                 <View flexDirection="row">
                     <View flexGrow={1} flexShrink={1}>
-                        <TouchableWithoutFeedback onPress={!deleted ? () => router.push('ProfileUser', { id: sender.id }) : undefined}>
+                        <TouchableWithoutFeedback disabled={deleted} onPress={() => router.push('ProfileUser', { id: sender.id })}>
                             <View flexDirection="row" marginBottom={3}>
                                 {avatar}
 
