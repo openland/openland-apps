@@ -71,6 +71,8 @@ const overlayStyle = css`
     background-color: rgba(0, 0, 0, 0.3);
 `;
 
+const Loader = <XView height={64} alignItems="center" justifyContent="center"><XLoader loading={true} /></XView>;
+
 const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, config: XModalBoxConfig }>((props) => {
     const [state, setState] = React.useState<'showing' | 'visible' | 'hiding'>('showing')
     const [top, setTop] = React.useState(0);
@@ -166,7 +168,7 @@ const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, con
                     <CloseButton onClick={tryHide} />
                 </XView>
                 <XScrollView3 flexShrink={1}>
-                    <React.Suspense fallback={<XView height={64}><XLoader /></XView>}>
+                    <React.Suspense fallback={Loader}>
                         {contents}
                     </React.Suspense>
                 </XScrollView3>
