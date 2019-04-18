@@ -1,6 +1,31 @@
-query OrganizationWithoutMembers($organizationId: ID!) {
-  organization(id: $organizationId) {
+fragment OrganizationWithoutMembers on Organization {
+  __typename
+  about
+  featured: alphaFeatured
+  isCommunity: alphaIsCommunity
+  requests: alphaOrganizationMemberRequests {
     __typename
-    ...OrganizationWithoutMembers
+    role
+    user {
+      __typename
+      ...UserFull
+    }
   }
+  isAdmin: betaIsAdmin
+  isOwner: betaIsOwner
+  rooms: betaPublicRooms {
+    __typename
+    ...RoomShort
+  }
+  facebook
+  id
+  isMine
+  linkedin
+  membersCount
+  name
+  photo
+  shortname
+  superAccountId
+  twitter
+  website
 }

@@ -22,6 +22,8 @@ export const OrganizationWithoutMembers = gql`
         facebook
         linkedin
 
+        membersCount
+
         requests: alphaOrganizationMemberRequests {
             role
             user {

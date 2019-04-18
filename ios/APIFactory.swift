@@ -601,6 +601,22 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "OrganizationMembersShortPaginated") {
+      let organizationId = notNull(readString(src, "organizationId"))
+      let first = readInt(src, "first")
+      let after = readString(src, "after")
+      let requestBody = OrganizationMembersShortPaginatedQuery(organizationId: organizationId, first: first, after: after)
+      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "OrganizationProfile") {
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationProfileQuery(organizationId: organizationId)
@@ -1424,6 +1440,22 @@ class ApiFactory: ApiFactoryBase {
     if (name == "OrganizationMembersShort") {
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationMembersShortQuery(organizationId: organizationId)
+      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
+    if (name == "OrganizationMembersShortPaginated") {
+      let organizationId = notNull(readString(src, "organizationId"))
+      let first = readInt(src, "first")
+      let after = readString(src, "after")
+      let requestBody = OrganizationMembersShortPaginatedQuery(organizationId: organizationId, first: first, after: after)
       let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -3761,6 +3793,16 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "OrganizationMembersShortPaginated") {
+      let organizationId = notNull(readString(src, "organizationId"))
+      let first = readInt(src, "first")
+      let after = readString(src, "after")
+      let requestBody = OrganizationMembersShortPaginatedQuery(organizationId: organizationId, first: first, after: after)
+      store.withinReadTransaction { (tx) in
+        handler((try tx.read(query: requestBody)).resultMap, nil)
+      }
+      return
+    }
     if (name == "OrganizationProfile") {
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationProfileQuery(organizationId: organizationId)
@@ -4321,6 +4363,18 @@ class ApiFactory: ApiFactoryBase {
       let organizationId = notNull(readString(src, "organizationId"))
       let requestBody = OrganizationMembersShortQuery(organizationId: organizationId)
       let data = OrganizationMembersShortQuery.Data(unsafeResultMap: self.convertData(src: data))
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(data: data, forQuery: requestBody)
+        handler(nil, nil)
+      }
+      return
+    }
+    if (name == "OrganizationMembersShortPaginated") {
+      let organizationId = notNull(readString(src, "organizationId"))
+      let first = readInt(src, "first")
+      let after = readString(src, "after")
+      let requestBody = OrganizationMembersShortPaginatedQuery(organizationId: organizationId, first: first, after: after)
+      let data = OrganizationMembersShortPaginatedQuery.Data(unsafeResultMap: self.convertData(src: data))
       store.withinReadWriteTransaction { (tx) in
         try tx.write(data: data, forQuery: requestBody)
         handler(nil, nil)

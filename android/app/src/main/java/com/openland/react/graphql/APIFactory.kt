@@ -1824,6 +1824,13 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        builder.organizationId(notNull(readString(src, "organizationId")))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "OrganizationMembersShortPaginated") {
+       val builder = OrganizationMembersShortPaginatedQuery.builder()
+       builder.organizationId(notNull(readString(src, "organizationId")))
+       builder.first(readInt(src, "first"))
+       builder.after(readString(src, "after"))
+       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "OrganizationProfile") {
        val builder = OrganizationProfileQuery.builder()
        builder.organizationId(notNull(readString(src, "organizationId")))

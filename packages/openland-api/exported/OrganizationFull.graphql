@@ -29,6 +29,7 @@ fragment OrganizationFull on Organization {
   id
   isMine
   linkedin
+  membersCount
   name
   photo
   shortname

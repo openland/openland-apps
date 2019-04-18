@@ -8,5 +8,6 @@ query OrganizationMembersShort($organizationId: ID!) {
         id
       }
     }
+    ...OrganizationWithoutMembers
   }
 }

@@ -21,6 +21,7 @@ export class BaseApiClient {
     protected useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): TQuery | null {
         const [observableQuery, currentResult] = this.useObservableQuery(query, vars, opts);
         
+        console.log(currentResult)
         if (currentResult && currentResult.error) {
             throw currentResult.error!!;
         } else if (currentResult && currentResult.data) {

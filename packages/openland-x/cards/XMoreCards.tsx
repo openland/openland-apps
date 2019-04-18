@@ -3,12 +3,12 @@ import Glamorous from 'glamorous';
 import { XButton } from 'openland-x/XButton';
 import { TextProfiles } from 'openland-text/TextProfiles';
 
-const Wrapper = Glamorous.div<{ isShown: boolean }>((props) => ({
+export const XMoreCardsWrapper = Glamorous.div<{ isShown: boolean }>(props => ({
     marginBottom: 4,
-        
+
     '& *:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3))': {
-        display: !props.isShown ? 'none !important' : undefined
-    }
+        display: !props.isShown ? 'none !important' : undefined,
+    },
 }));
 
 const Button = Glamorous(XButton)({
@@ -26,8 +26,8 @@ const Button = Glamorous(XButton)({
 
     '& .icon.material': {
         marginLeft: -2,
-        marginRight: 2
-    }
+        marginRight: 2,
+    },
 });
 
 interface XMoreCardsProps {
@@ -38,39 +38,46 @@ interface XMoreCardsState {
     isShown: boolean;
 }
 
+export const XMoreCardsButton = ({
+    toggleShown,
+    isShown,
+}: {
+    toggleShown?: () => void;
+    isShown: boolean;
+}) => {
+    return (
+        <Button
+            onClick={toggleShown}
+            icon={isShown ? 'expand_less' : 'expand_more'}
+            text={isShown ? TextProfiles.showLess : TextProfiles.showMore}
+            style="flat"
+        />
+    );
+};
+
 export class XMoreCards extends React.Component<XMoreCardsProps, XMoreCardsState> {
     state = {
-        isShown: false
+        isShown: false,
     };
 
     toggleShown = () => {
         this.setState({
-            isShown: !this.state.isShown
+            isShown: !this.state.isShown,
         });
-    }
+    };
 
-    render () {
+    render() {
         if (React.Children.count(this.props.children) > 4) {
             return (
                 <>
-                    <Wrapper isShown={this.state.isShown}>
+                    <XMoreCardsWrapper isShown={this.state.isShown}>
                         {this.props.children}
-                    </Wrapper>
-    
-                    <Button
-                        onClick={this.toggleShown}
-                        icon={this.state.isShown ? 'expand_less' : 'expand_more'}
-                        text={this.state.isShown ? TextProfiles.showLess : TextProfiles.showMore}
-                        style="flat"
-                    />
+                    </XMoreCardsWrapper>
+                    <XMoreCardsButton toggleShown={this.toggleShown} isShown={this.state.isShown} />
                 </>
             );
         } else {
-            return (
-                <>
-                    {this.props.children}
-                </>
-            );
+            return <>{this.props.children}</>;
         }
     }
 }
