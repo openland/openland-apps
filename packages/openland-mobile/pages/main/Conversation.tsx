@@ -248,8 +248,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             quoted = <ReplyView onClearPress={this.onQuotedClearPress} comment={this.state.messagesActionsState.messages.map(convertMessageBack) || []} action={this.state.messagesActionsState.pendingAction.action === 'forward' ? 'forward' : 'reply'} />
         }
 
-        // quoted = <Text>{JSON.stringify([this.state.messagesActionsState.conversationId, (this.state.messagesActionsState.messages || []).length, this.state.messagesActionsState.pendingAction, this.props.chat.id])}</Text>
-
         let topContent = [suggestions, quoted];
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;

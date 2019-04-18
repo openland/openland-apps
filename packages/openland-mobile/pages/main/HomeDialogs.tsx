@@ -46,12 +46,12 @@ const DialogsComponent = XMemo<PageProps>((props) => {
 
     }, [props.router.params.share, props.router.params.callback]);
 
-    let dialogs = props.router.params.share || props.router.params.pressCallback ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
+    let dialogs = (props.router.params.share || props.router.params.pressCallback) ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
         return (
             <DialogItemViewAsync item={item} onPress={(id, i) => handlePress(id, (i as DialogDataSourceItem).title)} />
         );
     }) :
-        <DialogListComponent dialogs={getMessenger().dialogs} />
+        getMessenger().dialogs
         ;
 
     return (
@@ -77,7 +77,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                     key={props.router.key + new Date().getTime()}
                     searchRender={(p) => (<GlobalSearch query={p.query} router={props.router} onGroupPress={handlePress} onUserPress={handlePress} />)}
                 >
-                    {dialogs}
+                    <DialogListComponent dialogs={dialogs} />
                 </SSearchControler>
             )}
         </ZTrack>
