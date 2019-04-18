@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XTitle } from 'openland-x/XTitle';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 export default withApp('UI Framework - Buttons', 'viewer', props => {
     return (
         <DevDocsScaffold title="Buttons">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <XTitle>Sizes</XTitle>
                     <XHorizontal>
                         <XButton size="large" text="large" />
@@ -105,7 +105,7 @@ export default withApp('UI Framework - Buttons', 'viewer', props => {
                         <XButton text="bottom" tooltipPlacement="bottom" iconResponsive="star" />
                         <XButton text="right" tooltipPlacement="right" iconResponsive="star" />
                     </XHorizontal>
-                </XVertical>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

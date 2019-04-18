@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XStore } from 'openland-y-store/XStore';
 import { XInput } from 'openland-x/XInput';
@@ -9,16 +8,17 @@ import { XTitle } from 'openland-x/XTitle';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XButton } from 'openland-x/XButton';
+import { XVertical2 } from 'openland-x/XVertical2';
 export default withApp('UI Framework - Store', 'viewer', props => {
     return (
         <DevDocsScaffold title="Store">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <XStore
                         onChanged={data => console.warn(data)}
                         defaultData={{ stage: 'Hello!' }}
                     >
-                        <XVertical>
+                        <XVertical2>
                             <XTitle>Simple</XTitle>
                             <XInput valueStoreKey="stage" />
                             <XInput valueStoreKey="stage" />
@@ -37,9 +37,9 @@ export default withApp('UI Framework - Store', 'viewer', props => {
                                     );
                                 }}
                             </XStoreContext.Consumer>
-                        </XVertical>
+                        </XVertical2>
                     </XStore>
-                </XVertical>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

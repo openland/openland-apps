@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTag } from 'openland-x/XTag';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XTitle } from 'openland-x/XTitle';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 export default withApp('UI Framework - Tags', 'viewer', props => {
     return (
         <DevDocsScaffold title="Tags">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <XTitle>Sizes</XTitle>
                     <XHorizontal>
                         <XTag size="large" text="large" />
@@ -47,7 +47,7 @@ export default withApp('UI Framework - Tags', 'viewer', props => {
                         <XTag rounded={true} size="large" text="Automotive" icon="x-close" />
                         <XTag rounded={true} style="primary" text="primary" icon="x-close" />
                     </XHorizontal>
-                </XVertical>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

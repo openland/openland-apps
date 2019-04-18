@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XContent } from 'openland-x-layout/XContent';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XTitle } from 'openland-x/XTitle';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 const EXAMPLE = 'https://theblueraft.files.wordpress.com/2010/08/aang.jpg';
 
@@ -19,11 +19,11 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
     return (
         <DevDocsScaffold title="Avatar">
             <XContent>
-                <XVertical>
-                    <XVertical>
+                <XVertical2>
+                    <XVertical2>
                         <XTitle>Online dot</XTitle>
                         <XHorizontal>
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>74</div>
                                 <XAvatar2
                                     size={74}
@@ -32,9 +32,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>58</div>
                                 <XAvatar2
                                     size={58}
@@ -43,9 +43,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>default (40)</div>
                                 <XAvatar2
                                     online={true}
@@ -53,9 +53,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>36</div>
                                 <XAvatar2
                                     size={36}
@@ -64,9 +64,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>32</div>
                                 <XAvatar2
                                     size={32}
@@ -75,9 +75,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>28</div>
                                 <XAvatar2
                                     size={28}
@@ -86,9 +86,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>24</div>
                                 <XAvatar2
                                     size={24}
@@ -97,13 +97,13 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
                         </XHorizontal>
-                    </XVertical>
-                    <XVertical>
+                    </XVertical2>
+                    <XVertical2>
                         <XTitle>No image</XTitle>
                         <XHorizontal>
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>74</div>
                                 <XAvatar2
                                     size={74}
@@ -112,9 +112,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>58</div>
                                 <XAvatar2
                                     size={58}
@@ -123,9 +123,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>default (40)</div>
                                 <XAvatar2
                                     online={true}
@@ -133,9 +133,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>36</div>
                                 <XAvatar2
                                     size={36}
@@ -144,9 +144,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>32</div>
                                 <XAvatar2
                                     size={32}
@@ -155,9 +155,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>28</div>
                                 <XAvatar2
                                     size={28}
@@ -166,9 +166,9 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
 
-                            <XVertical separator="none" alignItems="center">
+                            <XVertical2 alignItems="center">
                                 <div>24</div>
                                 <XAvatar2
                                     size={24}
@@ -177,16 +177,16 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                                     title={EXAMPLE_TITLE}
                                     id={EXAMPLE_ID}
                                 />
-                            </XVertical>
+                            </XVertical2>
                         </XHorizontal>
-                    </XVertical>
+                    </XVertical2>
 
                     <br />
                     <br />
                     <br />
                     <br />
 
-                    <XVertical>
+                    <XVertical2>
                         <XTitle>Online dot</XTitle>
                         <XHorizontal>
                             <XAvatar size="x-large" online={true} src={EXAMPLE} />
@@ -255,8 +255,8 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                             <XAvatar style="organization" size="small" />
                             <XAvatar style="organization" size="small" src={EXAMPLE} />
                         </XHorizontal>
-                    </XVertical>
-                </XVertical>
+                    </XVertical2>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

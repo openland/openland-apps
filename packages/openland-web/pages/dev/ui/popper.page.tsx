@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
 import { XTitle } from 'openland-x/XTitle';
 import { XPopper } from 'openland-x/XPopper';
 import Glamorous from 'glamorous';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 const CustomContentDiv = Glamorous(XPopper.Content)({
     boxShadow:
@@ -34,9 +34,9 @@ export default withApp('UI Framework - Popper', 'viewer', props => {
     return (
         <DevDocsScaffold title="Popper">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <XTitle>Popper</XTitle>
-                    <XVertical>
+                    <XVertical2>
                         <XPopper
                             content={`Lorem ipsum dolor sit amet, mei euripidis consequat ad, qui quot dicam recusabo ne, cu pro harum scripta voluptua. Vivendo theophrastus est ut, audire eleifend no sea. Per ei mediocrem expetendis interpretaris, melius aliquam dissentias nam ex. Eum an viris choro honestatis. Recusabo deseruisse definitionem sed no, stet facilis albucius et usu, vitae iuvaret ne est.`}
                             show={true}
@@ -214,8 +214,8 @@ export default withApp('UI Framework - Popper', 'viewer', props => {
                                 </NavigatorItem>
                             </XTooltip2>
                         </NavigationContainer> */}
-                    </XVertical>
-                </XVertical>
+                    </XVertical2>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

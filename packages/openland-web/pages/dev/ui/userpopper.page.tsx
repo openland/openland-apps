@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
+import { XVertical2 } from 'openland-x/XVertical2';
 // import { OthersPopper } from 'openland-web/components/messenger/message/content/service/views/OthersPopper';
 
 const joinedUserPopperRowExample = {
@@ -17,9 +17,9 @@ export default withApp('UI Framework - Popper', 'viewer', () => {
     return (
         <DevDocsScaffold title="Popper">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <XTitle>Popper</XTitle>
-                    <XVertical>
+                    <XVertical2>
                         <br />
                         <br />
                         <br />
@@ -45,8 +45,8 @@ export default withApp('UI Framework - Popper', 'viewer', () => {
                         {/*>*/}
                         {/*    5 others*/}
                         {/*</OthersPopper>*/}
-                    </XVertical>
-                </XVertical>
+                    </XVertical2>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

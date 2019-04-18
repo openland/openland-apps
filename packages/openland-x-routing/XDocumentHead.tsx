@@ -2,6 +2,7 @@ import * as React from 'react';
 import Head from 'next/head';
 import { XRouterContext } from './XRouterContext';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { isElectron } from 'openland-y-utils/isElectron';
 
 const DEFAULT_OG = {
     title: 'Openland',
@@ -23,10 +24,15 @@ export const XDocumentHead = XMemo<XDocumentHeadT>(props => {
     let router = React.useContext(XRouterContext)!;
 
     let parts = ['Openland'];
+    if (isElectron) {
+        parts = [];
+    }
     if (typeof props.title === 'string') {
-        parts = ['Openland', props.title];
+        if (props.title !== 'Openland') {
+            parts = [...parts, props.title];
+        }
     } else if (Array.isArray(props.title)) {
-        parts = ['Openland', ...props.title];
+        parts = [...parts, ...props.title];
     } else {
         parts = ['Openland'];
     }

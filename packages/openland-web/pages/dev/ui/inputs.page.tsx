@@ -1,27 +1,27 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XContent } from 'openland-x-layout/XContent';
 import { XInput, XInputGroup } from 'openland-x/XInput';
 import { XTitle } from 'openland-x/XTitle';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XRichTextInput } from 'openland-x/XRichTextInput';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 export default withApp('UI Framework - Inputs', 'viewer', props => {
     return (
         <DevDocsScaffold title="Inputs">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <XTitle>Size</XTitle>
                     <XHorizontal>
-                        <XVertical>
+                        <XVertical2>
                             <XInput size="large" placeholder="large" alignSelf="flex-start" />
                             <XInput placeholder="default" alignSelf="flex-start" />
                             <XInput size="small" placeholder="small" alignSelf="flex-start" />
-                        </XVertical>
-                        <XVertical>
+                        </XVertical2>
+                        <XVertical2>
                             <XInput
                                 rounded={true}
                                 size="large"
@@ -35,16 +35,16 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 placeholder="small"
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
+                        </XVertical2>
                     </XHorizontal>
                     <XTitle>With title</XTitle>
                     <XHorizontal>
-                        <XVertical>
+                        <XVertical2>
                             <XInput size="large" title="large" alignSelf="flex-start" />
                             <XInput title="default" alignSelf="flex-start" />
                             <XInput size="small" title="small" alignSelf="flex-start" />
-                        </XVertical>
-                        <XVertical>
+                        </XVertical2>
+                        <XVertical2>
                             <XInput
                                 required={true}
                                 rounded={true}
@@ -65,11 +65,11 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 title="small"
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
+                        </XVertical2>
                     </XHorizontal>
                     <XTitle>Group</XTitle>
                     <XHorizontal>
-                        <XVertical>
+                        <XVertical2>
                             <XInputGroup>
                                 <XInput size="large" placeholder="large" />
                                 <XInput size="large" placeholder="large" />
@@ -85,8 +85,8 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 <XInput size="small" placeholder="small" />
                                 <XInput size="small" placeholder="small" />
                             </XInputGroup>
-                        </XVertical>
-                        <XVertical>
+                        </XVertical2>
+                        <XVertical2>
                             <XInputGroup>
                                 <XInput rounded={true} size="large" placeholder="large" />
                                 <XInput rounded={true} size="large" placeholder="large" />
@@ -102,11 +102,11 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 <XInput rounded={true} size="small" placeholder="small" />
                                 <XInput rounded={true} size="small" placeholder="small" />
                             </XInputGroup>
-                        </XVertical>
+                        </XVertical2>
                     </XHorizontal>
                     <XTitle>Icon</XTitle>
                     <XHorizontal>
-                        <XVertical>
+                        <XVertical2>
                             <XInput
                                 size="large"
                                 placeholder="large"
@@ -120,8 +120,8 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 icon="star"
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
-                        <XVertical>
+                        </XVertical2>
+                        <XVertical2>
                             <XInput
                                 rounded={true}
                                 size="large"
@@ -142,11 +142,11 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 icon="star"
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
+                        </XVertical2>
                     </XHorizontal>
                     <XTitle>Icon Right</XTitle>
                     <XHorizontal>
-                        <XVertical>
+                        <XVertical2>
                             <XInput
                                 size="large"
                                 placeholder="large"
@@ -160,8 +160,8 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 iconRight="star"
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
-                        <XVertical>
+                        </XVertical2>
+                        <XVertical2>
                             <XInput
                                 rounded={true}
                                 size="large"
@@ -182,11 +182,11 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 iconRight="star"
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
+                        </XVertical2>
                     </XHorizontal>
                     <XTitle>Icon & Required</XTitle>
                     <XHorizontal>
-                        <XVertical>
+                        <XVertical2>
                             <XInput
                                 size="large"
                                 placeholder="large"
@@ -207,8 +207,8 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 required={true}
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
-                        <XVertical>
+                        </XVertical2>
+                        <XVertical2>
                             <XInput
                                 rounded={true}
                                 size="large"
@@ -232,11 +232,11 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 required={true}
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
+                        </XVertical2>
                     </XHorizontal>
                     <XTitle>Icon & Required & Invalid</XTitle>
                     <XHorizontal>
-                        <XVertical>
+                        <XVertical2>
                             <XInput
                                 size="large"
                                 placeholder="large"
@@ -260,8 +260,8 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 invalid={true}
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
-                        <XVertical>
+                        </XVertical2>
+                        <XVertical2>
                             <XInput
                                 rounded={true}
                                 size="large"
@@ -288,11 +288,11 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 invalid={true}
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
+                        </XVertical2>
                     </XHorizontal>
                     <XTitle>Disabled</XTitle>
                     <XHorizontal>
-                        <XVertical>
+                        <XVertical2>
                             <XInput
                                 size="large"
                                 placeholder="large"
@@ -312,8 +312,8 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 disabled={true}
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
-                        <XVertical>
+                        </XVertical2>
+                        <XVertical2>
                             <XInput
                                 rounded={true}
                                 size="large"
@@ -336,11 +336,11 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 disabled={true}
                                 alignSelf="flex-start"
                             />
-                        </XVertical>
+                        </XVertical2>
                     </XHorizontal>
                     <XTitle>Text Area</XTitle>
                     <XHorizontal>
-                        <XVertical flexGrow={1}>
+                        <XVertical2 flexGrow={1}>
                             <XTextArea resize={false} size="large" placeholder="default" />
                             <XTextArea
                                 resize={false}
@@ -349,8 +349,8 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 disabled={true}
                             />
                             <XTextArea resize={false} size="large" value="invalid" invalid={true} />
-                        </XVertical>
-                        <XVertical flexGrow={1}>
+                        </XVertical2>
+                        <XVertical2 flexGrow={1}>
                             <XTextArea
                                 resize={false}
                                 size="large"
@@ -371,13 +371,13 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 value="invalid"
                                 invalid={true}
                             />
-                        </XVertical>
-                        <XVertical flexGrow={1}>
+                        </XVertical2>
+                        <XVertical2 flexGrow={1}>
                             <XTextArea resize={false} placeholder="small" />
                             <XTextArea resize={false} value="disabled" disabled={true} />
                             <XTextArea resize={false} value="invalid" invalid={true} />
-                        </XVertical>
-                        <XVertical flexGrow={1}>
+                        </XVertical2>
+                        <XVertical2 flexGrow={1}>
                             <XTextArea resize={false} rounded={true} placeholder="small rounded" />
                             <XTextArea
                                 resize={false}
@@ -391,10 +391,10 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 value="invalid"
                                 invalid={true}
                             />
-                        </XVertical>
+                        </XVertical2>
                     </XHorizontal>
                     <XHorizontal>
-                        <XVertical flexGrow={1}>
+                        <XVertical2 flexGrow={1}>
                             <XTextArea
                                 mode="modern"
                                 title="title"
@@ -418,8 +418,8 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 value="invalid"
                                 invalid={true}
                             />
-                        </XVertical>
-                        <XVertical flexGrow={1}>
+                        </XVertical2>
+                        <XVertical2 flexGrow={1}>
                             <XTextArea
                                 size="large"
                                 mode="modern"
@@ -446,13 +446,13 @@ export default withApp('UI Framework - Inputs', 'viewer', props => {
                                 value="invalid large"
                                 invalid={true}
                             />
-                        </XVertical>
+                        </XVertical2>
                     </XHorizontal>
                     <XTitle>Rich Text Input</XTitle>
-                    <XVertical>
+                    <XVertical2>
                         <XRichTextInput placeholder={'Try type something...'} value={''} />
-                    </XVertical>
-                </XVertical>
+                    </XVertical2>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

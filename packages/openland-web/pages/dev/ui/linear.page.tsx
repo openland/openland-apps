@@ -2,10 +2,10 @@ import Glamorous from 'glamorous';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 const Box = Glamorous.div({
     width: '100px',
@@ -17,7 +17,7 @@ export default withApp('UI Framework - Linear', 'viewer', props => {
     return (
         <DevDocsScaffold title="Tables">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <XTitle>Horizontal</XTitle>
                     <XHorizontal>
                         <Box />
@@ -25,15 +25,15 @@ export default withApp('UI Framework - Linear', 'viewer', props => {
                         <Box />
                     </XHorizontal>
                     <XTitle>Vertical</XTitle>
-                    <XVertical>
+                    <XVertical2>
                         <Box />
                         <Box />
                         <Box />
                         <Box />
                         <Box />
                         <Box />
-                    </XVertical>
-                </XVertical>
+                    </XVertical2>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

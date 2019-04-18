@@ -3,8 +3,8 @@ import glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
-import { XVertical } from 'openland-x-layout/XVertical';
 import XStyles from 'openland-x/XStyles';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 const H900 = glamorous.div({
     ...XStyles.text.h900,
@@ -50,7 +50,7 @@ export default withApp('UI Framework - Typograpthy', 'viewer', props => {
     return (
         <DevDocsScaffold title="Typography">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <H900>Text h900</H900>
                     <div>For oversized screen titles. Use in moderation.</div>
                     <H800>Text h800</H800>
@@ -71,7 +71,7 @@ export default withApp('UI Framework - Typograpthy', 'viewer', props => {
                     <div>Low level headings.</div>
                     <H100>Text h100</H100>
                     <div>Low level headings.</div>
-                </XVertical>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

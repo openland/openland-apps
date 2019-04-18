@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
 import { XSelect } from 'openland-x/XSelect';
 import { XForm } from 'openland-x-forms/XForm2';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 export default withApp('UI Framework - Select', 'viewer', props => {
     return (
@@ -20,7 +20,7 @@ export default withApp('UI Framework - Select', 'viewer', props => {
                     }}
                     defaultAction={() => true}
                 >
-                    <XVertical>
+                    <XVertical2>
                         <XTitle>Default</XTitle>
                         <XSelect
                             field="select1"
@@ -68,7 +68,7 @@ export default withApp('UI Framework - Select', 'viewer', props => {
                             searchable={false}
                             clearable={false}
                         />
-                    </XVertical>
+                    </XVertical2>
                 </XForm>
             </XContent>
         </DevDocsScaffold>

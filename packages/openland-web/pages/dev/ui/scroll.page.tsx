@@ -4,12 +4,12 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XScrollView } from 'openland-x/XScrollView';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XView } from 'react-mental';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XScrollViewReverse2 } from 'openland-x/XScrollViewReversed2';
 import { XButton } from 'openland-x/XButton';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 const Box = Glamorous.div({
     width: '100px',
@@ -67,7 +67,7 @@ export default withApp('UI Framework - Scroll', 'viewer', props => {
                         <ResizableScroll />
                         <XView width={600} flexDirection="row" backgroundColor="red">
                             <XScrollView width={200} height={600}>
-                                <XVertical>
+                                <XVertical2>
                                     <Box />
                                     <Box />
                                     <Box />
@@ -93,10 +93,10 @@ export default withApp('UI Framework - Scroll', 'viewer', props => {
                                     <Box />
                                     <Box />
                                     <Box />
-                                </XVertical>
+                                </XVertical2>
                             </XScrollView>
                             <XScrollView2 width={200} height={600}>
-                                <XVertical>
+                                <XVertical2>
                                     <Box />
                                     <Box />
                                     <Box />
@@ -122,10 +122,10 @@ export default withApp('UI Framework - Scroll', 'viewer', props => {
                                     <Box />
                                     <Box />
                                     <Box />
-                                </XVertical>
+                                </XVertical2>
                             </XScrollView2>
                             <XScrollView3 width={200} height={600}>
-                                <XVertical>
+                                <XVertical2>
                                     <Box />
                                     <Box />
                                     <Box />
@@ -151,7 +151,7 @@ export default withApp('UI Framework - Scroll', 'viewer', props => {
                                     <Box />
                                     <Box />
                                     <Box />
-                                </XVertical>
+                                </XVertical2>
                             </XScrollView3>
                         </XView>
                     </XView>

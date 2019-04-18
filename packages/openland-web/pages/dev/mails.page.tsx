@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { XHeader } from 'openland-x/XHeader';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 
 import { DebugEmailType } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XContent } from 'openland-x-layout/XContent';
 import { useClient } from 'openland-web/utils/useClient';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 interface DebugMailButtonProps {
     sendMail?: any;
@@ -63,7 +63,7 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], pro
     <DevToolsScaffold title="Mails">
         <XHeader text="Mails" />
         <XContent>
-            <XVertical>
+            <XVertical2>
                 <DebugMailButton emailType={DebugEmailType.WELCOME} />
                 <DebugMailButton emailType={DebugEmailType.ACCOUNT_ACTIVATED} />
                 <DebugMailButton emailType={DebugEmailType.ACCOUNT_DEACTIVATED} />
@@ -78,7 +78,7 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], pro
                 <DebugMailButton emailType={DebugEmailType.PUBLIC_ROOM_INVITE} />
                 <DebugMailButton emailType={DebugEmailType.PRIVATE_ROOM_INVITE} />
                 <DebugMailButton emailType={DebugEmailType.ROOM_INVITE_ACCEPTED} />
-            </XVertical>
+            </XVertical2>
         </XContent>
     </DevToolsScaffold>
 ));

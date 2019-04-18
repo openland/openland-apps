@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
 import { XModal } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
 import Lorem from 'react-lorem-component';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 class ControlledModal extends React.Component<{}, { show: boolean }> {
     constructor(props: {}) {
@@ -29,7 +29,7 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
     return (
         <DevDocsScaffold title="Modals">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <XTitle>for rooms</XTitle>
                     <XTitle>Modals</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>
@@ -59,7 +59,7 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                     <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={40} />
                     </XModal>
-                </XVertical>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

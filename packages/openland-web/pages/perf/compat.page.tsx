@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 const FontDemoRender = Glamorous.div<{ fontSize: number; fontWeight: string }>(props => ({
     fontSize: (props as any).fontSize,
@@ -22,7 +22,7 @@ export default class Error extends React.Component {
     render() {
         return (
             <XHorizontal>
-                <XVertical>
+                <XVertical2>
                     <FontDemo fontSize={13} fontWeight="300" />
                     <FontDemo fontSize={14} fontWeight="300" />
                     <FontDemo fontSize={15} fontWeight="300" />
@@ -36,8 +36,8 @@ export default class Error extends React.Component {
                     <FontDemo fontSize={28} fontWeight="300" />
                     <FontDemo fontSize={32} fontWeight="300" />
                     <FontDemo fontSize={34} fontWeight="300" />
-                </XVertical>
-                <XVertical>
+                </XVertical2>
+                <XVertical2>
                     <FontDemo fontSize={13} fontWeight="400" />
                     <FontDemo fontSize={14} fontWeight="400" />
                     <FontDemo fontSize={15} fontWeight="400" />
@@ -51,8 +51,8 @@ export default class Error extends React.Component {
                     <FontDemo fontSize={28} fontWeight="400" />
                     <FontDemo fontSize={32} fontWeight="400" />
                     <FontDemo fontSize={34} fontWeight="400" />
-                </XVertical>
-                <XVertical>
+                </XVertical2>
+                <XVertical2>
                     <FontDemo fontSize={13} fontWeight="500" />
                     <FontDemo fontSize={14} fontWeight="500" />
                     <FontDemo fontSize={15} fontWeight="500" />
@@ -66,8 +66,8 @@ export default class Error extends React.Component {
                     <FontDemo fontSize={28} fontWeight="500" />
                     <FontDemo fontSize={32} fontWeight="500" />
                     <FontDemo fontSize={34} fontWeight="500" />
-                </XVertical>
-                <XVertical>
+                </XVertical2>
+                <XVertical2>
                     <FontDemo fontSize={13} fontWeight="600" />
                     <FontDemo fontSize={14} fontWeight="600" />
                     <FontDemo fontSize={15} fontWeight="600" />
@@ -81,8 +81,8 @@ export default class Error extends React.Component {
                     <FontDemo fontSize={28} fontWeight="600" />
                     <FontDemo fontSize={32} fontWeight="600" />
                     <FontDemo fontSize={34} fontWeight="600" />
-                </XVertical>
-                <XVertical>
+                </XVertical2>
+                <XVertical2>
                     <FontDemo fontSize={13} fontWeight="700" />
                     <FontDemo fontSize={14} fontWeight="700" />
                     <FontDemo fontSize={15} fontWeight="700" />
@@ -96,8 +96,8 @@ export default class Error extends React.Component {
                     <FontDemo fontSize={28} fontWeight="700" />
                     <FontDemo fontSize={32} fontWeight="700" />
                     <FontDemo fontSize={34} fontWeight="700" />
-                </XVertical>
-                <XVertical>
+                </XVertical2>
+                <XVertical2>
                     <FontDemo fontSize={13} fontWeight="800" />
                     <FontDemo fontSize={14} fontWeight="800" />
                     <FontDemo fontSize={15} fontWeight="800" />
@@ -111,7 +111,7 @@ export default class Error extends React.Component {
                     <FontDemo fontSize={28} fontWeight="800" />
                     <FontDemo fontSize={32} fontWeight="800" />
                     <FontDemo fontSize={34} fontWeight="800" />
-                </XVertical>
+                </XVertical2>
             </XHorizontal>
         );
     }

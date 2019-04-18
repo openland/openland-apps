@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
 import { XCheckbox } from 'openland-x/XCheckbox';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 export default withApp('UI Framework - Checkboxes', 'viewer', props => {
     return (
         <DevDocsScaffold title="Checkboxes">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <XTitle>Default</XTitle>
                     <XHorizontal>
                         <XCheckbox label="Default" />
@@ -48,7 +48,7 @@ export default withApp('UI Framework - Checkboxes', 'viewer', props => {
                             checked={true}
                         />
                     </XHorizontal>
-                </XVertical>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

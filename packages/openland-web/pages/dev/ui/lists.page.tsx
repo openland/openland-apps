@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XList, XListInfinite } from 'openland-x/XList';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XTitle } from 'openland-x/XTitle';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 const SampleData = [
     'Kimberlie Hammond',
@@ -132,7 +132,7 @@ export default withApp('UI Framework - Lists', 'viewer', props => {
     return (
         <DevDocsScaffold title="Lists">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <XTitle>Simple</XTitle>
                     <XHorizontal height={300}>
                         <XList rowCount={SampleData.length} itemRenderer={itemRenderer} />
@@ -147,7 +147,7 @@ export default withApp('UI Framework - Lists', 'viewer', props => {
                             loadNextPage={loadNextPage}
                         />
                     </XHorizontal>
-                </XVertical>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );

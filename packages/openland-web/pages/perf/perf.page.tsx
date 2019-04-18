@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 const FastButton = css`
     border-radius: 20px;
@@ -30,7 +30,7 @@ class FirstText extends React.Component {
         for (let a = 0; a < 1000; a++) {
             ch.push(<XButton key={'b-' + a} text="button" />);
         }
-        return <XVertical>{ch}</XVertical>;
+        return <XVertical2>{ch}</XVertical2>;
     }
 }
 
@@ -46,7 +46,7 @@ class SecondText extends React.Component {
         for (let a = 0; a < 1000; a++) {
             ch.push(<FastWrapper key={'b-' + a} />);
         }
-        return <XVertical>{ch}</XVertical>;
+        return <XVertical2>{ch}</XVertical2>;
     }
 }
 
@@ -68,14 +68,14 @@ class ThirdText extends React.Component {
                 </XView>,
             );
         }
-        return <XVertical>{ch}</XVertical>;
+        return <XVertical2>{ch}</XVertical2>;
     }
 }
 
 export default class Perf extends React.Component {
     render() {
         return (
-            <XVertical>
+            <XVertical2>
                 <XHorizontal>
                     <XButton text="0" query={{ field: 'tab' }} />
                     <XButton text="1" query={{ field: 'tab', value: '1' }} />
@@ -95,7 +95,7 @@ export default class Perf extends React.Component {
                         }
                     }}
                 </XRouterContext.Consumer>
-            </XVertical>
+            </XVertical2>
         );
     }
 }

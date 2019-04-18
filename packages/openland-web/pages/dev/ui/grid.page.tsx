@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { XVertical } from 'openland-x-layout/XVertical';
 import glamorous from 'glamorous';
 import { XContent } from 'openland-x-layout/XContent';
 import XStyles from 'openland-x/XStyles';
 import { XTitle } from 'openland-x/XTitle';
+import { XVertical2 } from 'openland-x/XVertical2';
 
 const Small = glamorous.div({
     width: XStyles.paddings.small,
@@ -35,7 +35,7 @@ export default withApp('UI Framework - Typograpthy', 'viewer', props => {
     return (
         <DevDocsScaffold title="Typography">
             <XContent>
-                <XVertical>
+                <XVertical2>
                     <XTitle>XLarge</XTitle>
                     <div>24px, padding between content and side of a container</div>
                     <XLarge />
@@ -51,7 +51,7 @@ export default withApp('UI Framework - Typograpthy', 'viewer', props => {
                     <XTitle>Small</XTitle>
                     <div>4px, grid step, can be used to fine grained design improvements</div>
                     <Small />
-                </XVertical>
+                </XVertical2>
             </XContent>
         </DevDocsScaffold>
     );
