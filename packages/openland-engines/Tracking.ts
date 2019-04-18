@@ -9,12 +9,19 @@ export interface TrackPlatform {
     isProd: boolean;
 }
 
+interface TrackEvent {
+    id: string;
+    event: string;
+    params?: string;
+    time: number;
+}
+
 class TrackingEngine {
 
     private client!: OpenlandClient;
     private initPromise: Promise<void> | undefined;
     private deviceId!: string;
-    private pending: { id: string, event: string, params?: string }[] = [];
+    private pending: TrackEvent[] = [];
     private isSending = false;
     private platform: TrackPlatform = { name: EventPlatform.WEB, isProd: true };
 
@@ -27,12 +34,12 @@ class TrackingEngine {
 
     track(platform: TrackPlatform, event: string, params?: { [key: string]: any }) {
         console.log('Event: ' + event, params, platform);
-
         this.platform = platform;
         this.pending.push({
-            event,
+            id: uuid(),
+            event: event,
             params: params ? JSON.stringify(params) : undefined,
-            id: uuid()
+            time: Date.now()
         });
 
         this.flush();

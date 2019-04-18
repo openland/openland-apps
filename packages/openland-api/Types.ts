@@ -47827,6 +47827,7 @@ export interface Event {
   id: string;
   event: string;
   params?: string | null;
+  time?: number | null;
 }
 
 export interface FileAttachmentInput {

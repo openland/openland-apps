@@ -1765,8 +1765,8 @@ public enum NotificationsDelay: RawRepresentable, Equatable, Hashable, Apollo.JS
 public struct Event: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
 
-  public init(id: String, event: String, params: Swift.Optional<String?> = nil) {
-    graphQLMap = ["id": id, "event": event, "params": params]
+  public init(id: String, event: String, params: Swift.Optional<String?> = nil, time: Swift.Optional<Int?> = nil) {
+    graphQLMap = ["id": id, "event": event, "params": params, "time": time]
   }
 
   public var id: String {
@@ -1793,6 +1793,15 @@ public struct Event: GraphQLMapConvertible {
     }
     set {
       graphQLMap.updateValue(newValue, forKey: "params")
+    }
+  }
+
+  public var time: Swift.Optional<Int?> {
+    get {
+      return graphQLMap["time"] as! Swift.Optional<Int?>
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "time")
     }
   }
 }
