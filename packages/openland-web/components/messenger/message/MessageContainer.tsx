@@ -97,7 +97,7 @@ const CompactMessageContainerWrapper = ({
             borderRadius={4}
             onClick={onClick}
             cursor={cursorPointer ? 'pointer' : undefined}
-            backgroundColor={selected ? '#f7f7f7' : undefined}
+            // backgroundColor={selected ? '#f7f7f7' : undefined}
         >
             {children}
         </XView>
@@ -127,7 +127,7 @@ const NotCompactMessageContainerWrapper = ({
             borderRadius={4}
             onClick={onClick}
             cursor={cursorPointer ? 'pointer' : undefined}
-            backgroundColor={selected ? '#f7f7f7' : undefined}
+            // backgroundColor={selected ? '#f7f7f7' : undefined}
         >
             {children}
         </XView>

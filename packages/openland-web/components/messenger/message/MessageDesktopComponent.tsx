@@ -303,11 +303,11 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             a => a.__typename === 'MessageRichAttachment',
         )[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
 
-        let isSelect = false;
+        let selected = false;
         let hideMenu = this.props.messagesContext.useForwardHeader;
         let { forwardMessagesId } = this.props.messagesContext;
         if (forwardMessagesId) {
-            isSelect = forwardMessagesId.has(message.id || 'none');
+            selected = forwardMessagesId.has(message.id || 'none');
         }
 
         if (!message.isSending) {
@@ -506,7 +506,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     date={this.props.message.date}
                     renderMenu={this.menuRender}
                     onSelected={this.selectMessage}
-                    selected={isSelect}
+                    selected={selected}
                 >
                     {content}
                     {this.reactionsRender()}
@@ -522,7 +522,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 alignItems="center"
                 startSelected={hideMenu}
             >
-                <Check onClick={this.selectMessage} select={isSelect} className="check-icon" />
+                <Check onClick={this.selectMessage} select={selected} className="check-icon" />
                 <XVertical
                     separator={0}
                     className="message-container"
