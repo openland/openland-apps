@@ -793,7 +793,7 @@ const Members = ({ organization, router }: MembersProps) => {
                                 highlight={true}
                             >
                                 {TextProfiles.Organization.requestsTitle}
-                            </XSwitcher.Item>
+                            </XSwitcher.Item> 
                         </XSwitcher>
 
                         {tab === tabs.members && joinedMembersBox(false)}
@@ -997,7 +997,10 @@ const OrganizationProvider = ({
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const data = client.useOrganizationWithoutMembers(variables);
+    const data = client.useOrganization(variables);
+
+    console.log(variables);
+    console.log(data);
 
     return (
         <OrganizationProfileInner

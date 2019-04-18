@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import { OrganizationFull } from '../fragments/OrganizationFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
-import { OrganizationWithoutMembers } from '../fragments/OrganizationWithoutMembers';
+import { OrganizationWithoutMembersFragment } from '../fragments/OrganizationWithoutMembersFragment';
 import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
 import { OrganizationSearch } from '../fragments/OrganizationSearch';
 import { CommunitySearch } from '../fragments/CommunitySearch';
@@ -47,16 +47,16 @@ export const OrganizationQuery = gql`
 export const OrganizationWithoutMembersQuery = gql`
     query OrganizationWithoutMembers($organizationId: ID!) {
         organization(id: $organizationId) {
-            ...OrganizationWithoutMembers
+            ...OrganizationWithoutMembersFragment
         }
     }
-    ${OrganizationWithoutMembers}
+    ${OrganizationWithoutMembersFragment}
 `;
 
 export const OrganizationMembersShortQuery = gql`
     query OrganizationMembersShort($organizationId: ID!) {
         organization(id: $organizationId) {
-            ...OrganizationWithoutMembers
+            ...OrganizationWithoutMembersFragment
             members: alphaOrganizationMembers {
                 user {
                     id
@@ -64,13 +64,13 @@ export const OrganizationMembersShortQuery = gql`
             }
         }
     }
-    ${OrganizationWithoutMembers}
+    ${OrganizationWithoutMembersFragment}
 `;
 
 export const OrganizationMembersShortPaginatedQuery = gql`
     query OrganizationMembersShortPaginated($organizationId: ID!, $first: Int, $after: ID) {
         organization(id: $organizationId) {
-            ...OrganizationWithoutMembers
+            ...OrganizationWithoutMembersFragment
             members: alphaOrganizationMembers(first: $first, after: $after) {
                 role
                 user {
@@ -79,7 +79,7 @@ export const OrganizationMembersShortPaginatedQuery = gql`
             }
         }
     }
-    ${OrganizationWithoutMembers}
+    ${OrganizationWithoutMembersFragment}
     ${UserFull}
 `;
 

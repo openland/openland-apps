@@ -2,8 +2,8 @@ import gql from 'graphql-tag';
 import { UserFull } from './UserFull';
 import { RoomShort } from './RoomShort';
 
-export const OrganizationWithoutMembers = gql`
-    fragment OrganizationWithoutMembers on Organization {
+export const OrganizationWithoutMembersFragment = gql`
+    fragment OrganizationWithoutMembersFragment on Organization {
         id
         superAccountId
         isMine

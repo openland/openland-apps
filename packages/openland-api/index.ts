@@ -28,7 +28,7 @@ import * as OrganizationMedium from './fragments/OrganizationMedium';
 import * as OrganizationProfileFull from './fragments/OrganizationProfileFull';
 import * as OrganizationSearch from './fragments/OrganizationSearch';
 import * as OrganizationShort from './fragments/OrganizationShort';
-import * as OrganizationWithoutMembers from './fragments/OrganizationWithoutMembers';
+import * as OrganizationWithoutMembers from './fragments/OrganizationWithoutMembersFragment';
 import * as RoomFull from './fragments/RoomFull';
 import * as RoomShort from './fragments/RoomShort';
 import * as SessionStateFull from './fragments/SessionStateFull';
