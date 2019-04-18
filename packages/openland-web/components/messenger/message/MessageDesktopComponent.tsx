@@ -310,8 +310,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             isSelect = forwardMessagesId.has(message.id || 'none');
         }
 
-        let haveReactions = !!(message.reactions && message.reactions.length);
-
         if (!message.isSending) {
             if (this.state.isEditView && message.text) {
                 content.push(
@@ -509,7 +507,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     renderMenu={this.menuRender}
                     onSelected={this.selectMessage}
                     selected={isSelect}
-                    haveReactions={haveReactions}
                 >
                     {content}
                     {this.reactionsRender()}

@@ -24,16 +24,14 @@ export interface DesktopMessageContainerProps {
     selected: boolean;
 
     children?: any;
-    haveReactions: boolean;
 }
 
 interface PreambulaContainerProps {
     children: any;
     onClick?: () => void;
-    haveReactions: boolean;
 }
 
-const CompactPreambulaContainer = ({ children, haveReactions }: PreambulaContainerProps) => {
+const CompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
     return (
         <XView
             alignSelf="flex-start"
@@ -42,7 +40,6 @@ const CompactPreambulaContainer = ({ children, haveReactions }: PreambulaContain
             fontSize={11}
             whiteSpace={'nowrap'}
             overflow={'hidden'}
-            marginTop={haveReactions ? 1 : 2}
             fontWeight={'600'}
             lineHeight={'22px'}
             color="rgba(0, 0, 0, 0.4)"
@@ -182,13 +179,13 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     );
 
     // Left side of message
-    const { compact, sender, date, haveReactions } = props;
+    const { compact, sender, date } = props;
 
     const PreambulaContainer = compact ? CompactPreambulaContainer : NotCompactPreambulaContainer;
 
     const preambula = React.useMemo(
         () => (
-            <PreambulaContainer haveReactions={haveReactions}>
+            <PreambulaContainer>
                 {!compact ? (
                     <UserPopper
                         isMe={props.sender.isYou}
@@ -199,7 +196,9 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                         <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
                     </UserPopper>
                 ) : (
-                    <XView>{hover && <XDate value={date.toString()} format="time" />}</XView>
+                    <XView lineHeight="23px">
+                        {hover && <XDate value={date.toString()} format="time" />}
+                    </XView>
                 )}
             </PreambulaContainer>
         ),
@@ -336,7 +335,7 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
     const { sender, date } = props;
 
     const preambula = (
-        <NotCompactPreambulaContainer haveReactions={false}>
+        <NotCompactPreambulaContainer>
             <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
         </NotCompactPreambulaContainer>
     );
