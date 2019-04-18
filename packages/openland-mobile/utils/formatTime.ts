@@ -37,3 +37,14 @@ export function formatLastSeen(lastSeen: string) {
         }
     }
 }
+
+export function formatRelativeTime(date: string) {
+    let time = new Date(parseInt(date, 10)).getTime();
+    if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
+        return humanize.relativeTime(time / 1000);
+    } else if (new Date().getTime() - time < 1000 * 60) {
+        return 'just now';
+    } else {
+        return formatDate(time);
+    }
+}

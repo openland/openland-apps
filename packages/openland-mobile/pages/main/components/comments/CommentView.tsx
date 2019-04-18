@@ -10,6 +10,7 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { AppTheme } from 'openland-mobile/themes/themes';
+import { ZRelativeDate } from 'openland-mobile/components/ZRelativeDate';
 
 const styles = StyleSheet.create({
     senderName: {
@@ -97,7 +98,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let tools = (
         <View flexDirection="row" marginTop={4}>
-            <Text style={styles.date}>{formatDate(parseInt(date, 10))}</Text>
+            <ZRelativeDate style={styles.date} date={date} />
 
             {!deleted && (
                 <View marginLeft={12}>
