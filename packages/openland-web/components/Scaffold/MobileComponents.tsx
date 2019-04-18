@@ -7,7 +7,6 @@ import { XThemeDefault } from 'openland-x/XTheme';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from '../UserInfo';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
-import { InvitesGlobalModal } from '../../pages/main/settings/components/invites';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { CreateOrganization } from './Modals';
@@ -277,7 +276,6 @@ const MobileSidebar = ({ topItems, menu }: { topItems: any; menu: any }) => {
             <div className={sideBarClassName} style={{ left: showSidebar ? 0 : -350 }}>
                 <XView width="100%">
                     <MobileNavigationContainer>
-                        <InvitesGlobalModal targetQuery="invite_global" target={null} />
                         <CreateOrganization />
                         <MobileUserProfile onClick={close} />
                         {topItems}

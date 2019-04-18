@@ -20,11 +20,11 @@ import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import { MyOrganizations_myOrganizations, UserShort_primaryOrganization } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from '../UserInfo';
-import { InvitesGlobalModal } from 'openland-web/pages/main/settings/components/invites';
 import { CreateOrganization } from './Modals';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PromoBanner } from './PromoBanner';
 import { useClient } from 'openland-web/utils/useClient';
+import { showAppInviteModal } from 'openland-web/fragments/showAppInviteModal';
 
 interface NavigatorItemProps {
     path?: string;
@@ -336,10 +336,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                             />
                             <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
                             <XMenuItem
-                                query={{
-                                    field: 'invite_global',
-                                    value: 'true',
-                                }}
+                                onClick={() => showAppInviteModal()}
                             >
                                 {TextGlobal.joinOpenland}
                             </XMenuItem>
@@ -428,7 +425,6 @@ const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization
                         : undefined
                 }
             />
-            <InvitesGlobalModal targetQuery="invite_global" target={null} />
         </XVertical>
     )
 });

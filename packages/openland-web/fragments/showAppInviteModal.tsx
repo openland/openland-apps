@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { showModalBox } from 'openland-x/showModalBox';
 import { XView } from 'react-mental';
-import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
-import { XInput } from 'openland-x/XInput';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { TextInvites } from 'openland-text/TextInvites';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { useClient } from 'openland-web/utils/useClient';
 import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import CheckIcon from 'openland-icons/ic-check.svg';
+import { css } from 'linaria';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { XInput } from 'openland-x/XInput';
 
 const InputClassName = css`
     border-radius: 8px !important;
@@ -99,8 +97,8 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                 {copied ? (
                                     <CheckIcon />
                                 ) : (
-                                    <CopiedIcon className={CopyIconClassName} />
-                                )}
+                                        <CopiedIcon className={CopyIconClassName} />
+                                    )}
                                 <XView marginLeft={10}>{copied ? 'Copied' : 'Copy'}</XView>
                             </XView>
                         </XView>
@@ -131,51 +129,12 @@ const OwnerLinkOrganization = () => {
     return <OwnerLinkComponent appInvite={data ? data.invite : null} />;
 };
 
-interface InvitesModalRawProps {
-    organizationId: string;
-    isMobile: boolean;
-}
-
-class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XModalFormProps>> {
-    render() {
-        let { submitProps, isMobile, ...modalFormProps } = this.props;
+export function showAppInviteModal() {
+    showModalBox({ title: 'Invite people to Openland' }, (ctx) => {
         return (
-            <XModalForm
-                autoClose={1500}
-                useTopCloser={true}
-                flexGrow={isMobile ? 1 : undefined}
-                maxHeight={isMobile ? '100%' : undefined}
-                defaultAction={async () => null}
-                scrollableContent={true}
-                submitProps={submitProps}
-                customFooter={null}
-                {...modalFormProps}
-            >
-                <XVertical alignItems="center">
-                    <OwnerLinkOrganization />
-                </XVertical>
-            </XModalForm>
-        );
-    }
+            <XView width={575} paddingHorizontal={24} paddingBottom={24} paddingTop={6}>
+                <OwnerLinkOrganization />
+            </XView>
+        )
+    });
 }
-
-type InvitesGlobalModalProps = {
-    targetQuery?: string;
-    target?: any;
-};
-
-export const InvitesGlobalModal = (props: InvitesGlobalModalProps) => {
-    const { targetQuery, target } = props as typeof props & InvitesGlobalModalProps;
-    const isMobile = React.useContext(IsMobileContext);
-
-    return (
-        <InvitesModalRaw
-            organizationId={'primary'}
-            targetQuery={targetQuery}
-            target={target}
-            isMobile={isMobile}
-            title={TextInvites.modalGlobalTitle}
-            submitProps={{ text: TextInvites.modalGloabalAction }}
-        />
-    );
-};

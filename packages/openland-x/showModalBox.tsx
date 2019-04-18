@@ -4,15 +4,18 @@ import { css } from 'linaria';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import * as className from 'classnames';
 import { XScrollView3 } from './XScrollView3';
+import { XView } from 'react-mental';
+import { XButton } from './XButton';
 
 const boxStyle = css`
     display: flex;
     flex-direction: column;
     background-color: white;
-    border-radius: 16px;
+    border-radius: 6px;
     box-shadow: 0px 3px 14px 4px #82777747;
     max-height: 100vh;
     max-width: 100vw;
+    width: 575px;
 `
 
 const overlayHiding = css`
@@ -38,11 +41,11 @@ const overlayStyle = css`
     background-color: rgba(0, 0, 0, 0.3);
 `;
 
-class ModalBoxComponent extends React.Component<{ ctx: XModalController, modal: XModal }, { status: 'showing' | 'visible' | 'hiding' }> {
+class ModalBoxComponent extends React.Component<{ ctx: XModalController, modal: XModal, config: XModalBoxConfig }, { status: 'showing' | 'visible' | 'hiding' }> {
     private readonly key = randomKey();
     private readonly contents: React.ReactElement<{}>;
 
-    constructor(props: { modal: XModal, ctx: XModalController }) {
+    constructor(props: { modal: XModal, ctx: XModalController, config: XModalBoxConfig }) {
         super(props);
         let ctx2: XModalController = {
             hide: () => {
@@ -90,6 +93,12 @@ class ModalBoxComponent extends React.Component<{ ctx: XModalController, modal: 
                 onClick={this.handleContainerClick}
             >
                 <div className={boxStyle}>
+                    <XView height={64} lineHeight="64px" paddingLeft={24} paddingRight={14} fontSize={18} fontWeight="600" flexDirection="row" alignItems="center">
+                        <XView flexGrow={1} flexShrink={1} minWidth={0}>
+                            {this.props.config.title}
+                        </XView>
+                        <XButton style="flat" text="close" onClick={this.tryHide} />
+                    </XView>
                     <XScrollView3 maxHeight="calc(100vh - 48px)">
                         {this.contents}
                     </XScrollView3>
@@ -99,10 +108,14 @@ class ModalBoxComponent extends React.Component<{ ctx: XModalController, modal: 
     }
 }
 
-export function showModalBox(modal: XModal) {
+export interface XModalBoxConfig {
+    title?: string;
+}
+
+export function showModalBox(config: XModalBoxConfig, modal: XModal) {
     showModal((ctx) => {
         return (
-            <ModalBoxComponent modal={modal} ctx={ctx} />
+            <ModalBoxComponent modal={modal} ctx={ctx} config={config} />
         )
     })
 }
