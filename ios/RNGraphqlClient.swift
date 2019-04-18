@@ -97,7 +97,7 @@ class RNGraphqlClient: WebSocketTransportDelegate {
       configuration.httpAdditionalHeaders = ["x-openland-token": token]
     }
     var request = URLRequest(url: URL(string: "wss:"+endpoint)!)
-    request.timeoutInterval = 0.5
+    request.timeoutInterval = 15
     self.ws = WebSocketTransport(
       request: request,
       connectingPayload:["x-openland-token": token])
