@@ -1,17 +1,9 @@
-fragment OrganizationFull on Organization {
+fragment OrganizationWithoutMembers on Organization {
   __typename
   about
   featured: alphaFeatured
   isCommunity: alphaIsCommunity
   requests: alphaOrganizationMemberRequests {
-    __typename
-    role
-    user {
-      __typename
-      ...UserFull
-    }
-  }
-  members: alphaOrganizationMembers {
     __typename
     role
     user {

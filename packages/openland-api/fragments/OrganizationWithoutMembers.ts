@@ -2,8 +2,8 @@ import gql from 'graphql-tag';
 import { UserFull } from './UserFull';
 import { RoomShort } from './RoomShort';
 
-export const OrganizationFull = gql`
-    fragment OrganizationFull on Organization {
+export const OrganizationWithoutMembers = gql`
+    fragment OrganizationWithoutMembers on Organization {
         id
         superAccountId
         isMine
@@ -21,14 +21,8 @@ export const OrganizationFull = gql`
         twitter
         facebook
         linkedin
-        membersCount
 
-        members: alphaOrganizationMembers {
-            role
-            user {
-                ...UserFull
-            }
-        }
+        membersCount
 
         requests: alphaOrganizationMemberRequests {
             role

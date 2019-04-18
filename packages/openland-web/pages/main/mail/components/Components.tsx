@@ -123,18 +123,18 @@ const CacheComponent = ({
     activeChat: string | null;
     componentProps: any;
 }) => {
+    let SIZE_OF_CACHE = 20;
+
+    if (canUseDOM && (window as any).safari !== undefined) {
+        SIZE_OF_CACHE = 10;
+    }
+
     const [cachedPropsArray, setCachedProps] = React.useState<
         {
             chatId: string;
             componentProps: Object;
         }[]
     >([]);
-
-    let SIZE_OF_CACHE = 20;
-
-    if (canUseDOM && (window as any).safari !== undefined) {
-        SIZE_OF_CACHE = 10;
-    }
 
     if (activeChat) {
         if (cachedPropsArray.filter(({ chatId }) => chatId === activeChat).length === 0) {

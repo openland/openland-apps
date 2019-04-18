@@ -1814,9 +1814,21 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        builder.organizationId(notNull(readString(src, "organizationId")))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "OrganizationWithoutMembers") {
+       val builder = OrganizationWithoutMembersQuery.builder()
+       builder.organizationId(notNull(readString(src, "organizationId")))
+       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "OrganizationMembersShort") {
        val builder = OrganizationMembersShortQuery.builder()
        builder.organizationId(notNull(readString(src, "organizationId")))
+       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
+    }
+    if (name == "OrganizationMembersShortPaginated") {
+       val builder = OrganizationMembersShortPaginatedQuery.builder()
+       builder.organizationId(notNull(readString(src, "organizationId")))
+       builder.first(readInt(src, "first"))
+       builder.after(readString(src, "after"))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
     if (name == "OrganizationProfile") {
@@ -2581,6 +2593,10 @@ fun readFragment(name: String, src: ReadableMap): Pair<String, GraphqlFragment> 
     }
     if (name == "OrganizationShort") {
         val res = OrganizationShort.Mapper().map(responseReader(src))
+        return (res.__typename() + "$" + res.id()) to res
+    }
+    if (name == "OrganizationWithoutMembers") {
+        val res = OrganizationWithoutMembers.Mapper().map(responseReader(src))
         return (res.__typename() + "$" + res.id()) to res
     }
     if (name == "SettingsFull") {

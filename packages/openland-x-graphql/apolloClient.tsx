@@ -30,14 +30,15 @@ const buildWebClient = (token?: string) => {
 
 export const apolloClient = (token?: string) => {
     if (canUseDOM) {
-        if (!cachedClient) {
-            let httpEndpoint = '/graphql';
-            let wsEndpoint = loadConfig().webSocketEndpoint!;
-            const client = createWorkerClient(httpEndpoint, wsEndpoint, token);
-            cachedClient = new OpenlandClient(client);
-            Track.setClient(cachedClient);
-        }
-        return cachedClient!!;
+        // if (!cachedClient) {
+        //     let httpEndpoint = '/graphql';
+        //     let wsEndpoint = loadConfig().webSocketEndpoint!;
+        //     const client = createWorkerClient(httpEndpoint, wsEndpoint, token);
+        //     cachedClient = new OpenlandClient(client);
+        //     Track.setClient(cachedClient);
+        // }
+        // return cachedClient!!;
+        return new OpenlandClient(new DirectApollolClient(buildWebClient(token)));
     } else {
         return new OpenlandClient(new DirectApollolClient(buildWebClient(token)));
     }

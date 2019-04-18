@@ -1,10 +1,12 @@
 import gql from 'graphql-tag';
 import { OrganizationFull } from '../fragments/OrganizationFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
+import { OrganizationWithoutMembers } from '../fragments/OrganizationWithoutMembers';
 import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
 import { OrganizationSearch } from '../fragments/OrganizationSearch';
 import { CommunitySearch } from '../fragments/CommunitySearch';
 import { UserShort } from 'openland-api/fragments/UserShort';
+import { UserFull } from 'openland-api/fragments/UserFull';
 
 export const MyOrganizationsQuery = gql`
     query MyOrganizations {
@@ -42,9 +44,19 @@ export const OrganizationQuery = gql`
     ${UserShort}
 `;
 
+export const OrganizationWithoutMembersQuery = gql`
+    query OrganizationWithoutMembers($organizationId: ID!) {
+        organization(id: $organizationId) {
+            ...OrganizationWithoutMembers
+        }
+    }
+    ${OrganizationWithoutMembers}
+`;
+
 export const OrganizationMembersShortQuery = gql`
     query OrganizationMembersShort($organizationId: ID!) {
         organization(id: $organizationId) {
+            ...OrganizationWithoutMembers
             members: alphaOrganizationMembers {
                 user {
                     id
@@ -52,6 +64,23 @@ export const OrganizationMembersShortQuery = gql`
             }
         }
     }
+    ${OrganizationWithoutMembers}
+`;
+
+export const OrganizationMembersShortPaginatedQuery = gql`
+    query OrganizationMembersShortPaginated($organizationId: ID!, $first: Int, $after: ID) {
+        organization(id: $organizationId) {
+            ...OrganizationWithoutMembers
+            members: alphaOrganizationMembers(first: $first, after: $after) {
+                role
+                user {
+                    ...UserFull
+                }
+            }
+        }
+    }
+    ${OrganizationWithoutMembers}
+    ${UserFull}
 `;
 
 export const OrganizationProfileQuery = gql`

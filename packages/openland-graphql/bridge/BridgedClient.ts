@@ -86,6 +86,7 @@ export abstract class BridgedClient implements GraphqlClient {
             // Special retry action
             if (error) {
                 if (!(error instanceof ApiError)) {
+                    
                     log.warn('Received unknown error: retrying watch');
 
                     // Stop old watch

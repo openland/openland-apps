@@ -3,9 +3,9 @@ import Glamorous from 'glamorous';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import {
     OrganizationMemberRole,
-    Organization_organization,
     Organization_organization_members,
-    Organization_organization_requests,
+    OrganizationWithoutMembers_organization,
+    OrganizationWithoutMembers_organization_requests,
 } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -38,7 +38,7 @@ import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XSocialButton } from 'openland-x/XSocialButton';
-import { XMoreCards } from 'openland-x/cards/XMoreCards';
+import { XMoreCards, XMoreCardsButton, XMoreCardsWrapper } from 'openland-x/cards/XMoreCards';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XSwitcher } from 'openland-x/XSwitcher';
@@ -156,7 +156,7 @@ export const EditButton = (props: XButtonProps & { big?: boolean }) => {
 
 interface MemberJoinedProps {
     member: Organization_organization_members;
-    organization: Organization_organization;
+    organization: OrganizationWithoutMembers_organization;
 }
 
 const MemberJoinedCard = (props: MemberJoinedProps) => {
@@ -256,8 +256,8 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
 };
 
 interface MemberRequestCardProps {
-    member: Organization_organization_requests;
-    organization: Organization_organization;
+    member: OrganizationWithoutMembers_organization_requests;
+    organization: OrganizationWithoutMembers_organization;
 }
 
 interface MemberRequestCardState {
@@ -519,7 +519,7 @@ export let extractHostname = (url: string) => {
     return hostname;
 };
 
-const Header = (props: { organization: Organization_organization }) => {
+const Header = (props: { organization: OrganizationWithoutMembers_organization }) => {
     let { organization } = props;
 
     const editButton = (
@@ -628,7 +628,7 @@ const Header = (props: { organization: Organization_organization }) => {
     );
 };
 
-const About = (props: { organization: Organization_organization }) => {
+const About = (props: { organization: OrganizationWithoutMembers_organization }) => {
     let { organization } = props;
 
     return (
@@ -678,10 +678,27 @@ const tabs: { [K in tabsT]: tabsT } = {
 };
 
 interface MembersProps {
-    organization: Organization_organization;
+    organization: OrganizationWithoutMembers_organization;
     router: XRouter;
     onDirectory?: boolean;
 }
+
+const MoreMembersButton = ({
+    haveMore,
+    children,
+    toggleShown,
+}: {
+    haveMore: boolean;
+    children: any;
+    toggleShown: () => void;
+}) => {
+    return (
+        <>
+            <XView marginBottom={4}>{children}</XView>
+            {haveMore && <XMoreCardsButton isShown={false} toggleShown={toggleShown} />}
+        </>
+    );
+};
 
 const Members = ({ organization, router }: MembersProps) => {
     let tab: tabsT = tabs.members;
@@ -689,8 +706,33 @@ const Members = ({ organization, router }: MembersProps) => {
     if (router.query.tab === tabs.requests) {
         tab = tabs.requests;
     }
+    const client = useClient();
 
-    let joinedMembers = organization.members || [];
+    const data = client.useOrganizationMembersShortPaginated({
+        organizationId: organization.id,
+        first: 10,
+    });
+
+    const [joinedMembers, setJoinedMembers] = React.useState<Organization_organization_members[]>(
+        () => {
+            return data.organization.members;
+        },
+    );
+
+    React.useEffect(() => {
+        setJoinedMembers(data.organization.members);
+    }, [organization.id]);
+
+    const toggleShown = async () => {
+        const loaded = await client.queryOrganizationMembersShortPaginated({
+            organizationId: organization.id,
+            first: 10,
+            after: joinedMembers[joinedMembers.length - 1].user.id,
+        });
+
+        setJoinedMembers([...joinedMembers, ...loaded.organization.members]);
+    };
+
     let requestMembers = organization.requests || [];
 
     if (joinedMembers.length > 0) {
@@ -699,7 +741,7 @@ const Members = ({ organization, router }: MembersProps) => {
                 {withHeader && (
                     <XSubHeader
                         title={TextProfiles.Organization.membersTitle}
-                        counter={joinedMembers.length}
+                        counter={organization.membersCount.toString()}
                         paddingBottom={0}
                         marginBottom={-3}
                     />
@@ -722,11 +764,17 @@ const Members = ({ organization, router }: MembersProps) => {
                             />
                         </>
                     )}
-                    <XMoreCards>
+                    <MoreMembersButton
+                        haveMore={
+                            joinedMembers.length !== 0 &&
+                            joinedMembers.length !== organization.membersCount
+                        }
+                        toggleShown={toggleShown}
+                    >
                         {joinedMembers.map((member, i) => (
                             <MemberJoinedCard key={i} member={member} organization={organization} />
                         ))}
-                    </XMoreCards>
+                    </MoreMembersButton>
                 </SectionContent>
             </>
         );
@@ -767,7 +815,7 @@ const Members = ({ organization, router }: MembersProps) => {
                     joinedMembersBox(true)}
 
                 <RemoveJoinedModal
-                    members={organization.members}
+                    members={joinedMembers}
                     orgName={organization.name}
                     orgId={organization.id}
                     refetchVars={{
@@ -776,7 +824,7 @@ const Members = ({ organization, router }: MembersProps) => {
                     }}
                 />
                 <PermissionsModal
-                    members={organization.members}
+                    members={joinedMembers}
                     orgName={organization.name}
                     orgId={organization.id}
                     refetchVars={{
@@ -784,7 +832,7 @@ const Members = ({ organization, router }: MembersProps) => {
                         organizationId: organization.id,
                     }}
                 />
-                <UpdateUserProfileModal members={organization.members} />
+                <UpdateUserProfileModal members={joinedMembers} />
             </Section>
         );
     } else {
@@ -841,7 +889,7 @@ export const CreateGroupPopperButton = XMemo((props: { orgId: string }) => {
     );
 });
 
-const Rooms = (props: { organization: Organization_organization }) => {
+const Rooms = (props: { organization: OrganizationWithoutMembers_organization }) => {
     let { organization } = props;
 
     let groups = organization.rooms;
@@ -909,7 +957,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
 };
 
 interface OrganizationProfileInnerProps extends XWithRouter {
-    organization: Organization_organization;
+    organization: OrganizationWithoutMembers_organization;
     onDirectory?: boolean;
     hideBack?: boolean;
 }
@@ -925,11 +973,13 @@ export const OrganizationProfileInner = (props: OrganizationProfileInnerProps) =
                 <Header organization={organization} />
                 <XScrollView3 flexGrow={1} flexShrink={1}>
                     <About organization={organization} />
-                    <Members
-                        organization={organization}
-                        router={props.router}
-                        onDirectory={props.onDirectory}
-                    />
+                    <React.Suspense fallback={<XLoader loading={true} />}>
+                        <Members
+                            organization={organization}
+                            router={props.router}
+                            onDirectory={props.onDirectory}
+                        />
+                    </React.Suspense>
                     <Rooms organization={organization} />
                 </XScrollView3>
             </XView>
@@ -947,24 +997,24 @@ const OrganizationProvider = ({
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const data = client.useWithoutLoaderOrganization(variables);
+    const data = client.useOrganizationWithoutMembers(variables);
 
-    return data && data.organization ? (
+    return (
         <OrganizationProfileInner
             organization={data.organization}
             router={router}
             onDirectory={onDirectory}
         />
-    ) : (
-        <XLoader loading={true} />
     );
 };
 
 export const OrganizationProfile = (props: { organizationId: string; onDirectory?: boolean }) => {
     return (
-        <OrganizationProvider
-            variables={{ organizationId: props.organizationId }}
-            onDirectory={props.onDirectory}
-        />
+        <React.Suspense fallback={<XLoader loading={true} />}>
+            <OrganizationProvider
+                variables={{ organizationId: props.organizationId }}
+                onDirectory={props.onDirectory}
+            />
+        </React.Suspense>
     );
 };
