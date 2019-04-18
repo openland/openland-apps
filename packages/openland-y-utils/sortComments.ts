@@ -4,6 +4,7 @@ export const sortComments = (
     comments: MessageComments_messageComments_comments[],
     commentsMap: { [key: string]: MessageComments_messageComments_comments | undefined },
 ): MessageComments_messageComments_comments[] => {
+    let i = 0;
     function treeSortHelper(node: any, explored: any, s: any) {
         if (node && node.id) {
             const curNode = commentsMap[node.id];
@@ -27,12 +28,10 @@ export const sortComments = (
     }
 
     function treeSort(nodes: any[]) {
-        // Create a Stack to keep track of all elements in sorted order
         let s: any[] = [];
         let explored = new Set();
 
         while (explored.size !== nodes.length) {
-            // For every unvisited node in our graph, call the helper.
             nodes.forEach(node => {
                 if (!explored.has(node.id)) {
                     treeSortHelper(node, explored, s);
