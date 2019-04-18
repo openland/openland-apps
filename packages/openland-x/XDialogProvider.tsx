@@ -3,7 +3,7 @@ import { XModalProvider, XModal, registerModalProvider, XModalController } from 
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import * as ReactModal from 'react-modal';
 
-export class XDialogProviderComponent extends React.Component<{}, { modals: { element: React.ReactElement<{}>, key: string, escHandler?: () => void }[] }> implements XModalProvider {
+export class XDialogProviderComponent extends React.Component<{}, { modals: { element: React.ReactElement<{}>, key: string, escHandler: () => void }[] }> implements XModalProvider {
     constructor(props: {}) {
         super(props);
         this.state = { modals: [] };
@@ -20,8 +20,13 @@ export class XDialogProviderComponent extends React.Component<{}, { modals: { el
                     escHandler = handler;
                 },
             }
+            let esc = () => {
+                if (escHandler) {
+                    escHandler();
+                }
+            }
             let element = modal(cont);
-            this.setState((state) => ({ modals: [...state.modals, { key, element, escHandler }] }));
+            this.setState((state) => ({ modals: [...state.modals, { key, element, escHandler: esc }] }));
         }, 1);
     }
     componentWillMount() {
