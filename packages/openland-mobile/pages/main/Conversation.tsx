@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image, TouchableHighlight } from 'react-native';
+import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image, TouchableWithoutFeedback, TextStyle } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -33,6 +33,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showCallModal } from './Call';
 import { EmojiRender } from './components/EmojiRender';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
+import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -246,36 +247,41 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
+                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} />
 
                             {sharedRoom && sharedRoom.pinnedMessage && (
                                 <ASSafeAreaContext.Consumer>
                                     {area => (
-                                        <View width="100%" height={56} flexDirection="column" zIndex={1} marginTop={area.top}>
-                                            <TouchableHighlight underlayColor={'white'} onPress={() => this.handlePinnedMessagePress(sharedRoom!.pinnedMessage!.id)}>
-                                                <View backgroundColor="#f3f5f7" width="100%" height={56} flexDirection="column" zIndex={1} >
-                                                    <View flexDirection="row" marginTop={9} marginLeft={12}>
-                                                        <View flexGrow={1} flexDirection="row">
-                                                            <Image style={{ width: 15, height: 15, tintColor: '#1790ff', marginRight: 6 }} source={require('assets/ic-pinned.png')} />
-                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: '#000', marginRight: 8, fontWeight: TextStyles.weight.medium as any }}>{sharedRoom!.pinnedMessage!.sender.name}</Text>
+                                        <ZBlurredView intensity="normal" position="absolute" top={area.top} left={0} right={0} zIndex={2} borderBottomColor="#eff0f2" borderBottomWidth={1}>
+                                            <TouchableWithoutFeedback onPress={() => this.handlePinnedMessagePress(sharedRoom!.pinnedMessage!.id)}>
+                                                <View flexDirection="row" paddingRight={16}>
+                                                    <View width={50} height={52} alignItems="center" justifyContent="center">
+                                                        <Image style={{ width: 16, height: 16, tintColor: '#1790ff' }} source={require('assets/ic-pinned.png')} />
+                                                    </View>
+
+                                                    <View height={52} flexGrow={1} flexShrink={1} paddingTop={9}>
+                                                        <View flexDirection="row">
+                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: '#000', fontWeight: TextStyles.weight.medium } as TextStyle}>
+                                                                {sharedRoom!.pinnedMessage!.sender.name}
+                                                            </Text>
+
                                                             {sharedRoom!.pinnedMessage!.sender.primaryOrganization &&
-                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: '#99a2b0', fontWeight: TextStyles.weight.medium as any }}>{sharedRoom!.pinnedMessage!.sender.primaryOrganization!.name}</Text>
+                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: '#99a2b0', marginLeft: 8, fontWeight: TextStyles.weight.medium } as TextStyle}>
+                                                                    {sharedRoom!.pinnedMessage!.sender.primaryOrganization!.name}
+                                                                </Text>
                                                             }
                                                         </View>
-                                                        <Image style={{ width: 14, height: 14, marginRight: 10, opacity: 0.25 }} source={require('assets/ic-expand.png')} />
-
+                                                        <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: 1, opacity: 0.8, lineHeight: 21 } as TextStyle}>
+                                                            {formatMessage(sharedRoom!.pinnedMessage as any)}
+                                                        </Text>
                                                     </View>
-                                                    <Text numberOfLines={1} style={{ fontSize: 14, marginRight: 9, fontWeight: TextStyles.weight.regular as any, marginLeft: 12, marginTop: 6 }}>
-                                                        {formatMessage(sharedRoom!.pinnedMessage as any)}
-                                                    </Text>
                                                 </View>
-                                            </TouchableHighlight>
-                                        </View>
-
+                                            </TouchableWithoutFeedback>
+                                        </ZBlurredView>
                                     )}
                                 </ASSafeAreaContext.Consumer>
-
                             )}
-                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} />
+
                             {showInputBar && (
                                 <MessageInputBar
                                     onAttachPress={this.handleAttach}
