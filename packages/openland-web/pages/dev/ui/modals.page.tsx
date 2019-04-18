@@ -5,8 +5,10 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
 import { XModal } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
-import Lorem from 'react-lorem-component';
 import { XVertical2 } from 'openland-x/XVertical2';
+import { showModal } from 'openland-x/showModal';
+import { XView } from 'react-mental';
+import { showModalBox } from 'openland-x/showModalBox';
 
 class ControlledModal extends React.Component<{}, { show: boolean }> {
     constructor(props: {}) {
@@ -32,7 +34,15 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                 <XVertical2>
                     <XTitle>for rooms</XTitle>
                     <XTitle>Modals</XTitle>
-                    <XModal target={<XButton text="Show Modal" />}>
+                    <XButton
+                        text="Show Modal"
+                        onClick={() => showModalBox((ctx) => (
+                            <XView paddingHorizontal={20} paddingVertical={24}>
+                                <XButton text="close" onClick={() => ctx.hide()} />
+                            </XView>
+                        ))}
+                    />
+                    {/* <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={2} />
                     </XModal>
                     <XTitle>Controlled</XTitle>
@@ -58,7 +68,7 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                     <XTitle>Large Content</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={40} />
-                    </XModal>
+                    </XModal> */}
                 </XVertical2>
             </XContent>
         </DevDocsScaffold>
