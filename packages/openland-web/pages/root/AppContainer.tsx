@@ -6,6 +6,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
+import { XDialogProviderComponent } from 'openland-x/XDialogProvider';
 
 export const AppContainer = (props: { children: any }) => {
     const client = useClient();
@@ -28,6 +29,7 @@ export const AppContainer = (props: { children: any }) => {
                 roles={data.myPermissions.roles}
             >
                 <MessengerProvider user={hasMessenger ? data.me!! : undefined}>
+                    <XDialogProviderComponent />
                     {props.children}
                 </MessengerProvider>
             </UserInfoProvider>
