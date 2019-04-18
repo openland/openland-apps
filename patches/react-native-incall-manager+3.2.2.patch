@@ -1,0 +1,28 @@
+diff --git a/node_modules/react-native-incall-manager/ios/RNInCallManager/RNInCallManager.m b/node_modules/react-native-incall-manager/ios/RNInCallManager/RNInCallManager.m
+index 5e08ab9..ce39c31 100644
+--- a/node_modules/react-native-incall-manager/ios/RNInCallManager/RNInCallManager.m
++++ b/node_modules/react-native-incall-manager/ios/RNInCallManager/RNInCallManager.m
+@@ -159,10 +159,10 @@ - (void)dealloc
+         [self startRingback:ringbackUriType];
+     }
+ 
+-    if ([_media isEqualToString:@"audio"]) {
+-        [self startProximitySensor];
+-    }
+-    [self setKeepScreenOn:YES];
++    // if ([_media isEqualToString:@"audio"]) {
++    //     [self startProximitySensor];
++    // }
++    // [self setKeepScreenOn:YES];
+     _audioSessionInitialized = YES;
+     //self.debugAudioSession()
+ }
+@@ -526,7 +526,7 @@ - (void)updateAudioRoute
+         overrideAudioPortString = @".None";
+         if ([_media isEqualToString:@"video"]) {
+             audioMode = AVAudioSessionModeVoiceChat;
+-            [self startProximitySensor];
++            // [self startProximitySensor];
+         }
+     } else { // use default behavior
+         overrideAudioPort = AVAudioSessionPortOverrideNone;

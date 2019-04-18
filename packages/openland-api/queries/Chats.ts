@@ -589,7 +589,19 @@ export const RoomSearchQuery = gql`
         items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {
             edges {
                 node {
-                    ...RoomShort
+                    ... on SharedRoom {
+                        id
+                        kind
+                        isChannel
+                        title
+                        photo
+                        membership
+                        membersCount
+                        organization {
+                            photo
+                            name
+                        }
+                    }
                 }
                 cursor
             }
@@ -603,9 +615,6 @@ export const RoomSearchQuery = gql`
             }
         }
     }
-    ${RoomShort}
-    ${UserShort}
-    ${OrganizationMedium}
 `;
 
 export const RoomAlterFeaturedMutation = gql`

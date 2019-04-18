@@ -9,6 +9,12 @@ export class InMemoryKeyValueStore implements KeyValueStore {
             this._store.delete(key);
         }
     }
+    async writeKeys(items: { key: string, value: string | null }[]) {
+        for (let i of items) {
+            this.writeKey(i.key, i.value);
+        }
+    }
+
     async readKey(key: string) {
         let res = this._store.get(key);
         if (res) {
@@ -16,5 +22,15 @@ export class InMemoryKeyValueStore implements KeyValueStore {
         } else {
             return null;
         }
+    }
+    async readKeys(keys: string[]): Promise<{ key: string, value: string | null }[]> {
+        return keys.map((v) => {
+            let res = this._store.get(v);
+            if (res) {
+                return { key: v, value: res };
+            } else {
+                return { key: v, value: null };
+            }
+        })
     }
 }

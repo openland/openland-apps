@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { View, Text, TouchableOpacity, Image, BackHandler } from 'react-native';
+import { View, Text, TouchableOpacity, Image, BackHandler, TouchableWithoutFeedbackComponent, TouchableHighlight } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { CallController } from 'openland-mobile/calls/CallController';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -20,6 +20,8 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { CallStatus } from 'openland-engines/CallsEngine';
 import { formatTimerTime } from 'openland-mobile/utils/formatTime';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { NativeModules } from 'react-native';
+import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let [mute, setMute] = React.useState(false);
@@ -38,7 +40,6 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         InCallManager.start({ media: 'audio' });
         RNSDevice.proximityEnable();
         return () => {
-            InCallManager.stop();
             RNSDevice.proximityDisable();
             SStatusBar.setBarStyle('dark-content');
         }
@@ -51,24 +52,19 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let calls = getMessenger().engine.calls;
     let callsState = calls.useState();
 
+    let conference = getClient().useWithoutLoaderConference({ id: props.id })
+    useWatchCall(conference && conference.conference.id);
+
     let onCallEnd = React.useCallback(() => {
+        InCallManager.stop({ busytone: '_BUNDLE_' });
+        calls.leaveCall();
         setStatus('end');
-        var Sound = require('react-native-sound');
-        Sound.setCategory('Playback');
-        Sound.setMode('SpokenAudio');
-        var whoosh = new Sound('call_end.mp3', Sound.MAIN_BUNDLE, (error: any) => {
-            if (error) {
-                console.log('failed to load the sound', error);
-                return;
-            }
-            whoosh.play();
-        });
 
         setTimeout(() => {
             SStatusBar.setBarStyle('dark-content');
             props.hide();
-        }, 1000)
-    }, [])
+        }, 2000)
+    }, []);
 
     React.useEffect(() => {
         if (callsState.status === 'connected') {
@@ -86,7 +82,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
             setStatus('waiting');
         }
 
-    }, [callsState.status])
+    }, [callsState.status]);
 
     React.useEffect(() => {
         if (status === 'connected') {
@@ -95,7 +91,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
             }, 100);
         }
 
-    }, [timer, initialTime, status])
+    }, [timer, initialTime, status]);
 
     return (
         <ASSafeAreaView flexDirection="column" alignItems="stretch" flexGrow={1}>
@@ -121,6 +117,15 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     {['connected', 'end'].includes(status) ? formatTimerTime(timer) : ''}
                 </Text>
             </View>
+
+            {room.__typename === 'SharedRoom' && <View flexDirection="row" alignItems="center" flexWrap="wrap" marginHorizontal={18} marginTop={40}>
+                {conference && conference.conference.peers.map(p => {
+                    return <View key={p.id} margin={10}>
+                        <ZAvatar size={45} placeholderKey={p.id} placeholderTitle={p.user.name} src={p.user.photo} />
+                    </View>
+
+                })}
+            </View>}
 
             <View flexGrow={1} />
             <View justifyContent="center" alignItems="center" marginBottom={56} flexDirection="row">

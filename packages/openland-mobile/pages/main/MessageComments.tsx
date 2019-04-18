@@ -7,7 +7,7 @@ import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform
 import { SHeader } from 'react-native-s/SHeader';
 import { MessageInputBar } from './components/MessageInputBar';
 import { DefaultConversationTheme } from './themes/ConversationThemeResolver';
-import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomMembers_members_user, MentionInput, UserShort, RoomShort_SharedRoom } from 'openland-api/Types';
+import { MessageComments_messageComments_comments, FullMessage_GeneralMessage, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, RoomMembers_members_user, MentionInput, UserShort, RoomShort_SharedRoom, FileAttachmentInput } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
@@ -24,6 +24,8 @@ import { showAttachMenu } from '../../files/showAttachMenu';
 import { CommentsList } from './components/comments/CommentsList';
 import { ReplyView } from './components/comments/ReplyView';
 import { SDevice } from 'react-native-s/SDevice';
+import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -47,8 +49,8 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         const [ mentions, setMentions ] = React.useState<({ user: UserShort, offset: number, length: number })[]>([]);
 
     // callbacks
-        const handleSubmit = React.useCallback(async () => {
-            if (inputText.trim().length > 0) {
+        const handleSubmit = React.useCallback(async (attachment?: FileAttachmentInput) => {
+            if (inputText.trim().length > 0 || attachment) {
                 setSending(true);
 
                 let mentionsCleared: MentionInput[] = [];
@@ -69,7 +71,8 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                     messageId: message.id,
                     message: inputText,
                     replyComment: replied ? replied.id : null,
-                    mentions: mentionsCleared.length > 0 ? mentionsCleared : null
+                    mentions: mentionsCleared.length > 0 ? mentionsCleared : null,
+                    fileAttachments: attachment ? [ attachment ] : null
                 });
 
                 setInputText('');
@@ -104,7 +107,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
             }]);
         }, [inputText, inputSelection, mentions]);
 
-        const handleManageClick = React.useCallback(() => {
+        const handleManagePress = React.useCallback(() => {
             let client = messenger.engine.client;
             let router = messenger.history.navigationManager;
 
@@ -130,9 +133,28 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
         const handleAttach = React.useCallback(() => {
             showAttachMenu((type, name, path, size) => {
-                // temp ignore
+                setSending(true);
+
+                UploadManagerInstance.registerSimpleUpload(
+                    name,
+                    path,
+                    {
+                        onProgress: (progress: number) => {
+                            // temp ignore
+                        },
+                        onDone: (fileId: string) => {
+                            handleSubmit({ fileId });
+                        },
+                        onFail: () => {
+                            setSending(false);
+
+                            Alert.alert('Error while uploading file');
+                        }
+                    },
+                    size
+                )
             });
-        }, []);
+        }, [message, inputText, mentions, replied]);
 
         const handleReplyPress = React.useCallback((comment: MessageComments_messageComments_comments_comment) => {
             setReplied(comment);
@@ -198,7 +220,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         <>
             <SHeader title="Comments" />
 
-            {room && room.canEdit && room.pinnedMessage && (room.pinnedMessage.id === message.id) && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
+            {room && room.canEdit && room.pinnedMessage && (room.pinnedMessage.id === message.id) && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManagePress} />}
 
             <ASSafeAreaContext.Consumer>
                 {area => (
@@ -218,9 +240,8 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
                         <View paddingBottom={Platform.OS === 'android' ? area.keyboardHeight : undefined}>
                             <MessageInputBar
-                                attachesEnabled={false}
                                 onAttachPress={handleAttach}
-                                onSubmitPress={handleSubmit}
+                                onSubmitPress={() => handleSubmit()}
                                 onChangeText={handleInputTextChange}
                                 onSelectionChange={handleInputSelectionChange}
                                 onFocus={handleInputFocus}

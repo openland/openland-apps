@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Text, Linking, Clipboard, Share } from 'react-native';
 import { Span } from 'openland-mobile/utils/TextProcessor';
-import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { OthersUsersWrapper } from 'openland-mobile/messenger/components/service/views/OthersUsersWrapper';
 import { ActionSheetBuilder } from '../ActionSheet';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 let openContextMenu = (link: string) => {
     let builder = new ActionSheetBuilder();
@@ -17,14 +17,14 @@ let openContextMenu = (link: string) => {
     builder.show();
 }
 
-export const renderPreprocessedText = (v: Span, i: number, onUserPress: (id: string) => void) => {
+export const renderPreprocessedText = (v: Span, i: number, onUserPress: (id: string) => void, theme: AppTheme) => {
     if (v.type === 'new_line') {
         return <Text key={'br-' + i} >{'\n'}</Text>;
     } else if (v.type === 'link') {
         return (
             <Text
                 key={'link-' + i}
-                style={{ color: DefaultConversationTheme.linkColorIn, }}
+                style={{ color: theme.accentColor, }}
                 onPress={resolveInternalLink(v.link!, async () => await Linking.openURL(v.link!))}
                 onLongPress={() => openContextMenu(v.link!)}
                 allowFontScaling={false}
@@ -36,7 +36,7 @@ export const renderPreprocessedText = (v: Span, i: number, onUserPress: (id: str
         return (
             <Text
                 key={'mention-' + i}
-                style={{ color: DefaultConversationTheme.linkColorIn, }}
+                style={{ color: theme.accentColor, }}
                 onPress={() => onUserPress(v.id)}
                 allowFontScaling={false}
             >

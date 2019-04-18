@@ -52,6 +52,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
         this.dataSource.watch(this);
         // Register for load more events
         ASEventEmitter.registerOnLoadMore(this.key, () => { this.dataSource.needMore(); });
+        NativeDataView.dataViewInit(this.key, '[]', false);
     }
 
     onDataSourceInited = (data: T[], completed: boolean) => {
@@ -65,7 +66,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
                 config: v.currentState
             })));
             console.log('DataSource inited in ' + (Date.now() - start) + ' ms');
-            NativeDataView.dataViewInit(this.key, config, completed);
+            NativeDataView.dataViewLoadedMore(this.key, config, completed);
         });
     }
     onDataSourceItemAdded = (item: T, index: number) => {

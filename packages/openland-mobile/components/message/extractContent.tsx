@@ -10,16 +10,15 @@ import { layoutImage } from 'openland-mobile/messenger/components/content/MediaC
 import { Dimensions } from 'react-native';
 
 interface ExtractContentProps {
-    theme: AppTheme;
     message: FullMessage_GeneralMessage;
 
     onUserPress: (id: string) => void;
     onDocumentPress: (document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => void;
 }
 
-export let extractContent = (props: ExtractContentProps, isSmall?: boolean) => {
+export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxWidth?: number) => {
     let message = props.message;
-    let maxWidth = Dimensions.get('screen').width - 32;
+    let realMaxWidth = maxWidth || Dimensions.get('screen').width - 32;
 
     let attaches = (message.attachments || []);
     let fileAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile') as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
@@ -41,7 +40,7 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean) => {
         let isImage = file.fileMetadata.isImage;
     
         if (isImage) {
-            let imageLayout = layoutImage(file.fileMetadata, maxWidth);
+            let imageLayout = layoutImage(file.fileMetadata, realMaxWidth);
     
             if (imageLayout) {
                 content.push(<MediaContent key={'msg-media-' + index} imageLayout={imageLayout} message={message} attach={file} />);
@@ -55,10 +54,10 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean) => {
         let imageLayout;
 
         if (attach.image && attach.image.metadata) {
-            imageLayout = layoutImage(attach.image.metadata, maxWidth);
+            imageLayout = layoutImage(attach.image.metadata, realMaxWidth);
         }
 
-        content.push(<RichAttachContent key={'msg-rich-' + index} attach={attach} imageLayout={imageLayout} message={message} />);
+        content.push(<RichAttachContent key={'msg-rich-' + index} attach={attach} imageLayout={imageLayout} message={message} isSmall={isSmall} />);
     });
 
     return content;

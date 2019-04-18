@@ -11,13 +11,14 @@ export interface ZMessageViewProps {
 
     small?: boolean;
     showReactions?: boolean;
+    maxWidth?: number;
 }
 
 export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const router = getMessenger().history.navigationManager;
 
-    const { message } = props;
+    const { message, small, showReactions, maxWidth } = props;
 
     const handleUserPress = React.useCallback((id: string) => {
         router.push('ProfileUser', { id });
@@ -28,14 +29,12 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     }, []);
 
     const content = extractContent({
-        theme,
         message,
-
         onUserPress: handleUserPress,
         onDocumentPress: handleDocumentPress,
-    }, props.small);
+    }, small, maxWidth);
 
-    const reactions = props.showReactions ? <ReactionsView reactions={message.reactions} /> : undefined;
+    const reactions = showReactions ? <ReactionsView reactions={message.reactions} /> : undefined;
 
     return (
         <View>

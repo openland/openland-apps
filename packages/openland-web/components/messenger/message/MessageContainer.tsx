@@ -24,14 +24,16 @@ export interface DesktopMessageContainerProps {
     selected: boolean;
 
     children?: any;
+    haveReactions: boolean;
 }
 
 interface PreambulaContainerProps {
     children: any;
     onClick?: () => void;
+    haveReactions: boolean;
 }
 
-const CompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
+const CompactPreambulaContainer = ({ children, haveReactions }: PreambulaContainerProps) => {
     return (
         <XView
             alignSelf="flex-start"
@@ -41,10 +43,10 @@ const CompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
             whiteSpace={'nowrap'}
             overflow={'hidden'}
             paddingTop={1}
-            marginTop={1}
+            marginTop={haveReactions ? undefined : 1}
             fontWeight={'600'}
             lineHeight={'22px'}
-            color={'rgba(0, 0, 0, 0.4)'}
+            color="rgba(0, 0, 0, 0.4)"
         >
             {children}
         </XView>
@@ -73,6 +75,7 @@ interface MessageContainerWrapperProps {
     onMouseLeave: (event: React.MouseEvent<any>) => void;
     onClick?: (e: any) => void;
     cursorPointer: boolean;
+    selected: boolean;
 }
 
 const CompactMessageContainerWrapper = ({
@@ -81,6 +84,7 @@ const CompactMessageContainerWrapper = ({
     onMouseLeave,
     onClick,
     cursorPointer,
+    selected,
 }: MessageContainerWrapperProps) => {
     return (
         <XView
@@ -88,13 +92,16 @@ const CompactMessageContainerWrapper = ({
             flexDirection="row"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            marginTop={0}
-            paddingTop={2}
-            paddingLeft={18}
+            marginTop={-3}
+            marginBottom={-3}
+            paddingTop={7}
+            paddingBottom={5}
+            paddingLeft={20}
             paddingRight={20}
-            paddingBottom={3}
+            borderRadius={4}
             onClick={onClick}
             cursor={cursorPointer ? 'pointer' : undefined}
+            backgroundColor={selected ? '#f7f7f7' : undefined}
         >
             {children}
         </XView>
@@ -107,6 +114,7 @@ const NotCompactMessageContainerWrapper = ({
     onMouseLeave,
     onClick,
     cursorPointer,
+    selected,
 }: MessageContainerWrapperProps) => {
     return (
         <XView
@@ -114,13 +122,16 @@ const NotCompactMessageContainerWrapper = ({
             flexDirection="row"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            marginTop={12}
-            paddingTop={7}
-            paddingLeft={18}
+            marginTop={9}
+            marginBottom={-3}
+            paddingTop={10}
+            paddingBottom={5}
+            paddingLeft={20}
             paddingRight={20}
-            paddingBottom={3}
+            borderRadius={4}
             onClick={onClick}
             cursor={cursorPointer ? 'pointer' : undefined}
+            backgroundColor={selected ? '#f7f7f7' : undefined}
         >
             {children}
         </XView>
@@ -172,13 +183,13 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     );
 
     // Left side of message
-    const { compact, sender, date } = props;
+    const { compact, sender, date, haveReactions } = props;
 
     const PreambulaContainer = compact ? CompactPreambulaContainer : NotCompactPreambulaContainer;
 
     const preambula = React.useMemo(
         () => (
-            <PreambulaContainer>
+            <PreambulaContainer haveReactions={haveReactions}>
                 {!compact ? (
                     <UserPopper
                         isMe={props.sender.isYou}
@@ -221,7 +232,11 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                                 paddingLeft={8}
                                 alignSelf="flex-end"
                                 marginBottom={-1}
-                                path={`/mail/o/${props.sender.primaryOrganization.id}`}
+                                path={
+                                    props.selecting
+                                        ? undefined
+                                        : `/mail/o/${props.sender.primaryOrganization.id}`
+                                }
                                 hoverTextDecoration="none"
                             >
                                 {props.sender.primaryOrganization.name}
@@ -240,7 +255,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
                     </XView>
                 </XView>
             ),
-            [props.date, props.sender, props.sender.primaryOrganization],
+            [props.date, props.sender, props.sender.primaryOrganization, props.selecting],
         );
     // Content
     const content = (
@@ -251,12 +266,6 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
             flexBasis={0}
             minWidth={0}
             alignItems="stretch"
-            backgroundColor={props.selected ? '#f7f7f7' : undefined}
-            marginVertical={-2}
-            marginHorizontal={-8}
-            paddingVertical={2}
-            paddingHorizontal={8}
-            borderRadius={6}
         >
             {props.compact ? (
                 props.children
@@ -285,6 +294,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             cursorPointer={props.selecting}
+            selected={props.selected}
             onClick={(e: any) => {
                 if (props.selecting) {
                     e.preventDefault();
@@ -327,7 +337,7 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
     const { sender, date } = props;
 
     const preambula = (
-        <NotCompactPreambulaContainer>
+        <NotCompactPreambulaContainer haveReactions={false}>
             <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
         </NotCompactPreambulaContainer>
     );

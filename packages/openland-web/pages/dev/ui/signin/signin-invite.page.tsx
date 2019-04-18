@@ -35,6 +35,7 @@ export default () => (
                             signin={signin}
                             signPath={''}
                             inviter={{ photo: null, name: 'name', id: 'id' }}
+                            isInvitePageSignin={false}
                         />
                     </WebSignUpContainer>
                 );

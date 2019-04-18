@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { OrganizationShort } from './OrganizationShort';
 
 export const UserTiny = gql`
     fragment UserTiny on User {
@@ -9,5 +10,9 @@ export const UserTiny = gql`
         lastName
         photo
         shortname
+        primaryOrganization {
+            ...OrganizationShort
+        }
     }
+    ${OrganizationShort}
 `;

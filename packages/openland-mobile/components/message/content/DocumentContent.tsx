@@ -43,11 +43,11 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
 
         return (
             <TouchableWithoutFeedback onPress={this.handlePress}>
-                <View height={40} flexDirection="row" marginTop={2} marginBottom={1}>
+                <View height={40} flexDirection="row" marginVertical={5}>
                     <View
                         width={40}
                         height={40}
-                        backgroundColor="#f7f7f7"
+                        backgroundColor="rgba(185, 192, 202, 0.2)"
                         borderRadius={20}
                         marginRight={10}
                         alignItems="center"
@@ -59,10 +59,8 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                         />
                         {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && (
                             <View
-                                width={40}
                                 backgroundColor="#0008"
                                 borderRadius={20}
-                                marginRight={10}
                                 justifyContent="center"
                                 alignItems="center"
                                 position="absolute"
@@ -78,9 +76,9 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
 
                     <View
                         flexGrow={1}
+                        flexShrink={1}
                         flexDirection="column"
                         marginTop={4}
-                        marginRight={14}
                         alignSelf="center"
                     >
                         <Text

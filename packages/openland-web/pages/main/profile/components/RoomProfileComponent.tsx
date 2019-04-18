@@ -10,6 +10,7 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
+import { RoomMembersPaginated } from 'openland-api/Types';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
@@ -37,6 +38,7 @@ import {
     Room_room_SharedRoom,
     RoomFull_SharedRoom_members,
     RoomFull_SharedRoom_requests,
+    RoomMembersPaginated_members,
 } from 'openland-api/Types';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XMutation } from 'openland-x/XMutation';
@@ -117,8 +119,9 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                             <XOverflow
                                 placement="bottom-end"
                                 flat={true}
+                                width={152}
                                 content={
-                                    <>
+                                    <React.Suspense fallback={<XLoader loading={true} />}>
                                         <XWithRole role="super-admin" or={canEdit}>
                                             <XMenuItem
                                                 query={{
@@ -157,7 +160,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                                 />
                                             </XWithRole>
                                         </XWithRole>
-                                    </>
+                                    </React.Suspense>
                                 }
                             />
                             <LeaveChatComponent />
@@ -328,10 +331,6 @@ interface MembersProviderProps {
     isChannel: boolean;
 }
 
-const convertToDataSource = (data: any) => {
-    return data.members.map((member: any) => ({ ...member, key: member.user.id, canKick: true }));
-};
-
 const MembersProvider = ({
     roomTitle,
     membersCount,
@@ -350,7 +349,7 @@ const MembersProvider = ({
         let sectionElems;
         if (tab === tabs.members) {
             sectionElems = (
-                <XView flexBasis={0} flexGrow={1} flexShrink={1} overflow="hidden">
+                <XView flexGrow={1} flexShrink={1}>
                     <AddMembersModal
                         id={chatId}
                         isRoom={true}
@@ -492,6 +491,14 @@ const itemsWrapperClassName = css`
     padding-right: 16px;
 `;
 
+const convertToDataSource = (data: RoomMembersPaginated) => {
+    return data.members.map(member => ({
+        ...member,
+        key: member.user.id,
+        canKick: member.canKick,
+    }));
+};
+
 const RoomGroupProfileProvider = ({
     variables,
     conversationId,
@@ -514,7 +521,10 @@ const RoomGroupProfileProvider = ({
 
     const pageSize = 20;
 
-    const { dataSource, renderLoading } = useInfiniteScroll({
+    const { dataSource, renderLoading } = useInfiniteScroll<
+        RoomMembersPaginated,
+        RoomMembersPaginated_members & { key: string; canKick: boolean }
+    >({
         convertToDataSource,
         initialLoadFunction: () => {
             return client.useRoomMembersPaginated(

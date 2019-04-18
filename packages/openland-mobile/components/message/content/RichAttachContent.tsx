@@ -15,6 +15,7 @@ interface RichAttachContentProps {
     message: FullMessage_GeneralMessage;
     attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
     imageLayout?: { width: number, height: number };
+    isSmall?: boolean;
 }
 
 const paddedTextPrefix = <Text>{' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 11 }))}</Text>;
@@ -58,6 +59,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
     }
 
     render() {
+        let { isSmall } = this.props;
         let { text, subTitle, keyboard } = this.props.attach;
 
         let mainTextColor = DefaultConversationTheme.textColorIn;
@@ -82,7 +84,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
         }
 
         return (
-            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={10} backgroundColor="#f3f5f7" borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
+            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={!isSmall ? 10 : undefined} marginVertical={isSmall ? 5 : undefined} backgroundColor="#f3f5f7" borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <Text
                         style={{

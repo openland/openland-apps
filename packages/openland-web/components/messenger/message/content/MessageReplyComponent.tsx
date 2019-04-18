@@ -81,7 +81,7 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
                     file={props.attach.fileId}
                     fileName={name}
                     fileSize={size}
-                    marginTop={0}
+                    marginBottom={8}
                 />,
             );
         }

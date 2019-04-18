@@ -6,7 +6,20 @@ query RoomSearch($page: Int, $query: String, $sort: String) {
       cursor
       node {
         __typename
-        ...RoomShort
+        ... on SharedRoom {
+          id
+          isChannel
+          kind
+          membersCount
+          membership
+          organization {
+            __typename
+            name
+            photo
+          }
+          photo
+          title
+        }
       }
     }
     pageInfo {

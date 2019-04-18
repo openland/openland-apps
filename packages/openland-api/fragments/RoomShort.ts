@@ -27,7 +27,7 @@ export const RoomShort = gql`
             pinnedMessage {
                 ...FullMessage
             }
-            organization{
+            organization {
                 ...OrganizationShort
             }
             settings {

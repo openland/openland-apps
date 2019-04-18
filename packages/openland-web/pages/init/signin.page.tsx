@@ -37,6 +37,7 @@ const InviteInfo = (props: {
     signin: boolean;
     loginWithGoogle: Function;
     loginWithEmail: Function;
+    isInvitePageSignin: boolean;
 }) => {
     const client = useClient();
 
@@ -80,6 +81,7 @@ const InviteInfo = (props: {
             signPath={signPath}
             loginWithGoogle={props.loginWithGoogle}
             loginWithEmail={props.loginWithEmail}
+            isInvitePageSignin={props.isInvitePageSignin}
         />
     );
 };
@@ -102,6 +104,7 @@ const checkIfIsSignIn = (router: any) => {
 
 interface SignInComponentProps extends XWithRouter {
     redirect?: string | null;
+    isSignInInvite: boolean;
 }
 
 interface SignInComponentState {
@@ -209,7 +212,9 @@ class SignInComponent extends React.Component<
     }
 
     loginWithGoogle = () => {
-        trackEvent('signup_google_action');
+        trackEvent(
+            checkIfIsSignIn(this.props.router) ? 'signin_google_action' : 'signup_google_action',
+        );
 
         this.setState({ googleStarting: true, signInInvite: false });
         this.fireGoogle();
@@ -324,7 +329,10 @@ class SignInComponent extends React.Component<
                 'no_code',
             ].includes(error)
         ) {
-            let e = (error === 'wrong_code_length' || error === 'invalid_user_password') ? 'wrong_code' : error;
+            let e =
+                error === 'wrong_code_length' || error === 'invalid_user_password'
+                    ? 'wrong_code'
+                    : error;
 
             trackEvent('code_error', { error_type: e });
         } else {
@@ -337,10 +345,6 @@ class SignInComponent extends React.Component<
         let redirect = this.props.router.query.redirect
             ? '?redirect=' + encodeURIComponent(this.props.router.query.redirect)
             : '';
-
-        const signupText = signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint;
-
-        const linkText = signin ? InitTexts.auth.signup : InitTexts.auth.signin;
 
         const roomView = this.props.roomView;
 
@@ -377,15 +381,37 @@ class SignInComponent extends React.Component<
 
         const showTerms = (!signin && pageMode === 'AuthMechanism') || this.state.fromOutside;
 
+        let isInvitePage = this.props.isSignInInvite;
+        let isInvitePageSignin = false;
+
+        if (isInvitePage && this.props.router.path.endsWith('/signup')) {
+            isInvitePageSignin = true;
+        }
+
+        let signupText = signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint;
+        let linkText = signin ? InitTexts.auth.signup : InitTexts.auth.signin;
+
+        let containerPath = (signin ? '/signup' : '/signin') + redirect;
+        let headerStyle: 'signin' | 'signup' | 'profile' | 'organization' = signin
+            ? 'signin'
+            : 'signup';
+
+        if (isInvitePage) {
+            containerPath = (isInvitePageSignin ? '/signin' : '/signup') + redirect;
+            headerStyle = isInvitePageSignin ? 'signup' : 'signin';
+            signupText = isInvitePageSignin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint;
+            linkText = isInvitePageSignin ? InitTexts.auth.signup : InitTexts.auth.signin;
+        }
+
         return (
             <>
                 <Container
                     showTerms={showTerms}
                     pageMode={pageMode}
                     text={signupText}
-                    path={(signin ? '/signup' : '/signin') + redirect}
+                    path={containerPath}
                     linkText={linkText}
-                    headerStyle={signin ? 'signin' : 'signup'}
+                    headerStyle={headerStyle}
                 >
                     {pageMode === 'SignInInvite' && (
                         <InviteInfo
@@ -395,6 +421,7 @@ class SignInComponent extends React.Component<
                             signin={signin}
                             loginWithGoogle={this.loginWithGoogle}
                             loginWithEmail={this.loginWithEmail}
+                            isInvitePageSignin={isInvitePageSignin}
                         />
                     )}
                     {pageMode === 'AuthMechanism' && (
@@ -413,7 +440,7 @@ class SignInComponent extends React.Component<
                     {pageMode === 'Loading' && <Loader />}
 
                     {pageMode === 'CreateFromEmail' && (
-                        <XTrack event="signup_email_view">
+                        <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'}>
                             <MyCreateWithEmail
                                 signin={signin}
                                 emailError={this.state.emailError}
@@ -515,6 +542,7 @@ export const SignInPage = (props: any) => {
                         redirect={redirect}
                         router={props.router}
                         roomView={!!fromRoom}
+                        isSignInInvite={isSignInInvite}
                     />
                 )}
             </XTrack>

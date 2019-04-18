@@ -294,7 +294,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     render() {
         let { message } = this.props;
         let content: any[] = [];
-        let date: any = null;
         let edited = message.isEdited;
 
         let fileAttach = (message.attachments || []).filter(
@@ -310,6 +309,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (forwardMessagesId) {
             isSelect = forwardMessagesId.has(message.id || 'none');
         }
+
+        let haveReactions = !!(message.reactions && message.reactions.length);
 
         if (!message.isSending) {
             if (this.state.isEditView && message.text) {
@@ -424,6 +425,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 file={fileAttach.fileId}
                                 fileName={fileAttach.fileMetadata.name}
                                 fileSize={fileAttach.fileMetadata.size}
+                                marginBottom={3}
                             />,
                         );
                     }
@@ -507,6 +509,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     renderMenu={this.menuRender}
                     onSelected={this.selectMessage}
                     selected={isSelect}
+                    haveReactions={haveReactions}
                 >
                     {content}
                     {this.reactionsRender()}

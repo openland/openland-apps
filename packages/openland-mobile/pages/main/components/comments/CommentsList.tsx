@@ -9,6 +9,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Prompt } from 'openland-mobile/components/Prompt';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface CommentsListProps {
     comments: MessageComments_messageComments_comments[];
@@ -19,6 +20,8 @@ interface CommentsListProps {
 
 export const CommentsList = (props: CommentsListProps) => {
     const { comments, highlightedId, onReplyPress } = props;
+
+    const theme = React.useContext(ThemeContext);
 
     const handleLongPress = React.useCallback((comment: MessageComments_messageComments_comments_comment) => {
         let engine = getMessenger().engine;
@@ -86,9 +89,9 @@ export const CommentsList = (props: CommentsListProps) => {
 
     return (
         <>
-            <View height={1} backgroundColor="#eff0f2" marginTop={20} />
+            <View height={1} backgroundColor={theme.separatorColor} marginTop={15} />
 
-            <View marginTop={20} marginBottom={20}>
+            <View marginTop={20} marginBottom={15}>
                 <Text style={{ fontSize: 16, color: '#99a2b0', fontWeight: TextStyles.weight.medium } as TextStyle} allowFontScaling={false}>COMMENTS <Text style={{ color: '#b9c1cd' }}>{comments.length}</Text></Text>
             </View>
 
@@ -101,6 +104,7 @@ export const CommentsList = (props: CommentsListProps) => {
                         onReplyPress={onReplyPress}
                         onLongPress={handleLongPress}
                         highlighted={(typeof highlightedId === 'string' && highlightedId === commentEntry.id) ? true : false}
+                        theme={theme}
                     />
                 ))}
             </View>

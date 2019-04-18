@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation } from 'react-native';
+import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation, Image, Animated } from 'react-native';
 import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/apolloClient';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
 import { ZLoader } from '../components/ZLoader';
@@ -16,11 +16,60 @@ import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink, saveLinkIfInvite, joinInviteIfHave } from '../utils/internalLnksResolver';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { SDevice } from 'react-native-s/SDevice';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { NativeKeyValue } from 'openland-mobile/apollo/NativeKeyValue';
+import { SAnimated } from 'react-native-s/SAnimated';
+import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
+import { randomKey } from 'react-native-s/utils/randomKey';
+
+const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
+    const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
+    React.useEffect(() => {
+        SAnimated.beginTransaction();
+        SAnimated.setDefaultPropertyAnimator();
+        animatedValue.opacity = props.loading ? 1 : 0;
+        SAnimated.commitTransaction();
+    }, [props.loading]);
+
+    return (
+        <SAnimated.View
+            name={animatedValue.name}
+            style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'white',
+                opacity: 1
+            }}
+            pointerEvents={props.loading ? 'box-none' : 'none'}
+        >
+            {/* <View alignItems="center" justifyContent="center" position="absolute" top={0} left={0} bottom={0} right={0} backgroundColor="white" pointerEvents="box-only"> */}
+            <Image
+                source={require('assets/logo-unicorn.png')}
+                style={{ width: 130, height: 155 }}
+            />
+            {/* </View> */}
+        </SAnimated.View>
+    );
+});
+
+const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (e: LayoutChangeEvent) => void }>((props) => {
+    return (
+        <ThemeProvider>
+            <View style={{ width: '100%', height: '100%' }} onLayout={props.onLayout}>
+                {props.children}
+                <ZModalProvider />
+                <AppPlaceholder loading={props.loading} />
+            </View>
+        </ThemeProvider>
+    )
+});
 
 export let NON_PRODUCTION = false;
 
@@ -172,57 +221,37 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
     }
 
     render() {
-        if (this.state.state === 'loading') {
-            return (
-                <ThemeProvider>
-                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
-                        <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
-                            <ZLoader appearance="large" />
-                        </View>
-                    </View>
-                </ThemeProvider>
-            );
-        } else if (this.state.state === 'app') {
-            return (
-                <ThemeProvider>
+        let content = undefined;
+        let loading = true;
+
+        if (this.state.state === 'app') {
+            loading = false;
+            content = (
+                <>
                     <PushManager client={getClient()} />
-                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
-                        {this.state.dimensions && <Root routing={getMessenger().history} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
-                        <ZModalProvider />
-                        {/* <View position="absolute" top={0} left={0} right={0} height={SDevice.safeArea.top} backgroundColor="red" /> */}
-                        {/* <View position="absolute" top={0} left={0} right={0} height={SDevice.safeArea.top + SDevice.statusBarHeight} backgroundColor="yellow" />
-                        <View position="absolute" bottom={0} left={0} right={0} height={SDevice.safeArea.bottom} backgroundColor="blue" /> */}
-                    </View>
-                </ThemeProvider>
+                    {this.state.dimensions && <Root routing={getMessenger().history} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
+                </>
             );
         } else if (this.state.state === 'initial') {
-            return (
-                <ThemeProvider>
-                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
-                        {this.state.dimensions && <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
-                        <ZModalProvider />
-                    </View>
-                </ThemeProvider>
+            loading = false;
+            content = (
+                <>
+                    {this.state.dimensions && <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
+                </>
             );
         } else if (this.state.state === 'signup') {
-            return (
-                <ThemeProvider>
-                    <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
-                        {this.state.dimensions && <Root routing={this.history} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
-                        <ZModalProvider />
-                    </View>
-                </ThemeProvider>
+            loading = false;
+            content = (
+                <>
+                    {this.state.dimensions && <Root routing={this.history} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
+                </>
             );
         }
 
         return (
-            <ThemeProvider>
-                <View style={{ width: '100%', height: '100%' }} onLayout={this.handleLayoutChange}>
-                    <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
-                        <ZLoader appearance="large" />
-                    </View>
-                </View>
-            </ThemeProvider>
+            <AppContainer loading={loading} onLayout={this.handleLayoutChange}>
+                {content}
+            </AppContainer>
         )
     }
 }

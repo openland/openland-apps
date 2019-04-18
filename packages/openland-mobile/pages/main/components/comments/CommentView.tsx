@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessageComments_messageComments_comments_comment, MessageReactionType } from 'openland-api/Types';
-import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { formatDate } from 'openland-mobile/utils/formatDate';
@@ -9,19 +9,12 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 const styles = StyleSheet.create({
     senderName: {
         fontSize: 13,
         fontWeight: TextStyles.weight.medium,
-        color: '#0084fe',
-        lineHeight: 15
-    } as TextStyle,
-    senderNameDeleted: {
-        fontSize: 13,
-        fontWeight: TextStyles.weight.medium,
-        color: 'rgba(0, 0, 0, 0.5)',
         lineHeight: 15
     } as TextStyle,
     date: {
@@ -31,7 +24,6 @@ const styles = StyleSheet.create({
         lineHeight: 15,
     } as TextStyle,
     reply: {
-        color: '#0084fe',
         fontSize: 13,
         fontWeight: TextStyles.weight.medium,
         lineHeight: 15,
@@ -44,21 +36,20 @@ export interface CommentViewProps {
     depth: number;
     deleted: boolean;
     highlighted: boolean;
+    theme: AppTheme;
 
     onReplyPress: (comment: MessageComments_messageComments_comments_comment) => void;
     onLongPress: (comment: MessageComments_messageComments_comments_comment) => void;
 }
 
 export const CommentView = React.memo<CommentViewProps>((props) => {
-    const { comment, deleted, depth, highlighted } = props;
+    const { comment, deleted, depth, highlighted, theme } = props;
     const { sender, date, reactions } = comment;
 
     let messenger = getMessenger();
     let engine = messenger.engine;
     let client = getClient();
     let router = messenger.history.navigationManager;
-
-    const theme = React.useContext(ThemeContext);
 
     const handleReactionPress = React.useCallback(() => {
         let r = MessageReactionType.LIKE;
@@ -107,28 +98,31 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     let tools = (
         <View flexDirection="row" marginTop={4}>
             <Text style={styles.date}>{formatDate(parseInt(date, 10))}</Text>
-            <View marginLeft={12}>
-                {depth === 0 && (
-                    <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                        <View flexDirection="row">
-                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: '#0084fe', width: 16, height: 16, opacity: 0.7 }} />
-                            <Text style={styles.reply} allowFontScaling={false}>Reply</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                )}
 
-                {depth !== 0 && (
-                    <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                        <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: '#0084fe', width: 16, height: 16, opacity: 0.7}} />
-                    </TouchableWithoutFeedback>
-                )}
-            </View>
+            {!deleted && (
+                <View marginLeft={12}>
+                    {depth === 0 && (
+                        <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
+                            <View flexDirection="row">
+                                <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7 }} />
+                                <Text style={[styles.reply, { color: theme.accentColor }]} allowFontScaling={false}>Reply</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    )}
+
+                    {depth !== 0 && (
+                        <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
+                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7}} />
+                        </TouchableWithoutFeedback>
+                    )}
+                </View>
+            )}
         </View>
     );
 
     let likes = !deleted ? (
         <TouchableWithoutFeedback onPress={handleReactionPress}>
-            <View width={46} alignItems="center" justifyContent="center" paddingLeft={8}>
+            <View width={34} alignItems="center" justifyContent="center" paddingRight={4}>
                 <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? '#f6564e' : 'rgba(129, 137, 149, 0.3)', width: 18, height: 18 }} />
                 {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? '#000000' : 'rgba(0, 0, 0, 0.6)' } as TextStyle} allowFontScaling={false}>{likesCount}</Text>}
             </View>
@@ -142,22 +136,22 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     }
 
     return (
-        <TouchableWithoutFeedback onLongPress={!deleted ? () => props.onLongPress(comment) : undefined}>
-            <View style={{ backgroundColor: highlighted ? 'rgba(255, 255, 102, 0.15)' : '#ffffff', marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
+        <TouchableWithoutFeedback disabled={deleted} onLongPress={() => props.onLongPress(comment)}>
+            <View style={{ backgroundColor: highlighted ? 'rgba(255, 255, 102, 0.15)' : theme.backgroundColor, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
                 {lines}
 
                 <View flexDirection="row">
                     <View flexGrow={1} flexShrink={1}>
-                        <TouchableWithoutFeedback onPress={!deleted ? () => router.push('ProfileUser', { id: sender.id }) : undefined}>
+                        <TouchableWithoutFeedback disabled={deleted} onPress={() => router.push('ProfileUser', { id: sender.id })}>
                             <View flexDirection="row" marginBottom={3}>
                                 {avatar}
 
-                                <Text style={!deleted ? styles.senderName : styles.senderNameDeleted} allowFontScaling={false}>{sender.name}</Text>
+                                <Text style={[styles.senderName, { color: !deleted ? theme.accentColor : 'rgba(0, 0, 0, 0.5)' }]} allowFontScaling={false}>{sender.name}</Text>
                             </View>
                         </TouchableWithoutFeedback>
 
                         <View style={{ opacity: deleted ? 0.5 : undefined }}>
-                            <ZMessageView message={comment} small={true} />
+                            <ZMessageView message={comment} small={true} maxWidth={Dimensions.get('screen').width - branchIndent - 34} />
                         </View>
 
                         {tools}

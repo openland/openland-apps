@@ -74,9 +74,9 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>To upload a photo or video, allow Openland access to your camera.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>For sharing geolication, allow Openland access to your location.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
+	<string>For sharing geolication, allow Openland access to your location.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>For sharing geolication, allow Openland access to your location.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>For voice calls, allow Openland access to your microphone.</string>
@@ -112,6 +112,7 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>audio</string>
 		<string>fetch</string>
 		<string>remote-notification</string>
 		<string>voip</string>

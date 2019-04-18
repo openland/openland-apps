@@ -3,8 +3,8 @@ import { backoff, delay } from 'openland-y-utils/timer';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-import { ConferenceMediaWatchSubscription } from 'openland-api';
 import { ConferenceMediaWatch_media_streams } from 'openland-api/Types';
+import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
 
 export class MediaSessionManager {
     readonly conversationId: string;
@@ -185,19 +185,22 @@ export class MediaSessionManager {
     private doKeepAlive = () => {
         let confId = this.conferenceId;
         let peerId = this.peerId;
-        backoff(async () => {
-            while (!this.destroyed) {
-                await this.client.mutateConferenceKeepAlive({
+        const intervalId = AppBackgroundTask.setInterval(() => {
+            // this will be executed once after 10 seconds
+            // even when app is the the background
+            if (!this.destroyed) {
+                console.log('[WEBRTC] Keep Alive sent');
+                this.client.mutateConferenceKeepAlive({
                     id: confId,
                     peerId,
                 })
-                console.log('[WEBRTC] Keep Alive sent');
-                await delay(2000);
+            } else {
+                AppBackgroundTask.clearInterval(intervalId)
+                this.client.mutateConferenceLeave({
+                    id: confId,
+                    peerId: peerId
+                });
             }
-            await await this.client.mutateConferenceLeave({
-                id: confId,
-                peerId: peerId
-            });
-        });
+        }, 1000);
     }
 }
