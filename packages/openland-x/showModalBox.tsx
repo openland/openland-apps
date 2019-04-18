@@ -75,6 +75,9 @@ const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, con
     const [state, setState] = React.useState<'showing' | 'visible' | 'hiding'>('showing')
     const [top, setTop] = React.useState(0);
     const [left, setLeft] = React.useState(0);
+    const containerRef = React.useRef<HTMLDivElement | null>(null);
+    const boxRef = React.useRef<HTMLDivElement | null>(null);
+
     const tryHide = React.useCallback(() => {
         if (state !== 'hiding') {
             setState('hiding');
@@ -103,9 +106,6 @@ const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, con
         }
         return props.modal(ctx2);
     }, []);
-
-    const containerRef = React.useRef<HTMLDivElement | null>(null);
-    const boxRef = React.useRef<HTMLDivElement | null>(null);
 
     React.useLayoutEffect(() => {
         let inited = false;
