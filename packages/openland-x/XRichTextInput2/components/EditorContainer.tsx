@@ -54,7 +54,7 @@ type EditorContainerContainer = XRichTextInput2Props & {
     setEditorState: (a: EditorState) => void;
     mentionState: MentionSuggestionsStateT;
     onMentionPicked: (mention: UserShort) => void;
-    onSubmit: () => void;
+    onSubmit?: () => void;
     emojiState: EmojiSuggestionsStateT;
     onEmojiPicked: (emoji: EmojiData) => void;
     finalAddEmoji: (emoji: { shortName: string; unified: string }) => void;
@@ -132,7 +132,7 @@ const DocumentButton = ({ fileSelector }: { fileSelector: () => void }) => {
     );
 };
 
-const SendIconWrapper = ({ onSubmit }: { onSubmit: () => void }) => {
+const SendIconWrapper = ({ onSubmit }: { onSubmit?: () => void }) => {
     return (
         <div className={cx(iconWrapperClassName, sendIconWrapperClassName)} onClick={onSubmit}>
             <XIcon icon="send" className={sendIconClassName} />
@@ -153,7 +153,7 @@ const Icons = ({
     minimal?: boolean;
     hideAttach?: boolean;
     onEmojiPicked: (emoji: EmojiData) => void;
-    onSubmit: () => void;
+    onSubmit?: () => void;
 }) => {
     const fileInput: React.RefObject<HTMLInputElement> = React.createRef();
     const { handleDrop } = React.useContext(UploadContext);

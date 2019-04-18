@@ -594,7 +594,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
             return (
                 <DesktopMessageContainer
-                    haveReactions={haveReactions}
+                    haveReactions={!!haveReactions}
                     isPinned={this.props.isPinned}
                     isModal={this.props.isModal}
                     commentDepth={this.props.commentDepth}
