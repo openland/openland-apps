@@ -42,6 +42,15 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                             </XView>
                         ))}
                     />
+                    <XButton
+                        text="Show Large"
+                        onClick={() => showModalBox((ctx) => (
+                            <XView paddingHorizontal={20} paddingVertical={24} flexDirection="column">
+                                <XButton text="close" onClick={() => ctx.hide()} />
+                                <XView height={2000} backgroundColor="yellow" />
+                            </XView>
+                        ))}
+                    />
                     {/* <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={2} />
                     </XModal>

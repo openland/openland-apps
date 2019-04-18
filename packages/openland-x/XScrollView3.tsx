@@ -123,6 +123,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
                     flexShrink={props.flexShrink}
                     height={props.height}
                     minHeight={props.minHeight}
+                    maxHeight={props.maxHeight}
                     width={props.width}
                     minWidth={props.minWidth}
                     alignSelf={props.alignSelf}

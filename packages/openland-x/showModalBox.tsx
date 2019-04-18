@@ -3,6 +3,7 @@ import { XModal, showModal, XModalController } from './showModal';
 import { css } from 'linaria';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import * as className from 'classnames';
+import { XScrollView3 } from './XScrollView3';
 
 const boxStyle = css`
     display: flex;
@@ -10,6 +11,8 @@ const boxStyle = css`
     background-color: white;
     border-radius: 16px;
     box-shadow: 0px 3px 14px 4px #82777747;
+    max-height: 100vh;
+    max-width: 100vw;
 `
 
 const overlayHiding = css`
@@ -87,7 +90,9 @@ class ModalBoxComponent extends React.Component<{ ctx: XModalController, modal: 
                 onClick={this.handleContainerClick}
             >
                 <div className={boxStyle}>
-                    {this.contents}
+                    <XScrollView3 maxHeight="calc(100vh - 48px)">
+                        {this.contents}
+                    </XScrollView3>
                 </div>
             </div>
         )
