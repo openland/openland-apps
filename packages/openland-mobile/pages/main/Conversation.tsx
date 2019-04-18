@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { View, Text, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, Image, TouchableWithoutFeedback, TextStyle } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
 import { ConversationView } from './components/ConversationView';
 import { PageProps } from '../../components/PageProps';
@@ -35,6 +35,7 @@ import { EmojiRender } from './components/EmojiRender';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { MessagesActonsState } from 'openland-engines/messenger/MessagesActonsState';
+import { ReplyView } from './components/comments/ReplyView';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -203,6 +204,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
     }
 
+    onQuotedClearPress = () => {
+        getMessenger().engine.messagesActionsState.clear();
+    }
+
     render() {
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
@@ -236,8 +241,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
 
         let quoted = null;
-        if (this.state.messagesActionsState.messages && this.state.messagesActionsState.messages.length) {
-            quoted = <Text>{'Reply:' + this.state.messagesActionsState.messages[0].text}</Text>
+        if (this.state.messagesActionsState.messages && this.state.messagesActionsState.messages.length
+            && (this.state.messagesActionsState.pendingAction && ['reply', 'forward'].includes(this.state.messagesActionsState.pendingAction.action || ''))
+            && (this.state.messagesActionsState.pendingAction.conversationId === this.props.chat.id)
+        ) {
+            quoted = <ReplyView onClearPress={this.onQuotedClearPress} comment={this.state.messagesActionsState.messages.map(convertMessageBack) || []} action={this.state.messagesActionsState.pendingAction.action === 'forward' ? 'forward' : 'reply'} />
         }
 
         let topContent = [suggestions, quoted];

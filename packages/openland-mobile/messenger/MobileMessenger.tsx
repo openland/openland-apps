@@ -130,7 +130,7 @@ export class MobileMessenger {
 
         if (this.engine.getConversation(message.chatId).canSendMessage) {
             builder.action('Reply', () => {
-                this.engine.messagesActionsState.setState({ conversationId: message.chatId, messages: [message] })
+                this.engine.messagesActionsState.setState({ messages: [message], pendingAction: { action: 'reply', conversationId: chatId } })
             });
         }
 

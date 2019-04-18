@@ -86,7 +86,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
     };
 }
 
-export function convertMessageBack(src: DataSourceMessageItem): FullMessage_GeneralMessage_quotedMessages {
+export function convertMessageBack(src: DataSourceMessageItem): Types.Message_message {
     let res = {
         __typename: src.isService ? 'ServiceMessage' : 'GeneralMessage' as any,
         id: src.id!,
@@ -94,10 +94,12 @@ export function convertMessageBack(src: DataSourceMessageItem): FullMessage_Gene
         message: src.text || null,
         fallback: src.text || 'unknow message type',
         sender: src.sender,
-        spans: src.spans || [] as any,
-        commentsCount: src.commentsCount,
-        attachments: src.attachments,
-        edited: src.isEdited,
+        spans: src.spans || [],
+        commentsCount: src.commentsCount || 0,
+        attachments: src.attachments || [],
+        edited: !!src.isEdited,
+        quotedMessages: [],
+        reactions: [],
     };
 
     return res;
@@ -286,8 +288,13 @@ export class ConversationEngine implements MessageSendHandler {
         if (text.trim().length > 0) {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
-            let quoted = this.engine.messagesActionsState.getState().messages;
-            this.engine.messagesActionsState.clear();
+            let actionState = this.engine.messagesActionsState.getState();
+            let quoted;
+            if (actionState.pendingAction && actionState.pendingAction.conversationId === this.conversationId) {
+                quoted = this.engine.messagesActionsState.getState().messages;
+                this.engine.messagesActionsState.clear();
+            }
+
             let key = this.engine.sender.sendMessage({
                 conversationId: this.conversationId,
                 message,

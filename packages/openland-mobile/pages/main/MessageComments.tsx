@@ -41,150 +41,150 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const { message, comments, room, messenger } = props;
 
     // state
-        const [ replied, setReplied ] = React.useState<MessageComments_messageComments_comments_comment | undefined>(undefined);
-        const [ inputText, setInputText ] = React.useState<string>('');
-        const [ inputFocused, setInputFocused ] = React.useState<boolean>(false);
-        const [ inputSelection, setInputSelection ] = React.useState<{ start: number, end: number }>({ start: 0, end: 0});
-        const [ sending, setSending ] = React.useState<boolean>(false);
-        const [ mentions, setMentions ] = React.useState<({ user: UserShort, offset: number, length: number })[]>([]);
+    const [replied, setReplied] = React.useState<MessageComments_messageComments_comments_comment | undefined>(undefined);
+    const [inputText, setInputText] = React.useState<string>('');
+    const [inputFocused, setInputFocused] = React.useState<boolean>(false);
+    const [inputSelection, setInputSelection] = React.useState<{ start: number, end: number }>({ start: 0, end: 0 });
+    const [sending, setSending] = React.useState<boolean>(false);
+    const [mentions, setMentions] = React.useState<({ user: UserShort, offset: number, length: number })[]>([]);
 
     // callbacks
-        const handleSubmit = React.useCallback(async (attachment?: FileAttachmentInput) => {
-            if (inputText.trim().length > 0 || attachment) {
-                setSending(true);
+    const handleSubmit = React.useCallback(async (attachment?: FileAttachmentInput) => {
+        if (inputText.trim().length > 0 || attachment) {
+            setSending(true);
 
-                let mentionsCleared: MentionInput[] = [];
+            let mentionsCleared: MentionInput[] = [];
 
-                if (mentions.length > 0) {
-                    mentions.map(mention => {
-                        if (inputText.indexOf(mention.user.name) >= 0) {
-                            mentionsCleared.push({
-                                userId: mention.user.id,
-                                offset: mention.offset,
-                                length: mention.length
-                            });
-                        }
-                    });
-                }
-        
-                await getClient().mutateAddMessageComment({
-                    messageId: message.id,
-                    message: inputText,
-                    replyComment: replied ? replied.id : null,
-                    mentions: mentionsCleared.length > 0 ? mentionsCleared : null,
-                    fileAttachments: attachment ? [ attachment ] : null
+            if (mentions.length > 0) {
+                mentions.map(mention => {
+                    if (inputText.indexOf(mention.user.name) >= 0) {
+                        mentionsCleared.push({
+                            userId: mention.user.id,
+                            offset: mention.offset,
+                            length: mention.length
+                        });
+                    }
                 });
-
-                setInputText('');
-                setReplied(undefined);
-                setSending(false);
-                setMentions([]);
-            }
-        }, [message, inputText, mentions, replied]);
-
-        const handleEmojiPress = React.useCallback((word: string | undefined, emoji: string) => {
-            if (typeof word !== 'string') {
-                return;
             }
 
-            let newText = inputText.substring(0, inputSelection.start - word.length) + emoji + ' ' + inputText.substring(inputSelection.start, inputText.length);
-    
-            setInputText(newText);
-        }, [inputText, inputSelection]);
-
-        const handleMentionPress = React.useCallback((word: string | undefined, user: RoomMembers_members_user) => {
-            if (typeof word !== 'string') {
-                return;
-            }
-
-            let newText = inputText.substring(0, inputSelection.start - word.length) + '@' + user.name + ' ' + inputText.substring(inputSelection.start, inputText.length);
-
-            setInputText(newText);
-            setMentions([...mentions, {
-                user: user,
-                offset: inputSelection.start - 1,
-                length: user.name.length + 1
-            }]);
-        }, [inputText, inputSelection, mentions]);
-
-        const handleManagePress = React.useCallback(() => {
-            let client = messenger.engine.client;
-            let router = messenger.history.navigationManager;
-
-            if (room) {
-                let builder = new ActionSheetBuilder();
-        
-                if (room.canEdit) {
-                    builder.action('Unpin', async () => {
-                        startLoader();
-                        try {
-                            await client.mutateUnpinMessage({ chatId: room!.id });
-                            
-                            router.pop();
-                        } finally {
-                            stopLoader();
-                        }
-                    });
-                }
-        
-                builder.show();
-            }
-        }, [messenger, room]);
-
-        const handleAttach = React.useCallback(() => {
-            showAttachMenu((type, name, path, size) => {
-                setSending(true);
-
-                UploadManagerInstance.registerSimpleUpload(
-                    name,
-                    path,
-                    {
-                        onProgress: (progress: number) => {
-                            // temp ignore
-                        },
-                        onDone: (fileId: string) => {
-                            handleSubmit({ fileId });
-                        },
-                        onFail: () => {
-                            setSending(false);
-
-                            Alert.alert('Error while uploading file');
-                        }
-                    },
-                    size
-                )
+            await getClient().mutateAddMessageComment({
+                messageId: message.id,
+                message: inputText,
+                replyComment: replied ? replied.id : null,
+                mentions: mentionsCleared.length > 0 ? mentionsCleared : null,
+                fileAttachments: attachment ? [attachment] : null
             });
-        }, [message, inputText, mentions, replied]);
 
-        const handleReplyPress = React.useCallback((comment: MessageComments_messageComments_comments_comment) => {
-            setReplied(comment);
-
-            if (inputRef.current) {
-                inputRef.current.focus();
-            }
-        }, [inputRef]);
-
-        const handleReplyClear = React.useCallback(() => {
-            if (inputText.length <= 0) {
-                Keyboard.dismiss();
-            }
-
+            setInputText('');
             setReplied(undefined);
-        }, [inputText]);
+            setSending(false);
+            setMentions([]);
+        }
+    }, [message, inputText, mentions, replied]);
 
-        const handleInputTextChange = React.useCallback((src: string) => {
-            setInputText(src);
-        }, []);
+    const handleEmojiPress = React.useCallback((word: string | undefined, emoji: string) => {
+        if (typeof word !== 'string') {
+            return;
+        }
 
-        const handleInputSelectionChange = React.useCallback((e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
-            setInputSelection({
-                start: e.nativeEvent.selection.start,
-                end: e.nativeEvent.selection.end
-            });
-        }, []);
+        let newText = inputText.substring(0, inputSelection.start - word.length) + emoji + ' ' + inputText.substring(inputSelection.start, inputText.length);
 
-        const handleInputFocus = React.useCallback(() => { setInputFocused(true); }, []);
-        const handleInputBlur = React.useCallback(() => { setInputFocused(false); }, []);
+        setInputText(newText);
+    }, [inputText, inputSelection]);
+
+    const handleMentionPress = React.useCallback((word: string | undefined, user: RoomMembers_members_user) => {
+        if (typeof word !== 'string') {
+            return;
+        }
+
+        let newText = inputText.substring(0, inputSelection.start - word.length) + '@' + user.name + ' ' + inputText.substring(inputSelection.start, inputText.length);
+
+        setInputText(newText);
+        setMentions([...mentions, {
+            user: user,
+            offset: inputSelection.start - 1,
+            length: user.name.length + 1
+        }]);
+    }, [inputText, inputSelection, mentions]);
+
+    const handleManagePress = React.useCallback(() => {
+        let client = messenger.engine.client;
+        let router = messenger.history.navigationManager;
+
+        if (room) {
+            let builder = new ActionSheetBuilder();
+
+            if (room.canEdit) {
+                builder.action('Unpin', async () => {
+                    startLoader();
+                    try {
+                        await client.mutateUnpinMessage({ chatId: room!.id });
+
+                        router.pop();
+                    } finally {
+                        stopLoader();
+                    }
+                });
+            }
+
+            builder.show();
+        }
+    }, [messenger, room]);
+
+    const handleAttach = React.useCallback(() => {
+        showAttachMenu((type, name, path, size) => {
+            setSending(true);
+
+            UploadManagerInstance.registerSimpleUpload(
+                name,
+                path,
+                {
+                    onProgress: (progress: number) => {
+                        // temp ignore
+                    },
+                    onDone: (fileId: string) => {
+                        handleSubmit({ fileId });
+                    },
+                    onFail: () => {
+                        setSending(false);
+
+                        Alert.alert('Error while uploading file');
+                    }
+                },
+                size
+            )
+        });
+    }, [message, inputText, mentions, replied]);
+
+    const handleReplyPress = React.useCallback((comment: MessageComments_messageComments_comments_comment) => {
+        setReplied(comment);
+
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [inputRef]);
+
+    const handleReplyClear = React.useCallback(() => {
+        if (inputText.length <= 0) {
+            Keyboard.dismiss();
+        }
+
+        setReplied(undefined);
+    }, [inputText]);
+
+    const handleInputTextChange = React.useCallback((src: string) => {
+        setInputText(src);
+    }, []);
+
+    const handleInputSelectionChange = React.useCallback((e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
+        setInputSelection({
+            start: e.nativeEvent.selection.start,
+            end: e.nativeEvent.selection.end
+        });
+    }, []);
+
+    const handleInputFocus = React.useCallback(() => { setInputFocused(true); }, []);
+    const handleInputBlur = React.useCallback(() => { setInputFocused(false); }, []);
 
     const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 
@@ -201,7 +201,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     }
 
     if (replied) {
-        suggestions.push(<ReplyView comment={replied} onClearPress={handleReplyClear} />);
+        suggestions.push(<ReplyView comment={[replied]} onClearPress={handleReplyClear} />);
     }
 
     let content = (
@@ -281,7 +281,7 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
     };
 
     React.useEffect(() => {
-        const watcher = new SequenceModernWatcher('comment messageId:' + messageId, client.subscribeCommentWatch({ peerId: messageId }), client.client, updateHandler, undefined, { peerId: messageId }, null );
+        const watcher = new SequenceModernWatcher('comment messageId:' + messageId, client.subscribeCommentWatch({ peerId: messageId }), client.client, updateHandler, undefined, { peerId: messageId }, null);
 
         return () => {
             watcher.destroy();
