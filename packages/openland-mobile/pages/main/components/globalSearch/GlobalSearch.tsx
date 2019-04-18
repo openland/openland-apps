@@ -14,9 +14,9 @@ interface GlobalSearchProps {
     query: string;
     router: SRouter;
 
-    onOrganizationPress?: (id: string) => void;
-    onUserPress?: (id: string) => void;
-    onGroupPress?: (id: string) => void;
+    onOrganizationPress?: (id: string, title: string) => void;
+    onUserPress?: (id: string, title: string) => void;
+    onGroupPress?: (id: string, title: string) => void;
 }
 
 export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {

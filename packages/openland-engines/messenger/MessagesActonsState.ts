@@ -1,8 +1,9 @@
 import { DataSourceMessageItem } from "./ConversationEngine";
 
 export interface MessagesActonsState {
-    pendingAction?: { action?: 'reply' | 'forward' | 'delete', conversationId?: string };
+    pendingAction?: { action?: 'reply' | 'forward' | 'delete' };
     messages?: DataSourceMessageItem[];
+    conversationId?: string;
 }
 export class MessagesActonsStateEngine {
 

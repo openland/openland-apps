@@ -290,7 +290,7 @@ export class ConversationEngine implements MessageSendHandler {
             let date = (new Date().getTime()).toString();
             let actionState = this.engine.messagesActionsState.getState();
             let quoted;
-            if (actionState.pendingAction && actionState.pendingAction.conversationId === this.conversationId) {
+            if (actionState.pendingAction && actionState.conversationId === this.conversationId) {
                 quoted = this.engine.messagesActionsState.getState().messages;
                 this.engine.messagesActionsState.clear();
             }
@@ -631,7 +631,7 @@ export class ConversationEngine implements MessageSendHandler {
                         imageHeight: p.imageSize && p.imageSize.height || 0,
                     }
                 }] : undefined,
-                reply: p.quoted ? p.quoted.map(convertMessageBack) : undefined,
+                reply: p.quoted ? (p.quoted.map(convertMessageBack) as Types.Message_message_GeneralMessage_quotedMessages[]) : undefined,
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false
             };
         }

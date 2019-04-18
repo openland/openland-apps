@@ -19,6 +19,7 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'op
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
 import { reactionsImagesMap, defaultReactions, reactionMap } from './components/AsyncMessageReactionsView';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -130,9 +131,21 @@ export class MobileMessenger {
 
         if (this.engine.getConversation(message.chatId).canSendMessage) {
             builder.action('Reply', () => {
-                this.engine.messagesActionsState.setState({ messages: [message], pendingAction: { action: 'reply', conversationId: chatId } })
+                this.engine.messagesActionsState.setState({ messages: [message], pendingAction: { action: 'reply' }, conversationId: chatId })
             });
         }
+
+        // if (this.engine.getConversation(message.chatId).canSendMessage) {
+        //     builder.action('Forward', () => {
+        //         this.engine.messagesActionsState.setState({ messages: [message], pendingAction: { action: 'forward' } });
+        //         getMessenger().history.navigationManager.push('HomeDialogs', {
+        //             title: 'Forward to', pressCallback: (id: string) => {
+        //                 Alert.alert(id);
+        //                 this.engine.messagesActionsState.setState({ conversationId: id })
+        //             }
+        //         });
+        //     });
+        // }
 
         builder.action('Comment', () => {
             this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId });

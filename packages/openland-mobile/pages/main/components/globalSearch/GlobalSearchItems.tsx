@@ -10,10 +10,10 @@ import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
 
 export class GlobalSearchItemSharedRoom extends React.PureComponent<{
     item: GlobalSearch_items_SharedRoom;
-    onPress: (id: string) => void;
+    onPress: (id: string, title: string) => void;
 }> {
     handlePress = () => {
-        this.props.onPress(this.props.item.id);
+        this.props.onPress(this.props.item.id, this.props.item.title);
     }
 
     render() {
@@ -43,10 +43,10 @@ export class GlobalSearchItemSharedRoom extends React.PureComponent<{
 
 export class GlobalSearchItemOrganization extends React.PureComponent<{
     item: GlobalSearch_items_Organization;
-    onPress: (id: string) => void;
+    onPress: (id: string, title: string) => void;
 }> {
     handlePress = () => {
-        this.props.onPress(this.props.item.id);
+        this.props.onPress(this.props.item.id, this.props.item.name);
     }
 
     render() {
@@ -76,10 +76,10 @@ export class GlobalSearchItemOrganization extends React.PureComponent<{
 
 export class GlobalSearchItemUser extends React.PureComponent<{
     item: GlobalSearch_items_User;
-    onPress: (id: string) => void;
+    onPress: (id: string, title: string) => void;
 }> {
     handlePress = () => {
-        this.props.onPress(this.props.item.id);
+        this.props.onPress(this.props.item.id, this.props.item.name);
     }
 
     render() {

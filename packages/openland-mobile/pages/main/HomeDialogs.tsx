@@ -19,36 +19,45 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
-    let handleShareDialogClick = React.useCallback((id: string, dialog: DialogDataSourceItem) => {
-        Alert.builder().title('Openland').message('Share with ' + dialog.title + '?').button('Cancel', 'cancel').button('Ok', 'default', async () => {
+    let handlePress = React.useCallback((id: string, title: string) => {
 
-            if (props.router.params.share.files) {
-                for (let attach of props.router.params.share.files) {
-                    let path = attach.split('/');
-                    UploadManagerInstance.registerUpload(id, path[path.length - 1], attach);
+        if (props.router.params.share) {
+            Alert.builder().title('Openland').message('Share with ' + title + '?').button('Cancel', 'cancel').button('Ok', 'default', async () => {
+                if (props.router.params.share.files) {
+                    for (let attach of props.router.params.share.files) {
+                        let path = attach.split('/');
+                        UploadManagerInstance.registerUpload(id, path[path.length - 1], attach);
+                    }
                 }
-            }
 
-            if (props.router.params.share.strings) {
-                for (let s of props.router.params.share.strings) {
-                    getMessenger().engine.getConversation(id).sendMessage(s, []);
+                if (props.router.params.share.strings) {
+                    for (let s of props.router.params.share.strings) {
+                        getMessenger().engine.getConversation(id).sendMessage(s, []);
+                    }
                 }
-            }
 
-            getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
-        }).show();
+            }).show();
+        }
 
-    }, [props.router.params.share]);
+        if (props.router.params.pressCallback) {
+            props.router.params.pressCallback(id, title);
+        }
+        getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
 
-    let dialogs = props.router.params.share ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
+    }, [props.router.params.share, props.router.params.callback]);
+
+    let dialogs = props.router.params.share || props.router.params.pressCallback ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
         return (
-            <DialogItemViewAsync item={item} onPress={handleShareDialogClick} />
+            <DialogItemViewAsync item={item} onPress={(id, item) => handlePress(id, (item as DialogDataSourceItem).title)} />
         );
-    }) : undefined;
+    }) :
+        <DialogListComponent dialogs={getMessenger().dialogs} />
+        ;
+
     return (
         <ZTrack event="mail_view">
             {Platform.OS === 'ios' && (
-                <SHeader title={props.router.params.share ? 'Share with' : 'Messages'} />
+                <SHeader title={props.router.params.title || (props.router.params.share ? 'Share with' : 'Messages')} />
             )}
             {Platform.OS === 'android' && (
                 <>
@@ -56,23 +65,19 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                     {!props.router.params.share && < CenteredHeader title="Messages" padding={98} />}
                 </>
             )}
-            {!props.router.params.share && <SHeaderButton
+            {!props.router.params.share && !props.router.params.title && <SHeaderButton
                 title="New"
                 icon={Platform.OS === 'ios' ? require('assets/ic-compose-26.png') : require('assets/ic-edit.png')}
                 onPress={() => props.router.push('Compose')}
             />}
 
-            {props.router.params.share && (
-                <DialogListComponent dialogs={dialogs!} />
-            )}
-
             {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
-            {!props.router.params.share && (
+            {props.router.params.share || props.router.params && (
                 <SSearchControler
                     key={props.router.key + new Date().getTime()}
-                    searchRender={(p) => (<GlobalSearch query={p.query} router={props.router} />)}
+                    searchRender={(p) => (<GlobalSearch query={p.query} router={props.router} onGroupPress={handlePress} onUserPress={handlePress} />)}
                 >
-                    <DialogListComponent dialogs={getMessenger().dialogs} />
+                    {dialogs}
                 </SSearchControler>
             )}
         </ZTrack>

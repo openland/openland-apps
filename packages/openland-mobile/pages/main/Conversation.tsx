@@ -243,10 +243,12 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let quoted = null;
         if (this.state.messagesActionsState.messages && this.state.messagesActionsState.messages.length
             && (this.state.messagesActionsState.pendingAction && ['reply', 'forward'].includes(this.state.messagesActionsState.pendingAction.action || ''))
-            && (this.state.messagesActionsState.pendingAction.conversationId === this.props.chat.id)
+            && (this.state.messagesActionsState.conversationId === this.props.chat.id)
         ) {
             quoted = <ReplyView onClearPress={this.onQuotedClearPress} comment={this.state.messagesActionsState.messages.map(convertMessageBack) || []} action={this.state.messagesActionsState.pendingAction.action === 'forward' ? 'forward' : 'reply'} />
         }
+
+        // quoted = <Text>{JSON.stringify([this.state.messagesActionsState.conversationId, (this.state.messagesActionsState.messages || []).length, this.state.messagesActionsState.pendingAction, this.props.chat.id])}</Text>
 
         let topContent = [suggestions, quoted];
 
