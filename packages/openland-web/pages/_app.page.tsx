@@ -51,7 +51,7 @@ export default withData(
                 isApp: boolean;
             } & AppProps,
         ) {
-            super(props);
+            super(props as any);
             let cfg = canUseDOM ? loadConfig() : buildConfig();
             if (cfg.sentryEndpoint && cfg.release) {
                 this.isSentryEnabled = true;
