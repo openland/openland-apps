@@ -17,7 +17,7 @@ import {
     DataSourceWebMessageItem,
     buildMessagesDataSource,
 } from '../data/WebMessageItemDataSource';
-import { XScrollViewReverse2, XScrollViewReverse2Props } from 'openland-x/XScrollViewReversed2';
+import { XScrollViewReverse2 } from 'openland-x/XScrollViewReversed2';
 import { XScrollValues } from 'openland-x/XScrollView3';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -169,6 +169,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                 <XScrollViewReverse2
                     flexGrow={1}
                     flexShrink={1}
+                    justifyContent="flex-end"
                     onScroll={this.handlerScroll}
                     ref={this.scroller}
                 >
