@@ -71,7 +71,7 @@ const MetaTags = ({
 export default class OpenlandDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
         const page = props.renderPage();
-        const styles = renderStaticOptimized(() => page.html || page.errorHtml || '');
+        const styles = renderStaticOptimized(() => page.html  || '');
 
         let inviteKey;
         let metaTagsInfo;
@@ -123,9 +123,9 @@ export default class OpenlandDocument extends Document {
 
     constructor(props: DocumentProps) {
         super(props);
-        const { __NEXT_DATA__, ids } = props;
+        const { __NEXT_DATA__, ids } = props as any;
         if (ids) {
-            __NEXT_DATA__.ids = this.props.ids;
+            __NEXT_DATA__.ids = (this.props as any).ids;
         }
     }
 
@@ -220,7 +220,7 @@ export default class OpenlandDocument extends Document {
                         content="/static/img/favicon/ms-icon-144x144.png?v=2"
                     />
 
-                    <MetaTags {...(this.props.metaTagsInfo ? this.props.metaTagsInfo : {})} />
+                    <MetaTags {...((this.props as any).metaTagsInfo ? (this.props as any).metaTagsInfo : {})} />
 
                     <link
                         rel="stylesheet"
@@ -232,12 +232,12 @@ export default class OpenlandDocument extends Document {
                     <link rel="stylesheet" href="/static/css/draft-mentions.css" />
                     <link rel="stylesheet" href="/static/css/emoji-mart.css" />
                     <link rel="stylesheet" href="/static/css/x.css" />
-                    <style dangerouslySetInnerHTML={{ __html: this.props.glamCss }} />
+                    <style dangerouslySetInnerHTML={{ __html: (this.props as any).glamCss }} />
 
                     {/* Config */}
                     <script
                         dangerouslySetInnerHTML={{
-                            __html: "window.GLAMOR_IDS='" + JSON.stringify(this.props.ids) + "'",
+                            __html: "window.GLAMOR_IDS='" + JSON.stringify((this.props as any).ids) + "'",
                         }}
                     />
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />

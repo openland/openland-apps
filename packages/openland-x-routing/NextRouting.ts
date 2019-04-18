@@ -62,15 +62,15 @@ export function stopProgress(src: number) {
     }
 }
 
-NRouter.onRouteChangeStart = (url: any) => {
+NRouter.events.on('routeChangeStart', (url: string) => {
     // tslint:disable
     console.log(`onRouteChangeStart`);
     // tslint:enable
 
     // Hotfix Current Url (for initial render)
     if (currentPath == null) {
-        currentPath = (NRouter as any as RouterProps).asPath!!;
-        currentPathName = (NRouter as any as RouterProps).pathname;
+        currentPath = NRouter.asPath!!;
+        currentPathName = NRouter.pathname;
     }
     if (currentPath !== null) {
         console.log(`Naviating to: ${currentPath} -> ${url}`);
@@ -78,22 +78,22 @@ NRouter.onRouteChangeStart = (url: any) => {
     currentPath = url;
 
     startProgress(0);
-};
+});
 
-NRouter.onRouteChangeComplete = () => {
+NRouter.events.on('routeChangeComplete', (url: string) => {
     // tslint:disable
     console.log(`Naviating Complete`);
     // tslint:enable
 
-    currentPathName = (NRouter as any as RouterProps).pathname;
-    currentPath = (NRouter as any as RouterProps).asPath!!;
+    currentPathName = NRouter.pathname;
+    currentPath = NRouter.asPath!!;
 
     stopProgress(0);
 
-    trackPage();
-};
+    // trackPage();
+});
 
-NRouter.onRouteChangeError = (error: any) => {
+NRouter.events.on('routeChangeError', (error: any) => {
     // tslint:disable
     console.log(`onRouteChangeError`);
     // tslint:enable
@@ -109,4 +109,53 @@ NRouter.onRouteChangeError = (error: any) => {
 
     trackError(error);
     stopProgress(0);
-};
+});
+
+// NRouter.onRouteChangeStart = (url: any) => {
+//     // tslint:disable
+//     console.log(`onRouteChangeStart`);
+//     // tslint:enable
+
+//     // Hotfix Current Url (for initial render)
+//     if (currentPath == null) {
+//         currentPath = (NRouter as any as RouterProps).asPath!!;
+//         currentPathName = (NRouter as any as RouterProps).pathname;
+//     }
+//     if (currentPath !== null) {
+//         console.log(`Naviating to: ${currentPath} -> ${url}`);
+//     }
+//     currentPath = url;
+
+//     startProgress(0);
+// };
+
+// NRouter.onRouteChangeComplete = () => {
+//     // tslint:disable
+//     console.log(`Naviating Complete`);
+//     // tslint:enable
+
+//     currentPathName = (NRouter as any as RouterProps).pathname;
+//     currentPath = (NRouter as any as RouterProps).asPath!!;
+
+//     stopProgress(0);
+
+//     trackPage();
+// };
+
+// NRouter.onRouteChangeError = (error: any) => {
+//     // tslint:disable
+//     console.log(`onRouteChangeError`);
+//     // tslint:enable
+
+//     // Ignore if route canceled
+//     if ('' + error === 'Error: Route Cancelled') {
+//         return;
+//     }
+
+//     // tslint:disable
+//     console.log(`Naviating Errored`);
+//     // tslint:enable
+
+//     trackError(error);
+//     stopProgress(0);
+// };

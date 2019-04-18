@@ -37,6 +37,7 @@ export function withData(App: React.ComponentType<any>) {
 
             let token = getToken(ctx.ctx.req);
             apolloClient(token);
+            await null;
             return {
                 ...appProps,
                 token,
