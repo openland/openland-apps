@@ -128,6 +128,12 @@ export class MobileMessenger {
             </View>
         ));
 
+        if (this.engine.getConversation(message.chatId).canSendMessage) {
+            builder.action('Reply', () => {
+                this.engine.messagesActionsState.setState({ conversationId: message.chatId, messages: [message] })
+            });
+        }
+
         builder.action('Comment', () => {
             this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId });
         });

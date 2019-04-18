@@ -1,4 +1,5 @@
 import { FullMessage, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
+import { DataSourceMessageItem } from './ConversationEngine';
 
 export interface PendingMessage {
     isService?: false,
@@ -13,6 +14,7 @@ export interface PendingMessage {
     isImage: boolean;
     imageSize?: { width: number, height: number };
     failed?: boolean;
+    quoted?: DataSourceMessageItem[]
 }
 
 export type ModelMessage = PendingMessage | FullMessage;

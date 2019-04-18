@@ -34,6 +34,7 @@ import { showCallModal } from './Call';
 import { EmojiRender } from './components/EmojiRender';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
+import { MessagesActonsState } from 'openland-engines/messenger/MessagesActonsState';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -48,7 +49,8 @@ interface ConversationRootState {
     selection: {
         start: number,
         end: number
-    }
+    },
+    messagesActionsState: MessagesActonsState
 }
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
@@ -67,7 +69,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 end: 0.
             },
             mentionedUsers: [],
-            inputFocused: false
+            inputFocused: false,
+            messagesActionsState: {}
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
@@ -82,6 +85,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     componentWillMount() {
         ConversationThemeResolver.subscribe(this.props.chat.id, t => this.setState({ theme: t })).then(s => this.themeSub = s);
+        getMessenger().engine.messagesActionsState.listen(messagesActionsState => this.setState({ messagesActionsState }));
     }
 
     saveDraft = () => {
@@ -231,6 +235,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             );
         }
 
+        let quoted = null;
+        if (this.state.messagesActionsState.messages && this.state.messagesActionsState.messages.length) {
+            quoted = <Text>{'Reply:' + this.state.messagesActionsState.messages[0].text}</Text>
+        }
+
+        let topContent = [suggestions, quoted];
+
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
         let showInputBar = !sharedRoom || sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage;
 
@@ -292,7 +303,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     onBlur={this.handleBlur}
                                     text={this.state.text}
                                     theme={this.state.theme}
-                                    topContent={suggestions}
+                                    topContent={topContent}
                                     placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message...'}
                                 />
                             )}

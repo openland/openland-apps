@@ -15,6 +15,7 @@ type MessageBodyT = {
     file: string | null;
     replyMessages: string[] | null;
     mentions: UserShort[] | null;
+    quoted?: string[];
 };
 
 export class MessageSender {
@@ -97,12 +98,14 @@ export class MessageSender {
         conversationId,
         message,
         mentions,
-        callback
+        callback,
+        quoted,
     }: {
         conversationId: string;
         message: string;
         mentions: UserShort[] | null;
         callback: MessageSendHandler;
+        quoted?: string[];
     }) {
         message = message.trim();
         if (message.length === 0) {
@@ -113,11 +116,11 @@ export class MessageSender {
         this.doSendMessage({
             file: null,
             mentions,
-            replyMessages: null,
             conversationId,
             message,
             key,
-            callback
+            callback,
+            replyMessages: quoted || null
         });
         return key;
     }
@@ -170,7 +173,7 @@ export class MessageSender {
         replyMessages,
         mentions,
         key,
-        callback
+        callback,
     }: MessageBodyT & {
         key: string;
         callback: MessageSendHandler;
@@ -181,7 +184,7 @@ export class MessageSender {
             file,
             conversationId,
             replyMessages,
-            mentions
+            mentions,
         };
 
         this.pending.set(key, messageBody);
@@ -197,7 +200,7 @@ export class MessageSender {
                     message,
                     file,
                     replyMessages,
-                    room: conversationId
+                    room: conversationId,
                 });
             } catch (e) {
                 if (

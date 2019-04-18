@@ -86,6 +86,23 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
     };
 }
 
+export function convertMessageBack(src: DataSourceMessageItem): FullMessage_GeneralMessage_quotedMessages {
+    let res = {
+        __typename: src.isService ? 'ServiceMessage' : 'GeneralMessage' as any,
+        id: src.id!,
+        date: src.date,
+        message: src.text || null,
+        fallback: src.text || 'unknow message type',
+        sender: src.sender,
+        spans: src.spans || [] as any,
+        commentsCount: src.commentsCount,
+        attachments: src.attachments,
+        edited: src.isEdited,
+    };
+
+    return res;
+}
+
 function isSameIntDate(a1: number, b1: number) {
     let a2 = new Date(a1);
     let b2 = new Date(b1);
@@ -269,14 +286,18 @@ export class ConversationEngine implements MessageSendHandler {
         if (text.trim().length > 0) {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
+            let quoted = this.engine.messagesActionsState.getState().messages;
+            this.engine.messagesActionsState.clear();
             let key = this.engine.sender.sendMessage({
                 conversationId: this.conversationId,
                 message,
                 mentions,
-                callback: this
+                callback: this,
+                quoted: (quoted || []).map(q => q.id!),
             });
             let spans = prepareLegacyMentions(message, mentions || []);
-            let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans } as PendingMessage;
+
+            let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans, quoted };
             this.messages = [...this.messages, msgs];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
@@ -603,6 +624,7 @@ export class ConversationEngine implements MessageSendHandler {
                         imageHeight: p.imageSize && p.imageSize.height || 0,
                     }
                 }] : undefined,
+                reply: p.quoted ? p.quoted.map(convertMessageBack) : undefined,
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false
             };
         }
