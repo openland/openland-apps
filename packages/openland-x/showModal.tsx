@@ -5,6 +5,7 @@ export type XModal = (controller: XModalController) => React.ReactElement<{}>;
 
 export interface XModalController {
     hide(): void;
+    setOnEscPressed(handler: () => void): void;
 }
 
 export interface XModalProvider {

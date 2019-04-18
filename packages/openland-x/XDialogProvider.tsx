@@ -3,7 +3,7 @@ import { XModalProvider, XModal, registerModalProvider, XModalController } from 
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import * as ReactModal from 'react-modal';
 
-export class XDialogProviderComponent extends React.Component<{}, { modals: { element: React.ReactElement<{}>, key: string }[] }> implements XModalProvider {
+export class XDialogProviderComponent extends React.Component<{}, { modals: { element: React.ReactElement<{}>, key: string, escHandler?: () => void }[] }> implements XModalProvider {
     constructor(props: {}) {
         super(props);
         this.state = { modals: [] };
@@ -11,13 +11,17 @@ export class XDialogProviderComponent extends React.Component<{}, { modals: { el
     showModal = (modal: XModal) => {
         setTimeout(() => {
             let key = randomKey();
+            let escHandler: (() => void) | undefined;
             let cont: XModalController = {
                 hide: () => {
                     this.setState((state) => ({ modals: state.modals.filter((v) => v.key !== key) }));
-                }
+                },
+                setOnEscPressed: (handler) => {
+                    escHandler = handler;
+                },
             }
             let element = modal(cont);
-            this.setState((state) => ({ modals: [...state.modals, { key, element }] }));
+            this.setState((state) => ({ modals: [...state.modals, { key, element, escHandler }] }));
         }, 1);
     }
     componentWillMount() {
@@ -30,14 +34,14 @@ export class XDialogProviderComponent extends React.Component<{}, { modals: { el
                     <ReactModal
                         key={v.key}
                         isOpen={true}
-                        onRequestClose={() => this.setState((state) => ({ modals: state.modals.filter((v2) => v.key !== v2.key) }))}
-                        shouldCloseOnOverlayClick={true}
+                        onRequestClose={v.escHandler}
+                        shouldCloseOnOverlayClick={false}
                         shouldCloseOnEsc={true}
                         ariaHideApp={false}
                         style={{
                             overlay: {
                                 zIndex: 100,
-                                backgroundColor: 'rgba(0, 0, 0, 0.3)'
+                                backgroundColor: 'transparent'
                             },
                             content: {
                                 display: 'block',
