@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Platform, Dimensions, TextStyle } from 'react-native';
+import { View, Text, Platform, Dimensions, TextStyle, ActivityIndicator } from 'react-native';
 import { RoomMembers_members_user, RoomMembers_members } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
@@ -29,7 +29,7 @@ interface MentionsRenderProps {
     onMentionPress: (word: string | undefined, user: RoomMembers_members_user) => void;
 }
 
-export const MentionsRender = (props: MentionsRenderProps) => {
+const MentionsRenderInner = (props: MentionsRenderProps) => {
     let theme = React.useContext(ThemeContext);
     let mentionsWrapper = null;
     let mentionedUsers = findMentions(props.activeWord, props.groupId);
@@ -99,3 +99,9 @@ export const MentionsRender = (props: MentionsRenderProps) => {
 
     return mentionsWrapper;
 }
+
+export const MentionsRender = (props: MentionsRenderProps) => (
+    <React.Suspense fallback={<View paddingTop={10} paddingBottom={6}><ActivityIndicator /></View>}>
+        <MentionsRenderInner {...props} />
+    </React.Suspense>
+)

@@ -193,11 +193,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     let suggestions: JSX.Element[] = [];
 
     if (room && inputFocused && activeWord && activeWord.startsWith('@')) {
-        suggestions.push(
-            <React.Suspense fallback={null}>
-                <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={room!.id} />
-            </React.Suspense>
-        );
+        suggestions.push(<MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={room!.id} />);
     }
 
     if (inputFocused && activeWord && activeWord.startsWith(':')) {
