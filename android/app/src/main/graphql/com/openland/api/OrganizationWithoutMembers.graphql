@@ -1,31 +1,6 @@
-fragment OrganizationWithoutMembers on Organization {
-  __typename
-  about
-  featured: alphaFeatured
-  isCommunity: alphaIsCommunity
-  requests: alphaOrganizationMemberRequests {
+query OrganizationWithoutMembers($organizationId: ID!) {
+  organization(id: $organizationId) {
     __typename
-    role
-    user {
-      __typename
-      ...UserFull
-    }
+    ...OrganizationWithoutMembersFragment
   }
-  isAdmin: betaIsAdmin
-  isOwner: betaIsOwner
-  rooms: betaPublicRooms {
-    __typename
-    ...RoomShort
-  }
-  facebook
-  id
-  isMine
-  linkedin
-  membersCount
-  name
-  photo
-  shortname
-  superAccountId
-  twitter
-  website
 }

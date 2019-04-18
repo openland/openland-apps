@@ -2595,8 +2595,8 @@ fun readFragment(name: String, src: ReadableMap): Pair<String, GraphqlFragment> 
         val res = OrganizationShort.Mapper().map(responseReader(src))
         return (res.__typename() + "$" + res.id()) to res
     }
-    if (name == "OrganizationWithoutMembers") {
-        val res = OrganizationWithoutMembers.Mapper().map(responseReader(src))
+    if (name == "OrganizationWithoutMembersFragment") {
+        val res = OrganizationWithoutMembersFragment.Mapper().map(responseReader(src))
         return (res.__typename() + "$" + res.id()) to res
     }
     if (name == "SettingsFull") {

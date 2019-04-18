@@ -15645,9 +15645,9 @@ public final class OrganizationQuery: GraphQLQuery {
 
 public final class OrganizationWithoutMembersQuery: GraphQLQuery {
   public let operationDefinition =
-    "query OrganizationWithoutMembers($organizationId: ID!) {\n  organization(id: $organizationId) {\n    __typename\n    ...OrganizationWithoutMembers\n  }\n}"
+    "query OrganizationWithoutMembers($organizationId: ID!) {\n  organization(id: $organizationId) {\n    __typename\n    ...OrganizationWithoutMembersFragment\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(OrganizationWithoutMembers.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(RoomShort.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(OrganizationWithoutMembersFragment.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(RoomShort.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
 
   public var organizationId: GraphQLID
 
@@ -15690,7 +15690,7 @@ public final class OrganizationWithoutMembersQuery: GraphQLQuery {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLFragmentSpread(OrganizationWithoutMembers.self),
+        GraphQLFragmentSpread(OrganizationWithoutMembersFragment.self),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -15724,9 +15724,9 @@ public final class OrganizationWithoutMembersQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public var organizationWithoutMembers: OrganizationWithoutMembers {
+        public var organizationWithoutMembersFragment: OrganizationWithoutMembersFragment {
           get {
-            return OrganizationWithoutMembers(unsafeResultMap: resultMap)
+            return OrganizationWithoutMembersFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -15739,9 +15739,9 @@ public final class OrganizationWithoutMembersQuery: GraphQLQuery {
 
 public final class OrganizationMembersShortQuery: GraphQLQuery {
   public let operationDefinition =
-    "query OrganizationMembersShort($organizationId: ID!) {\n  organization(id: $organizationId) {\n    __typename\n    ...OrganizationWithoutMembers\n    members: alphaOrganizationMembers {\n      __typename\n      user {\n        __typename\n        id\n      }\n    }\n  }\n}"
+    "query OrganizationMembersShort($organizationId: ID!) {\n  organization(id: $organizationId) {\n    __typename\n    ...OrganizationWithoutMembersFragment\n    members: alphaOrganizationMembers {\n      __typename\n      user {\n        __typename\n        id\n      }\n    }\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(OrganizationWithoutMembers.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(RoomShort.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(OrganizationWithoutMembersFragment.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(RoomShort.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
 
   public var organizationId: GraphQLID
 
@@ -15784,7 +15784,7 @@ public final class OrganizationMembersShortQuery: GraphQLQuery {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLFragmentSpread(OrganizationWithoutMembers.self),
+        GraphQLFragmentSpread(OrganizationWithoutMembersFragment.self),
         GraphQLField("alphaOrganizationMembers", alias: "members", type: .nonNull(.list(.nonNull(.object(Member.selections))))),
       ]
 
@@ -15828,9 +15828,9 @@ public final class OrganizationMembersShortQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public var organizationWithoutMembers: OrganizationWithoutMembers {
+        public var organizationWithoutMembersFragment: OrganizationWithoutMembersFragment {
           get {
-            return OrganizationWithoutMembers(unsafeResultMap: resultMap)
+            return OrganizationWithoutMembersFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -15917,9 +15917,9 @@ public final class OrganizationMembersShortQuery: GraphQLQuery {
 
 public final class OrganizationMembersShortPaginatedQuery: GraphQLQuery {
   public let operationDefinition =
-    "query OrganizationMembersShortPaginated($organizationId: ID!, $first: Int, $after: ID) {\n  organization(id: $organizationId) {\n    __typename\n    ...OrganizationWithoutMembers\n    members: alphaOrganizationMembers(first: $first, after: $after) {\n      __typename\n      role\n      user {\n        __typename\n        ...UserFull\n      }\n    }\n  }\n}"
+    "query OrganizationMembersShortPaginated($organizationId: ID!, $first: Int, $after: ID) {\n  organization(id: $organizationId) {\n    __typename\n    ...OrganizationWithoutMembersFragment\n    members: alphaOrganizationMembers(first: $first, after: $after) {\n      __typename\n      role\n      user {\n        __typename\n        ...UserFull\n      }\n    }\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(OrganizationWithoutMembers.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(RoomShort.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(OrganizationWithoutMembersFragment.fragmentDefinition).appending(UserFull.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(RoomShort.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
 
   public var organizationId: GraphQLID
   public var first: Int?
@@ -15966,7 +15966,7 @@ public final class OrganizationMembersShortPaginatedQuery: GraphQLQuery {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLFragmentSpread(OrganizationWithoutMembers.self),
+        GraphQLFragmentSpread(OrganizationWithoutMembersFragment.self),
         GraphQLField("alphaOrganizationMembers", alias: "members", arguments: ["first": GraphQLVariable("first"), "after": GraphQLVariable("after")], type: .nonNull(.list(.nonNull(.object(Member.selections))))),
       ]
 
@@ -16010,9 +16010,9 @@ public final class OrganizationMembersShortPaginatedQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public var organizationWithoutMembers: OrganizationWithoutMembers {
+        public var organizationWithoutMembersFragment: OrganizationWithoutMembersFragment {
           get {
-            return OrganizationWithoutMembers(unsafeResultMap: resultMap)
+            return OrganizationWithoutMembersFragment(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -30574,9 +30574,9 @@ public struct OrganizationShort: GraphQLFragment {
   }
 }
 
-public struct OrganizationWithoutMembers: GraphQLFragment {
+public struct OrganizationWithoutMembersFragment: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment OrganizationWithoutMembers on Organization {\n  __typename\n  id\n  superAccountId\n  isMine\n  isOwner: betaIsOwner\n  isAdmin: betaIsAdmin\n  featured: alphaFeatured\n  isCommunity: alphaIsCommunity\n  name\n  photo\n  shortname\n  website\n  about\n  twitter\n  facebook\n  linkedin\n  membersCount\n  requests: alphaOrganizationMemberRequests {\n    __typename\n    role\n    user {\n      __typename\n      ...UserFull\n    }\n  }\n  rooms: betaPublicRooms {\n    __typename\n    ...RoomShort\n  }\n}"
+    "fragment OrganizationWithoutMembersFragment on Organization {\n  __typename\n  id\n  superAccountId\n  isMine\n  isOwner: betaIsOwner\n  isAdmin: betaIsAdmin\n  featured: alphaFeatured\n  isCommunity: alphaIsCommunity\n  name\n  photo\n  shortname\n  website\n  about\n  twitter\n  facebook\n  linkedin\n  membersCount\n  requests: alphaOrganizationMemberRequests {\n    __typename\n    role\n    user {\n      __typename\n      ...UserFull\n    }\n  }\n  rooms: betaPublicRooms {\n    __typename\n    ...RoomShort\n  }\n}"
 
   public static let possibleTypes = ["Organization"]
 

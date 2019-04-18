@@ -28,7 +28,7 @@ import * as OrganizationMedium from './fragments/OrganizationMedium';
 import * as OrganizationProfileFull from './fragments/OrganizationProfileFull';
 import * as OrganizationSearch from './fragments/OrganizationSearch';
 import * as OrganizationShort from './fragments/OrganizationShort';
-import * as OrganizationWithoutMembers from './fragments/OrganizationWithoutMembersFragment';
+import * as OrganizationWithoutMembersFragment from './fragments/OrganizationWithoutMembersFragment';
 import * as RoomFull from './fragments/RoomFull';
 import * as RoomShort from './fragments/RoomShort';
 import * as SessionStateFull from './fragments/SessionStateFull';
@@ -212,7 +212,7 @@ export const OrganizationMediumFragment = typedFragment<Types.OrganizationMedium
 export const OrganizationProfileFullFragment = typedFragment<Types.OrganizationProfileFull>(OrganizationProfileFull.OrganizationProfileFull);
 export const OrganizationSearchFragment = typedFragment<Types.OrganizationSearch>(OrganizationSearch.OrganizationSearch);
 export const OrganizationShortFragment = typedFragment<Types.OrganizationShort>(OrganizationShort.OrganizationShort);
-export const OrganizationWithoutMembersFragment = typedFragment<Types.OrganizationWithoutMembers>(OrganizationWithoutMembers.OrganizationWithoutMembers);
+export const OrganizationWithoutMembersFragmentFragment = typedFragment<Types.OrganizationWithoutMembersFragment>(OrganizationWithoutMembersFragment.OrganizationWithoutMembersFragment);
 export const RoomFullFragment = typedFragment<Types.RoomFull>(RoomFull.RoomFull);
 export const RoomFullWithoutMembersFragment = typedFragment<Types.RoomFullWithoutMembers>(RoomFull.RoomFullWithoutMembers);
 export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomShort);

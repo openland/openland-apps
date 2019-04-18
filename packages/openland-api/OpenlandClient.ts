@@ -1072,8 +1072,8 @@ export class OpenlandClient extends BaseApiClient {
     writeOrganizationShort(data: Types.OrganizationShort) {
       return this.client.writeFragment(data, Source.OrganizationShortFragment);
     }
-    writeOrganizationWithoutMembers(data: Types.OrganizationWithoutMembers) {
-      return this.client.writeFragment(data, Source.OrganizationWithoutMembersFragment);
+    writeOrganizationWithoutMembersFragment(data: Types.OrganizationWithoutMembersFragment) {
+      return this.client.writeFragment(data, Source.OrganizationWithoutMembersFragmentFragment);
     }
     writeRoomFull(data: Types.RoomFull) {
       return this.client.writeFragment(data, Source.RoomFullFragment);

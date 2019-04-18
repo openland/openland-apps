@@ -9,6 +9,6 @@ query OrganizationMembersShortPaginated($after: ID, $first: Int, $organizationId
         ...UserFull
       }
     }
-    ...OrganizationWithoutMembers
+    ...OrganizationWithoutMembersFragment
   }
 }

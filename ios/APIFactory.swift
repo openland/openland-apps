@@ -4650,8 +4650,8 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
-    if name == "OrganizationWithoutMembers" {
-      let data = OrganizationWithoutMembers(unsafeResultMap: self.convertData(src: data))
+    if name == "OrganizationWithoutMembersFragment" {
+      let data = OrganizationWithoutMembersFragment(unsafeResultMap: self.convertData(src: data))
       let key = data.id + ":" + data.__typename
       store.withinReadWriteTransaction { (tx) in
         try tx.write(object: data, withKey: key)
