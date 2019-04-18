@@ -729,8 +729,8 @@ const Members = ({ organization, router }: MembersProps) => {
             first: 10,
             after: joinedMembers[joinedMembers.length - 1].user.id,
         });
-
-        setJoinedMembers([...joinedMembers, ...loaded.organization.members]);
+        
+        setJoinedMembers([...joinedMembers, ...loaded.organization.members.slice(1)]);
     };
 
     let requestMembers = organization.requests || [];
@@ -997,10 +997,7 @@ const OrganizationProvider = ({
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const data = client.useOrganization(variables);
-
-    console.log(variables);
-    console.log(data);
+    const data = client.useOrganizationWithoutMembers(variables);
 
     return (
         <OrganizationProfileInner

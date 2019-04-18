@@ -69,7 +69,6 @@ interface MessagesComponentState {
     hideInput: boolean;
     loading: boolean;
     messages: ModelMessage[];
-    messageListScrollPosition: number;
 }
 
 const DeleteMessageComponent = () => {
@@ -163,16 +162,19 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             hideInput: false,
             messages: [],
             loading: true,
-            messageListScrollPosition: 0,
         };
+    }
+
+    scrollToBottom = () => {
+        if (this.messagesList.current) {
+            this.messagesList.current.scrollToBottom();
+        }
     }
 
     onMessageSend = () => {
         trackEvent('message_sent');
 
-        if (this.messagesList.current) {
-            this.messagesList.current.scrollToBottom();
-        }
+        this.scrollToBottom();
     };
 
     onChatLostAccess = () => {
@@ -181,12 +183,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             this.props.messenger.removeConversation(this.props.conversationId);
             this.props.onChatLostAccess();
         }
-    };
-
-    onMessageListScroll = (scrollPosition: number) => {
-        this.setState({
-            messageListScrollPosition: scrollPosition,
-        });
     };
 
     //
@@ -242,11 +238,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     handleChange = async (text: string) => {
-        if (this.state.messageListScrollPosition < 40) {
-            if (this.messagesList.current) {
-                this.messagesList.current.scrollToBottom();
-            }
-        }
         let prevLength = this.messageText.length;
         let curLength = text.length;
 
@@ -324,7 +315,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     conversationId={this.props.conversationId}
                     conversationType={this.props.conversationType}
                     inputShower={this.handleShowIput}
-                    scrollPosition={this.onMessageListScroll}
                 />
 
                 {!this.state.hideInput &&
@@ -337,6 +327,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                                 onChange={this.handleChange}
                                 onSend={this.handleSend}
                                 onSendFile={this.handleSendFile}
+                                scrollToBottom={this.scrollToBottom}
                                 enabled={true}
                                 conversationType={this.props.conversationType}
                                 conversationId={this.props.conversationId}
