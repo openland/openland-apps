@@ -973,6 +973,7 @@ export const OrganizationProfileInner = (props: OrganizationProfileInnerProps) =
                 <Header organization={organization} />
                 <XScrollView3 flexGrow={1} flexShrink={1}>
                     <About organization={organization} />
+                    <Rooms organization={organization} />
                     <React.Suspense fallback={<XLoader loading={true} />}>
                         <Members
                             organization={organization}
@@ -980,7 +981,6 @@ export const OrganizationProfileInner = (props: OrganizationProfileInnerProps) =
                             onDirectory={props.onDirectory}
                         />
                     </React.Suspense>
-                    <Rooms organization={organization} />
                 </XScrollView3>
             </XView>
         </>

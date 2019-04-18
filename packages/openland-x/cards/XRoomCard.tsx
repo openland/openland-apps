@@ -57,11 +57,6 @@ export const XRoomCard = XMemo<XRoomCardProps>(props => {
         [onHover],
     );
 
-    let title =
-        (room.kind !== SharedRoomKind.INTERNAL && room.organization
-            ? room.organization.name + ' / '
-            : '') + room.title;
-
     let buttonPath = '/mail/' + room.id;
 
     if (isMember === false) {
@@ -164,7 +159,7 @@ export const XRoomCard = XMemo<XRoomCardProps>(props => {
                         minWidth={0}
                         flexShrink={1}
                     >
-                        <div className={RoomTitleInner}>{title}</div>
+                        <div className={RoomTitleInner}>{room.title}</div>
                     </XView>
                     <XView fontSize={13} lineHeight="18px" color="rgba(0, 0, 0, 0.5)">
                         {TextProfiles.Room.membersLabel(room.membersCount || 0)}
