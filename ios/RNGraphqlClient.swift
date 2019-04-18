@@ -96,8 +96,10 @@ class RNGraphqlClient: WebSocketTransportDelegate {
     if token != nil {
       configuration.httpAdditionalHeaders = ["x-openland-token": token]
     }
+    var request = URLRequest(url: URL(string: "wss:"+endpoint)!)
+    request.timeoutInterval = 0.5
     self.ws = WebSocketTransport(
-      request: URLRequest(url: URL(string: "wss:"+endpoint)!),
+      request: request,
       connectingPayload:["x-openland-token": token])
     let httpTransport =  HTTPNetworkTransport(url:URL(string: "https:"+endpoint)!, configuration: configuration)
     let transport = SplitNetworkTransport(httpNetworkTransport: httpTransport, webSocketNetworkTransport: self.ws)
