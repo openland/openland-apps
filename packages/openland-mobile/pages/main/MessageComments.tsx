@@ -190,18 +190,22 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
     let activeWord = findActiveWord(inputText, inputSelection);
 
-    let suggestions: JSX.Element;
-
-    if (replied) {
-        suggestions = <ReplyView comment={replied} onClearPress={handleReplyClear} />;
-    }
+    let suggestions: JSX.Element[] = [];
 
     if (room && inputFocused && activeWord && activeWord.startsWith('@')) {
-        suggestions = <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={room!.id} />;
+        suggestions.push(
+            <React.Suspense fallback={null}>
+                <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={room!.id} />
+            </React.Suspense>
+        );
     }
 
     if (inputFocused && activeWord && activeWord.startsWith(':')) {
-        suggestions = <EmojiRender activeWord={activeWord!} onEmojiPress={handleEmojiPress} />;
+        suggestions.push(<EmojiRender activeWord={activeWord!} onEmojiPress={handleEmojiPress} />);
+    }
+
+    if (replied) {
+        suggestions.push(<ReplyView comment={replied} onClearPress={handleReplyClear} />);
     }
 
     let content = (
