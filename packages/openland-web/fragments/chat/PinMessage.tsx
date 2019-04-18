@@ -19,6 +19,8 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
     const isMobile = React.useContext(IsMobileContext);
     const { pinMessage, chatId, room } = props;
     const { attachments, sender } = pinMessage;
+
+    return null;
     const attach = attachments[0];
 
     return (
