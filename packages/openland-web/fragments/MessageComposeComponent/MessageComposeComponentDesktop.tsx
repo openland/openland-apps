@@ -40,6 +40,7 @@ export interface MessageComposeComponentProps {
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
     getMessages?: () => ModelMessage[];
+    scrollToBottom?: () => void;
 }
 
 export type MessageComposeComponentInnerProps = {
@@ -94,6 +95,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         conversationId: messageComposeProps.conversationId,
         onSend: messageComposeProps.onSend,
         onSendFile: messageComposeProps.onSendFile,
+        scrollToBottom: messageComposeProps.scrollToBottom,
         inputValue,
         setInputValue,
         quoteState,

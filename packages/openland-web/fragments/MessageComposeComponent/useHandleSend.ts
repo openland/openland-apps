@@ -23,6 +23,7 @@ export type useHandleSendT = {
     quoteState?: QuoteStateT;
     inputValue: string;
     inputRef?: any;
+    scrollToBottom?: () => void;
 } & useReplyPropsT;
 
 export function useHandleSend({
@@ -38,6 +39,7 @@ export function useHandleSend({
     quoteState,
     mentionsState,
     inputRef,
+    scrollToBottom,
 }: useHandleSendT) {
     const supportMentions = () => {
         return !!mentionsState && !!members;
@@ -62,6 +64,12 @@ export function useHandleSend({
         mentionsState,
         inputValue,
     });
+
+    const scrollChatToBottom = () => {
+        if (scrollToBottom) {
+            scrollToBottom();
+        }
+    };
 
     const hasQuoteInState = () => {
         if (!supportQuote()) {
@@ -126,13 +134,16 @@ export function useHandleSend({
                     onUploadCareSendFile(file);
                 }
             }
+            scrollChatToBottom();
         } else if (hasQuoteInState()) {
             replyMessagesProc();
             if (file) {
                 onUploadCareSendFile(file);
             }
+            scrollChatToBottom();
         } else if (file) {
             onUploadCareSendFile(file);
+            scrollChatToBottom();
         }
         closeEditor();
         if (supportDraft()) {

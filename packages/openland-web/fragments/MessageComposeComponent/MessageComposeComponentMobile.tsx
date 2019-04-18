@@ -20,6 +20,7 @@ export const MobileMessageCompose = (messageComposeProps: MessageComposeComponen
         conversationId: messageComposeProps.conversationId,
         onSend: messageComposeProps.onSend,
         onSendFile: messageComposeProps.onSendFile,
+        scrollToBottom: messageComposeProps.scrollToBottom,
         inputValue,
         setInputValue,
         inputRef,

@@ -43,7 +43,6 @@ interface ConversationMessagesComponentProps {
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
     editPostHandler?: (data: EditPostProps) => void;
-    scrollPosition?: (data: number) => void;
 }
 
 export class ConversationMessagesComponent extends React.PureComponent<
@@ -70,7 +69,6 @@ export class ConversationMessagesComponent extends React.PureComponent<
                     ref={this.messagesList}
                     conversationId={this.props.conversationId}
                     editPostHandler={this.props.editPostHandler}
-                    scrollPosition={this.props.scrollPosition}
                 />
                 {this.props.loading && <XLoader loading={this.props.loading} />}
                 <TypingComponent chatId={this.props.conversationId} />
