@@ -36,7 +36,7 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                     <XTitle>Modals</XTitle>
                     <XButton
                         text="Show Modal"
-                        onClick={() => showModalBox((ctx) => (
+                        onClick={() => showModalBox({}, (ctx) => (
                             <XView paddingHorizontal={20} paddingVertical={24}>
                                 <XButton text="close" onClick={() => ctx.hide()} />
                             </XView>
@@ -44,7 +44,7 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                     />
                     <XButton
                         text="Show Large"
-                        onClick={() => showModalBox((ctx) => (
+                        onClick={() => showModalBox({}, (ctx) => (
                             <XView paddingHorizontal={20} paddingVertical={24} flexDirection="column">
                                 <XButton text="close" onClick={() => ctx.hide()} />
                                 <XView height={2000} backgroundColor="yellow" />

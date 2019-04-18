@@ -6,6 +6,7 @@ import * as className from 'classnames';
 import { XScrollView3 } from './XScrollView3';
 import { XView } from 'react-mental';
 import { XButton } from './XButton';
+import { XLoader } from './XLoader';
 
 const boxStyle = css`
     display: flex;
@@ -41,72 +42,66 @@ const overlayStyle = css`
     background-color: rgba(0, 0, 0, 0.3);
 `;
 
-class ModalBoxComponent extends React.Component<{ ctx: XModalController, modal: XModal, config: XModalBoxConfig }, { status: 'showing' | 'visible' | 'hiding' }> {
-    private readonly key = randomKey();
-    private readonly contents: React.ReactElement<{}>;
+const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, config: XModalBoxConfig }>((props) => {
+    const key = React.useMemo(() => randomKey(), []);
+    const [state, setState] = React.useState<'showing' | 'visible' | 'hiding'>('showing')
+    const tryHide = React.useCallback(() => {
+        if (state !== 'hiding') {
+            setState('hiding');
+            setTimeout(() => { props.ctx.hide() }, 75);
+        }
+    }, []);
+    React.useEffect(() => {
+        props.ctx.setOnEscPressed(() => {
+            tryHide();
+        });
+        setState('visible');
+    }, []);
+    let handleContainerClick = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        if ((e.target as HTMLDivElement).id === key) {
+            tryHide();
+        }
+    }, []);
 
-    constructor(props: { modal: XModal, ctx: XModalController, config: XModalBoxConfig }) {
-        super(props);
+    const contents = React.useMemo(() => {
         let ctx2: XModalController = {
             hide: () => {
-                this.tryHide();
+                tryHide();
             },
             setOnEscPressed: () => {
                 // Ignore?
             }
         }
-        this.contents = this.props.modal(ctx2);
-        this.props.ctx.setOnEscPressed(() => {
-            this.tryHide();
-        });
-        this.state = { status: 'showing' };
-    }
+        return props.modal(ctx2);
+    }, []);
 
-    private handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if ((e.target as HTMLDivElement).id === this.key) {
-            this.tryHide();
-        }
-    }
-
-    private tryHide = () => {
-        if (this.state.status !== 'hiding') {
-            this.setState({ status: 'hiding' }, () => {
-                setTimeout(() => { this.props.ctx.hide() }, 75);
-            });
-        }
-    }
-
-    componentDidMount() {
-        this.setState({ status: 'visible' });
-    }
-
-    render() {
-        return (
-            <div
-                id={this.key}
-                className={className(
-                    overlayStyle,
-                    (this.state.status === 'showing') && overlayShowing,
-                    (this.state.status === 'visible') && overlayVisible,
-                    (this.state.status === 'hiding') && overlayHiding,
-                )}
-                onClick={this.handleContainerClick}
-            >
-                <div className={boxStyle}>
-                    <XView height={64} lineHeight="64px" paddingLeft={24} paddingRight={14} fontSize={18} fontWeight="600" flexDirection="row" alignItems="center">
-                        <XView flexGrow={1} flexShrink={1} minWidth={0}>
-                            {this.props.config.title}
-                        </XView>
-                        <XButton style="flat" text="close" onClick={this.tryHide} />
+    return (
+        <div
+            id={key}
+            className={className(
+                overlayStyle,
+                (state === 'showing') && overlayShowing,
+                (state === 'visible') && overlayVisible,
+                (state === 'hiding') && overlayHiding,
+            )}
+            onClick={handleContainerClick}
+        >
+            <div className={boxStyle}>
+                <XView height={64} lineHeight="64px" paddingLeft={24} paddingRight={14} fontSize={18} fontWeight="600" flexDirection="row" alignItems="center">
+                    <XView flexGrow={1} flexShrink={1} minWidth={0}>
+                        {props.config.title}
                     </XView>
-                    <XScrollView3 maxHeight="calc(100vh - 48px)">
-                        {this.contents}
-                    </XScrollView3>
-                </div>
+                    <XButton style="flat" text="close" onClick={tryHide} />
+                </XView>
+                <XScrollView3 maxHeight="calc(100vh - 48px)">
+                    <React.Suspense fallback={<XView height={64}><XLoader /></XView>}>
+                        {contents}
+                    </React.Suspense>
+                </XScrollView3>
             </div>
-        )
-    }
-}
+        </div>
+    )
+});
 
 export interface XModalBoxConfig {
     title?: string;

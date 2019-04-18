@@ -120,7 +120,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
 
 const OwnerLinkOrganization = () => {
     const client = useClient();
-    const data = client.useWithoutLoaderAccountAppInvite();
+    const data = client.useAccountAppInvite();
 
     if (!data) {
         return null;
