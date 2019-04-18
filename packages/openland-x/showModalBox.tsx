@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XModal, showModal, XModalController } from './showModal';
 import { css } from 'linaria';
-import { randomKey } from 'openland-graphql/utils/randomKey';
 import * as className from 'classnames';
 import { XScrollView3 } from './XScrollView3';
 import { XView } from 'react-mental';
@@ -36,6 +35,7 @@ const CloseButton = (props: { onClick: () => void }) => (
 );
 
 const boxStyle = css`
+    position: absolute;
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -46,6 +46,10 @@ const boxStyle = css`
     width: 575px;
 `
 
+const boxVisible = css`
+    transition: top 150ms, left 150ms;
+`;
+
 const overlayHiding = css`
     opacity: 0;
     transition: opacity 75ms;
@@ -53,7 +57,7 @@ const overlayHiding = css`
 
 const overlayVisible = css`
     opacity: 1;
-    transition: opacity 150ms, top 150ms;
+    transition: opacity 150ms;
 `;
 
 const overlayShowing = css`
@@ -61,18 +65,16 @@ const overlayShowing = css`
 `;
 
 const overlayStyle = css`
-    display: flex;
+    position: relative;
     width: 100%;
     height: 100%;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     background-color: rgba(0, 0, 0, 0.3);
 `;
 
 const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, config: XModalBoxConfig }>((props) => {
     const [state, setState] = React.useState<'showing' | 'visible' | 'hiding'>('showing')
     const [top, setTop] = React.useState(0);
+    const [left, setLeft] = React.useState(0);
     const tryHide = React.useCallback(() => {
         if (state !== 'hiding') {
             setState('hiding');
@@ -108,26 +110,29 @@ const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, con
     React.useLayoutEffect(() => {
         let inited = false;
         let windowHeight = 0;
+        let windowWidth = 0;
         let contentHeight = 0;
+        let contentWidth = 0;
         let observer = new ResizeObserver(src => {
             for (let s of src) {
                 if (s.target === containerRef.current) {
                     windowHeight = s.contentRect.height;
+                    windowWidth = s.contentRect.width;
                 }
                 if (s.target === boxRef.current) {
                     contentHeight = s.contentRect.height;
+                    contentWidth = s.contentRect.width;
                 }
             }
 
-            // console.log('size: ' + windowHeight + '/' + contentHeight)
-
             setTop(Math.min((windowHeight - contentHeight) / 2, 128));
+            setLeft((windowWidth - contentWidth) / 2);
 
-            // console.log(src[0].contentRect.height);
-            // console.log(src[1].contentRect.height);
             if (!inited) {
                 inited = true;
-                setState('visible');
+                setTimeout(() => {
+                    setState('visible');
+                }, 1);
             }
         });
         observer.observe(boxRef.current!)
@@ -146,7 +151,14 @@ const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, con
             )}
             onClick={handleContainerClick}
         >
-            <div className={boxStyle} ref={boxRef} style={{ marginTop: top }}>
+            <div
+                ref={boxRef}
+                className={className(
+                    boxStyle,
+                    state === 'visible' && boxVisible
+                )}
+                style={{ top: top, left: left }}
+            >
                 <XView height={64} lineHeight="64px" paddingLeft={24} paddingRight={14} fontSize={18} fontWeight="600" flexDirection="row" alignItems="center">
                     <XView flexGrow={1} flexShrink={1} minWidth={0} paddingRight={8}>
                         {props.config.title}

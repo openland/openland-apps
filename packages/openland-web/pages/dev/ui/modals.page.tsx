@@ -12,7 +12,7 @@ const ResizableContent = React.memo(() => {
     let [height, setHeight] = React.useState(100);
     React.useEffect(() => {
         let r = setInterval(() => {
-            setHeight(Math.random() * 100 + 50);
+            setHeight(Math.random() * 1000 + 100);
         }, 1000);
         return () => clearInterval(r);
     }, []);
