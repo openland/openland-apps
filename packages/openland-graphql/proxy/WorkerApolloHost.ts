@@ -71,8 +71,10 @@ export class WorkerApolloHost {
             });
             this.watches.set(msg.id, res);
         } else if (msg.type === 'watch-destroy') {
-            this.watches.get(msg.id)!!();
-            this.watches.delete(msg.id);
+            if (this.watches.has(msg.id)) {
+                this.watches.get(msg.id)!!();
+                this.watches.delete(msg.id);
+            }
         } else if (msg.type === 'subscribe') {
             let id = msg.id;
             let subscription = this.client.subscribe(msg.body, msg.variables);
