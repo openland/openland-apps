@@ -48,7 +48,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
 
     let dialogs = props.router.params.share || props.router.params.pressCallback ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
         return (
-            <DialogItemViewAsync item={item} onPress={(id, item) => handlePress(id, (item as DialogDataSourceItem).title)} />
+            <DialogItemViewAsync item={item} onPress={(id, i) => handlePress(id, (i as DialogDataSourceItem).title)} />
         );
     }) :
         <DialogListComponent dialogs={getMessenger().dialogs} />
