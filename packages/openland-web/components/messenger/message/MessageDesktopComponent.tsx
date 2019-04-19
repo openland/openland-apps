@@ -11,19 +11,15 @@ import { MessageVideoComponent } from './content/MessageVideoComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import {
     UserShort,
     SharedRoomKind,
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
 } from 'openland-api/Types';
-import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContextProps } from '../MessagesStateContext';
 import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
-import ReplyIcon from 'openland-icons/ic-reply1.svg';
-import EditIcon from 'openland-icons/ic-edit.svg';
 import { DesktopMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
@@ -103,18 +99,6 @@ const ReplyMessageWrapper = Glamorous.div({
     },
 });
 
-const IconButton = Glamorous.div({
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 6,
-    '&:hover svg path:last-child': {
-        fill: '#1790ff',
-        opacity: 1,
-    },
-});
-
 export interface MessageComponentProps {
     isPinned?: boolean;
     isModal?: boolean;
@@ -159,7 +143,7 @@ const DiscussButton = ({
             paddingLeft={12}
             paddingRight={12}
             onClick={() =>
-                showModalBox({}, () => (
+                showModalBox({ width: 800 }, () => (
                     <CommentsInner messageId={messageId} roomId={conversationId} />
                 ))
             }
@@ -212,46 +196,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         });
     }
 
-    private setEditMessage = (e: any) => {
-        let { message, messagesContext } = this.props;
-        if (!message.isSending) {
-            e.stopPropagation();
-            messagesContext.resetAll();
-            messagesContext.setEditMessage(message.id!, message.text!);
-        }
-    };
-
-    private setReplyMessages = (e: any) => {
-        let { message, messagesContext } = this.props;
-
-        if (!message.isSending) {
-            e.stopPropagation();
-            messagesContext.resetAll();
-            let singleReplyMessageMessage = new Set().add(message.text);
-            let singleReplyMessageId = new Set().add(message.id);
-            let singleReplyMessageSender = new Set().add(message.sender.name);
-
-            let fileAttach = (message.attachments || []).filter(
-                a => a.__typename === 'MessageAttachmentFile',
-            )[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
-            let richAttach = (message.attachments || []).filter(
-                a => a.__typename === 'MessageRichAttachment',
-            )[0];
-
-            if (fileAttach && !richAttach) {
-                singleReplyMessageMessage = new Set().add('File');
-                if (fileAttach.fileMetadata.isImage) {
-                    singleReplyMessageMessage = new Set().add('Photo');
-                }
-            }
-            messagesContext.setReplyMessages(
-                singleReplyMessageId,
-                singleReplyMessageMessage,
-                singleReplyMessageSender,
-            );
-        }
-    };
-
     private selectMessage = () => {
         let { message, messagesContext } = this.props;
 
@@ -287,46 +231,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
     private hideEditView = () => {
         this.props.messagesContext.resetAll();
-    };
-
-    private menuRender = () => {
-        let { message, messagesContext } = this.props;
-        let out = message.isOut;
-
-        if (!message.isSending && !messagesContext.useForwardHeader && !this.props.isModal) {
-            return (
-                <XHorizontal
-                    alignItems="center"
-                    alignSelf="flex-start"
-                    justifyContent="flex-start"
-                    width={83}
-                    flexShrink={0}
-                    separator={5}
-                    className="menu-wrapper"
-                >
-                    <XHorizontal alignItems="center" separator={8}>
-                        {!this.props.hasComments && <ReactionComponent messageId={message.id!} />}
-                        {!this.props.isChannel && (
-                            <IconButton onClick={this.setReplyMessages}>
-                                <ReplyIcon />
-                            </IconButton>
-                        )}
-                        {!this.props.isComment && out && message.text && (
-                            <IconButton onClick={this.setEditMessage}>
-                                <EditIcon />
-                            </IconButton>
-                        )}
-                        {out && message.text && (
-                            <IconButton onClick={this.setEditMessage}>
-                                <EditIcon />
-                            </IconButton>
-                        )}
-                    </XHorizontal>
-                </XHorizontal>
-            );
-        } else {
-            return null;
-        }
     };
 
     render() {
@@ -599,16 +503,18 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 <DesktopMessageContainer
                     haveReactions={!!haveReactions}
                     isPinned={this.props.isPinned}
-                    isModal={this.props.isModal}
                     commentDepth={this.props.commentDepth}
+                    isModal={this.props.isModal}
+                    hasComments={this.props.hasComments}
+                    isChannel={this.props.isChannel}
                     isComment={this.props.isComment}
                     noSelector={this.props.noSelector}
+                    message={this.props.message}
                     compact={message.attachTop}
                     selecting={hideMenu}
                     sender={message.sender}
                     senderNameEmojify={message.senderNameEmojify}
                     date={this.props.message.date}
-                    renderMenu={this.menuRender}
                     onSelected={this.selectMessage}
                     selected={!!isSelect}
                 >

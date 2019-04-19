@@ -7,20 +7,21 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
-
+import { Menu } from './Menu';
+import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 export interface DesktopMessageContainerProps {
+    message: DataSourceWebMessageItem;
     compact: boolean;
     isModal?: boolean;
     isPinned?: boolean;
+    hasComments?: boolean;
+    isChannel?: boolean;
     commentDepth?: number;
     isComment?: boolean;
     noSelector?: boolean;
     sender: UserShort;
     senderNameEmojify?: any;
     date: number;
-
-    // Menu
-    renderMenu: () => void;
 
     // Selection
     onSelected: () => void;
@@ -389,7 +390,15 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     // Actions
     let actions = (
         <XView width={83} marginLeft={12} alignSelf="flex-start">
-            {hover && props.renderMenu()}
+            {hover && (
+                <Menu
+                    message={props.message}
+                    hasComments={!!props.hasComments}
+                    isChannel={!!props.isChannel}
+                    isComment={!!props.isComment}
+                    isModal={!!props.isModal}
+                />
+            )}
         </XView>
     );
 
