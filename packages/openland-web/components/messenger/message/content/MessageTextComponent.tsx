@@ -31,6 +31,7 @@ const cropTextStyle = css`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    max-height: 20px;
 `;
 
 const EditLabelStyle = css`

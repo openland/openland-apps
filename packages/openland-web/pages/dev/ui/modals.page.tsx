@@ -3,29 +3,21 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
-import { XModal } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
 import { XVertical2 } from 'openland-x/XVertical2';
-import { showModal } from 'openland-x/showModal';
 import { XView } from 'react-mental';
 import { showModalBox } from 'openland-x/showModalBox';
 
-class ControlledModal extends React.Component<{}, { show: boolean }> {
-    constructor(props: {}) {
-        super(props);
-        this.state = { show: false };
-    }
-    render() {
-        return (
-            <>
-                <XButton text="Show Modal" onClick={() => this.setState({ show: true })} />
-                <XModal isOpen={this.state.show} onClosed={() => this.setState({ show: false })}>
-                    Hey!
-                </XModal>
-            </>
-        );
-    }
-}
+const ResizableContent = React.memo(() => {
+    let [height, setHeight] = React.useState(100);
+    React.useEffect(() => {
+        let r = setInterval(() => {
+            setHeight(Math.random() * 1000 + 100);
+        }, 1000);
+        return () => clearInterval(r);
+    }, []);
+    return (<XView height={height} width={100} backgroundColor="red" />)
+});
 
 export default withApp('UI Framework - Modals', 'viewer', props => {
     return (
@@ -48,6 +40,15 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                             <XView paddingHorizontal={20} paddingVertical={24} flexDirection="column">
                                 <XButton text="close" onClick={() => ctx.hide()} />
                                 <XView height={2000} backgroundColor="yellow" />
+                            </XView>
+                        ))}
+                    />
+                    <XButton
+                        text="Show Dynamic"
+                        onClick={() => showModalBox({}, (ctx) => (
+                            <XView paddingHorizontal={20} paddingVertical={24} flexDirection="column">
+                                <XButton text="close" onClick={() => ctx.hide()} />
+                                <ResizableContent />
                             </XView>
                         ))}
                     />

@@ -5,8 +5,8 @@ import FileIcon from 'openland-icons/ic-file-3.svg';
 import Glamorous from 'glamorous';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import { XLink } from 'openland-x/XLink';
-import { ShortcutsModal } from 'openland-web/components/messenger/view/ShortcutsModal';
 import { UploadContext } from './FileUploading/UploadContext';
+import { showShortcutsHelp } from '../showShortcutsHelp';
 
 const FileInput = Glamorous.input({
     display: 'none',
@@ -120,16 +120,27 @@ export const AttachmentButtons = ({ enabled }: { enabled?: boolean }) => {
     return (
         <XHorizontal separator="none">
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
-            <PhotoButton enabled={enabled} onClick={fileSelector} />
-            <DocumentButton enabled={enabled} onClick={fileSelector} />
-            <ShortcutsModal
-                target={
-                    <AttachmentButton className="shortcuts-button">
-                        <ShortcutsIcon />
-                        <span>Shortcuts</span>
-                    </AttachmentButton>
-                }
-            />
+            <AttachmentButton
+                onClick={!enabled ? undefined : fileSelector}
+                enabled={!enabled}
+                disable={!enabled}
+            >
+                <PhotoIcon />
+                <span>Photo</span>
+            </AttachmentButton>
+            <AttachmentButton
+                onClick={!enabled ? undefined : fileSelector}
+                enabled={!enabled}
+                disable={!enabled}
+                className="document-button"
+            >
+                <FileIcon />
+                <span>Document</span>
+            </AttachmentButton>
+            <AttachmentButton className="shortcuts-button" onClick={showShortcutsHelp}>
+                <ShortcutsIcon />
+                <span>Shortcuts</span>
+            </AttachmentButton>
         </XHorizontal>
     );
 };

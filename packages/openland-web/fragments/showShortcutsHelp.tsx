@@ -1,10 +1,9 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XModal } from 'openland-x-modal/XModal';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { showModalBox } from 'openland-x/showModalBox';
 
 const KeyboardShortcuts = Glamorous.div({
-    padding: '7px 0 19px',
+    padding: '7px 24px 19px',
 });
 
 const KeyboardShortcut = Glamorous.div({
@@ -32,8 +31,8 @@ const KeyboardShortcut = Glamorous.div({
     },
 });
 
-export const ShortcutsModal = (props: { target: any }) => (
-    <XModal title="Keyboard shortcuts" useTopCloser={true} target={props.target}>
+export function showShortcutsHelp() {
+    showModalBox({ title: 'Keyboard shortcuts' }, () => (
         <KeyboardShortcuts>
             <KeyboardShortcut>
                 <span>Ctrl + S</span> Search chats
@@ -76,5 +75,5 @@ export const ShortcutsModal = (props: { target: any }) => (
                 <span>Ctrl + Alt + N (Windows)</span> New chat
             </KeyboardShortcut>
         </KeyboardShortcuts>
-    </XModal>
-);
+    ));
+}

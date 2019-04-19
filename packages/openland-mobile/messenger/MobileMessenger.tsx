@@ -135,16 +135,15 @@ export class MobileMessenger {
             });
         }
 
-        if (this.engine.getConversation(message.chatId).canSendMessage) {
-            builder.action('Forward', () => {
-                this.engine.messagesActionsState.setState({ messages: [message], pendingAction: { action: 'forward' } });
-                getMessenger().history.navigationManager.push('HomeDialogs', {
-                    title: 'Forward to', pressCallback: (id: string) => {
-                        this.engine.messagesActionsState.setState({ conversationId: id })
-                    }
-                });
+        builder.action('Forward', () => {
+            this.engine.messagesActionsState.setState({ messages: [message], pendingAction: { action: 'forward' } });
+            getMessenger().history.navigationManager.push('HomeDialogs', {
+                title: 'Forward to', pressCallback: (id: string) => {
+                    this.engine.messagesActionsState.setState({ conversationId: id })
+                    getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
+                }
             });
-        }
+        });
 
         builder.action('Comment', () => {
             this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId });
