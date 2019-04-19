@@ -22,10 +22,10 @@ import { MentionsRender } from './components/MentionsRender';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showAttachMenu } from '../../files/showAttachMenu';
 import { CommentsList } from './components/comments/CommentsList';
-import { ReplyView } from './components/comments/ReplyView';
 import { SDevice } from 'react-native-s/SDevice';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -202,7 +202,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     }
 
     if (replied) {
-        quoted = <ReplyView comment={[replied]} onClearPress={handleReplyClear} />;
+        quoted = <ForwardReplyView messages={[replied]} onClearPress={handleReplyClear} />;
     }
 
     let content = (
