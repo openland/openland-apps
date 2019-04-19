@@ -5,8 +5,8 @@ import Glamorous from 'glamorous';
 import FileIcon from 'openland-icons/ic-file-3.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import { XLink } from 'openland-x/XLink';
-import { ShortcutsModal } from 'openland-web/components/messenger/view/ShortcutsModal';
 import { UploadContext } from './FileUploading/UploadContext';
+import { showShortcutsHelp } from '../showShortcutsHelp';
 
 const FileInput = Glamorous.input({
     display: 'none',
@@ -94,14 +94,13 @@ export const AttachmentButtons = ({ enabled }: { enabled?: boolean }) => {
                 <FileIcon />
                 <span>Document</span>
             </AttachmentButton>
-            <ShortcutsModal
-                target={
-                    <AttachmentButton className="shortcuts-button">
-                        <ShortcutsIcon />
-                        <span>Shortcuts</span>
-                    </AttachmentButton>
-                }
-            />
+            <AttachmentButton
+                className="shortcuts-button"
+                onClick={showShortcutsHelp}
+            >
+                <ShortcutsIcon />
+                <span>Shortcuts</span>
+            </AttachmentButton>
         </XHorizontal>
     );
 };
