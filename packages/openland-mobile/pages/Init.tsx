@@ -51,6 +51,7 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
         >
             {/* <View alignItems="center" justifyContent="center" position="absolute" top={0} left={0} bottom={0} right={0} backgroundColor="white" pointerEvents="box-only"> */}
             <Image
+                fadeDuration={0}
                 source={require('assets/logo-unicorn.png')}
                 style={{ width: 130, height: 155 }}
             />
@@ -62,7 +63,7 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
 const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (e: LayoutChangeEvent) => void }>((props) => {
     return (
         <ThemeProvider>
-            <View style={{ width: '100%', height: '100%' }} onLayout={props.onLayout}>
+            <View style={{ width: '100%', height: '100%', backgroundColor: 'white' }} onLayout={props.onLayout}>
                 {props.children}
                 <ZModalProvider />
                 <AppPlaceholder loading={props.loading} />
