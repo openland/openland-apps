@@ -842,7 +842,7 @@ fun parseEvent(src: ReadableMap): Event {
     builder.id(notNull(readOptionalString(src, "id")))
     builder.event(notNull(readOptionalString(src, "event")))
     builder.paramsInput(readOptionalString(src, "params"))
-    builder.timeInput(readOptionalInt(src, "time"))
+    builder.timeInput(readOptionalString(src, "time"))
     return builder.build()
 }
 fun readEvent(src: ReadableMap, name: String): Event? {

@@ -5277,7 +5277,7 @@ class ApiFactory: ApiFactoryBase {
     let id = optionalNotNull(readOptionalString(src, "id"))
     let event = optionalNotNull(readOptionalString(src, "event"))
     let params = readOptionalString(src, "params")
-    let time = readOptionalInt(src, "time")
+    let time = readOptionalString(src, "time")
     return Event(id: id, event: event, params: params, time: time)
   }
   func readEvent(_ src: NSDictionary, _ name: String) -> Event? {

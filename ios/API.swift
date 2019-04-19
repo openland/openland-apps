@@ -1765,7 +1765,7 @@ public enum NotificationsDelay: RawRepresentable, Equatable, Hashable, Apollo.JS
 public struct Event: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
 
-  public init(id: String, event: String, params: Swift.Optional<String?> = nil, time: Swift.Optional<Int?> = nil) {
+  public init(id: String, event: String, params: Swift.Optional<String?> = nil, time: Swift.Optional<String?> = nil) {
     graphQLMap = ["id": id, "event": event, "params": params, "time": time]
   }
 
@@ -1796,9 +1796,9 @@ public struct Event: GraphQLMapConvertible {
     }
   }
 
-  public var time: Swift.Optional<Int?> {
+  public var time: Swift.Optional<String?> {
     get {
-      return graphQLMap["time"] as! Swift.Optional<Int?>
+      return graphQLMap["time"] as! Swift.Optional<String?>
     }
     set {
       graphQLMap.updateValue(newValue, forKey: "time")
@@ -6342,7 +6342,9 @@ public final class RoomSuperQuery: GraphQLQuery {
 
 public final class PinMessageMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation PinMessage($chatId: ID!, $messageId: ID!) {\n  pinMessage(chatId: $chatId, messageId: $messageId)\n}"
+    "mutation PinMessage($chatId: ID!, $messageId: ID!) {\n  pinMessage: betaPinMessage(chatId: $chatId, messageId: $messageId) {\n    __typename\n    ...RoomShort\n  }\n}"
+
+  public var queryDocument: String { return operationDefinition.appending(RoomShort.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
 
   public var chatId: GraphQLID
   public var messageId: GraphQLID
@@ -6360,7 +6362,7 @@ public final class PinMessageMutation: GraphQLMutation {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("pinMessage", arguments: ["chatId": GraphQLVariable("chatId"), "messageId": GraphQLVariable("messageId")], type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("betaPinMessage", alias: "pinMessage", arguments: ["chatId": GraphQLVariable("chatId"), "messageId": GraphQLVariable("messageId")], type: .nonNull(.object(PinMessage.selections))),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -6369,16 +6371,66 @@ public final class PinMessageMutation: GraphQLMutation {
       self.resultMap = unsafeResultMap
     }
 
-    public init(pinMessage: Bool) {
-      self.init(unsafeResultMap: ["__typename": "Mutation", "pinMessage": pinMessage])
+    public init(pinMessage: PinMessage) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "pinMessage": pinMessage.resultMap])
     }
 
-    public var pinMessage: Bool {
+    public var pinMessage: PinMessage {
       get {
-        return resultMap["pinMessage"]! as! Bool
+        return PinMessage(unsafeResultMap: resultMap["pinMessage"]! as! ResultMap)
       }
       set {
-        resultMap.updateValue(newValue, forKey: "pinMessage")
+        resultMap.updateValue(newValue.resultMap, forKey: "pinMessage")
+      }
+    }
+
+    public struct PinMessage: GraphQLSelectionSet {
+      public static let possibleTypes = ["SharedRoom"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(RoomShort.self),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var roomShort: RoomShort {
+          get {
+            return RoomShort(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
       }
     }
   }
@@ -6386,7 +6438,9 @@ public final class PinMessageMutation: GraphQLMutation {
 
 public final class UnpinMessageMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation UnpinMessage($chatId: ID!) {\n  unpinMessage(chatId: $chatId)\n}"
+    "mutation UnpinMessage($chatId: ID!) {\n  unpinMessage: betaUnpinMessage(chatId: $chatId) {\n    __typename\n    ...RoomShort\n  }\n}"
+
+  public var queryDocument: String { return operationDefinition.appending(RoomShort.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(FullMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
 
   public var chatId: GraphQLID
 
@@ -6402,7 +6456,7 @@ public final class UnpinMessageMutation: GraphQLMutation {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("unpinMessage", arguments: ["chatId": GraphQLVariable("chatId")], type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("betaUnpinMessage", alias: "unpinMessage", arguments: ["chatId": GraphQLVariable("chatId")], type: .nonNull(.object(UnpinMessage.selections))),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -6411,16 +6465,66 @@ public final class UnpinMessageMutation: GraphQLMutation {
       self.resultMap = unsafeResultMap
     }
 
-    public init(unpinMessage: Bool) {
-      self.init(unsafeResultMap: ["__typename": "Mutation", "unpinMessage": unpinMessage])
+    public init(unpinMessage: UnpinMessage) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "unpinMessage": unpinMessage.resultMap])
     }
 
-    public var unpinMessage: Bool {
+    public var unpinMessage: UnpinMessage {
       get {
-        return resultMap["unpinMessage"]! as! Bool
+        return UnpinMessage(unsafeResultMap: resultMap["unpinMessage"]! as! ResultMap)
       }
       set {
-        resultMap.updateValue(newValue, forKey: "unpinMessage")
+        resultMap.updateValue(newValue.resultMap, forKey: "unpinMessage")
+      }
+    }
+
+    public struct UnpinMessage: GraphQLSelectionSet {
+      public static let possibleTypes = ["SharedRoom"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLFragmentSpread(RoomShort.self),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var roomShort: RoomShort {
+          get {
+            return RoomShort(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
       }
     }
   }
