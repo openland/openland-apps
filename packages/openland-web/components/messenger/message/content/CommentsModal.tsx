@@ -21,7 +21,6 @@ import { useQuote } from 'openland-web/fragments/MessageComposeComponent/useQuot
 import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/useHandleChange';
 import { useMentions } from 'openland-web/fragments/MessageComposeComponent/useMentions';
 import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
@@ -139,18 +138,45 @@ const Separator = () => {
     return <div className={separatorClassName} />;
 };
 
-const CommentsInner = () => {
+export const CommentsInner = ({ messageId, roomId }: { messageId: string; roomId: string }) => {
     const client = useClient();
-    const isMobile = React.useContext(IsMobileContext);
-    let router = React.useContext(XRouterContext)!;
-    let messenger = React.useContext(MessengerContext);
 
-    const [curMesssageId, roomId] = router.routeQuery.comments.split('&');
+    const addComment = async ({
+        message,
+        replyComment,
+        mentions,
+        fileAttachments,
+    }: {
+        message: string;
+        replyComment: string | null;
+        mentions: UserWithOffset[] | null;
+        fileAttachments?: FileAttachmentInput[] | null;
+    }) => {
+        const finalMentions = convertToMentionInput({
+            mentions: mentions ? mentions : [],
+            text: message,
+        });
+
+        await client.mutateAddMessageComment({
+            messageId,
+            message,
+            replyComment,
+            mentions: finalMentions,
+            fileAttachments,
+        });
+
+        await client.refetchMessageComments({
+            messageId,
+        });
+    };
+
+    const isMobile = React.useContext(IsMobileContext);
+    let messenger = React.useContext(MessengerContext);
 
     const [showInputId, setShowInputId] = React.useState<string | null>(null);
 
     const commentedMessage = client.useMessage({
-        messageId: curMesssageId,
+        messageId,
     });
 
     const members = client.useRoomMembers({
@@ -165,7 +191,7 @@ const CommentsInner = () => {
 
     const messageComments = client.useMessageComments(
         {
-            messageId: curMesssageId,
+            messageId,
         },
         { fetchPolicy: 'network-only' },
     );
@@ -173,51 +199,25 @@ const CommentsInner = () => {
     const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
         if (event.__typename === 'CommentReceived') {
             await client.refetchMessageComments({
-                messageId: curMesssageId,
+                messageId,
             });
         }
     };
 
     React.useEffect(() => {
         const watcher = new SequenceModernWatcher(
-            'comment messageId:' + curMesssageId,
-            client.subscribeCommentWatch({ peerId: curMesssageId }),
+            'comment messageId:' + messageId,
+            client.subscribeCommentWatch({ peerId: messageId }),
             client.client,
             updateHandler,
             undefined,
-            { peerId: curMesssageId },
+            { peerId: messageId },
             null,
         );
         return () => {
             watcher.destroy();
         };
     });
-
-    const addComment = async ({
-        messageId,
-        message,
-        replyComment,
-        mentions,
-        fileAttachments,
-    }: {
-        messageId: string;
-        message: string;
-        replyComment: string | null;
-        mentions: MentionInput[] | null;
-        fileAttachments?: FileAttachmentInput[] | null;
-    }) => {
-        await client.mutateAddMessageComment({
-            messageId,
-            message,
-            replyComment,
-            mentions,
-            fileAttachments,
-        });
-
-        await client.refetchMessageComments({
-            messageId,
-        });
-    };
 
     const commentsMap = {};
 
@@ -257,15 +257,9 @@ const CommentsInner = () => {
                         <CommentsInput
                             members={members.members}
                             minimal
-                            onSend={(msgToSend, mentions) => {
-                                const finalMentions = convertToMentionInput({
-                                    mentions: mentions ? mentions : [],
-                                    text: msgToSend,
-                                });
-
-                                addComment({
-                                    mentions: finalMentions,
-                                    messageId: curMesssageId,
+                            onSend={async (msgToSend, mentions) => {
+                                await addComment({
+                                    mentions,
                                     message: msgToSend,
                                     replyComment: message.key,
                                     // fileAttachments: [],
@@ -342,15 +336,9 @@ const CommentsInner = () => {
                 <UploadContextProvider>
                     <CommentsInput
                         members={members.members}
-                        onSend={(msgToSend, mentions) => {
-                            const finalMentions = convertToMentionInput({
-                                mentions: mentions ? mentions : [],
-                                text: msgToSend,
-                            });
-
-                            addComment({
-                                mentions: finalMentions,
-                                messageId: curMesssageId,
+                        onSend={async (msgToSend, mentions) => {
+                            await addComment({
+                                mentions,
                                 message: msgToSend,
                                 replyComment: null,
                                 // fileAttachments: [],
@@ -364,36 +352,36 @@ const CommentsInner = () => {
     );
 };
 
-export const CommentsModal = () => {
-    return (
-        <XModalForm
-            useTopCloser
-            width={800}
-            noPadding
-            targetQuery="comments"
-            defaultData={{
-                input: {},
-            }}
-            defaultAction={async () => {
-                //
-            }}
-            customFooter={null}
-        >
-            <React.Suspense
-                fallback={
-                    <XView
-                        top={0}
-                        left={0}
-                        width="100%"
-                        height="100%"
-                        backgroundColor="rgba(0, 0, 0, 0.4)"
-                        position="fixed"
-                        zIndex={100}
-                    />
-                }
-            >
-                <CommentsInner />
-            </React.Suspense>
-        </XModalForm>
-    );
-};
+// export const CommentsModal = () => {
+//     return (
+//         <XModalForm
+//             useTopCloser
+//             width={800}
+//             noPadding
+//             targetQuery="comments"
+//             defaultData={{
+//                 input: {},
+//             }}
+//             defaultAction={async () => {
+//                 //
+//             }}
+//             customFooter={null}
+//         >
+//             <React.Suspense
+//                 fallback={
+//                     <XView
+//                         top={0}
+//                         left={0}
+//                         width="100%"
+//                         height="100%"
+//                         backgroundColor="rgba(0, 0, 0, 0.4)"
+//                         position="fixed"
+//                         zIndex={100}
+//                     />
+//                 }
+//             >
+//                 <CommentsInner />
+//             </React.Suspense>
+//         </XModalForm>
+//     );
+// };

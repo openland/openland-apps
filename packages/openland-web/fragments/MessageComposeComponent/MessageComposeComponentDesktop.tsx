@@ -157,7 +157,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
                     enabled={messageComposeProps.enabled}
                     closeEditor={closeEditor}
                     mentionsState={mentionsState}
-                    minimal
                 />
             )}
         </>
