@@ -11,7 +11,7 @@ export const ServiceMessageDefault = React.memo<{
     const spannedString = spansPreprocess(props.message, props.spans);
     return (
         <Container>
-            <SpannedStringView spannedString={spannedString} />
+            <SpannedStringView spannedString={spannedString} isService />
         </Container>
     );
 });

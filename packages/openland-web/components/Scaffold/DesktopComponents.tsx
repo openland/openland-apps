@@ -20,11 +20,11 @@ import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import { MyOrganizations_myOrganizations, UserShort_primaryOrganization } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from '../UserInfo';
-import { CreateOrganization } from './Modals';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PromoBanner } from './PromoBanner';
 import { useClient } from 'openland-web/utils/useClient';
 import { showAppInviteModal } from 'openland-web/fragments/showAppInviteModal';
+import { showCreateOrganization } from 'openland-web/fragments/showCreateOrganization';
 
 interface NavigatorItemProps {
     path?: string;
@@ -486,15 +486,12 @@ export const DesktopScaffold = ({
                             menuItems={
                                 <>
                                     <XMenuItem
-                                        query={{ field: 'createOrganization', value: 'true' }}
+                                        onClick={() => showCreateOrganization('organization')}
                                     >
                                         {TextGlobal.addOrganization}
                                     </XMenuItem>
                                     <XMenuItem
-                                        query={{
-                                            field: 'createOrganization',
-                                            value: 'community',
-                                        }}
+                                        onClick={() => showCreateOrganization('community')}
                                     >
                                         {TextGlobal.addCommunity}
                                     </XMenuItem>
@@ -543,8 +540,6 @@ export const DesktopScaffold = ({
             <XView flexDirection="row" flexGrow={1} flexBasis={0} flexShrink={0}>
                 {contentView}
                 {menuView}
-
-                <CreateOrganization />
             </XView>
         </XView>
     );

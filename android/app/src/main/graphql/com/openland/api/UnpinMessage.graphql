@@ -1,3 +1,6 @@
 mutation UnpinMessage($chatId: ID!) {
-  unpinMessage(chatId: $chatId)
+  unpinMessage: betaUnpinMessage(chatId: $chatId) {
+    __typename
+    ...RoomShort
+  }
 }

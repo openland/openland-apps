@@ -81,7 +81,7 @@ const LinkText = css`
     }
 `;
 
-export const SpannedStringView = React.memo<{ spannedString: SpannedString }>(props => {
+export const SpannedStringView = React.memo<{ spannedString: SpannedString, isService?: boolean }>(props => {
     const messagesContextProps = React.useContext(MessagesStateContext);
     let res: any[] = [];
     let i = 0;
@@ -120,18 +120,23 @@ export const SpannedStringView = React.memo<{ spannedString: SpannedString }>(pr
                 href = undefined;
             }
 
-            res.push(
-                <span key={'link-' + i} className={LinkText}>
-                    <XView
-                        as="a"
-                        target={openlandLink ? undefined : '_blank'}
-                        href={href}
-                        path={path}
-                    >
-                        <SpannedStringView spannedString={s.child} />
-                    </XView>
-                </span>,
-            );
+            if (!props.isService) {
+                res.push(
+                    <span key={'link-' + i} className={LinkText}>
+                        <XView
+                            as="a"
+                            target={openlandLink ? undefined : '_blank'}
+                            href={href}
+                            path={path}
+                        >
+                            <SpannedStringView
+                                spannedString={s.child}
+                                isService={props.isService}
+                            />
+                        </XView>
+                    </span>,
+                );
+            }
         } else if (s.type === 'bold') {
             res.push(
                 <span key={'bold-' + i} className={boldTextClassName}>

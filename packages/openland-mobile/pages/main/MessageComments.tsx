@@ -22,10 +22,10 @@ import { MentionsRender } from './components/MentionsRender';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showAttachMenu } from '../../files/showAttachMenu';
 import { CommentsList } from './components/comments/CommentsList';
-import { ReplyView } from './components/comments/ReplyView';
 import { SDevice } from 'react-native-s/SDevice';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -190,18 +190,19 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
     let activeWord = findActiveWord(inputText, inputSelection);
 
-    let suggestions: JSX.Element[] = [];
+    let suggestions: JSX.Element;
+    let quoted: JSX.Element;
 
     if (room && inputFocused && activeWord && activeWord.startsWith('@')) {
-        suggestions.push(<MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={room!.id} />);
+        suggestions = <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={room!.id} />;
     }
 
     if (inputFocused && activeWord && activeWord.startsWith(':')) {
-        suggestions.push(<EmojiRender activeWord={activeWord!} onEmojiPress={handleEmojiPress} />);
+        suggestions = <EmojiRender activeWord={activeWord!} onEmojiPress={handleEmojiPress} />;
     }
 
     if (replied) {
-        suggestions.push(<ReplyView comment={[replied]} onClearPress={handleReplyClear} />);
+        quoted = <ForwardReplyView messages={[replied]} onClearPress={handleReplyClear} />;
     }
 
     let content = (
@@ -225,18 +226,16 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
             <ASSafeAreaContext.Consumer>
                 {area => (
                     <>
-                        <View flexGrow={1} flexShrink={1} paddingTop={area.top}>
-                            {Platform.OS === 'ios' && (
-                                <ScrollView flexGrow={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingBottom: area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ bottom: area.bottom - SDevice.safeArea.bottom }}>
-                                    {content}
-                                </ScrollView>
-                            )}
-                            {Platform.OS === 'android' && (
-                                <ScrollView flexGrow={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
-                                    {content}
-                                </ScrollView>
-                            )}
-                        </View>
+                        {Platform.OS === 'ios' && (
+                            <ScrollView flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: area.bottom - SDevice.safeArea.bottom }}>
+                                {content}
+                            </ScrollView>
+                        )}
+                        {Platform.OS === 'android' && (
+                            <ScrollView flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
+                                {content}
+                            </ScrollView>
+                        )}
 
                         <View paddingBottom={Platform.OS === 'android' ? area.keyboardHeight : undefined}>
                             <MessageInputBar
@@ -249,7 +248,8 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                                 text={inputText}
                                 theme={DefaultConversationTheme}
                                 placeholder="Write a comment..."
-                                topContent={suggestions}
+                                suggestions={suggestions}
+                                topView={quoted}
                                 showLoader={sending}
                                 ref={inputRef}
                             />

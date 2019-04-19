@@ -48,7 +48,8 @@ export interface MessageInputBarProps {
     theme: ConversationTheme;
     placeholder: string;
 
-    topContent?: any;
+    suggestions?: any;
+    topView?: any;
     showLoader?: boolean;
 }
 
@@ -59,21 +60,23 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
     return (
         <View marginBottom={SDevice.safeArea.bottom}>
             <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                {!props.topContent && (
+                {!props.suggestions && (
                     <>
                         <LinearGradient position="absolute" left={0} top={0} right={0} height={androidMessageInputListOverlap} colors={['#fff', '#fff', 'rgba(255,255,255,0)', 'rgba(255,255,255,0)']} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />
                         <View position="absolute" left={0} top={androidMessageInputListOverlap} bottom={0} right={0} backgroundColor="#fff" />
                     </>
                 )}
 
-                {props.topContent && (
-                    <React.Suspense fallback={null}>
+                {props.suggestions && (
+                    <>
                         <View position="absolute" left={0} top={0} bottom={0} right={0} backgroundColor="#fff" />
                         <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: -7 }}>
-                            {props.topContent}
+                            {props.suggestions}
                         </View>
-                    </React.Suspense>
+                    </>
                 )}
+
+                {props.topView}
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     {props.attachesEnabled !== false && (

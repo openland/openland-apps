@@ -35,7 +35,7 @@ import { EmojiRender } from './components/EmojiRender';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { MessagesActonsState } from 'openland-engines/messenger/MessagesActonsState';
-import { ReplyView } from './components/comments/ReplyView';
+import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -245,10 +245,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             && (this.state.messagesActionsState.pendingAction && ['reply', 'forward'].includes(this.state.messagesActionsState.pendingAction.action || ''))
             && (this.state.messagesActionsState.conversationId === this.props.chat.id || this.state.messagesActionsState.conversationId === (this.props.chat.__typename === 'PrivateRoom' && this.props.chat.user.id))
         ) {
-            quoted = <ReplyView onClearPress={this.onQuotedClearPress} comment={this.state.messagesActionsState.messages.map(convertMessageBack) || []} action={this.state.messagesActionsState.pendingAction.action === 'forward' ? 'forward' : 'reply'} />
+            quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={this.state.messagesActionsState.messages.map(convertMessageBack) || []} action={this.state.messagesActionsState.pendingAction.action === 'forward' ? 'forward' : 'reply'} />
         }
-
-        let topContent = [suggestions, quoted];
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
         let showInputBar = !sharedRoom || sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage;
@@ -311,7 +309,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     onBlur={this.handleBlur}
                                     text={this.state.text}
                                     theme={this.state.theme}
-                                    topContent={topContent}
+                                    suggestions={suggestions}
+                                    topView={quoted}
                                     placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message...'}
                                 />
                             )}

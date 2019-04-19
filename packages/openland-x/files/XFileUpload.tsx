@@ -23,7 +23,7 @@ export interface XFileUploadProps {
     cropParams?: string;
 
     file?: UploadedFile | null;
-    onChanged?: (file: UploadedFile | null) => void;
+    onChange?: (file: UploadedFile | null) => void;
 
     initialUrl?: string | null;
 
@@ -103,8 +103,8 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
             } else {
                 this.setState({ isLoading: false, progress: 1, file: fileu });
             }
-            if (this.props.onChanged) {
-                this.props.onChanged(fileu);
+            if (this.props.onChange) {
+                this.props.onChange(fileu);
             }
         });
     }
@@ -115,8 +115,8 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
         } else {
             this.setState({ isLoading: false, file: null });
         }
-        if (this.props.onChanged) {
-            this.props.onChanged(null);
+        if (this.props.onChange) {
+            this.props.onChange(null);
         }
     }
 

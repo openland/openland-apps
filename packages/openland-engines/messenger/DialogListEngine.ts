@@ -53,34 +53,8 @@ export function formatMessage(message: Dialogs_dialogs_items_topMessage | null):
     if (!message) {
         return '';
     }
-    let res = message.fallback;
-    if (message.message) {
-        res = message.message;
-    } else if (message.__typename === "GeneralMessage") {
 
-        if (message.quotedMessages.length) {
-            res = 'Forward'
-        }
-        // attchments
-        if (message.attachments && message.attachments.length === 1) {
-            let attachment = message.attachments[0];
-            res = attachment.fallback;
-            if (attachment.__typename === 'MessageAttachmentFile') {
-                if (attachment.fileMetadata.isImage) {
-                    if (attachment.fileMetadata.imageFormat === 'GIF') {
-                        res = 'GIF';
-                    } else {
-                        res = 'Photo';
-                    }
-                } else {
-                    res = 'Document';
-                }
-            }
-        }
-
-    }
-
-    return res;
+    return message.message || message.fallback;
 }
 
 export const extractDialog = (
