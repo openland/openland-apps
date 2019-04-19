@@ -74,6 +74,7 @@ const DialogItemViewAsyncRender = React.memo<{ theme: AppTheme, item: DialogData
                     </ASFlex>}
                     {item.unread > 0 && (
                         <ASFlex marginTop={18} flexShrink={0}>
+                            {item.haveMention && <ASImage tintColor="#0084fe" marginRight={4} width={18} height={18} source={require('assets/ic-mention-18.png')} />}
                             <ASCounter value={item.unread} muted={item.isMuted} />
                         </ASFlex>
                     )}

@@ -446,6 +446,13 @@
             "sizes": [
                 16
             ]
+        },
+        {
+            "name": "ic-mention",
+            "src": "ic-mention.svg",
+            "sizes": [
+                18
+            ]
         }
     ]
 }
