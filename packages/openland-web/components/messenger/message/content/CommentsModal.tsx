@@ -14,6 +14,7 @@ import {
     MentionInput,
     FileAttachmentInput,
 } from 'openland-api/Types';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { useHandleSend } from 'openland-web/fragments/MessageComposeComponent/useHandleSend';
 import { useInputMethods } from 'openland-web/fragments/MessageComposeComponent/useInputMethods';
@@ -128,18 +129,12 @@ const CommentsInput = ({ minimal, members, onSend, onSendFile, onChange }: Comme
     );
 };
 
-const separatorClassName = css`
-    height: 1px;
-    background-color: rgba(216, 218, 229, 0.45);
-    width: 100%;
-`;
-
-const Separator = () => {
-    return <div className={separatorClassName} />;
-};
-
-export const CommentsInner = ({ messageId, roomId }: { messageId: string; roomId: string }) => {
+export const CommentsInner = () => {
     const client = useClient();
+
+    let router = React.useContext(XRouterContext)!;
+
+    const [messageId, roomId] = router.routeQuery.comments.split('&');
 
     const addComment = async ({
         message,
@@ -295,7 +290,6 @@ export const CommentsInner = ({ messageId, roomId }: { messageId: string; roomId
             />
             {commentsElements.length ? (
                 <>
-                    <Separator />
                     <XView
                         paddingHorizontal={32}
                         paddingTop={isMobile ? 0 : 30}
@@ -352,36 +346,22 @@ export const CommentsInner = ({ messageId, roomId }: { messageId: string; roomId
     );
 };
 
-// export const CommentsModal = () => {
-//     return (
-//         <XModalForm
-//             useTopCloser
-//             width={800}
-//             noPadding
-//             targetQuery="comments"
-//             defaultData={{
-//                 input: {},
-//             }}
-//             defaultAction={async () => {
-//                 //
-//             }}
-//             customFooter={null}
-//         >
-//             <React.Suspense
-//                 fallback={
-//                     <XView
-//                         top={0}
-//                         left={0}
-//                         width="100%"
-//                         height="100%"
-//                         backgroundColor="rgba(0, 0, 0, 0.4)"
-//                         position="fixed"
-//                         zIndex={100}
-//                     />
-//                 }
-//             >
-//                 <CommentsInner />
-//             </React.Suspense>
-//         </XModalForm>
-//     );
-// };
+export const CommentsModal = () => {
+    return (
+        <XModalForm
+            useTopCloser
+            width={800}
+            noPadding
+            targetQuery="comments"
+            defaultData={{
+                input: {},
+            }}
+            defaultAction={async () => {
+                //
+            }}
+            customFooter={null}
+        >
+            <CommentsInner />
+        </XModalForm>
+    );
+};

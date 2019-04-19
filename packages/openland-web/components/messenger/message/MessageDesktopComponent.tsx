@@ -27,8 +27,7 @@ import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
 import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
-import { showModalBox } from 'openland-x/showModalBox';
-import { CommentsInner } from 'openland-web/components/messenger/message/content/CommentsModal';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
     flexShrink: 0,
@@ -130,6 +129,8 @@ const DiscussButton = ({
     messageId: string;
     conversationId: string;
 }) => {
+    let router = React.useContext(XRouterContext)!;
+
     return (
         <XView
             cursor="pointer"
@@ -142,11 +143,9 @@ const DiscussButton = ({
             color="#1790ff"
             paddingLeft={12}
             paddingRight={12}
-            onClick={() =>
-                showModalBox({ width: 800 }, () => (
-                    <CommentsInner messageId={messageId} roomId={conversationId} />
-                ))
-            }
+            onClick={() => {
+                router.pushQuery('comments', `${messageId}&${conversationId}`);
+            }}
         >
             {commentsCount ? (
                 <XView flexDirection="row">

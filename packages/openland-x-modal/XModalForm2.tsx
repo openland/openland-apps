@@ -8,6 +8,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XFormSubmit, XFormSubmitProps } from 'openland-x-forms/XFormSubmit';
 import { applyFlex, extractFlexProps, XFlexStyles } from 'openland-x/basics/Flex';
 import { useIsMobile } from 'openland-web/hooks';
+import { XLoader } from 'openland-x/XLoader';
 
 export interface XModalFormProps extends XFormProps, XModalProps {
     noPadding?: boolean;
@@ -111,8 +112,16 @@ export class XModalFormInner extends React.Component<XModalFormProps & XFlexStyl
                         autoClose={this.props.autoClose || true}
                         {...other}
                     >
-                        {body}
-                        {footer}
+                        <React.Suspense
+                            fallback={
+                                <XView height={64} alignItems="center" justifyContent="center">
+                                    <XLoader loading={true} />
+                                </XView>
+                            }
+                        >
+                            {body}
+                            {footer}
+                        </React.Suspense>
                     </XForm>
                 }
                 footer={null}

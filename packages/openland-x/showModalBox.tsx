@@ -19,7 +19,7 @@ const closeIconStyle = css`
     border-radius: 50px;
     border: 1px solid transparent;
     > svg > g > path:last-child {
-        fill: rgba(0, 0, 0, 0.3);
+        loaderfill: rgba(0, 0, 0, 0.3);
     }
     :hover {
         & > svg > g > path:last-child {
@@ -28,7 +28,7 @@ const closeIconStyle = css`
     }
 `;
 
-const CloseButton = (props: { onClick: () => void }) => (
+export const CloseButton = (props: { onClick: () => void }) => (
     <div className={closeIconStyle} onClick={props.onClick}>
         <CloseIcon />
     </div>
@@ -71,13 +71,13 @@ const overlayStyle = css`
     background-color: rgba(0, 0, 0, 0.3);
 `;
 
-const Loader = (
+export const Loader = (
     <XView height={64} alignItems="center" justifyContent="center">
         <XLoader loading={true} />
     </XView>
 );
 
-const ModalBoxComponent = React.memo<{
+export const ModalBoxComponent = React.memo<{
     ctx: XModalController;
     modal: XModal;
     config: XModalBoxConfig;
