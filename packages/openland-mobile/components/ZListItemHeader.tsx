@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TextStyle, ViewStyle, Platform, Image } from 'r
 import { ZRoundedButton } from './ZRoundedButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     container: {
@@ -34,17 +35,17 @@ const styles = StyleSheet.create({
     title: {
         color: '#000000',
         fontSize: 22,
-        fontWeight: Platform.OS === 'android' ? '500' : '600',
-        height: 30,
+        fontWeight: TextStyles.weight.medium,
+        minHeight: 30,
         textAlignVertical: 'center'
     } as TextStyle,
     subtitle: {
         color: Platform.OS === 'android' ? '#99a2b0' : '#5c6a81',
         fontSize: Platform.OS === 'android' ? 14 : 15,
-        fontWeight: Platform.OS === 'android' ? '400' : '400',
+        fontWeight: '400',
         height: Platform.OS === 'android' ? 20 : 20,
         textAlignVertical: 'center',
-        marginTop: -3
+        marginTop: 0
     } as TextStyle
 });
 
@@ -55,6 +56,7 @@ export interface ZListItemHeaderProps {
     title?: string | null,
     titleIcon?: any;
     titleColor?: string;
+    titleLines?: number;
     subtitle?: string | null,
     subtitleColor?: string,
     subsubtitle?: string | null,
@@ -72,7 +74,7 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
                 <View style={styles.header}>
                     <View flexDirection="row">
                         {props.titleIcon && <Image source={props.titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: props.titleColor || '#000' }} />}
-                        <Text style={[styles.title, props.titleColor ? { color: props.titleColor } : { color: theme.textColor }]} numberOfLines={1}>{props.title}</Text>
+                        <Text style={[styles.title, props.titleColor ? { color: props.titleColor } : { color: theme.textColor }]} numberOfLines={props.titleLines || 1}>{props.title}</Text>
                     </View>
                     <Text style={[styles.subtitle, props.subtitleColor ? { color: props.subtitleColor } : { color: theme.textLabelColor }]} numberOfLines={1}>{props.subtitle}</Text>
                     {/* {this.props.subsubtitle && <Text style={styles.subtitle} numberOfLines={1}>{this.props.subsubtitle}</Text>} */}
