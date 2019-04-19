@@ -11,18 +11,17 @@ interface ForwardReplyViewProps {
     onClearPress: () => void;
 }
 
-let formatMessage = (message: Message_message): string => {
-    return message.message || message.fallback;
-}
-
 export const ForwardReplyView = (props: ForwardReplyViewProps) => {
     const { messages, onClearPress, action } = props;
+
+    const title = (messages.length === 1) ? (messages[0].sender.name) : ((action === 'reply') ? 'Reply messages' : 'Forward messages');
+    const text = (messages.length === 1) ? (messages[0].message || messages[0].fallback) : (messages.length + ' messages');
 
     return (
         <View marginLeft={Platform.OS === 'android' ? 12 : 48} paddingLeft={8} marginRight={Platform.OS === 'android' ? 12 : 52} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
             <View flexGrow={1}>
-                <Text style={{ color: '#0084fe', fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1} allowFontScaling={false}>{messages.length === 1 ? messages[0].sender.name : action === 'reply' ? 'Reply messages' : 'Forward messages'}</Text>
-                <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1} allowFontScaling={false}>{messages.length > 1 ? (messages.length + ' messages') : formatMessage(messages[0])}</Text>
+                <Text style={{ color: '#0084fe', fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1} allowFontScaling={false}>{title}</Text>
+                <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1} allowFontScaling={false}>{text}</Text>
             </View>
             <TouchableWithoutFeedback onPress={onClearPress}>
                 <View marginLeft={11} width={18} height={38} alignItems="center" justifyContent="center">
