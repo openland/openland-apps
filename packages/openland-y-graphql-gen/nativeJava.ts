@@ -3,7 +3,7 @@ import { parse, OperationTypeNode, OperationDefinitionNode, TypeNode, NonNullTyp
 
 function buildItemReader(name: string, v: TypeNode): string {
     if (v.kind === 'NamedType') {
-        if (v.name.value === 'String' || v.name.value === 'ID') {
+        if (v.name.value === 'String' || v.name.value === 'ID' || v.name.value === 'Date') {
             return 'readStringList(src, "' + name + '")'
         } else if (v.name.value === 'Boolean') {
             return 'readBoolList(src, "' + name + '")'
@@ -23,7 +23,7 @@ function buildItemReader(name: string, v: TypeNode): string {
 
 function buildReader(name: string, v: TypeNode): string {
     if (v.kind === 'NamedType') {
-        if (v.name.value === 'String' || v.name.value === 'ID') {
+        if (v.name.value === 'String' || v.name.value === 'ID' || v.name.value === 'Date') {
             return 'readString(src, "' + name + '")'
         } else if (v.name.value === 'Boolean') {
             return 'readBool(src, "' + name + '")'
@@ -47,7 +47,7 @@ function buildReader(name: string, v: TypeNode): string {
 function buildSchemaListReader(name: string, v: any): string {
     // console.log(v);
     if (v.kind === 'SCALAR') {
-        if (v.name === 'String' || v.name === 'ID') {
+        if (v.name === 'String' || v.name === 'ID' || v.name === 'Date') {
             return 'readOptionalStringList(src, "' + name + '")'
         } else if (v.name === 'Boolean') {
             return 'readBoolList(src, "' + name + '")'
@@ -56,7 +56,7 @@ function buildSchemaListReader(name: string, v: any): string {
         } else if (v.name === 'Float') {
             return 'readFloatList(src, "' + name + '")'
         } else {
-            throw Error('Unknown scalar type: ' + v.name.value);
+            throw Error('Unknown scalar type: ' + v.name);
         }
     } else if (v.kind === 'INPUT_OBJECT' || v.kind === 'ENUM') {
         return 'read' + v.name + 'ListOptional(src, "' + name + '")'
@@ -73,7 +73,7 @@ function buildSchemaListReader(name: string, v: any): string {
 function buildSchemaReader(name: string, v: any): string {
     // console.log(v);
     if (v.kind === 'SCALAR') {
-        if (v.name === 'String' || v.name === 'ID') {
+        if (v.name === 'String' || v.name === 'ID' || v.name === 'Date') {
             return 'readOptionalString(src, "' + name + '")'
         } else if (v.name === 'Boolean') {
             return 'readOptionalBool(src, "' + name + '")'
@@ -82,7 +82,7 @@ function buildSchemaReader(name: string, v: any): string {
         } else if (v.name === 'Float') {
             return 'readOptionalFloat(src, "' + name + '")'
         } else {
-            throw Error('Unknown scalar type: ' + v.name.value);
+            throw Error('Unknown scalar type: ' + v.name);
         }
     } else if (v.kind === 'INPUT_OBJECT' || v.kind === 'ENUM') {
         return 'read' + v.name + 'Optional(src, "' + name + '")'
