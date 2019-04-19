@@ -49,6 +49,15 @@ function ProfileOrganizationContent(props: PageProps) {
             { path: 'OrganizationInviteLinkModal', pathParams: { id: organization.id } });
     }, [organization.id]);
 
+    let handleCreatePress = React.useCallback(() => {
+        let builder = new ActionSheetBuilder();
+
+        builder.action('Create group', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id }));
+        builder.action('Create channel', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id, isChannel: true }));
+
+        builder.show();
+    }, [organization.id]);
+
     let canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id);
 
     let handleManageClick = React.useCallback(() => {
@@ -138,18 +147,15 @@ function ProfileOrganizationContent(props: PageProps) {
             </ZListItemGroup>
 
             <ZListItemGroup
-                header="Groups"
+                header="Groups and Channels"
                 divider={false}
-                actionRight={organization.rooms.length > 3 ? { title: 'See All', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name + ' groups' }) } : undefined}
+                actionRight={organization.rooms.length > 3 ? { title: 'See All', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name }) } : undefined}
             >
                 {organization.isMine && (
                     <ZListItem
                         leftIcon={require('assets/ic-add-24.png')}
-                        text="Create group"
-                        path="CreateGroupAttrs"
-                        pathParams={{
-                            organizationId: organization.id,
-                        }}
+                        text="Create new"
+                        onPress={handleCreatePress}
                         navigationIcon={false}
                     />
                 )}

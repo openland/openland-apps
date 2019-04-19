@@ -21,12 +21,20 @@ const CreateGroupComponent = (props: PageProps) => {
     const ref = React.createRef<ZForm>();
 
     let isChannel = !!props.router.params.isChannel;
+    let orgIdFromRouter = props.router.params.organizationId;
+
     let chatTypeString = isChannel ? 'Channel' : 'Group'
 
     let organizations = getClient().useMyOrganizations().myOrganizations;
 
-    const [selectedKind, setSelectedKind] = React.useState<SharedRoomKind.GROUP | SharedRoomKind.PUBLIC>(SharedRoomKind.GROUP);
-    const [selectedOrg, setSelectedOrg] = React.useState(organizations[0].id);
+    let sortedOrganizations = organizations.sort((a, b) => (a.isPrimary && !b.isPrimary) ? -1 : 1);
+
+    if (orgIdFromRouter) {
+        sortedOrganizations.sort((a, b) => (a.id === orgIdFromRouter && b !== orgIdFromRouter) ? -1 : 1);
+    }
+
+    const [selectedKind, setSelectedKind] = React.useState<SharedRoomKind.GROUP | SharedRoomKind.PUBLIC>(orgIdFromRouter ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP);
+    const [selectedOrg, setSelectedOrg] = React.useState(sortedOrganizations[0].id);
     const handleKindPress = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
@@ -41,8 +49,6 @@ const CreateGroupComponent = (props: PageProps) => {
         builder.show();
     }, []);
 
-    let orgIdFromRouter = props.router.params.organizationId;
-
     return (
         <>
             <SHeader title={`Create ${chatTypeString.toLowerCase()}`} />
@@ -56,11 +62,10 @@ const CreateGroupComponent = (props: PageProps) => {
                         throw new SilentError();
                     }
 
-                    let orgId = orgIdFromRouter ? orgIdFromRouter : (selectedKind === SharedRoomKind.PUBLIC ? selectedOrg : undefined);
-                    let kind = orgIdFromRouter ? SharedRoomKind.PUBLIC : selectedKind;
+                    let orgId = selectedKind === SharedRoomKind.PUBLIC ? selectedOrg : undefined;
 
                     let res = await getClient().mutateRoomCreate({
-                        kind: kind,
+                        kind: selectedKind,
                         title: src.title,
                         photoRef: src.photoRef,
                         members: [],
@@ -119,37 +124,35 @@ const CreateGroupComponent = (props: PageProps) => {
                     />
                 </ZAvatarPickerInputsGroup>
 
-                {!orgIdFromRouter && (
-                    <View marginTop={20}>
-                        <ZListItemGroup footer={selectedKind === SharedRoomKind.GROUP ? `Secret ${chatTypeString.toLowerCase()} is a place that people can view and join only by invite from a ${chatTypeString.toLowerCase()} member.` : undefined}>
-                            <ZListItem
-                                onPress={handleKindPress}
-                                text={`${chatTypeString} type`}
-                                description={selectedKind === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
-                                descriptionColor={selectedKind === SharedRoomKind.GROUP ? '#129f25' : undefined}
-                                descriptionIcon={selectedKind === SharedRoomKind.GROUP ? require('assets/ic-secret-20.png') : undefined}
-                                navigationIcon={true}
-                            />
-                        </ZListItemGroup>
+                <View marginTop={20}>
+                    <ZListItemGroup footer={selectedKind === SharedRoomKind.GROUP ? `Secret ${chatTypeString.toLowerCase()} is a place that people can view and join only by invite from a ${chatTypeString.toLowerCase()} member.` : undefined}>
+                        <ZListItem
+                            onPress={handleKindPress}
+                            text={`${chatTypeString} type`}
+                            description={selectedKind === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
+                            descriptionColor={selectedKind === SharedRoomKind.GROUP ? '#129f25' : undefined}
+                            descriptionIcon={selectedKind === SharedRoomKind.GROUP ? require('assets/ic-secret-20.png') : undefined}
+                            navigationIcon={true}
+                        />
+                    </ZListItemGroup>
 
-                        {selectedKind === SharedRoomKind.PUBLIC && (
-                            <View marginTop={20}>
-                                {organizations.map(org => (
-                                    <ZListItem
-                                        text={org.name}
-                                        leftAvatar={{
-                                            photo: org.photo,
-                                            key: org.id,
-                                            title: org.name
-                                        }}
-                                        checkmark={org.id === selectedOrg}
-                                        onPress={() => setSelectedOrg(org.id)}
-                                    />
-                                ))}
-                            </View>
-                        )}
-                    </View>
-                )}
+                    {selectedKind === SharedRoomKind.PUBLIC && (
+                        <View marginTop={20}>
+                            {sortedOrganizations.map(org => (
+                                <ZListItem
+                                    text={org.name}
+                                    leftAvatar={{
+                                        photo: org.photo,
+                                        key: org.id,
+                                        title: org.name
+                                    }}
+                                    checkmark={org.id === selectedOrg}
+                                    onPress={() => setSelectedOrg(org.id)}
+                                />
+                            ))}
+                        </View>
+                    )}
+                </View>
             </ZForm>
         </>
     );
