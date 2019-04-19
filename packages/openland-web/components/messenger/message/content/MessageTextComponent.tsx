@@ -48,12 +48,12 @@ const EditLabelStyle = css`
 `;
 
 export const MessageTextComponent = React.memo<MessageTextComponentProps>(
-    ({ shouldCrop, message, spans, isEdited, asPinMessage }) => {
+    ({ shouldCrop, message, spans, isEdited, asPinMessage, isService }) => {
         let spannedString = spansPreprocess(message, spans, { disableBig: asPinMessage });
         return (
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
-                    <SpannedStringView spannedString={spannedString} />
+                    <SpannedStringView spannedString={spannedString} isService={isService} />
                     {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
                 </span>
             </div>
@@ -67,11 +67,11 @@ export const MessageTextComponentSpanned = React.memo<{
     isService?: boolean;
     shouldCrop?: boolean;
     asPinMessage?: boolean;
-}>(({ shouldCrop, spannedString, isEdited }) => {
+}>(({ shouldCrop, spannedString, isEdited, isService }) => {
     return (
         <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
             <span>
-                <SpannedStringView spannedString={spannedString} />
+                <SpannedStringView spannedString={spannedString} isService={isService} />
                 {isEdited && <span className={EditLabelStyle}>(Edited)</span>}
             </span>
         </div>
