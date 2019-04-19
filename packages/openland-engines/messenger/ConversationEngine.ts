@@ -148,6 +148,7 @@ export class ConversationEngine implements MessageSendHandler {
     canSendMessage?: boolean;
     isChannel?: boolean;
     isPrivate?: boolean;
+    user?: Types.ChatInit_room_PrivateRoom_user
 
     constructor(engine: MessengerEngine, conversationId: string) {
         this.engine = engine;
@@ -186,6 +187,9 @@ export class ConversationEngine implements MessageSendHandler {
         this.canSendMessage = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.kind !== 'INTERNAL' ? initialChat.room.canSendMessage : true;
         this.isChannel = initialChat.room && initialChat.room.__typename === 'SharedRoom' ? initialChat.room.isChannel : false;
         this.isPrivate = initialChat.room && initialChat.room.__typename === 'PrivateRoom' ? true : false;
+        if (initialChat.room && initialChat.room.__typename === 'PrivateRoom') {
+            this.user = initialChat.room.user
+        }
 
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < this.engine.options.conversationBatchSize;
@@ -290,7 +294,7 @@ export class ConversationEngine implements MessageSendHandler {
             let date = (new Date().getTime()).toString();
             let actionState = this.engine.messagesActionsState.getState();
             let quoted;
-            if (actionState.pendingAction && actionState.conversationId === this.conversationId) {
+            if (actionState.pendingAction && (actionState.conversationId === this.conversationId || (this.user !== undefined && (actionState.conversationId === this.user.id)))) {
                 quoted = this.engine.messagesActionsState.getState().messages;
                 this.engine.messagesActionsState.clear();
             }

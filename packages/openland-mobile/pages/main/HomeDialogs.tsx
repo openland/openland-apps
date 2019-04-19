@@ -35,14 +35,14 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                         getMessenger().engine.getConversation(id).sendMessage(s, []);
                     }
                 }
+                getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
 
             }).show();
-        }
-
-        if (props.router.params.pressCallback) {
+        } else if (props.router.params.pressCallback) {
             props.router.params.pressCallback(id, title);
+        } else {
+            getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
         }
-        getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
 
     }, [props.router.params.share, props.router.params.callback]);
 
@@ -72,14 +72,12 @@ const DialogsComponent = XMemo<PageProps>((props) => {
             />}
 
             {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
-            {props.router.params.share || props.router.params && (
-                <SSearchControler
-                    key={props.router.key + new Date().getTime()}
-                    searchRender={(p) => (<GlobalSearch query={p.query} router={props.router} onGroupPress={handlePress} onUserPress={handlePress} />)}
-                >
-                    <DialogListComponent dialogs={dialogs} />
-                </SSearchControler>
-            )}
+            <SSearchControler
+                key={props.router.key + new Date().getTime()}
+                searchRender={(p) => (<GlobalSearch query={p.query} router={props.router} onGroupPress={handlePress} onUserPress={handlePress} />)}
+            >
+                <DialogListComponent dialogs={dialogs} />
+            </SSearchControler>
         </ZTrack>
     );
 });
