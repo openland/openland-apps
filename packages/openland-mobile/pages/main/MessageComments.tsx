@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput, Text } from 'react-native';
+import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { MessageInputBar } from './components/MessageInputBar';
 import { DefaultConversationTheme } from './themes/ConversationThemeResolver';
@@ -228,7 +228,6 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                     <>
                         {Platform.OS === 'ios' && (
                             <ScrollView flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: area.bottom - SDevice.safeArea.bottom }}>
-                                <Text>{JSON.stringify(area)}</Text>
                                 {content}
                             </ScrollView>
                         )}
