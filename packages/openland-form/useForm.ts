@@ -17,7 +17,6 @@ export function useForm(): SForm {
         setEnabled(false);
         setError(null);
         (async () => {
-            console.log('start');
             try {
                 await action();
             } catch (e) {
