@@ -46,6 +46,7 @@ export interface DataSourceMessageItem {
     isService?: boolean;
     progress?: number;
     commentsCount: number | null;
+    fallback?: string;
 }
 
 export interface DataSourceDateItem {
@@ -83,6 +84,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
+        fallback: src.fallback || undefined,
     };
 }
 
@@ -92,7 +94,7 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.Message_me
         id: src.id!,
         date: src.date,
         message: src.text || null,
-        fallback: src.text || 'unknow message type',
+        fallback: src.fallback || 'unknown message type',
         sender: src.sender,
         spans: src.spans || [],
         commentsCount: src.commentsCount || 0,
