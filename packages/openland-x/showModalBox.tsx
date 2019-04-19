@@ -127,8 +127,8 @@ const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, con
                 }
             }
 
-            setTop(Math.min((windowHeight - contentHeight) / 2, 128));
-            setLeft((windowWidth - contentWidth) / 2);
+            setTop(Math.round(Math.min((windowHeight - contentHeight) / 2, 128)));
+            setLeft(Math.round((windowWidth - contentWidth) / 2));
 
             if (!inited) {
                 inited = true;
