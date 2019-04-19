@@ -6,11 +6,13 @@ export function useField<T>(name: string, defaultValue: T, form: SForm) {
     let onChange = React.useCallback((src: T) => setValue(src), []);
     let field = React.useMemo(() => {
         return ({
-            input: { value, onChange },
+            input: { value, onChange, invalid: false },
             value: value
         })
     }, []);
+    let invalid = !!form.errorFields.find((v) => v.key === name);
     field.input.value = value;
+    field.input.invalid = invalid;
     field.value = value;
     return field;
 }
