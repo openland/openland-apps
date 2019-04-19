@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { Room_room_PrivateRoom_user_primaryOrganization } from 'openland-api/Types';
-import { css } from 'linaria';
+import { RoomHeader_room_PrivateRoom_user_primaryOrganization } from 'openland-api/Types';
 import { emoji } from 'openland-y-utils/emoji';
 
 export const HeaderTitle = React.memo(
     (props: {
         value: string;
         path?: string;
-        organization?: Room_room_PrivateRoom_user_primaryOrganization | null;
+        organization?: RoomHeader_room_PrivateRoom_user_primaryOrganization | null;
     }) => (
         <XView marginTop={-2} minWidth={0} flexShrink={1} flexDirection="row">
             <XView

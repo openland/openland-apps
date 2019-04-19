@@ -9,8 +9,8 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile,
-    RoomWithoutMembers_room_PrivateRoom,
-    RoomWithoutMembers_room_SharedRoom,
+    RoomChat_room,
+    RoomChat_room_SharedRoom,
 } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { MessageTextComponent } from 'openland-web/components/messenger/message/content/MessageTextComponent';
@@ -93,7 +93,7 @@ type attachmentType = Room_room_SharedRoom_pinnedMessage_GeneralMessage_attachme
 export interface PinMessageComponentProps {
     pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage;
     chatId: string;
-    room: RoomWithoutMembers_room_SharedRoom | RoomWithoutMembers_room_PrivateRoom;
+    room: RoomChat_room;
     target?: any;
 }
 
@@ -102,8 +102,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
     const { room } = props;
     const { pinMessage } = props;
     const { sender, message } = pinMessage;
-    let sharedRoom =
-        room.__typename === 'SharedRoom' ? (room as RoomWithoutMembers_room_SharedRoom) : null;
+    let sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomChat_room_SharedRoom) : null;
     let canMeUnpinMessage = sharedRoom && sharedRoom.canEdit;
     let attachment: attachmentType | null = null;
 

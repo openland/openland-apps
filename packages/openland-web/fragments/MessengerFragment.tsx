@@ -2,11 +2,11 @@ import * as React from 'react';
 import { MessengerRootComponent } from './MessengerRootComponent';
 import { InviteLandingComponent } from './InviteLandingComponent';
 import {
-    RoomWithoutMembers_room_SharedRoom,
-    Room_room_PrivateRoom,
-    RoomWithoutMembers,
     UserShort,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
+    RoomChat_room,
+    RoomChat_room_PrivateRoom,
+    RoomChat_room_SharedRoom,
 } from 'openland-api/Types';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import {
@@ -28,7 +28,7 @@ interface MessengerComponentLoaderProps {
     isActive: boolean;
     state: MessagesStateContextProps;
     user: UserShort;
-    data: RoomWithoutMembers;
+    room: RoomChat_room | null;
 }
 
 const DocumentHeadTitleUpdater = ({ title }: { title: string }) => {
@@ -46,19 +46,18 @@ class MessagengerFragmentInner extends React.PureComponent<
 > {
     onChatLostAccess = () => {
         this.props.client.refetchRoom({ id: this.props.id });
-        // this.props.apollo.client.reFetchObservableQueries();
     };
 
     render() {
-        const { state, data } = this.props;
-        if (!data || !data.room) {
+        const { state, room } = this.props;
+        if (!room) {
             return <XLoader loading={true} />;
         }
 
-        let sharedRoom: RoomWithoutMembers_room_SharedRoom | null =
-            data.room.__typename === 'SharedRoom' ? data.room : null;
-        let privateRoom: Room_room_PrivateRoom | null =
-            data.room.__typename === 'PrivateRoom' ? data.room : null;
+        let sharedRoom: RoomChat_room_SharedRoom | null =
+            room.__typename === 'SharedRoom' ? room : null;
+        let privateRoom: RoomChat_room_PrivateRoom | null =
+            room.__typename === 'PrivateRoom' ? room : null;
         let pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null =
             sharedRoom &&
             sharedRoom.pinnedMessage &&
@@ -89,30 +88,16 @@ class MessagengerFragmentInner extends React.PureComponent<
                 >
                     {state.useForwardPlaceholder && <ForwardPlaceholder state={state} />}
                     <TalkBarComponent
-                        conversationId={data.room.id}
-                        isPrivate={data.room.__typename === 'PrivateRoom'}
+                        conversationId={room.id}
+                        isPrivate={room.__typename === 'PrivateRoom'}
                     />
                     <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
                         <MessengerRootComponent
                             onChatLostAccess={this.onChatLostAccess}
-                            objectName={title}
-                            objectId={
-                                sharedRoom ? sharedRoom.id : privateRoom ? privateRoom.user.id : ''
-                            }
-                            cloudImageUuid={
-                                (sharedRoom && sharedRoom.photo) ||
-                                (privateRoom && privateRoom.user.photo) ||
-                                undefined
-                            }
-                            organizationId={
-                                sharedRoom && sharedRoom.organization
-                                    ? sharedRoom.organization.id
-                                    : null
-                            }
                             pinMessage={pinMessage}
-                            conversationId={data.room!.id}
+                            conversationId={room!.id}
                             conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
-                            room={data.room}
+                            room={room}
                         />
                     </XView>
                     <CommentsModal />
@@ -125,9 +110,7 @@ class MessagengerFragmentInner extends React.PureComponent<
 export const MessengerFragment = React.memo<{ id: string; isActive: boolean }>(props => {
     const client = useClient();
 
-    // const apollo = React.useContext(YApolloContext)!;
-
-    let room = client.useRoomWithoutMembers({ id: props.id })!!;
+    let data = client.useRoomChat({ id: props.id })!!;
     const state: MessagesStateContextProps = React.useContext(MessagesStateContext);
     let ctx = React.useContext(UserInfoContext);
     const user = ctx!!.user!!;
@@ -138,7 +121,7 @@ export const MessengerFragment = React.memo<{ id: string; isActive: boolean }>(p
             isActive={props.isActive}
             state={state}
             user={user}
-            data={room}
+            room={data.room || null}
             client={client}
         />
     );

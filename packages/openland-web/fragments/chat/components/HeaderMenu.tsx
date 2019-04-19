@@ -3,11 +3,11 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMenuItemSeparator, XMenuItem } from 'openland-x/XMenuItem';
 import { AdminTools } from 'openland-web/pages/main/profile/components/RoomProfileComponent';
 import { XOverflow } from 'openland-web/components/XOverflow';
-import { RoomWithoutMembers_room_SharedRoom } from 'openland-api/Types';
+import { RoomHeader_room_SharedRoom } from 'openland-api/Types';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { XLoader } from 'openland-x/XLoader';
 
-export const HeaderMenu = ({ room }: { room: RoomWithoutMembers_room_SharedRoom }) => {
+export const HeaderMenu = ({ room }: { room: RoomHeader_room_SharedRoom }) => {
     const { id, canEdit } = room;
 
     const canSeeAdvancedSettings = checkCanSeeAdvancedSettings({ chat: room });

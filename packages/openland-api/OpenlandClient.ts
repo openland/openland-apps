@@ -163,6 +163,30 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderRoom(variables: Types.RoomVariables): Types.Room | null {
         return this.useQuery(Source.RoomQuery, variables);
     }
+    async queryRoomChat(variables: Types.RoomChatVariables, opts?: OperationParameters): Promise<Types.RoomChat> {
+        return this.client.query(Source.RoomChatQuery, variables, opts);
+    }
+    async refetchRoomChat(variables: Types.RoomChatVariables): Promise<Types.RoomChat> {
+        return this.refetch(Source.RoomChatQuery, variables);
+    }
+    useRoomChat(variables: Types.RoomChatVariables, opts?: QueryWatchParameters): Types.RoomChat {
+        return this.useQuerySuspense(Source.RoomChatQuery, variables, opts);
+    }
+    useWithoutLoaderRoomChat(variables: Types.RoomChatVariables): Types.RoomChat | null {
+        return this.useQuery(Source.RoomChatQuery, variables);
+    }
+    async queryRoomHeader(variables: Types.RoomHeaderVariables, opts?: OperationParameters): Promise<Types.RoomHeader> {
+        return this.client.query(Source.RoomHeaderQuery, variables, opts);
+    }
+    async refetchRoomHeader(variables: Types.RoomHeaderVariables): Promise<Types.RoomHeader> {
+        return this.refetch(Source.RoomHeaderQuery, variables);
+    }
+    useRoomHeader(variables: Types.RoomHeaderVariables, opts?: QueryWatchParameters): Types.RoomHeader {
+        return this.useQuerySuspense(Source.RoomHeaderQuery, variables, opts);
+    }
+    useWithoutLoaderRoomHeader(variables: Types.RoomHeaderVariables): Types.RoomHeader | null {
+        return this.useQuery(Source.RoomHeaderQuery, variables);
+    }
     async queryRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: OperationParameters): Promise<Types.RoomWithoutMembers> {
         return this.client.query(Source.RoomWithoutMembersQuery, variables, opts);
     }

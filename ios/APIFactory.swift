@@ -176,6 +176,34 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "RoomChat") {
+      let id = notNull(readString(src, "id"))
+      let requestBody = RoomChatQuery(id: id)
+      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
+    if (name == "RoomHeader") {
+      let id = notNull(readString(src, "id"))
+      let requestBody = RoomHeaderQuery(id: id)
+      client.fetch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "RoomWithoutMembers") {
       let id = notNull(readString(src, "id"))
       let requestBody = RoomWithoutMembersQuery(id: id)
@@ -1015,6 +1043,34 @@ class ApiFactory: ApiFactoryBase {
     if (name == "Room") {
       let id = notNull(readString(src, "id"))
       let requestBody = RoomQuery(id: id)
+      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
+    if (name == "RoomChat") {
+      let id = notNull(readString(src, "id"))
+      let requestBody = RoomChatQuery(id: id)
+      let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
+    if (name == "RoomHeader") {
+      let id = notNull(readString(src, "id"))
+      let requestBody = RoomHeaderQuery(id: id)
       let res = client.watch(query: requestBody, cachePolicy: cachePolicy, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -3548,6 +3604,22 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "RoomChat") {
+      let id = notNull(readString(src, "id"))
+      let requestBody = RoomChatQuery(id: id)
+      store.withinReadTransaction { (tx) in
+        handler((try tx.read(query: requestBody)).resultMap, nil)
+      }
+      return
+    }
+    if (name == "RoomHeader") {
+      let id = notNull(readString(src, "id"))
+      let requestBody = RoomHeaderQuery(id: id)
+      store.withinReadTransaction { (tx) in
+        handler((try tx.read(query: requestBody)).resultMap, nil)
+      }
+      return
+    }
     if (name == "RoomWithoutMembers") {
       let id = notNull(readString(src, "id"))
       let requestBody = RoomWithoutMembersQuery(id: id)
@@ -4058,6 +4130,26 @@ class ApiFactory: ApiFactoryBase {
       let id = notNull(readString(src, "id"))
       let requestBody = RoomQuery(id: id)
       let data = RoomQuery.Data(unsafeResultMap: self.convertData(src: data))
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(data: data, forQuery: requestBody)
+        handler(nil, nil)
+      }
+      return
+    }
+    if (name == "RoomChat") {
+      let id = notNull(readString(src, "id"))
+      let requestBody = RoomChatQuery(id: id)
+      let data = RoomChatQuery.Data(unsafeResultMap: self.convertData(src: data))
+      store.withinReadWriteTransaction { (tx) in
+        try tx.write(data: data, forQuery: requestBody)
+        handler(nil, nil)
+      }
+      return
+    }
+    if (name == "RoomHeader") {
+      let id = notNull(readString(src, "id"))
+      let requestBody = RoomHeaderQuery(id: id)
+      let data = RoomHeaderQuery.Data(unsafeResultMap: self.convertData(src: data))
       store.withinReadWriteTransaction { (tx) in
         try tx.write(data: data, forQuery: requestBody)
         handler(nil, nil)

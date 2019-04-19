@@ -195,7 +195,6 @@ export type MessageComposeComponentDraftProps = MessageComposeComponentProps & {
     variables?: {
         roomId?: string;
         conversationId?: string;
-        organizationId: string | null;
     };
     getMessages?: () => ModelMessage[];
 };

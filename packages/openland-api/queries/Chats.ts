@@ -240,6 +240,85 @@ export const RoomQuery = gql`
     ${OrganizationMedium}
 `;
 
+export const RoomChatQuery = gql`
+    query RoomChat($id: ID!) {
+        room(id: $id) {
+            ... on PrivateRoom {
+                id
+                user {
+                    id
+                    name
+                }
+            }
+            ... on SharedRoom {
+                id
+                kind
+                title
+                membership
+                isChannel
+                canEdit
+                pinnedMessage {
+                    ...FullMessage
+                }
+            }
+        }
+    }
+    ${FullMessage}
+`;
+
+export const RoomHeaderQuery = gql`
+    query RoomHeader($id: ID!) {
+        room(id: $id) {
+            ... on PrivateRoom {
+                id
+                user {
+                    id
+                    name
+                    photo
+                    primaryOrganization {
+                        id
+                        name
+                    }
+                }
+                settings {
+                    id
+                    mute
+                }
+            }
+            ... on SharedRoom {
+                id
+                kind
+                title
+                photo
+                description
+                socialImage
+                membersCount
+                canEdit
+                isChannel
+                role
+                organization {
+                    id
+                    name
+                    isOwner: betaIsOwner
+                    isAdmin: betaIsAdmin
+                }
+                settings {
+                    id
+                    mute
+                }
+                welcomeMessage {
+                    isOn
+                    message
+                    sender {
+                        id
+                        name
+                    }
+                }
+            }
+        }
+    }
+`;
+
 export const RoomWithoutMembersQuery = gql`
     query RoomWithoutMembers($id: ID!) {
         room(id: $id) {
@@ -897,6 +976,7 @@ export const RoomUpdateMutation = gql`
                 title
                 photo
                 description
+                socialImage
             }
         }
     }
