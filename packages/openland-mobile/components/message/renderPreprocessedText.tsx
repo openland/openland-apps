@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Text, Linking, Clipboard, Share } from 'react-native';
+import { Text, Linking, Clipboard, Share, TextStyle } from 'react-native';
 import { Span } from 'openland-mobile/utils/TextProcessor';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { OthersUsersWrapper } from 'openland-mobile/messenger/components/service/views/OthersUsersWrapper';
 import { ActionSheetBuilder } from '../ActionSheet';
 import { AppTheme } from 'openland-mobile/themes/themes';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 let openContextMenu = (link: string) => {
     let builder = new ActionSheetBuilder();
@@ -45,6 +46,8 @@ export const renderPreprocessedText = (v: Span, i: number, onUserPress: (id: str
         );
     } else if (v.type === 'mention_users') {
         return <OthersUsersWrapper onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={false} />
+    } else if (v.type === 'bold') {
+        return <Text key={'text-bold-' + i} allowFontScaling={false} style={{ fontWeight: TextStyles.weight.bold } as TextStyle}>{v.text}</Text>
     } else {
         return <Text key={'text-' + i} allowFontScaling={false}>{v.text}</Text>;
     }

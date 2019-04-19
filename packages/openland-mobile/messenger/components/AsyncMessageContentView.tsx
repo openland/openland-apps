@@ -41,6 +41,8 @@ export let renderPreprocessedText = (v: Span, i: number, message: DataSourceMess
         return <ASText key={'mention-' + i} color={(message.isOut && !message.isService) ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(v.id)}>{useNonBreakingSpaces(v.text)}</ASText>;
     } else if (v.type === 'mention_users') {
         return <OthersUsersWrapper onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={true} />
+    } else if (v.type === 'bold') {
+        return <ASText key={'text-bold-' + i} fontWeight={TextStyles.weight.bold}>{v.text}</ASText>
     } else {
         return <ASText key={'text-' + i}>{v.text}</ASText>;
     }
