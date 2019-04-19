@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
-import { ReactionComponent } from './MessageReaction';
+import { ReactionButton } from './reactions/ReactionButton';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -85,7 +85,7 @@ export const Menu = ({
                 className="menu-wrapper"
             >
                 <XHorizontal alignItems="center" separator={8}>
-                    {!hasComments && <ReactionComponent messageId={message.id!} />}
+                    {!hasComments && <ReactionButton messageId={message.id!} />}
                     {!isChannel && (
                         <IconButton onClick={setReplyMessages}>
                             <ReplyIcon />

@@ -19,7 +19,7 @@ import {
 
 import { MobileMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
-import { Reactions } from './MessageReaction';
+import { Reactions } from './reactions/MessageReaction';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 
 const MessageWrapper = Glamorous(XHorizontal)<{

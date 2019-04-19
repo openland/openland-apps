@@ -17,7 +17,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
 } from 'openland-api/Types';
-import { Reactions } from './MessageReaction';
+import { Reactions } from './reactions/MessageReaction';
 import { MessagesStateContextProps } from '../MessagesStateContext';
 import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
 import { DesktopMessageContainer } from './MessageContainer';

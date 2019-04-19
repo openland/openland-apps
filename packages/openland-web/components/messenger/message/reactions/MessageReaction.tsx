@@ -1,45 +1,17 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XView } from 'react-mental';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import ReactionIcon from 'openland-icons/ic-reactions.svg';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
 import CommentLikeChannelIcon from 'openland-icons/ic-like-channel.svg';
 import CommentLikeEmptyChannelIcon from 'openland-icons/ic-like-empty-channel.svg';
-import { XView } from 'react-mental';
+import { emojifyReactions } from './emojifyReactions';
 
-const CustomPickerDiv = Glamorous(XPopper.Content)({
-    padding: '4px 10px',
-    borderRadius: 18,
-});
-
-const ReactionButton = Glamorous.div<{
-    marginTop?: number;
-    marginLeft?: number;
-    hovered: boolean;
-}>(props => ({
-    display: 'flex',
-    alignSelf: 'flex-start',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    marginTop: props.marginTop,
-    marginLeft: props.marginLeft,
-    paddingTop: 6,
-    '& svg > path': {
-        fill: props.hovered ? '#d75454' : undefined,
-        opacity: props.hovered ? 1 : undefined,
-    },
-    '&:hover svg > path': {
-        fill: '#d75454',
-        opacity: 1,
-    },
-}));
-
-const ReactionItem = Glamorous.div<{ isMy?: boolean }>(props => ({
+export const ReactionItem = Glamorous.div<{ isMy?: boolean }>(() => ({
     display: 'flex',
     alignItems: 'center',
     height: 28,
@@ -51,183 +23,6 @@ const ReactionItem = Glamorous.div<{ isMy?: boolean }>(props => ({
     },
 }));
 
-const emojifyReactions = ({ src, size }: { src: string; size: 25 | 18 }) => {
-    if (src === '👍') {
-        // margin-right: -2px;
-        // margin-left: -2px;
-        return emoji({
-            src,
-            size,
-            crop:
-                size === 25
-                    ? {
-                          figureStyle: {
-                              width: 20,
-                              marginBottom: -4,
-                          },
-                          imgStyle: {
-                              marginLeft: -3,
-                              marginRight: -1,
-                          },
-                      }
-                    : {
-                          figureStyle: {
-                              width: 14,
-                              marginBottom: -4,
-                          },
-                          imgStyle: {
-                              marginLeft: -2,
-                              marginRight: -2,
-                          },
-                      },
-        });
-    } else if (src === '😱') {
-        return emoji({
-            src,
-            size,
-            crop:
-                size === 25
-                    ? {
-                          figureStyle: {
-                              width: 23,
-                              marginBottom: -2,
-                          },
-                          imgStyle: {
-                              marginLeft: -1,
-                          },
-                      }
-                    : undefined,
-        });
-    }
-
-    return emoji({
-        src,
-        size,
-    });
-};
-
-class ReactionPicker extends React.PureComponent<{
-    setReaction: (src: any) => void;
-    onHover: (hover: boolean) => void;
-}> {
-    componentWillUnmount() {
-        this.props.onHover(false);
-    }
-
-    render() {
-        const { props } = this;
-        const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
-
-        return (
-            <XHorizontal separator={6} alignItems="center" onMouseEnter={() => props.onHover(true)}>
-                {defaultReactions.map((src: string) => (
-                    <ReactionItem
-                        key={'msg_reaction' + src}
-                        onClick={e => {
-                            e.stopPropagation();
-                            props.setReaction(src);
-                        }}
-                    >
-                        {emojifyReactions({
-                            src,
-                            size: 25,
-                        })}
-                    </ReactionItem>
-                ))}
-            </XHorizontal>
-        );
-    }
-}
-
-class ReactionComponentInner extends React.PureComponent<{
-    onlyLikes?: boolean;
-    messageId: string;
-    marginTop?: number;
-    marginLeft?: number;
-    handler: (reaction: string) => void;
-}> {
-    state = {
-        hovered: false,
-    };
-    handleSetReaction = (emj: any) => {
-        this.props.handler(typeof emj === 'string' ? emj : emj.native);
-    };
-
-    handleClick = () => {
-        this.handleSetReaction('❤️');
-    };
-
-    onReactionsHover = (data: boolean) => {
-        this.setState({
-            hovered: data,
-        });
-    };
-
-    render() {
-        const onlyLikes = this.props.onlyLikes;
-        if (onlyLikes) {
-            return (
-                <ReactionButton
-                    className="reaction-button"
-                    onClick={this.handleClick}
-                    marginTop={this.props.marginTop}
-                    marginLeft={this.props.marginLeft}
-                    hovered={this.state.hovered}
-                >
-                    <ReactionIcon />
-                </ReactionButton>
-            );
-        }
-
-        return (
-            <XPopper
-                content={
-                    <ReactionPicker
-                        setReaction={this.handleSetReaction}
-                        onHover={this.onReactionsHover}
-                    />
-                }
-                showOnHover
-                placement="top"
-                contentContainer={<CustomPickerDiv />}
-                marginBottom={6}
-            >
-                <ReactionButton
-                    className="reaction-button"
-                    onClick={this.handleClick}
-                    marginTop={this.props.marginTop}
-                    marginLeft={this.props.marginLeft}
-                    hovered={this.state.hovered}
-                >
-                    <ReactionIcon />
-                </ReactionButton>
-            </XPopper>
-        );
-    }
-}
-
-type ReactionComponentT = {
-    onlyLikes?: boolean;
-    messageId: string;
-    marginTop?: number;
-    marginLeft?: number;
-};
-
-export const ReactionComponent = React.memo((props: ReactionComponentT) => {
-    let client = useClient();
-    return (
-        <ReactionComponentInner
-            handler={it =>
-                client.mutateMessageSetReaction({ messageId: props.messageId, reaction: it })
-            }
-            onlyLikes={props.onlyLikes}
-            messageId={props.messageId}
-            marginTop={props.marginTop}
-            marginLeft={props.marginLeft}
-        />
-    );
-});
-
 const UsersLabel = Glamorous.div({
     color: 'rgba(0, 0, 0, 0.5)',
     fontSize: 12,
@@ -235,14 +30,13 @@ const UsersLabel = Glamorous.div({
 });
 
 class SingleReaction extends React.PureComponent<{
-    messageId: string;
     reaction: string;
     isMy: boolean;
     handler: (reaction: string) => void;
     unset: boolean;
 }> {
     handleChangeReaction = (e: any) => {
-        const { reaction, messageId } = this.props;
+        const { reaction } = this.props;
         e.stopPropagation();
         if (this.props.unset) {
             let r: string = reaction;
@@ -287,7 +81,6 @@ const SingleReactionSetInner = (props: SingleReactionSetT) => {
             handler={it =>
                 client.mutateMessageSetReaction({ messageId: props.messageId, reaction: it })
             }
-            messageId={props.messageId}
             reaction={props.reaction}
             isMy={props.isMy}
             unset={false}
@@ -317,7 +110,6 @@ const SingleReactionUnsetInner = (props: SingleReactionUnsetT) => {
             handler={it =>
                 client.mutateMessageUnsetReaction({ messageId: props.messageId, reaction: it })
             }
-            messageId={props.messageId}
             reaction={props.reaction}
             isMy={props.isMy}
             unset={true}
