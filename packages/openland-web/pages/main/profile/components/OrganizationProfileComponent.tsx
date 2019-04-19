@@ -16,7 +16,6 @@ import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import {
     RemoveOrganizationModal,
-    LeaveOrganizationModal,
     AboutPlaceholder,
     SocialPlaceholder,
     WebsitePlaceholder,
@@ -51,6 +50,7 @@ import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { AvatarModal } from './UserProfileComponent';
 import { XPopper } from 'openland-x/XPopper';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { showLeaveConfirmation } from 'openland-web/fragments/showLeaveConfirmation';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -535,7 +535,7 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
     );
 
     const leaveOrganizationButton = (
-        <XMenuItem style="danger" query={{ field: 'leaveOrganization', value: 'true' }}>
+        <XMenuItem style="danger" onClick={() => showLeaveConfirmation(organization.id)}>
             {organization.isCommunity ? 'Leave community' : 'Leave organization'}
         </XMenuItem>
     );
@@ -561,7 +561,6 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
                     )}
                 </HeaderAvatar>
                 <RemoveOrganizationModal />
-                <LeaveOrganizationModal />
                 <HeaderInfo flexGrow={1} separator={0}>
                     <HeaderTitle>{organization.name}</HeaderTitle>
                     {organization.website && (
@@ -729,7 +728,7 @@ const Members = ({ organization, router }: MembersProps) => {
             first: 10,
             after: joinedMembers[joinedMembers.length - 1].user.id,
         });
-        
+
         setJoinedMembers([...joinedMembers, ...loaded.organization.members.slice(1)]);
     };
 
@@ -793,7 +792,7 @@ const Members = ({ organization, router }: MembersProps) => {
                                 highlight={true}
                             >
                                 {TextProfiles.Organization.requestsTitle}
-                            </XSwitcher.Item> 
+                            </XSwitcher.Item>
                         </XSwitcher>
 
                         {tab === tabs.members && joinedMembersBox(false)}

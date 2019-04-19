@@ -4,60 +4,45 @@ import { css } from 'linaria';
 import * as className from 'classnames';
 import { XScrollView3 } from './XScrollView3';
 import { XView } from 'react-mental';
-import CloseIcon from 'openland-x-modal/ic-close.svg';
 import { XLoader } from './XLoader';
 import ResizeObserver from 'resize-observer-polyfill';
 
-const closeIconStyle = css`
-    cursor: pointer;
-    display: flex;
-    width: 28px;
-    height: 28px;
-    align-items: center;
-    justify-content: center;
-    transition: all .15s ease;
-    border-radius: 50px;
-    border: 1px solid transparent;
-    > svg > g > path:last-child {
-        fill: rgba(0, 0, 0, 0.3)
-    }
-    :hover {
-        & > svg > g > path:last-child {
-            fill: rgba(0, 0, 0, 0.4);
-        }
-    }
-`;
-
-const CloseButton = (props: { onClick: () => void }) => (
-    <div className={closeIconStyle} onClick={props.onClick}>
-        <CloseIcon />
-    </div>
-);
-
 const boxStyle = css`
+    overflow: hidden;
     position: absolute;
     display: flex;
     flex-direction: column;
     background-color: white;
-    border-radius: 6px;
+    border-radius: 8px;
     box-shadow: 0px 3px 14px 4px #82777747;
     max-height: calc(100vh - 48px);
     max-width: 100vw;
     width: 575px;
 `
 
+const boxShowing = css`
+    transform: translate(0px, 64px); 
+`;
+
 const boxVisible = css`
-    transition: top 150ms, left 150ms;
+    transition: top 150ms cubic-bezier(0.4, 0.0, 0.2, 1), left 150ms cubic-bezier(0.4, 0.0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transform: translate(0px, 0px);
+`;
+
+const boxHiding = css`
+    transition: top 150ms cubic-bezier(0.0, 0.0, 0.2, 1), left 150ms cubic-bezier(0.0, 0.0, 0.2, 1), transform 150ms cubic-bezier(0.0, 0.0, 0.2, 1), opacity 150ms cubic-bezier(0.0, 0.0, 0.2, 1);
+    opacity: 0;
+    transform: translate(0px, 32px);
 `;
 
 const overlayHiding = css`
     opacity: 0;
-    transition: opacity 75ms;
+    transition: opacity 150ms cubic-bezier(0.0, 0.0, 0.2, 1);
 `;
 
 const overlayVisible = css`
     opacity: 1;
-    transition: opacity 150ms;
+    transition: opacity 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
 const overlayShowing = css`
@@ -83,7 +68,7 @@ const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, con
     const tryHide = React.useCallback(() => {
         if (state !== 'hiding') {
             setState('hiding');
-            setTimeout(() => { props.ctx.hide() }, 75);
+            setTimeout(() => { props.ctx.hide() }, 200);
         }
     }, []);
     React.useEffect(() => {
@@ -157,15 +142,19 @@ const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, con
                 ref={boxRef}
                 className={className(
                     boxStyle,
-                    state === 'visible' && boxVisible
+                    state === 'showing' && boxShowing,
+                    state === 'visible' && boxVisible,
+                    state === 'hiding' && boxHiding
                 )}
                 style={{ top: top, left: left }}
             >
-                <XView height={64} lineHeight="64px" paddingLeft={24} paddingRight={14} fontSize={18} fontWeight="600" flexDirection="row" alignItems="center">
-                    <XView flexGrow={1} flexShrink={1} minWidth={0} paddingRight={8}>
-                        {props.config.title}
+                <XView paddingTop={30} paddingBottom={20}>
+                    <XView height={36} lineHeight="36px" paddingLeft={40} paddingRight={14} fontSize={30} fontWeight="600" flexDirection="row" alignItems="center">
+                        <XView flexGrow={1} flexShrink={1} minWidth={0} paddingRight={8}>
+                            {props.config.title}
+                        </XView>
+                        {/* <CloseButton onClick={tryHide} /> */}
                     </XView>
-                    <CloseButton onClick={tryHide} />
                 </XView>
                 <XScrollView3 flexShrink={1}>
                     <React.Suspense fallback={Loader}>
@@ -176,6 +165,10 @@ const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, con
         </div>
     )
 });
+
+export const XModalBoxStyles = {
+    contentPadding: 40
+}
 
 export interface XModalBoxConfig {
     title?: string;

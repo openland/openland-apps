@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { showModalBox } from 'openland-x/showModalBox';
+import { showModalBox, XModalBoxStyles } from 'openland-x/showModalBox';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import CopiedIcon from 'openland-icons/ic-content-copy.svg';
@@ -132,7 +132,7 @@ const OwnerLinkOrganization = () => {
 export function showAppInviteModal() {
     showModalBox({ title: 'Invite people to Openland' }, (ctx) => {
         return (
-            <XView width={575} paddingHorizontal={24} paddingBottom={24} paddingTop={6}>
+            <XView width={575} paddingHorizontal={XModalBoxStyles.contentPadding} paddingBottom={24} paddingTop={6}>
                 <OwnerLinkOrganization />
             </XView>
         )
