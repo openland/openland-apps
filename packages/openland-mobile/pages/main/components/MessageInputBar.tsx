@@ -39,7 +39,8 @@ export interface MessageInputBarProps {
     theme: ConversationTheme;
     placeholder: string;
 
-    topContent?: any;
+    suggestions?: any;
+    topView?: any;
     showLoader?: boolean;
 }
 
@@ -49,15 +50,15 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
 
     return (
         <ZKeyboardAwareBar>
-            {props.topContent && (
-                <React.Suspense fallback={null}>
-                    <ZBlurredView intensity="normal" style={{ position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
-                        {props.topContent}
-                    </ZBlurredView>
-                </React.Suspense>
+            {props.suggestions && (
+                <ZBlurredView intensity="normal" style={{ position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
+                    {props.suggestions}
+                </ZBlurredView>
             )}
 
             <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                {props.topView}
+
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     {props.attachesEnabled !== false && (
                         <TouchableOpacity onPress={props.onAttachPress}>

@@ -248,8 +248,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             quoted = <ReplyView onClearPress={this.onQuotedClearPress} comment={this.state.messagesActionsState.messages.map(convertMessageBack) || []} action={this.state.messagesActionsState.pendingAction.action === 'forward' ? 'forward' : 'reply'} />
         }
 
-        let topContent = [suggestions, quoted];
-
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
         let showInputBar = !sharedRoom || sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage;
 
@@ -311,7 +309,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     onBlur={this.handleBlur}
                                     text={this.state.text}
                                     theme={this.state.theme}
-                                    topContent={topContent}
+                                    suggestions={suggestions}
+                                    topView={quoted}
                                     placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message...'}
                                 />
                             )}
