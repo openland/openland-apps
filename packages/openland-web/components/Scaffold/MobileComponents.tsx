@@ -9,7 +9,6 @@ import { withUserInfo } from '../UserInfo';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { CreateOrganization } from './Modals';
 
 const CloseBannerIconClassName = css`
     & > g > path:last-child {
@@ -276,7 +275,6 @@ const MobileSidebar = ({ topItems, menu }: { topItems: any; menu: any }) => {
             <div className={sideBarClassName} style={{ left: showSidebar ? 0 : -350 }}>
                 <XView width="100%">
                     <MobileNavigationContainer>
-                        <CreateOrganization />
                         <MobileUserProfile onClick={close} />
                         {topItems}
                         <XView

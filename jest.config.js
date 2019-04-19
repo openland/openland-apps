@@ -29,6 +29,8 @@ module.exports = {
         //
         // WARNING: ORDER MATTERS
         //
+        'openland-form/(.*)': '<rootDir>/packages/openland-form/$1',
+        'openland-form': '<rootDir>/packages/openland-form',
         'openland-apps/(.*)': '<rootDir>/packages/openland-apps/$1',
         'openland-apps': '<rootDir>/packages/openland-apps',
         'openland-graphql/(.*)': '<rootDir>/packages/openland-graphql/$1',

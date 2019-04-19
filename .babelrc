@@ -67,6 +67,7 @@
                         "openland-y-forms": "./build/native/openland-y-forms",
                         "openland-xp": "./build/native/openland-xp",
                         "openland-shared": "./build/native/openland-shared",
+                        "openland-form": "./build/native/openland-form",
                         "assets": "./packages/openland-mobile/assets",
                         "assets-s": "./packages/react-native-s/assets"
                     }
@@ -99,6 +100,7 @@
                         "openland-y-store": "./build/native/openland-y-store",
                         "openland-xp": "./build/native/openland-xp",
                         "openland-shared": "./build/native/openland-shared",
+                        "openland-form": "./build/native/openland-form",
                         "assets": "./packages/openland-mobile/assets",
                         "assets-s": "./packages/react-native-s/assets"
                     }

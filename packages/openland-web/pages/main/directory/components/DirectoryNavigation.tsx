@@ -20,6 +20,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { useIsMobile } from 'openland-web/hooks';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3 } from 'openland-x/XScrollView3';
+import { showCreateOrganization } from 'openland-web/fragments/showCreateOrganization';
 
 export const SearchCardsOrShowProfile = XMemo(
     ({
@@ -149,19 +150,13 @@ export const DirectoryNavigation = XMemo(
                         content={
                             <>
                                 <XMenuItem
-                                    query={{
-                                        field: 'createOrganization',
-                                        value: 'true',
-                                    }}
+                                    onClick={() => showCreateOrganization('organization')}
                                     icon="x-dropdown-organization"
                                 >
                                     {TextDirectory.create.organization}
                                 </XMenuItem>
                                 <XMenuItem
-                                    query={{
-                                        field: 'createOrganization',
-                                        value: 'community',
-                                    }}
+                                    onClick={() => showCreateOrganization('community')}
                                     icon="x-dropdown-community"
                                 >
                                     {TextDirectory.create.community}
@@ -212,17 +207,17 @@ export const DirectoryNavigation = XMemo(
                                     {children ? (
                                         children
                                     ) : (
-                                        <SearchCardsOrShowProfile
-                                            id={id}
-                                            ProfileComponent={ProfileComponent}
-                                            CardsComponent={CardsComponent}
-                                            searchPlaceholder={searchPlaceholder || ''}
-                                            noQueryText={noQueryText || ''}
-                                            hasQueryText={hasQueryText || ''}
-                                            withoutFeatured={withoutFeatured}
-                                            page={page}
-                                        />
-                                    )}
+                                            <SearchCardsOrShowProfile
+                                                id={id}
+                                                ProfileComponent={ProfileComponent}
+                                                CardsComponent={CardsComponent}
+                                                searchPlaceholder={searchPlaceholder || ''}
+                                                noQueryText={noQueryText || ''}
+                                                hasQueryText={hasQueryText || ''}
+                                                withoutFeatured={withoutFeatured}
+                                                page={page}
+                                            />
+                                        )}
                                 </React.Suspense>
                             </XView>
                         </XScrollView3>
@@ -257,27 +252,27 @@ export const ComponentWithSort = ({
     customMenu: any;
     CustomButtonComponent: any;
 }) => {
-    return (
-        <React.Suspense
-            fallback={
-                <XView flexGrow={1} flexShrink={0}>
-                    <XLoader loading={true} />
-                </XView>
-            }
-        >
-            <Component
-                tagsCount={tagsCount}
-                variables={{
-                    ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
-                    sort: JSON.stringify([
-                        ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
-                        { [orderBy]: { order: 'desc' } },
-                    ]),
-                    ...(variables.page ? { page: variables.page } : {}),
-                }}
-                customMenu={customMenu}
-                CustomButtonComponent={CustomButtonComponent}
-            />
-        </React.Suspense>
-    );
-};
+        return (
+            <React.Suspense
+                fallback={
+                    <XView flexGrow={1} flexShrink={0}>
+                        <XLoader loading={true} />
+                    </XView>
+                }
+            >
+                <Component
+                    tagsCount={tagsCount}
+                    variables={{
+                        ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
+                        sort: JSON.stringify([
+                            ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
+                            { [orderBy]: { order: 'desc' } },
+                        ]),
+                        ...(variables.page ? { page: variables.page } : {}),
+                    }}
+                    customMenu={customMenu}
+                    CustomButtonComponent={CustomButtonComponent}
+                />
+            </React.Suspense>
+        );
+    };

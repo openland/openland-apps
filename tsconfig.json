@@ -62,7 +62,8 @@
             "openland-icons": ["openland-icons"],
             "openland-landing": ["openland-landing"],
             "openland-graphql": ["openland-graphql"],
-            "openland-apps": ["openland-apps"]
+            "openland-apps": ["openland-apps"],
+            "openland-form": ["openland-form"]
         },
         "importHelpers": true
     },
@@ -115,6 +116,7 @@
         "./packages/openland-icons",
         "./packages/openland-landing",
         "./packages/openland-graphql",
+        "./packages/openland-form",
         "./packages/react-native-async-view",
         "./packages/react-native-async-view-babel",
         "./packages/react-native-fast-navigation",

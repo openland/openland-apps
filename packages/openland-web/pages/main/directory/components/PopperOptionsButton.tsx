@@ -7,6 +7,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import CreateRoomIcon from 'openland-icons/ic-create-room.svg';
 import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
 import CreateCommunityIcon from 'openland-icons/ic-create-community.svg';
+import { showCreateOrganization } from 'openland-web/fragments/showCreateOrganization';
 
 export const PopperOptionsButton = XMemo(
     ({ content, icon, title, path }: { content?: any; icon: any; title: any; path?: string }) => {
@@ -58,15 +59,12 @@ export const PopperOptionsButton = XMemo(
                             </XMenuItem>
                             <XMenuItem
                                 style="gray"
+                                onClick={() => showCreateOrganization('community')}
                                 icon={
                                     <XView marginRight={14} marginTop={-4}>
                                         <CreateCommunityIcon />
                                     </XView>
                                 }
-                                query={{
-                                    field: 'createOrganization',
-                                    value: 'community',
-                                }}
                             >
                                 New community
                             </XMenuItem>
