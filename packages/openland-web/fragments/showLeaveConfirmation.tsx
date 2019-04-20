@@ -2,16 +2,16 @@ import * as React from 'react';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
-import { XView } from 'react-mental';
-import { showModalBox, XModalBoxStyles } from 'openland-x/showModalBox';
-import { XButton } from 'openland-x/XButton';
+import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import { useForm } from 'openland-form/useForm';
-import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
+import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
+import { XModalContent } from 'openland-web/components/XModalContent';
 
 const LeaveDialog = React.memo<{ id: string, ctx: XModalController }>((props) => {
-    let router = React.useContext(XRouterContext)!;
+    const router = React.useContext(XRouterContext)!;
     const user = React.useContext(UserInfoContext)!!;
     const client = useClient();
     const data = client.useOrganizationProfile({ organizationId: props.id });
@@ -34,23 +34,20 @@ const LeaveDialog = React.memo<{ id: string, ctx: XModalController }>((props) =>
             });
         })
     }, [])
-    // let user = React.useContext(UserInfoContext)!!;
 
     return (
-        <XView flexDirection="column" position="relative">
+        <>
             {form.error && <XErrorMessage message={form.error} />}
-            <XView flexDirection="column" paddingHorizontal={XModalBoxStyles.contentPadding} paddingBottom={30} fontSize={18} lineHeight="28px">
+            <XModalContent fontSize={18} lineHeight="28px">
                 Are you sure you want to leave? You will lose access to all internal chats at{' '}
                 {data.organizationProfile.name}. You can only join{' '}
                 {data.organizationProfile.name} by invitation in the future.
-            </XView>
-            <XView height={72} backgroundColor="rgb(242, 243, 244)" flexDirection="row" justifyContent="flex-end" alignItems="center" paddingHorizontal={XModalBoxStyles.contentPadding}>
-                <XView paddingRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={() => props.ctx.hide()} />
-                </XView>
-                <XButton style="danger" text="Yes, I am sure" size="large" onClick={doConfirm} loading={form.loading} />
-            </XView>
-        </XView>
+            </XModalContent>
+            <XModalFooter>
+                <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
+                <XModalFooterButton text="Yes, I am sure" style="danger" onClick={doConfirm} loading={form.loading} />
+            </XModalFooter>
+        </>
     )
 });
 

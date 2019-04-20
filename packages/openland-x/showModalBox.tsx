@@ -16,7 +16,7 @@ const boxStyle = css`
     border-radius: 8px;
     box-shadow: 0px 3px 14px 4px #82777747;
     max-height: calc(100vh - 48px);
-    max-width: 100vw;
+    max-width: calc(100vw - 20px);
     width: 575px;
 `
 
