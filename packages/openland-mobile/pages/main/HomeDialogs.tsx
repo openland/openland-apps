@@ -41,7 +41,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
         } else if (props.router.params.pressCallback) {
             props.router.params.pressCallback(id, title);
         } else {
-            getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
+            getMessenger().history.navigationManager.push('Conversation', { id });
         }
 
     }, [props.router.params.share, props.router.params.callback]);
