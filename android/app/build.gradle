@@ -241,6 +241,8 @@ dependencies {
 
     implementation 'com.apollographql.apollo:apollo-runtime:1.0.0-alpha5'
     implementation 'com.apollographql.apollo:apollo-android-support:1.0.0-alpha5'
+
+    implementation project(':soyuz')
 }
 
 // Run this once to be able to run the application with BUCK
