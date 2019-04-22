@@ -9,11 +9,15 @@ import { randomKey } from 'openland-graphql/utils/randomKey';
 
 export const TasksFragment = React.memo(() => {
     let userStorage = React.useContext(MessengerContext).userStorage;
-    let data = JSON.parse(userStorage.useKeys('app.tasks', ['index.projects']).userStorage[0].value || '[]') as {
+    let data = JSON.parse(
+        userStorage.useKeys('app.tasks', ['index.projects']).userStorage[0].value || '[]',
+    ) as {
         id: string;
         name: string;
     }[];
-    let inbox = JSON.parse(userStorage.useKeys('app.tasks', ['index.inbox']).userStorage[0].value || '[]') as {
+    let inbox = JSON.parse(
+        userStorage.useKeys('app.tasks', ['index.inbox']).userStorage[0].value || '[]',
+    ) as {
         id: string;
         name: string;
     }[];
@@ -24,13 +28,18 @@ export const TasksFragment = React.memo(() => {
         <XModalForm
             title="Create task"
             defaultAction={async src => {
-                await userStorage.setKeys('app.tasks', [{
-                    key: 'index.inbox',
-                    value: JSON.stringify([...inbox, {
-                        id: randomKey(),
-                        name: src.name
-                    }])
-                }]);
+                await userStorage.setKeys('app.tasks', [
+                    {
+                        key: 'index.inbox',
+                        value: JSON.stringify([
+                            ...inbox,
+                            {
+                                id: randomKey(),
+                                name: src.name,
+                            },
+                        ]),
+                    },
+                ]);
                 // await client.mutateFeedPost({ message: src.message });
                 // await client.refetchFeedHome();
             }}
@@ -47,22 +56,30 @@ export const TasksFragment = React.memo(() => {
                 />
             </XFormField>
         </XModalForm>
-    )
+    );
 
     return (
-        <XView flexDirection="column" alignSelf="stretch" alignItems="stretch" paddingTop={32} paddingLeft={16} paddingRight={16} paddingBottom={64}>
+        <XView
+            flexDirection="column"
+            alignSelf="stretch"
+            alignItems="stretch"
+            paddingTop={32}
+            paddingLeft={16}
+            paddingRight={16}
+            paddingBottom={64}
+        >
             {newTask}
             <XView flexDirection="row" justifyContent="center" paddingVertical={12}>
                 <XView maxWidth={800}>
                     <XButton
                         text="New"
                         onClick={() => {
-                            setNewTaskModal(true)
+                            setNewTaskModal(true);
                         }}
                     />
                 </XView>
             </XView>
-            {inbox.map((v) => (
+            {inbox.map(v => (
                 <XView flexDirection="row" justifyContent="center" paddingVertical={12}>
                     <XView
                         cursor="pointer"
@@ -78,13 +95,17 @@ export const TasksFragment = React.memo(() => {
                         paddingVertical={8}
                         paddingHorizontal={16}
                         onClick={() => {
-                            userStorage.setKeys('app.tasks', [{
-                                key: 'index.inbox',
-                                value: JSON.stringify(inbox.filter((v2) => v.id !== v2.id))
-                            }])
+                            userStorage.setKeys('app.tasks', [
+                                {
+                                    key: 'index.inbox',
+                                    value: JSON.stringify(inbox.filter(v2 => v.id !== v2.id)),
+                                },
+                            ]);
                         }}
                     >
-                        <XView fontSize={18} lineHeight="20px" key={v.id}>{v.name}</XView>
+                        <XView fontSize={18} lineHeight="20px" key={v.id}>
+                            {v.name}
+                        </XView>
                     </XView>
                 </XView>
             ))}

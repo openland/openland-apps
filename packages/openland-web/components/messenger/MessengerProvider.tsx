@@ -12,7 +12,7 @@ const Messenger = (props: { currentUser: UserShort; children?: any }) => {
         if (!cachedMessenger) {
             let platform = 'web ' + location.hostname;
             cachedMessenger = new MessengerEngine(client, props.currentUser, platform, {
-                conversationBatchSize: 30
+                conversationBatchSize: 30,
             });
         }
         return (

@@ -33,20 +33,19 @@ const MessageComponentInner = (
                 messagesContext={props.messagesContextProps}
             />
             <XWithRole role={['feature-non-production']}>
-                {props.isChannel &&
-                    !props.message.isService && (
-                        <XView width={150}>
-                            <XButton
-                                text={
-                                    !props.message.commentsCount
-                                        ? `Discuss`
-                                        : `${props.message.commentsCount} Comments`
-                                }
-                                size="default"
-                                query={{ field: 'comments', value: props.message.id }}
-                            />
-                        </XView>
-                    )}
+                {props.isChannel && !props.message.isService && (
+                    <XView width={150}>
+                        <XButton
+                            text={
+                                !props.message.commentsCount
+                                    ? `Discuss`
+                                    : `${props.message.commentsCount} Comments`
+                            }
+                            size="default"
+                            query={{ field: 'comments', value: props.message.id }}
+                        />
+                    </XView>
+                )}
             </XWithRole>
         </>
     );

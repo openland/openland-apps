@@ -93,7 +93,7 @@ css.global('.ReactModal__Overlay', {
 
 css.global('.ReactModal__Overlay--after-open', {
     opacity: 1,
-    transition: 'none'
+    transition: 'none',
     // transition: 'opacity 300ms',
 });
 

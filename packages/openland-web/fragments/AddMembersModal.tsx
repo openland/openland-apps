@@ -205,9 +205,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                 marginLeft={12}
                             >
                                 {copied ? <CheckIcon /> : <CopiedIcon />}
-                                <XView marginLeft={10}>
-                                    {copied ? 'Copied' : 'Copy'}
-                                </XView>
+                                <XView marginLeft={10}>{copied ? 'Copied' : 'Copy'}</XView>
                             </XView>
                         </XView>
                         <XView

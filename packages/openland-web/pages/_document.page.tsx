@@ -71,7 +71,7 @@ const MetaTags = ({
 export default class OpenlandDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
         const page = props.renderPage();
-        const styles = renderStaticOptimized(() => page.html  || '');
+        const styles = renderStaticOptimized(() => page.html || '');
 
         let inviteKey;
         let metaTagsInfo;
@@ -220,7 +220,11 @@ export default class OpenlandDocument extends Document {
                         content="/static/img/favicon/ms-icon-144x144.png?v=2"
                     />
 
-                    <MetaTags {...((this.props as any).metaTagsInfo ? (this.props as any).metaTagsInfo : {})} />
+                    <MetaTags
+                        {...((this.props as any).metaTagsInfo
+                            ? (this.props as any).metaTagsInfo
+                            : {})}
+                    />
 
                     <link
                         rel="stylesheet"
@@ -237,7 +241,10 @@ export default class OpenlandDocument extends Document {
                     {/* Config */}
                     <script
                         dangerouslySetInnerHTML={{
-                            __html: "window.GLAMOR_IDS='" + JSON.stringify((this.props as any).ids) + "'",
+                            __html:
+                                "window.GLAMOR_IDS='" +
+                                JSON.stringify((this.props as any).ids) +
+                                "'",
                         }}
                     />
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />

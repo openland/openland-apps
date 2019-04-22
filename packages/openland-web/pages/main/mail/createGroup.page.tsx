@@ -409,50 +409,48 @@ const OrganizationsList = (props: {
                 Share with
             </XView>
             <div className={SelectOrganizationWrapperClassName}>
-                {inOrgId &&
-                    selectedOrg && (
-                        <OrganizationItem
-                            organization={selectedOrg}
-                            onSelect={props.onSelect}
-                            isSelected={
-                                props.selectedOrg
-                                    ? props.selectedOrg === inOrgId
-                                    : primaryOrganizationId === inOrgId
-                            }
-                        />
-                    )}
-                {!inOrgId &&
-                    primaryOrg && (
-                        <OrganizationItem
-                            organization={primaryOrg}
-                            onSelect={props.onSelect}
-                            isSelected={
-                                props.selectedOrg
-                                    ? props.selectedOrg === primaryOrganizationId
-                                    : true
-                            }
-                        />
-                    )}
-                {orgs.myOrganizations.sort((a, b) => a.name.localeCompare(b.name)).map(i => {
-                    if (inOrgId && i.id === inOrgId) {
-                        return;
-                    }
-                    if (primaryOrganizationId === i.id && !inOrgId) {
-                        return;
-                    }
-                    return (
-                        <OrganizationItem
-                            organization={i}
-                            key={'org_' + i.id}
-                            onSelect={props.onSelect}
-                            isSelected={
-                                props.selectedOrg
-                                    ? props.selectedOrg === i.id
-                                    : primaryOrganizationId === i.id
-                            }
-                        />
-                    );
-                })}
+                {inOrgId && selectedOrg && (
+                    <OrganizationItem
+                        organization={selectedOrg}
+                        onSelect={props.onSelect}
+                        isSelected={
+                            props.selectedOrg
+                                ? props.selectedOrg === inOrgId
+                                : primaryOrganizationId === inOrgId
+                        }
+                    />
+                )}
+                {!inOrgId && primaryOrg && (
+                    <OrganizationItem
+                        organization={primaryOrg}
+                        onSelect={props.onSelect}
+                        isSelected={
+                            props.selectedOrg ? props.selectedOrg === primaryOrganizationId : true
+                        }
+                    />
+                )}
+                {orgs.myOrganizations
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map(i => {
+                        if (inOrgId && i.id === inOrgId) {
+                            return;
+                        }
+                        if (primaryOrganizationId === i.id && !inOrgId) {
+                            return;
+                        }
+                        return (
+                            <OrganizationItem
+                                organization={i}
+                                key={'org_' + i.id}
+                                onSelect={props.onSelect}
+                                isSelected={
+                                    props.selectedOrg
+                                        ? props.selectedOrg === i.id
+                                        : primaryOrganizationId === i.id
+                                }
+                            />
+                        );
+                    })}
             </div>
         </XView>
     );

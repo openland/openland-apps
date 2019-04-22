@@ -3,7 +3,7 @@ const path = require('path');
 const withTypescript = require('@zeit/next-typescript');
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const withCSS = require('@zeit/next-css');
-const withWorkers = require('@zeit/next-workers')
+const withWorkers = require('@zeit/next-workers');
 
 const config = {
     pageExtensions: ['page.ts', 'page.tsx'],
@@ -30,12 +30,7 @@ const config = {
         config.module.noParse = [/(mapbox-gl)\.js$/, /(jquery)\.js$/];
 
         // Typescript
-        const {
-            dir,
-            defaultLoaders,
-            dev,
-            isServer
-        } = options;
+        const { dir, defaultLoaders, dev, isServer } = options;
 
         // Ask babel to handle typescript files
         // Modules are not loading by default since root folder is out of scope
@@ -56,10 +51,10 @@ const config = {
             options: {
                 name: 'static/[hash].worker.js',
                 publicPath: '/_next/',
-            }
-        })
+            },
+        });
 
-        config.output.globalObject = `(typeof self !== 'undefined' ? self : this)`
+        config.output.globalObject = `(typeof self !== 'undefined' ? self : this)`;
 
         config.module.rules.push({
             test: /\.(ts|tsx)$/,
@@ -236,31 +231,31 @@ const config = {
                     name: 'vendor',
                     chunks: 'all',
                 }),
-                (config.optimization.splitChunks.cacheGroups.moment = {
-                    test: /\/node_modules\/moment/,
-                    name: 'vendor',
-                    chunks: 'all',
-                }),
-                (config.optimization.splitChunks.cacheGroups.momenttx = {
-                    test: /\/node_modules\/moment-timezones/,
-                    name: 'vendor',
-                    chunks: 'all',
-                }),
-                (config.optimization.splitChunks.cacheGroups.emoji1 = {
-                    test: /\/node_modules\/emojione/,
-                    name: 'vendor',
-                    chunks: 'all',
-                }),
-                (config.optimization.splitChunks.cacheGroups.emoji1react = {
-                    test: /\/node_modules\/react-emojione/,
-                    name: 'vendor',
-                    chunks: 'all',
-                }),
-                (config.optimization.splitChunks.cacheGroups.draft = {
-                    test: /\/node_modules\/draft-js/,
-                    name: 'vendor',
-                    chunks: 'all',
-                });
+                    (config.optimization.splitChunks.cacheGroups.moment = {
+                        test: /\/node_modules\/moment/,
+                        name: 'vendor',
+                        chunks: 'all',
+                    }),
+                    (config.optimization.splitChunks.cacheGroups.momenttx = {
+                        test: /\/node_modules\/moment-timezones/,
+                        name: 'vendor',
+                        chunks: 'all',
+                    }),
+                    (config.optimization.splitChunks.cacheGroups.emoji1 = {
+                        test: /\/node_modules\/emojione/,
+                        name: 'vendor',
+                        chunks: 'all',
+                    }),
+                    (config.optimization.splitChunks.cacheGroups.emoji1react = {
+                        test: /\/node_modules\/react-emojione/,
+                        name: 'vendor',
+                        chunks: 'all',
+                    }),
+                    (config.optimization.splitChunks.cacheGroups.draft = {
+                        test: /\/node_modules\/draft-js/,
+                        name: 'vendor',
+                        chunks: 'all',
+                    });
             }
         }
 

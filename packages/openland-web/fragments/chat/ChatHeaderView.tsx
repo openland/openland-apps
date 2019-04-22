@@ -149,8 +149,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const userContext = React.useContext(UserInfoContext);
     const myId = userContext!!.user!!.id!!;
 
-    let sharedRoom =
-        room.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
+    let sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
     let privateRoom =
         room.__typename === 'PrivateRoom' ? (room as RoomHeader_room_PrivateRoom) : null;
 

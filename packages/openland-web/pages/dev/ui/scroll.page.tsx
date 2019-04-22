@@ -32,30 +32,44 @@ const ResizableScroll = () => {
     let [height, setHeight] = React.useState(200);
     let childrens: any[] = [];
     for (let i = count2; i > 0; i--) {
-        childrens.push(<XView key={'keyb-' + i} backgroundColor={['yellow', 'green', 'brown'][i % 3]} width={100} height={100} flexShrink={0} />);
+        childrens.push(
+            <XView
+                key={'keyb-' + i}
+                backgroundColor={['yellow', 'green', 'brown'][i % 3]}
+                width={100}
+                height={100}
+                flexShrink={0}
+            />,
+        );
     }
     for (let i = 0; i < count; i++) {
-        childrens.push(<XView key={'keya-' + i} backgroundColor={['red', 'blue', 'magenta'][i % 3]} width={100} height={100} flexShrink={0} />);
+        childrens.push(
+            <XView
+                key={'keya-' + i}
+                backgroundColor={['red', 'blue', 'magenta'][i % 3]}
+                width={100}
+                height={100}
+                flexShrink={0}
+            />,
+        );
     }
     return (
         <XView flexDirection="row" backgroundColor="grey">
             <XView flexDirection="column">
-                <XButton onClick={() => setCount((v) => v + 1)} text="add" />
-                <XButton onClick={() => setCount((v) => v - 1)} text="remove" />
+                <XButton onClick={() => setCount(v => v + 1)} text="add" />
+                <XButton onClick={() => setCount(v => v - 1)} text="remove" />
 
-                <XButton onClick={() => setCount2((v) => v + 1)} text="add2" />
-                <XButton onClick={() => setCount2((v) => v - 1)} text="remove2" />
+                <XButton onClick={() => setCount2(v => v + 1)} text="add2" />
+                <XButton onClick={() => setCount2(v => v - 1)} text="remove2" />
 
-                <XButton onClick={() => setHeight((v) => v + 50)} text="increase" />
-                <XButton onClick={() => setHeight((v) => v - 50)} text="decrease" />
+                <XButton onClick={() => setHeight(v => v + 50)} text="increase" />
+                <XButton onClick={() => setHeight(v => v - 50)} text="decrease" />
             </XView>
             <XView flexDirection="column" width={200} height={height}>
-                <XScrollViewReverse2>
-                    {childrens}
-                </XScrollViewReverse2>
+                <XScrollViewReverse2>{childrens}</XScrollViewReverse2>
             </XView>
         </XView>
-    )
+    );
 };
 
 export default withApp('UI Framework - Scroll', 'viewer', props => {

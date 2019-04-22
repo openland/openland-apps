@@ -207,17 +207,17 @@ export const DirectoryNavigation = XMemo(
                                     {children ? (
                                         children
                                     ) : (
-                                            <SearchCardsOrShowProfile
-                                                id={id}
-                                                ProfileComponent={ProfileComponent}
-                                                CardsComponent={CardsComponent}
-                                                searchPlaceholder={searchPlaceholder || ''}
-                                                noQueryText={noQueryText || ''}
-                                                hasQueryText={hasQueryText || ''}
-                                                withoutFeatured={withoutFeatured}
-                                                page={page}
-                                            />
-                                        )}
+                                        <SearchCardsOrShowProfile
+                                            id={id}
+                                            ProfileComponent={ProfileComponent}
+                                            CardsComponent={CardsComponent}
+                                            searchPlaceholder={searchPlaceholder || ''}
+                                            noQueryText={noQueryText || ''}
+                                            hasQueryText={hasQueryText || ''}
+                                            withoutFeatured={withoutFeatured}
+                                            page={page}
+                                        />
+                                    )}
                                 </React.Suspense>
                             </XView>
                         </XScrollView3>
@@ -252,27 +252,27 @@ export const ComponentWithSort = ({
     customMenu: any;
     CustomButtonComponent: any;
 }) => {
-        return (
-            <React.Suspense
-                fallback={
-                    <XView flexGrow={1} flexShrink={0}>
-                        <XLoader loading={true} />
-                    </XView>
-                }
-            >
-                <Component
-                    tagsCount={tagsCount}
-                    variables={{
-                        ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
-                        sort: JSON.stringify([
-                            ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
-                            { [orderBy]: { order: 'desc' } },
-                        ]),
-                        ...(variables.page ? { page: variables.page } : {}),
-                    }}
-                    customMenu={customMenu}
-                    CustomButtonComponent={CustomButtonComponent}
-                />
-            </React.Suspense>
-        );
-    };
+    return (
+        <React.Suspense
+            fallback={
+                <XView flexGrow={1} flexShrink={0}>
+                    <XLoader loading={true} />
+                </XView>
+            }
+        >
+            <Component
+                tagsCount={tagsCount}
+                variables={{
+                    ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
+                    sort: JSON.stringify([
+                        ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
+                        { [orderBy]: { order: 'desc' } },
+                    ]),
+                    ...(variables.page ? { page: variables.page } : {}),
+                }}
+                customMenu={customMenu}
+                CustomButtonComponent={CustomButtonComponent}
+            />
+        </React.Suspense>
+    );
+};

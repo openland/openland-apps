@@ -94,10 +94,7 @@ export const AttachmentButtons = ({ enabled }: { enabled?: boolean }) => {
                 <FileIcon />
                 <span>Document</span>
             </AttachmentButton>
-            <AttachmentButton
-                className="shortcuts-button"
-                onClick={showShortcutsHelp}
-            >
+            <AttachmentButton className="shortcuts-button" onClick={showShortcutsHelp}>
                 <ShortcutsIcon />
                 <span>Shortcuts</span>
             </AttachmentButton>

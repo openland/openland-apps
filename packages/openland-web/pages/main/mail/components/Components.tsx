@@ -238,24 +238,21 @@ export const ConversationContainerWrapper = ({
                 {tab === tabs.rooms && <RoomsExploreComponent />}
                 {tab === tabs.roomInvite && <RoomInviteFromLink />}
                 {tab === tabs.organizationInvite && <OrganizationInviteFromLink />}
-                {tab === tabs.organization &&
-                    oid && (
-                        <OrganizationProfileContainer>
-                            <OrganizationProfile organizationId={oid} />
-                        </OrganizationProfileContainer>
-                    )}
-                {tab === tabs.user &&
-                    uid && (
-                        <OrganizationProfileContainer>
-                            <UserProfile userId={uid} />
-                        </OrganizationProfileContainer>
-                    )}
-                {tab === tabs.roomProfile &&
-                    cid && (
-                        <OrganizationProfileContainer>
-                            <RoomProfile conversationId={cid} />
-                        </OrganizationProfileContainer>
-                    )}
+                {tab === tabs.organization && oid && (
+                    <OrganizationProfileContainer>
+                        <OrganizationProfile organizationId={oid} />
+                    </OrganizationProfileContainer>
+                )}
+                {tab === tabs.user && uid && (
+                    <OrganizationProfileContainer>
+                        <UserProfile userId={uid} />
+                    </OrganizationProfileContainer>
+                )}
+                {tab === tabs.roomProfile && cid && (
+                    <OrganizationProfileContainer>
+                        <RoomProfile conversationId={cid} />
+                    </OrganizationProfileContainer>
+                )}
             </ConversationContainerInner>
         </>
     );

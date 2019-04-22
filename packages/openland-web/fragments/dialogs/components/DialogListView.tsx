@@ -36,7 +36,9 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     console.log('render DialogListView');
     const ref = React.createRef<XInput>();
     let messenger = React.useContext(MessengerContext);
-    let dataSource = React.useMemo(() => dialogListWebDataSource(messenger.dialogList.dataSource), [messenger]);
+    let dataSource = React.useMemo(() => dialogListWebDataSource(messenger.dialogList.dataSource), [
+        messenger,
+    ]);
     let [query, setQuery] = React.useState('');
     let isSearching = query.trim().length > 0;
     let router = React.useContext(XViewRouterContext);
@@ -64,18 +66,21 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         };
     }, []);
 
-    const renderDialog = React.useMemo(() => {
-        return (item: DialogListWebItem) => {
-            let selected = false;
-            if (
-                conversationId &&
-                (conversationId === item.key || conversationId === item.flexibleId)
-            ) {
-                selected = true;
-            }
-            return <DialogView item={item} selected={selected} />;
-        };
-    }, [props.onDialogClick, conversationId]);
+    const renderDialog = React.useMemo(
+        () => {
+            return (item: DialogListWebItem) => {
+                let selected = false;
+                if (
+                    conversationId &&
+                    (conversationId === item.key || conversationId === item.flexibleId)
+                ) {
+                    selected = true;
+                }
+                return <DialogView item={item} selected={selected} />;
+            };
+        },
+        [props.onDialogClick, conversationId],
+    );
 
     const getCurrentConversationId = () => {
         return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
@@ -142,12 +147,10 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                 <XView flexGrow={1} flexBasis={0} minHeight={0}>
                     {isSearching && (
                         <div className={dialogSearchWrapperClassName}>
-
                             <DialogSearchResults
                                 variables={{ query: query }}
                                 onClick={() => setQuery('')}
                             />
-
                         </div>
                     )}
                     {canUseDOM && !isSearching && (

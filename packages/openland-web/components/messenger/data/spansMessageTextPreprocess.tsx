@@ -53,6 +53,6 @@ export const spansMessageTextPreprocess = (text: string, opts?: { disableBig?: b
         isBig,
         isInsane,
         isRotating,
-        isOnlyEmoji
+        isOnlyEmoji,
     };
 };
