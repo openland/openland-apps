@@ -7,7 +7,7 @@ export interface XFileUploadRenderProps {
     doClear: () => void;
     isLoading: boolean;
     progress: number;
-    file: UploadedFile | null;
+    value?: UploadedFile | null;
 }
 
 export interface XImageCrop {
@@ -18,11 +18,11 @@ export interface XImageCrop {
 }
 
 export interface XFileUploadProps {
-    dataTestId?: string,
+    dataTestId?: string;
     component: React.ComponentType<XFileUploadRenderProps>;
     cropParams?: string;
 
-    file?: UploadedFile | null;
+    value?: UploadedFile | null;
     onChange?: (file: UploadedFile | null) => void;
 
     initialUrl?: string | null;
@@ -40,17 +40,24 @@ export interface UploadedFile {
     size: string | null;
 }
 
-export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: boolean, progress: number, file: UploadedFile | null | undefined }> {
+export class XFileUpload extends React.Component<
+    XFileUploadProps,
+    { isLoading: boolean; progress: number; value: UploadedFile | null | undefined }
+> {
     private isControlled: boolean = false;
 
     constructor(props: XFileUploadProps) {
         super(props);
-        this.isControlled = props.file !== undefined;
-        this.state = { isLoading: false, file: this.props.file, progress: 0 };
+        this.isControlled = props.value !== undefined;
+        this.state = { isLoading: false, value: this.props.value, progress: 0 };
     }
 
-    componentWillUpdate(nextProps: Readonly<XFileUploadProps>, nextState: Readonly<{ isLoading: boolean; file: UploadedFile | null | undefined }>, nextContext: any): void {
-        if ((nextProps.file !== undefined) !== (this.props.file !== undefined)) {
+    componentWillUpdate(
+        nextProps: Readonly<XFileUploadProps>,
+        nextState: Readonly<{ isLoading: boolean; value: UploadedFile | null | undefined }>,
+        nextContext: any,
+    ): void {
+        if ((nextProps.value !== undefined) !== (this.props.value !== undefined)) {
             throw 'You can\'t make controlled component to be not controlled';
         }
     }
@@ -63,14 +70,21 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
     }
 
     doUpload = () => {
-        let file = this.state.file;
+        let file = this.state.value;
         if (this.isControlled) {
-            file = this.props.file;
+            file = this.props.value;
         }
         let uploaded = file
             ? UploadCare.fileFrom(
-                'uploaded',
-                file.crop ? 'https://ucarecdn.com/' + file.uuid + `/-/crop/${file.crop.width}x${file.crop.height}/${file.crop.left},${file.crop.top}/` : file.uuid)
+                  'uploaded',
+                  file.crop
+                      ? 'https://ucarecdn.com/' +
+                        file.uuid +
+                        `/-/crop/${file.crop.width}x${file.crop.height}/${file.crop.left},${
+                            file.crop.top
+                        }/`
+                      : file.uuid,
+              )
             : null;
         let dialog = UploadCare.openDialog(uploaded, {
             publicKey: 'b70227616b5eac21ba88',
@@ -78,30 +92,30 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
             crop: this.props.cropParams,
             imageShrink: '1024x1024',
         });
-        dialog.done((r) => {
+        dialog.done(r => {
             this.doStartUpload(r);
         });
-    }
+    };
 
     doStartUpload(file: UploadCare.File) {
         this.setState({ isLoading: true, progress: 0 });
-        file.progress((p) => {
+        file.progress(p => {
             this.setState({ progress: p.progress });
         });
-        file.done((f) => {
+        file.done(f => {
             let fileu: UploadedFile = {
                 isImage: f.isImage,
                 uuid: f.uuid,
                 crop: f.crop ? f.crop : null,
-                width: f.originalImageInfo && f.originalImageInfo.width || null,
-                height: f.originalImageInfo && f.originalImageInfo.height || null,
+                width: (f.originalImageInfo && f.originalImageInfo.width) || null,
+                height: (f.originalImageInfo && f.originalImageInfo.height) || null,
                 name: f.name,
-                size: f.size
+                size: f.size,
             };
             if (this.isControlled) {
                 this.setState({ isLoading: false, progress: 1 });
             } else {
-                this.setState({ isLoading: false, progress: 1, file: fileu });
+                this.setState({ isLoading: false, progress: 1, value: fileu });
             }
             if (this.props.onChange) {
                 this.props.onChange(fileu);
@@ -113,20 +127,20 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
         if (this.isControlled) {
             this.setState({ isLoading: false });
         } else {
-            this.setState({ isLoading: false, file: null });
+            this.setState({ isLoading: false, value: null });
         }
         if (this.props.onChange) {
             this.props.onChange(null);
         }
-    }
+    };
 
     render() {
-        let file = this.isControlled ? this.props.file : this.state.file;
+        let value = this.isControlled ? this.props.value : this.state.value;
         let Component = this.props.component;
         return (
             <Component
                 dataTestId={this.props.dataTestId}
-                file={file || null}
+                value={value || null}
                 isLoading={this.state.isLoading}
                 doClear={this.doClear}
                 doUpload={this.doUpload}

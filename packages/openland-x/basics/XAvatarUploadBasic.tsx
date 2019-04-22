@@ -13,8 +13,8 @@ import { styleResolver } from 'openland-x-utils/styleResolver';
 
 export interface XAvatarUploadBasicProps {
     placeholder?: { add: any; change: any };
-    value?: UploadedFile | null;
-    onChanged?: (file: UploadedFile | null) => void;
+    value: UploadedFile | null;
+    onChange?: (file: UploadedFile | null) => void;
     size?: 'small' | 'xSmall' | 'normal' | 'large' | 'default';
     initialUrl?: string | null;
     cropParams?: string;
@@ -141,8 +141,8 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
     }
 
     componentWillReceiveProps(nextProps: XFileUploadRenderProps) {
-        if (this.props.file !== nextProps.file) {
-            if (nextProps.file) {
+        if (this.props.value !== nextProps.value) {
+            if (nextProps.value) {
                 this.setState({ srcLoading: true });
             } else {
                 this.setState({ srcLoading: false });
@@ -155,17 +155,17 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
     };
     render() {
         let hasImage =
-            (this.props.file &&
-                this.props.file.uuid &&
-                this.props.file.uuid &&
-                !this.props.file.uuid.startsWith('ph://') &&
-                this.props.file.isImage) ||
+            (this.props.value &&
+                this.props.value.uuid &&
+                this.props.value.uuid &&
+                !this.props.value.uuid.startsWith('ph://') &&
+                this.props.value.isImage) ||
             false;
 
         let isFreeCrop =
-            this.props.file &&
-            this.props.file.crop &&
-            this.props.file.crop.height !== this.props.file.crop.width;
+            this.props.value &&
+            this.props.value.crop &&
+            this.props.value.crop.height !== this.props.value.crop.width;
 
         return (
             <DropAreaWrapper
@@ -178,16 +178,16 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
                 {hasImage && (
                     <AvatarImage
                         width={
-                            this.props.file && this.props.file.crop && isFreeCrop
-                                ? this.props.file.crop.width
+                            this.props.value && this.props.value.crop && isFreeCrop
+                                ? this.props.value.crop.width
                                 : AvatarImageSize[this.props.size || 'normal']
                         }
                         height={
-                            this.props.file && this.props.file.crop && isFreeCrop
-                                ? this.props.file.crop.height
+                            this.props.value && this.props.value.crop && isFreeCrop
+                                ? this.props.value.crop.height
                                 : AvatarImageSize[this.props.size || 'normal']
                         }
-                        srcCloud={prepareSrc(this.props.file!!.uuid, this.props.file!!.crop)}
+                        srcCloud={prepareSrc(this.props.value!!.uuid, this.props.value!!.crop)}
                         resize={'fill'}
                         onLoad={this.handleOnLoad}
                     />
