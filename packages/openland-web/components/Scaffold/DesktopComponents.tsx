@@ -411,7 +411,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
 
 const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization }) => {
     const client = useClient();
-    const myorgs = client.useWithoutLoaderMyOrganizations();
+    const myOrgs = client.useMyOrganizations();
     return (
         <XVertical>
             <UserPopper
@@ -420,8 +420,8 @@ const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization
                 id={user!!.id}
                 primaryOrganization={organization || undefined}
                 organizations={
-                    myorgs && myorgs.myOrganizations
-                        ? myorgs.myOrganizations
+                    myOrgs && myOrgs.myOrganizations
+                        ? myOrgs.myOrganizations
                         : undefined
                 }
             />
