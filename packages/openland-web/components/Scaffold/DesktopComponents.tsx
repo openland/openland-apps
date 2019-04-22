@@ -407,16 +407,17 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
     }
 }
 
-const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization }) => {
+const DesktopUserProfile = withUserInfo<{ onClick?: any }>(() => {
     const client = useClient();
     const myOrgs = client.useMyOrganizations();
+    const me = client.useAccount();
     return (
         <XVertical>
             <UserPopper
-                picture={user!!.photo}
-                name={user!!.name}
-                id={user!!.id}
-                primaryOrganization={organization || undefined}
+                picture={me.me!!.photo}
+                name={me.me!!.name}
+                id={me.me!!.id}
+                primaryOrganization={me.me!!.primaryOrganization || undefined}
                 organizations={
                     myOrgs && myOrgs.myOrganizations ? myOrgs.myOrganizations : undefined
                 }
