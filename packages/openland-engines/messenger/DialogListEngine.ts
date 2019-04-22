@@ -252,6 +252,7 @@ export class DialogListEngine {
                 await this._dataSourceStored.updateItem({
                     ...existing,
                     message,
+                    fallback: message,
                     attachments: event.message.attachments,
                 });
             }
