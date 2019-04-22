@@ -55,13 +55,13 @@ class RNGraphQLPersistenceLevelDB: RNGraphQLPersistenceEngine {
     try sync {
       // print("persist \(key)")
       // let start = getCurrentMillis()
+      cache[key] = CacheRecrod(value: value)
       if key == "SUBSCRIPTION_ROOT" {
         return
       }
       if key == "MUTATION_ROOT" {
         return
       }
-      cache[key] = CacheRecrod(value: value)
       swiftStore[key] = value
       // print("[LDB]: in \(getCurrentMillis() - start) ms")
     }
