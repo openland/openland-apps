@@ -1,14 +1,16 @@
 import { Platform } from 'react-native';
 
 export interface AppTheme {
+    headerColor: string;
     backgroundColor: string;
+    inputBackground: string;
     textColor: string;
     textLabelColor: string;
     separatorColor: string;
     selectorColor: string;
     arrowColor: string;
     androidIconColor: string;
-    
+
     blurType: 'dark' | 'light';
     keyboardAppearance: 'dark' | 'light';
     statusBar: 'dark-content' | 'light-content';
@@ -26,10 +28,21 @@ export interface AppTheme {
     dialogSenderColor: string;
     dialogMessageColor: string;
     dialogTypingColor: string;
+
+    textColorOut: string;
+    textSecondaryColor: string;
+    linkColor: string;
+    linkOutColor: string;
+    bubbleColorIn: string;
+    bubbleGradientOut: string[];
+
+    reactionBackground: string;
 }
 
 export const DefaultTheme: AppTheme = {
+    headerColor: 'white',
     backgroundColor: 'white',
+    inputBackground: '#f3f5f7',
     statusBar: 'dark-content',
     blurType: 'light',
     keyboardAppearance: 'light',
@@ -51,11 +64,23 @@ export const DefaultTheme: AppTheme = {
     dialogDateColor: '#aaaaaa',
     dialogSenderColor: '#181818',
     dialogMessageColor: Platform.OS === 'android' ? '#676767' : '#7b7b7b',
-    dialogTypingColor: '#0084fe'
+    dialogTypingColor: '#0084fe',
+
+    textColorOut: 'white',
+    textSecondaryColor: '#8a8a8f',
+    linkColor: '#0084fe',
+    linkOutColor: 'white',
+    bubbleColorIn: 'white',
+    bubbleGradientOut: ['#1970ff', '#11b2ff'],
+
+    reactionBackground: '#f3f5f7',
+
 }
 
 export const DarkTheme: AppTheme = {
+    headerColor: '#1a1a1a',
     backgroundColor: 'black',
+    inputBackground: 'black',
     statusBar: 'light-content',
     blurType: 'dark',
     keyboardAppearance: 'dark',
@@ -77,5 +102,14 @@ export const DarkTheme: AppTheme = {
     dialogDateColor: 'white',
     dialogSenderColor: 'white',
     dialogMessageColor: 'white',
-    dialogTypingColor: 'white'
+    dialogTypingColor: 'white',
+
+    textColorOut: 'white',
+    textSecondaryColor: '#808080',
+    linkColor: 'white',
+    linkOutColor: 'white',
+    bubbleColorIn: '#333333',
+    bubbleGradientOut: ['#4d4d4d', '#6d6d6d'],
+
+    reactionBackground: 'black',
 }

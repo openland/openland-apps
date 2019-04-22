@@ -15,6 +15,7 @@ import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { bubbleMaxWidth } from '../AsyncBubbleView';
 import { formatBytes } from 'openland-mobile/utils/formatBytes';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { AppTheme } from 'openland-mobile/themes/themes';
 interface DocumentContentProps {
     message: DataSourceMessageItem;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
@@ -22,6 +23,7 @@ interface DocumentContentProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     compensateBubble?: boolean;
+    theme: AppTheme;
 }
 export class DocumentContent extends React.PureComponent<DocumentContentProps, { downloadState?: DownloadState }> {
     private handlePress = () => {
@@ -67,7 +69,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
             big = big || (this.props.message.text.length <= 302 && this.props.message.text.startsWith(':') && this.props.message.text.endsWith(':'));
         }
 
-        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, this.props.message, this.props.onUserPress));
+        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, this.props.message, this.props.theme, this.props.onUserPress));
         if (this.props.message.title) {
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{this.props.message.title}</ASText>);

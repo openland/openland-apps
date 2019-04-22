@@ -164,7 +164,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                 if (hasClient()) {
                     let res = (await backoff(async () => await getClient().queryAccount()));
                     if (res && res.me) {
-                        NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0;
+                        NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
 
                         this.setState({ state: 'app' });
                     } else {
@@ -184,7 +184,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState) : undefined;
                         this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
                         if (res.me) {
-                            NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0;
+                            NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
 
                             let messenger = buildMessenger(getClient(), res.me, { store: new NativeKeyValue('engines') });
                             setMessenger(new MobileMessenger(messenger, this.history));

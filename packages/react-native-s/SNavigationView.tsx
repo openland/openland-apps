@@ -22,6 +22,7 @@ export interface SNavigationViewStyle {
     blurType: 'dark' | 'light';
     hairlineColor: string;
     keyboardAppearance: 'dark' | 'light';
+    headerColor: string;
 }
 
 export class SNavigationView extends React.PureComponent<SNavigationViewProps, { presented?: NavigationManager }> {
@@ -111,6 +112,7 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
             blurType: 'light',
             hairlineColor: '#e0e3e7',
             keyboardAppearance: 'light',
+            headerColor: 'white',
             ...this.props.navigationBarStyle
         };
 

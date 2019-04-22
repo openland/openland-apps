@@ -72,7 +72,6 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                 setInitialTime(new Date().getTime());
             } else if (callsState.startTime) {
                 setInitialTime(callsState.startTime);
-                console.warn('boom', callsState.startTime)
             }
             setStatus('connected');
             ReactNativeHapticFeedback.trigger('impactMedium', { ignoreAndroidSystemSettings: false });

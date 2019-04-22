@@ -14,6 +14,7 @@ import { bubbleMaxWidth, bubbleMaxWidthIncoming, AsyncBubbleView, contentInsetsH
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment, ModernMessageButtonStyle } from 'openland-api/Types';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 interface UrlAugmentationContentProps {
     message: DataSourceMessageItem;
@@ -25,6 +26,7 @@ interface UrlAugmentationContentProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     padded?: boolean;
+    theme: AppTheme;
 }
 
 export let isInvite = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {
@@ -90,11 +92,10 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
     }
 
     render() {
+        let theme = this.props.theme;
         let out = this.props.message.isOut;
         let link = this.props.attach!.titleLink || '';
         let { text, subTitle, keyboard } = this.props.attach;
-
-        let mainTextColor = this.props.message.isOut ? DefaultConversationTheme.textColorOut : DefaultConversationTheme.textColorIn;
 
         // prepare image
         let imgCompact = this.imageCompact;
@@ -120,7 +121,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
             <ASFlex flexDirection="column" alignItems="stretch" alignSelf={'stretch'}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && <ASText
                     maxWidth={maxWidth}
-                    color={out ? '#fff' : '#000'}
+                    color={out ? theme.textColorOut : theme.textColorOut}
                     opacity={out ? 0.7 : 0.6}
                     fontSize={14}
                     numberOfLines={1}
@@ -164,7 +165,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 {!!this.props.attach.titleLinkHostname && !imgCompact && <ASText
                     marginTop={5}
                     maxWidth={maxWidth}
-                    color={out ? '#fff' : '#000'}
+                    color={out ? theme.textColorOut : theme.textColor}
                     opacity={out ? 0.7 : 0.6}
                     fontSize={14}
                     numberOfLines={1}
@@ -194,7 +195,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
                         {!!this.props.attach.title && <ASText
                             maxWidth={maxWidth - 36}
-                            color={mainTextColor}
+                            color={theme.textColor}
                             letterSpacing={-0.3}
                             fontSize={14}
                             marginTop={Platform.OS === 'android' ? -4 : -1}
@@ -209,7 +210,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                         {!!subTitle && <ASText
                             marginTop={(Platform.OS === 'android' ? -4 : -1)}
                             maxWidth={maxWidth - 36}
-                            color={out ? '#fff' : '#000'}
+                            color={out ? theme.textColorOut : theme.textColor}
                             opacity={out ? 0.7 : 0.6}
                             fontSize={14}
                             numberOfLines={1}
@@ -224,7 +225,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
                 {!!text && <ASText
                     maxWidth={maxWidth}
-                    color={out ? '#fff' : '#000'}
+                    color={out ? theme.textColorOut : theme.textColor}
                     fontSize={14}
                     marginTop={this.imageCompact && imgLayout ? (subTitle ? 4 : -19) : 0}
                     marginBottom={4}
@@ -243,7 +244,6 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             <ASFlex
                                 marginTop={i !== 0 ? 4 : 0}
                                 key={'button-' + i + '-' + j}
-                                backgroundColor='#fff'
                                 borderRadius={8}
                                 marginLeft={j > 0 ? 4 : 0}
                                 marginRight={j < line.length - 1 ? 4 : 0}
@@ -257,7 +257,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             >
                                 <ASText
                                     textAlign='center'
-                                    color={'#0084fe'}
+                                    color={theme.linkColor}
                                     fontSize={14}
                                     fontWeight={TextStyles.weight.medium}
                                 >
