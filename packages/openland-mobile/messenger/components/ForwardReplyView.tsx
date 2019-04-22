@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, TextStyle, TouchableWithoutFeedback, Image, Platform } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Message_message } from 'openland-api/Types';
+import { formatMessage } from 'openland-engines/messenger/DialogListEngine';
 
 interface ForwardReplyViewProps {
     action?: 'forward' | 'reply';
@@ -15,7 +16,7 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
     const { messages, onClearPress, action } = props;
 
     const title = (messages.length === 1) ? (messages[0].sender.name) : ((action === 'reply') ? 'Reply messages' : 'Forward messages');
-    const text = (messages.length === 1) ? (messages[0].message || messages[0].fallback) : (messages.length + ' messages');
+    const text = (messages.length === 1) ? (formatMessage(messages[0])) : (messages.length + ' messages');
 
     return (
         <View marginLeft={Platform.OS === 'android' ? 12 : 48} paddingLeft={8} marginRight={Platform.OS === 'android' ? 12 : 52} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
