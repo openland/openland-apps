@@ -390,15 +390,15 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     // Actions
     let actions = (
         <XView width={83} marginLeft={12} alignSelf="flex-start">
-            {hover && (
-                <Menu
-                    message={props.message}
-                    hasComments={!!props.hasComments}
-                    isChannel={!!props.isChannel}
-                    isComment={!!props.isComment}
-                    isModal={!!props.isModal}
-                />
-            )}
+            {/* {hover && ( */}
+            <Menu
+                message={props.message}
+                hasComments={!!props.hasComments}
+                isChannel={!!props.isChannel}
+                isComment={!!props.isComment}
+                isModal={!!props.isModal}
+            />
+            {/* )} */}
         </XView>
     );
 

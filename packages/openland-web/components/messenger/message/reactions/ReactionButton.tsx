@@ -4,8 +4,13 @@ import { XPopper } from 'openland-x/XPopper';
 import { useClient } from 'openland-web/utils/useClient';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { ReactionItem } from './MessageReaction';
+import { MessageReactionType } from 'openland-api/Types';
 import { emojifyReactions } from './emojifyReactions';
+import { XView } from 'react-mental';
+import { css, cx } from 'linaria';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 10px',
@@ -136,23 +141,116 @@ class ReactionComponentInner extends React.PureComponent<{
 }
 
 type ReactionButtonT = {
+    reactions?: FullMessage_GeneralMessage_reactions[];
     onlyLikes?: boolean;
     messageId: string;
     marginTop?: number;
     marginLeft?: number;
 };
 
-export const ReactionButton = React.memo((props: ReactionButtonT) => {
-    let client = useClient();
+const likeClassName = css`
+    cursor: pointer;
+    & svg {
+        height: 13.5px;
+        width: 15.5px;
+    }
+
+    &:hover svg > path  {
+        fill: #e11616;
+        opacity: 1;
+    },
+`;
+
+const activeClassName = css`
+    & svg > path {
+        fill: #e11616;
+        opacity: 1;
+    }
+`;
+
+const LikeIcon = ({
+    isActive,
+    onClick,
+}: {
+    isActive: boolean;
+    onClick: (event: React.MouseEvent) => void;
+}) => {
     return (
-        <ReactionComponentInner
-            handler={it =>
-                client.mutateMessageSetReaction({ messageId: props.messageId, reaction: it })
-            }
-            onlyLikes={props.onlyLikes}
-            messageId={props.messageId}
-            marginTop={props.marginTop}
-            marginLeft={props.marginLeft}
-        />
+        <div onClick={onClick} className={cx(likeClassName, isActive && activeClassName)}>
+            <ReactionIcon />
+        </div>
     );
+};
+
+const CommentReactionButton = ({
+    id,
+    reactions,
+}: {
+    id: string;
+    reactions?: FullMessage_GeneralMessage_reactions[];
+}) => {
+    let client = useClient();
+    const userContext = React.useContext(UserInfoContext);
+    const myId = userContext!!.user!!.id!!;
+    const likeReaction = MessageReactionType.LIKE;
+
+    let isActive =
+        reactions &&
+        reactions.filter(
+            (userReaction: FullMessage_GeneralMessage_reactions) =>
+                userReaction.user.id === myId && userReaction.reaction === likeReaction,
+        ).length > 0;
+
+    let reactionsCount = reactions ? reactions.length : 0;
+    return (
+        <XView flexDirection="row" alignItems="center">
+            <XView alignItems="center">
+                <LikeIcon
+                    isActive={!!isActive}
+                    onClick={async () => {
+                        if (isActive) {
+                            client.mutateCommentUnsetReaction({
+                                commentId: id,
+                                reaction: likeReaction,
+                            });
+                        } else {
+                            client.mutateCommentSetReaction({
+                                commentId: id,
+                                reaction: likeReaction,
+                            });
+                        }
+                    }}
+                />
+            </XView>
+
+            <XView marginLeft={3} alignItems="center">
+                <XView fontSize={12} fontWeight={'600'} opacity={0.8}>
+                    {reactionsCount ? reactionsCount : null}
+                </XView>
+            </XView>
+        </XView>
+    );
+};
+
+export const ReactionButton = React.memo((props: ReactionButtonT) => {
+    return <CommentReactionButton id={props.messageId} reactions={props.reactions} />;
+
+    // return (
+    //     <ReactionComponentInner
+    //         handler={async it => {
+    //             await client.mutateCommentSetReaction({
+    //                 commentId: props.messageId,
+    //                 reaction: MessageReactionType.LIKE,
+    //             });
+    //             // await client.mutateMessageSetReaction({
+    //             //     messageId: props.messageId,
+    //             //     reaction: it,
+    //             // });
+    //         }}
+    //         onlyLikes={props.onlyLikes}
+    //         messageId={props.messageId}
+    //         marginTop={props.marginTop}
+    //         marginLeft={props.marginLeft}
+    //     />
+    // );
 });

@@ -7,6 +7,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import Glamorous from 'glamorous';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { MessagesStateContext } from '../../messenger/MessagesStateContext';
+import { XView } from 'react-mental';
 
 const IconButton = Glamorous.div({
     cursor: 'pointer',
@@ -78,25 +79,33 @@ export const Menu = ({
             <XHorizontal
                 alignItems="center"
                 alignSelf="flex-start"
-                justifyContent="flex-start"
+                justifyContent={isComment ? 'flex-end' : 'flex-start'}
                 width={83}
                 flexShrink={0}
                 separator={5}
                 className="menu-wrapper"
             >
-                <XHorizontal alignItems="center" separator={8}>
-                    {!hasComments && <ReactionButton messageId={message.id!} />}
-                    {!isChannel && (
-                        <IconButton onClick={setReplyMessages}>
-                            <ReplyIcon />
-                        </IconButton>
-                    )}
-                    {!isComment && out && message.text && (
-                        <IconButton onClick={setEditMessage}>
-                            <EditIcon />
-                        </IconButton>
-                    )}
-                </XHorizontal>
+                <XView paddingTop={isComment ? 24 : 0}>
+                    <XHorizontal alignItems="center" separator={8}>
+                        {!hasComments && (
+                            <ReactionButton
+                                messageId={message.id!}
+                                onlyLikes={isComment}
+                                reactions={message.reactions}
+                            />
+                        )}
+                        {!isChannel && (
+                            <IconButton onClick={setReplyMessages}>
+                                <ReplyIcon />
+                            </IconButton>
+                        )}
+                        {!isComment && out && message.text && (
+                            <IconButton onClick={setEditMessage}>
+                                <EditIcon />
+                            </IconButton>
+                        )}
+                    </XHorizontal>
+                </XView>
             </XHorizontal>
         );
     } else {

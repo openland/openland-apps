@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 import { DumpSendMessage } from 'openland-web/fragments/MessageComposeComponent/DumpSendMessage';
 import { DesktopSendMessage } from 'openland-web/fragments/MessageComposeComponent/SendMessage/DesktopSendMessage';
@@ -11,7 +10,6 @@ import {
     RoomMembers_members,
     CommentWatch_event_CommentUpdateSingle_update,
     FullMessage,
-    MentionInput,
     FileAttachmentInput,
 } from 'openland-api/Types';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
