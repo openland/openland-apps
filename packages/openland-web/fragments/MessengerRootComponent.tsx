@@ -290,13 +290,14 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
         return (
             <XView flexDirection="column" flexGrow={1} flexShrink={1}>
-                {this.props.pinMessage && (
-                    <PinMessageComponent
-                        pinMessage={this.props.pinMessage}
-                        chatId={this.props.conversationId}
-                        room={this.props.room}
-                    />
-                )}
+                {this.props.pinMessage &&
+                    !this.state.loading && (
+                        <PinMessageComponent
+                            pinMessage={this.props.pinMessage}
+                            chatId={this.props.conversationId}
+                            room={this.props.room}
+                        />
+                    )}
                 <ConversationMessagesComponent
                     isChannel={isChannel}
                     isActive={this.props.isActive}

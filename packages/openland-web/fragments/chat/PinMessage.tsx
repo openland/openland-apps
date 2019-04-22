@@ -343,7 +343,7 @@ const ForwardIconClassName = css`
     }
 `;
 
-export const PinMessageComponent = React.memo((props: PinMessageComponentProps) => {
+export const PinMessageComponent = (props: PinMessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
     const { pinMessage, chatId, room } = props;
     const { attachments, sender } = pinMessage;
@@ -470,4 +470,4 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
             <XView height={1} width="100%" flexShrink={0} backgroundColor="#ececec" />
         </XView>
     );
-});
+};
