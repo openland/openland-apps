@@ -35,13 +35,14 @@ class RNGraphQLPersistenceLevelDB: RNGraphQLPersistenceEngine {
         } else {
           if k == "MUTATION_ROOT" || k == "SUBSCRIPTION_ROOT" || k.hasPrefix("SUBSCRIPTION_ROOT.") || k.hasPrefix("MUTATION_ROOT.") {
             cache[k] = CacheRecrod(value: nil)
-          }
-          if let v = swiftStore[k] {
-            if !v.isEmpty {
-              res.append(RNGraphQLPersistenceRecord(key: k, value: v))
-              cache[k] = CacheRecrod(value: v)
-            } else {
-              cache[k] = CacheRecrod(value: nil)
+          } else {
+            if let v = swiftStore[k] {
+              if !v.isEmpty {
+                res.append(RNGraphQLPersistenceRecord(key: k, value: v))
+                cache[k] = CacheRecrod(value: v)
+              } else {
+                cache[k] = CacheRecrod(value: nil)
+              }
             }
           }
         }
