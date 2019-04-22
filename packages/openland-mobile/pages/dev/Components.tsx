@@ -20,7 +20,7 @@ class ComponentsComponent extends React.PureComponent<PageProps> {
                             <ZListItem text="List Item 4" toggle={true} toggleDisabled={true} onToggle={() => { /**/ }} />
                             <ZListItem text="List Item 5" toggle={false} toggleDisabled={true} onToggle={() => { /**/ }} />
                             <ZListItem text="List Item 6" path="DevTypography" />
-                            <ZListItem text="Modal" onPress={() => showSheetModal(() => <View><Text>{123}</Text></View>, true)} />
+                            <ZListItem text="Modal" onPress={() => showSheetModal(() => <View><Text>{123}</Text></View>, false)} />
                         </ZListItemGroup>
                     </View>
                 </SafeAreaView>
