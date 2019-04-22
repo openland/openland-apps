@@ -261,12 +261,11 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {out &&
-                            message.text && (
-                                <IconButton onClick={this.setEditMessage}>
-                                    <EditIcon />
-                                </IconButton>
-                            )}
+                        {out && message.text && (
+                            <IconButton onClick={this.setEditMessage}>
+                                <EditIcon />
+                            </IconButton>
+                        )}
                     </XHorizontal>
                 </XHorizontal>
             );

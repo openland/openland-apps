@@ -319,8 +319,9 @@ export default withApp('Super Organization', 'super-admin', () => {
                         <RemoveMemberForm accountId={accountId} />
                     </>
                 )}
-                {!actionsButton &&
-                    superAccount.state !== 'DELETED' && <ActivateButton accountId={accountId} />}
+                {!actionsButton && superAccount.state !== 'DELETED' && (
+                    <ActivateButton accountId={accountId} />
+                )}
                 {actionsButton && <SuspendButton accountId={accountId} />}
                 {actionsButton && <PendButton accountId={accountId} />}
                 {actionsButton && <DeleteButton accountId={accountId} orgId={superAccount.orgId} />}

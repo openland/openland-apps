@@ -86,8 +86,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{dialog.senderEmojify}: </>
     ) : (
-                    ''
-                );
+        ''
+    );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
 
@@ -240,17 +240,15 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                 active
                                                     ? channelIconActiveClass
                                                     : dialog.kind === 'GROUP' && highlightSecretChat
-                                                        ? channelSecretIconClass
-                                                        : channelIconClass
+                                                    ? channelSecretIconClass
+                                                    : channelIconClass
                                             }
                                         />
                                     </XView>
                                 )}
                             </XViewSelectedContext.Consumer>
                         )}
-                        <span>
-                            {dialog.titleEmojify}
-                        </span>
+                        <span>{dialog.titleEmojify}</span>
                     </XView>
                     {dialog.date && (
                         <XView

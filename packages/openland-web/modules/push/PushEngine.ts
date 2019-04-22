@@ -100,8 +100,8 @@ export class PushEngine {
                     //
 
                     log.log('Downloading push settings...');
-                    let settings = await backoff(async () =>
-                        await this.client.queryFetchPushSettings(),
+                    let settings = await backoff(
+                        async () => await this.client.queryFetchPushSettings(),
                     );
                     let key = settings.pushSettings.webPushKey as string | null;
                     if (key) {
@@ -194,7 +194,7 @@ export class PushEngine {
         log.log(subscription);
         await backoff(
             async () =>
-                await this.client.mutateRegisterWebPush({ endpoint: JSON.stringify(subscription) })
+                await this.client.mutateRegisterWebPush({ endpoint: JSON.stringify(subscription) }),
         );
         log.log('Push registered successfully.');
     }

@@ -55,6 +55,6 @@ export const AppJoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                     </MessagePageContent>
                 )}
             </MessagePage>
-            </AuthRouter>
+        </AuthRouter>
     );
 };

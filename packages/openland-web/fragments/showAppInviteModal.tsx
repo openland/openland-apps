@@ -97,8 +97,8 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                 {copied ? (
                                     <CheckIcon />
                                 ) : (
-                                        <CopiedIcon className={CopyIconClassName} />
-                                    )}
+                                    <CopiedIcon className={CopyIconClassName} />
+                                )}
                                 <XView marginLeft={10}>{copied ? 'Copied' : 'Copy'}</XView>
                             </XView>
                         </XView>
@@ -130,11 +130,16 @@ const OwnerLinkOrganization = () => {
 };
 
 export function showAppInviteModal() {
-    showModalBox({ title: 'Invite people to Openland' }, (ctx) => {
+    showModalBox({ title: 'Invite people to Openland' }, ctx => {
         return (
-            <XView width={575} paddingHorizontal={XModalBoxStyles.contentPadding} paddingBottom={24} paddingTop={6}>
+            <XView
+                width={575}
+                paddingHorizontal={XModalBoxStyles.contentPadding}
+                paddingBottom={24}
+                paddingTop={6}
+            >
                 <OwnerLinkOrganization />
             </XView>
-        )
+        );
     });
 }

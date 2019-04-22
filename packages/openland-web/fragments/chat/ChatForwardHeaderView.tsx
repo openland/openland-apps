@@ -78,7 +78,8 @@ export const ChatForwardHeaderView = (props: {
     const selectedMessageArr = Array.from(selectedMessages);
 
     const youPinMessage = selectedMessageArr[0];
-    const canPinThisMessage = !props.privateRoom && selectedMessages.size === 1 && !youPinMessage.isService;
+    const canPinThisMessage =
+        !props.privateRoom && selectedMessages.size === 1 && !youPinMessage.isService;
     let pinMessageAccess = canPinThisMessage && props.canMePinMessage;
 
     const { forwardMessagesId, resetAll } = state;
@@ -116,11 +117,11 @@ export const ChatForwardHeaderView = (props: {
                         {!Array.from(state.selectedMessages).find(
                             msg => msg.sender.id !== props.me.id,
                         ) && (
-                                <DeleteMessagesFrom
-                                    messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
-                                    onDelete={resetAll}
-                                />
-                            )}
+                            <DeleteMessagesFrom
+                                messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
+                                onDelete={resetAll}
+                            />
+                        )}
                     </XWithRole>
                     {pinMessageAccess && (
                         <PinMessageButton
@@ -131,13 +132,19 @@ export const ChatForwardHeaderView = (props: {
                             onSuccess={state.resetAll}
                         />
                     )}
-                    {!props.isChannel && <XButton
-                        text="Reply"
-                        style="primary"
-                        onClick={() =>
-                            state.setReplyMessages(state.forwardMessagesId, new Set(), new Set())
-                        }
-                    />}
+                    {!props.isChannel && (
+                        <XButton
+                            text="Reply"
+                            style="primary"
+                            onClick={() =>
+                                state.setReplyMessages(
+                                    state.forwardMessagesId,
+                                    new Set(),
+                                    new Set(),
+                                )
+                            }
+                        />
+                    )}
                     <XButton
                         text="Forward"
                         style="primary"

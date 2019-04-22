@@ -290,14 +290,13 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
         return (
             <XView flexDirection="column" flexGrow={1} flexShrink={1}>
-                {this.props.pinMessage &&
-                    !this.state.loading && (
-                        <PinMessageComponent
-                            pinMessage={this.props.pinMessage}
-                            chatId={this.props.conversationId}
-                            room={this.props.room}
-                        />
-                    )}
+                {this.props.pinMessage && !this.state.loading && (
+                    <PinMessageComponent
+                        pinMessage={this.props.pinMessage}
+                        chatId={this.props.conversationId}
+                        room={this.props.room}
+                    />
+                )}
                 <ConversationMessagesComponent
                     isChannel={isChannel}
                     isActive={this.props.isActive}
@@ -312,27 +311,26 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     inputShower={this.handleShowIput}
                 />
 
-                {!this.state.hideInput &&
-                    this.conversation.canSendMessage && (
-                        <UploadContextProvider>
-                            <MessageComposeHandler
-                                isActive={this.props.isActive}
-                                getMessages={this.getMessages}
-                                conversation={this.conversation}
-                                onChange={this.handleChange}
-                                onSend={this.handleSend}
-                                onSendFile={this.handleSendFile}
-                                scrollToBottom={this.scrollToBottom}
-                                enabled={true}
-                                conversationType={this.props.conversationType}
-                                conversationId={this.props.conversationId}
-                                variables={{
-                                    roomId: this.props.conversationId,
-                                    conversationId: this.props.conversationId,
-                                }}
-                            />
-                        </UploadContextProvider>
-                    )}
+                {!this.state.hideInput && this.conversation.canSendMessage && (
+                    <UploadContextProvider>
+                        <MessageComposeHandler
+                            isActive={this.props.isActive}
+                            getMessages={this.getMessages}
+                            conversation={this.conversation}
+                            onChange={this.handleChange}
+                            onSend={this.handleSend}
+                            onSendFile={this.handleSendFile}
+                            scrollToBottom={this.scrollToBottom}
+                            enabled={true}
+                            conversationType={this.props.conversationType}
+                            conversationId={this.props.conversationId}
+                            variables={{
+                                roomId: this.props.conversationId,
+                                conversationId: this.props.conversationId,
+                            }}
+                        />
+                    </UploadContextProvider>
+                )}
                 <DeleteUrlAugmentationComponent />
                 <DeleteMessageComponent />
                 <LeaveChatComponent />

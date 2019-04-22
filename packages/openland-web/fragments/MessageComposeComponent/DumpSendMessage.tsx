@@ -33,53 +33,59 @@ type DumpSendMessageT = {
     TextInputComponent: React.ComponentType<TextInputComponentInnerT>;
 } & DumpSendMessagePropsT;
 
-export const DumpSendMessage = React.memo(({
-    TextInputComponent,
-    mentionsState,
-    handleChange,
-    handleSend,
-    inputRef,
-    inputValue,
-    enabled,
-    quoteState,
-    closeEditor,
-}: DumpSendMessageT) => {
-    const { handleDrop } = React.useContext(UploadContext);
-    return (
-        <SendMessageWrapper>
-            <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
-            <SendMessageContent separator={4} alignItems="center">
-                <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                    {closeEditor && quoteState && quoteState.quoteMessageReply && (
-                        <EditView
-                            message={quoteState.quoteMessageReply}
-                            title={quoteState.quoteMessageSender || 'Edit message'}
-                            onCancel={closeEditor}
+export const DumpSendMessage = React.memo(
+    ({
+        TextInputComponent,
+        mentionsState,
+        handleChange,
+        handleSend,
+        inputRef,
+        inputValue,
+        enabled,
+        quoteState,
+        closeEditor,
+    }: DumpSendMessageT) => {
+        const { handleDrop } = React.useContext(UploadContext);
+        return (
+            <SendMessageWrapper>
+                <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
+                <SendMessageContent separator={4} alignItems="center">
+                    <XVertical separator={6} flexGrow={1} maxWidth="100%">
+                        {closeEditor && quoteState && quoteState.quoteMessageReply && (
+                            <EditView
+                                message={quoteState.quoteMessageReply}
+                                title={quoteState.quoteMessageSender || 'Edit message'}
+                                onCancel={closeEditor}
+                            />
+                        )}
+                        <FileUploader />
+                        <TextInputComponent
+                            placeholder="Write a message..."
+                            mentionsState={mentionsState}
+                            handleChange={handleChange}
+                            handleSend={handleSend}
+                            inputRef={inputRef}
+                            inputValue={inputValue}
+                            handleDrop={handleDrop}
                         />
-                    )}
-                    <FileUploader />
-                    <TextInputComponent
-                        placeholder="Write a message..."
-                        mentionsState={mentionsState}
-                        handleChange={handleChange}
-                        handleSend={handleSend}
-                        inputRef={inputRef}
-                        inputValue={inputValue}
-                        handleDrop={handleDrop}
-                    />
-                    <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
-                        <AttachmentButtons enabled={enabled} />
+                        <XHorizontal
+                            alignItems="center"
+                            justifyContent="space-between"
+                            flexGrow={1}
+                        >
+                            <AttachmentButtons enabled={enabled} />
 
-                        <XButton
-                            text="Send"
-                            style="primary"
-                            action={handleSend}
-                            iconRight="send"
-                            enabled={enabled}
-                        />
-                    </XHorizontal>
-                </XVertical>
-            </SendMessageContent>
-        </SendMessageWrapper>
-    );
-});
+                            <XButton
+                                text="Send"
+                                style="primary"
+                                action={handleSend}
+                                iconRight="send"
+                                enabled={enabled}
+                            />
+                        </XHorizontal>
+                    </XVertical>
+                </SendMessageContent>
+            </SendMessageWrapper>
+        );
+    },
+);

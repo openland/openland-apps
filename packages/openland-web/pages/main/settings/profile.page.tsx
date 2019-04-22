@@ -30,8 +30,8 @@ const CardsWrapper = XMemo<{ children: any }>(props => {
     return isMobile ? (
         <XVertical separator={8}>{props.children}</XVertical>
     ) : (
-            <XHorizontal separator={8}>{props.children}</XHorizontal>
-        );
+        <XHorizontal separator={8}>{props.children}</XHorizontal>
+    );
 });
 
 const CardText = (props: { children?: any }) => (
@@ -140,11 +140,7 @@ export default withApp('Profile', 'viewer', () => {
                                 <XFormError onlyGeneralErrors={true} />
                                 <XVertical separator={12}>
                                     <XFormLoadingContent>
-                                        <XVertical
-                                            flexGrow={1}
-                                            maxWidth={480}
-                                            separator={10}
-                                        >
+                                        <XVertical flexGrow={1} maxWidth={480} separator={10}>
                                             <XHorizontal separator={13}>
                                                 <XVertical flexGrow={1} separator={10}>
                                                     <XInput
@@ -169,10 +165,12 @@ export default withApp('Profile', 'viewer', () => {
                                                     field="input.primaryOrganizationId"
                                                     searchable={false}
                                                     clearable={false}
-                                                    options={organizations.myOrganizations.map((org: any) => ({
-                                                        value: org.id,
-                                                        label: org.name,
-                                                    }))}
+                                                    options={organizations.myOrganizations.map(
+                                                        (org: any) => ({
+                                                            value: org.id,
+                                                            label: org.name,
+                                                        }),
+                                                    )}
                                                 />
                                                 <XView position="relative">
                                                     <TextAreaTitle>About</TextAreaTitle>

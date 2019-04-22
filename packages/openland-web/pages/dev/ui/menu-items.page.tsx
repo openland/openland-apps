@@ -28,10 +28,10 @@ export default withApp('UI Framework - Menu Items', 'viewer', props => {
                         <XMenuItemSeparator />
                         <XMenuItem icon="chat" iconRight="chevron_right">
                             Very long title in XMenuItem
-                            </XMenuItem>
+                        </XMenuItem>
                         <XMenuItem style="danger" icon="chat" iconRight="chevron_right">
                             Very long title in XMenuItem
-                            </XMenuItem>
+                        </XMenuItem>
                         <XMenuItemSeparator />
                         <XMenuItemWrapper>
                             <XVertical2>

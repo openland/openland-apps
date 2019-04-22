@@ -11,11 +11,20 @@ const cropEmailSymbolIfAny = (message: string) => {
     return finalMessage;
 };
 
-function _spansPreprocess(root: boolean, message: string, spans?: FullMessage_ServiceMessage_spans[], opts?: { disableBig?: boolean }): SpannedString {
+function _spansPreprocess(
+    root: boolean,
+    message: string,
+    spans?: FullMessage_ServiceMessage_spans[],
+    opts?: { disableBig?: boolean },
+): SpannedString {
     let res: SpannedStringSpan[] = [];
     if (!spans || spans.length === 0) {
         if (root) {
-            res.push(spansMessageTextPreprocess(message, { disableBig: false || opts && opts.disableBig }))
+            res.push(
+                spansMessageTextPreprocess(message, {
+                    disableBig: false || (opts && opts.disableBig),
+                }),
+            );
         } else {
             res.push(spansMessageTextPreprocess(message, { disableBig: true }));
         }
@@ -27,11 +36,22 @@ function _spansPreprocess(root: boolean, message: string, spans?: FullMessage_Se
         let lastOffset = 0;
 
         for (let span of sortedSpans) {
-
             // Prefix
-            if (['MessageSpanMultiUserMention', 'MessageSpanUserMention', 'MessageSpanRoomMention', 'MessageSpanLink', 'MessageSpanBold'].indexOf(span.__typename) >= 0) {
+            if (
+                [
+                    'MessageSpanMultiUserMention',
+                    'MessageSpanUserMention',
+                    'MessageSpanRoomMention',
+                    'MessageSpanLink',
+                    'MessageSpanBold',
+                ].indexOf(span.__typename) >= 0
+            ) {
                 if (lastOffset < span.offset) {
-                    res.push(spansMessageTextPreprocess(message.slice(lastOffset, span.offset), { disableBig: true }));
+                    res.push(
+                        spansMessageTextPreprocess(message.slice(lastOffset, span.offset), {
+                            disableBig: true,
+                        }),
+                    );
                 }
             }
 
@@ -43,7 +63,10 @@ function _spansPreprocess(root: boolean, message: string, spans?: FullMessage_Se
                 res.push({
                     type: 'users',
                     users: span.users,
-                    child: _spansPreprocess(false, message.slice(span.offset, span.offset + span.length))
+                    child: _spansPreprocess(
+                        false,
+                        message.slice(span.offset, span.offset + span.length),
+                    ),
                 });
                 lastOffset = span.offset + span.length;
             }
@@ -54,7 +77,7 @@ function _spansPreprocess(root: boolean, message: string, spans?: FullMessage_Se
                 res.push({
                     type: 'user',
                     user: span.user,
-                    child: _spansPreprocess(false, finalMessage)
+                    child: _spansPreprocess(false, finalMessage),
                 });
                 lastOffset = span.offset + span.length;
             }
@@ -65,7 +88,7 @@ function _spansPreprocess(root: boolean, message: string, spans?: FullMessage_Se
                 res.push({
                     type: 'group',
                     group: span.room,
-                    child: _spansPreprocess(false, finalMessage)
+                    child: _spansPreprocess(false, finalMessage),
                 });
                 lastOffset = span.offset + span.length;
             }
@@ -78,14 +101,20 @@ function _spansPreprocess(root: boolean, message: string, spans?: FullMessage_Se
                 res.push({
                     type: 'link',
                     url: span.url,
-                    child: _spansPreprocess(false, message.slice(span.offset, span.offset + span.length))
+                    child: _spansPreprocess(
+                        false,
+                        message.slice(span.offset, span.offset + span.length),
+                    ),
                 });
                 lastOffset = span.offset + span.length;
             }
             if (span.__typename === 'MessageSpanBold') {
                 res.push({
                     type: 'bold',
-                    child: _spansPreprocess(false, message.slice(span.offset, span.offset + span.length))
+                    child: _spansPreprocess(
+                        false,
+                        message.slice(span.offset, span.offset + span.length),
+                    ),
                 });
                 lastOffset = span.offset + span.length;
             }
@@ -93,14 +122,22 @@ function _spansPreprocess(root: boolean, message: string, spans?: FullMessage_Se
 
         // Suffix
         if (lastOffset < message.length) {
-            res.push(spansMessageTextPreprocess(message.slice(lastOffset, message.length), { disableBig: true }));
+            res.push(
+                spansMessageTextPreprocess(message.slice(lastOffset, message.length), {
+                    disableBig: true,
+                }),
+            );
         }
     }
     return {
-        spans: res
-    }
+        spans: res,
+    };
 }
 
-export function spansPreprocess(message: string, spans?: FullMessage_ServiceMessage_spans[], opts?: { disableBig?: boolean }): SpannedString {
+export function spansPreprocess(
+    message: string,
+    spans?: FullMessage_ServiceMessage_spans[],
+    opts?: { disableBig?: boolean },
+): SpannedString {
     return _spansPreprocess(true, message, spans, opts);
 }

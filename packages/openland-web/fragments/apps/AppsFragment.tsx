@@ -6,9 +6,9 @@ import { TasksFragment } from '../tasks/TasksFragment';
 // import { Navigation } from 'openland-web/components/Navigation';
 // import { MenuItem } from 'openland-web/components/MainLayout';
 
-const AppResolver = React.memo<{ appId: string }>((props) => {
+const AppResolver = React.memo<{ appId: string }>(props => {
     if (props.appId === 'feed') {
-        return <FeedFragment />
+        return <FeedFragment />;
     } else if (props.appId === 'tasks') {
         return <TasksFragment />;
     } else {
@@ -19,7 +19,11 @@ const AppResolver = React.memo<{ appId: string }>((props) => {
 export const AppsFragment = React.memo(() => {
     let path = useXRouter();
     if (path.routeQuery.appId) {
-        return <AppContainer key={path.routeQuery.appId}><AppResolver appId={path.routeQuery.appId} /></AppContainer>;
+        return (
+            <AppContainer key={path.routeQuery.appId}>
+                <AppResolver appId={path.routeQuery.appId} />
+            </AppContainer>
+        );
     } else {
         return null;
     }

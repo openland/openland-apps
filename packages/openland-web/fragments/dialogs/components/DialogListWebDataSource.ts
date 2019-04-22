@@ -18,21 +18,22 @@ export interface DialogListWebItem extends DialogDataSourceItem {
     typingEmojify?: any;
 }
 
-export function dialogListWebDataSource(dialogs: DataSource<DialogDataSourceItem>): DataSource<DialogListWebItem> {
-    return dialogs.batched().throttledMap((src) =>
-        ({
-            ...src,
-            titleEmojify: emoji({
-                src: src.title,
-                size: 16,
-            }),
-            titlePlaceholderEmojify: emoji({
-                src: extractPlaceholder(src.title),
-                size: 20,
-                cache: true,
-            }),
-            senderEmojify: src.sender && emojifyMessage(src.sender),
-            typingEmojify: src.typing && emojifyMessage(src.typing),
-            messageEmojify: src.message && emojifyMessage(src.message)
-        }));
+export function dialogListWebDataSource(
+    dialogs: DataSource<DialogDataSourceItem>,
+): DataSource<DialogListWebItem> {
+    return dialogs.batched().throttledMap(src => ({
+        ...src,
+        titleEmojify: emoji({
+            src: src.title,
+            size: 16,
+        }),
+        titlePlaceholderEmojify: emoji({
+            src: extractPlaceholder(src.title),
+            size: 20,
+            cache: true,
+        }),
+        senderEmojify: src.sender && emojifyMessage(src.sender),
+        typingEmojify: src.typing && emojifyMessage(src.typing),
+        messageEmojify: src.message && emojifyMessage(src.message),
+    }));
 }

@@ -335,9 +335,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                 path={`/mail/u/${this.props.id}`}
                             />
                             <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
-                            <XMenuItem
-                                onClick={() => showAppInviteModal()}
-                            >
+                            <XMenuItem onClick={() => showAppInviteModal()}>
                                 {TextGlobal.joinOpenland}
                             </XMenuItem>
                             <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
@@ -420,13 +418,11 @@ const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization
                 id={user!!.id}
                 primaryOrganization={organization || undefined}
                 organizations={
-                    myOrgs && myOrgs.myOrganizations
-                        ? myOrgs.myOrganizations
-                        : undefined
+                    myorgs && myorgs.myOrganizations ? myorgs.myOrganizations : undefined
                 }
             />
         </XVertical>
-    )
+    );
 });
 
 export const DesktopScaffold = ({
@@ -492,9 +488,7 @@ export const DesktopScaffold = ({
                                     >
                                         {TextGlobal.addOrganization}
                                     </XMenuItem>
-                                    <XMenuItem
-                                        onClick={() => showCreateOrganization('community')}
-                                    >
+                                    <XMenuItem onClick={() => showCreateOrganization('community')}>
                                         {TextGlobal.addCommunity}
                                     </XMenuItem>
                                 </>

@@ -107,7 +107,7 @@ class ScaffoldContent extends React.Component<{
                         {bottomOffset !== false && <PageDiv />}
                     </XVertical>
                 </React.Suspense>
-            )
+            );
         }
         return (
             <XVertical flexGrow={1}>

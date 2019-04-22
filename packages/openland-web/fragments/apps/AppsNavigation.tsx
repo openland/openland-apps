@@ -7,5 +7,5 @@ export const AppsNavigation = React.memo(() => {
             <MenuItem title="Feed" path="/apps/feed" />
             <MenuItem title="Tasks" path="/apps/tasks" />
         </>
-    )
+    );
 });
