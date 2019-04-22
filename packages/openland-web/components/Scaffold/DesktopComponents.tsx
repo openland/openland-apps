@@ -418,7 +418,7 @@ const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization
                 id={user!!.id}
                 primaryOrganization={organization || undefined}
                 organizations={
-                    myorgs && myorgs.myOrganizations ? myorgs.myOrganizations : undefined
+                    myOrgs && myOrgs.myOrganizations ? myOrgs.myOrganizations : undefined
                 }
             />
         </XVertical>
