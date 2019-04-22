@@ -19,7 +19,7 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
 
     return (
         <View marginLeft={Platform.OS === 'android' ? 12 : 48} paddingLeft={8} marginRight={Platform.OS === 'android' ? 12 : 52} borderLeftColor="#0084fe" borderLeftWidth={2} marginTop={10} marginBottom={4} flexDirection="row">
-            <View flexGrow={1}>
+            <View flexGrow={1} flexShrink={1}>
                 <Text style={{ color: '#0084fe', fontSize: 14, lineHeight: 20, marginBottom: 1, fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1} allowFontScaling={false}>{title}</Text>
                 <Text style={{ color: '#99a2b0', fontSize: 14 }} numberOfLines={1} allowFontScaling={false}>{text}</Text>
             </View>
