@@ -23,6 +23,7 @@ export interface AsyncMessageViewProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onReactionPress: (message: DataSourceMessageItem, r: string) => void;
     onCommentsPress: (message: DataSourceMessageItem, chatId: string) => void;
+    onReactionsPress: (message: DataSourceMessageItem) => void;
     navigationManager: NavigationManager;
 }
 
@@ -40,6 +41,9 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
     let handleCommentsPress = () => {
         props.onCommentsPress(props.message, props.engine.conversationId);
+    }
+    let handleReactionsPress = () => {
+        props.onReactionsPress(props.message);
     }
 
     let res;
@@ -94,7 +98,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-right" backgroundColor={theme.backgroundColor} width={4} />
                 </ASFlex>
 
-                {!props.message.isSending && (<AsyncMessageReactionsView theme={theme} message={props.message} isChannel={props.engine.isChannel} onCommentsPress={handleCommentsPress} />)}
+                {!props.message.isSending && (<AsyncMessageReactionsView theme={theme} message={props.message} isChannel={props.engine.isChannel} onCommentsPress={handleCommentsPress} onReactionsPress={handleReactionsPress} />)}
 
                 <ASFlex backgroundColor={theme.backgroundColor} height={50} marginBottom={-50} />
             </ASFlex>

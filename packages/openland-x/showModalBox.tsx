@@ -4,60 +4,45 @@ import { css } from 'linaria';
 import * as className from 'classnames';
 import { XScrollView3 } from './XScrollView3';
 import { XView } from 'react-mental';
-import CloseIcon from 'openland-x-modal/ic-close.svg';
 import { XLoader } from './XLoader';
 import ResizeObserver from 'resize-observer-polyfill';
 
-const closeIconStyle = css`
-    cursor: pointer;
-    display: flex;
-    width: 28px;
-    height: 28px;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s ease;
-    border-radius: 50px;
-    border: 1px solid transparent;
-    > svg > g > path:last-child {
-        loaderfill: rgba(0, 0, 0, 0.3);
-    }
-    :hover {
-        & > svg > g > path:last-child {
-            fill: rgba(0, 0, 0, 0.4);
-        }
-    }
-`;
-
-export const CloseButton = (props: { onClick: () => void }) => (
-    <div className={closeIconStyle} onClick={props.onClick}>
-        <CloseIcon />
-    </div>
-);
-
 const boxStyle = css`
+    overflow: hidden;
     position: absolute;
     display: flex;
     flex-direction: column;
     background-color: white;
-    border-radius: 6px;
+    border-radius: 8px;
     box-shadow: 0px 3px 14px 4px #82777747;
     max-height: calc(100vh - 48px);
-    max-width: 100vw;
+    max-width: calc(100vw - 20px);
     width: 575px;
+`
+
+const boxShowing = css`
+    transform: translate(0px, 64px); 
 `;
 
 const boxVisible = css`
-    transition: top 150ms, left 150ms;
+    transition: top 150ms cubic-bezier(0.4, 0.0, 0.2, 1), left 150ms cubic-bezier(0.4, 0.0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transform: translate(0px, 0px);
+`;
+
+const boxHiding = css`
+    transition: top 150ms cubic-bezier(0.0, 0.0, 0.2, 1), left 150ms cubic-bezier(0.0, 0.0, 0.2, 1), transform 150ms cubic-bezier(0.0, 0.0, 0.2, 1), opacity 150ms cubic-bezier(0.0, 0.0, 0.2, 1);
+    opacity: 0;
+    transform: translate(0px, 32px);
 `;
 
 const overlayHiding = css`
     opacity: 0;
-    transition: opacity 75ms;
+    transition: opacity 150ms cubic-bezier(0.0, 0.0, 0.2, 1);
 `;
 
 const overlayVisible = css`
     opacity: 1;
-    transition: opacity 150ms;
+    transition: opacity 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
 `;
 
 const overlayShowing = css`
@@ -71,18 +56,10 @@ const overlayStyle = css`
     background-color: rgba(0, 0, 0, 0.3);
 `;
 
-export const Loader = (
-    <XView height={64} alignItems="center" justifyContent="center">
-        <XLoader loading={true} />
-    </XView>
-);
+const Loader = <XView height={64} alignItems="center" justifyContent="center"><XLoader loading={true} /></XView>;
 
-export const ModalBoxComponent = React.memo<{
-    ctx: XModalController;
-    modal: XModal;
-    config: XModalBoxConfig;
-}>(props => {
-    const [state, setState] = React.useState<'showing' | 'visible' | 'hiding'>('showing');
+const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, config: XModalBoxConfig }>((props) => {
+    const [state, setState] = React.useState<'showing' | 'visible' | 'hiding'>('showing')
     const [top, setTop] = React.useState(0);
     const [left, setLeft] = React.useState(0);
     const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -91,9 +68,7 @@ export const ModalBoxComponent = React.memo<{
     const tryHide = React.useCallback(() => {
         if (state !== 'hiding') {
             setState('hiding');
-            setTimeout(() => {
-                props.ctx.hide();
-            }, 75);
+            setTimeout(() => { props.ctx.hide() }, 200);
         }
     }, []);
     React.useEffect(() => {
@@ -114,8 +89,8 @@ export const ModalBoxComponent = React.memo<{
             },
             setOnEscPressed: () => {
                 // Ignore?
-            },
-        };
+            }
+        }
         return props.modal(ctx2);
     }, []);
 
@@ -147,8 +122,10 @@ export const ModalBoxComponent = React.memo<{
                 }, 1);
             }
         });
-        observer.observe(boxRef.current!);
-        observer.observe(containerRef.current!);
+        containerRef.current!!.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+        boxRef.current!!.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+        observer.observe(boxRef.current!)
+        observer.observe(containerRef.current!)
         return () => observer.disconnect();
     }, []);
 
@@ -157,47 +134,52 @@ export const ModalBoxComponent = React.memo<{
             ref={containerRef}
             className={className(
                 overlayStyle,
-                state === 'showing' && overlayShowing,
-                state === 'visible' && overlayVisible,
-                state === 'hiding' && overlayHiding,
+                (state === 'showing') && overlayShowing,
+                (state === 'visible') && overlayVisible,
+                (state === 'hiding') && overlayHiding,
             )}
             onClick={handleContainerClick}
         >
             <div
                 ref={boxRef}
-                className={className(boxStyle, state === 'visible' && boxVisible)}
-                style={{ top, left, width: props.config.width }}
+                className={className(
+                    boxStyle,
+                    state === 'showing' && boxShowing,
+                    state === 'visible' && boxVisible,
+                    state === 'hiding' && boxHiding
+                )}
+                style={{ top: top, left: left }}
             >
-                <XView
-                    height={64}
-                    lineHeight="64px"
-                    paddingLeft={24}
-                    paddingRight={14}
-                    fontSize={18}
-                    fontWeight="600"
-                    flexDirection="row"
-                    alignItems="center"
-                >
-                    <XView flexGrow={1} flexShrink={1} minWidth={0} paddingRight={8}>
-                        {props.config.title}
+                <XView paddingTop={30} paddingBottom={20}>
+                    <XView height={36} lineHeight="36px" paddingLeft={40} paddingRight={14} fontSize={30} fontWeight="600" flexDirection="row" alignItems="center">
+                        <XView flexGrow={1} flexShrink={1} minWidth={0} paddingRight={8}>
+                            {props.config.title}
+                        </XView>
+                        {/* <CloseButton onClick={tryHide} /> */}
                     </XView>
-                    <CloseButton onClick={tryHide} />
                 </XView>
                 <XScrollView3 flexShrink={1}>
-                    <React.Suspense fallback={Loader}>{contents}</React.Suspense>
+                    <React.Suspense fallback={Loader}>
+                        {contents}
+                    </React.Suspense>
                 </XScrollView3>
             </div>
         </div>
-    );
+    )
 });
+
+export const XModalBoxStyles = {
+    contentPadding: 40
+}
 
 export interface XModalBoxConfig {
     title?: string;
-    width?: number;
 }
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {
-    showModal(ctx => {
-        return <ModalBoxComponent modal={modal} ctx={ctx} config={config} />;
-    });
+    showModal((ctx) => {
+        return (
+            <ModalBoxComponent modal={modal} ctx={ctx} config={config} />
+        )
+    })
 }

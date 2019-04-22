@@ -1,14 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`XButton should render correctly 1`] = `
-.css-126rrgb,
-[data-css-126rrgb] {
+.css-1imwqsd,
+[data-css-1imwqsd] {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   pointer-events: auto;
   cursor: pointer;
   transition: box-shadow 0.08s ease-in, color 0.08s ease-in, border 0s,
@@ -30,8 +31,8 @@ exports[`XButton should render correctly 1`] = `
   -moz-transition: box-shadow 0.08s ease-in, color 0.08s ease-in, border 0s,
     all 0.15s ease;
 }
-.css-126rrgb .loading-icon,
-[data-css-126rrgb] .loading-icon {
+.css-1imwqsd .loading-icon,
+[data-css-1imwqsd] .loading-icon {
   position: absolute;
   width: 32px;
   height: 32px;
@@ -39,51 +40,51 @@ exports[`XButton should render correctly 1`] = `
   top: calc(50% - 16px);
   left: calc(50% - 16px);
 }
-.css-126rrgb .icon-responsive,
-[data-css-126rrgb] .icon-responsive {
+.css-1imwqsd .icon-responsive,
+[data-css-1imwqsd] .icon-responsive {
   display: none;
 }
-.css-126rrgb:hover,
-[data-css-126rrgb]:hover,
-.css-126rrgb:hover *,
-[data-css-126rrgb]:hover * {
+.css-1imwqsd:hover,
+[data-css-1imwqsd]:hover,
+.css-1imwqsd:hover *,
+[data-css-1imwqsd]:hover * {
   text-decoration: none !important;
 }
-.css-126rrgb:hover,
-[data-css-126rrgb]:hover {
+.css-1imwqsd:hover,
+[data-css-1imwqsd]:hover {
   background-color: #e6e9ec;
   color: rgba(0, 0, 0, 0.7);
 }
-.css-126rrgb:active,
-[data-css-126rrgb]:active {
+.css-1imwqsd:active,
+[data-css-1imwqsd]:active {
   background-color: #1790ff;
   color: #ffffff;
 }
-.css-126rrgb:focus,
-[data-css-126rrgb]:focus {
+.css-1imwqsd:focus,
+[data-css-1imwqsd]:focus {
   box-shadow: 0 0 0 1px rgba(50, 151, 211, 0.2),
     0 0 0 2px rgba(50, 151, 211, 0.25), 0 2px 5px 0 rgba(0, 0, 0, 0.1),
     0 0 0 0 transparent, 0 0 0 0 transparent;
 }
-.css-126rrgb .button-content,
-[data-css-126rrgb] .button-content {
+.css-1imwqsd .button-content,
+[data-css-1imwqsd] .button-content {
   padding-left: 16px;
   padding-right: 16px;
 }
-.css-126rrgb .icon.material,
-[data-css-126rrgb] .icon.material {
+.css-1imwqsd .icon.material,
+[data-css-1imwqsd] .icon.material {
   font-size: 20px;
 }
-.css-126rrgb i.icon-svg,
-[data-css-126rrgb] i.icon-svg {
+.css-1imwqsd i.icon-svg,
+[data-css-1imwqsd] i.icon-svg {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
 }
-.css-126rrgb svg,
-[data-css-126rrgb] svg {
+.css-1imwqsd svg,
+[data-css-1imwqsd] svg {
   margin-left: -2px;
   margin-right: 4px;
 }
@@ -143,6 +144,7 @@ exports[`XButton should render correctly 1`] = `
   display: -webkit-flex;
   display: flex;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
   pointer-events: auto;
   cursor: pointer;
   transition: box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease;

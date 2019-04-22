@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { showModalBox } from 'openland-x/showModalBox';
 
 const KeyboardShortcuts = Glamorous.div({
-    padding: '7px 24px 19px',
+    padding: '7px 40px 30px',
 });
 
 const KeyboardShortcut = Glamorous.div({

@@ -57,13 +57,13 @@ class XAvatarUploadStored extends React.PureComponent<XAvatarUploadProps & { sto
                   uuid: uuid,
                   crop: crop,
                   isImage: true,
-                  width: null,
-                  height: null,
+                  width: crop ? crop.width : null,
+                  height: crop ? crop.height : null,
                   name: name,
                   size: size,
               }
             : null;
-        return <XAvatarUploadBasic {...other} onChanged={this.handleChange} value={value} />;
+        return <XAvatarUploadBasic {...other} onChange={this.handleChange} value={value} />;
     }
 }
 

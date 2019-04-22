@@ -26,7 +26,7 @@ interface MessageFileComponentProps {
     fileSize?: number;
     onClearClick?: () => void;
     clearButton?: boolean;
-    marginBottom?: number
+    marginBottom?: number;
 }
 
 export const MessageFileComponent = XMemo<MessageFileComponentProps>(props => {

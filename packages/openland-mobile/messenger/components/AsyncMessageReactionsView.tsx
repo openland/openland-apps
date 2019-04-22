@@ -67,6 +67,7 @@ interface AsyncMessageReactionsViewProps {
     isChannel?: boolean;
 
     onCommentsPress: () => void;
+    onReactionsPress: () => void;
 }
 
 export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewProps>((props) => {
@@ -101,7 +102,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
                 )}
 
                 {reactions.reactionsSorted.length > 0 && (
-                    <ASFlex backgroundColor="#f3f5f7" borderRadius={13}>
+                    <ASFlex backgroundColor="#f3f5f7" borderRadius={13} onPress={props.onReactionsPress}>
                         <ASFlex marginLeft={5} marginRight={1} height={26} alignItems="center" justifyContent="center">
                             {[...reactions.reactionsSorted].map((i) =>
                                 (

@@ -3,9 +3,9 @@ import tlds from 'tlds';
 import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans } from 'openland-api/Types';
 import { Stopwatch } from 'openland-y-utils/stopwatch';
 
-type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room';
+type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold';
 
-export type Span = SpanUser | SpanRoom | SpanText | SpanLink | SpanUsers;
+export type Span = SpanUser | SpanRoom | SpanText | SpanLink | SpanUsers | SpanBold;
 interface SpanAbs {
     type: SpanType;
     text?: string;
@@ -15,6 +15,11 @@ interface SpanAbs {
 export interface SpanText extends SpanAbs {
     type: 'text' | 'new_line';
 }
+
+export interface SpanBold extends SpanAbs {
+    type: 'bold';
+}
+
 export interface SpanLink extends SpanAbs {
     type: 'link';
     link: string;
@@ -84,6 +89,8 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
             span = { type: 'mention_room', title: s.room.__typename === 'SharedRoom' ? s.room.title : s.room.user.name, id: s.room.id }
         } else if (s.__typename === 'MessageSpanMultiUserMention') {
             span = { type: 'mention_users', users: s.users.map(u => ({ name: u.name, id: u.id })) }
+        } else if (s.__typename === 'MessageSpanBold') {
+            span = { type: 'bold' }
         } else {
             span = { type: 'text' };
         }

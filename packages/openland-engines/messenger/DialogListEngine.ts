@@ -7,6 +7,7 @@ import {
     Dialogs_dialogs_items_topMessage_GeneralMessage_attachments,
     TinyMessage,
     DialogKind,
+    Message_message,
 } from 'openland-api/Types';
 import { RoomQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
@@ -49,12 +50,12 @@ export interface DialogDataSourceItem extends DialogDataSourceItemStored {
     typing?: string;
 }
 
-export function formatMessage(message: Dialogs_dialogs_items_topMessage | null): string {
+export function formatMessage(message: Dialogs_dialogs_items_topMessage | Message_message | null): string {
     if (!message) {
         return '';
     }
 
-    return message.message || message.fallback;
+    return (message.message && message.message.length > 0) ? message.message : message.fallback;
 }
 
 export const extractDialog = (
@@ -251,6 +252,7 @@ export class DialogListEngine {
                 await this._dataSourceStored.updateItem({
                     ...existing,
                     message,
+                    fallback: message,
                     attachments: event.message.attachments,
                 });
             }

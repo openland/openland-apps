@@ -54,7 +54,7 @@ export const RoomFull = gql`
                 }
                 message
             }
-            pinnedMessage{
+            pinnedMessage {
                 ...FullMessage
             }
         }
@@ -102,7 +102,7 @@ export const RoomFullWithoutMembers = gql`
                 }
                 message
             }
-            pinnedMessage{
+            pinnedMessage {
                 ...FullMessage
             }
         }

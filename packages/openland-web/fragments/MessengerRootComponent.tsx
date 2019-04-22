@@ -20,8 +20,7 @@ import {
     SharedRoomKind,
     PostMessageType,
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
-    RoomWithoutMembers_room_SharedRoom,
-    RoomWithoutMembers_room_PrivateRoom,
+    RoomChat_room,
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
@@ -53,17 +52,13 @@ export interface EditPostProps {
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
     isActive: boolean;
-    organizationId: string | null;
     conversationId: string;
     loading: boolean;
     messenger: MessengerEngine;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
-    objectName: string;
-    objectId?: string;
-    cloudImageUuid?: string;
     pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null;
-    room: RoomWithoutMembers_room_SharedRoom | RoomWithoutMembers_room_PrivateRoom;
+    room: RoomChat_room;
 }
 
 interface MessagesComponentState {
@@ -135,7 +130,6 @@ interface ComposeHandlerProps extends MessageComposeComponentProps {
     variables?: {
         roomId?: string;
         conversationId?: string;
-        organizationId: string | null;
     };
 }
 
@@ -170,7 +164,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();
         }
-    }
+    };
 
     onMessageSend = () => {
         trackEvent('message_sent');
@@ -301,7 +295,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
         return (
             <XView flexDirection="column" flexGrow={1} flexShrink={1}>
-                {this.props.pinMessage && (
+                {this.props.pinMessage && !this.state.loading && (
                     <PinMessageComponent
                         pinMessage={this.props.pinMessage}
                         chatId={this.props.conversationId}
@@ -322,28 +316,26 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     inputShower={this.handleShowIput}
                 />
 
-                {!this.state.hideInput &&
-                    this.conversation.canSendMessage && (
-                        <UploadContextProvider>
-                            <MessageComposeHandler
-                                isActive={this.props.isActive}
-                                getMessages={this.getMessages}
-                                conversation={this.conversation}
-                                onChange={this.handleChange}
-                                onSend={this.handleSend}
-                                onSendFile={this.handleSendFile}
-                                scrollToBottom={this.scrollToBottom}
-                                enabled={true}
-                                conversationType={this.props.conversationType}
-                                conversationId={this.props.conversationId}
-                                variables={{
-                                    roomId: this.props.conversationId,
-                                    conversationId: this.props.conversationId,
-                                    organizationId: this.props.organizationId,
-                                }}
-                            />
-                        </UploadContextProvider>
-                    )}
+                {!this.state.hideInput && this.conversation.canSendMessage && (
+                    <UploadContextProvider>
+                        <MessageComposeHandler
+                            isActive={this.props.isActive}
+                            getMessages={this.getMessages}
+                            conversation={this.conversation}
+                            onChange={this.handleChange}
+                            onSend={this.handleSend}
+                            onSendFile={this.handleSendFile}
+                            scrollToBottom={this.scrollToBottom}
+                            enabled={true}
+                            conversationType={this.props.conversationType}
+                            conversationId={this.props.conversationId}
+                            variables={{
+                                roomId: this.props.conversationId,
+                                conversationId: this.props.conversationId,
+                            }}
+                        />
+                    </UploadContextProvider>
+                )}
                 <DeleteUrlAugmentationComponent />
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
@@ -354,14 +346,10 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
 interface MessengerRootComponentProps {
     onChatLostAccess?: Function;
-    organizationId: string | null;
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
-    objectName: string;
-    objectId?: string;
-    cloudImageUuid?: string;
     pinMessage: Room_room_SharedRoom_pinnedMessage_GeneralMessage | null;
-    room: RoomWithoutMembers_room_SharedRoom | RoomWithoutMembers_room_PrivateRoom;
+    room: RoomChat_room;
 }
 
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
@@ -374,13 +362,9 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
             isActive={!!isActive}
             me={messenger.user}
             loading={false}
-            organizationId={props.organizationId}
             conversationId={props.conversationId}
             messenger={messenger}
             conversationType={props.conversationType}
-            objectName={props.objectName}
-            objectId={props.objectId}
-            cloudImageUuid={props.cloudImageUuid}
             pinMessage={props.pinMessage}
             room={props.room}
         />

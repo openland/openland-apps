@@ -44,7 +44,6 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
                                         online={false}
                                         cloudImageUuid={v.user.photo || undefined}
                                     />
-                                    {/* <span>{v.connection && v.connection.state}</span> */}
                                 </XView>
                                 <XView width={8} />
                             </React.Fragment>

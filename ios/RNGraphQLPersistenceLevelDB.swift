@@ -33,12 +33,16 @@ class RNGraphQLPersistenceLevelDB: RNGraphQLPersistenceEngine {
             res.append(RNGraphQLPersistenceRecord(key: k, value: r!.value!))
           }
         } else {
-          if let v = swiftStore[k] {
-            if !v.isEmpty {
-              res.append(RNGraphQLPersistenceRecord(key: k, value: v))
-              cache[k] = CacheRecrod(value: v)
-            } else {
-              cache[k] = CacheRecrod(value: nil)
+          if k == "MUTATION_ROOT" || k == "SUBSCRIPTION_ROOT" || k.hasPrefix("SUBSCRIPTION_ROOT.") || k.hasPrefix("MUTATION_ROOT.") {
+            cache[k] = CacheRecrod(value: nil)
+          } else {
+            if let v = swiftStore[k] {
+              if !v.isEmpty {
+                res.append(RNGraphQLPersistenceRecord(key: k, value: v))
+                cache[k] = CacheRecrod(value: v)
+              } else {
+                cache[k] = CacheRecrod(value: nil)
+              }
             }
           }
         }
@@ -51,8 +55,14 @@ class RNGraphQLPersistenceLevelDB: RNGraphQLPersistenceEngine {
   func persist(key: String, value: String) throws {
     try sync {
       // print("persist \(key)")
-      let start = getCurrentMillis()
+      // let start = getCurrentMillis()
       cache[key] = CacheRecrod(value: value)
+      if key == "SUBSCRIPTION_ROOT" || key.hasPrefix("SUBSCRIPTION_ROOT.") {
+        return
+      }
+      if key == "MUTATION_ROOT" || key.hasPrefix("MUTATION_ROOT.") {
+        return
+      }
       swiftStore[key] = value
       // print("[LDB]: in \(getCurrentMillis() - start) ms")
     }

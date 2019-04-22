@@ -60,7 +60,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
     return (
         <View marginBottom={SDevice.safeArea.bottom}>
             <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                {!props.suggestions && (
+                {!props.suggestions && !props.topView && (
                     <>
                         <LinearGradient position="absolute" left={0} top={0} right={0} height={androidMessageInputListOverlap} colors={['#fff', '#fff', 'rgba(255,255,255,0)', 'rgba(255,255,255,0)']} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />
                         <View position="absolute" left={0} top={androidMessageInputListOverlap} bottom={0} right={0} backgroundColor="#fff" />
@@ -76,7 +76,11 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                     </>
                 )}
 
-                {props.topView}
+                {props.topView && (
+                    <View backgroundColor="#ffffff">
+                        {props.topView}
+                    </View>
+                )}
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     {props.attachesEnabled !== false && (

@@ -9,10 +9,12 @@ export function useInfiniteScroll<FetchDataT, DataSourseT>({
     convertToDataSource,
 }: {
     initialLoadFunction: () => FetchDataT;
-    queryOnNeedMore: (a: {
-        currentPage: number;
-        getLastItem: () => DataSourseT;
-    }) => Promise<FetchDataT>;
+    queryOnNeedMore: (
+        a: {
+            currentPage: number;
+            getLastItem: () => DataSourseT;
+        },
+    ) => Promise<FetchDataT>;
     convertToDataSource: (a: FetchDataT) => DataSourseT[];
 }) {
     const [currentPage, setCurrentPage] = React.useState(0);
@@ -39,15 +41,18 @@ export function useInfiniteScroll<FetchDataT, DataSourseT>({
         return dataSource.getAt(dataSource.getSize() - 1);
     };
 
-    React.useEffect(() => {
-        (async () => {
-            const loadedData = await queryOnNeedMore({ currentPage, getLastItem });
-            const converted = convertToDataSource(loadedData);
-            const isCompleted = converted.length === 0;
+    React.useEffect(
+        () => {
+            (async () => {
+                const loadedData = await queryOnNeedMore({ currentPage, getLastItem });
+                const converted = convertToDataSource(loadedData);
+                const isCompleted = converted.length === 0;
 
-            dataSource.loadedMore(convertToDataSource(loadedData), isCompleted);
-        })();
-    }, [currentPage]);
+                dataSource.loadedMore(convertToDataSource(loadedData), isCompleted);
+            })();
+        },
+        [currentPage],
+    );
 
     return { dataSource, renderLoading };
 }

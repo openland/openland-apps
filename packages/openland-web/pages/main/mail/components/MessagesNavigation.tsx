@@ -112,18 +112,16 @@ export const MessagesNavigation = XMemo(
                     />
                 }
                 secondFragmentHeader={
-                    <ErrorBoundary>
-                        <React.Suspense fallback={null}>
-                            {chatId && (
-                                <ChatHeaderViewLoader
-                                    variables={{
-                                        id: chatId,
-                                    }}
-                                />
-                            )}
-                            <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
-                        </React.Suspense>
-                    </ErrorBoundary>
+                    <React.Suspense fallback={null}>
+                        {chatId && (
+                            <ChatHeaderViewLoader
+                                variables={{
+                                    id: chatId,
+                                }}
+                            />
+                        )}
+                        <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                    </React.Suspense>
                 }
                 firstFragment={<DialogListFragment />}
                 secondFragment={

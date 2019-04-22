@@ -114,6 +114,7 @@ export class UserPopper extends React.PureComponent<
                 ref={this.xPopperRef}
                 nodeSelector={this.getXPopperTargetNode}
                 style={noCardOnMe && isMe ? 'dark' : 'default'}
+                zIndex={999}
                 content={
                     <div onMouseEnter={this.showPopper} onMouseLeave={this.hidePopper}>
                         <UserPopperContent

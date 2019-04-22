@@ -8,6 +8,7 @@ mutation RoomUpdate($input: RoomUpdateInput!, $roomId: ID!) {
       description
       id
       photo
+      socialImage
       title
     }
   }

@@ -668,6 +668,7 @@ interface StyledButtonProps extends XFlexStyles {
 const StyledButton = Glamorous.a<StyledButtonProps>([
     {
         display: 'flex', boxSizing: 'border-box',
+        WebkitTapHighlightColor: 'rgba(0,0,0,0)',
         '& .loading-icon': {
             position: 'absolute',
         },

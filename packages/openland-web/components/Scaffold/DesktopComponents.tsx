@@ -335,9 +335,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                 path={`/mail/u/${this.props.id}`}
                             />
                             <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
-                            <XMenuItem
-                                onClick={() => showAppInviteModal()}
-                            >
+                            <XMenuItem onClick={() => showAppInviteModal()}>
                                 {TextGlobal.joinOpenland}
                             </XMenuItem>
                             <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
@@ -411,7 +409,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
 
 const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization }) => {
     const client = useClient();
-    const myorgs = client.useWithoutLoaderMyOrganizations();
+    const myOrgs = client.useMyOrganizations();
     return (
         <XVertical>
             <UserPopper
@@ -420,7 +418,7 @@ const DesktopUserProfile = withUserInfo<{ onClick?: any }>(({ user, organization
                 id={user!!.id}
                 primaryOrganization={organization || undefined}
                 organizations={
-                    myorgs && myorgs.myOrganizations ? myorgs.myOrganizations : undefined
+                    myOrgs && myOrgs.myOrganizations ? myOrgs.myOrganizations : undefined
                 }
             />
         </XVertical>
@@ -490,9 +488,7 @@ export const DesktopScaffold = ({
                                     >
                                         {TextGlobal.addOrganization}
                                     </XMenuItem>
-                                    <XMenuItem
-                                        onClick={() => showCreateOrganization('community')}
-                                    >
+                                    <XMenuItem onClick={() => showCreateOrganization('community')}>
                                         {TextGlobal.addCommunity}
                                     </XMenuItem>
                                 </>

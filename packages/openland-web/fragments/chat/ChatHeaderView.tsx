@@ -5,8 +5,9 @@ import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import {
     UserShort,
-    RoomWithoutMembers_room_SharedRoom,
-    RoomWithoutMembers_room_PrivateRoom,
+    RoomHeader_room_PrivateRoom,
+    RoomHeader_room_SharedRoom,
+    RoomHeader_room,
 } from 'openland-api/Types';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { RoomEditModal } from './RoomEditModal';
@@ -45,7 +46,7 @@ const inviteButtonClass = css`
 `;
 
 export interface ChatHeaderViewProps {
-    room: RoomWithoutMembers_room_SharedRoom | RoomWithoutMembers_room_PrivateRoom;
+    room: RoomHeader_room;
     me: UserShort;
 }
 
@@ -108,14 +109,9 @@ const ChatHeaderViewAbstract = XMemo(
     },
 );
 
-const CallButton = ({
-    room,
-}: {
-    room: RoomWithoutMembers_room_SharedRoom | RoomWithoutMembers_room_PrivateRoom;
-}) => {
+const CallButton = ({ room }: { room: RoomHeader_room }) => {
     let calls = React.useContext(MessengerContext).calls;
     let callsState = calls.useState();
-    // const ctx = React.useContext(TalkContext);
 
     return callsState.conversationId !== room.id ? (
         <XButton
@@ -154,10 +150,9 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const userContext = React.useContext(UserInfoContext);
     const myId = userContext!!.user!!.id!!;
 
-    let sharedRoom =
-        room.__typename === 'SharedRoom' ? (room as RoomWithoutMembers_room_SharedRoom) : null;
+    let sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
     let privateRoom =
-        room.__typename === 'PrivateRoom' ? (room as RoomWithoutMembers_room_PrivateRoom) : null;
+        room.__typename === 'PrivateRoom' ? (room as RoomHeader_room_PrivateRoom) : null;
 
     if (state.useForwardHeader) {
         return (
@@ -208,7 +203,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                         id={room.id}
                         isRoom={true}
                         isOrganization={false}
-                        isChannel={(room as RoomWithoutMembers_room_SharedRoom).isChannel}
+                        isChannel={(room as RoomHeader_room_SharedRoom).isChannel}
                     />
                 </>
             );
@@ -313,18 +308,14 @@ class ErrorBoundary extends React.Component<any, { error: any }> {
 
 export const ChatHeaderViewLoader = (props: {
     variables: {
-        id?: string | false | null;
+        id: string;
     };
 }) => {
-    if (!props.variables.id) {
-        return <div />;
-    }
-    if (!canUseDOM || !props.variables.id) {
+    if (!canUseDOM) {
         return <XLoader loading={true} />;
     }
     const client = useClient();
-
-    let room = client.useRoomWithoutMembers({ id: props.variables.id })!!;
+    let room = client.useRoomHeader({ id: props.variables.id });
     let ctx = React.useContext(UserInfoContext);
     const user = ctx!!.user!!;
 

@@ -16,7 +16,7 @@ const ResizableContent = React.memo(() => {
         }, 1000);
         return () => clearInterval(r);
     }, []);
-    return (<XView height={height} width={100} backgroundColor="red" />)
+    return <XView height={height} width={100} backgroundColor="red" />;
 });
 
 export default withApp('UI Framework - Modals', 'viewer', props => {
@@ -28,29 +28,43 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                     <XTitle>Modals</XTitle>
                     <XButton
                         text="Show Modal"
-                        onClick={() => showModalBox({}, (ctx) => (
-                            <XView paddingHorizontal={20} paddingVertical={24}>
-                                <XButton text="close" onClick={() => ctx.hide()} />
-                            </XView>
-                        ))}
+                        onClick={() =>
+                            showModalBox({}, ctx => (
+                                <XView paddingHorizontal={20} paddingVertical={24}>
+                                    <XButton text="close" onClick={() => ctx.hide()} />
+                                </XView>
+                            ))
+                        }
                     />
                     <XButton
                         text="Show Large"
-                        onClick={() => showModalBox({}, (ctx) => (
-                            <XView paddingHorizontal={20} paddingVertical={24} flexDirection="column">
-                                <XButton text="close" onClick={() => ctx.hide()} />
-                                <XView height={2000} backgroundColor="yellow" />
-                            </XView>
-                        ))}
+                        onClick={() =>
+                            showModalBox({}, ctx => (
+                                <XView
+                                    paddingHorizontal={20}
+                                    paddingVertical={24}
+                                    flexDirection="column"
+                                >
+                                    <XButton text="close" onClick={() => ctx.hide()} />
+                                    <XView height={2000} backgroundColor="yellow" />
+                                </XView>
+                            ))
+                        }
                     />
                     <XButton
                         text="Show Dynamic"
-                        onClick={() => showModalBox({}, (ctx) => (
-                            <XView paddingHorizontal={20} paddingVertical={24} flexDirection="column">
-                                <XButton text="close" onClick={() => ctx.hide()} />
-                                <ResizableContent />
-                            </XView>
-                        ))}
+                        onClick={() =>
+                            showModalBox({}, ctx => (
+                                <XView
+                                    paddingHorizontal={20}
+                                    paddingVertical={24}
+                                    flexDirection="column"
+                                >
+                                    <XButton text="close" onClick={() => ctx.hide()} />
+                                    <ResizableContent />
+                                </XView>
+                            ))
+                        }
                     />
                     {/* <XModal target={<XButton text="Show Modal" />}>
                         <Lorem count={2} />

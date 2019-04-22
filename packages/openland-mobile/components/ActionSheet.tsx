@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { showSheetModal } from './showSheetModal';
 import { ZActionSheetItem, ZActionSheetViewItem } from './ZActionSheetItem';
 import { ZModalController } from './ZModal';
@@ -23,6 +23,17 @@ interface ActionSheetBuilderViewItem {
 export class ActionSheetBuilder {
     private _title?: string;
     private _items: (ActionSheetBuilderActionItem | ActionSheetBuilderViewItem)[] = [];
+    private _flatStyle: boolean;
+
+    constructor() {
+        this._flatStyle = Platform.OS === 'android' ? true : false;
+    }
+
+    makeFlat(): ActionSheetBuilder {
+        this._flatStyle = true;
+
+        return this;
+    }
 
     title(title: string): ActionSheetBuilder {
         this._title = title;
@@ -56,11 +67,11 @@ export class ActionSheetBuilder {
                                     appearance={a.distructive ? 'danger' : 'default'}
                                     name={a.name}
                                     onPress={() => { ctx.hide(); a.callback(); }}
-                                    separator={isPad ? true : (i !== this._items.length - 1)}
+                                    separator={(isPad && !this._flatStyle) ? true : (i !== this._items.length - 1)}
                                 />
                             )}
                             {a.__typename === 'ViewItem' && (
-                                <ZActionSheetViewItem separator={isPad ? true : (i !== this._items.length - 1)}>
+                                <ZActionSheetViewItem separator={(isPad && !this._flatStyle) ? true : (i !== this._items.length - 1)}>
                                     {a.view(ctx)}
                                 </ZActionSheetViewItem>
                             )}
@@ -68,7 +79,7 @@ export class ActionSheetBuilder {
                     ))}
                 </View>
             )
-        });
+        }, this._flatStyle);
     }
 }
 
