@@ -2,24 +2,26 @@ import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ASDataView } from 'react-native-async-view/ASDataView';
-import { DataSourceMessageItem, DataSourceDateItem, ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
 import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Platform, View, TouchableOpacity, Image } from 'react-native';
+import { Clipboard, Platform, View, TouchableOpacity, Image, Text, TouchableNativeFeedback, TextStyle, TouchableWithoutFeedback } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { Prompt } from '../components/Prompt';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, UserShort } from 'openland-api/Types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ServiceMessageDefault } from './components/service/ServiceMessageDefaut';
 import { reactionsImagesMap, defaultReactions, reactionMap } from './components/AsyncMessageReactionsView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -45,7 +47,7 @@ export class MobileMessenger {
                     if (item.serviceMetaData || item.isService) {
                         return (<ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} />);
                     } else {
-                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} />);
+                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />);
                     }
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
@@ -201,6 +203,73 @@ export class MobileMessenger {
         }
 
         builder.show();
+    }
+
+    private handleReactionsClick = (message: DataSourceMessageItem) => {
+        if (message.reactions && message.reactions.length > 0) {
+            let builder = new ActionSheetBuilder();
+    
+            builder.makeFlat();
+    
+            let reactionList: { [key: string]: UserShort[]; } = {};
+    
+            message.reactions.map((r) => {
+                if (!reactionList[r.reaction]) {
+                    reactionList[r.reaction] = [r.user];
+                } else {
+                    reactionList[r.reaction] = [ ...reactionList[r.reaction], r.user];
+                }
+            });
+
+            builder.view((ctx: ZModalController) => (
+                <View flexGrow={1} paddingHorizontal={16} paddingTop={5}>
+                    {Object.keys(reactionList).map((r, i) => {
+                        let users = reactionList[r];
+
+                        return (
+                            <View key={'reaction-' + i} borderTopColor="#e0e3e7" borderTopWidth={i > 0 ? 1 : undefined} paddingTop={15} paddingBottom={14}>
+                                <View marginBottom={9} alignItems="center" flexDirection="row">
+                                    <Image source={reactionsImagesMap[r]} style={{ width: 20, height: 20 }} />
+
+                                    <View flexGrow={1} flexShrink={1} paddingLeft={8}>
+                                        <Text style={{ color: '#000000', fontWeight: TextStyles.weight.medium } as TextStyle}>
+                                            {users.length > 1 ? (users.length + ' people') : '1 person'} reacted with :{r.toLowerCase()}:
+                                        </Text>
+                                    </View>
+                                </View>
+
+                                {users.map((u) => (
+                                    <View marginHorizontal={-16}>
+                                        {Platform.OS === 'android' && (
+                                            <TouchableNativeFeedback onPress={() => { ctx.hide(); this.handleAvatarClick(u.id); }}>
+                                                <View paddingHorizontal={16} paddingVertical={6} flexDirection="row" alignItems="center">
+                                                    <ZAvatar size={28} src={u.photo} placeholderTitle={u.name} placeholderKey={u.id} />
+                                                    <View flexGrow={1} flexShrink={1} paddingLeft={12}>
+                                                        <Text style={{ color: '#000000', fontWeight: TextStyles.weight.medium } as TextStyle}>{u.name}</Text>
+                                                    </View>
+                                                </View>
+                                            </TouchableNativeFeedback>
+                                        )}
+                                        {Platform.OS === 'ios' && (
+                                            <TouchableWithoutFeedback onPress={() => { ctx.hide(); this.handleAvatarClick(u.id); }}>
+                                                <View paddingHorizontal={16} paddingVertical={6} flexDirection="row" alignItems="center">
+                                                    <ZAvatar size={28} src={u.photo} placeholderTitle={u.name} placeholderKey={u.id} />
+                                                    <View flexGrow={1} flexShrink={1} paddingLeft={12}>
+                                                        <Text style={{ color: '#000000', fontWeight: TextStyles.weight.medium } as TextStyle}>{u.name}</Text>
+                                                    </View>
+                                                </View>
+                                            </TouchableWithoutFeedback>
+                                        )}
+                                    </View>
+                                ))}
+                            </View>
+                        );
+                    })}
+                </View>
+            ));
+
+            builder.show();
+        }
     }
 
 }

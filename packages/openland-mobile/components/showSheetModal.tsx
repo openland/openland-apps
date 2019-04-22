@@ -9,7 +9,7 @@ import { ZActionSheetItem } from './ZActionSheetItem';
 import { ZBlurredView } from './ZBlurredView';
 import { isPad } from 'openland-mobile/pages/Root';
 
-class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea }> implements ZModalController {
+class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea, flat: boolean }> implements ZModalController {
 
     key = randomKey();
     contents: any;
@@ -123,6 +123,8 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
     }
 
     render() {
+        const maxScrollHeight = Dimensions.get('screen').height - this.props.safe.top - this.props.safe.bottom - 100;
+
         return (
             <View width="100%" height="100%" flexDirection="column" alignItems="stretch" justifyContent={isPad ? 'center' : 'flex-end'}>
                 <TouchableWithoutFeedback onPress={this.hide}>
@@ -153,61 +155,82 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                 <SAnimated.View
                     name={this.key + '--ctns'}
                     style={{ opacity: 0 }}
+                    pointerEvents={isPad ? 'box-none' : undefined}
                 >
-                    {Platform.OS === 'android' && (
-                        <View
-                            backgroundColor="#ffffff"
-                            borderTopRightRadius={12}
-                            borderTopLeftRadius={12}
-                            paddingBottom={this.props.safe.bottom + 8}
-                            onLayout={this.onLayout}
-                            overflow="hidden"
-                        >
-                            <ScrollView maxHeight={Dimensions.get('screen').height - this.props.safe.top - this.props.safe.bottom - 100}>
-                                {this.contents}
-                            </ScrollView>
-                        </View>
+                    {this.props.flat && (
+                        <>
+                            {!isPad && (
+                                <View
+                                    backgroundColor="#ffffff"
+                                    borderTopRightRadius={12}
+                                    borderTopLeftRadius={12}
+                                    paddingBottom={Platform.select({ ios: undefined, android: this.props.safe.bottom + 8 })}
+                                    onLayout={this.onLayout}
+                                    overflow="hidden"
+                                >
+                                    <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight} contentContainerStyle={{ paddingBottom: Platform.select({ ios: this.props.safe.bottom, android: undefined }) }}>
+                                        {this.contents}
+                                    </ScrollView>
+                                </View>
+                            )}
+                            {isPad && (
+                                <View
+                                    borderRadius={14}
+                                    marginHorizontal={10}
+                                    overflow="hidden"
+                                    width={350}
+                                    alignSelf="center"
+                                    backgroundColor="#ffffff"
+                                    onLayout={this.onLayout}
+                                >
+                                    <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight}>
+                                        {this.contents}
+                                    </ScrollView>
+                                </View>
+                            )}
+                        </>
                     )}
-                    {Platform.OS === 'ios' && !isPad && (
-                        <View onLayout={this.onLayout}>
-                            <ZBlurredView
-                                intensity="high"
-                                borderRadius={14}
-                                marginHorizontal={10}
-                                overflow="hidden"
-                            >
-                                <ScrollView alwaysBounceVertical={false} maxHeight={Dimensions.get('screen').height - this.props.safe.top - this.props.safe.bottom - 100}>
-                                    {this.contents}
-                                </ScrollView>
-                            </ZBlurredView>
-                            <View
-                                borderRadius={14}
-                                backgroundColor="#ffffff"
-                                marginBottom={this.props.safe.bottom}
-                                marginTop={10}
-                                marginHorizontal={10}
-                                overflow="hidden"
-                            >
-                                <ZActionSheetItem name="Cancel" onPress={this.hide} appearance="cancel" separator={false} />
-                            </View>
-                        </View>
-                    )}
-                    {Platform.OS === 'ios' && isPad && (
-                        <View onLayout={this.onLayout}>
-                            <ZBlurredView
-                                intensity="high"
-                                borderRadius={14}
-                                marginHorizontal={10}
-                                overflow="hidden"
-                                width={350}
-                                alignSelf="center"
-                            >
-                                <ScrollView alwaysBounceVertical={false} maxHeight={Dimensions.get('screen').height - this.props.safe.top - this.props.safe.bottom - 100}>
-                                    {this.contents}
+                    {!this.props.flat && (
+                        <View onLayout={this.onLayout} pointerEvents={isPad ? 'box-none' : undefined}>
+                            {!isPad && (
+                                <>
+                                    <ZBlurredView
+                                        intensity="high"
+                                        borderRadius={14}
+                                        marginHorizontal={10}
+                                        overflow="hidden"
+                                    >
+                                        <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight}>
+                                            {this.contents}
+                                        </ScrollView>
+                                    </ZBlurredView>
+                                    <View
+                                        borderRadius={14}
+                                        backgroundColor="#ffffff"
+                                        marginBottom={this.props.safe.bottom}
+                                        marginTop={10}
+                                        marginHorizontal={10}
+                                        overflow="hidden"
+                                    >
+                                        <ZActionSheetItem name="Cancel" onPress={this.hide} appearance="cancel" separator={false} />
+                                    </View>
+                                </>
+                            )}
+                            {isPad && (
+                                <ZBlurredView
+                                    intensity="high"
+                                    borderRadius={14}
+                                    overflow="hidden"
+                                    width={350}
+                                    alignSelf="center"
+                                >
+                                    <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight}>
+                                        {this.contents}
 
-                                    <ZActionSheetItem name="Cancel" onPress={this.hide} appearance="cancel" separator={false} />
-                                </ScrollView>
-                            </ZBlurredView>
+                                        <ZActionSheetItem name="Cancel" onPress={this.hide} appearance="cancel" separator={false} />
+                                    </ScrollView>
+                                </ZBlurredView>
+                            )}
                         </View>
                     )}
                 </SAnimated.View>
@@ -216,11 +239,11 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
     }
 }
 
-export function showSheetModal(render: (ctx: ZModalController) => React.ReactElement<{}>) {
+export function showSheetModal(render: (ctx: ZModalController) => React.ReactElement<{}>, flat: boolean) {
     showModal((modal) => {
         return (
             <ASSafeAreaContext.Consumer>
-                {safe => (<SheetModal ctx={modal} modal={render} safe={safe} />)}
+                {safe => (<SheetModal ctx={modal} modal={render} safe={safe} flat={flat} />)}
             </ASSafeAreaContext.Consumer>
         )
     });
