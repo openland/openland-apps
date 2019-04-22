@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
+import { XLink2 } from 'openland-x/XLink2';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XModal, XModalCloser } from 'openland-x-modal/XModal';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
@@ -202,19 +203,18 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                             justifyContent="space-between"
                         >
                             <XView flexDirection="row" alignItems="center">
-                                <XView
-                                    as="a"
+                                <XLink2
                                     path={'/mail/u/' + sender.id}
                                     color="rgba(0, 0, 0, 0.8)"
                                     hoverTextDecoration="none"
                                     fontWeight="600"
                                     fontSize={14}
+                                    autoClose={true}
                                 >
                                     {sender.name}
-                                </XView>
+                                </XLink2>
                                 {sender.primaryOrganization && (
-                                    <XView
-                                        as="a"
+                                    <XLink2
                                         path={'/mail/o/' + sender.primaryOrganization.id}
                                         hoverTextDecoration="none"
                                         color="rgba(0, 0, 0, 0.4)"
@@ -223,9 +223,10 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                                         fontSize={12}
                                         marginLeft={8}
                                         marginBottom={-2}
+                                        autoClose={true}
                                     >
                                         {sender.primaryOrganization.name}
-                                    </XView>
+                                    </XLink2>
                                 )}
                             </XView>
                             <XView flexDirection="row" alignItems="center">
