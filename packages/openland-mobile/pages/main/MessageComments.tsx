@@ -246,7 +246,6 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                                 onFocus={handleInputFocus}
                                 onBlur={handleInputBlur}
                                 text={inputText}
-                                theme={DefaultConversationTheme}
                                 placeholder="Write a comment..."
                                 suggestions={suggestions}
                                 topView={quoted}
