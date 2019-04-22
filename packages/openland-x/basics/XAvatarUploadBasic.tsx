@@ -13,7 +13,7 @@ import { styleResolver } from 'openland-x-utils/styleResolver';
 
 export interface XAvatarUploadBasicProps {
     placeholder?: { add: any; change: any };
-    value: UploadedFile | null;
+    value?: UploadedFile | null;
     onChange?: (file: UploadedFile | null) => void;
     size?: 'small' | 'xSmall' | 'normal' | 'large' | 'default';
     initialUrl?: string | null;
