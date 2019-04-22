@@ -116,13 +116,15 @@ export const MessengerFragment = React.memo<{ id: string; isActive: boolean }>(p
     const user = ctx!!.user!!;
 
     return (
-        <MessagengerFragmentInner
-            id={props.id}
-            isActive={props.isActive}
-            state={state}
-            user={user}
-            room={data.room || null}
-            client={client}
-        />
+        <React.Suspense fallback={<XLoader loading={true} />}>
+            <MessagengerFragmentInner
+                id={props.id}
+                isActive={props.isActive}
+                state={state}
+                user={user}
+                room={data.room || null}
+                client={client}
+            />
+        </React.Suspense>
     );
 });
