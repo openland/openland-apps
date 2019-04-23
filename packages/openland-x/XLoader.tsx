@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLoadingCircular } from './XLoadingCircular';
+import { XLoadingCircular, XLoadingRound } from './XLoadingCircular';
 
 interface XLoaderProps {
     loading?: boolean;
@@ -21,17 +21,10 @@ const XCardLoaderDiv = Glamorous.div<XLoaderProps>(props => ({
     borderRadius: 8,
     zIndex: 2,
     overflow: 'hidden',
-    '> .loading': {
-        width: 30,
-        height: 30,
-        lineHeight: 'normal',
-        top: 'calc(50% - 15px)',
-        left: 'calc(50% - 15px)',
-    },
 }));
 
 export const XLoader = (props: XLoaderProps) => (
     <XCardLoaderDiv loading={props.loading} height={props.height}>
-        <XLoadingCircular className="loading" color="#334562" />
+        <XLoadingRound />
     </XCardLoaderDiv>
 );
