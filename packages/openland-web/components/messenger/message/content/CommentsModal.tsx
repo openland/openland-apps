@@ -71,10 +71,18 @@ type CommentsInputProps = {
     onChange?: (text: string) => void;
     getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
+    commentsInputRef?: React.RefObject<XRichTextInput2RefMethods | null>;
 };
 
-const CommentsInput = ({ minimal, members, onSend, onSendFile, onChange }: CommentsInputProps) => {
-    const inputRef = React.useRef<XRichTextInput2RefMethods>(null);
+const CommentsInput = ({
+    minimal,
+    members,
+    onSend,
+    onSendFile,
+    onChange,
+    commentsInputRef,
+}: CommentsInputProps) => {
+    const inputRef = commentsInputRef || React.useRef<XRichTextInput2RefMethods>(null);
     const inputMethodsState = useInputMethods({ inputRef, enabled: true });
     const { file } = React.useContext(UploadContext);
 
@@ -130,6 +138,10 @@ const CommentsInput = ({ minimal, members, onSend, onSendFile, onChange }: Comme
 
 export const CommentsInner = () => {
     const client = useClient();
+
+    const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
+
+    const scrollRef = React.useRef<XScrollView3 | null>(null);
 
     let router = React.useContext(XRouterContext)!;
 
@@ -226,6 +238,18 @@ export const CommentsInner = () => {
         return { ...res, depth: getDepthOfComment(item, commentsMap) };
     });
 
+    React.useEffect(() => {
+        if (currentCommentsInputRef.current && scrollRef.current) {
+            const targetElem = currentCommentsInputRef.current.getElement()!!
+                .parentNode as HTMLElement;
+            if (targetElem) {
+                scrollRef.current.scrollToBottomOfElement({
+                    targetElem,
+                });
+            }
+        }
+    }, [showInputId]);
+
     const commentsElements = [];
 
     for (let message of dsMessages) {
@@ -255,6 +279,7 @@ export const CommentsInner = () => {
                 {showInputId === message.key && (
                     <UploadContextProvider>
                         <CommentsInput
+                            commentsInputRef={currentCommentsInputRef}
                             members={members.members}
                             minimal
                             onSend={async (msgToSend, mentions) => {
@@ -319,7 +344,12 @@ export const CommentsInner = () => {
                                 </XView>
 
                                 <XView flexDirection="row" marginBottom={16}>
-                                    <XScrollView3 flexGrow={1} flexShrink={1} height={500}>
+                                    <XScrollView3
+                                        flexGrow={1}
+                                        flexShrink={1}
+                                        height={500}
+                                        ref={scrollRef}
+                                    >
                                         <XView flexGrow={1}>
                                             <XView>{commentsElements}</XView>
                                         </XView>

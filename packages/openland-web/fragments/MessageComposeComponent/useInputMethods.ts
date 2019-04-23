@@ -31,6 +31,13 @@ export function useInputMethods({
         }
     };
 
+    const getElement = () => {
+        if (inputRef.current) {
+            return inputRef.current.getElement();
+        }
+        return null;
+    };
+
     const getMentions = () => {
         if (inputRef.current) {
             return inputRef.current.getMentions();
@@ -52,6 +59,7 @@ export function useInputMethods({
     };
 
     return {
+        getElement,
         focus,
         resetAndFocus,
         getHasFocus,

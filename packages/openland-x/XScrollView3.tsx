@@ -12,8 +12,37 @@ export interface XScrollValues {
 
 export interface XScrollView3Props extends XStyles {
     onScroll?: (values: XScrollValues) => void;
+    innerRef?: any;
     children?: any;
 }
+
+const scrollToTopOfElement = ({
+    scrollContainer,
+    targetElem,
+}: {
+    scrollContainer: HTMLElement;
+    targetElem: HTMLElement;
+}) => {
+    scrollContainer.scrollTop =
+        targetElem.getBoundingClientRect().top -
+        scrollContainer.getBoundingClientRect().top +
+        scrollContainer.scrollTop;
+};
+
+const scrollToBottomOfElement = ({
+    scrollContainer,
+    targetElem,
+}: {
+    scrollContainer: HTMLElement;
+    targetElem: HTMLElement;
+}) => {
+    scrollContainer.scrollTop =
+        targetElem.getBoundingClientRect().top +
+        targetElem.getBoundingClientRect().height -
+        scrollContainer.getBoundingClientRect().height -
+        scrollContainer.getBoundingClientRect().top +
+        scrollContainer.scrollTop;
+};
 
 const NativeScrollStyle = css`
     -webkit-overflow-scrolling: touch;
@@ -29,10 +58,12 @@ const NativeScrollStyle = css`
 
 const NativeBackend = React.memo<{
     onScroll: (values: XScrollValues) => void;
+    innerRef: any;
     children?: any;
 }>(props => {
-    const callback = React.useCallback(src => {
-        if (src) {
+    React.useEffect(() => {
+        if (props.innerRef && props.innerRef.current) {
+            const src = props.innerRef.current;
             src.addEventListener(
                 'scroll',
                 () => {
@@ -47,7 +78,7 @@ const NativeBackend = React.memo<{
     }, []);
 
     return (
-        <div className={NativeScrollStyle} ref={callback}>
+        <div className={NativeScrollStyle} ref={props.innerRef}>
             {props.children}
         </div>
     );
@@ -88,6 +119,7 @@ class CustomBackend extends React.PureComponent<{ onScroll: (values: XScrollValu
 
 export class XScrollView3 extends React.Component<XScrollView3Props> {
     private isWebkit: boolean;
+    nativeBackendElemRef = React.createRef<HTMLDivElement>();
 
     constructor(props: { children?: any }) {
         super(props);
@@ -100,6 +132,24 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
             /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) /* Mobile */ ||
             !!(global as any).require /* Electron */;
     }
+
+    public scrollToTopOfElement = ({ targetElem }: { targetElem: HTMLElement }) => {
+        if (this.nativeBackendElemRef.current) {
+            scrollToTopOfElement({
+                targetElem,
+                scrollContainer: this.nativeBackendElemRef.current,
+            });
+        }
+    };
+
+    public scrollToBottomOfElement = ({ targetElem }: { targetElem: HTMLElement }) => {
+        if (this.nativeBackendElemRef.current) {
+            scrollToBottomOfElement({
+                targetElem,
+                scrollContainer: this.nativeBackendElemRef.current,
+            });
+        }
+    };
 
     private onScroll = (values: XScrollValues) => {
         if (this.props.onScroll) {
@@ -131,7 +181,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
                     flexDirection={props.flexDirection}
                     justifyContent={props.justifyContent}
                 >
-                    <NativeBackend onScroll={this.onScroll}>
+                    <NativeBackend onScroll={this.onScroll} innerRef={this.nativeBackendElemRef}>
                         <XView
                             flexDirection="column"
                             alignItems="stretch"

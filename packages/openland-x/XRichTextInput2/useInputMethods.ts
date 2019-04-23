@@ -3,6 +3,7 @@ import { EditorState, ContentState } from 'draft-js';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 export type XRichTextInput2RefMethods = {
+    getElement: () => HTMLElement | null;
     focus: () => void;
     resetAndFocus: () => void;
     getHasFocus: () => boolean;
@@ -46,6 +47,9 @@ export function useInputMethods({
     };
 
     React.useImperativeHandle<XRichTextInput2RefMethods, any>(ref, () => ({
+        getElement: () => {
+            return editorRef.current.editorContainer;
+        },
         getMentions,
         focus,
         setInputValue: updateEditorStateFromTextAndMentions,
