@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatWatchSubscription, RoomTinyQuery, ChatInitQuery } from 'openland-api';
+import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatInitQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
 import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_ServiceMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
@@ -10,6 +10,7 @@ import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatch
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
+import { MessagesActionsStateEngine } from './MessagesActionsState';
 
 const log = createLogger('Engine-Messages');
 
@@ -145,6 +146,8 @@ export class ConversationEngine implements MessageSendHandler {
     private listeners: ConversationStateHandler[] = [];
     private loadingHistory?: string = undefined;
     private localMessagesMap = new Map<string, string>();
+    readonly messagesActionsState: MessagesActionsStateEngine;
+
     role?: Types.RoomMemberRole | null;
     canEdit?: boolean;
     canSendMessage?: boolean;
@@ -161,6 +164,8 @@ export class ConversationEngine implements MessageSendHandler {
             this.loadBefore();
         });
         // this.dataSourceLogger = new DataSourceLogger('conv:' + conversationId, this.dataSource);
+
+        this.messagesActionsState = new MessagesActionsStateEngine();
     }
 
     start = async () => {
@@ -294,11 +299,19 @@ export class ConversationEngine implements MessageSendHandler {
         if (text.trim().length > 0) {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
-            let actionState = this.engine.messagesActionsState.getState();
+
+            let localActionState = this.messagesActionsState.getState();
+            let globalActionState = this.messagesActionsState.getGlobal().getState();
             let quoted;
-            if (actionState.pendingAction && (actionState.conversationId === this.conversationId || (this.user !== undefined && (actionState.conversationId === this.user.id)))) {
-                quoted = this.engine.messagesActionsState.getState().messages;
-                this.engine.messagesActionsState.clear();
+
+            if (localActionState.action === 'reply') {
+                quoted = this.messagesActionsState.getState().messages;
+                this.messagesActionsState.clear();
+            }
+
+            if (globalActionState.action === 'forward' && globalActionState.conversationId === this.conversationId) {
+                quoted = this.messagesActionsState.getGlobal().getState().messages;
+                this.messagesActionsState.getGlobal().clear();
             }
 
             let key = this.engine.sender.sendMessage({
