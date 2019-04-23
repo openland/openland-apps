@@ -96,113 +96,119 @@ const LinkText = css`
     }
 `;
 
-export const SpannedStringView = React.memo<{ spannedString: SpannedString; isService?: boolean }>(
-    props => {
-        const messagesContextProps = React.useContext(MessagesStateContext);
-        let res: any[] = [];
-        let i = 0;
-        for (let s of props.spannedString.spans) {
-            if (s.type === 'text') {
-                res.push(
-                    <span
-                        key={'text-' + i}
-                        className={cx(
-                            EmojiSpaceStyle,
-                            s.isBig && TextLargeStyle,
-                            s.isInsane && TextInsaneStyle,
-                            s.isRotating && TextRotatingStyle,
-                            s.isOnlyEmoji && TextOnlyEmojiStyle,
-                        )}
-                    >
-                        {s.textEmoji}
-                    </span>,
-                );
-            } else if (s.type === 'link') {
-                let href: string | undefined = s.url || undefined;
-                let path: string | undefined = undefined;
+interface SpannedStringViewProps {
+    spannedString: SpannedString;
+    isService?: boolean;
+}
 
-                let internalLink = isInternalLink(href || '');
+export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
+    const messagesContextProps = React.useContext(MessagesStateContext);
+    let res: any[] = [];
+    let i = 0;
+    for (let s of props.spannedString.spans) {
+        if (s.type === 'text') {
+            res.push(
+                <span
+                    key={'text-' + i}
+                    className={cx(
+                        EmojiSpaceStyle,
+                        s.isBig && TextLargeStyle,
+                        s.isInsane && TextInsaneStyle,
+                        s.isRotating && TextRotatingStyle,
+                        s.isOnlyEmoji && TextOnlyEmojiStyle,
+                    )}
+                >
+                    {s.textEmoji}
+                </span>,
+            );
+        } else if (s.type === 'link') {
+            let href: string | undefined = s.url || undefined;
+            let path: string | undefined = undefined;
 
-                if (internalLink) {
-                    path = makeInternalLinkRelative(href || '');
-                    href = undefined;
-                }
-                let openlandLink: boolean = !!internalLink;
+            let internalLink = isInternalLink(href || '');
 
-                if (messagesContextProps.useForwardHeader) {
-                    path = undefined;
-                    href = undefined;
-                }
+            if (internalLink) {
+                path = makeInternalLinkRelative(href || '');
+                href = undefined;
+            }
+            let openlandLink: boolean = !!internalLink;
 
-                if (!props.isService) {
-                    res.push(
-                        <span key={'link-' + i} className={LinkText}>
-                            <XView
-                                as="a"
-                                target={openlandLink ? undefined : '_blank'}
-                                href={href}
-                                path={path}
-                            >
-                                <SpannedStringView
-                                    spannedString={s.child}
-                                    isService={props.isService}
-                                />
-                            </XView>
-                        </span>,
-                    );
-                }
-            } else if (s.type === 'bold') {
-                res.push(
-                    <span key={'bold-' + i} className={boldTextClassName}>
-                        <SpannedStringView spannedString={s.child} />
-                    </span>,
-                );
-            } else if (s.type === 'group') {
-                res.push(
-                    <LinkToRoom
-                        key={'room-' + i}
-                        text={<SpannedStringView spannedString={s.child} />}
-                        roomId={s.group.id}
-                    />,
-                );
-            } else if (s.type === 'user') {
-                res.push(
-                    <MentionedUser
-                        key={'user-' + i}
-                        isYou={s.user.isYou}
-                        text={<SpannedStringView spannedString={s.child} />}
-                        user={{
-                            __typename: 'User',
-                            id: s.user.id,
-                            name: s.user.name,
-                            firstName: s.user.name,
-                            lastName: null,
-                            photo: s.user.photo,
-                            email: null,
-                            online: false,
-                            lastSeen: null,
-                            isYou: s.user.isYou,
-                            isBot: false,
-                            shortname: null,
-                            primaryOrganization: s.user.primaryOrganization,
-                        }}
-                    />,
-                );
-            } else if (s.type === 'users') {
-                let otherItems: JoinedUserPopperRowProps[] = [];
-                s.users.map(j => {
-                    otherItems.push({
-                        title: j.name,
-                        subtitle: '',
-                        photo: j.photo || '',
-                        id: j.id,
-                    });
-                });
-                res.push(<OthersPopper items={otherItems}>{s.users.length} others</OthersPopper>);
+            if (messagesContextProps.useForwardHeader) {
+                path = undefined;
+                href = undefined;
             }
 
-            i++;
+            if (!props.isService) {
+                res.push(
+                    <span key={'link-' + i} className={LinkText}>
+                        <XView
+                            as="a"
+                            target={openlandLink ? undefined : '_blank'}
+                            href={href}
+                            path={path}
+                            hoverTextDecoration={
+                                messagesContextProps.useForwardHeader ? 'none' : undefined
+                            }
+                        >
+                            <SpannedStringView
+                                spannedString={s.child}
+                                isService={props.isService}
+                            />
+                        </XView>
+                    </span>,
+                );
+            }
+        } else if (s.type === 'bold') {
+            res.push(
+                <span key={'bold-' + i} className={boldTextClassName}>
+                    <SpannedStringView spannedString={s.child} />
+                </span>,
+            );
+        } else if (s.type === 'group') {
+            res.push(
+                <LinkToRoom
+                    key={'room-' + i}
+                    text={<SpannedStringView spannedString={s.child} />}
+                    roomId={s.group.id}
+                />,
+            );
+        } else if (s.type === 'user') {
+            res.push(
+                <MentionedUser
+                    key={'user-' + i}
+                    isYou={s.user.isYou}
+                    text={<SpannedStringView spannedString={s.child} />}
+                    user={{
+                        __typename: 'User',
+                        id: s.user.id,
+                        name: s.user.name,
+                        firstName: s.user.name,
+                        lastName: null,
+                        photo: s.user.photo,
+                        email: null,
+                        online: false,
+                        lastSeen: null,
+                        isYou: s.user.isYou,
+                        isBot: false,
+                        shortname: null,
+                        primaryOrganization: s.user.primaryOrganization,
+                    }}
+                />,
+            );
+        } else if (s.type === 'users') {
+            let otherItems: JoinedUserPopperRowProps[] = [];
+            s.users.map(j => {
+                otherItems.push({
+                    title: j.name,
+                    subtitle: '',
+                    photo: j.photo || '',
+                    id: j.id,
+                });
+            });
+            res.push(<OthersPopper items={otherItems}>{s.users.length} others</OthersPopper>);
         }
-        return <>{res}</>;
-    },
-);
+
+        i++;
+    }
+    return <>{res}</>;
+});
