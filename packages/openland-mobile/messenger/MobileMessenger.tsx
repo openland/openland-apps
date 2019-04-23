@@ -154,6 +154,7 @@ export class MobileMessenger {
         if (message.text) {
             if (message.senderId === this.engine.user.id) {
                 builder.action('Edit', () => {
+                    conversation.messagesActionsState.getGlobal().clearIfNeeded(message.chatId);
                     conversation.messagesActionsState.setState({ messages: [message], action: 'edit' });
                 });
             };

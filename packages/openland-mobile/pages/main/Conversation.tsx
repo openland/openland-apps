@@ -281,7 +281,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
 
         let quoted = null;
-        let edited = null;
 
         if (localActionsState.messages && localActionsState.messages.length > 0 && localActionsState.action === 'reply') {
             quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={localActionsState.messages.map(convertMessageBack)} action="reply" />
@@ -292,9 +291,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
 
         if (localActionsState.messages && localActionsState.messages.length > 0 && localActionsState.action === 'edit') {
-            let messageToEdit = localActionsState.messages.map(convertMessageBack)[0];
-
-            edited = <EditView onClearPress={this.onEditedClearPress} message={messageToEdit} />
+            quoted = <EditView onClearPress={this.onEditedClearPress} message={localActionsState.messages.map(convertMessageBack)[0]} />
         }
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
@@ -358,7 +355,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     onBlur={this.handleBlur}
                                     text={this.state.text}
                                     suggestions={suggestions}
-                                    topView={quoted || edited}
+                                    topView={quoted}
                                     placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message...'}
                                 />
                             )}
