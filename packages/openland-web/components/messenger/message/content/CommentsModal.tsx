@@ -29,6 +29,7 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { convertToMentionInput, UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UploadContextProvider } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -292,6 +293,7 @@ export const CommentsInner = () => {
                 backgroundColor={'rgba(216, 218, 229, 0.45)'}
                 width="100%"
             />
+
             {commentsElements.length ? (
                 <>
                     <XView
@@ -315,10 +317,13 @@ export const CommentsInner = () => {
                                         {messageComments.messageComments.count}
                                     </XView>
                                 </XView>
+
                                 <XView flexDirection="row" marginBottom={16}>
-                                    <XView flexGrow={1}>
-                                        <XView>{commentsElements}</XView>
-                                    </XView>
+                                    <XScrollView3 flexGrow={1} flexShrink={1} height={500}>
+                                        <XView flexGrow={1}>
+                                            <XView>{commentsElements}</XView>
+                                        </XView>
+                                    </XScrollView3>
                                 </XView>
                             </>
                         ) : (
