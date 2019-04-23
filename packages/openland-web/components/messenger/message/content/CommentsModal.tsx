@@ -232,8 +232,14 @@ export const CommentsInner = () => {
             setShowInputId(showInputId === message.key ? null : message.key);
         };
 
+        const offset = (message.depth > 0 ? 44 : 55) * message.depth;
+
         commentsElements.push(
-            <XView key={message.key} marginLeft={(message.depth > 0 ? 44 : 55) * message.depth}>
+            <XView
+                key={message.key}
+                marginLeft={offset}
+                width={`calc(800px - 32px - 32px - ${offset}px)`}
+            >
                 <MessageComponent
                     commentDepth={message.depth}
                     noSelector

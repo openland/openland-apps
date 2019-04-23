@@ -15,7 +15,7 @@ const ForwardIconClassName = css`
     }
 `;
 
-export const PinMessageComponent = React.memo((props: PinMessageComponentProps) => {
+export const PinMessageComponent = React.memo((props: any) => {
     const isMobile = React.useContext(IsMobileContext);
     const { pinMessage, chatId, room } = props;
     const { attachments, sender } = pinMessage;

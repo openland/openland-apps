@@ -203,7 +203,7 @@ const CommentReactionButton = ({
 
     let reactionsCount = reactions ? reactions.length : 0;
     return (
-        <XView flexDirection="row" alignItems="center">
+        <XView flexDirection="row" alignItems="center" position="relative">
             <XView alignItems="center">
                 <LikeIcon
                     isActive={!!isActive}
@@ -223,7 +223,7 @@ const CommentReactionButton = ({
                 />
             </XView>
 
-            <XView marginLeft={3} alignItems="center">
+            <XView alignItems="center" position="absolute" left={20}>
                 <XView fontSize={12} fontWeight={'600'} opacity={0.8}>
                     {reactionsCount ? reactionsCount : null}
                 </XView>
