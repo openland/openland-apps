@@ -3,7 +3,6 @@ import { MessageComments_messageComments_comments_comment, MessageReactionType }
 import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { formatDate } from 'openland-mobile/utils/formatDate';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';

@@ -176,7 +176,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         if (inputRef.current) {
             inputRef.current.focus();
         }
-    }, [inputRef, edited]);
+    }, [inputRef, edited, replied]);
 
     const handleEditPress = React.useCallback((comment: MessageComments_messageComments_comments_comment) => {
         setReplied(undefined);
@@ -186,7 +186,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         if (inputRef.current) {
             inputRef.current.focus();
         }
-    }, [inputRef]);
+    }, [inputRef, edited, replied]);
 
     const handleReplyClear = React.useCallback(() => {
         if (inputText.length <= 0) {
@@ -194,6 +194,11 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         }
 
         setReplied(undefined);
+    }, [inputText]);
+
+    const handleEditClear = React.useCallback(() => {
+        setInputText('');
+        setEdited(undefined);
     }, [inputText]);
 
     const handleInputTextChange = React.useCallback((src: string) => {
@@ -230,7 +235,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     }
 
     if (edited) {
-        quoted = <EditView message={edited} isComment={true} onClearPress={handleReplyClear} />;
+        quoted = <EditView message={edited} isComment={true} onClearPress={handleEditClear} />;
     }
 
     let content = (
