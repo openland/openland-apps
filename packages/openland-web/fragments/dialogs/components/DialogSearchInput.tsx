@@ -30,7 +30,7 @@ let searchStyle = css`
     }
     &:focus-within input,
     &:focus input {
-        background-color: #eceef0;
+        background-color: #ededed;
     }
     &:focus-within svg > path {
         fill: rgba(23, 144, 255, 0.5);
