@@ -12,6 +12,7 @@ import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '../AsyncBubbleView';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 interface MediaContentProps {
     single?: boolean;
@@ -22,6 +23,7 @@ interface MediaContentProps {
     onDocumentPress: (document: DataSourceMessageItem) => void;
     layout: { width: number, height: number },
     compensateBubble?: boolean;
+    theme: AppTheme;
 }
 
 export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeight: number | null }, maxSize?: number) => {

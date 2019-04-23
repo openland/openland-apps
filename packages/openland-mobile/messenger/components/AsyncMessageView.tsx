@@ -13,6 +13,7 @@ import { ASText } from 'react-native-async-view/ASText';
 import { Platform } from 'react-native';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
+import { ServiceMessageDefault } from './service/ServiceMessageDefaut';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -47,6 +48,11 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
 
     let res;
+
+    if (props.message.isService) {
+        return <ServiceMessageDefault message={props.message} onUserPress={handleAvatarPress} theme={theme} />
+    }
+
     if ((props.message.text || props.message.reply || (props.message.attachments && props.message.attachments.length))) {
         res =
             <AsyncMessageContentView theme={theme} key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onAvatarPress} />;
@@ -59,6 +65,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                 </ASFlex>
                 <ASFlex flexDirection="column" marginLeft={Platform.OS === 'android' ? 50 : 40}>
                     <TextContent
+                        theme={theme}
                         padded={false}
                         fontStyle="italic"
                         message={{ ...props.message, spans: undefined, attachments: [], text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }}

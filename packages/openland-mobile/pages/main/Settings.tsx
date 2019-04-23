@@ -11,6 +11,7 @@ import Rate from 'react-native-rate';
 import { CenteredHeader } from './components/CenteredHeader';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { useClient } from 'openland-mobile/utils/useClient';
+import { NON_PRODUCTION } from '../Init';
 
 let useOnlineState = () => {
     let [status, setStatus] = React.useState(useClient().client.status);
@@ -48,7 +49,7 @@ let SettingsContent = ((props: PageProps) => {
                 action="Edit profile"
             />
             <ZListItemGroup header="Settings" divider={false}>
-                {isSuper && (
+                {NON_PRODUCTION && (
                     <ZListItem
                         leftIconColor="#eb7272"
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-appearance-24.png') : require('assets/ic-appearance-fill-24.png')}
@@ -109,7 +110,7 @@ let SettingsContent = ((props: PageProps) => {
                     />
                 ))}
             </ZListItemGroup>
-            {(isSuper || __DEV__) && (
+            {(NON_PRODUCTION) && (
                 <ZListItemGroup header={null} divider={false}>
                     <ZListItem text="Developer Menu" path="Dev" />
                 </ZListItemGroup>

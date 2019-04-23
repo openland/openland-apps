@@ -12,12 +12,14 @@ import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView'
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_quotedMessages_GeneralMessage } from 'openland-api/Types';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 interface ReplyContentProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
+    theme: AppTheme;
 }
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
@@ -70,7 +72,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         fontWeight={TextStyles.weight.regular}
                                     >
 
-                                        {preprocessText(generalMesage!.message!, generalMesage.spans).map((p: Span, j: number) => renderPreprocessedText(p, j, this.props.message, this.props.onUserPress))}
+                                        {preprocessText(generalMesage!.message!, generalMesage.spans).map((p: Span, j: number) => renderPreprocessedText(p, j, this.props.message, this.props.theme, this.props.onUserPress))}
                                         {(!this.props.message.text && (i + 1 === this.props.message.reply!!.length)) ? (this.props.message.isOut ? paddedTextOut : paddedText) : undefined}
                                     </ASText>}
                                     {attachFile && attachFile.fileMetadata.isImage ? <AsyncReplyMessageMediaView attach={attachFile} onPress={this.props.onMediaPress} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}

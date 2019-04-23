@@ -17,7 +17,6 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { ConversationTheme, ConversationThemeResolver, DefaultConversationTheme } from './themes/ConversationThemeResolver';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
@@ -36,15 +35,17 @@ import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { MessagesActonsState } from 'openland-engines/messenger/MessagesActonsState';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
+import { AppTheme } from 'openland-mobile/themes/themes';
+import { SBlurView } from 'react-native-s/SBlurView';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
     chat: Room_room;
+    theme: AppTheme;
 }
 
 interface ConversationRootState {
     text: string;
-    theme: ConversationTheme;
     mentionedUsers: UserShort[];
     inputFocused: boolean;
     selection: {
@@ -64,7 +65,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         this.engine = this.props.engine.getConversation(this.props.chat.id);
         this.state = {
             text: '',
-            theme: DefaultConversationTheme,
             selection: {
                 start: 0,
                 end: 0.
@@ -85,7 +85,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     componentWillMount() {
-        ConversationThemeResolver.subscribe(this.props.chat.id, t => this.setState({ theme: t })).then(s => this.themeSub = s);
         getMessenger().engine.messagesActionsState.listen(messagesActionsState => this.setState({ messagesActionsState }));
     }
 
@@ -264,37 +263,37 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
-                            <ConversationView inverted={true} engine={this.engine} theme={this.state.theme} />
+                            <ConversationView inverted={true} engine={this.engine} />
 
                             {sharedRoom && sharedRoom.pinnedMessage && (
                                 <ASSafeAreaContext.Consumer>
                                     {area => (
-                                        <ZBlurredView intensity="normal" position="absolute" top={area.top} left={0} right={0} zIndex={2} borderBottomColor="#eff0f2" borderBottomWidth={1}>
+                                        <SBlurView blurType={this.props.theme.blurType} color={this.props.theme.headerColor} position="absolute" top={area.top} left={0} right={0} zIndex={2} borderBottomColor={this.props.theme.separatorColor} borderBottomWidth={1}>
                                             <TouchableWithoutFeedback onPress={() => this.handlePinnedMessagePress(sharedRoom!.pinnedMessage!.id)}>
                                                 <View flexDirection="row" paddingRight={16}>
                                                     <View width={50} height={52} alignItems="center" justifyContent="center">
-                                                        <Image style={{ width: 16, height: 16, tintColor: '#1790ff' }} source={require('assets/ic-pinned.png')} />
+                                                        <Image style={{ width: 16, height: 16, tintColor: this.props.theme.accentColor }} source={require('assets/ic-pinned.png')} />
                                                     </View>
 
                                                     <View height={52} flexGrow={1} flexShrink={1} paddingTop={9}>
                                                         <View flexDirection="row">
-                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: '#000', fontWeight: TextStyles.weight.medium } as TextStyle}>
+                                                            <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.textColor, fontWeight: TextStyles.weight.medium } as TextStyle}>
                                                                 {sharedRoom!.pinnedMessage!.sender.name}
                                                             </Text>
 
                                                             {sharedRoom!.pinnedMessage!.sender.primaryOrganization &&
-                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: '#99a2b0', marginLeft: 8, fontWeight: TextStyles.weight.medium } as TextStyle}>
+                                                                <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.textColor, marginLeft: 8, fontWeight: TextStyles.weight.medium } as TextStyle}>
                                                                     {sharedRoom!.pinnedMessage!.sender.primaryOrganization!.name}
                                                                 </Text>
                                                             }
                                                         </View>
-                                                        <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: 1, opacity: 0.8, lineHeight: 21 } as TextStyle}>
+                                                        <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: 1, opacity: 0.8, lineHeight: 21, color: this.props.theme.textColor } as TextStyle}>
                                                             {formatMessage(sharedRoom!.pinnedMessage as any)}
                                                         </Text>
                                                     </View>
                                                 </View>
                                             </TouchableWithoutFeedback>
-                                        </ZBlurredView>
+                                        </SBlurView>
                                     )}
                                 </ASSafeAreaContext.Consumer>
                             )}
@@ -308,7 +307,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     onFocus={this.handleFocus}
                                     onBlur={this.handleBlur}
                                     text={this.state.text}
-                                    theme={this.state.theme}
                                     suggestions={suggestions}
                                     topView={quoted}
                                     placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message...'}
@@ -398,7 +396,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
 
     return (
         <View flexDirection={'column'} height="100%" width="100%">
-            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} />
+            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} theme={theme} />
             <ASSafeAreaContext.Consumer>
                 {safe => <View position="absolute" top={safe.top} right={0} left={0}><CallBarComponent id={(sharedRoom || privateRoom)!.id} /></View>}
             </ASSafeAreaContext.Consumer>

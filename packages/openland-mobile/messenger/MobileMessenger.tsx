@@ -44,11 +44,7 @@ export class MobileMessenger {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
-                    if (item.serviceMetaData || item.isService) {
-                        return (<ServiceMessageDefault message={item} onUserPress={this.handleAvatarClick} />);
-                    } else {
-                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />);
-                    }
+                    return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />);
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
                 }
@@ -208,16 +204,16 @@ export class MobileMessenger {
     private handleReactionsClick = (message: DataSourceMessageItem) => {
         if (message.reactions && message.reactions.length > 0) {
             let builder = new ActionSheetBuilder();
-    
+
             builder.makeFlat();
-    
+
             let reactionList: { [key: string]: UserShort[]; } = {};
-    
+
             message.reactions.map((r) => {
                 if (!reactionList[r.reaction]) {
                     reactionList[r.reaction] = [r.user];
                 } else {
-                    reactionList[r.reaction] = [ ...reactionList[r.reaction], r.user];
+                    reactionList[r.reaction] = [...reactionList[r.reaction], r.user];
                 }
             });
 

@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { isEmoji } from 'openland-y-utils/isEmoji';
-import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import { AppTheme } from 'openland-mobile/themes/themes';
 interface TextContentProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
@@ -16,10 +16,11 @@ interface TextContentProps {
     onDocumentPress: (document: DataSourceMessageItem) => void;
     padded?: boolean;
     fontStyle?: 'italic' | 'normal';
+    theme: AppTheme;
 }
 export class TextContent extends React.PureComponent<TextContentProps> {
     render() {
-        let mainTextColor = this.props.message.isOut ? DefaultConversationTheme.textColorOut : DefaultConversationTheme.textColorIn;
+        let mainTextColor = this.props.message.isOut ? this.props.theme.textColorOut : this.props.theme.textColor;
 
         let singleEmoji = false;
         let textSticker = false;
@@ -35,7 +36,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
         }
         let preprocessed = preprocessText(message.text || '', message.spans);
 
-        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, message, this.props.onUserPress));
+        let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, message, this.props.theme, this.props.onUserPress));
         if (message.title) {
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{message.title}</ASText>);

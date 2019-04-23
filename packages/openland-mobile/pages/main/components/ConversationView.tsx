@@ -10,22 +10,23 @@ import LinearGradient from 'react-native-linear-gradient';
 import { ConversationTheme } from '../themes/ConversationThemeResolver';
 import { trackEvent } from 'openland-mobile/analytics';
 import { SRouter } from 'react-native-s/SRouter';
+import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
-    theme: ConversationTheme;
     messagesPaddingBottom?: number;
     inverted: boolean;
 }
 export const androidMessageInputListOverlap = 50;
 
-class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number }, { conversation: ConversationState }> implements ConversationStateHandler {
+class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     // private listRef = React.createRef<ConversationMessagesView>();
     private rotation = new Animated.Value(0);
 
-    constructor(props: MessagesListProps & { bottomInset: number, topInset: number, }) {
+    constructor(props: MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme }) {
         super(props);
         let initialState = props.engine.getState();
 
@@ -85,9 +86,9 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
-                {!this.state.conversation.loading && <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={this.props.theme.bubbleColorOut} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />}
+                {!this.state.conversation.loading && <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={this.props.theme.bubbleGradientOut} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />}
 
-                {this.props.theme.spiral && !this.state.conversation.loading && <Animated.View style={{ left: (screenWidth - screenHeight), position: 'absolute', transform: [{ rotate: this.rotation, scale: 1.3 }] }}>
+                {/* {this.props.theme.spiral && !this.state.conversation.loading && <Animated.View style={{ left: (screenWidth - screenHeight), position: 'absolute', transform: [{ rotate: this.rotation, scale: 1.3 }] }}>
                     <View
                         style={{ opacity: 0.1, left: 0, top: 0, width: screenHeight, height: screenHeight }}
                     >
@@ -99,7 +100,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                             }}
                         />
                     </View>
-                </Animated.View>}
+                </Animated.View>} */}
                 <ConversationMessagesView
                     // ref={this.listRef}
                     inverted={this.props.inverted}
@@ -127,9 +128,10 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 }
 
 export const ConversationView = (props: MessagesListProps) => {
+    let theme = React.useContext(ThemeContext);
     return (
         <ASSafeAreaContext.Consumer>
-            {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} />)}
+            {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} theme={theme} />)}
         </ASSafeAreaContext.Consumer>
     );
 };

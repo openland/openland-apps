@@ -51,6 +51,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
 
     render() {
         let bgColor = this.props.theme.backgroundColor;
+        let headerColor = this.props.theme.headerColor;
         let textColor = this.props.theme.textColor;
         let blurType = this.props.theme.blurType;
         let accentColor = this.props.theme.accentColor;
@@ -59,6 +60,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
             backgroundColor: bgColor,
             textColor,
             blurType,
+            headerColor,
             isOpaque: Platform.OS === 'ios' && blurType !== 'dark' ? false : true,
             hairlineColor: this.props.theme.hairlineColor,
             keyboardAppearance: this.props.theme.keyboardAppearance

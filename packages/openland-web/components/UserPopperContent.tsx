@@ -136,6 +136,10 @@ const UserPopperContent = XMemo(
                                 style="primary"
                                 text="Direct chat"
                                 size="small"
+                                autoClose={true}
+                                onClick={(e: any) => {
+                                    e.stopPropagation();
+                                }}
                             />
                         )}
                         <XButton
@@ -143,6 +147,10 @@ const UserPopperContent = XMemo(
                             style="electric"
                             text={isMe ? 'My profile' : 'View profile'}
                             size="small"
+                            autoClose={true}
+                            onClick={(e: any) => {
+                                e.stopPropagation();
+                            }}
                         />
                     </Buttons>
                 </Wrapper>

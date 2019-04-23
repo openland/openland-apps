@@ -1,35 +1,53 @@
 import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
-import { Container } from './views/Container';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
 import { renderPreprocessedText } from '../AsyncMessageContentView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { AppTheme } from 'openland-mobile/themes/themes';
+import { ASFlex } from 'react-native-async-view/ASFlex';
 
 export interface ServiceMessageDefaultProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
+    theme: AppTheme;
 }
 
 export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
     let preprocessed = preprocessText(props.message.text || '', props.message.spans);
 
-    let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, props.message, props.onUserPress));
+    let parts = preprocessed.map((span, i) => renderPreprocessedText(span, i, props.message, props.theme, props.onUserPress));
 
     return (
-        <Container>
-            <ASText
-                color={DefaultConversationTheme.serviceTextColor}
-                fontSize={12}
-                lineHeight={17}
-                height={20}
-                marginLeft={6}
-                fontWeight={TextStyles.weight.medium}
-                marginRight={6}
+        <ASFlex
+            backgroundColor={props.theme.backgroundColor}
+            flexDirection="column"
+
+            alignItems="center"
+        >
+            <ASFlex
+                marginTop={16}
+                marginBottom={8}
+                // backgroundColor="rgba(153,162,176,0.6)"
+                // borderRadius={10}
+                marginLeft={10}
+                marginRight={10}
+                flexDirection="column"
+                alignItems="center"
             >
-                {parts}
-            </ASText>
-        </Container>
+                <ASText
+                    color={props.theme.textSecondaryColor}
+                    fontSize={12}
+                    lineHeight={17}
+                    height={20}
+                    marginLeft={6}
+                    fontWeight={TextStyles.weight.medium}
+                    marginRight={6}
+                >
+                    {parts}
+                </ASText>
+            </ASFlex >
+        </ASFlex >
     );
 };

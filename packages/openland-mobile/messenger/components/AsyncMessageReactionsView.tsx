@@ -33,15 +33,15 @@ export let reactionMap = {
 
 export const extractReactionsSorted = (reactions: FullMessage_GeneralMessage_reactions[]) => {
     let reactionsReduced = reactions.reduce(
-            (res, r) => {
-                let data = res.get(r.reaction) || { reaction: r.reaction, count: 0, my: false };
-                data.count++;
-                data.my = data.my || r.user.id === getMessenger().engine.user.id;
-                res.set(r.reaction, data);
-                return res;
-            },
-            new Map<string, { count: number, my: boolean, reaction: string }>()
-        );
+        (res, r) => {
+            let data = res.get(r.reaction) || { reaction: r.reaction, count: 0, my: false };
+            data.count++;
+            data.my = data.my || r.user.id === getMessenger().engine.user.id;
+            res.set(r.reaction, data);
+            return res;
+        },
+        new Map<string, { count: number, my: boolean, reaction: string }>()
+    );
     let reactionsSorted = [...reactionsReduced.values()].sort((a, b) => a.count - b.count);
     let users = reactions
         .reduce(
@@ -102,7 +102,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
                 )}
 
                 {reactions.reactionsSorted.length > 0 && (
-                    <ASFlex backgroundColor="#f3f5f7" borderRadius={13} onPress={props.onReactionsPress}>
+                    <ASFlex backgroundColor={theme.reactionBackground} borderRadius={13} onPress={props.onReactionsPress}>
                         <ASFlex marginLeft={5} marginRight={1} height={26} alignItems="center" justifyContent="center">
                             {[...reactions.reactionsSorted].map((i) =>
                                 (

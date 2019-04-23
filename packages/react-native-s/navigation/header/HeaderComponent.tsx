@@ -25,8 +25,8 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
 
                 {/* Background and Hairline */}
                 <SAnimated.View name={'header-background-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
-                    {this.props.style.isOpaque && (<View style={{ width: '100%', height: Platform.OS === 'ios' ? MAX_SIZE : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top, backgroundColor: this.props.style.backgroundColor }} />)}
-                    {!this.props.style.isOpaque && (<SBlurView style={{ width: '100%', height: Platform.OS === 'ios' ? MAX_SIZE : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top }} color={this.props.style.backgroundColor} blurType={this.props.style.blurType} />)}
+                    {this.props.style.isOpaque && (<View style={{ width: '100%', height: Platform.OS === 'ios' ? MAX_SIZE : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top, backgroundColor: this.props.style.headerColor }} />)}
+                    {!this.props.style.isOpaque && (<SBlurView style={{ width: '100%', height: Platform.OS === 'ios' ? MAX_SIZE : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top }} color={this.props.style.headerColor} blurType={this.props.style.blurType} />)}
                 </SAnimated.View>
 
                 {Platform.OS !== 'android' && (

@@ -8,6 +8,7 @@
 
 import Foundation
 import Apollo
+import Soyuz
 
 class ActiveSubscription {
   let key: String
@@ -115,6 +116,8 @@ class RNGraphqlClient: WebSocketTransportDelegate {
 //           print("Loading storage: \(storage) at \(path.absoluteURL)")
 //           let engine = try RNGraphQLPersistenceSQL(fileURL:  url)
           let engine = try RNGraphQLPersistenceLevelDB(name: "\(s)-\(RNGraphQLPersistenceLevelDB.VERSION)")
+//           let engine = try RNGraphQLPersistenceSoyuz(name: "\(s)-\(RNGraphQLPersistenceLevelDB.VERSION)")
+          // let c = try RNGraphqlSQLSQLCache(engine: engine)
           let c = try RNGraphqlSQLSQLCache(engine: engine)
           sqlCaches[s] = c
           cache = c
