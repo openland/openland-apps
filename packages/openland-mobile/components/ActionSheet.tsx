@@ -23,14 +23,14 @@ interface ActionSheetBuilderViewItem {
 export class ActionSheetBuilder {
     private _title?: string;
     private _items: (ActionSheetBuilderActionItem | ActionSheetBuilderViewItem)[] = [];
-    private _flatStyle: boolean;
+    private _flat: boolean;
 
     constructor() {
-        this._flatStyle = Platform.OS === 'android' ? true : false;
+        this._flat = Platform.OS === 'android' ? true : false;
     }
 
-    makeFlat(): ActionSheetBuilder {
-        this._flatStyle = true;
+    flat(): ActionSheetBuilder {
+        this._flat = true;
 
         return this;
     }
@@ -67,11 +67,11 @@ export class ActionSheetBuilder {
                                     appearance={a.distructive ? 'danger' : 'default'}
                                     name={a.name}
                                     onPress={() => { ctx.hide(); a.callback(); }}
-                                    separator={(isPad && !this._flatStyle) ? true : (i !== this._items.length - 1)}
+                                    separator={(isPad && !this._flat) ? true : (i !== this._items.length - 1)}
                                 />
                             )}
                             {a.__typename === 'ViewItem' && (
-                                <ZActionSheetViewItem separator={(isPad && !this._flatStyle) ? true : (i !== this._items.length - 1)}>
+                                <ZActionSheetViewItem separator={(isPad && !this._flat) ? true : (i !== this._items.length - 1)}>
                                     {a.view(ctx)}
                                 </ZActionSheetViewItem>
                             )}
@@ -79,7 +79,7 @@ export class ActionSheetBuilder {
                     ))}
                 </View>
             )
-        }, this._flatStyle);
+        }, this._flat);
     }
 }
 
