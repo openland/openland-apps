@@ -195,10 +195,8 @@ const NotCompactShortMessageContainerWrapper = ({
             flexDirection="row"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            marginTop={12}
-            paddingTop={7}
+            marginTop={20}
             paddingRight={20}
-            paddingBottom={3}
         >
             {children}
         </XView>

@@ -3,26 +3,29 @@ import Glamorous from 'glamorous';
 import { XRichTextInput2 } from 'openland-x/XRichTextInput2';
 import { TextInputComponentInnerT } from '../DumpSendMessage';
 
-export const TextInputWrapper = Glamorous.div({
-    flexGrow: 1,
-    maxHeight: '100%',
-    maxWidth: '100%',
-    '& > div': {
+export const TextInputWrapper = Glamorous.div<{ minimal?: boolean }>(({ minimal }) => {
+    return {
+        flexGrow: 1,
+        marginBottom: minimal ? '0 !important' : undefined,
         maxHeight: '100%',
-        height: '100%',
-        '& .DraftEditor-root': {
-            overflow: 'auto',
-            borderRadius: 10,
-            backgroundColor: '#ffffff',
-            border: 'solid 1px #ececec',
-            minHeight: 40,
-            maxHeight: 255,
-            paddingTop: 9,
-            paddingBottom: 9,
-            paddingLeft: 16,
-            paddingRight: 40,
+        maxWidth: '100%',
+        '& > div': {
+            maxHeight: '100%',
+            height: '100%',
+            '& .DraftEditor-root': {
+                overflow: 'auto',
+                borderRadius: 10,
+                backgroundColor: '#ffffff',
+                border: 'solid 1px #ececec',
+                minHeight: minimal ? undefined : 40,
+                maxHeight: 255,
+                paddingTop: minimal ? 9 : 9,
+                paddingBottom: minimal ? 9 : 9,
+                paddingLeft: 16,
+                paddingRight: minimal ? 75 : 40,
+            },
         },
-    },
+    };
 });
 
 export const DesktopSendMessage = ({
@@ -37,7 +40,7 @@ export const DesktopSendMessage = ({
     round,
 }: TextInputComponentInnerT) => {
     return (
-        <TextInputWrapper>
+        <TextInputWrapper minimal={minimal}>
             <XRichTextInput2
                 minimal={minimal}
                 hideAttach={hideAttach}

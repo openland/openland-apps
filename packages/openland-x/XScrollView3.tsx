@@ -41,13 +41,19 @@ const scrollToBottomOfElement = ({
     targetElem: HTMLElement;
     offset?: number;
 }) => {
-    scrollContainer.scrollTop =
-        targetElem.getBoundingClientRect().top +
-        targetElem.getBoundingClientRect().height -
+    const bottom =
+        targetElem.getBoundingClientRect().top + targetElem.getBoundingClientRect().height;
+
+    const newScrollTop =
+        bottom -
         scrollContainer.getBoundingClientRect().height -
         scrollContainer.getBoundingClientRect().top +
         scrollContainer.scrollTop +
         (offset || 0);
+
+    if (scrollContainer.scrollTop < newScrollTop) {
+        scrollContainer.scrollTop = newScrollTop;
+    }
 };
 
 const NativeScrollStyle = css`
