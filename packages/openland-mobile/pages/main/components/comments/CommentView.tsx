@@ -19,8 +19,12 @@ const styles = StyleSheet.create({
         fontWeight: TextStyles.weight.medium,
         lineHeight: 15
     } as TextStyle,
+    editedLabel: {
+        fontSize: 13,
+        lineHeight: 15,
+        paddingLeft: 4,
+    } as TextStyle,
     date: {
-        color: '#99a2b0',
         fontSize: 13,
         fontWeight: TextStyles.weight.medium,
         lineHeight: 15,
@@ -103,7 +107,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let tools = (
         <View flexDirection="row" marginTop={4}>
-            <ZRelativeDate style={styles.date} date={date} />
+            <ZRelativeDate style={[styles.date, { color: '#99a2b0' }]} date={date} />
 
             {!deleted && (
                 <View marginLeft={12}>
@@ -153,6 +157,8 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                                 {avatar}
 
                                 <Text style={[styles.senderName, { color: !deleted ? theme.accentColor : 'rgba(0, 0, 0, 0.5)' }]} allowFontScaling={false}>{sender.name}</Text>
+
+                                {comment.edited && <Text style={[styles.editedLabel, { color: '#99a2b0' }]}>Edited</Text>}
                             </View>
                         </TouchableWithoutFeedback>
 
