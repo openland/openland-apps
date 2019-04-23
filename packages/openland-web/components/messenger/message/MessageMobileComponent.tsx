@@ -262,19 +262,19 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
     }
 
     // Handle unknown messages: display empty message
-    if (content.length === 0) {
-        content.push(
-            <MessageTextComponent
-                message={
-                    'Message is not supported on your version of Openland. Please refresh the page to view it.'
-                }
-                spans={[]}
-                key={'text'}
-                isService={false}
-                isEdited={!!message.isEdited}
-            />,
-        );
-    }
+    // if (content.length === 0) {
+    //     content.push(
+    //         <MessageTextComponent
+    //             message={
+    //                 'Message is not supported on your version of Openland. Please refresh the page to view it.'
+    //             }
+    //             spans={[]}
+    //             key={'text'}
+    //             isService={false}
+    //             isEdited={!!message.isEdited}
+    //         />,
+    //     );
+    // }
 
     if (!message.isService) {
         return (
