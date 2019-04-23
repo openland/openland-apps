@@ -71,9 +71,6 @@
 		AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */; };
 		AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAC60B56215AF2D3005E09BA /* Auth0.plist */; };
 		AAC9F61F226E08B6003D6F2C /* RNGraphQLPersistenceSoyuz.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC9F61E226E08B6003D6F2C /* RNGraphQLPersistenceSoyuz.swift */; };
-		AAC9F623226E0967003D6F2C /* Soyuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAC9F622226E0967003D6F2C /* Soyuz.framework */; };
-		AAC9F624226F15EE003D6F2C /* Soyuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAC9F622226E0967003D6F2C /* Soyuz.framework */; };
-		AAC9F625226F15EE003D6F2C /* Soyuz.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAC9F622226E0967003D6F2C /* Soyuz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AACF26262260987200C565E4 /* RNGraphQLPersistenceSQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACF26252260987200C565E4 /* RNGraphQLPersistenceSQL.swift */; };
 		AACF262822609B7E00C565E4 /* RNGraphQLPersistenceLevelDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACF262722609B7E00C565E4 /* RNGraphQLPersistenceLevelDB.swift */; };
 		AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; };
@@ -237,7 +234,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				AACF26442260A90100C565E4 /* SwiftStore.framework in Embed Frameworks */,
-				AAC9F625226F15EE003D6F2C /* Soyuz.framework in Embed Frameworks */,
 				AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -351,7 +347,6 @@
 		AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNSAuth0-Bridge.m"; sourceTree = "<group>"; };
 		AAC60B56215AF2D3005E09BA /* Auth0.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Auth0.plist; sourceTree = "<group>"; };
 		AAC9F61E226E08B6003D6F2C /* RNGraphQLPersistenceSoyuz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphQLPersistenceSoyuz.swift; sourceTree = "<group>"; };
-		AAC9F622226E0967003D6F2C /* Soyuz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Soyuz.framework; sourceTree = "<group>"; };
 		AACF26252260987200C565E4 /* RNGraphQLPersistenceSQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphQLPersistenceSQL.swift; sourceTree = "<group>"; };
 		AACF262722609B7E00C565E4 /* RNGraphQLPersistenceLevelDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphQLPersistenceLevelDB.swift; sourceTree = "<group>"; };
 		AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftStore.xcodeproj; path = Vendor/SwiftStore/SwiftStore.xcodeproj; sourceTree = "<group>"; };
@@ -404,10 +399,8 @@
 				AAD8F1582208A60A007C4FE3 /* libc.tbd in Frameworks */,
 				AAD8F15E2208A7C3007C4FE3 /* WebRTC.framework in Frameworks */,
 				AAD8F1562208A601007C4FE3 /* VideoToolbox.framework in Frameworks */,
-				AAC9F624226F15EE003D6F2C /* Soyuz.framework in Frameworks */,
 				AAD8F1542208A5FC007C4FE3 /* CoreVideo.framework in Frameworks */,
 				AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */,
-				AAC9F623226E0967003D6F2C /* Soyuz.framework in Frameworks */,
 				AAD8F1522208A5F7007C4FE3 /* CoreAudio.framework in Frameworks */,
 				AAD8F1502208A5F2007C4FE3 /* GLKit.framework in Frameworks */,
 				AAD8F14E2208A5EA007C4FE3 /* CoreGraphics.framework in Frameworks */,
@@ -523,7 +516,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				AAC9F622226E0967003D6F2C /* Soyuz.framework */,
 				AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */,
 				AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */,
 			);
