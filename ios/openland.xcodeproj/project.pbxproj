@@ -72,6 +72,8 @@
 		AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAC60B56215AF2D3005E09BA /* Auth0.plist */; };
 		AAC9F61F226E08B6003D6F2C /* RNGraphQLPersistenceSoyuz.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC9F61E226E08B6003D6F2C /* RNGraphQLPersistenceSoyuz.swift */; };
 		AAC9F623226E0967003D6F2C /* Soyuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAC9F622226E0967003D6F2C /* Soyuz.framework */; };
+		AAC9F624226F15EE003D6F2C /* Soyuz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAC9F622226E0967003D6F2C /* Soyuz.framework */; };
+		AAC9F625226F15EE003D6F2C /* Soyuz.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAC9F622226E0967003D6F2C /* Soyuz.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AACF26262260987200C565E4 /* RNGraphQLPersistenceSQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACF26252260987200C565E4 /* RNGraphQLPersistenceSQL.swift */; };
 		AACF262822609B7E00C565E4 /* RNGraphQLPersistenceLevelDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACF262722609B7E00C565E4 /* RNGraphQLPersistenceLevelDB.swift */; };
 		AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; };
@@ -235,6 +237,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				AACF26442260A90100C565E4 /* SwiftStore.framework in Embed Frameworks */,
+				AAC9F625226F15EE003D6F2C /* Soyuz.framework in Embed Frameworks */,
 				AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -401,6 +404,7 @@
 				AAD8F1582208A60A007C4FE3 /* libc.tbd in Frameworks */,
 				AAD8F15E2208A7C3007C4FE3 /* WebRTC.framework in Frameworks */,
 				AAD8F1562208A601007C4FE3 /* VideoToolbox.framework in Frameworks */,
+				AAC9F624226F15EE003D6F2C /* Soyuz.framework in Frameworks */,
 				AAD8F1542208A5FC007C4FE3 /* CoreVideo.framework in Frameworks */,
 				AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */,
 				AAC9F623226E0967003D6F2C /* Soyuz.framework in Frameworks */,
