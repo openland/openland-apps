@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { XViewRouterContext, XViewRouteContext, XViewRoute } from 'react-mental';
-import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import { DialogSearchInput } from './DialogSearchInput';
 import { XListView } from 'openland-web/components/XListView';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { XButton } from 'openland-x/XButton';
 import { DialogView } from './DialogView';
 import { DialogSearchResults } from './DialogSearchResults';
 import { XShortcuts } from 'openland-x/XShortcuts';
@@ -14,10 +12,7 @@ import { XInput } from 'openland-x/XInput';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { dialogListWebDataSource, DialogListWebItem } from './DialogListWebDataSource';
-
-const LoadingWrapper = Glamorous.div({
-    height: 60,
-});
+import { XLoader } from 'openland-x/XLoader';
 
 const dialogSearchWrapperClassName = css`
     justify-content: flex-start !important;
@@ -59,9 +54,9 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     const renderLoading = React.useMemo(() => {
         return () => {
             return (
-                <LoadingWrapper>
-                    <XButton alignSelf="center" style="flat" loading={true} />
-                </LoadingWrapper>
+                <XView flexDirection="column" alignItems="center" justifyContent="center">
+                    <XLoader loading={true} />
+                </XView>
             );
         };
     }, []);
@@ -153,15 +148,16 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                             />
                         </div>
                     )}
-                    {canUseDOM && !isSearching && (
-                        <XListView
-                            dataSource={dataSource}
-                            itemHeight={72}
-                            loadingHeight={200}
-                            renderItem={renderDialog}
-                            renderLoading={renderLoading}
-                        />
-                    )}
+                    {canUseDOM &&
+                        !isSearching && (
+                            <XListView
+                                dataSource={dataSource}
+                                itemHeight={72}
+                                loadingHeight={200}
+                                renderItem={renderDialog}
+                                renderLoading={renderLoading}
+                            />
+                        )}
                 </XView>
             </XView>
         </XShortcuts>
