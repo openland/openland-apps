@@ -34,7 +34,6 @@ const TypingComponent = React.memo((props: { chatId: string }) => (
 
 interface ConversationMessagesComponentProps {
     isChannel: boolean;
-    isActive: boolean;
     conversation: ConversationEngine;
     conversationId: string;
     conversationType?: SharedRoomKind | 'PRIVATE';
@@ -61,7 +60,6 @@ export class ConversationMessagesComponent extends React.PureComponent<
             <MessagesContainer conversationId={this.props.conversationId}>
                 <MessageListComponent
                     isChannel={this.props.isChannel}
-                    isActive={this.props.isActive}
                     me={this.props.me}
                     conversation={this.props.conversation}
                     conversationType={this.props.conversationType}

@@ -67,7 +67,6 @@ interface MessageListProps {
     me?: UserShort | null;
     conversationId: string;
     editPostHandler?: (data: EditPostProps) => void;
-    isActive: boolean;
 }
 
 const LoadingWrapper = glamorous.div({

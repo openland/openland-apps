@@ -299,7 +299,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 )}
                 <ConversationMessagesComponent
                     isChannel={isChannel}
-                    isActive={this.props.isActive}
                     ref={this.messagesList}
                     key={this.props.conversationId}
                     me={this.props.me}
@@ -331,7 +330,9 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         />
                     </UploadContextProvider>
                 )}
-                <DeleteUrlAugmentationComponent />
+                {this.props.isActive && (
+                    <DeleteUrlAugmentationComponent />
+                )}
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
             </XView>
