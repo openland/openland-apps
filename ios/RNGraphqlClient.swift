@@ -8,7 +8,7 @@
 
 import Foundation
 import Apollo
-import Soyuz
+// import Soyuz
 
 class ActiveSubscription {
   let key: String
