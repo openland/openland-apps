@@ -22,6 +22,7 @@ const IconButton = Glamorous.div({
 });
 
 export const Menu = ({
+    hover,
     message,
     isModal,
     hasComments,
@@ -33,6 +34,7 @@ export const Menu = ({
     isModal: boolean;
     isComment: boolean;
     isChannel: boolean;
+    hover: boolean;
 }) => {
     const messagesContext = React.useContext(MessagesStateContext);
     const setEditMessage = (e: any) => {
@@ -89,17 +91,18 @@ export const Menu = ({
                     <XHorizontal alignItems="center" separator={8}>
                         {!hasComments && (
                             <ReactionButton
+                                hover={hover}
                                 messageId={message.id!}
                                 onlyLikes={isComment}
                                 reactions={message.reactions}
                             />
                         )}
-                        {!isChannel && (
+                        {hover && !isChannel && (
                             <IconButton onClick={setReplyMessages}>
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {!isComment && out && message.text && (
+                        {hover && !isComment && out && message.text && (
                             <IconButton onClick={setEditMessage}>
                                 <EditIcon />
                             </IconButton>

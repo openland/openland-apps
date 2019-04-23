@@ -141,6 +141,7 @@ class ReactionComponentInner extends React.PureComponent<{
 }
 
 type ReactionButtonT = {
+    hover?: boolean;
     reactions?: FullMessage_GeneralMessage_reactions[];
     onlyLikes?: boolean;
     messageId: string;
@@ -185,9 +186,11 @@ const LikeIcon = ({
 const CommentReactionButton = ({
     id,
     reactions,
+    hover,
 }: {
     id: string;
     reactions?: FullMessage_GeneralMessage_reactions[];
+    hover?: boolean;
 }) => {
     let client = useClient();
     const userContext = React.useContext(UserInfoContext);
@@ -202,7 +205,7 @@ const CommentReactionButton = ({
         ).length > 0;
 
     let reactionsCount = reactions ? reactions.length : 0;
-    return (
+    return reactionsCount || hover ? (
         <XView flexDirection="row" alignItems="center" position="relative">
             <XView alignItems="center">
                 <LikeIcon
@@ -229,11 +232,17 @@ const CommentReactionButton = ({
                 </XView>
             </XView>
         </XView>
-    );
+    ) : null;
 };
 
 export const ReactionButton = React.memo((props: ReactionButtonT) => {
-    return <CommentReactionButton id={props.messageId} reactions={props.reactions} />;
+    return (
+        <CommentReactionButton
+            hover={props.hover}
+            id={props.messageId}
+            reactions={props.reactions}
+        />
+    );
 
     // return (
     //     <ReactionComponentInner
