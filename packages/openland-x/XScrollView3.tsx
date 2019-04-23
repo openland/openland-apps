@@ -19,29 +19,35 @@ export interface XScrollView3Props extends XStyles {
 const scrollToTopOfElement = ({
     scrollContainer,
     targetElem,
+    offset,
 }: {
     scrollContainer: HTMLElement;
     targetElem: HTMLElement;
+    offset?: number;
 }) => {
     scrollContainer.scrollTop =
         targetElem.getBoundingClientRect().top -
         scrollContainer.getBoundingClientRect().top +
-        scrollContainer.scrollTop;
+        scrollContainer.scrollTop +
+        (offset || 0);
 };
 
 const scrollToBottomOfElement = ({
     scrollContainer,
     targetElem,
+    offset,
 }: {
     scrollContainer: HTMLElement;
     targetElem: HTMLElement;
+    offset?: number;
 }) => {
     scrollContainer.scrollTop =
         targetElem.getBoundingClientRect().top +
         targetElem.getBoundingClientRect().height -
         scrollContainer.getBoundingClientRect().height -
         scrollContainer.getBoundingClientRect().top +
-        scrollContainer.scrollTop;
+        scrollContainer.scrollTop +
+        (offset || 0);
 };
 
 const NativeScrollStyle = css`
@@ -133,20 +139,34 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
             !!(global as any).require /* Electron */;
     }
 
-    public scrollToTopOfElement = ({ targetElem }: { targetElem: HTMLElement }) => {
+    public scrollToTopOfElement = ({
+        targetElem,
+        offset,
+    }: {
+        targetElem: HTMLElement;
+        offset?: number;
+    }) => {
         if (this.nativeBackendElemRef.current) {
             scrollToTopOfElement({
                 targetElem,
                 scrollContainer: this.nativeBackendElemRef.current,
+                offset,
             });
         }
     };
 
-    public scrollToBottomOfElement = ({ targetElem }: { targetElem: HTMLElement }) => {
+    public scrollToBottomOfElement = ({
+        targetElem,
+        offset,
+    }: {
+        targetElem: HTMLElement;
+        offset?: number;
+    }) => {
         if (this.nativeBackendElemRef.current) {
             scrollToBottomOfElement({
                 targetElem,
                 scrollContainer: this.nativeBackendElemRef.current,
+                offset,
             });
         }
     };

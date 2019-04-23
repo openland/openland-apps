@@ -24,12 +24,14 @@ import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatch
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { XModalCloser } from 'openland-x-modal/XModal';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { convertToMentionInput, UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UploadContextProvider } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
+import { XModalContext } from 'openland-x-modal/XModalContext';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -139,6 +141,8 @@ const CommentsInput = ({
 export const CommentsInner = () => {
     const client = useClient();
 
+    const modal = React.useContext(XModalContext);
+
     const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
 
     const scrollRef = React.useRef<XScrollView3 | null>(null);
@@ -245,6 +249,7 @@ export const CommentsInner = () => {
             if (targetElem) {
                 scrollRef.current.scrollToBottomOfElement({
                     targetElem,
+                    offset: 10,
                 });
             }
         }
@@ -302,69 +307,72 @@ export const CommentsInner = () => {
 
     return (
         <>
-            <XView paddingHorizontal={32} paddingTop={28}>
-                <MessageComponent
-                    noSelector
-                    message={finalMessages}
-                    onlyLikes={true}
-                    isChannel={true}
-                    me={messenger.user}
-                    isModal={true}
+            <XScrollView3 flexGrow={1} flexShrink={1} maxHeight={700} ref={scrollRef}>
+                <XView position="absolute" zIndex={100} right={32} top={28}>
+                    <XModalCloser
+                        onClick={() => {
+                            if (modal) {
+                                modal.close();
+                            }
+                        }}
+                    />
+                </XView>
+                <XView paddingHorizontal={32} paddingTop={28}>
+                    <MessageComponent
+                        noSelector
+                        message={finalMessages}
+                        onlyLikes={true}
+                        isChannel={true}
+                        me={messenger.user}
+                        isModal={true}
+                    />
+                </XView>
+                <XView
+                    marginTop={28}
+                    height={1}
+                    backgroundColor={'rgba(216, 218, 229, 0.45)'}
+                    width="100%"
                 />
-            </XView>
-            <XView
-                marginTop={28}
-                height={1}
-                backgroundColor={'rgba(216, 218, 229, 0.45)'}
-                width="100%"
-            />
 
-            {commentsElements.length ? (
-                <>
-                    <XView
-                        paddingHorizontal={32}
-                        paddingTop={isMobile ? 0 : 30}
-                        paddingBottom={28}
-                        flexDirection="column"
-                    >
-                        {commentsElements.length ? (
-                            <>
-                                <XView flexDirection="row" alignItems="center">
-                                    <XView fontSize={16} fontWeight="600">
-                                        Comments
+                {commentsElements.length ? (
+                    <>
+                        <XView
+                            paddingHorizontal={32}
+                            paddingTop={isMobile ? 0 : 30}
+                            paddingBottom={28}
+                            flexDirection="column"
+                        >
+                            {commentsElements.length ? (
+                                <>
+                                    <XView flexDirection="row" alignItems="center">
+                                        <XView fontSize={16} fontWeight="600">
+                                            Comments
+                                        </XView>
+                                        <XView
+                                            fontSize={15}
+                                            fontWeight="600"
+                                            opacity={0.3}
+                                            marginLeft={7}
+                                        >
+                                            {messageComments.messageComments.count}
+                                        </XView>
                                     </XView>
-                                    <XView
-                                        fontSize={15}
-                                        fontWeight="600"
-                                        opacity={0.3}
-                                        marginLeft={7}
-                                    >
-                                        {messageComments.messageComments.count}
-                                    </XView>
-                                </XView>
 
-                                <XView flexDirection="row" marginBottom={16}>
-                                    <XScrollView3
-                                        flexGrow={1}
-                                        flexShrink={1}
-                                        height={500}
-                                        ref={scrollRef}
-                                    >
+                                    <XView flexDirection="row" marginBottom={16}>
                                         <XView flexGrow={1}>
                                             <XView>{commentsElements}</XView>
                                         </XView>
-                                    </XScrollView3>
-                                </XView>
-                            </>
-                        ) : (
-                            undefined
-                        )}
-                    </XView>
-                </>
-            ) : (
-                undefined
-            )}
-
+                                    </XView>
+                                </>
+                            ) : (
+                                undefined
+                            )}
+                        </XView>
+                    </>
+                ) : (
+                    undefined
+                )}
+            </XScrollView3>
             <XView>
                 <UploadContextProvider>
                     <CommentsInput
@@ -388,7 +396,6 @@ export const CommentsInner = () => {
 export const CommentsModal = () => {
     return (
         <XModalForm
-            useTopCloser
             width={800}
             noPadding
             targetQuery="comments"
