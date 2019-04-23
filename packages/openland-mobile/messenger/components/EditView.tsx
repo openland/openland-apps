@@ -5,14 +5,15 @@ import { Message_message } from 'openland-api/Types';
 
 interface EditViewProps {
     message: Message_message;
+    isComment?: boolean;
 
     onClearPress: () => void;
 }
 
 export const EditView = (props: EditViewProps) => {
-    const { message, onClearPress } = props;
+    const { message, isComment, onClearPress } = props;
 
-    const title = 'Edit message';
+    const title = isComment ? 'Edit comment' : 'Edit message';
     const text = message.message || '';
 
     return (

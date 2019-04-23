@@ -16,10 +16,11 @@ interface CommentsListProps {
     highlightedId?: string;
 
     onReplyPress: (comment: MessageComments_messageComments_comments_comment) => void;
+    onEditPress: (comment: MessageComments_messageComments_comments_comment) => void;
 }
 
 export const CommentsList = (props: CommentsListProps) => {
-    const { comments, highlightedId, onReplyPress } = props;
+    const { comments, highlightedId, onReplyPress, onEditPress } = props;
 
     const theme = React.useContext(ThemeContext);
 
@@ -30,19 +31,7 @@ export const CommentsList = (props: CommentsListProps) => {
         if (comment.message) {
             if (comment.sender.id === engine.user.id) {
                 builder.action('Edit', () => {
-                    Prompt.builder()
-                        .title('Edit comment')
-                        .value(comment.message!)
-                        .callback(async (text) => {
-                            startLoader();
-                            try {
-                                await engine.client.mutateEditComment({ id: comment.id!, message: text });
-                            } catch (e) {
-                                Alert.alert(e.message);
-                            }
-                            stopLoader();
-                        })
-                        .show();
+                    onEditPress(comment);
                 });
             }
 
