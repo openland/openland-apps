@@ -1,8 +1,0 @@
-framework module "Soyuz" {
-	header "ref.h"
-    header "SZSoyuz.objc.h"
-    header "Universe.objc.h"
-    header "Soyuz.h"
-
-    export *
-}

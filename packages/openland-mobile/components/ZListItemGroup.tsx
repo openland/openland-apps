@@ -81,10 +81,9 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                         <Text
                             style={{
                                 color: '#b9c1cd',
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: Platform.OS === 'android' ? '500' : '600',
-                                height: 20,
-                                paddingLeft: 8,
+                                paddingLeft: 6,
                             }}
                         >
                             {props.counter.toString()}

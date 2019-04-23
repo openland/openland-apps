@@ -107,6 +107,8 @@ export const CommentsList = (props: CommentsListProps) => {
                         theme={theme}
                     />
                 ))}
+
+                <View backgroundColor={theme.backgroundColor} height={8} zIndex={2} marginTop={-8} marginBottom={8} />
             </View>
         </>
     );

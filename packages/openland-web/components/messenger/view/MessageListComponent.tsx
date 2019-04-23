@@ -67,7 +67,7 @@ interface MessageListProps {
     me?: UserShort | null;
     conversationId: string;
     scrollPosition?: (data: number) => void;
-    isActive: boolean;
+    isActive?: boolean;
 }
 
 const LoadingWrapper = glamorous.div({

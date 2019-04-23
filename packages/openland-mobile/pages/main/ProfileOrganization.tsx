@@ -150,6 +150,7 @@ function ProfileOrganizationContent(props: PageProps) {
             <ZListItemGroup
                 header="Groups and Channels"
                 divider={false}
+                counter={organization.rooms.length}
                 actionRight={organization.rooms.length > 3 ? { title: 'See All', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name }) } : undefined}
             >
                 {organization.isMine && (
@@ -173,7 +174,11 @@ function ProfileOrganizationContent(props: PageProps) {
                 }
             </ZListItemGroup>
 
-            <ZListItemGroup header="Members" divider={false} >
+            <ZListItemGroup
+                header="Members"
+                divider={false}
+                counter={sortedMembers.length}
+            >
                 {organization.isMine && (
                     <ZListItem
                         leftIcon={require('assets/ic-add-24.png')}

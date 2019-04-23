@@ -11,6 +11,7 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { ZRelativeDate } from 'openland-mobile/components/ZRelativeDate';
+import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 
 const styles = StyleSheet.create({
     senderName: {
@@ -18,8 +19,12 @@ const styles = StyleSheet.create({
         fontWeight: TextStyles.weight.medium,
         lineHeight: 15
     } as TextStyle,
+    editedLabel: {
+        fontSize: 13,
+        lineHeight: 15,
+        paddingLeft: 4,
+    } as TextStyle,
     date: {
-        color: '#99a2b0',
         fontSize: 13,
         fontWeight: TextStyles.weight.medium,
         lineHeight: 15,
@@ -67,7 +72,11 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
             Alert.alert(e.message);
         }
         stopLoader();
-    }, [ comment, reactions ])
+    }, [ comment, reactions ]);
+
+    const handleReactionLongPress = React.useCallback(() => {
+        showReactionsList(reactions);
+    }, [ comment, reactions ]);
 
     const branchIndent = (depth > 0) ? ((15 * depth) + 16) : 16;
 
@@ -98,7 +107,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let tools = (
         <View flexDirection="row" marginTop={4}>
-            <ZRelativeDate style={styles.date} date={date} />
+            <ZRelativeDate style={[styles.date, { color: '#99a2b0' }]} date={date} />
 
             {!deleted && (
                 <View marginLeft={12}>
@@ -122,7 +131,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     );
 
     let likes = !deleted ? (
-        <TouchableWithoutFeedback onPress={handleReactionPress}>
+        <TouchableWithoutFeedback onPress={handleReactionPress} onLongPress={handleReactionLongPress}>
             <View width={34} alignItems="center" justifyContent="center" paddingRight={4}>
                 <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? '#f6564e' : 'rgba(129, 137, 149, 0.3)', width: 18, height: 18 }} />
                 {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? '#000000' : 'rgba(0, 0, 0, 0.6)' } as TextStyle} allowFontScaling={false}>{likesCount}</Text>}
@@ -148,6 +157,8 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                                 {avatar}
 
                                 <Text style={[styles.senderName, { color: !deleted ? theme.accentColor : 'rgba(0, 0, 0, 0.5)' }]} allowFontScaling={false}>{sender.name}</Text>
+
+                                {comment.edited && <Text style={[styles.editedLabel, { color: '#99a2b0' }]}>Edited</Text>}
                             </View>
                         </TouchableWithoutFeedback>
 
