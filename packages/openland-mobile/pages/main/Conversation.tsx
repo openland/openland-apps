@@ -229,14 +229,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     onQuotedClearPress = () => {
-        let localActionsState = this.engine.messagesActionsState;
-        let globalActionsState = localActionsState.getGlobal();
-
-        localActionsState.clear();
-
-        if (globalActionsState.getState().conversationId === this.props.chat.id) {
-            globalActionsState.clear();
-        }
+        this.engine.messagesActionsState.clear();
+        this.engine.messagesActionsState.getGlobal().clearIfNeeded(this.props.chat.id);
 
         this.removeDraft();
     }

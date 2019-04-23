@@ -30,6 +30,13 @@ export class MessagesActionsStateEngine {
         this.notifyAll();
     }
 
+    clearIfNeeded = (conversationId: string) => {
+        if (conversationId === this.state.conversationId) {
+            this.state = {};
+            this.notifyAll();
+        }
+    }
+
     getState = () => {
         return this.state;
     }
