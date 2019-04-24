@@ -96,7 +96,7 @@ export const Menu = ({
                                 reactions={message.reactions}
                             />
                         )}
-                        {!hasComments && !isComment && (
+                        {!hasComments && !isComment && hover && (
                             <MessageReactionButton messageId={message.id!} />
                         )}
                         {hover && !isChannel && (
