@@ -37,6 +37,7 @@ import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardRe
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { SBlurView } from 'react-native-s/SBlurView';
 import { EditView } from 'openland-mobile/messenger/components/EditView';
+import { SHeader } from 'react-native-s/SHeader';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -367,29 +368,30 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     let messenger = getMessenger();
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id });
 
+    if (room.room === null) {
+        // access denied view
+        return (
+            <>
+                <SHeader title="Access Denied" />
+                <ASSafeAreaView flexGrow={1}>
+                    <View height="70%" alignItems="center" justifyContent="center">
+                        <Text style={{ fontSize: 100 }}>😢</Text>
+                    </View>
+                    <View height="30%" alignItems="center" justifyContent="center">
+                        <ZRoundedButton
+                            size="big"
+                            title="Go back"
+                            uppercase={false}
+                            onPress={() => props.router.back()}
+                        />
+                    </View>
+                </ASSafeAreaView>
+            </>
+        );
+    }
+
     let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as Room_room_PrivateRoom : null;
-
-    // if (accessDenied) {
-    //     return (
-    //         <>
-    //             <SHeader title="Access Denied" />
-    //             <ASSafeAreaView flexGrow={1}>
-    //                 <View height="70%" alignItems="center" justifyContent="center">
-    //                     <Text style={{ fontSize: 100 }}>😢</Text>
-    //                 </View>
-    //                 <View height="30%" alignItems="center" justifyContent="center">
-    //                     <ZRoundedButton
-    //                         size="big"
-    //                         title="Go back"
-    //                         uppercase={false}
-    //                         onPress={() => props.router.back()}
-    //                     />
-    //                 </View>
-    //             </ASSafeAreaView>
-    //         </>
-    //     );
-    // }
 
     if (sharedRoom && sharedRoom.membership !== 'MEMBER' && sharedRoom.kind === 'PUBLIC') {
         // not a member - show preview with join/request access button
@@ -424,8 +426,9 @@ const ConversationComponent = XMemo<PageProps>((props) => {
                                     await getClient().mutateRoomJoin({ roomId: sharedRoom!.id });
                                 } catch (e) {
                                     Alert.alert(e.message);
+                                } finally {
+                                    stopLoader();
                                 }
-                                stopLoader();
                             }}
                         />
                     </View>
@@ -436,7 +439,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     }
 
     return (
-        <View flexDirection={'column'} height="100%" width="100%">
+        <View flexDirection="column" height="100%" width="100%">
             <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} theme={theme} />
             <ASSafeAreaContext.Consumer>
                 {safe => <View position="absolute" top={safe.top} right={0} left={0}><CallBarComponent id={(sharedRoom || privateRoom)!.id} /></View>}
