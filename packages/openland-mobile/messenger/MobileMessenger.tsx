@@ -135,15 +135,14 @@ export class MobileMessenger {
         builder.action('Forward', () => {
             let actionsState = conversation.messagesActionsState;
 
+            actionsState.clear();
             actionsState.setState({ messages: [message] });
-            actionsState.setBuffer();
 
             getMessenger().history.navigationManager.push('HomeDialogs', {
                 title: 'Forward to', pressCallback: (id: string) => {
                     let selectedActionsState = this.engine.getConversation(id).messagesActionsState;
 
-                    selectedActionsState.getBuffer();
-                    selectedActionsState.setState({ action: 'forward' });
+                    selectedActionsState.setState({ ...actionsState.getState(), action: 'forward' });
 
                     actionsState.clear();
 

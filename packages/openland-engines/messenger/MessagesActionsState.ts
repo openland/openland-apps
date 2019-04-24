@@ -5,8 +5,6 @@ export interface MessagesActionsState {
     messages?: DataSourceMessageItem[];
 }
 
-let bufferedMessages: DataSourceMessageItem[] = [];
-
 export class MessagesActionsStateEngine {
     private state: MessagesActionsState = {};
     private listeners = new Set<(state: MessagesActionsState) => void>();
@@ -31,20 +29,6 @@ export class MessagesActionsStateEngine {
 
     getState = () => {
         return this.state;
-    }
-
-    setBuffer = () => {
-        if (this.state.messages && this.state.messages.length > 0) {
-            bufferedMessages = this.state.messages;
-        }
-    }
-
-    getBuffer = () => {
-        this.clear();
-
-        this.setState({ messages: bufferedMessages });
-
-        bufferedMessages = [];
     }
 
     private notifyAll = () => {
