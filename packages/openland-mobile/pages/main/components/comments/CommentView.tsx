@@ -133,7 +133,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         <TouchableWithoutFeedback onPress={handleReactionPress} onLongPress={handleReactionLongPress}>
             <View width={34} alignItems="center" justifyContent="center" paddingRight={4}>
                 <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? '#f6564e' : 'rgba(129, 137, 149, 0.3)', width: 18, height: 18 }} />
-                {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? '#000000' : 'rgba(0, 0, 0, 0.6)' } as TextStyle} allowFontScaling={false}>{likesCount}</Text>}
+                {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? theme.textColor : theme.textLabelColor } as TextStyle} allowFontScaling={false}>{likesCount}</Text>}
             </View>
         </TouchableWithoutFeedback>
     ) : undefined;
@@ -146,7 +146,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     return (
         <TouchableWithoutFeedback disabled={deleted} onLongPress={() => props.onLongPress(comment)}>
-            <View style={{ backgroundColor: highlighted ? 'rgba(255, 255, 102, 0.15)' : theme.backgroundColor, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
+            <View style={{ backgroundColor: highlighted ? theme.highlightedComment : theme.backgroundColor, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
                 {lines}
 
                 <View flexDirection="row">

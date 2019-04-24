@@ -34,7 +34,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         onDocumentPress: handleDocumentPress,
     }, small, maxWidth);
 
-    const reactions = showReactions ? <ReactionsView reactions={message.reactions} /> : undefined;
+    const reactions = showReactions ? <ReactionsView reactions={message.reactions} theme={theme} /> : undefined;
 
     return (
         <View>

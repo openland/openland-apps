@@ -46,6 +46,8 @@ export interface AppTheme {
     inputIconsColor: string;
     inputIconsColorInactive: string;
     inputIconsColorInactiveBackground: string;
+
+    highlightedComment: string;
 }
 
 export const DefaultTheme: AppTheme = {
@@ -91,6 +93,8 @@ export const DefaultTheme: AppTheme = {
     inputIconsColor: '#b9c1cd',
     inputIconsColorInactive: '#b0b0b0',
     inputIconsColorInactiveBackground: '#ebebeb',
+
+    highlightedComment: '#fffee8',
 }
 
 export const DarkTheme: AppTheme = {
@@ -136,4 +140,6 @@ export const DarkTheme: AppTheme = {
     inputIconsColor: '#767676',
     inputIconsColorInactive: '#b0b0b0',
     inputIconsColorInactiveBackground: '#ebebeb',
+
+    highlightedComment: '#002140',
 }
