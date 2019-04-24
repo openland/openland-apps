@@ -207,7 +207,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                                     <View
                                         borderRadius={14}
                                         backgroundColor="#ffffff"
-                                        marginBottom={this.props.safe.bottom}
+                                        marginBottom={this.props.safe.bottom || 10}
                                         marginTop={10}
                                         marginHorizontal={10}
                                         overflow="hidden"
