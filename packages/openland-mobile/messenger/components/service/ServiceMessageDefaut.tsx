@@ -14,8 +14,7 @@ export interface ServiceMessageDefaultProps {
 }
 
 export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
-    let text = (props.message.text || '').replace('\n', ' ');
-    let preprocessed = preprocessText(text, props.message.spans);
+    let preprocessed = preprocessText(props.message.text || '', props.message.spans);
 
     let parts = preprocessed.map((span, i) => renderPreprocessedText(span, i, props.message, props.theme, props.onUserPress));
 
@@ -40,10 +39,10 @@ export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
                     color={props.theme.textSecondaryColor}
                     fontSize={12}
                     lineHeight={17}
-                    height={20}
                     marginLeft={6}
                     fontWeight={TextStyles.weight.medium}
                     marginRight={6}
+                    textAlign="center"
                 >
                     {parts}
                 </ASText>
