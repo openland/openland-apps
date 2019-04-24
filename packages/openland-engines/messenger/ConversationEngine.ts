@@ -300,18 +300,12 @@ export class ConversationEngine implements MessageSendHandler {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
 
-            let localActionState = this.messagesActionsState.getState();
-            let globalActionState = this.messagesActionsState.getGlobal().getState();
+            let messagesActionsState = this.messagesActionsState.getState();
             let quoted;
 
-            if (localActionState.action === 'reply') {
+            if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
                 quoted = this.messagesActionsState.getState().messages;
                 this.messagesActionsState.clear();
-            }
-
-            if (globalActionState.action === 'forward' && globalActionState.conversationId === this.conversationId) {
-                quoted = this.messagesActionsState.getGlobal().getState().messages;
-                this.messagesActionsState.getGlobal().clear();
             }
 
             let key = this.engine.sender.sendMessage({

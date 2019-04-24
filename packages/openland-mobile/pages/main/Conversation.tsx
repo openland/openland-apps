@@ -52,8 +52,7 @@ interface ConversationRootState {
         start: number,
         end: number
     },
-    localActionsState: MessagesActionsState,
-    globalActionsState: MessagesActionsState
+    messagesActionsState: MessagesActionsState,
 }
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
@@ -72,8 +71,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             },
             mentionedUsers: [],
             inputFocused: false,
-            localActionsState: {},
-            globalActionsState: {}
+            messagesActionsState: {}
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
@@ -88,13 +86,12 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     componentWillMount() {
         this.engine.messagesActionsState.listen(state => {
-            this.setState({ localActionsState: state })
+            this.setState({ messagesActionsState: state })
 
             if (state.messages && state.messages.length > 0 && state.action === 'edit') {
                 this.setState({ text: state.messages[0].text || '' })
             }
         });
-        this.engine.messagesActionsState.getGlobal().listen(state => this.setState({ globalActionsState: state }));
     }
 
     saveDraft = () => {
@@ -141,7 +138,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleSubmit = async () => {
-        let { localActionsState } = this.state;
+        let { messagesActionsState } = this.state;
         let tx = this.state.text.trim();
         if (tx.length > 0) {
             let mentions: UserShort[] = [];
@@ -154,8 +151,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 })
             }
 
-            if (localActionsState.messages && localActionsState.messages.length > 0 && localActionsState.action === 'edit') {
-                let messageToEdit = localActionsState.messages.map(convertMessageBack)[0];
+            if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
+                let messageToEdit = messagesActionsState.messages.map(convertMessageBack)[0];
 
                 startLoader();
                 try {
@@ -230,7 +227,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     onQuotedClearPress = () => {
         this.engine.messagesActionsState.clear();
-        this.engine.messagesActionsState.getGlobal().clearIfNeeded(this.props.chat.id);
 
         this.removeDraft();
     }
@@ -247,7 +243,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     render() {
-        let { localActionsState, globalActionsState } = this.state;
+        let { messagesActionsState } = this.state;
 
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
@@ -282,16 +278,12 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         let quoted = null;
 
-        if (localActionsState.messages && localActionsState.messages.length > 0 && localActionsState.action === 'reply') {
-            quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={localActionsState.messages.map(convertMessageBack)} action="reply" />
+        if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && ['reply', 'forward'].includes(messagesActionsState.action || '')) {
+            quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={messagesActionsState.messages.map(convertMessageBack)} action={messagesActionsState.action === 'forward' ? 'forward' : 'reply'} />
         }
 
-        if (globalActionsState.messages && globalActionsState.messages.length > 0 && globalActionsState.action === 'forward' && globalActionsState.conversationId === this.props.chat.id) {
-            quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={globalActionsState.messages.map(convertMessageBack)} action="forward" />
-        }
-
-        if (localActionsState.messages && localActionsState.messages.length > 0 && localActionsState.action === 'edit') {
-            quoted = <EditView onClearPress={this.onEditedClearPress} message={localActionsState.messages.map(convertMessageBack)[0]} />
+        if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
+            quoted = <EditView onClearPress={this.onEditedClearPress} message={messagesActionsState.messages.map(convertMessageBack)[0]} />
         }
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;

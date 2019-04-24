@@ -133,14 +133,19 @@ export class MobileMessenger {
         }
 
         builder.action('Forward', () => {
-            let globalActionsState = conversation.messagesActionsState.getGlobal();
+            let actionsState = conversation.messagesActionsState;
 
-            globalActionsState.clear();
-            globalActionsState.setState({ messages: [message], action: 'forward' });
+            actionsState.setState({ messages: [message] });
+            actionsState.setBuffer();
 
             getMessenger().history.navigationManager.push('HomeDialogs', {
                 title: 'Forward to', pressCallback: (id: string) => {
-                    globalActionsState.setState({ conversationId: id });
+                    let selectedActionsState = this.engine.getConversation(id).messagesActionsState;
+
+                    selectedActionsState.getBuffer();
+                    selectedActionsState.setState({ action: 'forward' });
+
+                    actionsState.clear();
 
                     getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
                 }
@@ -154,7 +159,6 @@ export class MobileMessenger {
         if (message.text) {
             if (message.senderId === this.engine.user.id) {
                 builder.action('Edit', () => {
-                    conversation.messagesActionsState.getGlobal().clearIfNeeded(message.chatId);
                     conversation.messagesActionsState.setState({ messages: [message], action: 'edit' });
                 });
             };

@@ -30,18 +30,22 @@ export class MessagesActionsStateEngine {
         this.notifyAll();
     }
 
-    clearIfNeeded = (conversationId: string) => {
-        if (conversationId === this.state.conversationId) {
-            this.state = {};
-            this.notifyAll();
-        }
-    }
-
     getState = () => {
         return this.state;
     }
 
-    getGlobal = () => {
+    setBuffer = () => {
+        this.getGlobal().clear();
+        this.getGlobal().setState(this.state);
+    }
+
+    getBuffer = () => {
+        this.clear();
+        this.setState(this.getGlobal().getState());
+        this.getGlobal().clear();
+    }
+
+    private getGlobal = () => {
         if (!cachedMessagesActionState) {
             cachedMessagesActionState = new MessagesActionsStateEngine();
         }
