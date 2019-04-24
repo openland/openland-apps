@@ -57,4 +57,3 @@ export const ZText = (props: ZTextProps) => {
         return <Text style={props.style} numberOfLines={props.numberOfLines} />;
     }
 }
-}
