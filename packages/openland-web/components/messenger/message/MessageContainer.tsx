@@ -14,7 +14,6 @@ export interface DesktopMessageContainerProps {
     compact: boolean;
     isModal?: boolean;
     isPinned?: boolean;
-    hasComments?: boolean;
     isChannel?: boolean;
     commentDepth?: number;
     isComment?: boolean;
@@ -391,7 +390,6 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
             <Menu
                 hover={hover}
                 message={props.message}
-                hasComments={!!props.hasComments}
                 isChannel={!!props.isChannel}
                 isComment={!!props.isComment}
                 isModal={!!props.isModal}

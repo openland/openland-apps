@@ -17,17 +17,13 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
 } from 'openland-api/Types';
-import { Reactions } from './reactions/MessageReaction';
 import { MessagesStateContextProps } from '../MessagesStateContext';
 import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
 import { DesktopMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
+import { PostMessageButtons } from './PostMessageButtons';
 import { XView } from 'react-mental';
-import { XDate } from 'openland-x/XDate';
-import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
-import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const Check = Glamorous.div<{ selected: boolean }>(({ selected }) => ({
     flexShrink: 0,
@@ -104,7 +100,6 @@ export interface MessageComponentProps {
     commentDepth?: number;
     message: DataSourceWebMessageItem;
     isChannel: boolean;
-    hasComments?: boolean;
     noSelector?: boolean;
     isComment?: boolean;
     onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
@@ -118,46 +113,6 @@ export interface MessageComponentProps {
 interface MessageComponentInnerProps extends MessageComponentProps {
     messagesContext: MessagesStateContextProps;
 }
-
-const DiscussButton = ({
-    commentsCount,
-    messageId,
-    conversationId,
-}: {
-    commentsCount: number | null;
-    messageId: string;
-    conversationId: string;
-}) => {
-    let router = React.useContext(XRouterContext)!;
-
-    return (
-        <XView
-            cursor="pointer"
-            borderRadius={14}
-            backgroundColor="rgba(23, 144, 255, 0.1)"
-            height={28}
-            fontSize={13}
-            justifyContent="center"
-            alignItems="center"
-            color="#1790ff"
-            paddingLeft={12}
-            paddingRight={12}
-            onClick={() => {
-                router.pushQuery('comments', `${messageId}&${conversationId}`);
-            }}
-        >
-            {commentsCount ? (
-                <XView flexDirection="row">
-                    <CommentChannelIcon /> <XView marginLeft={4}>{commentsCount} comments</XView>
-                </XView>
-            ) : (
-                <XView flexDirection="row">
-                    <CommentEmptyChannelIcon /> <XView marginLeft={4}>Discuss</XView>
-                </XView>
-            )}
-        </XView>
-    );
-};
 
 export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
@@ -250,10 +205,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (forwardMessagesId) {
             selected = forwardMessagesId.has(message.id || 'none');
         }
-
-        console.log(selected);
-        console.log(message);
-        console.log(forwardMessagesId);
 
         if (!message.isSending) {
             if (this.state.isEditView && message.text && this.props.conversationId) {
@@ -443,63 +394,15 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
         if (!message.isService) {
             const postMessageButtons = (
-                <>
-                    {this.props.isComment && (
-                        <>
-                            <XView flexDirection="row" marginTop={4}>
-                                <XView
-                                    paddingRight={12}
-                                    fontSize={12}
-                                    opacity={0.4}
-                                    color="#000"
-                                    fontWeight="600"
-                                >
-                                    <XDate
-                                        value={this.props.message.date.toString()}
-                                        format="time"
-                                    />
-                                </XView>
-                                <XView
-                                    color="#1790ff"
-                                    fontWeight="600"
-                                    fontSize={12}
-                                    cursor="pointer"
-                                    onClick={onCommentReplyClick}
-                                >
-                                    Reply
-                                </XView>
-                            </XView>
-                        </>
-                    )}
-                    {!this.props.isComment && (
-                        <XView flexDirection="row">
-                            <XHorizontal alignItems="center" separator={5}>
-                                {this.props.hasComments && (
-                                    <XView paddingTop={6}>
-                                        <DiscussButton
-                                            commentsCount={this.props.message.commentsCount}
-                                            messageId={this.props.message.id!!}
-                                            conversationId={this.props.conversationId!!}
-                                        />
-                                    </XView>
-                                )}
-
-                                {!message.isSending &&
-                                ((message.reactions && message.reactions.length) ||
-                                    this.props.isChannel) ? (
-                                    <XView paddingTop={4}>
-                                        <Reactions
-                                            onlyLikes={this.props.onlyLikes}
-                                            messageId={message.id!}
-                                            reactions={message.reactions || []}
-                                            meId={(this.props.me && this.props.me.id) || ''}
-                                        />
-                                    </XView>
-                                ) : null}
-                            </XHorizontal>
-                        </XView>
-                    )}
-                </>
+                <PostMessageButtons
+                    isComment={!!this.props.isComment}
+                    onlyLikes={!!this.props.onlyLikes}
+                    isChannel={this.props.isChannel}
+                    message={this.props.message}
+                    onCommentReplyClick={onCommentReplyClick}
+                    conversationId={this.props.conversationId}
+                    me={this.props.me}
+                />
             );
 
             return (
@@ -508,7 +411,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     isPinned={this.props.isPinned}
                     commentDepth={this.props.commentDepth}
                     isModal={this.props.isModal}
-                    hasComments={this.props.hasComments}
                     isChannel={this.props.isChannel}
                     isComment={this.props.isComment}
                     noSelector={this.props.noSelector}

@@ -25,12 +25,10 @@ export const Menu = ({
     hover,
     message,
     isModal,
-    hasComments,
     isChannel,
     isComment,
 }: {
     message: DataSourceWebMessageItem;
-    hasComments: boolean;
     isModal: boolean;
     isComment: boolean;
     isChannel: boolean;
@@ -89,16 +87,14 @@ export const Menu = ({
             >
                 <XView paddingTop={isComment ? 24 : 0}>
                     <XHorizontal alignItems="center" separator={8}>
-                        {!hasComments && isComment && (
+                        {isComment && (
                             <CommentReactionButton
                                 hover={hover}
                                 id={message.id!}
                                 reactions={message.reactions}
                             />
                         )}
-                        {!hasComments && !isComment && hover && (
-                            <MessageReactionButton messageId={message.id!} />
-                        )}
+                        {!isComment && hover && <MessageReactionButton messageId={message.id!} />}
                         {hover && !isChannel && (
                             <IconButton onClick={setReplyMessages}>
                                 <ReplyIcon />
