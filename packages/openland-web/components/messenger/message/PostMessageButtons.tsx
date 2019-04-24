@@ -72,10 +72,16 @@ export const PostMessageButtons = React.memo(
         conversationId,
         me,
     }: PostMessageButtonsT) => {
-        let showDiscussButton = !message.isService;
-        if (!isChannel && message.commentsCount === 0) {
-            showDiscussButton = false;
+        let showDiscussButton = false;
+
+        if (isChannel) {
+            showDiscussButton = true;
         }
+
+        if (!isChannel && message.commentsCount !== null && message.commentsCount !== 0) {
+            showDiscussButton = true;
+        }
+
         return (
             <>
                 {isComment && (
