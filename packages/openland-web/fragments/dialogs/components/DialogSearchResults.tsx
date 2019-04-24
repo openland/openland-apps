@@ -1,18 +1,10 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XView } from 'react-mental';
 import { DialogViewCompact } from './DialogViewCompact';
-import { XText } from 'openland-x/XText';
-import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { useClient } from 'openland-web/utils/useClient';
-
-const PlaceholderEmpty = Glamorous(XText)({
-    opacity: 0.5,
-});
-
-const PlaceholderLoader = Glamorous(XLoadingCircular)({
-    alignSelf: 'center',
-});
+import { XLoader } from 'openland-x/XLoader';
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34,
@@ -41,7 +33,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
     });
 
     if (!data || !data.items) {
-        return <PlaceholderLoader color="#334562" />;
+        return <XLoader loading={true} />;
     }
 
     // Why?
@@ -59,7 +51,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         return (
             <NoResultWrapper separator={10} alignItems="center">
                 <Image />
-                <PlaceholderEmpty>No results</PlaceholderEmpty>
+                <XView color="rgba(0, 0, 0, 0.5)">No results</XView>
             </NoResultWrapper>
         );
     }
@@ -120,7 +112,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
 
 export const DialogSearchResults = (props: DialogSearchResultsT) => {
     return (
-        <React.Suspense fallback={<PlaceholderLoader color="#334562" />}>
+        <React.Suspense fallback={<XLoader loading={true} />}>
             <DialogSearchResultsInner {...props} />
         </React.Suspense>
     );

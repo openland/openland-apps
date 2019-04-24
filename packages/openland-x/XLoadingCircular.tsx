@@ -120,7 +120,7 @@ export const XLoadingRound = () => (
                 cy="50"
                 r="20"
                 fill="none"
-                strokeWidth="2"
+                strokeWidth="4"
                 strokeMiterlimit="10"
             />
         </svg>
