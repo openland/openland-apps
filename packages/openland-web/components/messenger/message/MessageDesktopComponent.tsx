@@ -29,16 +29,16 @@ import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
 import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
-const Check = Glamorous.div<{ select: boolean }>(props => ({
+const Check = Glamorous.div<{ selected: boolean }>(({ selected }) => ({
     flexShrink: 0,
     width: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: props.select ? '#1790ff' : '#fff',
-    backgroundImage: props.select ? "url('/static/img/icons/check-form.svg')" : undefined,
+    backgroundColor: selected ? '#1790ff' : '#fff',
+    backgroundImage: selected ? "url('/static/img/icons/check-form.svg')" : undefined,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    border: props.select ? undefined : '1px solid #D9D9D9',
+    border: selected ? undefined : '1px solid #D9D9D9',
 }));
 
 const MessageWrapper = Glamorous(XHorizontal)<{
@@ -113,7 +113,6 @@ export interface MessageComponentProps {
     me?: UserShort | null;
     onlyLikes?: boolean;
     haveReactions?: boolean;
-    isSelect?: boolean;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
@@ -233,7 +232,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     };
 
     render() {
-        let { message, onCommentReplyClick, isSelect, haveReactions } = this.props;
+        let { message, onCommentReplyClick, haveReactions } = this.props;
+
         let content: any[] = [];
         let edited = message.isEdited;
 
@@ -250,6 +250,10 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (forwardMessagesId) {
             selected = forwardMessagesId.has(message.id || 'none');
         }
+
+        console.log(selected);
+        console.log(message);
+        console.log(forwardMessagesId);
 
         if (!message.isSending) {
             if (this.state.isEditView && message.text && this.props.conversationId) {
@@ -515,7 +519,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     senderNameEmojify={message.senderNameEmojify}
                     date={this.props.message.date}
                     onSelected={this.selectMessage}
-                    selected={!!isSelect}
+                    selected={!!selected}
                 >
                     {content}
                     {this.props.isModal && <XView paddingTop={12}>{postMessageButtons}</XView>}
@@ -533,7 +537,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 alignItems="center"
                 startSelected={hideMenu}
             >
-                <Check onClick={this.selectMessage} select={!!isSelect} className="check-icon" />
+                <Check onClick={this.selectMessage} selected={!!selected} className="check-icon" />
 
                 <XVertical
                     separator={0}
