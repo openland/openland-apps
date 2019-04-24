@@ -18,27 +18,29 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
     const { reactionsSorted, usersString } = extractReactionsSorted(props.reactions!);
 
     return (
-        <TouchableWithoutFeedback onPress={() => showReactionsList(props.reactions)}>
-            <View alignItems="stretch" justifyContent="flex-start" flexDirection="row" marginTop={10}>
-                {[...reactionsSorted].map((i) => <Image key={'k' + i.reaction} marginRight={3} source={reactionsImagesMap[i.reaction]} style={{ width: 20, height: 20 }} />)}
+        <View marginBottom={-10}>
+            <TouchableWithoutFeedback onPress={() => showReactionsList(props.reactions)}>
+                <View alignItems="stretch" justifyContent="flex-start" flexDirection="row" paddingVertical={10}>
+                    {[...reactionsSorted].map((i) => <Image key={'k' + i.reaction} marginRight={3} source={reactionsImagesMap[i.reaction]} style={{ width: 20, height: 20 }} />)}
 
-                {usersString.length > 0 && (
-                    <Text
-                        style={{
-                            fontWeight: TextStyles.weight.medium,
-                            marginLeft: 2,
-                            marginRight: 7,
-                            marginTop: 2,
-                            fontSize: 13,
-                            color: '#99a2b0'
-                        } as TextStyle}
-                        numberOfLines={1}
-                        allowFontScaling={false}
-                    >
-                        {usersString}
-                    </Text>
-                )}
-            </View>
-        </TouchableWithoutFeedback>
+                    {usersString.length > 0 && (
+                        <Text
+                            style={{
+                                fontWeight: TextStyles.weight.medium,
+                                marginLeft: 2,
+                                marginRight: 7,
+                                marginTop: 2,
+                                fontSize: 13,
+                                color: '#99a2b0'
+                            } as TextStyle}
+                            numberOfLines={1}
+                            allowFontScaling={false}
+                        >
+                            {usersString}
+                        </Text>
+                    )}
+                </View>
+            </TouchableWithoutFeedback>
+        </View>
     );
 });
