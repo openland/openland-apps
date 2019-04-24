@@ -28,7 +28,7 @@ export function getClient(): OpenlandClient {
     return cachedClient;
 }
 
-export function buildNativeClient(storage: string, token?: string) {
+export function buildNativeClient(storage: string, token: string) {
 
     // return new OpenlandClient(createWorkerClient(token));
     // return new OpenlandClient(new NativeApolloClient(storage, token));

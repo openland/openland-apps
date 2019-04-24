@@ -23,7 +23,6 @@ import { NativeKeyValue } from 'openland-mobile/apollo/NativeKeyValue';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { randomKey } from 'react-native-s/utils/randomKey';
-import { Track } from 'openland-engines/Tracking';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
@@ -197,9 +196,6 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         } else {
                             authenticated = true;
                         }
-                    } else {
-                        let client = buildNativeClient(AppStorage.storage, undefined);
-                        Track.setClient(client);
                     }
 
                     // Reset badge if not authenticated
