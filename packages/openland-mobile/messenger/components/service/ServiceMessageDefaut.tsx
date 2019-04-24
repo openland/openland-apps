@@ -14,7 +14,8 @@ export interface ServiceMessageDefaultProps {
 }
 
 export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
-    let preprocessed = preprocessText(props.message.text || '', props.message.spans);
+    let text = (props.message.text || '').replace('\n', ' ');
+    let preprocessed = preprocessText(text, props.message.spans);
 
     let parts = preprocessed.map((span, i) => renderPreprocessedText(span, i, props.message, props.theme, props.onUserPress));
 
