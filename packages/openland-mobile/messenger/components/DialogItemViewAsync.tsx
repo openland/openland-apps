@@ -13,10 +13,11 @@ import { DataSourceItem } from 'openland-y-utils/DataSource';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
 function ASCounter(props: { value: number | string, muted?: boolean }) {
+    let theme = useThemeGlobal();
     return (
-        <ASFlex borderRadius={9} backgroundColor={props.muted ? '#c8c7cc' : '#0084fe'} height={18} minWidth={18} justifyContent="center">
+        <ASFlex borderRadius={9} backgroundColor={props.muted ? theme.accentDisabledColor : theme.accentColor} height={18} minWidth={18} justifyContent="center">
             <ASFlex justifyContent="center" marginLeft={Platform.select({ default: 4, android: 6 })} marginRight={Platform.select({ default: 4, android: 6 })}>
-                <ASText color="#fff" lineHeight={Platform.select({ default: 16, android: 17 })} fontSize={12} minWidth={8} textAlign="center">{props.value + ''}</ASText>
+                <ASText color={theme.textInverseColor} lineHeight={Platform.select({ default: 16, android: 17 })} fontSize={12} minWidth={8} textAlign="center">{props.value + ''}</ASText>
             </ASFlex>
         </ASFlex >
     );

@@ -45,6 +45,7 @@ export const ZActionSheetItem = (props: ZActionSheetItemProps) => {
     } else {
         let textStyle = [
             styles.text,
+            { color: theme.accentColor },
             props.appearance === 'danger' ? styles.textDanger : undefined,
             props.appearance === 'cancel' ? styles.textCancel : undefined
         ];

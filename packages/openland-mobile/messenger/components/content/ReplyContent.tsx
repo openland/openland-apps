@@ -3,7 +3,6 @@ import { DataSourceMessageItem, convertMessage } from 'openland-engines/messenge
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { preprocessText, Span } from 'openland-mobile/utils/TextProcessor';
@@ -24,7 +23,7 @@ interface ReplyContentProps {
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
     render() {
-        let mainTextColor = this.props.message.isOut ? DefaultConversationTheme.textColorOut : DefaultConversationTheme.textColorIn;
+        let mainTextColor = this.props.message.isOut ? this.props.theme.textColorOut : this.props.theme.textColor;
 
         let lineBAckgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
@@ -46,7 +45,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                         if (generalMesage) {
                             let attachFile = generalMesage.attachments && generalMesage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
                             return (
-                                <ASFlex key={'repl-' + m.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn}>
+                                <ASFlex key={'repl-' + m.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkOutColor}>
                                     <ASText
                                         key={'asd' + m.id}
                                         marginTop={-2}
@@ -54,7 +53,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         textAlign="center"
                                         lineHeight={15}
                                         marginLeft={10}
-                                        color={this.props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}
+                                        color={this.props.message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkColor}
                                         letterSpacing={-0.3}
                                         fontSize={13}
                                         onPress={() => this.props.onUserPress(generalMesage!.sender.id!)}

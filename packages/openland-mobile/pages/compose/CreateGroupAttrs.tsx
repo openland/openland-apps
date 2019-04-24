@@ -16,9 +16,12 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 
 const CreateGroupComponent = (props: PageProps) => {
     const ref = React.createRef<ZForm>();
+
+    const theme = useThemeGlobal();
 
     let isChannel = !!props.router.params.isChannel;
     let orgIdFromRouter = props.router.params.organizationId;
@@ -130,7 +133,7 @@ const CreateGroupComponent = (props: PageProps) => {
                             onPress={handleKindPress}
                             text={`${chatTypeString} type`}
                             description={selectedKind === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
-                            descriptionColor={selectedKind === SharedRoomKind.GROUP ? '#129f25' : undefined}
+                            descriptionColor={selectedKind === SharedRoomKind.GROUP ? theme.dialogTitleSecureColor : undefined}
                             descriptionIcon={selectedKind === SharedRoomKind.GROUP ? require('assets/ic-secret-20.png') : undefined}
                             navigationIcon={true}
                         />

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
-import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
 import { renderPreprocessedText } from '../AsyncMessageContentView';

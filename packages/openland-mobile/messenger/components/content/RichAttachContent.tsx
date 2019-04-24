@@ -2,7 +2,6 @@ import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
-import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform, Linking, PixelRatio } from 'react-native';
 import { paddedTextOut, paddedText } from '../AsyncMessageContentView';
@@ -10,10 +9,10 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
-import { bubbleMaxWidth, bubbleMaxWidthIncoming, AsyncBubbleView, contentInsetsHorizontal } from '../AsyncBubbleView';
+import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
-import { FullMessage_GeneralMessage_attachments_MessageRichAttachment, ModernMessageButtonStyle } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
 interface UrlAugmentationContentProps {
@@ -245,6 +244,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                 marginTop={i !== 0 ? 4 : 0}
                                 key={'button-' + i + '-' + j}
                                 borderRadius={8}
+                                backgroundColor={theme.backgroundColor}
                                 marginLeft={j > 0 ? 4 : 0}
                                 marginRight={j < line.length - 1 ? 4 : 0}
                                 alignItems="center"

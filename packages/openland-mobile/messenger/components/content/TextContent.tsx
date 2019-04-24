@@ -2,7 +2,6 @@ import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
-import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform } from 'react-native';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
@@ -45,7 +44,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
         return (
             <>
                 {!!message.text && <ASText
-                    key={'text-' + DefaultConversationTheme.senderNameColor}
+                    key={'text-' + mainTextColor}
                     color={mainTextColor}
                     lineHeight={big ? undefined : 20}
                     letterSpacing={-0.3}

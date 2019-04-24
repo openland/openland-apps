@@ -118,7 +118,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                             style={{
                                 fontSize: Platform.OS === 'android' ? 18 : 17,
                                 fontWeight: Platform.OS === 'android' ? '400' : '500',
-                                color: this.props.appearance === 'action' ? AppStyles.primaryColor
+                                color: this.props.appearance === 'action' ? this.props.theme.accentColor
                                     : this.props.appearance === 'danger' ? '#f6564e'
                                         : this.props.theme.textColor,
                                 lineHeight: 24,

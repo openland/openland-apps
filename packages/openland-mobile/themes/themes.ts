@@ -5,6 +5,8 @@ export interface AppTheme {
     backgroundColor: string;
     inputBackground: string;
     textColor: string;
+    textInverseColor: string;
+    textInputColor: string;
     textLabelColor: string;
     separatorColor: string;
     selectorColor: string;
@@ -18,6 +20,7 @@ export interface AppTheme {
     statusBar: 'dark-content' | 'light-content';
 
     accentColor: string;
+    accentDisabledColor: string;
     hairlineColor: string;
     groupHeaderColor: string;
 
@@ -55,10 +58,13 @@ export const DefaultTheme: AppTheme = {
     keyboardAppearance: 'light',
     androidIconColor: 'black',
     textColor: '#181818',
+    textInverseColor: 'white',
+    textInputColor: 'black',
     textLabelColor: Platform.OS === 'android' ? '#000' : '#8F8F91',
     separatorColor: Platform.OS === 'android' ? '#ebebeb' : '#eaeaea',
     arrowColor: '#D1D1D6',
     accentColor: '#0084fe',
+    accentDisabledColor: '#c8c8c8',
     hairlineColor: '#e0e3e7',
     groupHeaderColor: Platform.OS === 'android' ? '#000' : '#99a2b0',
     selectorColor: Platform.OS === 'android' ? 'rgba(0, 0, 0, .1)' : '#eee',
@@ -97,10 +103,13 @@ export const DarkTheme: AppTheme = {
     keyboardAppearance: 'dark',
     androidIconColor: 'white',
     textColor: 'white',
+    textInverseColor: 'black',
+    textInputColor: 'white',
     textLabelColor: '#7D7D80',
     separatorColor: '#262629',
     arrowColor: '#565658',
     accentColor: 'white',
+    accentDisabledColor: '#808080',
     hairlineColor: '#1C1C1E',
     groupHeaderColor: 'white',
     selectorColor: Platform.OS === 'android' ? '#1C1C1E' : '#1C1C1E',
@@ -109,7 +118,7 @@ export const DarkTheme: AppTheme = {
     tabColorActive: '#FDFDFD',
 
     dialogTitleColor: 'white',
-    dialogTitleSecureColor: 'green',
+    dialogTitleSecureColor: '#33c045',
     dialogDateColor: 'white',
     dialogSenderColor: 'white',
     dialogMessageColor: 'white',

@@ -8,8 +8,10 @@ import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAre
 import { ZActionSheetItem } from './ZActionSheetItem';
 import { ZBlurredView } from './ZBlurredView';
 import { isPad } from 'openland-mobile/pages/Root';
+import { useThemeGlobal, ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
-class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea, flat: boolean }> implements ZModalController {
+class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea, flat: boolean, theme: AppTheme }> implements ZModalController {
 
     key = randomKey();
     contents: any;
@@ -48,7 +50,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
         SAnimated.beginTransaction();
 
         if (!isPad) {
-            this.contentView.translateY = event.nativeEvent.layout.height;            
+            this.contentView.translateY = event.nativeEvent.layout.height;
         } else {
             SAnimated.setPropertyAnimator((name, prop, from, to) => {
                 SAnimated.spring(name, {
@@ -204,16 +206,15 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                                             {this.contents}
                                         </ScrollView>
                                     </ZBlurredView>
-                                    <View
+                                    <ZBlurredView
                                         borderRadius={14}
-                                        backgroundColor="#ffffff"
                                         marginBottom={this.props.safe.bottom || 10}
                                         marginTop={10}
                                         marginHorizontal={10}
                                         overflow="hidden"
                                     >
                                         <ZActionSheetItem name="Cancel" onPress={this.hide} appearance="cancel" separator={false} />
-                                    </View>
+                                    </ZBlurredView>
                                 </>
                             )}
                             {isPad && (
@@ -243,7 +244,13 @@ export function showSheetModal(render: (ctx: ZModalController) => React.ReactEle
     showModal((modal) => {
         return (
             <ASSafeAreaContext.Consumer>
-                {safe => (<SheetModal ctx={modal} modal={render} safe={safe} flat={flat} />)}
+                {safe => (
+                    <ThemeContext.Consumer>
+                        {theme => (
+                            <SheetModal ctx={modal} modal={render} safe={safe} flat={flat} theme={theme} />
+                        )}
+                    </ThemeContext.Consumer>
+                )}
             </ASSafeAreaContext.Consumer>
         )
     });

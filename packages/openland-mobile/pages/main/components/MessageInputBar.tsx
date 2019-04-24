@@ -67,6 +67,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                         onBlur={props.onBlur}
                         value={props.text}
                         style={{
+                            color: theme.textInputColor,
                             backgroundColor: theme.inputBackground,
                             borderRadius: 17.5,
                             paddingLeft: 12,

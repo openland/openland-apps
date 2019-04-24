@@ -4,6 +4,7 @@ import { ZKeyboardAwareBar } from 'openland-mobile/components/layout/ZKeyboardAw
 import { SDevice } from 'react-native-s/SDevice';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 
 interface ChannelMuteButtonProps {
     id: string;
@@ -12,6 +13,8 @@ interface ChannelMuteButtonProps {
 
 export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
     const client = getClient();
+
+    const theme = useThemeGlobal();
 
     const [notifications, setNotifications] = React.useState(!props.mute);
 
@@ -29,7 +32,7 @@ export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
             <ZKeyboardAwareBar>
                 <TouchableOpacity onPress={handleNotifications}>
                     <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: '#0084fe' } as TextStyle}>
+                        <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentColor } as TextStyle}>
                             {notifications ? 'Mute' : 'Unmute'}
                         </Text>
                     </View>
@@ -40,7 +43,7 @@ export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
 
     return (
         <View marginBottom={SDevice.safeArea.bottom} backgroundColor="#ffffff">
-        <TouchableOpacity onPress={handleNotifications}>
+            <TouchableOpacity onPress={handleNotifications}>
                 <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: '#0084fe' } as TextStyle}>
                         {notifications ? 'Mute' : 'Unmute'}

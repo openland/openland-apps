@@ -140,7 +140,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
 
             <ZListItemHeader
                 titleIcon={room.isChannel ? require('assets/ic-channel-18.png') : room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
-                titleColor={room.kind === 'GROUP' ? '#129f25' : undefined}
+                titleColor={room.kind === 'GROUP' ? theme.dialogTitleSecureColor : undefined}
                 title={room.title}
                 subtitle={subtitle}
                 photo={room.photo}
