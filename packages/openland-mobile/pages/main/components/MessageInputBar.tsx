@@ -87,11 +87,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                     {!props.showLoader && (
                         <TouchableOpacity disabled={!props.canSubmit} onPress={props.onSubmitPress}>
                             <View alignItems="center" justifyContent="center" width={52} height={50} paddingLeft={2}>
-<<<<<<< HEAD
-                                <Image source={icon} style={{ width: 26, height: 26, tintColor: props.canSubmit && props.enabled !== false ? theme.accentColor : '#C8C7CC' }} />
-=======
-                                <Image source={icon} style={{ width: 26, height: 26, tintColor: hasText && props.enabled !== false ? theme.accentColor : theme.inputIconsColor }} />
->>>>>>> wip(mobile): theme fixes
+                                <Image source={icon} style={{ width: 26, height: 26, tintColor: props.canSubmit && props.enabled !== false ? theme.accentColor : theme.inputIconsColor }} />
                             </View>
                         </TouchableOpacity>
                     )}
