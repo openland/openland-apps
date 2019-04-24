@@ -22,7 +22,7 @@ export const TextInputWrapper = Glamorous.div<{ minimal?: boolean }>(({ minimal 
                 paddingTop: minimal ? 9 : 9,
                 paddingBottom: minimal ? 9 : 9,
                 paddingLeft: 16,
-                paddingRight: minimal ? 75 : 40,
+                paddingRight: minimal ? 150 : 40,
             },
         },
     };

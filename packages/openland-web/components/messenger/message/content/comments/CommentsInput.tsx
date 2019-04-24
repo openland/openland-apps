@@ -70,7 +70,6 @@ export const CommentsInput = ({
         <DumpSendMessage
             round
             fullWidth
-            hideAttach
             minimal={minimal}
             TextInputComponent={DesktopSendMessage}
             quoteState={quoteState}
