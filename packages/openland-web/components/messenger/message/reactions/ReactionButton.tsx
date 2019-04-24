@@ -137,15 +137,6 @@ export const MessageReactionButton = ({
     );
 };
 
-type ReactionButtonT = {
-    hover?: boolean;
-    reactions?: FullMessage_GeneralMessage_reactions[];
-    onlyLikes?: boolean;
-    messageId: string;
-    marginTop?: number;
-    marginLeft?: number;
-};
-
 const likeClassName = css`
     cursor: pointer;
     & svg {

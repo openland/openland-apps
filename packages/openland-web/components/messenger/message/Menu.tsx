@@ -97,12 +97,7 @@ export const Menu = ({
                             />
                         )}
                         {!hasComments && !isComment && (
-                            <MessageReactionButton
-                                hover={hover}
-                                messageId={message.id!}
-                                onlyLikes={isComment}
-                                reactions={message.reactions}
-                            />
+                            <MessageReactionButton messageId={message.id!} />
                         )}
                         {hover && !isChannel && (
                             <IconButton onClick={setReplyMessages}>
@@ -122,22 +117,3 @@ export const Menu = ({
         return null;
     }
 };
-
-// return (
-//     <ReactionComponentInner
-//         handler={async it => {
-//             await client.mutateCommentSetReaction({
-//                 commentId: props.messageId,
-//                 reaction: MessageReactionType.LIKE,
-//             });
-//             // await client.mutateMessageSetReaction({
-//             //     messageId: props.messageId,
-//             //     reaction: it,
-//             // });
-//         }}
-//         onlyLikes={props.onlyLikes}
-//         messageId={props.messageId}
-//         marginTop={props.marginTop}
-//         marginLeft={props.marginLeft}
-//     />
-// );
