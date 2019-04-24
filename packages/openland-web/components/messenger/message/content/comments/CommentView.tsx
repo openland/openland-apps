@@ -6,8 +6,20 @@ import { MessageComponent } from 'openland-web/components/messenger/message/Mess
 import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { UploadContextProvider } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 import { UserShort } from 'openland-api/Types';
-import { AddCommentParams } from './CommentsModalInner';
+import { useAddComment } from './useAddComment';
 import { CommentsInput } from './CommentsInput';
+
+type CommentViewT = {
+    message: DataSourceWebMessageItem & { depth: number };
+    offset: number;
+    onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
+    me?: UserShort | null;
+    showInputId: string | null;
+    setShowInputId: (a: string | null) => void;
+    currentCommentsInputRef: React.MutableRefObject<XRichTextInput2RefMethods | null>;
+    members: RoomMembers_members[];
+    messageId: string;
+};
 
 export const CommentView = React.memo(
     ({
@@ -19,18 +31,9 @@ export const CommentView = React.memo(
         setShowInputId,
         currentCommentsInputRef,
         members,
-        addComment,
-    }: {
-        message: DataSourceWebMessageItem & { depth: number };
-        offset: number;
-        onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
-        me?: UserShort | null;
-        showInputId: string | null;
-        setShowInputId: (a: string | null) => void;
-        currentCommentsInputRef: React.MutableRefObject<XRichTextInput2RefMethods | null>;
-        members: RoomMembers_members[];
-        addComment: (a: AddCommentParams) => {};
-    }) => {
+        messageId,
+    }: CommentViewT) => {
+        const addComment = useAddComment();
         return (
             <XView
                 key={message.key}
@@ -56,6 +59,7 @@ export const CommentView = React.memo(
                             minimal
                             onSend={async (msgToSend, mentions) => {
                                 await addComment({
+                                    messageId,
                                     mentions,
                                     message: msgToSend,
                                     replyComment: message.key,

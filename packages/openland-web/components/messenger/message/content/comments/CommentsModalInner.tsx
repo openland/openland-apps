@@ -11,15 +11,14 @@ import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContex
 import { XModalCloser } from 'openland-x-modal/XModal';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
-import { convertToMentionInput } from 'openland-y-utils/mentionsConversion';
 import { UploadContextProvider } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { CommentView } from './CommentView';
 import { CommentsInput } from './CommentsInput';
-import { FullMessage, FileAttachmentInput } from 'openland-api/Types';
+import { FullMessage } from 'openland-api/Types';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { useAddComment } from './useAddComment';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -54,45 +53,15 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
     };
 }
 
-export type AddCommentParams = {
-    message: string;
-    replyComment: string | null;
-    mentions: UserWithOffset[] | null;
-    fileAttachments?: FileAttachmentInput[] | null;
-};
-
 export const CommentsModalInner = () => {
     const client = useClient();
     const modal = React.useContext(XModalContext);
     const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
     const scrollRef = React.useRef<XScrollView3 | null>(null);
     let router = React.useContext(XRouterContext)!;
+    const addComment = useAddComment();
 
     const [messageId, roomId] = router.routeQuery.comments.split('&');
-
-    const addComment = async ({
-        message,
-        replyComment,
-        mentions,
-        fileAttachments,
-    }: AddCommentParams) => {
-        const finalMentions = convertToMentionInput({
-            mentions: mentions ? mentions : [],
-            text: message,
-        });
-
-        await client.mutateAddMessageComment({
-            messageId,
-            message,
-            replyComment,
-            mentions: finalMentions,
-            fileAttachments,
-        });
-
-        await client.refetchMessageComments({
-            messageId,
-        });
-    };
 
     const isMobile = React.useContext(IsMobileContext);
     let messenger = React.useContext(MessengerContext);
@@ -180,6 +149,7 @@ export const CommentsModalInner = () => {
 
         commentsElements.push(
             <CommentView
+                messageId={messageId}
                 message={message}
                 offset={offset}
                 onCommentReplyClick={onCommentReplyClick}
@@ -188,7 +158,6 @@ export const CommentsModalInner = () => {
                 setShowInputId={setShowInputId}
                 currentCommentsInputRef={currentCommentsInputRef}
                 members={members.members}
-                addComment={addComment}
             />,
         );
     }
@@ -258,10 +227,11 @@ export const CommentsModalInner = () => {
                         members={members.members}
                         onSend={async (msgToSend, mentions) => {
                             await addComment({
+                                messageId,
                                 mentions,
                                 message: msgToSend,
                                 replyComment: null,
-                                // fileAttachments: [],
+                                fileAttachments: [],
                             });
                             setShowInputId(null);
 
