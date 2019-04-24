@@ -22,8 +22,10 @@ import { formatTimerTime } from 'openland-mobile/utils/formatTime';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { NativeModules } from 'react-native';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
+    let theme = useThemeGlobal();
     let [mute, setMute] = React.useState(false);
     let [speaker, setSpeaker] = React.useState(false);
     let [status, setStatus] = React.useState<CallStatus>('initial');
@@ -41,7 +43,9 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         RNSDevice.proximityEnable();
         return () => {
             RNSDevice.proximityDisable();
-            SStatusBar.setBarStyle('dark-content');
+            if (theme.blurType === 'light') {
+                SStatusBar.setBarStyle('dark-content');
+            }
         }
     }, []);
 
@@ -61,7 +65,9 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         setStatus('end');
 
         setTimeout(() => {
-            SStatusBar.setBarStyle('dark-content');
+            if (theme.blurType === 'light') {
+                SStatusBar.setBarStyle('dark-content');
+            }
             props.hide();
         }, 2000)
     }, []);
@@ -131,7 +137,9 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
                 <TouchableOpacity
                     onPress={() => {
-                        // SStatusBar.setBarStyle('dark-content');
+                        // if (theme.blurType === 'light') {
+                        //     SStatusBar.setBarStyle('dark-content');
+                        // }
                         // props.hide();
                         setSpeaker((s) => !s);
                     }}
