@@ -65,9 +65,8 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
     }, []);
 
     let handleClosing = React.useCallback(() => {
-        if (theme.blurType === 'light') {
-            setTimeout(() => { SStatusBar.setBarStyle('dark-content'); }, 50);
-        }
+        setTimeout(() => { SStatusBar.setBarStyle(theme.statusBar); }, 50);
+
         Animated.parallel([
             Animated.spring(progress, {
                 toValue: 0,

@@ -100,8 +100,7 @@ export interface PinMessageComponentProps {
 
 const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
-    const { room } = props;
-    const { pinMessage } = props;
+    const { room, pinMessage } = props;
     const { sender, message } = pinMessage;
     let sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomChat_room_SharedRoom) : null;
     let canMeUnpinMessage = sharedRoom && sharedRoom.canEdit;
@@ -266,58 +265,60 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
                         isEdited={false}
                     />
                 )}
-                {attachment && attachment.fileMetadata.isImage && (
-                    <img
-                        src={'https://ucarecdn.com/' + attachment.fileId + '/'}
-                        className={ImageClassName}
-                    />
-                )}
-                {attachment && !attachment.fileMetadata.isImage && (
-                    <XView flexDirection="column">
-                        <XView
-                            height={1}
-                            backgroundColor="#ececec"
-                            width="100%"
-                            flexShrink={0}
-                            marginBottom={12}
+                {attachment &&
+                    attachment.fileMetadata.isImage && (
+                        <img
+                            src={'https://ucarecdn.com/' + attachment.fileId + '/'}
+                            className={ImageClassName}
                         />
-                        <XView
-                            flexDirection="row"
-                            alignItems="center"
-                            as="a"
-                            hoverTextDecoration="none"
-                            href={`https://ucarecdn.com/${attachment.fileId}/${
-                                attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
-                            }`}
-                        >
+                    )}
+                {attachment &&
+                    !attachment.fileMetadata.isImage && (
+                        <XView flexDirection="column">
                             <XView
-                                alignItems="center"
-                                flexDirection="row"
+                                height={1}
+                                backgroundColor="#ececec"
+                                width="100%"
                                 flexShrink={0}
-                                marginRight={8}
+                                marginBottom={12}
+                            />
+                            <XView
+                                flexDirection="row"
+                                alignItems="center"
+                                as="a"
+                                hoverTextDecoration="none"
+                                href={`https://ucarecdn.com/${attachment.fileId}/${
+                                    attachment.fileMetadata.name ? attachment.fileMetadata.name : ''
+                                }`}
                             >
-                                <AttachIcon />
-                            </XView>
-                            <XView flexDirection="row" alignItems="center">
-                                <XView fontSize={13} color="#1790ff">
-                                    {attachment.fileMetadata.name}
-                                </XView>
                                 <XView
-                                    width={3}
-                                    height={3}
-                                    opacity={0.3}
-                                    backgroundColor="#000"
-                                    borderRadius="100%"
+                                    alignItems="center"
+                                    flexDirection="row"
                                     flexShrink={0}
-                                    marginHorizontal={5}
-                                />
-                                <XView fontSize={13} color="rgba(0, 0, 0, 0.5)">
-                                    {niceBytes(Number(attachment.fileMetadata.size))}
+                                    marginRight={8}
+                                >
+                                    <AttachIcon />
+                                </XView>
+                                <XView flexDirection="row" alignItems="center">
+                                    <XView fontSize={13} color="#1790ff">
+                                        {attachment.fileMetadata.name}
+                                    </XView>
+                                    <XView
+                                        width={3}
+                                        height={3}
+                                        opacity={0.3}
+                                        backgroundColor="#000"
+                                        borderRadius="100%"
+                                        flexShrink={0}
+                                        marginHorizontal={5}
+                                    />
+                                    <XView fontSize={13} color="rgba(0, 0, 0, 0.5)">
+                                        {niceBytes(Number(attachment.fileMetadata.size))}
+                                    </XView>
                                 </XView>
                             </XView>
                         </XView>
-                    </XView>
-                )}
+                    )}
                 {quotedMessages}
             </XView>
         </XView>
@@ -347,7 +348,7 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
     const { pinMessage, chatId, room } = props;
     const { attachments, sender } = pinMessage;
     const attach = attachments[0];
-
+    const hideSender = room.__typename === 'SharedRoom' && room.kind === 'GROUP';
     return (
         <XView
             flexDirection="column"
@@ -382,32 +383,34 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                         <PinIcon />
                     </XView>
                     <XView flexDirection="column" maxWidth="calc(100% - 70px)">
-                        <XView flexDirection="row" maxWidth="100%">
-                            <XView
-                                as="a"
-                                path={'/mail/u/' + sender.id}
-                                color="rgba(0, 0, 0, 0.8)"
-                                hoverTextDecoration="none"
-                                fontWeight="600"
-                                fontSize={13}
-                            >
-                                {sender.name}
-                            </XView>
-                            {sender.primaryOrganization && (
+                        {hideSender && (
+                            <XView flexDirection="row" maxWidth="100%">
                                 <XView
                                     as="a"
-                                    path={'/mail/o/' + sender.primaryOrganization.id}
+                                    path={'/mail/u/' + sender.id}
+                                    color="rgba(0, 0, 0, 0.8)"
                                     hoverTextDecoration="none"
-                                    color="rgba(0, 0, 0, 0.4)"
-                                    hoverColor="#1790ff"
                                     fontWeight="600"
                                     fontSize={13}
-                                    marginLeft={8}
                                 >
-                                    {sender.primaryOrganization.name}
+                                    {sender.name}
                                 </XView>
-                            )}
-                        </XView>
+                                {sender.primaryOrganization && (
+                                    <XView
+                                        as="a"
+                                        path={'/mail/o/' + sender.primaryOrganization.id}
+                                        hoverTextDecoration="none"
+                                        color="rgba(0, 0, 0, 0.4)"
+                                        hoverColor="#1790ff"
+                                        fontWeight="600"
+                                        fontSize={13}
+                                        marginLeft={8}
+                                    >
+                                        {sender.primaryOrganization.name}
+                                    </XView>
+                                )}
+                            </XView>
+                        )}
                         <PinMessageModal
                             pinMessage={pinMessage}
                             chatId={chatId}
@@ -438,26 +441,27 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                                                 <XView color="rgba(0, 0, 0, 0.5)">Forward</XView>
                                             </XView>
                                         )}
-                                    {attach && attach.__typename === 'MessageAttachmentFile' && (
-                                        <>
-                                            {attach.fileMetadata.isImage && (
-                                                <XView flexDirection="row" alignItems="center">
-                                                    <XView marginRight={6}>
-                                                        <IconImage />
+                                    {attach &&
+                                        attach.__typename === 'MessageAttachmentFile' && (
+                                            <>
+                                                {attach.fileMetadata.isImage && (
+                                                    <XView flexDirection="row" alignItems="center">
+                                                        <XView marginRight={6}>
+                                                            <IconImage />
+                                                        </XView>
+                                                        <XView>Image</XView>
                                                     </XView>
-                                                    <XView>Image</XView>
-                                                </XView>
-                                            )}
-                                            {!attach.fileMetadata.isImage && (
-                                                <XView flexDirection="row" alignItems="center">
-                                                    <XView marginRight={6}>
-                                                        <IconFile />
+                                                )}
+                                                {!attach.fileMetadata.isImage && (
+                                                    <XView flexDirection="row" alignItems="center">
+                                                        <XView marginRight={6}>
+                                                            <IconFile />
+                                                        </XView>
+                                                        <XView>Document</XView>
                                                     </XView>
-                                                    <XView>Document</XView>
-                                                </XView>
-                                            )}
-                                        </>
-                                    )}
+                                                )}
+                                            </>
+                                        )}
                                 </XView>
                             }
                         />

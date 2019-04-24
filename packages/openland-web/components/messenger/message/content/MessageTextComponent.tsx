@@ -29,7 +29,8 @@ const styleSpansMessageContainer = css`
 const cropTextStyle = css`
     max-width: 100%;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: pre-wrap;
+    word-wrap: break-word;
     text-overflow: ellipsis;
     max-height: 20px;
 `;

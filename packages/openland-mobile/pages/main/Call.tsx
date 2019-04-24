@@ -43,9 +43,8 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         RNSDevice.proximityEnable();
         return () => {
             RNSDevice.proximityDisable();
-            if (theme.blurType === 'light') {
-                SStatusBar.setBarStyle('dark-content');
-            }
+            SStatusBar.setBarStyle(theme.statusBar);
+
         }
     }, []);
 
@@ -65,9 +64,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         setStatus('end');
 
         setTimeout(() => {
-            if (theme.blurType === 'light') {
-                SStatusBar.setBarStyle('dark-content');
-            }
+            SStatusBar.setBarStyle(theme.statusBar);
             props.hide();
         }, 2000)
     }, []);

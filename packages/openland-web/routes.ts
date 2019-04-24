@@ -103,15 +103,6 @@ routes.add('/o/:organizationId/listings', '/main/profile/organization');
 routes.add('/o/:organizationId/listings/all', '/main/profile/organization');
 routes.add('/o/:organizationId/listings/all/', '/main/profile/organization');
 
-//
-// Marketplace
-//
-
-routes.add('/marketplace', '/main/marketplace/main');
-routes.add('/marketplace/', '/main/marketplace/main');
-routes.add('/marketplace/organization/:organizationId', '/main/marketplace/organization');
-routes.add('/marketplace/organization/:organizationId/', '/main/marketplace/organization');
-
 ///
 /// Invites
 ///
@@ -122,12 +113,6 @@ routes.add('/invite/:inviteKey', '/init/resolveInvite');
 routes.add('/invite/:inviteKey/', '/init/resolveInvite');
 routes.add('/resolveInvite/:inviteKey', '/init/resolveInvite');
 routes.add('/resolveInvite/:inviteKey/', '/init/resolveInvite');
-routes.add('/joinChannel/:inviteKey', '/init/resolveInvite');
-routes.add('/joinChannel/:inviteKey/', '/init/resolveInvite');
-routes.add('/signin/channel', '/init/resolveInvite');
-routes.add('/signin/channel/', '/init/resolveInvite');
-routes.add('/signin/joinChannel/:inviteKey', '/init/resolveInvite');
-routes.add('/signin/joinChannel/:inviteKey/', '/init/resolveInvite');
 routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
 routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
 
@@ -141,8 +126,6 @@ routes.add('/mail/create', '/main/mail/createGroup');
 routes.add('/mail/create/', '/main/mail/createGroup');
 routes.add('/mail/:conversationId', '/main/mail/root');
 routes.add('/mail/:conversationId/', '/main/mail/root');
-routes.add('/mail/channels', '/main/mail/root');
-routes.add('/mail/channels/', '/main/mail/root');
 routes.add('/mail/joinChannel/:inviteKey', '/main/mail/root');
 routes.add('/mail/joinChannel/:inviteKey/', '/main/mail/root');
 routes.add('/mail/join/:inviteKey', '/main/mail/root');
@@ -155,22 +138,6 @@ routes.add('/mail/p/:conversationId', '/main/mail/root');
 routes.add('/mail/p/:conversationId/', '/main/mail/root');
 routes.add('/mail/u/:userId', '/main/mail/root');
 routes.add('/mail/u/:userId/', '/main/mail/root');
-
-routes.add('/support/:conversationId', '/main/mail/support');
-routes.add('/support/:conversationId/', '/main/mail/support');
-
-//
-// Channel
-//
-
-routes.add('/channel', '/main/channel/root');
-routes.add('/channel/', '/main/channel/root');
-routes.add('/channel/:conversationId', '/main/channel/root');
-routes.add('/channel/:conversationId/', '/main/channel/root');
-routes.add('/channel/:conversationId/listings', '/main/channel/root');
-routes.add('/channel/:conversationId/listings/', '/main/channel/root');
-routes.add('/channel/:conversationId/members', '/main/channel/root');
-routes.add('/channel/:conversationId/members/', '/main/channel/root');
 
 //
 // UI
@@ -296,19 +263,6 @@ routes.add('/super/admins/', '/dev/admins');
 
 routes.add('/compatibility', '/perf/compat');
 routes.add('/performance', '/perf/perf');
-
-//
-// Landing
-//
-
-routes.add('/landing', '/landing/home');
-routes.add('/landing/', '/landing/home');
-routes.add('/landing/about', '/landing/about');
-routes.add('/landing/about/', '/landing/about');
-routes.add('/landing/terms', '/landing/terms');
-routes.add('/landing/terms/', '/landing/terms');
-routes.add('/landing/privacy', '/landing/privacy');
-routes.add('/landing/privacy/', '/landing/privacy');
 
 //
 // Authentication
