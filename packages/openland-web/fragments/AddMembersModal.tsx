@@ -143,7 +143,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
     render() {
         const { props } = this;
         const { copied, resetLink } = this.state;
-        let invitePath = props.isChannel ? '/joinChannel/' : '/joinChannel/';
+        let invitePath = '/invite/';
         let underLinkText = 'Anyone can use this link to join the group';
         if (props.isChannel) {
             underLinkText = 'Anyone with link can join as channel member';
