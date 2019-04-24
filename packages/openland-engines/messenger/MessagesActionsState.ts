@@ -3,10 +3,9 @@ import { DataSourceMessageItem } from "./ConversationEngine";
 export interface MessagesActionsState {
     action?: 'forward' | 'reply' | 'edit';
     messages?: DataSourceMessageItem[];
-    conversationId?: string;
 }
 
-let cachedMessagesActionState: MessagesActionsStateEngine | null;
+let bufferedMessages: DataSourceMessageItem[] = [];
 
 export class MessagesActionsStateEngine {
     private state: MessagesActionsState = {};
@@ -35,22 +34,17 @@ export class MessagesActionsStateEngine {
     }
 
     setBuffer = () => {
-        this.getGlobal().clear();
-        this.getGlobal().setState(this.state);
+        if (this.state.messages && this.state.messages.length > 0) {
+            bufferedMessages = this.state.messages;
+        }
     }
 
     getBuffer = () => {
         this.clear();
-        this.setState(this.getGlobal().getState());
-        this.getGlobal().clear();
-    }
 
-    private getGlobal = () => {
-        if (!cachedMessagesActionState) {
-            cachedMessagesActionState = new MessagesActionsStateEngine();
-        }
+        this.setState({ messages: bufferedMessages });
 
-        return cachedMessagesActionState!!;
+        bufferedMessages = [];
     }
 
     private notifyAll = () => {
