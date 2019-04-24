@@ -1,21 +1,20 @@
 import { DataSourceMessageItem } from "./ConversationEngine";
 
-export interface MessagesActonsState {
-    pendingAction?: { action?: 'reply' | 'forward' | 'delete' };
+export interface MessagesActionsState {
+    action?: 'forward' | 'reply' | 'edit';
     messages?: DataSourceMessageItem[];
-    conversationId?: string;
 }
-export class MessagesActonsStateEngine {
 
-    private state: MessagesActonsState = {};
-    private listeners = new Set<(state: MessagesActonsState) => void>();
+export class MessagesActionsStateEngine {
+    private state: MessagesActionsState = {};
+    private listeners = new Set<(state: MessagesActionsState) => void>();
 
-    setState = (state: Partial<MessagesActonsState>) => {
+    setState = (state: Partial<MessagesActionsState>) => {
         this.state = { ...this.state, ...state };
         this.notifyAll();
     }
 
-    listen = (listener: (state: MessagesActonsState) => void) => {
+    listen = (listener: (state: MessagesActionsState) => void) => {
         this.listeners.add(listener);
         listener(this.state);
         return () => {

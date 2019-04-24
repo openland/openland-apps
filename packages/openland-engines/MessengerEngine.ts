@@ -15,7 +15,6 @@ import { createLogger } from 'mental-log';
 import { UserStorageEngine } from './UserStorageEngine';
 import { EngineOptions } from './EnginesOptions';
 import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
-import { MessagesActonsStateEngine } from './messenger/MessagesActonsState';
 
 const log = createLogger('Engine');
 
@@ -30,7 +29,6 @@ export class MessengerEngine {
     readonly calls: CallsEngine;
     readonly userStorage: UserStorageEngine;
     readonly options: EngineOptions;
-    readonly messagesActionsState: MessagesActonsStateEngine;
     private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number; unread: number }>();
     private readonly activeTypings = new Map<string, TypingEngine>();
@@ -51,7 +49,6 @@ export class MessengerEngine {
         this.user = user;
         this.calls = new CallsEngine(this);
         this.userStorage = new UserStorageEngine(this);
-        this.messagesActionsState = new MessagesActonsStateEngine();
 
         // Onlines
         this.onlineWatcher = new OnlineWatcher(this.client);

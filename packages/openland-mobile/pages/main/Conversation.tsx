@@ -32,11 +32,11 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showCallModal } from './Call';
 import { EmojiRender } from './components/EmojiRender';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
-import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
-import { MessagesActonsState } from 'openland-engines/messenger/MessagesActonsState';
+import { MessagesActionsState } from 'openland-engines/messenger/MessagesActionsState';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { SBlurView } from 'react-native-s/SBlurView';
+import { EditView } from 'openland-mobile/messenger/components/EditView';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -52,7 +52,7 @@ interface ConversationRootState {
         start: number,
         end: number
     },
-    messagesActionsState: MessagesActonsState
+    messagesActionsState: MessagesActionsState,
 }
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
@@ -85,7 +85,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     componentWillMount() {
-        getMessenger().engine.messagesActionsState.listen(messagesActionsState => this.setState({ messagesActionsState }));
+        this.engine.messagesActionsState.listen(state => {
+            this.setState({ messagesActionsState: state })
+
+            if (state.messages && state.messages.length > 0 && state.action === 'edit') {
+                this.setState({ text: state.messages[0].text || '' })
+            }
+        });
     }
 
     saveDraft = () => {
@@ -131,7 +137,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         });
     }
 
-    handleSubmit = () => {
+    handleSubmit = async () => {
+        let { messagesActionsState } = this.state;
         let tx = this.state.text.trim();
         if (tx.length > 0) {
             let mentions: UserShort[] = [];
@@ -144,8 +151,23 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 })
             }
 
-            this.engine.sendMessage(tx, mentions);
+            if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
+                let messageToEdit = messagesActionsState.messages.map(convertMessageBack)[0];
+
+                startLoader();
+                try {
+                    await getClient().mutateRoomEditMessage({ messageId: messageToEdit.id, message: tx });
+                } catch (e) {
+                    Alert.alert(e.message);
+                } finally {
+                    stopLoader();
+                }
+            } else {
+                this.engine.sendMessage(tx, mentions);
+            }
         }
+
+        this.engine.messagesActionsState.clear();
 
         this.setState({
             text: '',
@@ -204,10 +226,25 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     onQuotedClearPress = () => {
-        getMessenger().engine.messagesActionsState.clear();
+        this.engine.messagesActionsState.clear();
+
+        this.removeDraft();
+    }
+
+    onEditedClearPress = () => {
+        this.engine.messagesActionsState.clear();
+
+        this.setState({
+            text: '',
+            mentionedUsers: []
+        });
+
+        this.removeDraft();
     }
 
     render() {
+        let { messagesActionsState } = this.state;
+
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
             <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!, path.pathArgs)}>
@@ -240,11 +277,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
 
         let quoted = null;
-        if (this.state.messagesActionsState.messages && this.state.messagesActionsState.messages.length
-            && (this.state.messagesActionsState.pendingAction && ['reply', 'forward'].includes(this.state.messagesActionsState.pendingAction.action || ''))
-            && (this.state.messagesActionsState.conversationId === this.props.chat.id || this.state.messagesActionsState.conversationId === (this.props.chat.__typename === 'PrivateRoom' && this.props.chat.user.id))
-        ) {
-            quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={this.state.messagesActionsState.messages.map(convertMessageBack) || []} action={this.state.messagesActionsState.pendingAction.action === 'forward' ? 'forward' : 'reply'} />
+
+        if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && ['reply', 'forward'].includes(messagesActionsState.action || '')) {
+            quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={messagesActionsState.messages.map(convertMessageBack)} action={messagesActionsState.action === 'forward' ? 'forward' : 'reply'} />
+        }
+
+        if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
+            quoted = <EditView onClearPress={this.onEditedClearPress} message={messagesActionsState.messages.map(convertMessageBack)[0]} />
         }
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
