@@ -21,6 +21,7 @@ export interface MessageInputBarProps {
     attachesEnabled?: boolean;
     text: string;
     placeholder: string;
+    canSubmit: boolean;
 
     suggestions?: any;
     topView?: any;
@@ -29,7 +30,6 @@ export interface MessageInputBarProps {
 
 export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, ref: any) => {
     let theme = React.useContext(ThemeContext);
-    let hasText = props.text.trim().length > 0;
 
     return (
         <ZKeyboardAwareBar>
@@ -85,9 +85,9 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                         keyboardAppearance={theme.keyboardAppearance}
                     />
                     {!props.showLoader && (
-                        <TouchableOpacity disabled={!hasText} onPress={props.onSubmitPress}>
+                        <TouchableOpacity disabled={!props.canSubmit} onPress={props.onSubmitPress}>
                             <View alignItems="center" justifyContent="center" width={52} height={50} paddingLeft={2}>
-                                <Image source={icon} style={{ width: 26, height: 26, tintColor: hasText && props.enabled !== false ? theme.accentColor : '#C8C7CC' }} />
+                                <Image source={icon} style={{ width: 26, height: 26, tintColor: props.canSubmit && props.enabled !== false ? theme.accentColor : '#C8C7CC' }} />
                             </View>
                         </TouchableOpacity>
                     )}

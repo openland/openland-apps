@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ASDataView } from 'react-native-async-view/ASDataView';
-import { DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, DataSourceDateItem, ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
 import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
@@ -12,7 +12,6 @@ import { Clipboard, Platform, View, TouchableOpacity, Image } from 'react-native
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
-import { Prompt } from '../components/Prompt';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
@@ -108,6 +107,7 @@ export class MobileMessenger {
     }
 
     private handleMessageLongPress = (message: DataSourceMessageItem, chatId: string) => {
+        let conversation: ConversationEngine = this.engine.getConversation(message.chatId);
         let builder = new ActionSheetBuilder();
 
         builder.view((ctx: ZModalController) => (
@@ -125,17 +125,26 @@ export class MobileMessenger {
             </View>
         ));
 
-        if (this.engine.getConversation(message.chatId).canSendMessage) {
+        if (conversation.canSendMessage) {
             builder.action('Reply', () => {
-                this.engine.messagesActionsState.setState({ messages: [message], pendingAction: { action: 'reply' }, conversationId: chatId })
+                conversation.messagesActionsState.setState({ messages: [message], action: 'reply' });
             });
         }
 
         builder.action('Forward', () => {
-            this.engine.messagesActionsState.setState({ messages: [message], pendingAction: { action: 'forward' } });
+            let actionsState = conversation.messagesActionsState;
+
+            actionsState.clear();
+            actionsState.setState({ messages: [message] });
+
             getMessenger().history.navigationManager.push('HomeDialogs', {
                 title: 'Forward to', pressCallback: (id: string) => {
-                    this.engine.messagesActionsState.setState({ conversationId: id })
+                    let selectedActionsState = this.engine.getConversation(id).messagesActionsState;
+
+                    selectedActionsState.setState({ ...actionsState.getState(), action: 'forward' });
+
+                    actionsState.clear();
+
                     getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
                 }
             });
@@ -148,19 +157,7 @@ export class MobileMessenger {
         if (message.text) {
             if (message.senderId === this.engine.user.id) {
                 builder.action('Edit', () => {
-                    Prompt.builder()
-                        .title('Edit message')
-                        .value(message.text!)
-                        .callback(async (text) => {
-                            startLoader();
-                            try {
-                                await this.engine.client.mutateRoomEditMessage({ messageId: message.id!, message: text });
-                            } catch (e) {
-                                Alert.alert(e.message);
-                            }
-                            stopLoader();
-                        })
-                        .show();
+                    conversation.messagesActionsState.setState({ messages: [message], action: 'edit' });
                 });
             };
 
@@ -169,7 +166,7 @@ export class MobileMessenger {
             });
         }
 
-        if (this.engine.getConversation(message.chatId).canEdit) {
+        if (conversation.canEdit) {
             builder.action('Pin', async () => {
                 startLoader();
                 try {

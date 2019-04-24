@@ -4,7 +4,6 @@ import {
     ConversationEngine,
     DataSourceDateItem,
 } from 'openland-engines/messenger/ConversationEngine';
-import { Loader } from 'openland-x/XButton';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from 'openland-web/fragments/ChatEmptyComponent';
 import { EditPostProps } from 'openland-web/fragments/MessengerRootComponent';
@@ -19,6 +18,7 @@ import {
 } from '../data/WebMessageItemDataSource';
 import { XScrollViewReverse2 } from 'openland-x/XScrollViewReversed2';
 import { XScrollValues } from 'openland-x/XScrollView3';
+import { XLoader } from 'openland-x/XLoader';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -74,6 +74,7 @@ const LoadingWrapper = glamorous.div({
     height: 50,
     display: 'flex',
     justifyContent: 'center',
+    position: 'relative',
 });
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
@@ -159,7 +160,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     renderLoading = React.memo(() => {
         return (
             <LoadingWrapper>
-                <Loader style="flat" />
+                <XLoader loading={true} />
             </LoadingWrapper>
         );
     });

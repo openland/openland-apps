@@ -26,6 +26,7 @@ import { SDevice } from 'react-native-s/SDevice';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
+import { EditView } from 'openland-mobile/messenger/components/EditView';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -42,6 +43,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
     // state
     const [replied, setReplied] = React.useState<MessageComments_messageComments_comments_comment | undefined>(undefined);
+    const [edited, setEdited] = React.useState<MessageComments_messageComments_comments_comment | undefined>(undefined);
     const [inputText, setInputText] = React.useState<string>('');
     const [inputFocused, setInputFocused] = React.useState<boolean>(false);
     const [inputSelection, setInputSelection] = React.useState<{ start: number, end: number }>({ start: 0, end: 0 });
@@ -50,14 +52,16 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
     // callbacks
     const handleSubmit = React.useCallback(async (attachment?: FileAttachmentInput) => {
-        if (inputText.trim().length > 0 || attachment) {
+        let text = inputText.trim();
+
+        if (text.length > 0 || attachment) {
             setSending(true);
 
             let mentionsCleared: MentionInput[] = [];
 
             if (mentions.length > 0) {
                 mentions.map(mention => {
-                    if (inputText.indexOf(mention.user.name) >= 0) {
+                    if (text.indexOf(mention.user.name) >= 0) {
                         mentionsCleared.push({
                             userId: mention.user.id,
                             offset: mention.offset,
@@ -67,20 +71,25 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                 });
             }
 
-            await getClient().mutateAddMessageComment({
-                messageId: message.id,
-                message: inputText,
-                replyComment: replied ? replied.id : null,
-                mentions: mentionsCleared.length > 0 ? mentionsCleared : null,
-                fileAttachments: attachment ? [attachment] : null
-            });
+            if (edited) {
+                await getClient().mutateEditComment({ id: edited.id, message: text });
+            } else {
+                await getClient().mutateAddMessageComment({
+                    messageId: message.id,
+                    message: text,
+                    replyComment: replied ? replied.id : null,
+                    mentions: mentionsCleared.length > 0 ? mentionsCleared : null,
+                    fileAttachments: attachment ? [attachment] : null
+                });
+            }
 
             setInputText('');
             setReplied(undefined);
+            setEdited(undefined);
             setSending(false);
             setMentions([]);
         }
-    }, [message, inputText, mentions, replied]);
+    }, [message, inputText, mentions, replied, edited]);
 
     const handleEmojiPress = React.useCallback((word: string | undefined, emoji: string) => {
         if (typeof word !== 'string') {
@@ -154,15 +163,30 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                 size
             )
         });
-    }, [message, inputText, mentions, replied]);
+    }, [message, inputText, mentions, replied, edited]);
 
     const handleReplyPress = React.useCallback((comment: MessageComments_messageComments_comments_comment) => {
         setReplied(comment);
 
+        if (edited) {
+            setEdited(undefined);
+            setInputText('');
+        }
+
         if (inputRef.current) {
             inputRef.current.focus();
         }
-    }, [inputRef]);
+    }, [inputRef, edited, replied]);
+
+    const handleEditPress = React.useCallback((comment: MessageComments_messageComments_comments_comment) => {
+        setReplied(undefined);
+        setEdited(comment);
+        setInputText(comment.message || '');
+
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [inputRef, edited, replied]);
 
     const handleReplyClear = React.useCallback(() => {
         if (inputText.length <= 0) {
@@ -170,6 +194,11 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         }
 
         setReplied(undefined);
+    }, [inputText]);
+
+    const handleEditClear = React.useCallback(() => {
+        setInputText('');
+        setEdited(undefined);
     }, [inputText]);
 
     const handleInputTextChange = React.useCallback((src: string) => {
@@ -205,6 +234,10 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         quoted = <ForwardReplyView messages={[replied]} onClearPress={handleReplyClear} />;
     }
 
+    if (edited) {
+        quoted = <EditView message={edited} isComment={true} onClearPress={handleEditClear} />;
+    }
+
     let content = (
         <View paddingHorizontal={16} paddingBottom={Platform.OS === 'ios' ? 68 : undefined}>
             <SenderView sender={message.sender} date={message.date} />
@@ -212,6 +245,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
             <CommentsList
                 comments={comments}
                 onReplyPress={handleReplyPress}
+                onEditPress={handleEditPress}
                 highlightedId={replied ? replied.id : undefined}
             />
         </View>
@@ -251,6 +285,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                                 topView={quoted}
                                 showLoader={sending}
                                 ref={inputRef}
+                                canSubmit={inputText.trim().length > 0}
                             />
                         </View>
                     </>

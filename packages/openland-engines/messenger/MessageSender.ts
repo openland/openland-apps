@@ -108,7 +108,7 @@ export class MessageSender {
         quoted?: string[];
     }) {
         message = message.trim();
-        if (message.length === 0) {
+        if (message.length === 0 && (!quoted || (quoted && quoted.length === 0))) {
             throw Error('Message can\'t be empty');
         }
         let key = UUID();

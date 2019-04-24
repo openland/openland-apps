@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatWatchSubscription, RoomTinyQuery, ChatInitQuery } from 'openland-api';
+import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatInitQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
 import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_ServiceMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
@@ -10,6 +10,7 @@ import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatch
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
+import { MessagesActionsStateEngine } from './MessagesActionsState';
 
 const log = createLogger('Engine-Messages');
 
@@ -145,6 +146,8 @@ export class ConversationEngine implements MessageSendHandler {
     private listeners: ConversationStateHandler[] = [];
     private loadingHistory?: string = undefined;
     private localMessagesMap = new Map<string, string>();
+    readonly messagesActionsState: MessagesActionsStateEngine;
+
     role?: Types.RoomMemberRole | null;
     canEdit?: boolean;
     canSendMessage?: boolean;
@@ -161,6 +164,8 @@ export class ConversationEngine implements MessageSendHandler {
             this.loadBefore();
         });
         // this.dataSourceLogger = new DataSourceLogger('conv:' + conversationId, this.dataSource);
+
+        this.messagesActionsState = new MessagesActionsStateEngine();
     }
 
     start = async () => {
@@ -290,37 +295,37 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     sendMessage = (text: string, mentions: UserShort[] | null) => {
-        if (text.trim().length > 0) {
-            let message = text.trim();
-            let date = (new Date().getTime()).toString();
-            let actionState = this.engine.messagesActionsState.getState();
-            let quoted;
-            if (actionState.pendingAction && (actionState.conversationId === this.conversationId || (this.user !== undefined && (actionState.conversationId === this.user.id)))) {
-                quoted = this.engine.messagesActionsState.getState().messages;
-                this.engine.messagesActionsState.clear();
-            }
+        let message = text.trim();
+        let date = (new Date().getTime()).toString();
 
-            let key = this.engine.sender.sendMessage({
-                conversationId: this.conversationId,
-                message,
-                mentions,
-                callback: this,
-                quoted: (quoted || []).map(q => q.id!),
-            });
-            let spans = prepareLegacyMentions(message, mentions || []);
+        let messagesActionsState = this.messagesActionsState.getState();
+        let quoted;
 
-            let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans, quoted };
-            this.messages = [...this.messages, msgs];
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
-            this.onMessagesUpdated();
+        if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
+            quoted = this.messagesActionsState.getState().messages;
+            this.messagesActionsState.clear();
+        }
 
-            // Data Source
-            this.appendMessage(msgs);
+        let key = this.engine.sender.sendMessage({
+            conversationId: this.conversationId,
+            message,
+            mentions,
+            callback: this,
+            quoted: (quoted || []).map(q => q.id!),
+        });
+        let spans = prepareLegacyMentions(message, mentions || []);
 
-            // Notify
-            for (let l of this.listeners) {
-                l.onMessageSend();
-            }
+        let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans, quoted };
+        this.messages = [...this.messages, msgs];
+        this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+        this.onMessagesUpdated();
+
+        // Data Source
+        this.appendMessage(msgs);
+
+        // Notify
+        for (let l of this.listeners) {
+            l.onMessageSend();
         }
     }
 
