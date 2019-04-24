@@ -27,6 +27,9 @@ export interface AppTheme {
     tabColorActive: string;
     tabColor: string;
 
+    roundButtonBackground: string;
+    roundButtonText: string;
+
     dialogTitleColor: string;
     dialogTitleSecureColor: string;
     dialogDateColor: string;
@@ -48,6 +51,15 @@ export interface AppTheme {
     inputIconsColorInactiveBackground: string;
 
     highlightedComment: string;
+    listItemIconColor: string;
+    listItemIconBackgroundColor: string;
+
+    settingsNotificationIcon: string;
+    settingsAppearanceIcon: string;
+    settingsInviteIcon: string;
+    settingsHelpIcon: string;
+    settingsRateIcon: string;
+
 }
 
 export const DefaultTheme: AppTheme = {
@@ -70,6 +82,9 @@ export const DefaultTheme: AppTheme = {
     hairlineColor: '#e0e3e7',
     groupHeaderColor: Platform.OS === 'android' ? '#000' : '#99a2b0',
     selectorColor: Platform.OS === 'android' ? 'rgba(0, 0, 0, .1)' : '#eee',
+
+    roundButtonBackground: '#0084fe',
+    roundButtonText: 'white',
 
     tabColor: Platform.OS === 'android' ? '#737373' : '#99a2b0',
     tabColorActive: Platform.OS === 'android' ? '#0084fe' : '#0084fe',
@@ -95,6 +110,14 @@ export const DefaultTheme: AppTheme = {
     inputIconsColorInactiveBackground: '#ebebeb',
 
     highlightedComment: '#fffee8',
+    listItemIconColor: '#fff',
+    listItemIconBackgroundColor: '#0084fe',
+
+    settingsNotificationIcon: '#0084fe',
+    settingsAppearanceIcon: '#eb7272',
+    settingsInviteIcon: '#fe9400',
+    settingsHelpIcon: '#00bfff',
+    settingsRateIcon: '#8a54ff',
 }
 
 export const DarkTheme: AppTheme = {
@@ -117,6 +140,9 @@ export const DarkTheme: AppTheme = {
     hairlineColor: '#1C1C1E',
     groupHeaderColor: 'white',
     selectorColor: Platform.OS === 'android' ? '#1C1C1E' : '#1C1C1E',
+
+    roundButtonBackground: '#313131',
+    roundButtonText: 'white',
 
     tabColor: '#929292',
     tabColorActive: '#FDFDFD',
@@ -142,4 +168,12 @@ export const DarkTheme: AppTheme = {
     inputIconsColorInactiveBackground: '#ebebeb',
 
     highlightedComment: '#002140',
+    listItemIconColor: '#d4d4d4',
+    listItemIconBackgroundColor: '#262626',
+
+    settingsNotificationIcon: '#262626',
+    settingsAppearanceIcon: '#262626',
+    settingsInviteIcon: '#262626',
+    settingsHelpIcon: '#262626',
+    settingsRateIcon: '#262626',
 }

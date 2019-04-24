@@ -5,6 +5,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { Alert } from './AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 
 type ZRoundedButtonStyle = 'default' | 'flat' | 'danger' | 'flat-danger';
 type ZRoundedButtonSize = 'default' | 'big' | 'large';
@@ -82,83 +83,84 @@ export interface ZRoundedButtonProps {
     uppercase?: boolean;
 }
 
-class ZRoundedButtonComponent extends React.PureComponent<ZRoundedButtonProps & { router: SRouter }, { actionInProgress?: boolean }> {
-    state = { actionInProgress: false };
-    handlePress = async () => {
-        if (this.props.onPress) {
-            this.props.onPress();
+const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRouter }>((props) => {
+    let [actionInProgress, setActionInProgress] = React.useState(false);
+    let theme = useThemeGlobal();
+    let handlePress = React.useCallback(async () => {
+        if (props.onPress) {
+            props.onPress();
         }
-        if (this.props.path) {
-            this.props.router.push(this.props.path);
+        if (props.path) {
+            props.router.push(props.path);
         }
 
-        if (this.props.action) {
-            this.setState({ actionInProgress: true });
+        if (props.action) {
+            setActionInProgress(true);
 
             try {
-                await this.props.action();
-                if (this.props.onActionSuccess) {
-                    await this.props.onActionSuccess();
+                await props.action();
+                if (props.onActionSuccess) {
+                    await props.onActionSuccess();
                 }
             } catch (e) {
-                if (this.props.onActionError) {
-                    await this.props.onActionError(e);
+                if (props.onActionError) {
+                    await props.onActionError(e);
                 } else {
                     Alert.alert(formatError(e));
                 }
-                this.setState({ actionInProgress: false });
+                setActionInProgress(false);
             }
-            if (this.props.actionFinally) {
-                this.props.actionFinally();
+            if (props.actionFinally) {
+                props.actionFinally();
             }
         }
-    }
-    render() {
-        let size = this.props.size || 'default';
-        let styles = resolveStylesBySize[size];
+    }, []);
+    let size = props.size || 'default';
+    let styles = resolveStylesBySize[size];
 
-        return (
-            <View borderRadius={size === 'default' ? 13 : 18}>
-                <TouchableOpacity onPress={!this.state.actionInProgress ? this.handlePress : undefined} activeOpacity={0.6}>
-                    <View
-                        style={[
-                            styles.container,
-                            {
-                                ...this.props.style === 'flat' ? { backgroundColor: 'transparent' } :
-                                    this.props.style === 'danger' ? { backgroundColor: '#ff3b30' } :
-                                        this.props.style === 'flat-danger' ? { backgroundColor: 'transparent' } : {}
-                            }
-                        ]}
-                    >
-                        <View >
-                            <Text
-                                style={[
-                                    styles.title,
-                                    {
-                                        ...this.props.style === 'flat' ? { color: '#0084fe' } :
-                                            this.props.style === 'danger' ? { color: '#fff' } :
-                                                this.props.style === 'flat-danger' ? { color: '#ff3b30' } : {}
-                                    },
-                                    {
-                                        ...this.state.actionInProgress ? { color: 'transparent' } : {}
-                                    }
-                                ]}
-                                allowFontScaling={false}
-                            >
-                                {this.props.uppercase !== false ? this.props.title.toUpperCase() : this.props.title}
-                            </Text>
+    return (
+        <View borderRadius={size === 'default' ? 13 : 18}>
+            <TouchableOpacity onPress={!actionInProgress ? handlePress : undefined} activeOpacity={0.6}>
+                <View
+                    style={[
+                        styles.container,
+                        { backgroundColor: theme.roundButtonBackground },
+                        {
+                            ...props.style === 'flat' ? { backgroundColor: 'transparent' } :
+                                props.style === 'danger' ? { backgroundColor: '#ff3b30' } :
+                                    props.style === 'flat-danger' ? { backgroundColor: 'transparent' } : {}
+                        }
+                    ]}
+                >
+                    <View >
+                        <Text
+                            style={[
+                                styles.title,
+                                { color: theme.roundButtonText },
+                                {
+                                    ...props.style === 'flat' ? { color: theme.accentColor } :
+                                        props.style === 'danger' ? { color: theme.backgroundColor } :
+                                            props.style === 'flat-danger' ? { color: '#ff3b30' } : {}
+                                },
+                                {
+                                    ...actionInProgress ? { color: 'transparent' } : {}
+                                }
+                            ]}
+                            allowFontScaling={false}
+                        >
+                            {props.uppercase !== false ? props.title.toUpperCase() : props.title}
+                        </Text>
 
-                            {this.state.actionInProgress && (
-                                <View width="100%" height="100%" justifyContent="center" position="absolute" >
-                                    <ActivityIndicator height="100%" color={this.props.style === 'flat' ? '#0084fe' : 'white'} />
-                                </View>
-                            )}
-                        </View>
+                        {actionInProgress && (
+                            <View width="100%" height="100%" justifyContent="center" position="absolute" >
+                                <ActivityIndicator height="100%" color={props.style === 'flat' ? theme.accentColor : theme.backgroundColor} />
+                            </View>
+                        )}
                     </View>
-                </TouchableOpacity>
-            </View >
-        );
-    }
-}
+                </View>
+            </TouchableOpacity>
+        </View >
+    );
+})
 
 export const ZRoundedButton = withRouter<ZRoundedButtonProps>(ZRoundedButtonComponent);

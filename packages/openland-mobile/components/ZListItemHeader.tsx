@@ -8,7 +8,6 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        height: 94,
         paddingTop: 8,
         paddingLeft: Platform.OS === 'android' ? 16 : 13,
         paddingRight: 16
@@ -16,21 +15,20 @@ const styles = StyleSheet.create({
     body: {
         flexDirection: 'column',
         flexGrow: 1,
-        flexBasis: 0,
         minWidth: 0,
         paddingLeft: 16,
-        paddingRight: 16
+        paddingRight: 16,
     } as ViewStyle,
     header: {
-        flexDirection: 'column',
         flexGrow: 1,
-        flexBasis: 0,
+        flexDirection: 'column',
         minWidth: 0,
     } as ViewStyle,
     footer: {
         flexDirection: 'column',
         height: 30,
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start'
     } as ViewStyle,
     title: {
         color: '#000000',
@@ -68,9 +66,9 @@ export interface ZListItemHeaderProps {
 export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
     let theme = React.useContext(ThemeContext);
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: theme.headerColor }]}>
             <XPAvatarWithPreview size={86} src={props.photo} placeholderKey={props.id} placeholderTitle={props.title} userId={props.userId} />
-            <View style={styles.body}>
+            <View style={[styles.body, { height: theme.headerColor === theme.backgroundColor ? 94 : 114, paddingBottom: theme.headerColor === theme.backgroundColor ? 0 : 24 }]}>
                 <View style={styles.header}>
                     <View flexDirection="row">
                         {props.titleIcon && <Image source={props.titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: props.titleColor || '#000' }} />}
@@ -85,6 +83,6 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
                     </View>
                 )}
             </View>
-        </View>
+        </View >
     );
 })

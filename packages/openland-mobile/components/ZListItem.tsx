@@ -8,7 +8,7 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { ActionSheet } from './ActionSheet';
 import { ZAvatar } from './ZAvatar';
 import { AppTheme } from 'openland-mobile/themes/themes';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ThemeContext, useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 
 export interface ZListItemProps {
     leftAvatar?: { photo?: string | null, key: string, title: string };
@@ -39,11 +39,12 @@ export interface ZListItemProps {
     copy?: boolean;
 }
 
-function LeftIcon(props: { theme: AppTheme, src: any, appearance?: 'default' | 'action' | 'danger', leftIconColor?: string }) {
+const LeftIcon = (props: { theme: AppTheme, src: any, appearance?: 'default' | 'action' | 'danger', leftIconColor?: string }) => {
+    let theme = useThemeGlobal();
     if (Platform.OS === 'ios') {
         return (
-            <View style={{ width: 42, height: 42, borderRadius: 21, alignContent: 'center', justifyContent: 'center', backgroundColor: props.leftIconColor || (props.appearance === 'danger' ? '#f6564e' : '#0184fe'), marginLeft: 16, alignSelf: 'center' }}>
-                <Image source={props.src} style={{ width: 24, height: 24, alignSelf: 'center', tintColor: '#fff' }} />
+            <View style={{ width: 42, height: 42, borderRadius: 21, alignContent: 'center', justifyContent: 'center', backgroundColor: props.leftIconColor || (props.appearance === 'danger' ? '#f6564e' : theme.listItemIconBackgroundColor), marginLeft: 16, alignSelf: 'center' }}>
+                <Image source={props.src} style={{ width: 24, height: 24, alignSelf: 'center', tintColor: theme.listItemIconColor }} />
             </View>
         );
     }
