@@ -73,72 +73,69 @@ class ReactionPicker extends React.PureComponent<{
     }
 }
 
-class ReactionComponentInner extends React.PureComponent<{
+export const MessageReactionButton = ({
+    onlyLikes,
+    messageId,
+    marginTop,
+    marginLeft,
+}: {
     onlyLikes?: boolean;
     messageId: string;
     marginTop?: number;
     marginLeft?: number;
-    handler: (reaction: string) => void;
-}> {
-    state = {
-        hovered: false,
-    };
-    handleSetReaction = (emj: any) => {
-        this.props.handler(typeof emj === 'string' ? emj : emj.native);
-    };
+}) => {
+    const [hovered, setHovered] = React.useState(false);
 
-    handleClick = () => {
-        this.handleSetReaction('❤️');
-    };
-
-    onReactionsHover = (data: boolean) => {
-        this.setState({
-            hovered: data,
+    let client = useClient();
+    const handler = async (it: MessageReactionType) => {
+        await client.mutateMessageSetReaction({
+            messageId,
+            reaction: it,
         });
     };
 
-    render() {
-        const onlyLikes = this.props.onlyLikes;
-        if (onlyLikes) {
-            return (
-                <ReactionButtonInner
-                    className="reaction-button"
-                    onClick={this.handleClick}
-                    marginTop={this.props.marginTop}
-                    marginLeft={this.props.marginLeft}
-                    hovered={this.state.hovered}
-                >
-                    <ReactionIcon />
-                </ReactionButtonInner>
-            );
-        }
+    const handleSetReaction = (emj: any) => {
+        handler(typeof emj === 'string' ? emj : emj.native);
+    };
 
+    const handleClick = () => {
+        handleSetReaction('❤️');
+    };
+
+    if (onlyLikes) {
         return (
-            <XPopper
-                content={
-                    <ReactionPicker
-                        setReaction={this.handleSetReaction}
-                        onHover={this.onReactionsHover}
-                    />
-                }
-                showOnHover
-                placement="top"
-                contentContainer={<CustomPickerDiv />}
-                marginBottom={6}
+            <ReactionButtonInner
+                className="reaction-button"
+                onClick={handleClick}
+                marginTop={marginTop}
+                marginLeft={marginLeft}
+                hovered={hovered}
             >
-                <ReactionButtonInner
-                    className="reaction-button"
-                    onClick={this.handleClick}
-                    marginTop={this.props.marginTop}
-                    marginLeft={this.props.marginLeft}
-                    hovered={this.state.hovered}
-                >
-                    <ReactionIcon />
-                </ReactionButtonInner>
-            </XPopper>
+                <ReactionIcon />
+            </ReactionButtonInner>
         );
     }
-}
+
+    return (
+        <XPopper
+            content={<ReactionPicker setReaction={handleSetReaction} onHover={setHovered} />}
+            showOnHover
+            placement="top"
+            contentContainer={<CustomPickerDiv />}
+            marginBottom={6}
+        >
+            <ReactionButtonInner
+                className="reaction-button"
+                onClick={handleClick}
+                marginTop={marginTop}
+                marginLeft={marginLeft}
+                hovered={hovered}
+            >
+                <ReactionIcon />
+            </ReactionButtonInner>
+        </XPopper>
+    );
+};
 
 type ReactionButtonT = {
     hover?: boolean;
@@ -183,83 +180,56 @@ const LikeIcon = ({
     );
 };
 
-const CommentReactionButton = ({
-    id,
-    reactions,
-    hover,
-}: {
-    id: string;
-    reactions?: FullMessage_GeneralMessage_reactions[];
-    hover?: boolean;
-}) => {
-    let client = useClient();
-    const userContext = React.useContext(UserInfoContext);
-    const myId = userContext!!.user!!.id!!;
-    const likeReaction = MessageReactionType.LIKE;
+export const CommentReactionButton = React.memo(
+    ({
+        id,
+        reactions,
+        hover,
+    }: {
+        id: string;
+        reactions?: FullMessage_GeneralMessage_reactions[];
+        hover?: boolean;
+    }) => {
+        let client = useClient();
+        const userContext = React.useContext(UserInfoContext);
+        const myId = userContext!!.user!!.id!!;
+        const likeReaction = MessageReactionType.LIKE;
 
-    let isActive =
-        reactions &&
-        reactions.filter(
-            (userReaction: FullMessage_GeneralMessage_reactions) =>
-                userReaction.user.id === myId && userReaction.reaction === likeReaction,
-        ).length > 0;
+        let isActive =
+            reactions &&
+            reactions.filter(
+                (userReaction: FullMessage_GeneralMessage_reactions) =>
+                    userReaction.user.id === myId && userReaction.reaction === likeReaction,
+            ).length > 0;
 
-    let reactionsCount = reactions ? reactions.length : 0;
-    return reactionsCount || hover ? (
-        <XView flexDirection="row" alignItems="center" position="relative">
-            <XView alignItems="center">
-                <LikeIcon
-                    isActive={!!isActive}
-                    onClick={async () => {
-                        if (isActive) {
-                            client.mutateCommentUnsetReaction({
-                                commentId: id,
-                                reaction: likeReaction,
-                            });
-                        } else {
-                            client.mutateCommentSetReaction({
-                                commentId: id,
-                                reaction: likeReaction,
-                            });
-                        }
-                    }}
-                />
-            </XView>
+        let reactionsCount = reactions ? reactions.length : 0;
+        return reactionsCount || hover ? (
+            <XView flexDirection="row" alignItems="center" position="relative">
+                <XView alignItems="center">
+                    <LikeIcon
+                        isActive={!!isActive}
+                        onClick={async () => {
+                            if (isActive) {
+                                client.mutateCommentUnsetReaction({
+                                    commentId: id,
+                                    reaction: likeReaction,
+                                });
+                            } else {
+                                client.mutateCommentSetReaction({
+                                    commentId: id,
+                                    reaction: likeReaction,
+                                });
+                            }
+                        }}
+                    />
+                </XView>
 
-            <XView alignItems="center" position="absolute" left={20}>
-                <XView fontSize={12} fontWeight={'600'} opacity={0.8}>
-                    {reactionsCount ? reactionsCount : null}
+                <XView alignItems="center" position="absolute" left={20}>
+                    <XView fontSize={12} fontWeight={'600'} opacity={0.8}>
+                        {reactionsCount ? reactionsCount : null}
+                    </XView>
                 </XView>
             </XView>
-        </XView>
-    ) : null;
-};
-
-export const ReactionButton = React.memo((props: ReactionButtonT) => {
-    return (
-        <CommentReactionButton
-            hover={props.hover}
-            id={props.messageId}
-            reactions={props.reactions}
-        />
-    );
-
-    // return (
-    //     <ReactionComponentInner
-    //         handler={async it => {
-    //             await client.mutateCommentSetReaction({
-    //                 commentId: props.messageId,
-    //                 reaction: MessageReactionType.LIKE,
-    //             });
-    //             // await client.mutateMessageSetReaction({
-    //             //     messageId: props.messageId,
-    //             //     reaction: it,
-    //             // });
-    //         }}
-    //         onlyLikes={props.onlyLikes}
-    //         messageId={props.messageId}
-    //         marginTop={props.marginTop}
-    //         marginLeft={props.marginLeft}
-    //     />
-    // );
-});
+        ) : null;
+    },
+);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
-import { ReactionButton } from './reactions/ReactionButton';
+import { CommentReactionButton, MessageReactionButton } from './reactions/ReactionButton';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -89,8 +89,15 @@ export const Menu = ({
             >
                 <XView paddingTop={isComment ? 24 : 0}>
                     <XHorizontal alignItems="center" separator={8}>
-                        {!hasComments && (
-                            <ReactionButton
+                        {!hasComments && isComment && (
+                            <CommentReactionButton
+                                hover={hover}
+                                id={message.id!}
+                                reactions={message.reactions}
+                            />
+                        )}
+                        {!hasComments && !isComment && (
+                            <MessageReactionButton
                                 hover={hover}
                                 messageId={message.id!}
                                 onlyLikes={isComment}
@@ -115,3 +122,22 @@ export const Menu = ({
         return null;
     }
 };
+
+// return (
+//     <ReactionComponentInner
+//         handler={async it => {
+//             await client.mutateCommentSetReaction({
+//                 commentId: props.messageId,
+//                 reaction: MessageReactionType.LIKE,
+//             });
+//             // await client.mutateMessageSetReaction({
+//             //     messageId: props.messageId,
+//             //     reaction: it,
+//             // });
+//         }}
+//         onlyLikes={props.onlyLikes}
+//         messageId={props.messageId}
+//         marginTop={props.marginTop}
+//         marginLeft={props.marginLeft}
+//     />
+// );
