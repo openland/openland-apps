@@ -279,7 +279,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
                 if (fileAttach && !richAttach) {
                     if (fileAttach.fileMetadata.isImage) {
-                        if (fileAttach.fileMetadata.imageFormat === 'gif') {
+                        if (fileAttach.fileMetadata.imageFormat === 'GIF') {
                             content.push(
                                 <MessageAnimationComponent
                                     key={'file'}
