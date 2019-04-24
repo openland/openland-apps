@@ -195,7 +195,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
                         {!!this.props.attach.title && <ASText
                             maxWidth={maxWidth - 36}
-                            color={theme.textColor}
+                            color={out ? theme.textColorOut : theme.textColor}
                             letterSpacing={-0.3}
                             fontSize={14}
                             marginTop={Platform.OS === 'android' ? -4 : -1}

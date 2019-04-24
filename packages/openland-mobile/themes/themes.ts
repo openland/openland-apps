@@ -11,6 +11,8 @@ export interface AppTheme {
     arrowColor: string;
     androidIconColor: string;
 
+    transparent: string;
+
     blurType: 'dark' | 'light';
     keyboardAppearance: 'dark' | 'light';
     statusBar: 'dark-content' | 'light-content';
@@ -37,10 +39,15 @@ export interface AppTheme {
     bubbleGradientOut: string[];
 
     reactionBackground: string;
+
+    inputIconsColor: string;
+    inputIconsColorInactive: string;
+    inputIconsColorInactiveBackground: string;
 }
 
 export const DefaultTheme: AppTheme = {
     headerColor: 'white',
+    transparent: 'rgba(255,255,255,0)',
     backgroundColor: 'white',
     inputBackground: '#f3f5f7',
     statusBar: 'dark-content',
@@ -70,15 +77,19 @@ export const DefaultTheme: AppTheme = {
     textSecondaryColor: '#8a8a8f',
     linkColor: '#0084fe',
     linkOutColor: 'white',
-    bubbleColorIn: 'white',
+    bubbleColorIn: '#f3f5f7',
     bubbleGradientOut: ['#1970ff', '#11b2ff'],
 
     reactionBackground: '#f3f5f7',
 
+    inputIconsColor: '#b9c1cd',
+    inputIconsColorInactive: '#b0b0b0',
+    inputIconsColorInactiveBackground: '#ebebeb',
 }
 
 export const DarkTheme: AppTheme = {
     headerColor: '#1a1a1a',
+    transparent: 'rgba(0,0,0,0)',
     backgroundColor: 'black',
     inputBackground: 'black',
     statusBar: 'light-content',
@@ -112,4 +123,8 @@ export const DarkTheme: AppTheme = {
     bubbleGradientOut: ['#4d4d4d', '#6d6d6d'],
 
     reactionBackground: 'black',
+
+    inputIconsColor: '#767676',
+    inputIconsColorInactive: '#b0b0b0',
+    inputIconsColorInactiveBackground: '#ebebeb',
 }

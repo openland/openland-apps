@@ -371,7 +371,8 @@
             "name": "ic-attachment",
             "src": "ic-attachment.svg",
             "sizes": [
-                11
+                11,
+                24
             ]
         },
         {

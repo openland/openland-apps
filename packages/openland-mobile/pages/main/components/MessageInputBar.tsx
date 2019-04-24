@@ -7,7 +7,7 @@ import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-const iconAttach = require('assets/ic-add-24.png');
+const iconAttach = require('assets/ic-attachment-24.png');
 const icon = require('assets/ic-send.png');
 
 export interface MessageInputBarProps {
@@ -46,8 +46,8 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                     {props.attachesEnabled !== false && (
                         <TouchableOpacity onPress={props.onAttachPress}>
                             <View width={48} height={50} alignItems="center" justifyContent="center">
-                                <View width={30} height={30} borderRadius={24} backgroundColor={theme.inputBackground} alignItems="center" justifyContent="center">
-                                    <Image source={iconAttach} style={{ width: 24, height: 24, tintColor: '#fff' }} />
+                                <View width={30} height={30} borderRadius={24} alignItems="center" justifyContent="center">
+                                    <Image source={iconAttach} style={{ width: 24, height: 24, tintColor: theme.inputIconsColor }} />
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -87,7 +87,11 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                     {!props.showLoader && (
                         <TouchableOpacity disabled={!props.canSubmit} onPress={props.onSubmitPress}>
                             <View alignItems="center" justifyContent="center" width={52} height={50} paddingLeft={2}>
+<<<<<<< HEAD
                                 <Image source={icon} style={{ width: 26, height: 26, tintColor: props.canSubmit && props.enabled !== false ? theme.accentColor : '#C8C7CC' }} />
+=======
+                                <Image source={icon} style={{ width: 26, height: 26, tintColor: hasText && props.enabled !== false ? theme.accentColor : theme.inputIconsColor }} />
+>>>>>>> wip(mobile): theme fixes
                             </View>
                         </TouchableOpacity>
                     )}
