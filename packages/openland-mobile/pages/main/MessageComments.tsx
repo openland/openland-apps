@@ -285,6 +285,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                                 topView={quoted}
                                 showLoader={sending}
                                 ref={inputRef}
+                                canSubmit={inputText.trim().length > 0}
                             />
                         </View>
                     </>

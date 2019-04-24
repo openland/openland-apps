@@ -47,6 +47,7 @@ export interface MessageInputBarProps {
     text: string;
     theme: ConversationTheme;
     placeholder: string;
+    canSubmit: boolean;
 
     suggestions?: any;
     topView?: any;
@@ -54,7 +55,6 @@ export interface MessageInputBarProps {
 }
 
 export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, ref: any) => {
-    let hasText = props.text.trim().length > 0;
     let resolved = Image.resolveAssetSource(inputShadow);
 
     return (
@@ -133,7 +133,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
 
                         {!props.showLoader && (
                             <TouchableOpacity
-                                disabled={!hasText}
+                                disabled={!props.canSubmit}
                                 onPress={props.onSubmitPress}
                                 style={{
                                     position: 'absolute',
@@ -148,7 +148,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                                     width={30}
                                     height={30}
                                     borderRadius={30}
-                                    backgroundColor={hasText && props.enabled !== false ? props.theme.mainColor : '#ebebeb'}
+                                    backgroundColor={props.canSubmit && props.enabled !== false ? props.theme.mainColor : '#ebebeb'}
                                     marginHorizontal={6}
                                 >
                                     <Image
@@ -157,7 +157,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
                                             width: 17,
                                             height: 17,
                                             marginRight: -4,
-                                            tintColor: hasText && props.enabled !== false ? '#fff' : '#b0b0b0'
+                                            tintColor: props.canSubmit && props.enabled !== false ? '#fff' : '#b0b0b0'
                                         }}
                                     />
                                 </View>

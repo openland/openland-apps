@@ -140,31 +140,30 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     handleSubmit = async () => {
         let { messagesActionsState } = this.state;
         let tx = this.state.text.trim();
-        if (tx.length > 0) {
-            let mentions: UserShort[] = [];
 
-            if (this.state.mentionedUsers.length > 0) {
-                this.state.mentionedUsers.map(user => {
-                    if (tx.indexOf(user.name) >= 0) {
-                        mentions.push(user);
-                    }
-                })
-            }
+        let mentions: UserShort[] = [];
 
-            if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
-                let messageToEdit = messagesActionsState.messages.map(convertMessageBack)[0];
-
-                startLoader();
-                try {
-                    await getClient().mutateRoomEditMessage({ messageId: messageToEdit.id, message: tx });
-                } catch (e) {
-                    Alert.alert(e.message);
-                } finally {
-                    stopLoader();
+        if (this.state.mentionedUsers.length > 0) {
+            this.state.mentionedUsers.map(user => {
+                if (tx.indexOf(user.name) >= 0) {
+                    mentions.push(user);
                 }
-            } else {
-                this.engine.sendMessage(tx, mentions);
+            })
+        }
+
+        if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
+            let messageToEdit = messagesActionsState.messages.map(convertMessageBack)[0];
+
+            startLoader();
+            try {
+                await getClient().mutateRoomEditMessage({ messageId: messageToEdit.id, message: tx });
+            } catch (e) {
+                Alert.alert(e.message);
+            } finally {
+                stopLoader();
             }
+        } else {
+            this.engine.sendMessage(tx, mentions);
         }
 
         this.engine.messagesActionsState.clear();
@@ -277,8 +276,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
 
         let quoted = null;
+        let canSubmit = this.state.text.trim().length > 0;
 
         if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && ['reply', 'forward'].includes(messagesActionsState.action || '')) {
+            canSubmit = true;
             quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={messagesActionsState.messages.map(convertMessageBack)} action={messagesActionsState.action === 'forward' ? 'forward' : 'reply'} />
         }
 
@@ -349,6 +350,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     suggestions={suggestions}
                                     topView={quoted}
                                     placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message...'}
+                                    canSubmit={canSubmit}
                                 />
                             )}
                             {!showInputBar && sharedRoom && <ChannelMuteButton id={sharedRoom.id} mute={!!sharedRoom.settings.mute} />}

@@ -295,40 +295,37 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     sendMessage = (text: string, mentions: UserShort[] | null) => {
+        let message = text.trim();
+        let date = (new Date().getTime()).toString();
 
-        if (text.trim().length > 0) {
-            let message = text.trim();
-            let date = (new Date().getTime()).toString();
+        let messagesActionsState = this.messagesActionsState.getState();
+        let quoted;
 
-            let messagesActionsState = this.messagesActionsState.getState();
-            let quoted;
+        if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
+            quoted = this.messagesActionsState.getState().messages;
+            this.messagesActionsState.clear();
+        }
 
-            if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
-                quoted = this.messagesActionsState.getState().messages;
-                this.messagesActionsState.clear();
-            }
+        let key = this.engine.sender.sendMessage({
+            conversationId: this.conversationId,
+            message,
+            mentions,
+            callback: this,
+            quoted: (quoted || []).map(q => q.id!),
+        });
+        let spans = prepareLegacyMentions(message, mentions || []);
 
-            let key = this.engine.sender.sendMessage({
-                conversationId: this.conversationId,
-                message,
-                mentions,
-                callback: this,
-                quoted: (quoted || []).map(q => q.id!),
-            });
-            let spans = prepareLegacyMentions(message, mentions || []);
+        let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans, quoted };
+        this.messages = [...this.messages, msgs];
+        this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+        this.onMessagesUpdated();
 
-            let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans, quoted };
-            this.messages = [...this.messages, msgs];
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
-            this.onMessagesUpdated();
+        // Data Source
+        this.appendMessage(msgs);
 
-            // Data Source
-            this.appendMessage(msgs);
-
-            // Notify
-            for (let l of this.listeners) {
-                l.onMessageSend();
-            }
+        // Notify
+        for (let l of this.listeners) {
+            l.onMessageSend();
         }
     }
 
