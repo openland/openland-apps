@@ -90,7 +90,18 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             this.setState({ messagesActionsState: state })
 
             if (state.messages && state.messages.length > 0 && state.action === 'edit') {
-                this.setState({ text: state.messages[0].text || '' })
+                let mentionsFromEditedMessage: UserShort[] = [];
+
+                (state.messages[0].spans || []).map(s => {
+                    if (s.__typename === 'MessageSpanUserMention') {
+                        mentionsFromEditedMessage.push(s.user as UserShort);
+                    }
+                })
+
+                this.setState({
+                    text: state.messages[0].text || '',
+                    mentionedUsers: mentionsFromEditedMessage
+                })
             }
         });
     }
@@ -157,7 +168,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
             startLoader();
             try {
-                await getClient().mutateRoomEditMessage({ messageId: messageToEdit.id, message: tx });
+                await getClient().mutateRoomEditMessage({
+                    messageId: messageToEdit.id,
+                    message: tx,
+                    mentions: (mentions || []).map(m => m.id)
+                });
             } catch (e) {
                 Alert.alert(e.message);
             } finally {
