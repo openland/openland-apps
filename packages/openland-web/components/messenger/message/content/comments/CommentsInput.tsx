@@ -1,0 +1,86 @@
+import * as React from 'react';
+import { DumpSendMessage } from 'openland-web/fragments/MessageComposeComponent/DumpSendMessage';
+import { DesktopSendMessage } from 'openland-web/fragments/MessageComposeComponent/SendMessage/DesktopSendMessage';
+import UploadCare from 'uploadcare-widget';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
+import { RoomMembers_members } from 'openland-api/Types';
+import { ModelMessage } from 'openland-engines/messenger/types';
+import { useHandleSend } from 'openland-web/fragments/MessageComposeComponent/useHandleSend';
+import { useInputMethods } from 'openland-web/fragments/MessageComposeComponent/useInputMethods';
+import { useQuote } from 'openland-web/fragments/MessageComposeComponent/useQuote';
+import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/useHandleChange';
+import { useMentions } from 'openland-web/fragments/MessageComposeComponent/useMentions';
+import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+
+type CommentsInputProps = {
+    minimal?: boolean;
+    onSend?: (text: string, mentions: UserWithOffset[] | null) => void;
+    onSendFile?: (file: UploadCare.File) => void;
+    onChange?: (text: string) => void;
+    getMessages?: () => ModelMessage[];
+    members?: RoomMembers_members[];
+    commentsInputRef?: React.RefObject<XRichTextInput2RefMethods | null>;
+};
+
+export const CommentsInput = ({
+    minimal,
+    members,
+    onSend,
+    onSendFile,
+    onChange,
+    commentsInputRef,
+}: CommentsInputProps) => {
+    const inputRef = commentsInputRef || React.useRef<XRichTextInput2RefMethods>(null);
+    const inputMethodsState = useInputMethods({ inputRef, enabled: true });
+    const { file } = React.useContext(UploadContext);
+
+    if (file) {
+        inputMethodsState.focusIfNeeded();
+    }
+
+    const [inputValue, setInputValue] = React.useState('');
+
+    const quoteState = useQuote({
+        inputMethodsState,
+    });
+
+    const mentionsState = useMentions({
+        members,
+    });
+
+    const { handleSend, closeEditor } = useHandleSend({
+        members,
+        onSend,
+        onSendFile,
+        inputValue,
+        setInputValue,
+        quoteState,
+        mentionsState,
+        inputMethodsState,
+    });
+
+    const { handleChange } = useHandleChange({
+        mentionsState,
+        onChange,
+        setInputValue,
+    });
+
+    return (
+        <DumpSendMessage
+            round
+            fullWidth
+            hideAttach
+            minimal={minimal}
+            TextInputComponent={DesktopSendMessage}
+            quoteState={quoteState}
+            handleChange={handleChange}
+            handleSend={handleSend}
+            inputRef={inputRef}
+            inputValue={inputValue}
+            enabled={true}
+            closeEditor={closeEditor}
+            mentionsState={mentionsState}
+        />
+    );
+};

@@ -29,7 +29,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
-import { CommentsModal } from 'openland-web/components/messenger/message/content/CommentsModal';
+import { CommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModal';
 
 const inviteButtonClass = css`
     & svg > g > path {

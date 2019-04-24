@@ -1,41 +1,25 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
-import { DumpSendMessage } from 'openland-web/fragments/MessageComposeComponent/DumpSendMessage';
-import { DesktopSendMessage } from 'openland-web/fragments/MessageComposeComponent/SendMessage/DesktopSendMessage';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import UploadCare from 'uploadcare-widget';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
-import {
-    RoomMembers_members,
-    CommentWatch_event_CommentUpdateSingle_update,
-    FullMessage,
-    FileAttachmentInput,
-} from 'openland-api/Types';
+import { CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { ModelMessage } from 'openland-engines/messenger/types';
-import { useHandleSend } from 'openland-web/fragments/MessageComposeComponent/useHandleSend';
-import { useInputMethods } from 'openland-web/fragments/MessageComposeComponent/useInputMethods';
-import { useQuote } from 'openland-web/fragments/MessageComposeComponent/useQuote';
-import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/useHandleChange';
-import { useMentions } from 'openland-web/fragments/MessageComposeComponent/useMentions';
-import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XModalCloser } from 'openland-x-modal/XModal';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import {
-    convertDsMessage,
-    DataSourceWebMessageItem,
-} from 'openland-web/components/messenger/data/WebMessageItemDataSource';
-import { convertToMentionInput, UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
+import { convertToMentionInput } from 'openland-y-utils/mentionsConversion';
 import { UploadContextProvider } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalContext } from 'openland-x-modal/XModalContext';
-import { UserShort } from 'openland-api/Types';
+import { CommentView } from './CommentView';
+import { CommentsInput } from './CommentsInput';
+import { FullMessage, FileAttachmentInput } from 'openland-api/Types';
+import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -70,148 +54,14 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
     };
 }
 
-type CommentsInputProps = {
-    minimal?: boolean;
-    onSend?: (text: string, mentions: UserWithOffset[] | null) => void;
-    onSendFile?: (file: UploadCare.File) => void;
-    onChange?: (text: string) => void;
-    getMessages?: () => ModelMessage[];
-    members?: RoomMembers_members[];
-    commentsInputRef?: React.RefObject<XRichTextInput2RefMethods | null>;
-};
-
-const CommentsInput = ({
-    minimal,
-    members,
-    onSend,
-    onSendFile,
-    onChange,
-    commentsInputRef,
-}: CommentsInputProps) => {
-    const inputRef = commentsInputRef || React.useRef<XRichTextInput2RefMethods>(null);
-    const inputMethodsState = useInputMethods({ inputRef, enabled: true });
-    const { file } = React.useContext(UploadContext);
-
-    if (file) {
-        inputMethodsState.focusIfNeeded();
-    }
-
-    const [inputValue, setInputValue] = React.useState('');
-
-    const quoteState = useQuote({
-        inputMethodsState,
-    });
-
-    const mentionsState = useMentions({
-        members,
-    });
-
-    const { handleSend, closeEditor } = useHandleSend({
-        members,
-        onSend,
-        onSendFile,
-        inputValue,
-        setInputValue,
-        quoteState,
-        mentionsState,
-        inputMethodsState,
-    });
-
-    const { handleChange } = useHandleChange({
-        mentionsState,
-        onChange,
-        setInputValue,
-    });
-
-    return (
-        <DumpSendMessage
-            round
-            fullWidth
-            hideAttach
-            minimal={minimal}
-            TextInputComponent={DesktopSendMessage}
-            quoteState={quoteState}
-            handleChange={handleChange}
-            handleSend={handleSend}
-            inputRef={inputRef}
-            inputValue={inputValue}
-            enabled={true}
-            closeEditor={closeEditor}
-            mentionsState={mentionsState}
-        />
-    );
-};
-
-type AddCommentParams = {
+export type AddCommentParams = {
     message: string;
     replyComment: string | null;
     mentions: UserWithOffset[] | null;
     fileAttachments?: FileAttachmentInput[] | null;
 };
 
-const Comment = React.memo(
-    ({
-        message,
-        offset,
-        onCommentReplyClick,
-        me,
-        showInputId,
-        setShowInputId,
-        currentCommentsInputRef,
-        members,
-        addComment,
-    }: {
-        message: DataSourceWebMessageItem & { depth: number };
-        offset: number;
-        onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
-        me?: UserShort | null;
-        showInputId: string | null;
-        setShowInputId: (a: string | null) => void;
-        currentCommentsInputRef: React.MutableRefObject<XRichTextInput2RefMethods | null>;
-        members: RoomMembers_members[];
-        addComment: (a: AddCommentParams) => {};
-    }) => {
-        return (
-            <XView
-                key={message.key}
-                marginLeft={offset}
-                width={`calc(800px - 32px - 32px - ${offset}px)`}
-            >
-                <MessageComponent
-                    commentDepth={message.depth}
-                    noSelector
-                    isComment
-                    onCommentReplyClick={onCommentReplyClick}
-                    message={message}
-                    onlyLikes={true}
-                    isChannel={true}
-                    me={me}
-                />
-
-                {showInputId === message.key && (
-                    <UploadContextProvider>
-                        <CommentsInput
-                            commentsInputRef={currentCommentsInputRef}
-                            members={members}
-                            minimal
-                            onSend={async (msgToSend, mentions) => {
-                                await addComment({
-                                    mentions,
-                                    message: msgToSend,
-                                    replyComment: message.key,
-                                    // fileAttachments: [],
-                                });
-                                setShowInputId(null);
-                            }}
-                        />
-                    </UploadContextProvider>
-                )}
-            </XView>
-        );
-    },
-);
-
-export const CommentsInner = () => {
+export const CommentsModalInner = () => {
     const client = useClient();
     const modal = React.useContext(XModalContext);
     const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
@@ -329,7 +179,7 @@ export const CommentsInner = () => {
         const offset = (message.depth > 0 ? 44 : 55) * message.depth;
 
         commentsElements.push(
-            <Comment
+            <CommentView
                 message={message}
                 offset={offset}
                 onCommentReplyClick={onCommentReplyClick}
@@ -423,24 +273,5 @@ export const CommentsInner = () => {
                 </UploadContextProvider>
             </XView>
         </>
-    );
-};
-
-export const CommentsModal = () => {
-    return (
-        <XModalForm
-            width={800}
-            noPadding
-            targetQuery="comments"
-            defaultData={{
-                input: {},
-            }}
-            defaultAction={async () => {
-                //
-            }}
-            customFooter={null}
-        >
-            <CommentsInner />
-        </XModalForm>
     );
 };
