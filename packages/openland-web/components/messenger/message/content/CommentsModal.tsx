@@ -385,6 +385,10 @@ export const CommentsInner = () => {
                                 // fileAttachments: [],
                             });
                             setShowInputId(null);
+
+                            if (scrollRef && scrollRef.current) {
+                                scrollRef.current.scrollToBottom();
+                            }
                         }}
                     />
                 </UploadContextProvider>

@@ -16,6 +16,10 @@ export interface XScrollView3Props extends XStyles {
     children?: any;
 }
 
+const scrollToBottom = ({ scrollContainer }: { scrollContainer: HTMLElement }) => {
+    scrollContainer.scrollTop = scrollContainer.getBoundingClientRect().height;
+};
+
 const scrollToTopOfElement = ({
     scrollContainer,
     targetElem,
@@ -173,6 +177,14 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
                 targetElem,
                 scrollContainer: this.nativeBackendElemRef.current,
                 offset,
+            });
+        }
+    };
+
+    public scrollToBottom = () => {
+        if (this.nativeBackendElemRef.current) {
+            scrollToBottom({
+                scrollContainer: this.nativeBackendElemRef.current,
             });
         }
     };
