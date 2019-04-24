@@ -63,7 +63,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         if (fileAttach && fileAttach.fileId && fileAttach!!.fileMetadata.imageWidth!! && fileAttach!!.fileMetadata.imageHeight!!) {
             this.serverDownloadManager = true;
             let optimalSize = layoutMedia(fileAttach!!.fileMetadata.imageWidth!!, fileAttach!!.fileMetadata.imageHeight!!, 1024, 1024);
-            this.downloadManagerWatch = DownloadManagerInstance.watch(fileAttach!!.fileId!, (fileAttach!!.fileMetadata.imageFormat !== 'gif') ? optimalSize : null, (state) => {
+            this.downloadManagerWatch = DownloadManagerInstance.watch(fileAttach!!.fileId!, (fileAttach!!.fileMetadata.imageFormat !== 'GIF') ? optimalSize : null, (state) => {
                 if (this.mounted) {
                     this.setState({ downloadState: state });
                 }
@@ -123,7 +123,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                     maxWidth={this.props.layout.width}
                     onPress={this.handlePress}
                     source={{ uri: (fileAttach && fileAttach.uri) ? fileAttach.uri : (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
-                    isGif={fileAttach!!.fileMetadata.imageFormat === 'gif'}
+                    isGif={fileAttach!!.fileMetadata.imageFormat === 'GIF'}
                     borderRadius={16}
                     marginLeft={2}
                     marginRight={2}

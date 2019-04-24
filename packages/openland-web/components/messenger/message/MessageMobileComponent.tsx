@@ -155,7 +155,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                 fileAttach.fileMetadata.imageWidth &&
                 fileAttach.fileMetadata.imageHeight
             ) {
-                if (fileAttach.fileMetadata.imageFormat === 'gif') {
+                if (fileAttach.fileMetadata.imageFormat === 'GIF') {
                     content.push(
                         <MessageAnimationComponent
                             key={'file'}

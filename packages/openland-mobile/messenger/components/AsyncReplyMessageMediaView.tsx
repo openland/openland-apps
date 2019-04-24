@@ -55,7 +55,7 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
                     source={{ uri: (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
                     width={layout.width}
                     height={layout.height}
-                    isGif={this.props.attach!!.fileMetadata.imageFormat === 'gif'}
+                    isGif={this.props.attach!!.fileMetadata.imageFormat === 'GIF'}
                     onPress={(e) => this.handlePress(e, 0)}
                 />
 
