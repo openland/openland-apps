@@ -12,7 +12,7 @@ const FileInput = Glamorous.input({
     display: 'none',
 });
 
-export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
+export const AttachmentButton = Glamorous(XLink)<{ enabled?: boolean }>(props => ({
     paddingLeft: 12,
     paddingRight: 12,
     height: 32,
@@ -26,8 +26,8 @@ export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props =>
     letterSpacing: 0,
     lineHeight: '20px',
     color: 'rgba(0, 0, 0, 0.4)',
-    opacity: props.disable ? 0.7 : undefined,
-    cursor: props.disable ? 'default !important' : 'pointer',
+    opacity: !props.enabled ? 0.7 : undefined,
+    cursor: !props.enabled ? 'default !important' : 'pointer',
     '&:first-child': {
         marginLeft: 6,
     },
@@ -39,10 +39,10 @@ export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props =>
     },
     '&:hover': {
         textDecoration: 'none',
-        color: props.disable ? '#a3acb8' : 'rgba(0, 0, 0, 0.5)',
-        backgroundColor: props.disable ? 'transparent' : 'rgba(0, 0, 0, 0.03)',
+        color: !props.enabled ? '#a3acb8' : 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: !props.enabled ? 'transparent' : 'rgba(0, 0, 0, 0.03)',
         '& > svg > *': {
-            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.3)',
+            fill: !props.enabled ? '#c1c7cf' : 'rgba(0, 0, 0, 0.3)',
         },
     },
     '&.shortcuts-button > svg, &.document-button > svg': {
@@ -53,7 +53,7 @@ export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props =>
         flexShrink: 0,
         marginRight: 10,
         '& > *': {
-            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.2)',
+            fill: !props.enabled ? '#c1c7cf' : 'rgba(0, 0, 0, 0.2)',
         },
     },
 }));
@@ -68,11 +68,7 @@ export const PhotoButton = ({
     onClick: ((event: React.MouseEvent<any, MouseEvent>) => void) | undefined;
 }) => {
     return (
-        <AttachmentButton
-            onClick={!enabled ? undefined : onClick}
-            enabled={!enabled}
-            disable={!enabled}
-        >
+        <AttachmentButton onClick={!enabled ? undefined : onClick} enabled={enabled}>
             <PhotoIcon />
             {!minimal && <span>Photo</span>}
         </AttachmentButton>
@@ -91,12 +87,20 @@ export const DocumentButton = ({
     return (
         <AttachmentButton
             onClick={!enabled ? undefined : onClick}
-            enabled={!enabled}
-            disable={!enabled}
+            enabled={enabled}
             className="document-button"
         >
             <FileIcon />
             {!minimal && <span>Document</span>}
+        </AttachmentButton>
+    );
+};
+
+export const ShortcutsButton = () => {
+    return (
+        <AttachmentButton className="shortcuts-button" onClick={showShortcutsHelp}>
+            <ShortcutsIcon />
+            <span>Shortcuts</span>
         </AttachmentButton>
     );
 };
@@ -120,27 +124,9 @@ export const AttachmentButtons = ({ enabled }: { enabled?: boolean }) => {
     return (
         <XHorizontal separator="none">
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
-            <AttachmentButton
-                onClick={!enabled ? undefined : fileSelector}
-                enabled={!enabled}
-                disable={!enabled}
-            >
-                <PhotoIcon />
-                <span>Photo</span>
-            </AttachmentButton>
-            <AttachmentButton
-                onClick={!enabled ? undefined : fileSelector}
-                enabled={!enabled}
-                disable={!enabled}
-                className="document-button"
-            >
-                <FileIcon />
-                <span>Document</span>
-            </AttachmentButton>
-            <AttachmentButton className="shortcuts-button" onClick={showShortcutsHelp}>
-                <ShortcutsIcon />
-                <span>Shortcuts</span>
-            </AttachmentButton>
+            <PhotoButton enabled={enabled} onClick={!enabled ? undefined : fileSelector} />
+            <DocumentButton enabled={enabled} onClick={!enabled ? undefined : fileSelector} />
+            <ShortcutsButton />
         </XHorizontal>
     );
 };
