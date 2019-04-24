@@ -2,23 +2,25 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
+import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { PendingMessage, UploadStatus } from 'openland-engines/messenger/types';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
 import { CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XModalCloser } from 'openland-x-modal/XModal';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
-import { UploadContextProvider } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { CommentView } from './CommentView';
 import { CommentsInput } from './CommentsInput';
 import { FullMessage } from 'openland-api/Types';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { useAddComment } from './useAddComment';
+import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
+import UUID from 'uuid/v4';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -52,6 +54,8 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
     };
 }
+
+const uploadedFiles = new Map<string, string>();
 
 export const CommentsModalInner = () => {
     const client = useClient();
@@ -222,25 +226,56 @@ export const CommentsModalInner = () => {
                 )}
             </XScrollView3>
             <XView>
-                <UploadContextProvider>
-                    <CommentsInput
-                        members={members.members}
-                        onSend={async (msgToSend, mentions) => {
-                            await addComment({
-                                messageId,
-                                mentions,
-                                message: msgToSend,
-                                replyComment: null,
-                                fileAttachments: [],
-                            });
-                            setShowInputId(null);
+                <CommentsInput
+                    members={members.members}
+                    onSendFile={async rawFile => {
+                        const file = new UploadCareUploading(rawFile);
 
-                            if (scrollRef && scrollRef.current) {
-                                scrollRef.current.scrollToBottom();
+                        let key = UUID();
+
+                        try {
+                            if (!uploadedFiles.has(key)) {
+                                let res = await new Promise<string>((resolver, reject) => {
+                                    file.watch(state => {
+                                        if (state.status === UploadStatus.FAILED) {
+                                            reject();
+                                        } else if (state.status === UploadStatus.UPLOADING) {
+                                            console.log('onProgress', key, state.progress!!);
+                                        } else if (state.status === UploadStatus.COMPLETED) {
+                                            resolver(state.uuid!!);
+                                        }
+                                    });
+                                });
+                                uploadedFiles.set(key, res);
                             }
-                        }}
-                    />
-                </UploadContextProvider>
+                        } catch (e) {
+                            console.log('onFailed', key);
+                        }
+
+                        let info = await file.fetchInfo();
+
+                        console.log('Uploading finished');
+                        console.log(key);
+
+                        return key;
+                    }}
+                    onSend={async (msgToSend, mentions) => {
+                        console.log('onSend');
+
+                        await addComment({
+                            messageId,
+                            mentions,
+                            message: msgToSend,
+                            replyComment: null,
+                            fileAttachments: [],
+                        });
+                        setShowInputId(null);
+
+                        if (scrollRef && scrollRef.current) {
+                            scrollRef.current.scrollToBottom();
+                        }
+                    }}
+                />
             </XView>
         </>
     );

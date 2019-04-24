@@ -2,14 +2,14 @@ import * as React from 'react';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { FileUploader } from './FileUploading/FileUploader';
+import { FileUploader } from '../../modules/FileUploading/FileUploader';
 import { SendMessageWrapper, SendMessageContent } from './Components';
 import { AttachmentButtons } from './AttachmentButtons';
 import { EditView } from './EditView';
 import { MentionsStateT } from './useMentions';
 import { QuoteStateT } from './useQuote';
-import { DropZone } from './FileUploading/DropZone';
-import { UploadContext } from './FileUploading/UploadContext';
+import { DropZone } from '../../modules/FileUploading/DropZone';
+import { UploadContext } from '../../modules/FileUploading/UploadContext';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 export type TextInputComponentT = {

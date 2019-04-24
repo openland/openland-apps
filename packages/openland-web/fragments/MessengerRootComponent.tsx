@@ -14,7 +14,7 @@ import {
 } from './MessageComposeComponent/MessageComposeComponentDesktop';
 import { MobileMessageCompose } from './MessageComposeComponent/MessageComposeComponentMobile';
 import { ConversationMessagesComponent } from '../components/messenger/ConversationMessagesComponent';
-import { UplaodCareUploading } from '../utils/UploadCareUploading';
+import { UploadCareUploading } from '../utils/UploadCareUploading';
 import {
     UserShort,
     SharedRoomKind,
@@ -25,7 +25,7 @@ import {
 import { XText } from 'openland-x/XText';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { UploadContextProvider } from './MessageComposeComponent/FileUploading/UploadContext';
+import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
 import { PinMessageComponent } from 'openland-web/fragments/chat/PinMessage';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
@@ -266,7 +266,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             throw Error('conversation should be defined here');
         }
 
-        this.conversation.sendFile(new UplaodCareUploading(file));
+        this.conversation.sendFile(new UploadCareUploading(file));
     };
 
     handleShowIput = (show: boolean) => {
@@ -335,9 +335,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         />
                     </UploadContextProvider>
                 )}
-                {this.props.isActive && (
-                    <DeleteUrlAugmentationComponent />
-                )}
+                {this.props.isActive && <DeleteUrlAugmentationComponent />}
                 <DeleteMessageComponent />
                 <LeaveChatComponent />
             </XView>

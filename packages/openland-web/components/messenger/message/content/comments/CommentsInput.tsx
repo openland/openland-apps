@@ -10,7 +10,7 @@ import { useInputMethods } from 'openland-web/fragments/MessageComposeComponent/
 import { useQuote } from 'openland-web/fragments/MessageComposeComponent/useQuote';
 import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/useHandleChange';
 import { useMentions } from 'openland-web/fragments/MessageComposeComponent/useMentions';
-import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
+import { UploadContext } from 'openland-web/modules/FileUploading/UploadContext';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 type CommentsInputProps = {

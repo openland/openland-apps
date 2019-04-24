@@ -28,7 +28,7 @@ import { useHandleChange } from './useHandleChange';
 import { useMentions } from './useMentions';
 import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
-import { UploadContext } from './FileUploading/UploadContext';
+import { UploadContext } from '../../modules/FileUploading/UploadContext';
 import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';

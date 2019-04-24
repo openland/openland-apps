@@ -19,7 +19,7 @@ import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
 import * as constants from '../constants';
 import { UserShort } from 'openland-api/Types';
-import { UploadContext } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
+import { UploadContext } from 'openland-web/modules/FileUploading/UploadContext';
 
 const Container = Glamorous.div<XFlexStyles & { round?: boolean }>(({ round }) => {
     return [

@@ -11,7 +11,7 @@ import { InputMethodsStateT } from './useInputMethods';
 import { MentionsStateT } from './useMentions';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { useReplyPropsT } from './useReply';
-import { UploadContext } from './FileUploading/UploadContext';
+import { UploadContext } from '../../modules/FileUploading/UploadContext';
 
 export type useHandleSendT = {
     onSend?: (text: string, mentions: UserWithOffset[] | null) => void;
@@ -83,10 +83,10 @@ export function useHandleSend({
         );
     };
 
-    const onUploadCareSendFile = (fileForUc: UploadCare.File) => {
+    const onUploadCareSendFile = async (fileForUc: UploadCare.File) => {
         const ucFile = UploadCare.fileFrom('object', fileForUc);
         if (onSendFile) {
-            onSendFile(ucFile);
+            await onSendFile(ucFile);
             dropZoneContext.fileRemover();
         }
     };
@@ -109,23 +109,22 @@ export function useHandleSend({
         }
     };
 
-    const handleSend = () => {
+    const handleSend = async () => {
         let msg = inputValue.trim();
         if (msg.length > 0) {
             if (onSend && !hasQuoteInState()) {
+                if (file) {
+                    await onUploadCareSendFile(file);
+                }
                 if (supportMentions() && mentionsState) {
-                    onSend(msg, mentionsState.getMentions());
+                    await onSend(msg, mentionsState.getMentions());
                     mentionsState.setCurrentMentions([]);
                 } else {
-                    onSend(msg, null);
+                    await onSend(msg, null);
                 }
 
                 if (supportDraft()) {
                     draftState!!.setBeDrafted!!(false);
-                }
-
-                if (file) {
-                    onUploadCareSendFile(file);
                 }
             }
             if (inputValue && hasQuoteInState()) {

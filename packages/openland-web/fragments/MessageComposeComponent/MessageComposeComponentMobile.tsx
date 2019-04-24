@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UploadContext } from './FileUploading/UploadContext';
+import { UploadContext } from '../../modules/FileUploading/UploadContext';
 import { MessageComposeComponentDraftProps } from './MessageComposeComponentDesktop';
 import { useHandleSend } from './useHandleSend';
 import { useHandleChange } from './useHandleChange';

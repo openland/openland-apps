@@ -1,6 +1,6 @@
 import { UploadingFile, FileMetadata, UploadStatus } from 'openland-engines/messenger/types';
 
-export class UplaodCareUploading implements UploadingFile {
+export class UploadCareUploading implements UploadingFile {
     private file: UploadCare.File;
     private infoPromise: Promise<FileMetadata>;
     constructor(file: UploadCare.File) {

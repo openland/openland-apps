@@ -4,7 +4,7 @@ import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMe
 import { RoomMembers_members } from 'openland-api/Types';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
-import { UploadContextProvider } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
+import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
 import { UserShort } from 'openland-api/Types';
 import { useAddComment } from './useAddComment';
 import { CommentsInput } from './CommentsInput';
@@ -57,6 +57,9 @@ export const CommentView = React.memo(
                             commentsInputRef={currentCommentsInputRef}
                             members={members}
                             minimal
+                            onSendFile={(file: any) => {
+                                console.log(file);
+                            }}
                             onSend={async (msgToSend, mentions) => {
                                 await addComment({
                                     messageId,
