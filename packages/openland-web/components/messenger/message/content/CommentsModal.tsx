@@ -27,11 +27,15 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XModalCloser } from 'openland-x-modal/XModal';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
+import {
+    convertDsMessage,
+    DataSourceWebMessageItem,
+} from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { convertToMentionInput, UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UploadContextProvider } from 'openland-web/fragments/MessageComposeComponent/FileUploading/UploadContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalContext } from 'openland-x-modal/XModalContext';
+import { UserShort } from 'openland-api/Types';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -138,15 +142,80 @@ const CommentsInput = ({
     );
 };
 
+type AddCommentParams = {
+    message: string;
+    replyComment: string | null;
+    mentions: UserWithOffset[] | null;
+    fileAttachments?: FileAttachmentInput[] | null;
+};
+
+const Comment = React.memo(
+    ({
+        message,
+        offset,
+        onCommentReplyClick,
+        me,
+        showInputId,
+        setShowInputId,
+        currentCommentsInputRef,
+        members,
+        addComment,
+    }: {
+        message: DataSourceWebMessageItem & { depth: number };
+        offset: number;
+        onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
+        me?: UserShort | null;
+        showInputId: string | null;
+        setShowInputId: (a: string | null) => void;
+        currentCommentsInputRef: React.MutableRefObject<XRichTextInput2RefMethods | null>;
+        members: RoomMembers_members[];
+        addComment: (a: AddCommentParams) => {};
+    }) => {
+        return (
+            <XView
+                key={message.key}
+                marginLeft={offset}
+                width={`calc(800px - 32px - 32px - ${offset}px)`}
+            >
+                <MessageComponent
+                    commentDepth={message.depth}
+                    noSelector
+                    isComment
+                    onCommentReplyClick={onCommentReplyClick}
+                    message={message}
+                    onlyLikes={true}
+                    isChannel={true}
+                    me={me}
+                />
+
+                {showInputId === message.key && (
+                    <UploadContextProvider>
+                        <CommentsInput
+                            commentsInputRef={currentCommentsInputRef}
+                            members={members}
+                            minimal
+                            onSend={async (msgToSend, mentions) => {
+                                await addComment({
+                                    mentions,
+                                    message: msgToSend,
+                                    replyComment: message.key,
+                                    // fileAttachments: [],
+                                });
+                                setShowInputId(null);
+                            }}
+                        />
+                    </UploadContextProvider>
+                )}
+            </XView>
+        );
+    },
+);
+
 export const CommentsInner = () => {
     const client = useClient();
-
     const modal = React.useContext(XModalContext);
-
     const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
-
     const scrollRef = React.useRef<XScrollView3 | null>(null);
-
     let router = React.useContext(XRouterContext)!;
 
     const [messageId, roomId] = router.routeQuery.comments.split('&');
@@ -156,12 +225,7 @@ export const CommentsInner = () => {
         replyComment,
         mentions,
         fileAttachments,
-    }: {
-        message: string;
-        replyComment: string | null;
-        mentions: UserWithOffset[] | null;
-        fileAttachments?: FileAttachmentInput[] | null;
-    }) => {
+    }: AddCommentParams) => {
         const finalMentions = convertToMentionInput({
             mentions: mentions ? mentions : [],
             text: message,
@@ -265,41 +329,17 @@ export const CommentsInner = () => {
         const offset = (message.depth > 0 ? 44 : 55) * message.depth;
 
         commentsElements.push(
-            <XView
-                key={message.key}
-                marginLeft={offset}
-                width={`calc(800px - 32px - 32px - ${offset}px)`}
-            >
-                <MessageComponent
-                    commentDepth={message.depth}
-                    noSelector
-                    isComment
-                    onCommentReplyClick={onCommentReplyClick}
-                    message={message}
-                    onlyLikes={true}
-                    isChannel={true}
-                    me={messenger.user}
-                />
-
-                {showInputId === message.key && (
-                    <UploadContextProvider>
-                        <CommentsInput
-                            commentsInputRef={currentCommentsInputRef}
-                            members={members.members}
-                            minimal
-                            onSend={async (msgToSend, mentions) => {
-                                await addComment({
-                                    mentions,
-                                    message: msgToSend,
-                                    replyComment: message.key,
-                                    // fileAttachments: [],
-                                });
-                                setShowInputId(null);
-                            }}
-                        />
-                    </UploadContextProvider>
-                )}
-            </XView>,
+            <Comment
+                message={message}
+                offset={offset}
+                onCommentReplyClick={onCommentReplyClick}
+                me={messenger.user}
+                showInputId={showInputId}
+                setShowInputId={setShowInputId}
+                currentCommentsInputRef={currentCommentsInputRef}
+                members={members.members}
+                addComment={addComment}
+            />,
         );
     }
 
@@ -342,31 +382,20 @@ export const CommentsInner = () => {
                             paddingBottom={28}
                             flexDirection="column"
                         >
-                            {commentsElements.length ? (
-                                <>
-                                    <XView flexDirection="row" alignItems="center">
-                                        <XView fontSize={16} fontWeight="600">
-                                            Comments
-                                        </XView>
-                                        <XView
-                                            fontSize={15}
-                                            fontWeight="600"
-                                            opacity={0.3}
-                                            marginLeft={7}
-                                        >
-                                            {messageComments.messageComments.count}
-                                        </XView>
-                                    </XView>
+                            <XView flexDirection="row" alignItems="center">
+                                <XView fontSize={16} fontWeight="600">
+                                    Comments
+                                </XView>
+                                <XView fontSize={15} fontWeight="600" opacity={0.3} marginLeft={7}>
+                                    {messageComments.messageComments.count}
+                                </XView>
+                            </XView>
 
-                                    <XView flexDirection="row" marginBottom={16}>
-                                        <XView flexGrow={1}>
-                                            <XView>{commentsElements}</XView>
-                                        </XView>
-                                    </XView>
-                                </>
-                            ) : (
-                                undefined
-                            )}
+                            <XView flexDirection="row" marginBottom={16}>
+                                <XView flexGrow={1}>
+                                    <XView>{commentsElements}</XView>
+                                </XView>
+                            </XView>
                         </XView>
                     </>
                 ) : (
