@@ -96,6 +96,7 @@ export const GlobalSearchItemUser = XMemo<{
                     placeholderKey={item.id}
                     placeholderTitle={item.name}
                     online={item.online}
+                    theme={theme}
                 />
             </ASFlex>
             <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
