@@ -12,10 +12,10 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     label: {
-        color: '#000000',
         opacity: 0.8,
         textAlign: 'center',
         fontSize: 14,
@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         lineHeight: 28,
-        color: '#000000',
         marginTop: 20,
         textAlign: 'center',
         fontWeight: TextStyles.weight.medium,
@@ -38,13 +37,12 @@ const styles = StyleSheet.create({
     members: {
         fontSize: 14,
         lineHeight: 18,
-        color: '#000000',
         opacity: 0.6,
         marginTop: 5,
     } as TextStyle,
 
     membersIcon: {
-        tintColor: 'rgba(0, 0, 0, 0.25)',
+        opacity: 0.25,
         marginRight: 6,
         marginBottom: 1,
         alignSelf: 'flex-end',
@@ -53,7 +51,6 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 15,
         lineHeight: 22,
-        color: '#000000',
         opacity: 0.6,
         marginTop: 15,
         textAlign: 'center',
@@ -63,6 +60,8 @@ const styles = StyleSheet.create({
 const MIN_MEMBERS_COUNT_TO_SHOW = 10;
 
 const GroupInviteContent = XMemo<PageProps>((props) => {
+    const theme = React.useContext(ThemeContext);
+
     let invite: RoomInviteInfo_invite = props.router.params.invite;
     let inviteId = props.router.params.inviteId;
     let room = invite.room;
@@ -75,23 +74,23 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
         <ASSafeAreaView flexGrow={1}>
             <View paddingHorizontal={32} flexGrow={1}>
                 <View paddingTop={20}>
-                    <Text style={styles.label}>
+                    <Text style={[styles.label, { color: theme.textColor }]}>
                         <Text style={styles.userName}>{user.name}</Text> invites you to join chat
                     </Text>
                 </View>
                 <View paddingTop={screenHeight <= 640 ? 60 : 100} alignItems="center" flexDirection="column">
                     <ZAvatar size={86} src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
-                    <Text style={styles.title}>{room.title}</Text>
+                    <Text style={[styles.title, { color: theme.textColor }]}>{room.title}</Text>
 
                     <View flexDirection="row">
-                        {showMembersCount && (<Image source={require('assets/ic-members-16.png')} style={styles.membersIcon} />)}
-                        <Text style={styles.members}>
+                        {showMembersCount && (<Image source={require('assets/ic-members-16.png')} style={[styles.membersIcon, { tintColor: theme.textColor }]} />)}
+                        <Text style={[styles.members, { color: theme.textColor }]}>
                             {showMembersCount ? (room.membersCount + ' members') : 'New ' + (room.isChannel ? 'channel' : 'group')}
                         </Text>
                     </View>
 
                     {typeof room.description === 'string' && (
-                        <Text style={styles.description}>{room.description}</Text>
+                        <Text style={[styles.description, { color: theme.textColor }]}>{room.description}</Text>
                     )}
                 </View>
 
