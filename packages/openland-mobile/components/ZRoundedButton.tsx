@@ -5,7 +5,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { Alert } from './AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 type ZRoundedButtonStyle = 'default' | 'flat' | 'danger' | 'flat-danger';
 type ZRoundedButtonSize = 'default' | 'big' | 'large';
@@ -85,7 +85,7 @@ export interface ZRoundedButtonProps {
 
 const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRouter }>((props) => {
     let [actionInProgress, setActionInProgress] = React.useState(false);
-    let theme = useThemeGlobal();
+    let theme = React.useContext(ThemeContext);
     let handlePress = React.useCallback(async () => {
         if (props.onPress) {
             props.onPress();

@@ -45,7 +45,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                         if (generalMesage) {
                             let attachFile = generalMesage.attachments && generalMesage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
                             return (
-                                <ASFlex key={'repl-' + m.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkOutColor}>
+                                <ASFlex key={'repl-' + m.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkColor}>
                                     <ASText
                                         key={'asd' + m.id}
                                         marginTop={-2}

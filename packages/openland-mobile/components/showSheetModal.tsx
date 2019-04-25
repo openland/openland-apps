@@ -8,8 +8,9 @@ import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAre
 import { ZActionSheetItem } from './ZActionSheetItem';
 import { ZBlurredView } from './ZBlurredView';
 import { isPad } from 'openland-mobile/pages/Root';
-import { useThemeGlobal, ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { AppTheme } from 'openland-mobile/themes/themes';
+import { XMemo } from 'openland-y-utils/XMemo';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea, flat: boolean, theme: AppTheme }> implements ZModalController {
 
@@ -240,17 +241,16 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
     }
 }
 
+const ThemedSheetModal = XMemo((props: { modal: ZModalController, render: (ctx: ZModalController) => React.ReactElement<{}>, flat: boolean, safe: ASSafeArea }) => {
+    let theme = React.useContext(ThemeContext);
+    return <SheetModal ctx={props.modal} modal={props.render} safe={props.safe} flat={props.flat} theme={theme} />
+})
+
 export function showSheetModal(render: (ctx: ZModalController) => React.ReactElement<{}>, flat: boolean) {
     showModal((modal) => {
         return (
             <ASSafeAreaContext.Consumer>
-                {safe => (
-                    <ThemeContext.Consumer>
-                        {theme => (
-                            <SheetModal ctx={modal} modal={render} safe={safe} flat={flat} theme={theme} />
-                        )}
-                    </ThemeContext.Consumer>
-                )}
+                {safe => <ThemedSheetModal render={render} safe={safe} flat={flat} modal={modal} />}
             </ASSafeAreaContext.Consumer>
         )
     });

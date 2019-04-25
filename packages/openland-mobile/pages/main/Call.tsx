@@ -20,12 +20,11 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { CallStatus } from 'openland-engines/CallsEngine';
 import { formatTimerTime } from 'openland-mobile/utils/formatTime';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { NativeModules } from 'react-native';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
-import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
-    let theme = useThemeGlobal();
+    let theme = React.useContext(ThemeContext);
     let [mute, setMute] = React.useState(false);
     let [speaker, setSpeaker] = React.useState(false);
     let [status, setStatus] = React.useState<CallStatus>('initial');

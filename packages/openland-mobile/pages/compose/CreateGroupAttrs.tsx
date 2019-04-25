@@ -16,12 +16,12 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const CreateGroupComponent = (props: PageProps) => {
     const ref = React.createRef<ZForm>();
 
-    const theme = useThemeGlobal();
+    const theme = React.useContext(ThemeContext);
 
     let isChannel = !!props.router.params.isChannel;
     let orgIdFromRouter = props.router.params.organizationId;

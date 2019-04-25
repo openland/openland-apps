@@ -3,7 +3,7 @@ import { preprocessText } from 'openland-y-utils/TextProcessor';
 import { Text, Linking, StyleProp, TextStyle, Clipboard } from 'react-native';
 import { resolveInternalLink } from '../utils/internalLnksResolver';
 import { ActionSheet } from './ActionSheet';
-import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface ZTextProps {
     text?: string | null;
@@ -16,7 +16,7 @@ interface ZTextProps {
 
 export const ZText = (props: ZTextProps) => {
 
-    let theme = useThemeGlobal();
+    let theme = React.useContext(ThemeContext);
 
     let openContextMenu = React.useCallback(async (link: string) => {
         ActionSheet.builder().action('Copy', () => Clipboard.setString(link)).show();

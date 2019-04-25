@@ -4,7 +4,7 @@ import { ZKeyboardAwareBar } from 'openland-mobile/components/layout/ZKeyboardAw
 import { SDevice } from 'react-native-s/SDevice';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface ChannelMuteButtonProps {
     id: string;
@@ -14,7 +14,7 @@ interface ChannelMuteButtonProps {
 export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
     const client = getClient();
 
-    const theme = useThemeGlobal();
+    const theme = React.useContext(ThemeContext);
 
     const [notifications, setNotifications] = React.useState(!props.mute);
 

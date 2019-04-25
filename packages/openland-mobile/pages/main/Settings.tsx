@@ -12,7 +12,7 @@ import { CenteredHeader } from './components/CenteredHeader';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { NON_PRODUCTION } from '../Init';
-import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 let useOnlineState = () => {
     let [status, setStatus] = React.useState(useClient().client.status);
@@ -26,7 +26,7 @@ let useOnlineState = () => {
 
 let SettingsContent = ((props: PageProps) => {
 
-    let theme = useThemeGlobal();
+    let theme = React.useContext(ThemeContext);
 
     let resp = getClient().useAccountSettings({ fetchPolicy: 'cache-and-network' });
     let primary = resp.me!.primaryOrganization;
