@@ -114,7 +114,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
                 props.actionFinally();
             }
         }
-    }, []);
+    }, [props.onPress, props.path, props.action, props.onActionSuccess, props.onActionError, props.actionFinally]);
     let size = props.size || 'default';
     let styles = resolveStylesBySize[size];
 

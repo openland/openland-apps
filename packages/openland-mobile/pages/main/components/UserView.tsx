@@ -28,9 +28,9 @@ export const UserView = (props: UserViewProps) => {
             <View alignSelf="center" flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column" opacity={props.enabled === false ? 0.5 : 1} paddingRight={props.paddingRight}>
                 <View flexDirection="row">
                     {props.isAdmin && <Image source={require('assets/ic-star-16.png')} style={{ tintColor: props.isAdmin === 'owner' ? '#fbc139' : '#c0c0c0', alignSelf: 'center', marginRight: 2, marginBottom: 4 }} />}
-                    <Text numberOfLines={1} style={{ fontSize: 16, fontWeight: '500', color: theme.textColor, height: 22, marginBottom: 0 }}>{props.user.name}{props.user.primaryOrganization && <Text style={{ fontSize: 15, color: theme.accentColor }}>  {props.user.primaryOrganization.name}</Text>}</Text>
+                    <Text numberOfLines={1} style={{ fontSize: 16, fontWeight: '500', color: theme.textColor, height: 22, marginBottom: 0 }}>{props.user.name}{props.user.primaryOrganization && <Text style={{ fontSize: 15, color: theme.textSecondaryColor }}>  {props.user.primaryOrganization.name}</Text>}</Text>
                 </View>
-                {props.subtitle ? <Text style={{ fontSize: 14, marginTop: 4, color: theme.accentColor }}>{props.subtitle}</Text> : <PresenceComponent isBot={props.user.isBot} uid={props.user.id} lastSeen={props.user.lastSeen} online={props.user.online} style={{ fontSize: 14, color: theme.accentColor, height: 20, marginBottom: -4 }} onlineStyle={{ color: theme.accentColor }} />}
+                {props.subtitle ? <Text style={{ fontSize: 14, marginTop: 4, color: theme.accentColor }}>{props.subtitle}</Text> : <PresenceComponent isBot={props.user.isBot} uid={props.user.id} lastSeen={props.user.lastSeen} online={props.user.online} style={{ fontSize: 14, color: theme.textSecondaryColor, height: 20, marginBottom: -4 }} onlineStyle={{ color: theme.accentColor }} />}
             </View>
         </ZListItemBase>
     );

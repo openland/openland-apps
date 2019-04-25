@@ -83,7 +83,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                 isInteraction: false
             })
         ]).start();
-    }, []);
+    }, [theme.statusBar]);
 
     let handleClosed = React.useCallback(() => {
         if (props.config.onEnd) {
