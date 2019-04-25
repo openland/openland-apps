@@ -74,12 +74,14 @@ export const AdminTools = (props: { id: string; variables: { id: string } }) => 
 
     return (
         <>
-            {data && data.roomSuper && (
-                <RoomSetFeatured val={data.roomSuper!.featured} roomId={data.roomSuper.id} />
-            )}
-            {data && data.roomSuper && (
-                <RoomSetHidden val={data.roomSuper!.listed} roomId={data.roomSuper.id} />
-            )}
+            {data &&
+                data.roomSuper && (
+                    <RoomSetFeatured val={data.roomSuper!.featured} roomId={data.roomSuper.id} />
+                )}
+            {data &&
+                data.roomSuper && (
+                    <RoomSetHidden val={data.roomSuper!.listed} roomId={data.roomSuper.id} />
+                )}
         </>
     );
 };
@@ -371,19 +373,20 @@ const MembersProvider = ({
 
         return (
             <Section separator={0} flexGrow={1}>
-                {isOwner && (requests || []).length > 0 && (
-                    <XSwitcher style="button">
-                        <XSwitcher.Item query={{ field: 'requests' }} counter={membersCount}>
-                            Members
-                        </XSwitcher.Item>
-                        <XSwitcher.Item
-                            query={{ field: 'requests', value: '1' }}
-                            counter={requests!.length}
-                        >
-                            Requests
-                        </XSwitcher.Item>
-                    </XSwitcher>
-                )}
+                {isOwner &&
+                    (requests || []).length > 0 && (
+                        <XSwitcher style="button">
+                            <XSwitcher.Item query={{ field: 'requests' }} counter={membersCount}>
+                                Members
+                            </XSwitcher.Item>
+                            <XSwitcher.Item
+                                query={{ field: 'requests', value: '1' }}
+                                counter={requests!.length}
+                            >
+                                Requests
+                            </XSwitcher.Item>
+                        </XSwitcher>
+                    )}
                 {((requests || []).length === 0 || !isOwner) && (
                     <XSubHeader title={'Members'} counter={membersCount} paddingBottom={0} />
                 )}
@@ -447,7 +450,7 @@ const BackButton = () => (
 
 const RoomGroupProfileInner = ({ chat, conversationId, router }: RoomGroupProfileInnerProps) => {
     return (
-        <XScrollView3 flexGrow={1} flexShrink={1}>
+        <XView flexGrow={1} flexShrink={1}>
             <About chat={chat} />
             {chat.organization && (
                 <XView
@@ -465,7 +468,6 @@ const RoomGroupProfileInner = ({ chat, conversationId, router }: RoomGroupProfil
                     <XCommunityCard community={chat.organization} />
                 </XView>
             )}
-
             <MembersProvider
                 membersCount={chat.membersCount}
                 roomTitle={chat.title}
@@ -475,12 +477,8 @@ const RoomGroupProfileInner = ({ chat, conversationId, router }: RoomGroupProfil
                 isOwner={chat.role === 'OWNER'}
                 isChannel={chat.isChannel}
             />
-        </XScrollView3>
+        </XView>
     );
-};
-
-const WrapChildrenComponent = ({ children }: { children: any }) => {
-    return <XView flexDirection="column">{children}</XView>;
 };
 
 const itemsWrapperClassName = css`
@@ -570,7 +568,6 @@ const RoomGroupProfileProvider = ({
                     loadingHeight={200}
                     renderItem={renderItem}
                     renderLoading={renderLoading}
-                    WrapChildrenComponent={WrapChildrenComponent}
                     beforeChildren={
                         <RoomGroupProfileInner
                             chat={chat}
