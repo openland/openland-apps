@@ -15,27 +15,21 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-interface UserMultiplePickerComponentState {
-    query: string;
-    users: { id: string, name: string }[];
-    searchHeight: number;
-}
-
-export class CheckListBoxWraper extends React.PureComponent<{ checked?: boolean }> {
-    render() {
-        return (
-            <View flexDirection="row">
-                <View flexGrow={1}>
-                    {this.props.children}
-                </View>
-                <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={this.props.checked ? '#0084fe' : '#fff'} opacity={this.props.checked ? 1 : 0.8} borderColor={this.props.checked ? '#0084fe' : 'rgba(185,193,205,0.8)'} borderWidth={2} borderRadius={12} width={24} height={24} >
-                    {this.props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} />}
-                </View>
+export const CheckListBoxWraper = XMemo<{ checked?: boolean, children: any }>((props) => {
+    let theme = React.useContext(ThemeContext);
+    return (
+        <View flexDirection="row">
+            <View flexGrow={1}>
+                {props.children}
             </View>
-        );
-    }
-}
+            <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.checked ? theme.accentColor : theme.accentDisabledColor} opacity={props.checked ? 1 : 0.8} borderColor={props.checked ? theme.accentColor : theme.accentDisabledColor} borderWidth={2} borderRadius={12} width={24} height={24} >
+                {props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.textInverseColor }} />}
+            </View>
+        </View>
+    );
+})
 
 const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
     let users = getClient().useExplorePeople({ query: props.query });
@@ -67,67 +61,64 @@ const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users
     );
 });
 
-class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMultiplePickerComponentState> {
-    constructor(props: any) {
-        super(props);
-        this.state = { users: [], query: '', searchHeight: 0 };
-    }
+const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
 
-    handleChange = (query: string) => {
-        this.setState({ query });
-    }
+    let theme = React.useContext(ThemeContext);
 
-    handleAddUser = (user: UserShort) => {
-        if (!this.state.users.find((v) => v.id === user.id)) {
-            this.setState({ users: [...this.state.users, user] });
+    let [users, setUsers] = React.useState([] as { id: string, name: string }[]);
+    let [query, setQuery] = React.useState('');
+    let [searchHeight, serSearchHeight] = React.useState(0);
+
+    let handleRemoveUser = React.useCallback((id: string) => {
+        setUsers(users.filter((v) => v.id !== id));
+    }, [users])
+
+    let handleAddUser = React.useCallback((user: UserShort) => {
+        if (!users.find((v) => v.id === user.id)) {
+            setUsers([...users, user]);
         } else {
-            this.handleRemoveUser(user.id);
+            handleRemoveUser(user.id);
         }
-    }
+    }, [users])
 
-    handleRemoveUser = (id: string) => {
-        this.setState({ users: this.state.users.filter((v) => v.id !== id) });
-    }
+    let handleSearchLayout = React.useCallback((event: LayoutChangeEvent) => {
+        serSearchHeight(event.nativeEvent.layout.height);
+    }, []);
 
-    handleSearchLayout = (event: LayoutChangeEvent) => {
-        this.setState({ searchHeight: event.nativeEvent.layout.height });
-    }
-
-    render() {
-        let paramsAction = this.props.router.params.action;
-        let isEmpty = paramsAction.titleEmpty && (this.state.users.length <= 0);
-        let buttonTitle = isEmpty ? paramsAction.titleEmpty : paramsAction.title + ' (' + this.state.users.length + ')';
-        return (
-            <>
-                <SHeader title={this.props.router.params.title || 'Pick members'} />
-                <SHeaderButton
-                    key={'bk-' + this.state.users.length}
-                    title={buttonTitle}
-                    onPress={isEmpty ? () => this.props.router.params.action.actionEmpty() : async () => {
-                        await this.props.router.params.action.action(this.state.users);
-                    }}
-                />
-                <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
-                    <React.Suspense fallback={<ZLoader />}>
-                        <UsersList {...this.props} users={this.state.users} searchHeight={this.state.searchHeight} query={this.state.query} onAdd={this.handleAddUser} />
-                    </React.Suspense>
-                </View>
-                <ASSafeAreaContext.Consumer>
-                    {area => (
-                        <ZBlurredView onLayout={this.handleSearchLayout} style={{ position: 'absolute', top: area.top, left: 0, right: 0, flexDirection: 'column', maxHeight: 44 * 4 }}>
-                            <ZTagView
-                                items={this.state.users.map((v) => ({ id: v.id, text: v.name }))}
-                                onChange={this.handleChange}
-                                onRemoved={this.handleRemoveUser}
-                                title="Members:"
-                            />
-                            <View style={{ height: 1, backgroundColor: AppStyles.separatorColor }} />
-                        </ZBlurredView>
-                    )}
-                </ASSafeAreaContext.Consumer>
-            </>
-        );
-    }
-}
+    let paramsAction = props.router.params.action;
+    let isEmpty = paramsAction.titleEmpty && (users.length <= 0);
+    let buttonTitle = isEmpty ? paramsAction.titleEmpty : paramsAction.title + ' (' + users.length + ')';
+    return (
+        <>
+            <SHeader title={props.router.params.title || 'Pick members'} />
+            <SHeaderButton
+                key={'bk-' + users.length}
+                title={buttonTitle}
+                onPress={isEmpty ? () => props.router.params.action.actionEmpty() : async () => {
+                    await props.router.params.action.action(users);
+                }}
+            />
+            <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
+                <React.Suspense fallback={<ZLoader />}>
+                    <UsersList {...props} users={users} searchHeight={searchHeight} query={query} onAdd={handleAddUser} />
+                </React.Suspense>
+            </View>
+            <ASSafeAreaContext.Consumer>
+                {area => (
+                    <ZBlurredView onLayout={handleSearchLayout} style={{ position: 'absolute', top: area.top, left: 0, right: 0, flexDirection: 'column', maxHeight: 44 * 4 }}>
+                        <ZTagView
+                            items={users.map((v) => ({ id: v.id, text: v.name }))}
+                            onChange={setQuery}
+                            onRemoved={handleRemoveUser}
+                            title="Members:"
+                            theme={theme}
+                        />
+                        <View style={{ height: 1, backgroundColor: theme.separatorColor }} />
+                    </ZBlurredView>
+                )}
+            </ASSafeAreaContext.Consumer>
+        </>
+    );
+})
 
 export const UserMultiplePicker = withApp(UserMultiplePickerComponent, { navigationAppearance: 'small' });

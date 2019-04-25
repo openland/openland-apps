@@ -103,14 +103,14 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                     />
                     {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && <ASFlex
                         width={40}
-                        backgroundColor="#0008"
+                        backgroundColor={this.props.theme.backgroundColor}
                         borderRadius={20}
                         marginRight={10}
                         overlay={true}
                         justifyContent="center"
                         alignItems="center"
                     >
-                        <ASText color="#fff" opacity={0.8} textAlign="center">{Math.round(this.state.downloadState.progress * 100)}</ASText>
+                        <ASText color={this.props.theme.textColor} opacity={0.8} textAlign="center">{Math.round(this.state.downloadState.progress * 100)}</ASText>
                     </ASFlex>}
                 </ASFlex>
 
@@ -123,7 +123,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                 >
                     <ASText
                         maxWidth={bubbleMaxWidth - 110}
-                        color={this.props.message.isOut ? '#ffffff' : '#000000'}
+                        color={this.props.message.isOut ? this.props.theme.textColorOut : this.props.theme.textColor}
                         height={18}
                         fontSize={15}
                         lineHeight={18}
@@ -132,7 +132,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                         {this.props.attach!!.fileMetadata.name}{this.props.message.isOut ? paddedTextOut : paddedText}
                     </ASText>
                     <ASText
-                        color={this.props.message.isOut ? '#ffffff' : '#8a8a8f'}
+                        color={this.props.theme.textSecondaryColor}
                         height={15}
                         lineHeight={15}
                         fontSize={13}

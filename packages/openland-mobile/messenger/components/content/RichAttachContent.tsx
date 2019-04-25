@@ -131,7 +131,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
                 {!imgCompact && this.props.attach.image && imgLayout && (
                     <ASFlex
-                        backgroundColor="#dbdce1"
+                        backgroundColor={theme.chatImageBackground}
                         marginTop={this.props.compensateBubble ? -5 : 5}
                         marginLeft={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
                         marginRight={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
@@ -153,8 +153,8 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                 justifyContent="center"
                                 alignItems="center"
                             >
-                                <ASFlex backgroundColor="#0008" borderRadius={20}>
-                                    <ASText color="#fff" opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
+                                <ASFlex backgroundColor={theme.backgroundColor} borderRadius={20}>
+                                    <ASText color={theme.textColor} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
                                 </ASFlex>
                             </ASFlex>
                         }

@@ -115,7 +115,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 marginLeft={this.props.compensateBubble ? - contentInsetsHorizontal : undefined}
                 marginRight={this.props.compensateBubble ? - contentInsetsHorizontal : undefined}
                 marginBottom={this.props.compensateBubble ? - contentInsetsBottom : undefined}
-                backgroundColor={!this.props.single ? '#dbdce1' : undefined}
+                backgroundColor={!this.props.single ? this.props.theme.chatImageBackground : undefined}
                 borderRadius={18}
                 alignItems="center"
             >
@@ -148,10 +148,10 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                         alignItems="center"
                     >
                         <ASFlex
-                            backgroundColor="#0008"
+                            backgroundColor={this.props.theme.backgroundColor}
                             borderRadius={20}
                         >
-                            <ASText color="#fff" opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
+                            <ASText color={this.props.theme.textColor} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
                         </ASFlex>
                     </ASFlex>}
                 </ASFlex>

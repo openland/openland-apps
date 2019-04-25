@@ -125,7 +125,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                     alignItems="center"
                                 >
                                     <View backgroundColor="#0008" borderRadius={20}>
-                                        <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center'}} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
+                                        <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center' }} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
                                     </View>
                                 </View>
                             }

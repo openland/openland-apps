@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 export interface AppTheme {
-    chatLoaderColor: string;
+
     headerColor: string;
     backgroundColor: string;
     inputBackground: string;
@@ -38,6 +38,9 @@ export interface AppTheme {
     dialogMessageColor: string;
     dialogTypingColor: string;
 
+    chatLoaderColor: string;
+    chatImageBackground: string;
+
     textColorOut: string;
     textSecondaryColor: string;
     linkColor: string;
@@ -64,7 +67,6 @@ export interface AppTheme {
 }
 
 export const DefaultTheme: AppTheme = {
-    chatLoaderColor: '#999',
     headerColor: 'white',
     transparent: 'rgba(255,255,255,0)',
     backgroundColor: 'white',
@@ -72,10 +74,10 @@ export const DefaultTheme: AppTheme = {
     statusBar: 'dark-content',
     blurType: 'light',
     keyboardAppearance: 'light',
-    androidIconColor: 'black',
+    androidIconColor: '#010101',
     textColor: '#181818',
     textInverseColor: 'white',
-    textInputColor: 'black',
+    textInputColor: '#010101',
     textLabelColor: Platform.OS === 'android' ? '#000' : '#8F8F91',
     separatorColor: Platform.OS === 'android' ? '#ebebeb' : '#eaeaea',
     arrowColor: '#D1D1D6',
@@ -90,6 +92,9 @@ export const DefaultTheme: AppTheme = {
 
     tabColor: Platform.OS === 'android' ? '#737373' : '#99a2b0',
     tabColorActive: Platform.OS === 'android' ? '#0084fe' : '#0084fe',
+
+    chatLoaderColor: '#999',
+    chatImageBackground: '#dbdce1',
 
     dialogTitleColor: '#181818',
     dialogTitleSecureColor: '#1daf30',
@@ -123,17 +128,16 @@ export const DefaultTheme: AppTheme = {
 }
 
 export const DarkTheme: AppTheme = {
-    chatLoaderColor: 'white',
     headerColor: '#1a1a1a',
     transparent: 'rgba(0,0,0,0)',
-    backgroundColor: 'black',
-    inputBackground: 'black',
+    backgroundColor: '#010101',
+    inputBackground: '#010101',
     statusBar: 'light-content',
     blurType: 'dark',
     keyboardAppearance: 'dark',
     androidIconColor: 'white',
     textColor: 'white',
-    textInverseColor: 'black',
+    textInverseColor: '#010101',
     textInputColor: 'white',
     textLabelColor: '#7D7D80',
     separatorColor: '#262629',
@@ -150,6 +154,9 @@ export const DarkTheme: AppTheme = {
     tabColor: '#929292',
     tabColorActive: '#FDFDFD',
 
+    chatLoaderColor: 'white',
+    chatImageBackground: '#555',
+
     dialogTitleColor: 'white',
     dialogTitleSecureColor: '#33c045',
     dialogDateColor: 'white',
@@ -164,7 +171,7 @@ export const DarkTheme: AppTheme = {
     bubbleColorIn: '#333333',
     bubbleGradientOut: ['#4d4d4d', '#6d6d6d'],
 
-    reactionBackground: 'black',
+    reactionBackground: '#010101',
 
     inputIconsColor: '#767676',
     inputIconsColorInactive: '#b0b0b0',

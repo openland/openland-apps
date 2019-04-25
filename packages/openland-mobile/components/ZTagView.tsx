@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ScrollView, View, Text, TextInput, Dimensions, NativeSyntheticEvent, TextInputKeyPressEventData, TouchableWithoutFeedback, Platform } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 export interface ZTagViewProps {
     title?: string;
@@ -8,6 +9,7 @@ export interface ZTagViewProps {
     onChange: (query: string) => void;
     onRemoved: (id: string) => void;
     autoFocus?: boolean;
+    theme: AppTheme;
 }
 
 export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: string, query: string }> {
@@ -96,26 +98,27 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                         <View flexWrap="wrap" flexDirection="row">
                             {this.props.title && (
                                 <View style={{ height: 32, paddingRight: 5 }}>
-                                    <Text style={{ lineHeight: 32, fontSize: 15, color: '#000', opacity: 0.6, fontWeight: '500' }}>{this.props.title}</Text>
+                                    <Text style={{ lineHeight: 32, fontSize: 15, color: this.props.theme.textColor, opacity: 0.6, fontWeight: '500' }}>{this.props.title}</Text>
                                 </View>
                             )}
 
                             {this.props.items.map((v) => (
                                 <TouchableWithoutFeedback onPress={() => this.handleFocus(v.id)}>
                                     <View paddingLeft={1} paddingRight={1} paddingTop={2} paddingBottom={2}>
-                                        <View height={28} borderRadius={8} backgroundColor={this.state.focused === v.id ? AppStyles.primaryColor : undefined} paddingLeft={1} paddingRight={1}>
-                                            <Text style={{ color: this.state.focused === v.id ? '#fff' : AppStyles.primaryColor, height: 24, lineHeight: 28, textAlignVertical: 'center', fontSize: 15 }}>{v.text},</Text>
+                                        <View height={28} borderRadius={8} backgroundColor={this.state.focused === v.id ? this.props.theme.accentColor : undefined} paddingLeft={1} paddingRight={1}>
+                                            <Text style={{ color: this.state.focused === v.id ? this.props.theme.textInverseColor : this.props.theme.accentColor, height: 24, lineHeight: 28, textAlignVertical: 'center', fontSize: 15 }}>{v.text},</Text>
                                         </View>
                                     </View>
                                 </TouchableWithoutFeedback>
                             ))}
                             <TextInput
+
                                 padding={Platform.OS === 'android' ? 0 : undefined}
                                 ref={this.ref}
                                 minHeight={32}
                                 onChangeText={this.handleChange}
                                 onKeyPress={this.handleKeyPress}
-                                style={{ minWidth: Math.min(Dimensions.get('window').width * 0.3, 250), fontSize: 15, height: 28 }}
+                                style={{ minWidth: Math.min(Dimensions.get('window').width * 0.3, 250), fontSize: 15, height: 28, color: this.props.theme.textColor }}
                                 value={this.state.query}
                                 opacity={this.state.focused ? 0 : 1}
                                 spellCheck={false}
