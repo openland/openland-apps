@@ -416,12 +416,7 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                             chatId={chatId}
                             room={room}
                             target={
-                                <XView
-                                    color="rgba(0, 0, 0, 0.8)"
-                                    hoverColor="rgba(0, 0, 0, 0.8)"
-                                    fontSize={14}
-                                    cursor="pointer"
-                                >
+                                <XView fontSize={14} cursor="pointer">
                                     {pinMessage.message && (
                                         <MessageTextComponent
                                             spans={pinMessage.spans}
@@ -449,7 +444,9 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                                                         <XView marginRight={6}>
                                                             <IconImage />
                                                         </XView>
-                                                        <XView>Image</XView>
+                                                        <XView color="rgba(0, 0, 0, 0.5)">
+                                                            Image
+                                                        </XView>
                                                     </XView>
                                                 )}
                                                 {!attach.fileMetadata.isImage && (
@@ -457,7 +454,9 @@ export const PinMessageComponent = (props: PinMessageComponentProps) => {
                                                         <XView marginRight={6}>
                                                             <IconFile />
                                                         </XView>
-                                                        <XView>Document</XView>
+                                                        <XView color="rgba(0, 0, 0, 0.5)">
+                                                            Document
+                                                        </XView>
                                                     </XView>
                                                 )}
                                             </>
