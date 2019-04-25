@@ -7,6 +7,7 @@ import { reactionsImagesMap } from 'openland-mobile/messenger/components/AsyncMe
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from '../ZAvatar';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { ZUserView } from '../ZUserView';
 
 export const showReactionsList = (reactions: FullMessage_GeneralMessage_reactions[]) => {
     if (reactions.length === 0) {
@@ -38,36 +39,17 @@ export const showReactionsList = (reactions: FullMessage_GeneralMessage_reaction
                             <Image source={reactionsImagesMap[r]} style={{ width: 20, height: 20 }} />
 
                             <View flexGrow={1} flexShrink={1} paddingLeft={8}>
-                                <Text style={{ color: '#000000', fontWeight: TextStyles.weight.medium } as TextStyle}>
+                                <Text style={{ color: '#000000', fontWeight: TextStyles.weight.medium } as TextStyle} allowFontScaling={false}>
                                     {users.length > 1 ? (users.length + ' people') : '1 person'} reacted with :{r.toLowerCase()}:
                                 </Text>
                             </View>
                         </View>
 
-                        {users.map((u) => (
-                            <View marginHorizontal={-16}>
-                                {Platform.OS === 'android' && (
-                                    <TouchableNativeFeedback onPress={() => { ctx.hide(); getMessenger().handleAvatarClick(u.id); }}>
-                                        <View paddingHorizontal={16} paddingVertical={6} flexDirection="row" alignItems="center">
-                                            <ZAvatar size={28} src={u.photo} placeholderTitle={u.name} placeholderKey={u.id} />
-                                            <View flexGrow={1} flexShrink={1} paddingLeft={12}>
-                                                <Text style={{ color: '#000000', fontWeight: TextStyles.weight.medium } as TextStyle}>{u.name}</Text>
-                                            </View>
-                                        </View>
-                                    </TouchableNativeFeedback>
-                                )}
-                                {Platform.OS === 'ios' && (
-                                    <TouchableWithoutFeedback onPress={() => { ctx.hide(); getMessenger().handleAvatarClick(u.id); }}>
-                                        <View paddingHorizontal={16} paddingVertical={6} flexDirection="row" alignItems="center">
-                                            <ZAvatar size={28} src={u.photo} placeholderTitle={u.name} placeholderKey={u.id} />
-                                            <View flexGrow={1} flexShrink={1} paddingLeft={12}>
-                                                <Text style={{ color: '#000000', fontWeight: TextStyles.weight.medium } as TextStyle}>{u.name}</Text>
-                                            </View>
-                                        </View>
-                                    </TouchableWithoutFeedback>
-                                )}
-                            </View>
-                        ))}
+                        <View marginHorizontal={-16}>
+                            {users.map((u) => (
+                                <ZUserView user={u} onPress={(id) => { ctx.hide(); getMessenger().handleAvatarClick(id); }} />
+                            ))}
+                        </View>
                     </View>
                 );
             })}

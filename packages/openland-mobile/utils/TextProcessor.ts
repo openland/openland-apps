@@ -1,6 +1,6 @@
 import linkify from 'linkify-it';
 import tlds from 'tlds';
-import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans, UserShort, UserTiny } from 'openland-api/Types';
 import { Stopwatch } from 'openland-y-utils/stopwatch';
 
 type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold';
@@ -33,10 +33,7 @@ export interface SpanUser extends SpanAbs {
 
 export interface SpanUsers extends SpanAbs {
     type: 'mention_users';
-    users: {
-        name: string;
-        id: string;
-    }[];
+    users: UserTiny[];
 }
 
 export interface SpanRoom extends SpanAbs {
@@ -88,7 +85,7 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
         } else if (s.__typename === 'MessageSpanRoomMention') {
             span = { type: 'mention_room', title: s.room.__typename === 'SharedRoom' ? s.room.title : s.room.user.name, id: s.room.id }
         } else if (s.__typename === 'MessageSpanMultiUserMention') {
-            span = { type: 'mention_users', users: s.users.map(u => ({ name: u.name, id: u.id })) }
+            span = { type: 'mention_users', users: s.users }
         } else if (s.__typename === 'MessageSpanBold') {
             span = { type: 'bold' }
         } else {
