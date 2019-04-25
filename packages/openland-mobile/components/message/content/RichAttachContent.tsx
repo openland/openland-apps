@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform, Linking, PixelRatio, View, Text, TextStyle, TouchableWithoutFeedback } from 'react-native';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
@@ -62,9 +61,8 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
 
     render() {
         let { isSmall } = this.props;
+        const { theme } = this.props;
         let { text, subTitle, keyboard } = this.props.attach;
-
-        let mainTextColor = DefaultConversationTheme.textColorIn;
 
         // prepare image
         let imgCompact = this.imageCompact;
@@ -86,11 +84,11 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
         }
 
         return (
-            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={!isSmall ? 10 : undefined} marginVertical={isSmall ? 5 : undefined} backgroundColor="#f3f5f7" borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
+            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={!isSmall ? 10 : undefined} marginVertical={isSmall ? 5 : undefined} backgroundColor={theme.bubbleColorIn} borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <Text
                         style={{
-                            color: '#000',
+                            color: theme.textColor,
                             opacity: 0.6,
                             fontSize: 14,
                             fontWeight: TextStyles.weight.regular,
@@ -139,7 +137,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                     <Text
                         style={{
                             marginTop: 5,
-                            color: '#000',
+                            color: theme.textColor,
                             opacity: 0.6,
                             fontSize: 14,
                             fontWeight: TextStyles.weight.regular
@@ -184,7 +182,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                         {!!this.props.attach.title && (
                             <Text
                                 style={{
-                                    color: mainTextColor,
+                                    color: theme.textColor,
                                     letterSpacing: -0.3,
                                     fontSize: 14,
                                     marginTop: Platform.OS === 'android' ? -4 : -1,
@@ -202,7 +200,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             <Text
                                 style={{
                                     marginTop: (Platform.OS === 'android' ? -4 : -1),
-                                    color: '#000',
+                                    color: theme.textColor,
                                     opacity: 0.6,
                                     fontSize: 14,
                                     marginBottom: 4,
@@ -220,7 +218,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 {!!text && (
                     <Text
                         style={{
-                            color: '#000',
+                            color: theme.textColor,
                             fontSize: 14,
                             marginTop: this.imageCompact && imgLayout ? (subTitle ? 4 : -19) : 0,
                             marginBottom: 4,
@@ -242,7 +240,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             <TouchableWithoutFeedback key={'button-' + i + '-' + j} onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}>
                                 <View
                                     marginTop={i !== 0 ? 4 : 0}
-                                    backgroundColor="#ffffff"
+                                    backgroundColor={theme.backgroundColor}
                                     borderRadius={8}
                                     marginLeft={j > 0 ? 4 : 0}
                                     marginRight={j < line.length - 1 ? 4 : 0}
@@ -254,7 +252,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                                     <Text
                                         style={{
                                             textAlign: 'center',
-                                            color: '#0084fe',
+                                            color: theme.linkColor,
                                             fontSize: 14,
                                             fontWeight: TextStyles.weight.medium,
                                         } as TextStyle}

@@ -65,13 +65,13 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     render() {
-        let { imageLayout } = this.props;
+        const { imageLayout, theme } = this.props;
 
         let imagePath = (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined;
 
         return (
             <View
-                backgroundColor="#f3f5f7"
+                backgroundColor={theme.bubbleColorIn}
                 borderRadius={8}
                 marginVertical={5}
             >
