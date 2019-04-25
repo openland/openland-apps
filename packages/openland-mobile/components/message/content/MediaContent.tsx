@@ -78,7 +78,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 <View width={imageLayout.width} height={imageLayout.height} alignSelf="center">
                     <PreviewWrapper path={imagePath} metadata={this.props.attach.fileMetadata} radius={8}>
                         <FastImage
-                            style={{ backgroundColor: 'red', borderRadius: 8, width: imageLayout.width, height: imageLayout.height }}
+                            style={{ borderRadius: 8, width: imageLayout.width, height: imageLayout.height }}
                             source={{ uri: imagePath, priority: 'normal', ...{ disableAnimations: true } as any }}
                         />
                     </PreviewWrapper>
