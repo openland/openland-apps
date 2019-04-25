@@ -247,12 +247,12 @@ export class DialogListEngine {
 
         if (existing) {
             if (existing.messageId === event.message.id) {
-                const message = formatMessage(event.message);
+                const msg = formatMessage(event.message);
 
                 await this._dataSourceStored.updateItem({
                     ...existing,
-                    message,
-                    fallback: message,
+                    message: event.message.message ? msg : undefined,
+                    fallback: msg,
                     attachments: event.message.attachments,
                 });
             }
