@@ -98,7 +98,7 @@ export const DocumentButton = ({
 
 export const ShortcutsButton = () => {
     return (
-        <AttachmentButton className="shortcuts-button" onClick={showShortcutsHelp}>
+        <AttachmentButton enabled className="shortcuts-button" onClick={showShortcutsHelp}>
             <ShortcutsIcon />
             <span>Shortcuts</span>
         </AttachmentButton>
