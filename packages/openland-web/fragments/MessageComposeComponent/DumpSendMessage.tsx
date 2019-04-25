@@ -13,6 +13,7 @@ import { UploadContext } from '../../modules/FileUploading/UploadContext';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 export type TextInputComponentT = {
+    topLevelComment?: boolean;
     fullWidth?: boolean;
     minimal?: boolean;
     hideAttach?: boolean;
@@ -40,6 +41,7 @@ type DumpSendMessageT = {
 export const DumpSendMessage = React.memo(
     ({
         TextInputComponent,
+        topLevelComment,
         mentionsState,
         handleChange,
         handleSend,
@@ -55,7 +57,11 @@ export const DumpSendMessage = React.memo(
     }: DumpSendMessageT) => {
         const { handleDrop } = React.useContext(UploadContext);
         return (
-            <SendMessageWrapper fullWidth={fullWidth} minimal={minimal}>
+            <SendMessageWrapper
+                fullWidth={fullWidth}
+                minimal={minimal}
+                topLevelComment={topLevelComment}
+            >
                 <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
                 <SendMessageContent separator={4} fullWidth={fullWidth} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">

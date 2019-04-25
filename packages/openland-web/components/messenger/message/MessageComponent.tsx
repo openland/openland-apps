@@ -21,6 +21,7 @@ const MessageComponentInner = React.memo(
         ) : (
             <>
                 <DesktopMessageComponentInner
+                    showNumberOfComments={props.showNumberOfComments}
                     isModal={props.isModal}
                     isPinned={props.isPinned}
                     commentDepth={props.commentDepth}
@@ -50,6 +51,7 @@ export const MessageComponent = (
 
     return (
         <MessageComponentInner
+            showNumberOfComments={props.showNumberOfComments}
             commentDepth={props.commentDepth}
             isModal={props.isModal}
             isPinned={props.isPinned}

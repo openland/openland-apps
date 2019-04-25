@@ -14,6 +14,7 @@ import { UploadContext } from 'openland-web/modules/FileUploading/UploadContext'
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 type CommentsInputProps = {
+    topLevelComment?: boolean;
     minimal?: boolean;
     onSend?: (text: string, mentions: UserWithOffset[] | null, uploadedFileKey?: string) => void;
     onSendFile?: (file: UploadCare.File) => Promise<string> | void;
@@ -24,6 +25,7 @@ type CommentsInputProps = {
 };
 
 export const CommentsInput = ({
+    topLevelComment,
     minimal,
     members,
     onSend,
@@ -68,6 +70,7 @@ export const CommentsInput = ({
 
     return (
         <DumpSendMessage
+            topLevelComment={topLevelComment}
             round
             fullWidth
             minimal={minimal}

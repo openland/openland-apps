@@ -180,6 +180,7 @@ export const CommentsModalInner = () => {
                     <MessageComponent
                         noSelector
                         message={finalMessages}
+                        showNumberOfComments={false}
                         onlyLikes={true}
                         isChannel={true}
                         me={messenger.user}

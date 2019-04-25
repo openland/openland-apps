@@ -55,6 +55,7 @@ export const CommentView = React.memo(
                 {showInputId === message.key && (
                     <UploadContextProvider>
                         <CommentsInput
+                            topLevelComment={message.depth === 0}
                             commentsInputRef={currentCommentsInputRef}
                             members={members}
                             minimal

@@ -10,6 +10,7 @@ import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 type PostMessageButtonsT = {
+    showNumberOfComments?: boolean;
     isComment: boolean;
     isChannel: boolean;
     onlyLikes: boolean;
@@ -71,6 +72,7 @@ export const PostMessageButtons = React.memo(
         onCommentReplyClick,
         conversationId,
         me,
+        showNumberOfComments,
     }: PostMessageButtonsT) => {
         let showDiscussButton = false;
 
@@ -80,6 +82,10 @@ export const PostMessageButtons = React.memo(
 
         if (!isChannel && message.commentsCount !== null && message.commentsCount !== 0) {
             showDiscussButton = true;
+        }
+
+        if (showNumberOfComments !== undefined) {
+            showDiscussButton = showNumberOfComments;
         }
 
         return (

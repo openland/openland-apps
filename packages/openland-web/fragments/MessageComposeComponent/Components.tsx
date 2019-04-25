@@ -20,23 +20,25 @@ export const SendMessageContent = Glamorous(XHorizontal)(
     },
 );
 
-export const SendMessageWrapper = Glamorous.div<{ fullWidth?: boolean; minimal?: boolean }>(
-    ({ fullWidth, minimal }) => {
-        return {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'stretch',
-            flexShrink: 0,
-            marginBottom: minimal ? -6 : undefined,
-            minHeight: minimal ? undefined : 114,
-            backgroundColor: minimal ? undefined : XThemeDefault.backyardColor,
-            paddingLeft: minimal ? 26 : fullWidth ? 32 : 16,
-            paddingRight: minimal ? 0 : fullWidth ? 32 : 16,
-            paddingTop: 12,
-            paddingBottom: minimal ? 0 : 12,
-            borderTopStyle: 'solid',
-            borderTopWidth: minimal ? undefined : '1px',
-            borderTopColor: minimal ? undefined : XThemeDefault.separatorColor,
-        };
-    },
-);
+export const SendMessageWrapper = Glamorous.div<{
+    fullWidth?: boolean;
+    minimal?: boolean;
+    topLevelComment?: boolean;
+}>(({ fullWidth, minimal, topLevelComment }) => {
+    return {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        flexShrink: 0,
+        marginBottom: minimal ? -6 : undefined,
+        minHeight: minimal ? undefined : 114,
+        backgroundColor: minimal ? undefined : XThemeDefault.backyardColor,
+        paddingLeft: minimal ? (topLevelComment ? 39 : 26) : fullWidth ? 32 : 16,
+        paddingRight: minimal ? 0 : fullWidth ? 32 : 16,
+        paddingTop: 12,
+        paddingBottom: minimal ? 0 : 12,
+        borderTopStyle: 'solid',
+        borderTopWidth: minimal ? undefined : '1px',
+        borderTopColor: minimal ? undefined : XThemeDefault.separatorColor,
+    };
+});

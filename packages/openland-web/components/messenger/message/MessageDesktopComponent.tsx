@@ -95,6 +95,7 @@ const ReplyMessageWrapper = Glamorous.div({
 });
 
 export interface MessageComponentProps {
+    showNumberOfComments?: boolean;
     isPinned?: boolean;
     isModal?: boolean;
     commentDepth?: number;
@@ -395,6 +396,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         if (!message.isService) {
             const postMessageButtons = (
                 <PostMessageButtons
+                    showNumberOfComments={this.props.showNumberOfComments}
                     isComment={!!this.props.isComment}
                     onlyLikes={!!this.props.onlyLikes}
                     isChannel={this.props.isChannel}
