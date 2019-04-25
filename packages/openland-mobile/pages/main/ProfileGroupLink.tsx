@@ -12,20 +12,22 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
-    let link = getClient().useRoomInviteLink({ roomId: props.router.params.id }, { fetchPolicy: 'network-only' }).link;
+    let invite = getClient().useRoomInviteLink({ roomId: props.router.params.id }, { fetchPolicy: 'network-only' }).link;
+    let link = 'https://openland.com/invite/' + invite;
+
     return (
         <>
             <ZListItemGroup header={null} footer="Anyone with link can join as group member">
                 <ZListItem
                     key="add"
-                    text={`https://openland.com/joinChannel/${link}`}
+                    text={link}
                     appearance="action"
-                    onPress={() => Share.share({ message: `https://openland.com/joinChannel/${link}` })}
+                    onPress={() => Share.share({ message: link })}
                     copy={true}
                 />
             </ZListItemGroup>
             <ZListItemGroup >
-                <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`https://openland.com/joinChannel/${link}`)} />
+                <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(link)} />
                 <ZListItem
                     appearance="action"
                     text="Revoke link"
@@ -42,7 +44,7 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
                     }}
                 />
             </ZListItemGroup>
-            <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: `https://openland.com/joinChannel/${link}` })} />
+            <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: link })} />
         </>
     )
 });
