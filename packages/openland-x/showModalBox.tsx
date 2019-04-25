@@ -158,7 +158,7 @@ const ModalBoxComponent = React.memo<{ ctx: XModalController, modal: XModal, con
                         {/* <CloseButton onClick={tryHide} /> */}
                     </XView>
                 </XView>
-                <XScrollView3 flexShrink={1}>
+                <XScrollView3 flexShrink={1} useDefaultScroll={true}>
                     <React.Suspense fallback={Loader}>
                         {contents}
                     </React.Suspense>

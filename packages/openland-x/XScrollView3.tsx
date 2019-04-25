@@ -14,6 +14,7 @@ export interface XScrollView3Props extends XStyles {
     onScroll?: (values: XScrollValues) => void;
     innerRef?: any;
     children?: any;
+    useDefaultScroll?: boolean;
 }
 
 const scrollToBottom = ({ scrollContainer }: { scrollContainer: HTMLElement }) => {
@@ -203,7 +204,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
         // scrollbarTrackColor = scrollbarTrackColor || 'rgba(0,0,0,0.1)';
         // scrollbarHandleColor = scrollbarHandleColor || 'rgba(0,0,0,0.4)';
 
-        if (this.isWebkit) {
+        if (this.isWebkit || this.props.useDefaultScroll) {
             return (
                 <XView
                     overflow="hidden"
