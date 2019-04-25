@@ -1,7 +1,9 @@
 function findActiveWordStart (content: string, selection: { start: number, end: number }): number {
     let startIndex = selection.start - 1;
     while (startIndex >= 0) {
-        if (content.charAt(startIndex) !== ' ') {
+        let whitelist = [' ', '\n', ',', '.', ')'];
+
+        if (!(whitelist.includes(content.charAt(startIndex)))) {
             startIndex--;
         } else {
             break;
