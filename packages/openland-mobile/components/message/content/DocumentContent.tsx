@@ -6,10 +6,12 @@ import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage } from 'openland-api/Types';
 import { formatBytes } from 'openland-mobile/utils/formatBytes';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 interface DocumentContentProps {
     message: FullMessage_GeneralMessage;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+    theme: AppTheme;
 
     onDocumentPress: (document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => void;
 }

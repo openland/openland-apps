@@ -6,16 +6,19 @@ import { TextContent } from './TextContent';
 import { MediaContent } from './MediaContent';
 import { DocumentContent } from './DocumentContent';
 import { layoutImage } from 'openland-mobile/messenger/components/content/MediaContent';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 interface ReplyContentProps {
     quotedMessages: FullMessage_GeneralMessage_quotedMessages[];
+    theme: AppTheme;
 
     onUserPress: (id: string) => void;
     onDocumentPress: (document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => void;
 }
 
 export const ReplyContent = (props: ReplyContentProps) => {
-    let maxWidth = Dimensions.get('screen').width - 100;
+    const maxWidth = Dimensions.get('screen').width - 100;
+    const { theme } = props;
 
     return (
         <>
@@ -33,21 +36,21 @@ export const ReplyContent = (props: ReplyContentProps) => {
                             let imageLayout = layoutImage(file.fileMetadata, maxWidth);
                     
                             if (imageLayout) {
-                                contentAttach.push(<MediaContent key={'msg-reply-' + quote.id + '-media-' + index} imageLayout={imageLayout} message={generalMesage!} attach={file} />);
+                                contentAttach.push(<MediaContent key={'msg-reply-' + quote.id + '-media-' + index} imageLayout={imageLayout} message={generalMesage!} attach={file} theme={theme} />);
                             }
                         } else {
-                            contentAttach.push(<DocumentContent key={'msg-reply-' + quote.id + '-document-' + index} attach={file} message={generalMesage!} onDocumentPress={props.onDocumentPress} />);
+                            contentAttach.push(<DocumentContent key={'msg-reply-' + quote.id + '-document-' + index} attach={file} message={generalMesage!} onDocumentPress={props.onDocumentPress} theme={theme} />);
                         }
                     })}
 
                     return (
-                        <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor="#0084fe" paddingLeft={8}>
+                        <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor={theme.accentColor} paddingLeft={8}>
                             <Text
                                 style={{
                                     marginTop: -2,
                                     height: 15,
                                     lineHeight: 15,
-                                    color: '#0084fe',
+                                    color: theme.accentColor,
                                     letterSpacing: -0.3,
                                     fontSize: 13,
                                     fontWeight: TextStyles.weight.medium,
@@ -59,14 +62,14 @@ export const ReplyContent = (props: ReplyContentProps) => {
                                 {generalMesage!.sender.name || ''}
                             </Text>
 
-                            {!!generalMesage!.message && <TextContent message={generalMesage!} onUserPress={props.onUserPress} isSmall={true} />}
+                            {!!generalMesage!.message && <TextContent message={generalMesage!} onUserPress={props.onUserPress} isSmall={true} theme={theme} />}
                             {contentAttach}
                         </View>
                     );
                 } else {
                     return (
                         <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor="#0084fe" paddingLeft={8}>
-                            <TextContent message={quote} onUserPress={props.onUserPress} />
+                            <TextContent message={quote} onUserPress={props.onUserPress} theme={theme} />
                         </View>
                     )
                 }

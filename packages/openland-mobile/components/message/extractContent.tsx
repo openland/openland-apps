@@ -11,13 +11,14 @@ import { Dimensions } from 'react-native';
 
 interface ExtractContentProps {
     message: FullMessage_GeneralMessage;
+    theme: AppTheme;
 
     onUserPress: (id: string) => void;
     onDocumentPress: (document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => void;
 }
 
 export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxWidth?: number) => {
-    let message = props.message;
+    const { theme, message } = props;
     let realMaxWidth = maxWidth || Dimensions.get('screen').width - 32;
 
     let attaches = (message.attachments || []);
@@ -30,10 +31,10 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
     let content: JSX.Element[] = [];
 
     if (hasReply) {
-        content.push(<ReplyContent key="msg-reply" quotedMessages={message.quotedMessages} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} />);
+        content.push(<ReplyContent key="msg-reply" quotedMessages={message.quotedMessages} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} theme={theme} />);
     }
     if (hasText) {
-        content.push(<TextContent key="msg-text" message={message} onUserPress={props.onUserPress} isSmall={isSmall} />);
+        content.push(<TextContent key="msg-text" message={message} onUserPress={props.onUserPress} isSmall={isSmall} theme={theme} />);
     }
 
     fileAttaches.map((file, index) => {
@@ -43,10 +44,10 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
             let imageLayout = layoutImage(file.fileMetadata, realMaxWidth);
     
             if (imageLayout) {
-                content.push(<MediaContent key={'msg-media-' + index} imageLayout={imageLayout} message={message} attach={file} />);
+                content.push(<MediaContent key={'msg-media-' + index} imageLayout={imageLayout} message={message} attach={file} theme={theme} />);
             }
         } else {
-            content.push(<DocumentContent key={'msg-document-' + index} attach={file} message={message} onDocumentPress={props.onDocumentPress} />);
+            content.push(<DocumentContent key={'msg-document-' + index} attach={file} message={message} onDocumentPress={props.onDocumentPress} theme={theme} />);
         }
     });
 
@@ -57,7 +58,7 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
             imageLayout = layoutImage(attach.image.metadata, realMaxWidth);
         }
 
-        content.push(<RichAttachContent key={'msg-rich-' + index} attach={attach} imageLayout={imageLayout} message={message} isSmall={isSmall} />);
+        content.push(<RichAttachContent key={'msg-rich-' + index} attach={attach} imageLayout={imageLayout} message={message} isSmall={isSmall} theme={theme} />);
     });
 
     return content;

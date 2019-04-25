@@ -10,12 +10,14 @@ import { FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessa
 import { richAttachImageShouldBeCompact, isInvite } from 'openland-mobile/messenger/components/content/RichAttachContent';
 import FastImage from 'react-native-fast-image';
 import { PreviewWrapper } from './PreviewWrapper';
+import { AppTheme } from 'openland-mobile/themes/themes';
 
 interface RichAttachContentProps {
     message: FullMessage_GeneralMessage;
     attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
     imageLayout?: { width: number, height: number };
     isSmall?: boolean;
+    theme: AppTheme;
 }
 
 const paddedTextPrefix = <Text>{' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 11 }))}</Text>;
