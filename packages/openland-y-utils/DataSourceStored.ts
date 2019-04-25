@@ -12,7 +12,7 @@ export interface DataSourceStoredProvider<T extends DataSourceItem> {
 }
 
 export class DataSourceStored<T extends DataSourceItem> {
-    private readonly _wireVersion = 3;
+    private readonly _wireVersion = 4;
     readonly dataSource: DataSource<T>;
     readonly pageSize: number;
     readonly name: string;
@@ -133,6 +133,7 @@ export class DataSourceStored<T extends DataSourceItem> {
         await this._queue.sync(async () => {
             this._index = this._index.filter((v) => v !== key);
             await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
+            await this._storage.writeKey('ds.' + this.name + '.item.' + key, null);
             if (this.dataSource.hasItem(key)) {
                 this.dataSource.removeItem(key);
             }
