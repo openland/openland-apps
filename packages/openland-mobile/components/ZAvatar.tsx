@@ -7,7 +7,6 @@ import { ZImage } from './ZImage';
 import { ZLinearGradient } from './visual/ZLinearGradient.native';
 import { ZStyles } from './ZStyles';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { AppTheme } from 'openland-mobile/themes/themes';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
@@ -32,53 +31,50 @@ const placeholderSizeInterpolator = createInterpolator(
     [12, 12, 13, 14, 16, 16, 26, 28]
 );
 
-class XPAvatarInner extends React.PureComponent<ZAvatarProps & { theme: AppTheme }> {
-    render() {
-        let onlineSize = this.props.size / 4;
-        if (this.props.src && !this.props.src.startsWith('ph://')) {
-            return (
-                <View>
-                    <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
-                        <ZImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
-                        {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
-                    </View>
-                    {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: this.props.theme.backgroundColor, backgroundColor: '#0084fe', borderWidth: onlineSize / 10 }} />}
-                </View>
-            );
-        }
-        let placeholderIndex = 0;
-        if (this.props.placeholderKey) {
-            placeholderIndex = doSimpleHash(this.props.placeholderKey);
-        }
-        let placeholderStyle = ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
-        let placeholderText = '?';
-        if (this.props.placeholderTitle) {
-            placeholderText = extractPlaceholder(this.props.placeholderTitle);
-        }
-        let textSize = Math.round(placeholderSizeInterpolator(this.props.size));
+const XPAvatarInner = XMemo<ZAvatarProps>((props) => {
+    let theme = React.useContext(ThemeContext);
+    let onlineSize = props.size / 4;
+    if (props.src && !props.src.startsWith('ph://')) {
         return (
             <View>
-                <ZLinearGradient
-                    width={this.props.size}
-                    height={this.props.size}
-                    borderRadius={this.props.size / 2}
-                    fallbackColor={placeholderStyle.placeholderColor}
-                    colors={[placeholderStyle.placeholderColorStart, placeholderStyle.placeholderColorEnd]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                >
-                    <View alignItems="center" justifyContent="center" width={this.props.size} height={this.props.size}>
-                        <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
-                    </View>
-                </ZLinearGradient>
-                {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: this.props.theme.backgroundColor, backgroundColor: '#0084fe', borderWidth: onlineSize / 10 }} />}
+                <View style={{ width: props.size, height: props.size, borderRadius: props.size / 2, backgroundColor: theme.backgroundColor }}>
+                    <ZImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={props.size} height={props.size} source={props.src} borderRadius={props.size / 2} />
+                    {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
+                </View>
+                {props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: theme.backgroundColor, backgroundColor: theme.accentColor, borderWidth: onlineSize / 10 }} />}
             </View>
         );
     }
-}
+    let placeholderIndex = 0;
+    if (props.placeholderKey) {
+        placeholderIndex = doSimpleHash(props.placeholderKey);
+    }
+    let placeholderStyle = ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
+    let placeholderText = '?';
+    if (props.placeholderTitle) {
+        placeholderText = extractPlaceholder(props.placeholderTitle);
+    }
+    let textSize = Math.round(placeholderSizeInterpolator(props.size));
+    return (
+        <View>
+            <ZLinearGradient
+                width={props.size}
+                height={props.size}
+                borderRadius={props.size / 2}
+                fallbackColor={placeholderStyle.placeholderColor}
+                colors={[placeholderStyle.placeholderColorStart, placeholderStyle.placeholderColorEnd]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+            >
+                <View alignItems="center" justifyContent="center" width={props.size} height={props.size}>
+                    <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
+                </View>
+            </ZLinearGradient>
+            {props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: theme.backgroundColor, backgroundColor: theme.accentColor, borderWidth: onlineSize / 10 }} />}
+        </View>
+    );
+})
 
 export const ZAvatar = XMemo<ZAvatarProps>((props) => {
-    const theme = React.useContext(ThemeContext);
-
-    return (<XPAvatarInner {...props} theme={theme} />);
+    return (<XPAvatarInner {...props} />);
 })
