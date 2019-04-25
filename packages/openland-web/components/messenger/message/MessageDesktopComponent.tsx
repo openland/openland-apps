@@ -407,6 +407,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
             return (
                 <DesktopMessageContainer
+                    conversationId={this.props.conversationId!!}
                     haveReactions={!!haveReactions}
                     isPinned={this.props.isPinned}
                     commentDepth={this.props.commentDepth}

@@ -11,6 +11,7 @@ import { Menu } from './Menu';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 export interface DesktopMessageContainerProps {
     message: DataSourceWebMessageItem;
+    conversationId: string;
     compact: boolean;
     isModal?: boolean;
     isPinned?: boolean;
@@ -388,6 +389,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     let actions = (
         <XView width={83} marginLeft={12} alignSelf="flex-start">
             <Menu
+                conversationId={props.conversationId}
                 hover={hover}
                 message={props.message}
                 isChannel={!!props.isChannel}

@@ -3,11 +3,13 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'op
 import { CommentReactionButton, MessageReactionButton } from './reactions/ReactionButton';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
+import CommentIcon from 'openland-icons/ic-comment-channel.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import Glamorous from 'glamorous';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { MessagesStateContext } from '../../messenger/MessagesStateContext';
 import { XView } from 'react-mental';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const IconButton = Glamorous.div({
     cursor: 'pointer',
@@ -15,6 +17,10 @@ const IconButton = Glamorous.div({
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 6,
+    '& svg path': {
+        fill: '#000',
+        opacity: 0.2,
+    },
     '&:hover svg path:last-child': {
         fill: '#1790ff',
         opacity: 1,
@@ -22,18 +28,22 @@ const IconButton = Glamorous.div({
 });
 
 export const Menu = ({
+    conversationId,
     hover,
     message,
     isModal,
     isChannel,
     isComment,
 }: {
+    conversationId: string;
     message: DataSourceWebMessageItem;
     isModal: boolean;
     isComment: boolean;
     isChannel: boolean;
     hover: boolean;
 }) => {
+    let router = React.useContext(XRouterContext)!;
+
     const messagesContext = React.useContext(MessagesStateContext);
     const setEditMessage = (e: any) => {
         if (!message.isSending) {
@@ -103,6 +113,15 @@ export const Menu = ({
                         {hover && !isComment && out && message.text && (
                             <IconButton onClick={setEditMessage}>
                                 <EditIcon />
+                            </IconButton>
+                        )}
+                        {hover && !isComment && (
+                            <IconButton
+                                onClick={() => {
+                                    router.pushQuery('comments', `${message.id}&${conversationId}`);
+                                }}
+                            >
+                                <CommentIcon />
                             </IconButton>
                         )}
                     </XHorizontal>
