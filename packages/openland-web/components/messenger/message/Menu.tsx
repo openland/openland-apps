@@ -1,31 +1,74 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
+import { css } from 'linaria';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { CommentReactionButton, MessageReactionButton } from './reactions/ReactionButton';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
 import CommentIcon from 'openland-icons/ic-comment-channel.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import Glamorous from 'glamorous';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { MessagesStateContext } from '../../messenger/MessagesStateContext';
-import { XView } from 'react-mental';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
-const IconButton = Glamorous.div({
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 6,
-    '& svg path': {
-        fill: '#000',
-        opacity: 0.2,
-    },
-    '&:hover svg path:last-child': {
-        fill: '#1790ff',
-        opacity: 1,
-    },
-});
+let iconButtonClass = css`
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 6;
+
+    &:hover svg path {
+        fill: #1790ff;
+        opacity: 1;
+    }
+`;
+
+const IconButton = ({
+    children,
+    onClick,
+}: {
+    children: any;
+    onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+}) => {
+    return (
+        <div className={iconButtonClass} onClick={onClick}>
+            {children}
+        </div>
+    );
+};
+
+let commentsIconWrapperClass = css`
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 6;
+
+    & svg g path {
+        fill: #000;
+        opacity: 0.2;
+    }
+
+    &:hover svg g path {
+        fill: #1790ff;
+        opacity: 1;
+    }
+`;
+
+const CommentsIconWrapper = ({
+    children,
+    onClick,
+}: {
+    children: any;
+    onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+}) => {
+    return (
+        <div className={commentsIconWrapperClass} onClick={onClick}>
+            {children}
+        </div>
+    );
+};
 
 export const Menu = ({
     conversationId,
@@ -89,7 +132,7 @@ export const Menu = ({
             <XHorizontal
                 alignItems="center"
                 alignSelf="flex-start"
-                justifyContent={isComment ? 'flex-end' : 'flex-start'}
+                justifyContent={isComment ? 'flex-end' : 'flex-end'}
                 width={83}
                 flexShrink={0}
                 separator={5}
@@ -116,13 +159,13 @@ export const Menu = ({
                             </IconButton>
                         )}
                         {hover && !isComment && (
-                            <IconButton
+                            <CommentsIconWrapper
                                 onClick={() => {
                                     router.pushQuery('comments', `${message.id}&${conversationId}`);
                                 }}
                             >
                                 <CommentIcon />
-                            </IconButton>
+                            </CommentsIconWrapper>
                         )}
                     </XHorizontal>
                 </XView>
