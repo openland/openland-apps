@@ -108,22 +108,24 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         <View flexDirection="row" marginTop={4}>
             <ZRelativeDate style={[styles.date, { color: '#99a2b0' }]} date={date} />
 
-            <View marginLeft={12}>
-                {depth === 0 && (
-                    <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                        <View flexDirection="row">
-                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7 }} />
-                            <Text style={[styles.reply, { color: theme.accentColor }]} allowFontScaling={false}>Reply</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                )}
+            {!deleted && (
+                <View marginLeft={12}>
+                    {depth === 0 && (
+                        <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
+                            <View flexDirection="row">
+                                <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7 }} />
+                                <Text style={[styles.reply, { color: theme.accentColor }]} allowFontScaling={false}>Reply</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    )}
 
-                {depth !== 0 && (
-                    <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                        <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7}} />
-                    </TouchableWithoutFeedback>
-                )}
-            </View>
+                    {depth !== 0 && (
+                        <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
+                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.accentColor, width: 16, height: 16, opacity: 0.7}} />
+                        </TouchableWithoutFeedback>
+                    )}
+                </View>
+            )}
         </View>
     );
 
