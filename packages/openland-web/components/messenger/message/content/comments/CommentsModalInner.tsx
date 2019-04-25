@@ -4,7 +4,6 @@ import { useClient } from 'openland-web/utils/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { PendingMessage, UploadStatus } from 'openland-engines/messenger/types';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
 import { CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
@@ -19,8 +18,7 @@ import { CommentView } from './CommentView';
 import { CommentsInput } from './CommentsInput';
 import { FullMessage } from 'openland-api/Types';
 import { useAddComment } from './useAddComment';
-import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
-import UUID from 'uuid/v4';
+import { uploadFile } from './uploadFile';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -54,8 +52,6 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
     };
 }
-
-const uploadedFiles = new Map<string, string>();
 
 export const CommentsModalInner = () => {
     const client = useClient();
@@ -228,46 +224,21 @@ export const CommentsModalInner = () => {
             <XView>
                 <CommentsInput
                     members={members.members}
-                    onSendFile={async rawFile => {
-                        const file = new UploadCareUploading(rawFile);
-
-                        let key = UUID();
-
-                        try {
-                            if (!uploadedFiles.has(key)) {
-                                let res = await new Promise<string>((resolver, reject) => {
-                                    file.watch(state => {
-                                        if (state.status === UploadStatus.FAILED) {
-                                            reject();
-                                        } else if (state.status === UploadStatus.UPLOADING) {
-                                            console.log('onProgress', key, state.progress!!);
-                                        } else if (state.status === UploadStatus.COMPLETED) {
-                                            resolver(state.uuid!!);
-                                        }
-                                    });
-                                });
-                                uploadedFiles.set(key, res);
-                            }
-                        } catch (e) {
-                            console.log('onFailed', key);
-                        }
-
-                        let info = await file.fetchInfo();
-
-                        console.log('Uploading finished');
-                        console.log(key);
-
-                        return key;
+                    onSendFile={async (file: UploadCare.File) => {
+                        return await uploadFile({
+                            file,
+                            onProgress: (progress: number) => {
+                                console.log('onProgress', progress);
+                            },
+                        });
                     }}
-                    onSend={async (msgToSend, mentions) => {
-                        console.log('onSend');
-
+                    onSend={async (msgToSend, mentions, uploadedFileKey) => {
                         await addComment({
                             messageId,
                             mentions,
                             message: msgToSend,
                             replyComment: null,
-                            fileAttachments: [],
+                            fileAttachments: uploadedFileKey ? [{ fileId: uploadedFileKey }] : [],
                         });
                         setShowInputId(null);
 

@@ -2,8 +2,6 @@ import { convertToMentionInput } from 'openland-y-utils/mentionsConversion';
 import { FileAttachmentInput } from 'openland-api/Types';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { useClient } from 'openland-web/utils/useClient';
-import * as React from 'react';
-import { UploadContext } from 'openland-web/modules/FileUploading/UploadContext';
 
 export type AddCommentParams = {
     messageId: string;
@@ -15,7 +13,6 @@ export type AddCommentParams = {
 
 export const useAddComment = () => {
     const client = useClient();
-    const { file, fileSrc, fileName, fileRemover } = React.useContext(UploadContext);
 
     return async ({
         messageId,

@@ -8,6 +8,7 @@ import { UploadContextProvider } from 'openland-web/modules/FileUploading/Upload
 import { UserShort } from 'openland-api/Types';
 import { useAddComment } from './useAddComment';
 import { CommentsInput } from './CommentsInput';
+import { uploadFile } from './uploadFile';
 
 type CommentViewT = {
     message: DataSourceWebMessageItem & { depth: number };
@@ -57,16 +58,23 @@ export const CommentView = React.memo(
                             commentsInputRef={currentCommentsInputRef}
                             members={members}
                             minimal
-                            onSendFile={(file: any) => {
-                                console.log(file);
+                            onSendFile={async (file: UploadCare.File) => {
+                                return await uploadFile({
+                                    file,
+                                    onProgress: (progress: number) => {
+                                        console.log('onProgress', progress);
+                                    },
+                                });
                             }}
-                            onSend={async (msgToSend, mentions) => {
+                            onSend={async (msgToSend, mentions, uploadedFileKey) => {
                                 await addComment({
                                     messageId,
                                     mentions,
                                     message: msgToSend,
                                     replyComment: message.key,
-                                    // fileAttachments: [],
+                                    fileAttachments: uploadedFileKey
+                                        ? [{ fileId: uploadedFileKey }]
+                                        : [],
                                 });
                                 setShowInputId(null);
                             }}

@@ -14,8 +14,8 @@ import { useReplyPropsT } from './useReply';
 import { UploadContext } from '../../modules/FileUploading/UploadContext';
 
 export type useHandleSendT = {
-    onSend?: (text: string, mentions: UserWithOffset[] | null) => void;
-    onSendFile?: (file: UploadCare.File) => void;
+    onSend?: (text: string, mentions: UserWithOffset[] | null, uploadedFileKey?: string) => void;
+    onSendFile?: (file: UploadCare.File) => Promise<string> | void;
     mentionsState?: MentionsStateT;
     inputMethodsState?: InputMethodsStateT;
     draftState?: DraftStateT;
@@ -84,11 +84,14 @@ export function useHandleSend({
     };
 
     const onUploadCareSendFile = async (fileForUc: UploadCare.File) => {
+        let uploadedFileKey = undefined;
         const ucFile = UploadCare.fileFrom('object', fileForUc);
         if (onSendFile) {
-            await onSendFile(ucFile);
+            uploadedFileKey = await onSendFile(ucFile);
             dropZoneContext.fileRemover();
         }
+
+        return uploadedFileKey;
     };
 
     const closeEditor = () => {
@@ -113,14 +116,15 @@ export function useHandleSend({
         let msg = inputValue.trim();
         if (msg.length > 0) {
             if (onSend && !hasQuoteInState()) {
+                let uploadedFileKey = undefined;
                 if (file) {
-                    await onUploadCareSendFile(file);
+                    uploadedFileKey = (await onUploadCareSendFile(file)) || undefined;
                 }
                 if (supportMentions() && mentionsState) {
-                    await onSend(msg, mentionsState.getMentions());
+                    await onSend(msg, mentionsState.getMentions(), uploadedFileKey);
                     mentionsState.setCurrentMentions([]);
                 } else {
-                    await onSend(msg, null);
+                    await onSend(msg, null, uploadedFileKey);
                 }
 
                 if (supportDraft()) {

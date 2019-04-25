@@ -15,8 +15,8 @@ import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 type CommentsInputProps = {
     minimal?: boolean;
-    onSend?: (text: string, mentions: UserWithOffset[] | null) => void;
-    onSendFile?: (file: UploadCare.File) => void;
+    onSend?: (text: string, mentions: UserWithOffset[] | null, uploadedFileKey?: string) => void;
+    onSendFile?: (file: UploadCare.File) => Promise<string> | void;
     onChange?: (text: string) => void;
     getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];

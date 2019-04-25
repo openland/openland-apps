@@ -39,7 +39,7 @@ export interface MessageComposeComponentProps {
     enabled?: boolean;
     minimal?: boolean;
     onSend?: (text: string, mentions: UserWithOffset[] | null) => void;
-    onSendFile?: (file: UploadCare.File) => void;
+    onSendFile?: (file: UploadCare.File) => Promise<string> | void;
     onChange?: (text: string) => void;
     getMessages?: () => ModelMessage[];
     scrollToBottom?: () => void;
