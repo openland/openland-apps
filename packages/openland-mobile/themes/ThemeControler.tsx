@@ -17,6 +17,7 @@ class ThemeControllerImpl {
 
     watch(handler: (theme: ThemeKind) => void) {
         this._watchers.push(handler);
+        handler(this._theme);
         return () => {
             let index = this._watchers.indexOf(handler);
             if (index < 0) {
