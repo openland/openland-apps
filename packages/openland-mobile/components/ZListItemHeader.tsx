@@ -66,23 +66,26 @@ export interface ZListItemHeaderProps {
 export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
     let theme = React.useContext(ThemeContext);
     return (
-        <View style={[styles.container, { backgroundColor: theme.headerColor }]}>
-            <XPAvatarWithPreview size={86} src={props.photo} placeholderKey={props.id} placeholderTitle={props.title} userId={props.userId} />
-            <View style={[styles.body, { height: theme.headerColor === theme.backgroundColor ? 94 : 114, paddingBottom: theme.headerColor === theme.backgroundColor ? 0 : 24 }]}>
-                <View style={styles.header}>
-                    <View flexDirection="row">
-                        {props.titleIcon && <Image source={props.titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: props.titleColor || '#000' }} />}
-                        <Text style={[styles.title, props.titleColor ? { color: props.titleColor } : { color: theme.textColor }]} numberOfLines={props.titleLines || 1}>{props.title}</Text>
+        <>
+            {(theme.headerColor !== theme.backgroundColor) && <View backgroundColor={theme.headerColor} height={500} marginTop={-500} />}
+            <View style={[styles.container, { backgroundColor: theme.headerColor }]}>
+                <XPAvatarWithPreview size={86} src={props.photo} placeholderKey={props.id} placeholderTitle={props.title} userId={props.userId} />
+                <View style={[styles.body, { height: theme.headerColor === theme.backgroundColor ? 94 : 114, paddingBottom: theme.headerColor === theme.backgroundColor ? 0 : 24 }]}>
+                    <View style={styles.header}>
+                        <View flexDirection="row">
+                            {props.titleIcon && <Image source={props.titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: props.titleColor || '#000' }} />}
+                            <Text style={[styles.title, props.titleColor ? { color: props.titleColor } : { color: theme.textColor }]} numberOfLines={props.titleLines || 1}>{props.title}</Text>
+                        </View>
+                        <Text style={[styles.subtitle, props.subtitleColor ? { color: props.subtitleColor } : { color: theme.textLabelColor }]} numberOfLines={1}>{props.subtitle}</Text>
+                        {/* {this.props.subsubtitle && <Text style={styles.subtitle} numberOfLines={1}>{this.props.subsubtitle}</Text>} */}
                     </View>
-                    <Text style={[styles.subtitle, props.subtitleColor ? { color: props.subtitleColor } : { color: theme.textLabelColor }]} numberOfLines={1}>{props.subtitle}</Text>
-                    {/* {this.props.subsubtitle && <Text style={styles.subtitle} numberOfLines={1}>{this.props.subsubtitle}</Text>} */}
+                    {props.action && (
+                        <View style={styles.footer}>
+                            <ZRoundedButton title={props.action} path={props.path} onPress={props.onPress} />
+                        </View>
+                    )}
                 </View>
-                {props.action && (
-                    <View style={styles.footer}>
-                        <ZRoundedButton title={props.action} path={props.path} onPress={props.onPress} />
-                    </View>
-                )}
             </View>
-        </View >
+        </>
     );
 })
