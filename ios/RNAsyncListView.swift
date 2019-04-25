@@ -66,6 +66,10 @@ class RNAsyncListView: RCTView {
     self.node.setOverflowColor(color: UInt64(color))
   }
   
+  @objc public func setLoaderColor(_ color: NSNumber) {
+    self.node.setLoaderColor(color: UInt64(color))
+  }
+  
   @objc public func setContentPaddingTop(_ padding: NSNumber) {
     self.node.setContentPaddingTop(value: Float(padding))
   }

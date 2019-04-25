@@ -11,6 +11,11 @@ import Foundation
 class RNLoadingCell: ASCellNode {
   private var node = RNAsyncLoadingIndicator()
   var overflowColor: UInt64?
+  var loaderColor: UInt64? = nil {
+    didSet {
+      self.node.loaderColor = self.loaderColor != nil ?  resolveColorR(self.loaderColor!) : UIColor.gray
+    }
+  }
   
   override init() {
     super.init()

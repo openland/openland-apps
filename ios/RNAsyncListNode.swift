@@ -18,6 +18,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var state: RNAsyncDataViewState = RNAsyncDataViewState(items: [], completed: false, inited: false)
   private var headerPadding: Float = 0.0
   private var overflowColor: UInt64? = nil
+  private var loaderColor: UInt64 = 0
   private var dataView: RNAsyncDataViewWindow!
   private var dataViewUnsubscribe: (()->Void)? = nil
   
@@ -292,6 +293,23 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
   }
   
+  func setLoaderColor(color: UInt64) {
+    if !self.loaded {
+      self.loaderColor = color
+      self.loadingCell.loaderColor = color
+    } else {
+      if self.loaderColor != color {
+        DispatchQueue.main.async {
+          self.node.performBatch(animated: false, updates: {
+            self.loaderColor = color
+            self.loadingCell.loaderColor = color
+            self.node.reloadSections(IndexSet(integer: 2))
+          }, completion: nil)
+        }
+      }
+    }
+  }
+  
   private func updateContentPadding() {
     if self.viewLoaded {
         self.fixContentInset(interactive: false)
@@ -556,6 +574,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         return cached!
       }
     } else if indexPath.section == 2 {
+      self.loadingCell.loaderColor = self.loaderColor
       let n = self.loadingCell
       return { () -> ASCellNode in
         n.layoutThatFits(range)

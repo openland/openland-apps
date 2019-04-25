@@ -7,6 +7,7 @@ export interface ASListViewProps {
     style?: StyleProp<ViewStyle>;
     contentPaddingTop?: number;
     contentPaddingBottom?: number;
+    loaderColor?: string;
     overflowColor?: string;
     inverted?: boolean;
     dataView: ASDataView<any>;
@@ -29,6 +30,7 @@ export class ASListView extends React.PureComponent<ASListViewProps> {
                 inverted={this.props.inverted}
                 onScroll={this.props.onScroll}
                 overflowColor={this.props.overflowColor ? processColor(this.props.overflowColor) : undefined}
+                loaderColor={this.props.loaderColor ? processColor(this.props.loaderColor) : undefined}
             />
         );
     }

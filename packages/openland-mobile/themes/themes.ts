@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 
 export interface AppTheme {
+    chatLoaderColor: string;
     headerColor: string;
     backgroundColor: string;
     inputBackground: string;
@@ -63,6 +64,7 @@ export interface AppTheme {
 }
 
 export const DefaultTheme: AppTheme = {
+    chatLoaderColor: '#999',
     headerColor: 'white',
     transparent: 'rgba(255,255,255,0)',
     backgroundColor: 'white',
@@ -121,6 +123,7 @@ export const DefaultTheme: AppTheme = {
 }
 
 export const DarkTheme: AppTheme = {
+    chatLoaderColor: 'white',
     headerColor: '#1a1a1a',
     transparent: 'rgba(0,0,0,0)',
     backgroundColor: 'black',

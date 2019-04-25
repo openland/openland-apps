@@ -9,6 +9,14 @@
 import Foundation
 
 class RNAsyncLoadingIndicator: ASDisplayNode {
+  var loaderColor: UIColor = UIColor.gray {
+    didSet {
+      let wi = self.weakIndicator
+      if wi != nil {
+        wi?.color = self.loaderColor
+      }
+    }
+  }
   private weak var weakIndicator: UIActivityIndicatorView!
   private var node: ASDisplayNode!
   var loading = false {
@@ -30,6 +38,7 @@ class RNAsyncLoadingIndicator: ASDisplayNode {
     self.node = ASDisplayNode(viewBlock: { () -> UIView in
       let res = UIActivityIndicatorView()
       res.style = UIActivityIndicatorView.Style.gray
+      res.color = self.loaderColor
       self.weakIndicator = res
       return res
     })

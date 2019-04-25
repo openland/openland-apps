@@ -12,4 +12,5 @@ export const ASViewListRender = Animated.createAnimatedComponent(requireNativeCo
     overscrollCompensation?: boolean,
     onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void,
     overflowColor?: number,
+    loaderColor?: number,
 }>('RNAsyncListView'));

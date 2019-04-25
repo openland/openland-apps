@@ -394,7 +394,7 @@ export class DialogListEngine {
                             sender
                         ) && !isService,
                 },
-                0,
+                0
             );
         }
     };
