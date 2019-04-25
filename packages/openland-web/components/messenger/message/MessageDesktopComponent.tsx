@@ -95,6 +95,7 @@ const ReplyMessageWrapper = Glamorous.div({
 });
 
 export interface MessageComponentProps {
+    deleted?: boolean;
     showNumberOfComments?: boolean;
     isPinned?: boolean;
     isModal?: boolean;
@@ -268,13 +269,22 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                             />,
                         );
                     } else {
-                        content.push(
-                            <MessageTextComponentSpanned
-                                spannedString={message.textSpannedString!}
-                                key={'text'}
-                                isEdited={!!message.isEdited}
-                            />,
-                        );
+                        if (this.props.deleted) {
+                            content.push(
+                                <XView key={'text'} color={'rgba(0, 0, 0, 0.5)'}>
+                                    {message.text}
+                                </XView>,
+                            );
+                        } else {
+                            content.push(
+                                <MessageTextComponentSpanned
+                                    spannedString={message.textSpannedString!}
+                                    key={'text'}
+                                    isEdited={!!message.isEdited}
+                                    deleted={this.props.deleted}
+                                />,
+                            );
+                        }
                     }
                 }
 
@@ -409,6 +419,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
             return (
                 <DesktopMessageContainer
+                    deleted={this.props.deleted}
                     conversationId={this.props.conversationId!!}
                     haveReactions={!!haveReactions}
                     isPinned={this.props.isPinned}
@@ -418,12 +429,12 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     isComment={this.props.isComment}
                     noSelector={this.props.noSelector}
                     message={this.props.message}
+                    date={this.props.message.date}
+                    onSelected={this.selectMessage}
                     compact={message.attachTop}
                     selecting={hideMenu}
                     sender={message.sender}
                     senderNameEmojify={message.senderNameEmojify}
-                    date={this.props.message.date}
-                    onSelected={this.selectMessage}
                     selected={!!selected}
                 >
                     {content}

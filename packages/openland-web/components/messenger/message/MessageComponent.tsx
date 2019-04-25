@@ -21,6 +21,7 @@ const MessageComponentInner = React.memo(
         ) : (
             <>
                 <DesktopMessageComponentInner
+                    deleted={props.deleted}
                     showNumberOfComments={props.showNumberOfComments}
                     isModal={props.isModal}
                     isPinned={props.isPinned}
@@ -51,6 +52,7 @@ export const MessageComponent = (
 
     return (
         <MessageComponentInner
+            deleted={props.deleted}
             showNumberOfComments={props.showNumberOfComments}
             commentDepth={props.commentDepth}
             isModal={props.isModal}

@@ -12,6 +12,7 @@ import { uploadFile } from './uploadFile';
 
 type CommentViewT = {
     message: DataSourceWebMessageItem & { depth: number };
+    deleted?: boolean;
     offset: number;
     onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
     me?: UserShort | null;
@@ -25,6 +26,7 @@ type CommentViewT = {
 export const CommentView = React.memo(
     ({
         message,
+        deleted,
         offset,
         onCommentReplyClick,
         me,
@@ -42,6 +44,7 @@ export const CommentView = React.memo(
                 width={`calc(800px - 32px - 32px - ${offset}px)`}
             >
                 <MessageComponent
+                    deleted={deleted}
                     commentDepth={message.depth}
                     noSelector
                     isComment

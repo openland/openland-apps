@@ -149,6 +149,7 @@ export const CommentsModalInner = () => {
 
         commentsElements.push(
             <CommentView
+                deleted={message.id ? commentsMap[message.id].deleted : false}
                 messageId={messageId}
                 message={message}
                 offset={offset}

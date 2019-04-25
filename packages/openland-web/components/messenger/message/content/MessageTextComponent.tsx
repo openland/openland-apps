@@ -66,7 +66,8 @@ export const MessageTextComponentSpanned = React.memo<{
     isService?: boolean;
     shouldCrop?: boolean;
     asPinMessage?: boolean;
-}>(({ shouldCrop, spannedString, isEdited, isService }) => {
+    deleted?: boolean;
+}>(({ shouldCrop, spannedString, isEdited, isService, deleted }) => {
     return (
         <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
             <span>
