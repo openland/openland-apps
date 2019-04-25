@@ -12,30 +12,42 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-const UserSearchComponent = XMemo<PageProps & { query: string }>((props) => {
-    // if (props.query.trim().length === 0) {
-    //     return null;
-    // }
+const UserSearchComponent = XMemo<PageProps & { query: string, useScroll: boolean }>((props) => {
+    let theme = React.useContext(ThemeContext);
     let search = getClient().useExplorePeople({ query: props.query });
 
     if (search.items.edges.length === 0) {
         return (
             <KeyboardSafeAreaView>
                 <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'No people found' + randomEmptyPlaceholderEmoji()}</Text>
+                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: theme.textColor }}>{'Nothing found' + randomEmptyPlaceholderEmoji()}</Text>
                 </View>
             </KeyboardSafeAreaView>
         );
 
     }
-    return (
-        <View style={{ flexDirection: 'column', width: '100%' }}>
-            {search.items.edges.map((item) => (
-                <UserView user={item.node} onPress={() => props.router.pushAndRemove('Conversation', { flexibleId: item.node.id })} />
-            ))}
-        </View>
-    );
+
+    if (props.useScroll) {
+        return (
+            <SScrollView keyboardDismissMode="interactive">
+                <View style={{ flexDirection: 'column', width: '100%' }}>
+                    {search.items.edges.map((item) => (
+                        <UserView user={item.node} onPress={() => props.router.pushAndRemove('Conversation', { flexibleId: item.node.id })} />
+                    ))}
+                </View>
+            </SScrollView>
+        );
+    } else {
+        return (
+            <View style={{ flexDirection: 'column', width: '100%' }}>
+                {search.items.edges.map((item) => (
+                    <UserView user={item.node} onPress={() => props.router.pushAndRemove('Conversation', { flexibleId: item.node.id })} />
+                ))}
+            </View>
+        );
+    }
 });
 
 const ComposeComponent = XMemo<PageProps>((props) => {
@@ -44,11 +56,11 @@ const ComposeComponent = XMemo<PageProps>((props) => {
             <SHeader title="New message" hairline="hidden" />
             <SSearchControler
                 searchRender={(p) => (
-                    <SScrollView keyboardDismissMode="interactive">
+                    <>
                         {p.query.length > 0 && (
-                            <UserSearchComponent query={p.query} router={props.router} />
+                            <UserSearchComponent query={p.query} router={props.router} useScroll={true} />
                         )}
-                    </SScrollView>
+                    </>
                 )}
             >
                 <SScrollView keyboardDismissMode="interactive">
@@ -59,7 +71,7 @@ const ComposeComponent = XMemo<PageProps>((props) => {
                     </ZListItemGroup>
                     <View height={15} />
                     <React.Suspense fallback={<ActivityIndicator />}>
-                        <UserSearchComponent query="" router={props.router} />
+                        <UserSearchComponent query="" router={props.router} useScroll={false} />
                     </React.Suspense>
                 </SScrollView>
             </SSearchControler>
