@@ -6,8 +6,9 @@ import { createInterpolator } from 'openland-y-utils/createInterpolator';
 import { ZImage } from './ZImage';
 import { ZLinearGradient } from './visual/ZLinearGradient.native';
 import { ZStyles } from './ZStyles';
-import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     placeholderText: {
@@ -31,7 +32,7 @@ const placeholderSizeInterpolator = createInterpolator(
     [12, 12, 13, 14, 16, 16, 26, 28]
 );
 
-class XPAvatarInner extends React.PureComponent<ZAvatarProps> {
+class XPAvatarInner extends React.PureComponent<ZAvatarProps & { theme: AppTheme }> {
     render() {
         let onlineSize = this.props.size / 4;
         if (this.props.src && !this.props.src.startsWith('ph://')) {
@@ -41,7 +42,7 @@ class XPAvatarInner extends React.PureComponent<ZAvatarProps> {
                         <ZImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
                         {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
                     </View>
-                    {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: '#0084fe', borderWidth: onlineSize / 10 }} />}
+                    {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: this.props.theme.backgroundColor, backgroundColor: '#0084fe', borderWidth: onlineSize / 10 }} />}
                 </View>
             );
         }
@@ -70,12 +71,14 @@ class XPAvatarInner extends React.PureComponent<ZAvatarProps> {
                         <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
                     </View>
                 </ZLinearGradient>
-                {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: '#0084fe', borderWidth: onlineSize / 10 }} />}
+                {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: this.props.theme.backgroundColor, backgroundColor: '#0084fe', borderWidth: onlineSize / 10 }} />}
             </View>
         );
     }
 }
 
 export const ZAvatar = XMemo<ZAvatarProps>((props) => {
-    return (<XPAvatarInner {...props} />);
+    const theme = React.useContext(ThemeContext);
+
+    return (<XPAvatarInner {...props} theme={theme} />);
 })
