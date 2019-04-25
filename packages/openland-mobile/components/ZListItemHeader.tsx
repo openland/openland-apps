@@ -67,7 +67,7 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
     let theme = React.useContext(ThemeContext);
     return (
         <>
-            {(theme.headerColor !== theme.backgroundColor) && <View backgroundColor={theme.headerColor} height={500} marginTop={-500} />}
+            {(theme.headerColor !== theme.backgroundColor) && <View backgroundColor={theme.headerColor} height={1000} marginTop={-1000} />}
             <View style={[styles.container, { backgroundColor: theme.headerColor }]}>
                 <XPAvatarWithPreview size={86} src={props.photo} placeholderKey={props.id} placeholderTitle={props.title} userId={props.userId} />
                 <View style={[styles.body, { height: theme.headerColor === theme.backgroundColor ? 94 : 114, paddingBottom: theme.headerColor === theme.backgroundColor ? 0 : 24 }]}>
