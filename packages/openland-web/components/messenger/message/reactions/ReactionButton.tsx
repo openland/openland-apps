@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XView } from 'react-mental';
+import { css, cx } from 'linaria';
 import { XPopper } from 'openland-x/XPopper';
 import { useClient } from 'openland-web/utils/useClient';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
@@ -8,8 +10,6 @@ import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { ReactionItem } from './MessageReaction';
 import { MessageReactionType } from 'openland-api/Types';
 import { emojifyReactions } from './emojifyReactions';
-import { XView } from 'react-mental';
-import { css, cx } from 'linaria';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
