@@ -126,7 +126,7 @@ class GroupInviteComponent extends React.Component<PageProps> {
         let room = invite.room;
         return (
             <>
-                <SHeader title={(room.isChannel ? 'Group' : 'Channel') + ' invitation'} />
+                <SHeader title={(room.isChannel ? 'Channel' : 'Group') + ' invitation'} />
                 <GroupInviteContent {...this.props} />
             </>
         );
