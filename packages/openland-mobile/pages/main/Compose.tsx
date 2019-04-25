@@ -3,8 +3,7 @@ import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
-import { ZLoader } from '../../components/ZLoader';
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
@@ -52,17 +51,17 @@ const ComposeComponent = XMemo<PageProps>((props) => {
                     </SScrollView>
                 )}
             >
-                <React.Suspense fallback={<ZLoader />}>
-                    <SScrollView keyboardDismissMode="interactive">
-                        <ZListItemGroup divider={false}>
-                            <ZListItem leftIcon={require('assets/ic-room-24.png')} text="Create group" path="CreateGroupAttrs" />
-                            <ZListItem leftIcon={require('assets/ic-cell-channel-24.png')} text="Create channel" path="CreateGroupAttrs" pathParams={{ isChannel: true }} />
-                            <ZListItem leftIcon={require('assets/ic-community-24.png')} text="Create community" path="NewOrganization" pathParams={{ isCommunity: true }} />
-                        </ZListItemGroup>
-                        <View height={15} />
+                <SScrollView keyboardDismissMode="interactive">
+                    <ZListItemGroup divider={false}>
+                        <ZListItem leftIcon={require('assets/ic-room-24.png')} text="Create group" path="CreateGroupAttrs" />
+                        <ZListItem leftIcon={require('assets/ic-cell-channel-24.png')} text="Create channel" path="CreateGroupAttrs" pathParams={{ isChannel: true }} />
+                        <ZListItem leftIcon={require('assets/ic-community-24.png')} text="Create community" path="NewOrganization" pathParams={{ isCommunity: true }} />
+                    </ZListItemGroup>
+                    <View height={15} />
+                    <React.Suspense fallback={<ActivityIndicator />}>
                         <UserSearchComponent query="" router={props.router} />
-                    </SScrollView>
-                </React.Suspense>
+                    </React.Suspense>
+                </SScrollView>
             </SSearchControler>
         </>
     );
