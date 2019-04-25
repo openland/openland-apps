@@ -45,10 +45,11 @@ const createReconciler = (onChanged: () => void) => {
 
         schedulePassiveEffects(callback: any) {
             if (scheduledPassiveCallback) {
-                throw new Error(
-                    'Scheduling a callback twice is excessive. Instead, keep track of ' +
-                    'whether the callback has already been scheduled.',
-                )
+                clearTimeout(scheduledPassiveCallback);
+                // throw new Error(
+                //     'Scheduling a callback twice is excessive. Instead, keep track of ' +
+                //     'whether the callback has already been scheduled.',
+                // )
             }
             scheduledPassiveCallback = setTimeout(callback, 1);
         },
