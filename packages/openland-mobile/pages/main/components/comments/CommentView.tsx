@@ -91,7 +91,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     let avatar = (
         <View marginRight={6}>
             {deleted && (
-                <View width={16} height={16} borderRadius={8} backgroundColor="rgba(0, 0, 0, 0.05)" />
+                <View width={16} height={16} borderRadius={8} backgroundColor={theme.textLabelColor} opacity={0.4} />
             )}
             {!deleted && (
                 <ZAvatar
@@ -106,7 +106,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let tools = (
         <View flexDirection="row" marginTop={4}>
-            <ZRelativeDate style={[styles.date, { color: '#99a2b0' }]} date={date} />
+            <ZRelativeDate style={[styles.date, { color: theme.textLabelColor }]} date={date} />
 
             {!deleted && (
                 <View marginLeft={12}>
@@ -155,9 +155,9 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                             <View flexDirection="row" marginBottom={3}>
                                 {avatar}
 
-                                <Text style={[styles.senderName, { color: !deleted ? theme.accentColor : 'rgba(0, 0, 0, 0.5)' }]} allowFontScaling={false}>{sender.name}</Text>
+                                <Text style={[styles.senderName, { color: !deleted ? theme.accentColor : theme.textLabelColor }]} allowFontScaling={false}>{sender.name}</Text>
 
-                                {comment.edited && <Text style={[styles.editedLabel, { color: '#99a2b0' }]}>Edited</Text>}
+                                {comment.edited && <Text style={[styles.editedLabel, { color: theme.textLabelColor }]}>Edited</Text>}
                             </View>
                         </TouchableWithoutFeedback>
 
