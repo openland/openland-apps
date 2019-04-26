@@ -20,6 +20,25 @@ import { reactionsImagesMap, defaultReactions, reactionMap } from './components/
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 
+export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
+    let actionsState = conversationEngine.messagesActionsState;
+
+    actionsState.clear();
+    actionsState.setState({ messages });
+
+    getMessenger().history.navigationManager.push('HomeDialogs', {
+        title: 'Forward to', pressCallback: (id: string) => {
+            let selectedActionsState = getMessenger().engine.getConversation(id).messagesActionsState;
+
+            selectedActionsState.setState({ ...actionsState.getState(), action: 'forward' });
+
+            actionsState.clear();
+
+            getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
+        }
+    });
+}
+
 export class MobileMessenger {
     readonly engine: MessengerEngine;
     readonly history: SRouting;
@@ -125,6 +144,10 @@ export class MobileMessenger {
             </View>
         ));
 
+        builder.action('Select', () => {
+            conversation.messagesActionsState.selectToggle(message);
+        });
+
         if (conversation.canSendMessage) {
             builder.action('Reply', () => {
                 conversation.messagesActionsState.setState({ messages: [message], action: 'reply' });
@@ -132,22 +155,7 @@ export class MobileMessenger {
         }
 
         builder.action('Forward', () => {
-            let actionsState = conversation.messagesActionsState;
-
-            actionsState.clear();
-            actionsState.setState({ messages: [message] });
-
-            getMessenger().history.navigationManager.push('HomeDialogs', {
-                title: 'Forward to', pressCallback: (id: string) => {
-                    let selectedActionsState = this.engine.getConversation(id).messagesActionsState;
-
-                    selectedActionsState.setState({ ...actionsState.getState(), action: 'forward' });
-
-                    actionsState.clear();
-
-                    getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
-                }
-            });
+            forward(conversation, [message]);
         });
 
         builder.action('Comment', () => {

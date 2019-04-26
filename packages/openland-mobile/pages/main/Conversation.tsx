@@ -38,6 +38,7 @@ import { AppTheme } from 'openland-mobile/themes/themes';
 import { SBlurView } from 'react-native-s/SBlurView';
 import { EditView } from 'openland-mobile/messenger/components/EditView';
 import { SHeader } from 'react-native-s/SHeader';
+import { ChatSelectedActions } from './components/ChatSelectedActions';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -72,7 +73,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             },
             mentionedUsers: [],
             inputFocused: false,
-            messagesActionsState: {}
+            messagesActionsState: { messages: [] }
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
@@ -308,6 +309,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         let showPinAuthor = sharedRoom && (sharedRoom!.kind !== SharedRoomKind.PUBLIC);
 
+        let showSelectedMessagesActions = this.state.messagesActionsState.messages.length > 0 && this.state.messagesActionsState.action !== 'forward';
+
         return (
             <>
                 <SHeaderView>
@@ -356,7 +359,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 </ASSafeAreaContext.Consumer>
                             )}
 
-                            {showInputBar && (
+                            {showInputBar && !showSelectedMessagesActions && (
                                 <MessageInputBar
                                     onAttachPress={this.handleAttach}
                                     onSubmitPress={this.handleSubmit}
@@ -371,7 +374,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     canSubmit={canSubmit}
                                 />
                             )}
-                            {!showInputBar && sharedRoom && <ChannelMuteButton id={sharedRoom.id} mute={!!sharedRoom.settings.mute} />}
+                            {!showInputBar && !showSelectedMessagesActions && sharedRoom && sharedRoom.isChannel && <ChannelMuteButton id={sharedRoom.id} mute={!!sharedRoom.settings.mute} />}
+                            {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} />}
                         </View>
                     </KeyboardSafeAreaView>
                 </SDeferred>

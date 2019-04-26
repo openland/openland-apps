@@ -13,6 +13,8 @@ import { ASText } from 'react-native-async-view/ASText';
 import { Platform } from 'react-native';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { ServiceMessageDefault } from './service/ServiceMessageDefaut';
+import { useMessageSelected } from 'openland-engines/messenger/MessagesActionsState';
+import { ASImage } from 'react-native-async-view/ASImage';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -31,6 +33,8 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
     let theme = useThemeGlobal();
 
+    let [selected, selectionActive] = useMessageSelected(props.engine.messagesActionsState, props.message);
+
     let handleAvatarPress = () => {
         props.onAvatarPress(props.message.senderId);
     }
@@ -45,6 +49,8 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     let handleReactionsPress = () => {
         props.onReactionsPress(props.message);
     }
+
+    let toggleSelect = React.useCallback(() => props.engine.messagesActionsState.selectToggle(props.message), [props.message]);
 
     let res;
 
@@ -78,6 +84,17 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch" onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundColor : undefined}>
+
+            {selectionActive && <ASFlex marginLeft={8} overlay={true} alignItems="center">
+                <ASFlex onPress={toggleSelect} width={24} height={24} borderRadius={12} backgroundColor={selected ? theme.accentColor : theme.radioBorderColor} >
+                    <ASFlex overlay={true} alignItems="center" justifyContent="center">
+                        <ASFlex width={22} height={22} borderRadius={11} alignItems="center" justifyContent="center" backgroundColor={selected ? theme.accentColor : theme.backgroundColor}>
+                            {selected && <ASImage source={require('assets/ic-checkmark.png')} tintColor={theme.textInverseColor} width={14} height={14} />}
+                        </ASFlex>
+                    </ASFlex>
+                </ASFlex>
+            </ASFlex>}
+
             <ASFlex key="margin-top" backgroundColor={theme.backgroundColor} height={(props.message.attachTop ? 2 : 14) + 2} marginTop={-2} />
 
             <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">

@@ -454,6 +454,20 @@
             "sizes": [
                 18
             ]
+        },
+        {
+            "name": "ic-delete-ios",
+            "src": "ic-delete-ios.svg",
+            "sizes": [
+                26
+            ]
+        },
+        {
+            "name": "ic-forward-ios",
+            "src": "ic-forward-ios.svg",
+            "sizes": [
+                26
+            ]
         }
     ]
 }

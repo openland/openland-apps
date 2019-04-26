@@ -65,6 +65,7 @@ export interface AppTheme {
     settingsHelpIcon: string;
     settingsRateIcon: string;
 
+    radioBorderColor: string;
 }
 
 export const DefaultTheme: AppTheme = {
@@ -127,6 +128,8 @@ export const DefaultTheme: AppTheme = {
     settingsInviteIcon: '#fe9400',
     settingsHelpIcon: '#00bfff',
     settingsRateIcon: '#8a54ff',
+
+    radioBorderColor: '#c7cdd7'
 }
 
 export const DarkTheme: AppTheme = {
@@ -189,4 +192,5 @@ export const DarkTheme: AppTheme = {
     settingsInviteIcon: '#262626',
     settingsHelpIcon: '#262626',
     settingsRateIcon: '#262626',
+    radioBorderColor: '#fff'
 }
