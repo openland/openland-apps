@@ -306,6 +306,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
         let showInputBar = !sharedRoom || sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage;
 
+        let showPinAuthor = sharedRoom && (sharedRoom!.kind !== SharedRoomKind.PUBLIC);
+
         return (
             <>
                 <SHeaderView>
@@ -326,13 +328,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     {area => (
                                         <SBlurView blurType={this.props.theme.blurType} color={this.props.theme.headerColor} position="absolute" top={area.top} left={0} right={0} zIndex={2} borderBottomColor={this.props.theme.separatorColor} borderBottomWidth={1}>
                                             <TouchableWithoutFeedback onPress={() => this.handlePinnedMessagePress(sharedRoom!.pinnedMessage!.id)}>
-                                                <View flexDirection="row" paddingRight={16}>
-                                                    <View width={50} height={52} alignItems="center" justifyContent="center">
+                                                <View flexDirection="row" paddingRight={16} alignItems="center">
+                                                    <View width={50} height={showPinAuthor ? 52 : 44} alignItems="center" justifyContent="center">
                                                         <Image style={{ width: 16, height: 16, tintColor: this.props.theme.accentColor }} source={require('assets/ic-pinned.png')} />
                                                     </View>
 
-                                                    <View height={52} flexGrow={1} flexShrink={1} paddingTop={9}>
-                                                        <View flexDirection="row">
+                                                    <View height={showPinAuthor ? 52 : 44} flexGrow={1} flexShrink={1} paddingTop={9} >
+                                                        {showPinAuthor && <View flexDirection="row">
                                                             <Text numberOfLines={1} style={{ fontSize: 13, color: this.props.theme.textColor, fontWeight: TextStyles.weight.medium } as TextStyle}>
                                                                 {sharedRoom!.pinnedMessage!.sender.name}
                                                             </Text>
@@ -342,7 +344,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                                                     {sharedRoom!.pinnedMessage!.sender.primaryOrganization!.name}
                                                                 </Text>
                                                             }
-                                                        </View>
+                                                        </View>}
                                                         <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: 1, opacity: 0.8, lineHeight: 21, color: this.props.theme.textColor } as TextStyle}>
                                                             {formatMessage(sharedRoom!.pinnedMessage as any)}
                                                         </Text>
