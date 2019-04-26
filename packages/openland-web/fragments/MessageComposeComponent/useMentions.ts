@@ -45,7 +45,6 @@ export function useMentions({ members }: useMentionsT) {
     const mentionsData = convertChannelMembersDataToMentionsData(members);
 
     const getMentions = () => {
-        console.log(currentMentions);
         return currentMentions;
     };
 

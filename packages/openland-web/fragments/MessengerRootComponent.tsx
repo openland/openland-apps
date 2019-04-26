@@ -250,7 +250,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     };
 
     handleSend = (text: string, mentions: UserWithOffset[] | null) => {
-        console.log(mentions);
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
