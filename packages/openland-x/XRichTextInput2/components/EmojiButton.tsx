@@ -25,7 +25,7 @@ const pickerClassName = css`
     right: 0;
     margin-top: 10px;
     padding: 0 0.3em;
-    z-index: 1000;
+    z-index: 1;
     box-sizing: content-box;
     background: #fff;
     border: 1px solid #e0e0e0;

@@ -70,6 +70,7 @@ export const CommentsInput = ({
 
     return (
         <DumpSendMessage
+            placeholder={'Write a comment...'}
             topLevelComment={topLevelComment}
             round
             fullWidth

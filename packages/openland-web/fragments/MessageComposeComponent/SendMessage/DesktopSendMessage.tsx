@@ -38,6 +38,7 @@ export const DesktopSendMessage = ({
     minimal,
     hideAttach,
     round,
+    placeholder,
 }: TextInputComponentInnerT) => {
     return (
         <TextInputWrapper minimal={minimal}>
@@ -47,7 +48,7 @@ export const DesktopSendMessage = ({
                 round={round}
                 flexGrow={1}
                 mentionsData={mentionsState!!.mentionsData}
-                placeholder="Write a message..."
+                placeholder={placeholder || 'Write a message...'}
                 onChange={handleChange}
                 onSubmit={handleSend}
                 ref={inputRef}

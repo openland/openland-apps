@@ -1,6 +1,5 @@
 import * as React from 'react';
 import UploadCare from 'uploadcare-widget';
-import { useReply } from './useReply';
 import {
     MessagesStateContext,
     MessagesStateContextProps,
@@ -10,8 +9,17 @@ import { DraftStateT } from './useDraft';
 import { InputMethodsStateT } from './useInputMethods';
 import { MentionsStateT } from './useMentions';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
-import { useReplyPropsT } from './useReply';
 import { UploadContext } from '../../modules/FileUploading/UploadContext';
+import { ReplyMessageVariables, ReplyMessage, RoomMembers_members } from 'openland-api/Types';
+
+export type useReplyPropsT = {
+    replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
+    conversationId?: string;
+    members?: RoomMembers_members[];
+    mentionsState?: MentionsStateT;
+    quoteState?: QuoteStateT;
+    inputValue: string;
+};
 
 export type useHandleSendT = {
     onSend?: (text: string, mentions: UserWithOffset[] | null, uploadedFileKey?: string) => void;
@@ -55,15 +63,6 @@ export function useHandleSend({
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
     const dropZoneContext = React.useContext(UploadContext);
     const { file } = dropZoneContext;
-
-    const { replyMessagesProc } = useReply({
-        replyMessage,
-        members,
-        conversationId,
-        quoteState,
-        mentionsState,
-        inputValue,
-    });
 
     const scrollChatToBottom = () => {
         if (scrollToBottom) {
@@ -112,36 +111,49 @@ export function useHandleSend({
         }
     };
 
-    const handleSend = async () => {
-        let msg = inputValue.trim();
-        if (onSend && !hasQuoteInState()) {
-            let uploadedFileKey = undefined;
-            if (file) {
-                uploadedFileKey = (await onUploadCareSendFile(file)) || undefined;
-            }
-            if (supportMentions() && mentionsState) {
-                await onSend(msg, mentionsState.getMentions(), uploadedFileKey);
-                mentionsState.setCurrentMentions([]);
-            } else {
-                await onSend(msg, null, uploadedFileKey);
-            }
-
-            if (supportDraft()) {
-                draftState!!.setBeDrafted!!(false);
-            }
+    const clearAfterSend = () => {
+        if (supportMentions() && mentionsState) {
+            mentionsState.setCurrentMentions([]);
         }
-        if (inputValue && hasQuoteInState()) {
-            replyMessagesProc();
-            if (file) {
-                onUploadCareSendFile(file);
-            }
-        }
-        scrollChatToBottom();
-
-        closeEditor();
         if (supportDraft()) {
             draftState!!.cleanDraft!!();
+            draftState!!.setBeDrafted!!(false);
         }
+        scrollChatToBottom();
+        closeEditor();
+    };
+
+    const handleSend = async () => {
+        let msg = inputValue.trim();
+
+        let uploadedFileKey = undefined;
+        if (file) {
+            uploadedFileKey = (await onUploadCareSendFile(file)) || undefined;
+        }
+
+        if (replyMessage && hasQuoteInState()) {
+            const finalQuoteMessagesId = quoteState ? quoteState.quoteMessagesId || [] : [];
+            let mentions: UserWithOffset[] = [];
+            if (supportMentions() && mentionsState!!.getMentions) {
+                mentions = mentionsState!!.getMentions().map((user: any) => user);
+            }
+            await replyMessage({
+                roomId: conversationId!!,
+                message: inputValue,
+                mentions: mentions.map(m => m.user.id),
+                replyMessages: finalQuoteMessagesId,
+            });
+        } else {
+            if (onSend && inputValue) {
+                if (supportMentions() && mentionsState) {
+                    await onSend(msg, mentionsState.getMentions(), uploadedFileKey);
+                } else {
+                    await onSend(msg, null, uploadedFileKey);
+                }
+            }
+        }
+
+        clearAfterSend();
     };
 
     return { handleSend, closeEditor };

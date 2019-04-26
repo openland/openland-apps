@@ -24,9 +24,10 @@ export type TextInputComponentT = {
     handleDrop?: ((file: any) => void) | undefined;
     mentionsState?: MentionsStateT;
     inputRef: any;
+    placeholder?: string;
 };
 
-export type TextInputComponentInnerT = TextInputComponentT & { placeholder: string };
+export type TextInputComponentInnerT = TextInputComponentT;
 
 export type DumpSendMessagePropsT = TextInputComponentT & {
     enabled?: boolean;
@@ -54,6 +55,7 @@ export const DumpSendMessage = React.memo(
         minimal,
         round,
         hideAttach,
+        placeholder,
     }: DumpSendMessageT) => {
         const { handleDrop } = React.useContext(UploadContext);
         return (
@@ -74,7 +76,7 @@ export const DumpSendMessage = React.memo(
                         )}
                         <FileUploader />
                         <TextInputComponent
-                            placeholder="Write a message..."
+                            placeholder={placeholder || 'Write a message...'}
                             mentionsState={mentionsState}
                             handleChange={handleChange}
                             handleSend={handleSend}

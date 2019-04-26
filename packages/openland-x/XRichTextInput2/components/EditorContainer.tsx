@@ -105,7 +105,7 @@ const sendIconWrapperClassName = css`
 `;
 
 const iconWrapperClassName = css`
-    z-index: 100;
+    z-index: 1;
     & * {
         cursor: pointer;
         fill: #c1c7cf;
@@ -178,7 +178,7 @@ const Icons = ({
             alignItems="center"
             top={0}
             right={minimal ? 6 : 16}
-            zIndex={100}
+            zIndex={1}
             flexDirection="row"
         >
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
