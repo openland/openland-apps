@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { css } from 'linaria';
 import { MessageSelector } from './MessageSelector';
 import { UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
@@ -8,7 +9,6 @@ import { UserPopper } from 'openland-web/components/UserPopper';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { Menu } from './Menu';
-import { css } from 'linaria';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import CommentIcon from 'openland-icons/ic-comment-channel.svg';
 

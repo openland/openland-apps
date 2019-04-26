@@ -16,7 +16,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
 } from 'openland-api/Types';
-
+import { XView } from 'react-mental';
 import { MobileMessageContainer } from './MessageContainer';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { Reactions } from './reactions/MessageReaction';
@@ -267,11 +267,13 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
         return (
             <MobileMessageContainer sender={message.sender} date={props.message.date}>
                 {content}
-                <Reactions
-                    messageId={message.id ? message.id : ''}
-                    reactions={message.reactions || []}
-                    meId={(props.me && props.me.id) || ''}
-                />
+                <XView alignItems="flex-start">
+                    <Reactions
+                        messageId={message.id ? message.id : ''}
+                        reactions={message.reactions || []}
+                        meId={(props.me && props.me.id) || ''}
+                    />
+                </XView>
             </MobileMessageContainer>
         );
     }
