@@ -71,112 +71,116 @@ const CommentsIconWrapper = ({
     );
 };
 
-export const Menu = ({
-    conversationId,
-    hover,
-    message,
-    isModal,
-    isChannel,
-    isComment,
-}: {
-    conversationId: string;
-    message: DataSourceWebMessageItem;
-    isModal: boolean;
-    isComment: boolean;
-    isChannel: boolean;
-    hover: boolean;
-}) => {
-    let router = React.useContext(XRouterContext)!;
+export const Menu = React.memo(
+    ({
+        conversationId,
+        hover,
+        message,
+        isModal,
+        isChannel,
+        isComment,
+    }: {
+        conversationId: string;
+        message: DataSourceWebMessageItem;
+        isModal: boolean;
+        isComment: boolean;
+        isChannel: boolean;
+        hover: boolean;
+    }) => {
+        let router = React.useContext(XRouterContext)!;
 
-    const messagesContext = React.useContext(MessagesStateContext);
-    const setEditMessage = (e: any) => {
-        if (!message.isSending) {
-            e.stopPropagation();
-            messagesContext.resetAll();
-            messagesContext.setEditMessage(message.id!, message.text!);
-        }
-    };
-
-    const setReplyMessages = (e: any) => {
-        if (!message.isSending) {
-            e.stopPropagation();
-            messagesContext.resetAll();
-            let singleReplyMessageMessage = new Set().add(message.text);
-            let singleReplyMessageId = new Set().add(message.id);
-            let singleReplyMessageSender = new Set().add(message.sender.name);
-
-            let fileAttach = (message.attachments || []).filter(
-                a => a.__typename === 'MessageAttachmentFile',
-            )[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
-            let richAttach = (message.attachments || []).filter(
-                a => a.__typename === 'MessageRichAttachment',
-            )[0];
-
-            if (fileAttach && !richAttach) {
-                singleReplyMessageMessage = new Set().add('File');
-                if (fileAttach.fileMetadata.isImage) {
-                    singleReplyMessageMessage = new Set().add('Photo');
-                }
+        const messagesContext = React.useContext(MessagesStateContext);
+        const setEditMessage = (e: any) => {
+            if (!message.isSending) {
+                e.stopPropagation();
+                messagesContext.resetAll();
+                messagesContext.setEditMessage(message.id!, message.text!);
             }
-            messagesContext.setReplyMessages(
-                singleReplyMessageId,
-                singleReplyMessageMessage,
-                singleReplyMessageSender,
+        };
+
+        const setReplyMessages = (e: any) => {
+            if (!message.isSending) {
+                e.stopPropagation();
+                messagesContext.resetAll();
+                let singleReplyMessageMessage = new Set().add(message.text);
+                let singleReplyMessageId = new Set().add(message.id);
+                let singleReplyMessageSender = new Set().add(message.sender.name);
+
+                let fileAttach = (message.attachments || []).filter(
+                    a => a.__typename === 'MessageAttachmentFile',
+                )[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+                let richAttach = (message.attachments || []).filter(
+                    a => a.__typename === 'MessageRichAttachment',
+                )[0];
+
+                if (fileAttach && !richAttach) {
+                    singleReplyMessageMessage = new Set().add('File');
+                    if (fileAttach.fileMetadata.isImage) {
+                        singleReplyMessageMessage = new Set().add('Photo');
+                    }
+                }
+                messagesContext.setReplyMessages(
+                    singleReplyMessageId,
+                    singleReplyMessageMessage,
+                    singleReplyMessageSender,
+                );
+            }
+        };
+
+        let out = message.isOut;
+
+        if (!message.isSending && !messagesContext.useForwardHeader && !isModal) {
+            return (
+                <XHorizontal
+                    alignItems="center"
+                    alignSelf="flex-start"
+                    justifyContent={isComment ? 'flex-end' : 'flex-end'}
+                    width={83}
+                    flexShrink={0}
+                    separator={5}
+                    className="menu-wrapper"
+                >
+                    <XView paddingTop={isComment ? 24 : 0}>
+                        <XHorizontal alignItems="center" separator={8}>
+                            {isComment && (
+                                <CommentReactionButton
+                                    hover={hover}
+                                    id={message.id!}
+                                    reactions={message.reactions}
+                                />
+                            )}
+                            {!isComment && hover && (
+                                <MessageReactionButton messageId={message.id!} />
+                            )}
+                            {hover && !isComment && !isChannel && (
+                                <IconButton onClick={setReplyMessages}>
+                                    <ReplyIcon />
+                                </IconButton>
+                            )}
+                            {hover && !isComment && out && message.text && (
+                                <IconButton onClick={setEditMessage}>
+                                    <EditIcon />
+                                </IconButton>
+                            )}
+                            {hover && !isComment && (
+                                <CommentsIconWrapper
+                                    onClick={() => {
+                                        openCommentsModal({
+                                            router,
+                                            messageId: message.id!!,
+                                            conversationId,
+                                        });
+                                    }}
+                                >
+                                    <CommentIcon />
+                                </CommentsIconWrapper>
+                            )}
+                        </XHorizontal>
+                    </XView>
+                </XHorizontal>
             );
+        } else {
+            return null;
         }
-    };
-
-    let out = message.isOut;
-
-    if (!message.isSending && !messagesContext.useForwardHeader && !isModal) {
-        return (
-            <XHorizontal
-                alignItems="center"
-                alignSelf="flex-start"
-                justifyContent={isComment ? 'flex-end' : 'flex-end'}
-                width={83}
-                flexShrink={0}
-                separator={5}
-                className="menu-wrapper"
-            >
-                <XView paddingTop={isComment ? 24 : 0}>
-                    <XHorizontal alignItems="center" separator={8}>
-                        {isComment && (
-                            <CommentReactionButton
-                                hover={hover}
-                                id={message.id!}
-                                reactions={message.reactions}
-                            />
-                        )}
-                        {!isComment && hover && <MessageReactionButton messageId={message.id!} />}
-                        {hover && !isChannel && (
-                            <IconButton onClick={setReplyMessages}>
-                                <ReplyIcon />
-                            </IconButton>
-                        )}
-                        {hover && !isComment && out && message.text && (
-                            <IconButton onClick={setEditMessage}>
-                                <EditIcon />
-                            </IconButton>
-                        )}
-                        {hover && !isComment && (
-                            <CommentsIconWrapper
-                                onClick={() => {
-                                    openCommentsModal({
-                                        router,
-                                        messageId: message.id!!,
-                                        conversationId,
-                                    });
-                                }}
-                            >
-                                <CommentIcon />
-                            </CommentsIconWrapper>
-                        )}
-                    </XHorizontal>
-                </XView>
-            </XHorizontal>
-        );
-    } else {
-        return null;
-    }
-};
+    },
+);
