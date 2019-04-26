@@ -152,7 +152,8 @@ export const CommentsModalInnerNoRouter = ({
             setShowInputId(showInputId === message.key ? null : message.key);
         };
 
-        const offset = (message.depth > 0 ? 44 : 55) * message.depth;
+        const offset =
+            message.depth === 0 ? 0 : message.depth === 1 ? 52 : 52 + 42 * (message.depth - 1);
 
         commentsElements.push(
             <CommentView
@@ -280,11 +281,11 @@ export const openCommentsModal = ({
     messageId: string;
     conversationId: string;
 }) => {
-    // router.pushQuery('comments', `${messageId}&${conversationId}`);
-    showModalBox(
-        {
-            width: 800,
-        },
-        () => <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />,
-    );
+    router.pushQuery('comments', `${messageId}&${conversationId}`);
+    // showModalBox(
+    //     {
+    //         width: 800,
+    //     },
+    //     () => <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />,
+    // );
 };

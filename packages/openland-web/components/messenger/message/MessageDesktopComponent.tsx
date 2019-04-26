@@ -407,6 +407,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             const postMessageButtons = (
                 <PostMessageButtons
                     showNumberOfComments={this.props.showNumberOfComments}
+                    isModal={!!this.props.isModal}
                     isComment={!!this.props.isComment}
                     onlyLikes={!!this.props.onlyLikes}
                     isChannel={this.props.isChannel}

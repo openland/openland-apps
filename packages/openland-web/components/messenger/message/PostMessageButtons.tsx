@@ -141,7 +141,7 @@ export const PostMessageButtons = React.memo(
                             )}
 
                             {showReactionsButton ? (
-                                <XView paddingTop={4}>
+                                <XView paddingTop={isModal ? 0 : 4}>
                                     <Reactions
                                         onlyLikes={onlyLikes}
                                         messageId={message.id!}

@@ -60,16 +60,23 @@ const CompactPreambulaContainer = ({ children }: PreambulaContainerProps) => {
     );
 };
 
-const NotCompactShortPreambulaContainer = ({ children }: PreambulaContainerProps) => {
+const NotCompactNotDeepPreambulaContainer = ({ children }: PreambulaContainerProps) => {
+    return (
+        <XView alignSelf="flex-start" minHeight={23} width={52} fontSize={12} whiteSpace={'nowrap'}>
+            {children}
+        </XView>
+    );
+};
+
+const NotCompactDeepPreambulaContainer = ({ children }: PreambulaContainerProps) => {
     return (
         <XView
             alignSelf="flex-start"
             minHeight={23}
-            width={44}
+            width={42}
             fontSize={12}
             whiteSpace={'nowrap'}
             paddingTop={3}
-            paddingLeft={3}
         >
             {children}
         </XView>
@@ -161,7 +168,7 @@ const NotCompactMessageContainerWrapper = ({
     );
 };
 
-const NotCompactModaltMessageContainerWrapper = ({
+const NotCompactModalMessageContainerWrapper = ({
     children,
     onMouseEnter,
     onMouseLeave,
@@ -177,7 +184,6 @@ const NotCompactModaltMessageContainerWrapper = ({
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             paddingRight={20}
-            paddingBottom={3}
         >
             {children}
         </XView>
@@ -300,13 +306,16 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     );
 
     // Left side of message
-    const { compact, sender, date, deleted } = props;
+    const { compact, sender, date, deleted, isComment } = props;
 
-    const PreambulaContainer = compact
-        ? CompactPreambulaContainer
-        : props.commentDepth && props.commentDepth > 0
-        ? NotCompactShortPreambulaContainer
-        : NotCompactPreambulaContainer;
+    let PreambulaContainer = compact ? CompactPreambulaContainer : NotCompactPreambulaContainer;
+
+    if (isComment) {
+        PreambulaContainer = NotCompactNotDeepPreambulaContainer;
+        if (props.commentDepth && props.commentDepth > 0) {
+            PreambulaContainer = NotCompactDeepPreambulaContainer;
+        }
+    }
 
     const preambula = React.useMemo(
         () => (
@@ -466,7 +475,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
     if (props.isComment) {
         MessageContainerWrapper = NotCompactShortMessageContainerWrapper;
     } else if (props.isModal) {
-        MessageContainerWrapper = NotCompactModaltMessageContainerWrapper;
+        MessageContainerWrapper = NotCompactModalMessageContainerWrapper;
     } else if (!props.compact) {
         MessageContainerWrapper = NotCompactMessageContainerWrapper;
     }
