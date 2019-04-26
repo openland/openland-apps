@@ -114,40 +114,30 @@ export function useHandleSend({
 
     const handleSend = async () => {
         let msg = inputValue.trim();
-        if (msg.length > 0) {
-            if (onSend && !hasQuoteInState()) {
-                let uploadedFileKey = undefined;
-                if (file) {
-                    uploadedFileKey = (await onUploadCareSendFile(file)) || undefined;
-                }
-                if (supportMentions() && mentionsState) {
-                    await onSend(msg, mentionsState.getMentions(), uploadedFileKey);
-                    mentionsState.setCurrentMentions([]);
-                } else {
-                    await onSend(msg, null, uploadedFileKey);
-                }
+        if (onSend && !hasQuoteInState()) {
+            let uploadedFileKey = undefined;
+            if (file) {
+                uploadedFileKey = (await onUploadCareSendFile(file)) || undefined;
+            }
+            if (supportMentions() && mentionsState) {
+                await onSend(msg, mentionsState.getMentions(), uploadedFileKey);
+                mentionsState.setCurrentMentions([]);
+            } else {
+                await onSend(msg, null, uploadedFileKey);
+            }
 
-                if (supportDraft()) {
-                    draftState!!.setBeDrafted!!(false);
-                }
+            if (supportDraft()) {
+                draftState!!.setBeDrafted!!(false);
             }
-            if (inputValue && hasQuoteInState()) {
-                replyMessagesProc();
-                if (file) {
-                    onUploadCareSendFile(file);
-                }
-            }
-            scrollChatToBottom();
-        } else if (hasQuoteInState()) {
+        }
+        if (inputValue && hasQuoteInState()) {
             replyMessagesProc();
             if (file) {
                 onUploadCareSendFile(file);
             }
-            scrollChatToBottom();
-        } else if (file) {
-            onUploadCareSendFile(file);
-            scrollChatToBottom();
         }
+        scrollChatToBottom();
+
         closeEditor();
         if (supportDraft()) {
             draftState!!.cleanDraft!!();
