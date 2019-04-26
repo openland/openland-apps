@@ -8,6 +8,7 @@ import { XDate } from 'openland-x/XDate';
 import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
 import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 
 type PostMessageButtonsT = {
     showNumberOfComments?: boolean;
@@ -45,7 +46,11 @@ const DiscussButton = React.memo(
                 paddingLeft={12}
                 paddingRight={12}
                 onClick={() => {
-                    router.pushQuery('comments', `${messageId}&${conversationId}`);
+                    openCommentsModal({
+                        router,
+                        messageId: messageId,
+                        conversationId,
+                    });
                 }}
             >
                 {commentsCount ? (

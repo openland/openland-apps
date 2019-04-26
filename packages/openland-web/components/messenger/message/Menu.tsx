@@ -10,6 +10,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { MessagesStateContext } from '../../messenger/MessagesStateContext';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 
 let iconButtonClass = css`
     cursor: pointer;
@@ -161,7 +162,11 @@ export const Menu = ({
                         {hover && !isComment && (
                             <CommentsIconWrapper
                                 onClick={() => {
-                                    router.pushQuery('comments', `${message.id}&${conversationId}`);
+                                    openCommentsModal({
+                                        router,
+                                        messageId: message.id!!,
+                                        conversationId,
+                                    });
                                 }}
                             >
                                 <CommentIcon />

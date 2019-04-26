@@ -6,6 +6,7 @@ import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatch
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
 import { CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
+import { XRouter } from 'openland-x-routing/XRouter';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
@@ -19,6 +20,7 @@ import { CommentsInput } from './CommentsInput';
 import { FullMessage } from 'openland-api/Types';
 import { useAddComment } from './useAddComment';
 import { uploadFile } from './uploadFile';
+import { showModalBox } from 'openland-x/showModalBox';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -54,14 +56,43 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
 }
 
 export const CommentsModalInner = () => {
+    let router = React.useContext(XRouterContext)!;
+
+    const [messageId, roomId] = router.routeQuery.comments.split('&');
+
+    return <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />;
+};
+
+export const openCommentsModal = ({
+    router,
+    messageId,
+    conversationId,
+}: {
+    router: XRouter;
+    messageId: string;
+    conversationId: string;
+}) => {
+    // router.pushQuery('comments', `${messageId}&${conversationId}`);
+    showModalBox(
+        {
+            width: 800,
+        },
+        () => <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />,
+    );
+};
+
+export const CommentsModalInnerNoRouter = ({
+    messageId,
+    roomId,
+}: {
+    messageId: string;
+    roomId: string;
+}) => {
     const client = useClient();
     const modal = React.useContext(XModalContext);
     const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
     const scrollRef = React.useRef<XScrollView3 | null>(null);
-    let router = React.useContext(XRouterContext)!;
     const addComment = useAddComment();
-
-    const [messageId, roomId] = router.routeQuery.comments.split('&');
 
     const isMobile = React.useContext(IsMobileContext);
     let messenger = React.useContext(MessengerContext);
