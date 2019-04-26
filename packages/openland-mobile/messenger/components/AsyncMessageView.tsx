@@ -49,8 +49,8 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
     let theme = useThemeGlobal();
 
-    let handleAvatarPress = () => {
-        props.onAvatarPress(props.message.senderId);
+    let handleAvatarPress = (id: string) => {
+        props.onAvatarPress(id);
     }
     let handleLongPress = () => {
         if (!props.message.isSending) {
@@ -105,7 +105,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-left-1" backgroundColor={theme.backgroundColor} width={(props.message.attachBottom ? 36 : 0) + 10} />
 
                     {!props.message.isOut && !props.message.attachBottom &&
-                        <ASFlex marginRight={3} onPress={handleAvatarPress} alignItems="flex-end">
+                        <ASFlex marginRight={3} onPress={() => handleAvatarPress(props.message.senderId)} alignItems="flex-end">
                             <AsyncAvatar
                                 size={32}
                                 src={props.message.senderPhoto}
