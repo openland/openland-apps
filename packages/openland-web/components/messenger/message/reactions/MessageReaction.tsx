@@ -330,7 +330,10 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
 
 export class Reactions extends React.PureComponent<ReactionsInnerProps> {
     render() {
-        const { reactions, meId, messageId, onlyLikes } = this.props;
+        let { reactions, meId, messageId, onlyLikes } = this.props;
+
+        onlyLikes = false;
+
         return (
             <XView flexWrap="wrap" alignItems="center">
                 {onlyLikes && (
