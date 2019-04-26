@@ -5,6 +5,7 @@ import * as className from 'classnames';
 import { XScrollView3 } from './XScrollView3';
 import { XView } from 'react-mental';
 import { XLoader } from './XLoader';
+import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import ResizeObserver from 'resize-observer-polyfill';
 
 const boxStyle = css`
@@ -83,11 +84,13 @@ const ModalBoxComponent = React.memo<{
             }, 200);
         }
     }, []);
+
     React.useEffect(() => {
         props.ctx.setOnEscPressed(() => {
             tryHide();
         });
     }, []);
+
     let handleContainerClick = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === containerRef.current) {
             tryHide();
@@ -144,50 +147,56 @@ const ModalBoxComponent = React.memo<{
     }, []);
 
     return (
-        <div
-            ref={containerRef}
-            className={className(
-                overlayStyle,
-                state === 'showing' && overlayShowing,
-                state === 'visible' && overlayVisible,
-                state === 'hiding' && overlayHiding,
-            )}
-            onClick={handleContainerClick}
+        <XModalBoxContext.Provider
+            value={{
+                close: tryHide,
+            }}
         >
             <div
-                ref={boxRef}
+                ref={containerRef}
                 className={className(
-                    boxStyle,
-                    state === 'showing' && boxShowing,
-                    state === 'visible' && boxVisible,
-                    state === 'hiding' && boxHiding,
+                    overlayStyle,
+                    state === 'showing' && overlayShowing,
+                    state === 'visible' && overlayVisible,
+                    state === 'hiding' && overlayHiding,
                 )}
-                style={{ top, left, width: props.config.width }}
+                onClick={handleContainerClick}
             >
-                {props.config.title && (
-                    <XView paddingTop={30} paddingBottom={20}>
-                        <XView
-                            height={36}
-                            lineHeight="36px"
-                            paddingLeft={40}
-                            paddingRight={14}
-                            fontSize={30}
-                            fontWeight="600"
-                            flexDirection="row"
-                            alignItems="center"
-                        >
-                            <XView flexGrow={1} flexShrink={1} minWidth={0} paddingRight={8}>
-                                {props.config.title}
+                <div
+                    ref={boxRef}
+                    className={className(
+                        boxStyle,
+                        state === 'showing' && boxShowing,
+                        state === 'visible' && boxVisible,
+                        state === 'hiding' && boxHiding,
+                    )}
+                    style={{ top, left, width: props.config.width }}
+                >
+                    {props.config.title && (
+                        <XView paddingTop={30} paddingBottom={20}>
+                            <XView
+                                height={36}
+                                lineHeight="36px"
+                                paddingLeft={40}
+                                paddingRight={14}
+                                fontSize={30}
+                                fontWeight="600"
+                                flexDirection="row"
+                                alignItems="center"
+                            >
+                                <XView flexGrow={1} flexShrink={1} minWidth={0} paddingRight={8}>
+                                    {props.config.title}
+                                </XView>
+                                {/* <CloseButton onClick={tryHide} /> */}
                             </XView>
-                            {/* <CloseButton onClick={tryHide} /> */}
                         </XView>
-                    </XView>
-                )}
-                <XScrollView3 flexShrink={1} useDefaultScroll={true}>
-                    <React.Suspense fallback={Loader}>{contents}</React.Suspense>
-                </XScrollView3>
+                    )}
+                    <XScrollView3 flexShrink={1} useDefaultScroll={true}>
+                        <React.Suspense fallback={Loader}>{contents}</React.Suspense>
+                    </XScrollView3>
+                </div>
             </div>
-        </div>
+        </XModalBoxContext.Provider>
     );
 });
 

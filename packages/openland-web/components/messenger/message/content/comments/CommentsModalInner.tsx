@@ -15,6 +15,7 @@ import { MessageComponent } from 'openland-web/components/messenger/message/Mess
 import { convertDsMessage } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalContext } from 'openland-x-modal/XModalContext';
+import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { CommentView } from './CommentView';
 import { CommentsInput } from './CommentsInput';
 import { FullMessage } from 'openland-api/Types';
@@ -64,6 +65,7 @@ export const CommentsModalInnerNoRouter = ({
 }) => {
     const client = useClient();
     const modal = React.useContext(XModalContext);
+    const modalBox = React.useContext(XModalBoxContext);
     const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
     const scrollRef = React.useRef<XScrollView3 | null>(null);
     const addComment = useAddComment();
@@ -178,6 +180,9 @@ export const CommentsModalInnerNoRouter = ({
                         onClick={() => {
                             if (modal) {
                                 modal.close();
+                            }
+                            if (modalBox) {
+                                modalBox.close();
                             }
                         }}
                     />
