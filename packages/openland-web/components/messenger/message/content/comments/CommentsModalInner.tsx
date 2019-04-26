@@ -175,7 +175,13 @@ export const CommentsModalInnerNoRouter = ({
 
     return (
         <>
-            <XScrollView3 flexGrow={1} flexShrink={1} maxHeight={700} ref={scrollRef}>
+            <XScrollView3
+                useDefaultScroll
+                flexGrow={1}
+                flexShrink={1}
+                maxHeight={700}
+                ref={scrollRef}
+            >
                 <XView position="absolute" zIndex={100} right={32} top={28}>
                     <XModalCloser
                         onClick={() => {
