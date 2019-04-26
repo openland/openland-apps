@@ -430,8 +430,11 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.queue.async {
       DispatchQueue.main.async {
         self.node.performBatch(animated: false, updates: {
-          let c = self.activeCellsStrong[state.items[index].key]!
-          c.setSpec(spec: state.items[index].config)
+          let c = self.activeCellsStrong[state.items[index].key]
+          if(c == nil){
+            return
+          }
+          c!.setSpec(spec: state.items[index].config)
           self.state = state
            // hack for disabling animations
            self.node.moveItem(at: IndexPath(item: index, section: 1), to: IndexPath(item: index, section: 1))
@@ -513,6 +516,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   func onRemoved(index: Int, state: RNAsyncDataViewState) {
+    self.activeCellsStrong.removeValue(forKey: self.state.items[index].key)
     self.queue.async {
       DispatchQueue.main.async {
         self.node.performBatch(animated: false, updates: {
