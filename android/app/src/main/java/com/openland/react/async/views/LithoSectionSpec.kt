@@ -31,7 +31,8 @@ object LithoSectionSpec {
                                   @Prop dataModel: List<AsyncDataViewItem>,
                                   @Prop loading: Boolean,
                                   @Prop headerPadding: Float,
-                                  @Prop(optional = true) overflowColor: Int?
+                                  @Prop(optional = true) overflowColor: Int?,
+                                  @Prop(optional = true) loaderColor: Int?
                                   ): Children {
 
         var footer = Column.create(c)
@@ -45,7 +46,7 @@ object LithoSectionSpec {
         val progress = Progress.create(c)
                 .heightDip(32.0f)
                 .widthDip(32.0f)
-                .color(0xFF0084fe.toInt())
+                .color(if (loaderColor !== null) loaderColor else 0xFF0084fe.toInt())
                 .marginDip(YogaEdge.BOTTOM, 16.0f)
 
         if(overflowColor != null){
@@ -60,12 +61,12 @@ object LithoSectionSpec {
                     .clipToOutline(false)
 
             footer.child(overflow)
-            if (loading && dataModel.isNotEmpty()) {
+            if (loading) {
                 footer.child(progress)
             }
 
         }else{
-            if (loading && dataModel.isNotEmpty()) {
+            if (loading) {
                 footer.child(progress)
             }
         }

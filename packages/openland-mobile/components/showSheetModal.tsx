@@ -164,7 +164,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                         <>
                             {!isPad && (
                                 <View
-                                    backgroundColor="#ffffff"
+                                    backgroundColor={this.props.theme.backgroundColor}
                                     borderTopRightRadius={12}
                                     borderTopLeftRadius={12}
                                     paddingBottom={Platform.select({ ios: undefined, android: this.props.safe.bottom + 8 })}
@@ -183,7 +183,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                                     overflow="hidden"
                                     width={350}
                                     alignSelf="center"
-                                    backgroundColor="#ffffff"
+                                    backgroundColor={this.props.theme.backgroundColor}
                                     onLayout={this.onLayout}
                                 >
                                     <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight}>

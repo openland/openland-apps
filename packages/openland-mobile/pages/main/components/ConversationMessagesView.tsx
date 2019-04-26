@@ -6,7 +6,6 @@ import { Platform, View } from 'react-native';
 import { androidMessageInputListOverlap } from './ConversationView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { SRouter } from 'react-native-s/SRouter';
 
 export interface ConversationMessagesViewProps {
     loaded: boolean;
@@ -29,7 +28,6 @@ export const ConversationMessagesView = React.memo<ConversationMessagesViewProps
                 style={{ flexGrow: 1 }}
                 headerPadding={Platform.select({ ios: 6, android: androidMessageInputListOverlap })}
                 overflowColor={theme.backgroundColor}
-                loaderColor={theme.chatLoaderColor}
             />
         </View>
     );

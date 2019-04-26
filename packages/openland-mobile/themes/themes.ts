@@ -38,7 +38,8 @@ export interface AppTheme {
     dialogMessageColor: string;
     dialogTypingColor: string;
 
-    chatLoaderColor: string;
+    loaderColorIos: string;
+    loaderColorAndroid: string;
     chatImageBackground: string;
 
     textColorOut: string;
@@ -93,7 +94,8 @@ export const DefaultTheme: AppTheme = {
     tabColor: Platform.OS === 'android' ? '#737373' : '#99a2b0',
     tabColorActive: Platform.OS === 'android' ? '#0084fe' : '#0084fe',
 
-    chatLoaderColor: '#999',
+    loaderColorIos: '#999',
+    loaderColorAndroid: '#0084fe',
     chatImageBackground: '#dbdce1',
 
     dialogTitleColor: '#181818',
@@ -154,7 +156,8 @@ export const DarkTheme: AppTheme = {
     tabColor: '#929292',
     tabColorActive: '#FDFDFD',
 
-    chatLoaderColor: 'white',
+    loaderColorIos: 'white',
+    loaderColorAndroid: 'white',
     chatImageBackground: '#555',
 
     dialogTitleColor: 'white',

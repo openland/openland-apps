@@ -34,6 +34,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private var inverted: Boolean = false
     private var headerPadding: Float = 0.0f
     private var overflowColor: Int? = null
+    private var loaderColor: Int? = null
     private val scrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -99,6 +100,11 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
         updateData()
     }
 
+    fun setLoaderColor(value: Int) {
+        this.loaderColor = value
+        updateData()
+    }
+
     private fun updateData() {
         val recycler = RecyclerCollectionComponent.create(asyncContext)
                 .backgroundColor(if (this.state.items.isEmpty()) (if (this.overflowColor !== null) this.overflowColor!! else 0x00ffffff) else 0x00ffffff)
@@ -109,6 +115,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                         .dataModel(this.state.items)
                         .headerPadding(this.headerPadding)
                         .overflowColor(this.overflowColor)
+                        .loaderColor(this.loaderColor)
                         .reactContext(context as ReactContext)
                         .loading(!this.state.competed)
                         .dataViewKey(if (this.dataViewKey !== null) this.dataViewKey!! else "empty")
@@ -169,6 +176,11 @@ class AsyncListViewManager : SimpleViewManager<AsyncListView>() {
     @ReactProp(name = "overflowColor")
     fun setOverflowColor(view: AsyncListView, value: Int) {
         view.setOverflowColor(value)
+    }
+
+    @ReactProp(name = "loaderColor")
+    fun setLoaderColor(view: AsyncListView, value: Int) {
+        view.setLoaderColor(value)
     }
 
     override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {

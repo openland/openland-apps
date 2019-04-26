@@ -6,7 +6,7 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { ASDataView } from 'react-native-async-view/ASDataView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASListView } from 'react-native-async-view/ASListView';
-import { StyleProp, ViewStyle, Animated, View, Text } from 'react-native';
+import { StyleProp, ViewStyle, Animated, View, Text, Platform } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { STrackedValue } from 'react-native-s/STrackedValue';

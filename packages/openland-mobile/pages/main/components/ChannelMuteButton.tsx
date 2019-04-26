@@ -42,10 +42,10 @@ export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
     }
 
     return (
-        <View marginBottom={SDevice.safeArea.bottom} backgroundColor="#ffffff">
+        <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundColor}>
             <TouchableOpacity onPress={handleNotifications}>
                 <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: '#0084fe' } as TextStyle}>
+                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentColor } as TextStyle}>
                         {notifications ? 'Mute' : 'Unmute'}
                     </Text>
                 </View>

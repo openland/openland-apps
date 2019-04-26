@@ -101,7 +101,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
         let showBackButton = !showCloseButton && (this.props.page.page.startIndex !== 0 || v.config.searchActive);
         return (
             <SAnimated.View name={'header--' + this.props.page.page.key} style={styles.root} pointerEvents={this.props.current ? 'box-none' : 'none'}>
-                <View style={[styles.titleContainer, { backgroundColor: this.props.style.backgroundColor }]} pointerEvents="box-none">
+                <View style={[styles.titleContainer, { backgroundColor: this.props.style.headerColor }]} pointerEvents="box-none">
                     <View
                         style={{
                             position: 'absolute',

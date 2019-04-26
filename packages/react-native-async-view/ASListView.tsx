@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { ViewStyle, StyleProp, NativeSyntheticEvent, NativeScrollEvent, processColor } from 'react-native';
+import { ViewStyle, StyleProp, NativeSyntheticEvent, NativeScrollEvent, processColor, Platform } from 'react-native';
 import { ASDataView } from './ASDataView';
 import { ASViewListRender } from './platform/ASViewRender';
+import { XMemo } from 'openland-y-utils/XMemo';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface ASListViewProps {
     style?: StyleProp<ViewStyle>;
@@ -17,21 +19,20 @@ export interface ASListViewProps {
     overscrollCompensation?: boolean;
     onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
-export class ASListView extends React.PureComponent<ASListViewProps> {
-    render() {
-        return (
-            <ASViewListRender
-                style={this.props.style}
-                dataViewKey={this.props.dataView.key}
-                contentPaddingTop={this.props.contentPaddingTop}
-                contentPaddingBottom={this.props.contentPaddingBottom}
-                headerPadding={this.props.headerPadding}
-                overscrollCompensation={this.props.overscrollCompensation}
-                inverted={this.props.inverted}
-                onScroll={this.props.onScroll}
-                overflowColor={this.props.overflowColor ? processColor(this.props.overflowColor) : undefined}
-                loaderColor={this.props.loaderColor ? processColor(this.props.loaderColor) : undefined}
-            />
-        );
-    }
-}
+export const ASListView = XMemo<ASListViewProps>((props) => {
+    const theme = React.useContext(ThemeContext);
+    return (
+        <ASViewListRender
+            style={props.style}
+            dataViewKey={props.dataView.key}
+            contentPaddingTop={props.contentPaddingTop}
+            contentPaddingBottom={props.contentPaddingBottom}
+            headerPadding={props.headerPadding}
+            overscrollCompensation={props.overscrollCompensation}
+            inverted={props.inverted}
+            onScroll={props.onScroll}
+            overflowColor={props.overflowColor ? processColor(props.overflowColor) : undefined}
+            loaderColor={processColor(props.loaderColor ? props.loaderColor : (Platform.OS === 'android' ? theme.loaderColorAndroid : theme.loaderColorIos))}
+        />
+    );
+})
