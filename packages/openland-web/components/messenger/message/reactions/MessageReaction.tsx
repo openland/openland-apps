@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
@@ -9,15 +10,37 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
 import CommentLikeChannelIcon from 'openland-icons/ic-like-channel.svg';
 import CommentLikeEmptyChannelIcon from 'openland-icons/ic-like-empty-channel.svg';
+import ReactionIcon from 'openland-icons/ic-reactions.svg';
+import ReactionThumbsupIcon from 'openland-icons/ic-reaction-thumbsup.svg';
 import { emojifyReactions } from './emojifyReactions';
 
-export const ReactionItem = Glamorous.div<{ isMy?: boolean }>(() => ({
+const LikeIconClassName = css`
+    width: 20px;
+    height: 20px;
+    & > path {
+        fill: #f6564e;
+        opacity: 1;
+    }
+`;
+
+const ThumbsupIconClassName = css`
+    width: 20px;
+    height: 20px;
+`;
+
+export const ReactionItem = Glamorous.div<{
+    isMy?: boolean;
+    marginRight?: number;
+    marginLeft?: number;
+}>(props => ({
     display: 'flex',
     alignItems: 'center',
     height: 28,
     cursor: 'pointer',
     fontSize: 13,
     fontWeight: 600,
+    marginRight: `${props.marginRight} !important`,
+    marginLeft: `${props.marginLeft} !important`,
     '& span:last-child': {
         margin: '0!important',
     },
@@ -239,6 +262,17 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
 
     for (let k in reactionsMap) {
         if (reactionsMap[k].find((r: any) => r.user.id === meId)) {
+            let content = emojifyReactions({
+                src: reactionsMap[k][0].reaction,
+                size: 18,
+            });
+
+            if (k === '❤️') {
+                content = <ReactionIcon className={LikeIconClassName} />;
+            }
+            if (k === '👍') {
+                content = <ReactionThumbsupIcon className={ThumbsupIconClassName} />;
+            }
             foundMyReaction = true;
             components.push(
                 <XPopper
@@ -268,14 +302,22 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                         reaction={reactionsMap[k][0].reaction}
                         isMy={true}
                     >
-                        {emojifyReactions({
-                            src: reactionsMap[k][0].reaction,
-                            size: 18,
-                        })}
+                        {content}
                     </SingleReactionUnset>
                 </XPopper>,
             );
         } else {
+            let content = emojifyReactions({
+                src: reactionsMap[k][0].reaction,
+                size: 18,
+            });
+
+            if (k === '❤️') {
+                content = <ReactionIcon className={LikeIconClassName} />;
+            }
+            if (k === '👍') {
+                content = <ReactionThumbsupIcon className={ThumbsupIconClassName} />;
+            }
             components.push(
                 <XPopper
                     key={'reaction' + reactionsMap[k][0].reaction}
@@ -304,10 +346,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                         reaction={reactionsMap[k][0].reaction}
                         isMy={false}
                     >
-                        {emojifyReactions({
-                            src: reactionsMap[k][0].reaction,
-                            size: 18,
-                        })}
+                        {content}
                     </SingleReactionSet>
                 </XPopper>,
             );

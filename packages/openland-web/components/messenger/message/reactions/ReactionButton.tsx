@@ -5,6 +5,7 @@ import { css, cx } from 'linaria';
 import { XPopper } from 'openland-x/XPopper';
 import { useClient } from 'openland-web/utils/useClient';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
+import ReactionThumbsupIcon from 'openland-icons/ic-reaction-thumbsup.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { ReactionItem } from './MessageReaction';
@@ -29,32 +30,75 @@ const ReactionButtonInner = Glamorous.div<{
     cursor: 'pointer',
     marginTop: props.marginTop,
     marginLeft: props.marginLeft,
-    paddingTop: 6,
+    paddingTop: 3,
     '& svg > path': {
         fill: props.hovered ? '#d75454' : undefined,
         opacity: props.hovered ? 1 : undefined,
     },
-    '&:hover svg > path': {
-        fill: '#d75454',
-        opacity: 1,
-    },
+    // '&:hover svg > path': {
+    //     fill: '#d75454',
+    //     opacity: 1,
+    // },
 }));
 
-class ReactionPicker extends React.PureComponent<{
-    setReaction: (src: any) => void;
-    onHover: (hover: boolean) => void;
-}> {
-    componentWillUnmount() {
-        this.props.onHover(false);
+const LikeIconClassName = css`
+    width: 22px;
+    height: 22px;
+    & > path {
+        fill: #f6564e;
+        opacity: 1;
     }
+`;
 
-    render() {
-        const { props } = this;
-        const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
+const ThumbsupIconClassName = css`
+    width: 24px;
+    height: 24px;
+`;
 
-        return (
-            <XHorizontal separator={6} alignItems="center" onMouseEnter={() => props.onHover(true)}>
-                {defaultReactions.map((src: string) => (
+const ReactionPicker = (props: {
+    setReaction: (src: any) => void;
+    onHover: () => void;
+    onHoverLeave: () => void;
+}) => {
+    const defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
+
+    return (
+        <XHorizontal
+            separator={4}
+            alignItems="center"
+            onMouseEnter={() => props.onHover()}
+            onMouseLeave={() => props.onHoverLeave()}
+        >
+            {defaultReactions.map((src: string, i: number) => {
+                if (i === 0) {
+                    return (
+                        <ReactionItem
+                            key={'msg_reaction' + src}
+                            onClick={e => {
+                                e.stopPropagation();
+                                props.setReaction(src);
+                            }}
+                        >
+                            <ReactionIcon className={LikeIconClassName} />
+                        </ReactionItem>
+                    );
+                }
+                if (i === 1) {
+                    return (
+                        <ReactionItem
+                            key={'msg_reaction' + src}
+                            marginRight={0}
+                            marginLeft={1}
+                            onClick={e => {
+                                e.stopPropagation();
+                                props.setReaction(src);
+                            }}
+                        >
+                            <ReactionThumbsupIcon className={ThumbsupIconClassName} />
+                        </ReactionItem>
+                    );
+                }
+                return (
                     <ReactionItem
                         key={'msg_reaction' + src}
                         onClick={e => {
@@ -67,11 +111,11 @@ class ReactionPicker extends React.PureComponent<{
                             size: 25,
                         })}
                     </ReactionItem>
-                ))}
-            </XHorizontal>
-        );
-    }
-}
+                );
+            })}
+        </XHorizontal>
+    );
+};
 
 export const MessageReactionButton = ({
     onlyLikes,
@@ -85,6 +129,7 @@ export const MessageReactionButton = ({
     marginLeft?: number;
 }) => {
     const [hovered, setHovered] = React.useState(false);
+    const [beHovered, setBeHovered] = React.useState(false);
 
     let client = useClient();
     const handler = async (it: MessageReactionType) => {
@@ -94,12 +139,34 @@ export const MessageReactionButton = ({
         });
     };
 
+    let timeout: any = null;
+
+    React.useEffect(() => {
+        if (beHovered && !hovered) {
+            timeout = setInterval(() => {
+                setHovered(false);
+                setBeHovered(false);
+                clearInterval(timeout);
+            }, 500);
+        }
+        if (beHovered && hovered) {
+            clearInterval(timeout);
+        }
+        return () => clearInterval(timeout);
+    });
+
     const handleSetReaction = (emj: any) => {
         handler(typeof emj === 'string' ? emj : emj.native);
     };
 
     const handleClick = () => {
         handleSetReaction('❤️');
+    };
+
+    const hoverDelay = () => {
+        clearInterval(timeout);
+        setHovered(true);
+        setBeHovered(true);
     };
 
     if (onlyLikes) {
@@ -118,18 +185,34 @@ export const MessageReactionButton = ({
 
     return (
         <XPopper
-            content={<ReactionPicker setReaction={handleSetReaction} onHover={setHovered} />}
-            showOnHover
+            content={
+                <ReactionPicker
+                    setReaction={handleSetReaction}
+                    onHover={() => {
+                        hoverDelay();
+                    }}
+                    onHoverLeave={() => {
+                        setHovered(false);
+                        clearInterval(timeout);
+                    }}
+                />
+            }
             placement="top"
             contentContainer={<CustomPickerDiv />}
             marginBottom={6}
+            show={beHovered}
         >
             <ReactionButtonInner
                 className="reaction-button"
                 onClick={handleClick}
                 marginTop={marginTop}
                 marginLeft={marginLeft}
-                hovered={hovered}
+                hovered={beHovered}
+                onMouseEnter={hoverDelay}
+                onMouseLeave={() => {
+                    setHovered(false);
+                    clearInterval(timeout);
+                }}
             >
                 <ReactionIcon />
             </ReactionButtonInner>
