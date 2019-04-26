@@ -130,7 +130,6 @@ export function useHandleSend({
         if (file) {
             uploadedFileKey = (await onUploadCareSendFile(file)) || undefined;
         }
-
         if (replyMessage && hasQuoteInState()) {
             const finalQuoteMessagesId = quoteState ? quoteState.quoteMessagesId || [] : [];
             let mentions: UserWithOffset[] = [];
@@ -143,13 +142,11 @@ export function useHandleSend({
                 mentions: mentions.map(m => m.user.id),
                 replyMessages: finalQuoteMessagesId,
             });
-        } else {
-            if (onSend && inputValue) {
-                if (supportMentions() && mentionsState) {
-                    await onSend(msg, mentionsState.getMentions(), uploadedFileKey);
-                } else {
-                    await onSend(msg, null, uploadedFileKey);
-                }
+        } else if (onSend && (inputValue || uploadedFileKey)) {
+            if (supportMentions() && mentionsState) {
+                await onSend(msg, mentionsState.getMentions(), uploadedFileKey);
+            } else {
+                await onSend(msg, null, uploadedFileKey);
             }
         }
 

@@ -22,6 +22,7 @@ import { FullMessage } from 'openland-api/Types';
 import { useAddComment } from './useAddComment';
 import { uploadFile } from './uploadFile';
 import { showModalBox } from 'openland-x/showModalBox';
+import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -275,7 +276,11 @@ export const CommentsModalInner = () => {
 
     const [messageId, roomId] = router.routeQuery.comments.split('&');
 
-    return <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />;
+    return (
+        <UploadContextProvider>
+            <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />{' '}
+        </UploadContextProvider>
+    );
 };
 
 export const openCommentsModal = ({
@@ -292,6 +297,10 @@ export const openCommentsModal = ({
         {
             width: 800,
         },
-        () => <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />,
+        () => (
+            <UploadContextProvider>
+                <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
+            </UploadContextProvider>
+        ),
     );
 };
