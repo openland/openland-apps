@@ -55,32 +55,6 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }): DataS
     };
 }
 
-export const CommentsModalInner = () => {
-    let router = React.useContext(XRouterContext)!;
-
-    const [messageId, roomId] = router.routeQuery.comments.split('&');
-
-    return <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />;
-};
-
-export const openCommentsModal = ({
-    router,
-    messageId,
-    conversationId,
-}: {
-    router: XRouter;
-    messageId: string;
-    conversationId: string;
-}) => {
-    // router.pushQuery('comments', `${messageId}&${conversationId}`);
-    showModalBox(
-        {
-            width: 800,
-        },
-        () => <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />,
-    );
-};
-
 export const CommentsModalInnerNoRouter = ({
     messageId,
     roomId,
@@ -282,5 +256,31 @@ export const CommentsModalInnerNoRouter = ({
                 />
             </XView>
         </>
+    );
+};
+
+export const CommentsModalInner = () => {
+    let router = React.useContext(XRouterContext)!;
+
+    const [messageId, roomId] = router.routeQuery.comments.split('&');
+
+    return <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />;
+};
+
+export const openCommentsModal = ({
+    router,
+    messageId,
+    conversationId,
+}: {
+    router: XRouter;
+    messageId: string;
+    conversationId: string;
+}) => {
+    // router.pushQuery('comments', `${messageId}&${conversationId}`);
+    showModalBox(
+        {
+            width: 800,
+        },
+        () => <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />,
     );
 };
