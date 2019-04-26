@@ -51,7 +51,6 @@ export const CommentView = React.memo(
                     onCommentReplyClick={onCommentReplyClick}
                     message={message}
                     onlyLikes={true}
-                    isChannel={true}
                     me={me}
                 />
 

@@ -7,7 +7,6 @@ import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDe
 const MessageComponentInner = React.memo(
     (
         props: MessageComponentProps & {
-            isChannel: boolean;
             isMobile: boolean;
             messagesContextProps: MessagesStateContextProps;
         },
@@ -42,11 +41,7 @@ const MessageComponentInner = React.memo(
     },
 );
 
-export const MessageComponent = (
-    props: MessageComponentProps & {
-        isChannel: boolean;
-    },
-) => {
+export const MessageComponent = (props: MessageComponentProps) => {
     const messagesContextProps = React.useContext(MessagesStateContext);
     const isMobile = React.useContext(IsMobileContext);
 

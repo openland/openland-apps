@@ -13,7 +13,8 @@ import { openCommentsModal } from 'openland-web/components/messenger/message/con
 type PostMessageButtonsT = {
     showNumberOfComments?: boolean;
     isComment: boolean;
-    isChannel: boolean;
+    isChannel?: boolean;
+    isModal?: boolean;
     onlyLikes: boolean;
     message: DataSourceWebMessageItem;
     onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
@@ -72,6 +73,7 @@ export const PostMessageButtons = React.memo(
     ({
         isComment,
         isChannel,
+        isModal,
         onlyLikes,
         message,
         onCommentReplyClick,
@@ -93,7 +95,13 @@ export const PostMessageButtons = React.memo(
             showDiscussButton = showNumberOfComments;
         }
 
-        return (
+        const showReactionsButton =
+            isChannel ||
+            (!message.isSending && message.reactions && message.reactions.length !== 0);
+
+        const showPostMessageButtons = showReactionsButton || showDiscussButton || isComment;
+
+        const postMessageButtons = (
             <>
                 {isComment && (
                     <>
@@ -119,7 +127,7 @@ export const PostMessageButtons = React.memo(
                         </XView>
                     </>
                 )}
-                {!isComment && (
+                {!isComment && (showReactionsButton || showDiscussButton) && (
                     <XView flexDirection="row">
                         <XHorizontal alignItems="center" separator={5}>
                             {showDiscussButton && (
@@ -132,8 +140,7 @@ export const PostMessageButtons = React.memo(
                                 </XView>
                             )}
 
-                            {!message.isSending &&
-                            ((message.reactions && message.reactions.length) || isChannel) ? (
+                            {showReactionsButton ? (
                                 <XView paddingTop={4}>
                                     <Reactions
                                         onlyLikes={onlyLikes}
@@ -146,6 +153,15 @@ export const PostMessageButtons = React.memo(
                         </XHorizontal>
                     </XView>
                 )}
+            </>
+        );
+
+        return (
+            <>
+                {isModal && showPostMessageButtons && (
+                    <XView paddingTop={12}>{postMessageButtons}</XView>
+                )}
+                {!isModal && showPostMessageButtons && postMessageButtons}
             </>
         );
     },

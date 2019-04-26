@@ -101,7 +101,7 @@ export interface MessageComponentProps {
     isModal?: boolean;
     commentDepth?: number;
     message: DataSourceWebMessageItem;
-    isChannel: boolean;
+    isChannel?: boolean;
     noSelector?: boolean;
     isComment?: boolean;
     onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
@@ -438,8 +438,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     selected={!!selected}
                 >
                     {content}
-                    {this.props.isModal && <XView paddingTop={12}>{postMessageButtons}</XView>}
-                    {!this.props.isModal && postMessageButtons}
+                    {postMessageButtons}
                 </DesktopMessageContainer>
             );
         }

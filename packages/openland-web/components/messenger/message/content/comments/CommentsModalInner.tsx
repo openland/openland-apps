@@ -193,7 +193,6 @@ export const CommentsModalInnerNoRouter = ({
                         message={finalMessages}
                         showNumberOfComments={false}
                         onlyLikes={true}
-                        isChannel={true}
                         me={messenger.user}
                         isModal={true}
                     />
