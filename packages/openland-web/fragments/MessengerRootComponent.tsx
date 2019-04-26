@@ -335,8 +335,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     </UploadContextProvider>
                 )}
                 {this.props.isActive && <DeleteUrlAugmentationComponent />}
-                <DeleteMessageComponent />
-                <LeaveChatComponent />
+                {this.props.isActive && <DeleteMessageComponent />}
+                {this.props.isActive && <LeaveChatComponent />}
             </XView>
         );
     }
