@@ -54,7 +54,7 @@ export const useMessageSelected = (engine: MessagesActionsStateEngine, self: Dat
     React.useEffect(() => {
         return engine.listen((s) => {
             setSelected(s.messages.includes(self));
-            setSelectionActive(s.messages.length > 0 && s.action !== 'forward');
+            setSelectionActive(s.messages.length > 0 && !s.action);
         })
     }, [self])
     return [selected, selectionActive];
