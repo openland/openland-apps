@@ -20,7 +20,7 @@
     </defs>
     <g fill="none" fill-rule="evenodd">
         <mask id="b" fill="#fff">
-            <use xlink:href="#a"/>
+            <path id="a" d="M0 0h19.963v20H0z"/>
         </mask>
         <use fill="#FFF" fill-opacity=".01" fill-rule="nonzero" xlink:href="#a"/>
         <g mask="url(#b)">
