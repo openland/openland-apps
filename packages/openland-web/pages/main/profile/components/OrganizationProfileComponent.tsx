@@ -732,7 +732,7 @@ const Members = ({ organization, router }: MembersProps) => {
             after: joinedMembers[joinedMembers.length - 1].user.id,
         });
 
-        setJoinedMembers([...joinedMembers, ...loaded.organization.members.slice(1)]);
+        setJoinedMembers([...joinedMembers, ...loaded.organization.members]);
     };
 
     let requestMembers = organization.requests || [];
