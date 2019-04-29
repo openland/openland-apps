@@ -45,7 +45,7 @@ export const renderPreprocessedText = (v: Span, i: number, onUserPress: (id: str
             </Text>
         );
     } else if (v.type === 'mention_users') {
-        return <OthersUsersWrapper theme={theme} onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={false} />
+        return <OthersUsersWrapper key={'mentions-' + i} theme={theme} onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={false} />
     } else if (v.type === 'bold') {
         return <Text key={'text-bold-' + i} allowFontScaling={false} style={{ fontWeight: TextStyles.weight.bold } as TextStyle}>{v.text}</Text>
     } else {

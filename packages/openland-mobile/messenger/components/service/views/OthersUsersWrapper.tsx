@@ -23,7 +23,7 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
         builder.view((ctx: ZModalController) => (
             <View flexGrow={1} paddingTop={5}>
                 {this.props.users.map((u) => (
-                    <ZUserView user={u} onPress={(id) => { ctx.hide(); this.props.onUserPress(id); }} />
+                    <ZUserView key={'user-' + u.id} user={u} onPress={(id) => { ctx.hide(); this.props.onUserPress(id); }} />
                 ))}
             </View>
         ));

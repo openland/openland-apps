@@ -278,7 +278,6 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 data={members}
                 renderItem={({ item }) => (
                     <UserView
-                        key={item.user.id}
                         user={item.user}
                         isAdmin={item.role === 'OWNER' ? 'owner' : item.role === 'ADMIN' ? 'admin' : undefined}
                         onPress={() => handleMemberPress(item.user)}

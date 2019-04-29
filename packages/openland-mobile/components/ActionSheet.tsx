@@ -71,7 +71,7 @@ export class ActionSheetBuilder {
                                 />
                             )}
                             {a.__typename === 'ViewItem' && (
-                                <ZActionSheetViewItem separator={(isPad && !this._flat) ? true : (i !== this._items.length - 1)}>
+                                <ZActionSheetViewItem key={i + '-view'} separator={(isPad && !this._flat) ? true : (i !== this._items.length - 1)}>
                                     {a.view(ctx)}
                                 </ZActionSheetViewItem>
                             )}
