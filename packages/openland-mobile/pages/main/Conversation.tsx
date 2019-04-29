@@ -387,13 +387,14 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 const ConversationComponent = XMemo<PageProps>((props) => {
     let theme = React.useContext(ThemeContext);
     let messenger = getMessenger();
-    let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id });
+    let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' });
 
     if (room.room === null) {
         // access denied view
         return (
             <>
                 <SHeader title="Access Denied" />
+                <SHeaderButton />
                 <ASSafeAreaView flexGrow={1} paddingHorizontal={16}>
                     <View height="73%" alignItems="center" justifyContent="center">
                         <Image source={require('assets/img-empty.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
@@ -425,6 +426,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
                 <SHeaderView>
                     <ChatHeader conversationId={sharedRoom.id} router={props.router} />
                 </SHeaderView>
+                <SHeaderButton />
                 <ASSafeAreaView width="100%" height="100%" justifyContent="center" >
                     <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
                         <ZAvatar
