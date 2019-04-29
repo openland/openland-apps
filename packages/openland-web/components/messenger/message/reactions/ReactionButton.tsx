@@ -118,6 +118,9 @@ const ReactionPicker = (props: {
 const PopperArrow = Glamorous(XPopper.Arrow)({
     position: 'absolute',
     left: '106px !important',
+    '@media(min-width: 1350px)': {
+        left: '95px !important',
+    }
 });
 
 export const MessageReactionButton = ({
