@@ -4,7 +4,6 @@ import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
-import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
@@ -16,104 +15,184 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { View, Platform } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { Organization_organization_members } from 'openland-api/Types';
+import { Organization_organization_members, Organization_organization_members_user } from 'openland-api/Types';
 import { GroupView } from './components/GroupView';
+import { SFlatList } from 'react-native-s/SFlatList';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-let isMember = (a: Organization_organization_members) => {
-    return a.role === 'MEMBER';
-}
+const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
+    const settings = getClient().useAccountSettings();
+    const organization = getClient().useOrganizationMembersShortPaginated({ organizationId: props.router.params.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organization;
 
-let isAdmin = (a: Organization_organization_members) => {
-    return a.role === 'ADMIN' || a.role === 'OWNER';
-}
+    const canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id);
 
-function ProfileOrganizationContent(props: PageProps) {
-    let settings = getClient().useAccountSettings();
-    let organization = getClient().useOrganization({ organizationId: props.router.params.id }, { fetchPolicy: 'cache-and-network' }).organization;
-    let handleAddMember = React.useCallback(() => {
-        Modals.showUserMuptiplePicker(props.router, {
-            title: 'Add',
-            action: async (users) => {
-                startLoader();
-                try {
-                    await getMessenger().engine.client.mutateOrganizationAddMember({ userIds: users.map(u => u.id), organizationId: organization.id })
-                } catch (e) {
-                    Alert.alert(formatError(e));
-                }
-                stopLoader();
-                props.router.back();
-            }
-        },
-            'Add members',
-            organization.members.map(u => u.user.id),
-            { path: 'OrganizationInviteLinkModal', pathParams: { id: organization.id } });
-    }, [organization.id]);
+    const [ members, setMembers ] = React.useState(organization.members);
+    const [ loading, setLoading ] = React.useState(false);
 
-    let handleCreatePress = React.useCallback(() => {
-        let builder = new ActionSheetBuilder();
+    // callbacks
 
-        builder.action('Create group', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id }));
-        builder.action('Create channel', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id, isChannel: true }));
-
-        builder.show();
-    }, [organization.id]);
-
-    let canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id);
-
-    let handleManageClick = React.useCallback(() => {
-        let builder = new ActionSheetBuilder();
-
-        if (organization.isOwner || organization.isAdmin) {
-            builder.action('Edit', () => props.router.push('EditOrganization', { id: props.router.params.id }));
-        }
-
-        if (canMakePrimary) {
-            builder.action('Make primary', async () => {
-                startLoader();
-                try {
-                    await getClient().mutateProfileUpdate({
-                        input: {
-                            alphaPrimaryOrganizationId: organization.id,
-                        },
-                    });
-                    await getClient().refetchAccountSettings();
-
-                    props.router.back();
-                } finally {
+        const handleAddMember = React.useCallback(() => {
+            Modals.showUserMuptiplePicker(props.router, {
+                title: 'Add',
+                action: async (users) => {
+                    startLoader();
+                    try {
+                        await getMessenger().engine.client.mutateOrganizationAddMember({ userIds: users.map(u => u.id), organizationId: organization.id })
+                    } catch (e) {
+                        Alert.alert(formatError(e));
+                    }
                     stopLoader();
+                    props.router.back();
                 }
-            });
-        }
+            },
+                'Add members',
+                organization.members.map(u => u.user.id),
+                { path: 'OrganizationInviteLinkModal', pathParams: { id: organization.id } });
+        }, [organization.id]);
 
-        if (organization.isOwner || organization.isAdmin) {
-            builder.action('Delete organization', () => {
-                Alert.builder()
-                    .title(`Delete ${organization.name}`)
-                    .message(`Are you sure you want to delete ${organization.name}? This cannot be undone.`)
-                    .button('Cancel', 'cancel')
-                    .action('Delete', 'destructive', async () => {
-                        await getClient().mutateDeleteOrganization({ organizationId: organization.id });
+        const handleCreatePress = React.useCallback(() => {
+            let builder = new ActionSheetBuilder();
+
+            builder.action('Create group', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id }));
+            builder.action('Create channel', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id, isChannel: true }));
+
+            builder.show();
+        }, [organization.id]);
+
+        const handleManageClick = React.useCallback(() => {
+            let builder = new ActionSheetBuilder();
+
+            if (organization.isOwner || organization.isAdmin) {
+                builder.action('Edit', () => props.router.push('EditOrganization', { id: props.router.params.id }));
+            }
+
+            if (canMakePrimary) {
+                builder.action('Make primary', async () => {
+                    startLoader();
+                    try {
+                        await getClient().mutateProfileUpdate({
+                            input: {
+                                alphaPrimaryOrganizationId: organization.id,
+                            },
+                        });
                         await getClient().refetchAccountSettings();
 
                         props.router.back();
-                    }).show();
-            }, true);
-        }
+                    } finally {
+                        stopLoader();
+                    }
+                });
+            }
 
-        builder.show();
-    }, []);
+            if (organization.isOwner || organization.isAdmin) {
+                builder.action('Delete organization', () => {
+                    Alert.builder()
+                        .title(`Delete ${organization.name}`)
+                        .message(`Are you sure you want to delete ${organization.name}? This cannot be undone.`)
+                        .button('Cancel', 'cancel')
+                        .action('Delete', 'destructive', async () => {
+                            await getClient().mutateDeleteOrganization({ organizationId: organization.id });
+                            await getClient().refetchAccountSettings();
 
-    // Sort members by name (admins should go first)
-    let sortedMembers = organization.members
-        .sort((a, b) => (a.user.name.localeCompare(b.user.name)))
-        .sort((a, b) => (isAdmin(a) && isMember(b) ? -1 : 1));
+                            props.router.back();
+                        }).show();
+                }, true);
+            }
+
+            builder.show();
+        }, []);
+
+        const handleMemberPress = React.useCallback((user: Organization_organization_members_user) => {
+            props.router.push('ProfileUser', { id: user.id });
+        }, []);
+
+        const handleMemberLongPress = React.useCallback(async (member: Organization_organization_members) => {
+            const { user } = member;
+
+            if (user.id === getMessenger().engine.user.id || (organization.isOwner || organization.isAdmin)) {
+                let builder = new ActionSheetBuilder();
+
+                if (user.id !== getMessenger().engine.user.id && organization.isOwner) {
+                    builder.action(member.role === 'MEMBER' ? 'Make Admin' : 'Remove as Admin',
+                        () => {
+                            Alert.builder()
+                                .title(`Change role for ${user.name} to ${member.role === 'MEMBER' ? 'Admin? Admins have full control over the organization account.' : 'Member? Members can participate in the organization\'s chats.'}`)
+                                .button('Cancel', 'cancel')
+                                .action('Change role', 'default', async () => {
+                                    await getClient().mutateOrganizationChangeMemberRole({
+                                        memberId: user.id,
+                                        organizationId: props.router.params.id,
+                                        newRole: (member.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
+                                    });
+                                    await getClient().refetchOrganization({ organizationId: props.router.params.id });
+                                }).show();
+                        },
+                    );
+                }
+
+                if (user.id === getMessenger().engine.user.id) {
+                    builder.action('Leave organization',
+                        () => {
+                            Alert.builder()
+                                .title('Are you sure want to leave?')
+                                .button('Cancel', 'cancel')
+                                .action('Leave', 'destructive', async () => {
+                                    await getClient().mutateOrganizationRemoveMember({
+                                        memberId: user.id,
+                                        organizationId: props.router.params.id,
+                                    });
+                                    await getClient().refetchOrganization({ organizationId: props.router.params.id });
+                                    await getClient().refetchAccountSettings();
+                                })
+                                .show();
+                        },
+                        true,
+                    );
+                }
+
+                if ((organization.isOwner || organization.isAdmin) && user.id !== getMessenger().engine.user.id) {
+                    builder.action('Remove from organization',
+                        () => {
+                            Alert.builder()
+                                .title(`Are you sure want to remove ${user.name}? They will be removed from all internal chats at ${organization.name}.`)
+                                .button('Cancel', 'cancel')
+                                .action('Remove', 'destructive', async () => {
+                                    await getClient().mutateOrganizationRemoveMember({
+                                        memberId: user.id,
+                                        organizationId: props.router.params.id,
+                                    });
+                                    await getClient().refetchOrganization({ organizationId: props.router.params.id });
+                                })
+                                .show();
+                        },
+                        true,
+                    );
+                }
+
+                builder.show();
+            }
+
+        }, [ organization ]);
+
+        const handleLoadMore = React.useCallback(async () => {
+            if (members.length < organization.membersCount && !loading) {
+                setLoading(true);
+
+                const loaded = await getClient().queryOrganizationMembersShortPaginated({
+                    organizationId: organization.id,
+                    first: 10,
+                    after: members[members.length - 1].user.id,
+                });
+
+                setMembers([...members, ...loaded.organization.members]);
+                setLoading(false);
+            }
+        }, [ organization, members, loading ]);
 
     const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 
-    return (
+    const content = (
         <>
-            {(organization.isOwner || organization.isAdmin || canMakePrimary) && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
-
             <ZListItemHeader
                 photo={organization.photo}
                 id={organization.id}
@@ -144,9 +223,8 @@ function ProfileOrganizationContent(props: PageProps) {
                 {organization.linkedin && (
                     <ZListItem title="Linkedin" text={organization.linkedin} copy={true} />
                 )}
-
             </ZListItemGroup>
-
+            
             <ZListItemGroup
                 header="Groups and Channels"
                 divider={false}
@@ -177,7 +255,7 @@ function ProfileOrganizationContent(props: PageProps) {
             <ZListItemGroup
                 header="Members"
                 divider={false}
-                counter={sortedMembers.length}
+                counter={organization.membersCount}
             >
                 {organization.isMine && (
                     <ZListItem
@@ -186,99 +264,35 @@ function ProfileOrganizationContent(props: PageProps) {
                         onPress={handleAddMember}
                     />
                 )}
-
-                {sortedMembers.map((v) => (
-                    <UserView
-                        key={v.user.id}
-                        user={v.user}
-                        isAdmin={v.role === 'OWNER' ? 'owner' : v.role === 'ADMIN' ? 'admin' : undefined}
-
-                        onPress={() => props.router.push('ProfileUser', { id: v.user.id, })}
-                        onLongPress={v.user.id === getMessenger().engine.user.id || (organization.isOwner || organization.isAdmin) ?
-                            async () => {
-
-                                let builder = new ActionSheetBuilder();
-
-                                if (v.user.id !== getMessenger().engine.user.id && organization.isOwner) {
-                                    builder.action(v.role === 'MEMBER' ? 'Make Admin' : 'Remove as Admin',
-                                        () => {
-                                            Alert.builder()
-                                                .title(`Change role for ${v.user.name} to ${v.role === 'MEMBER' ? 'Admin? Admins have full control over the organization account.' : 'Member? Members can participate in the organization\'s chats.'}`)
-                                                .button('Cancel', 'cancel')
-                                                .action('Change role', 'default', async () => {
-                                                    await getClient().mutateOrganizationChangeMemberRole({
-                                                        memberId: v.user.id,
-                                                        organizationId: props.router.params.id,
-                                                        newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
-                                                    });
-                                                    await getClient().refetchOrganization({ organizationId: props.router.params.id });
-                                                }).show();
-                                        },
-                                    );
-                                }
-
-                                if (v.user.id === getMessenger().engine.user.id) {
-                                    builder.action('Leave organization',
-                                        () => {
-                                            Alert.builder()
-                                                .title('Are you sure want to leave?')
-                                                .button('Cancel', 'cancel')
-                                                .action('Leave', 'destructive', async () => {
-                                                    await getClient().mutateOrganizationRemoveMember({
-                                                        memberId: v.user.id,
-                                                        organizationId: props.router.params.id,
-                                                    });
-                                                    await getClient().refetchOrganization({ organizationId: props.router.params.id });
-                                                    await getClient().refetchAccountSettings();
-                                                })
-                                                .show();
-                                        },
-                                        true,
-                                    );
-                                }
-
-                                if ((organization.isOwner || organization.isAdmin) && v.user.id !== getMessenger().engine.user.id) {
-                                    builder.action('Remove from organization',
-                                        () => {
-                                            Alert.builder()
-                                                .title(`Are you sure want to remove ${v.user.name}? They will be removed from all internal chats at ${organization.name}.`)
-                                                .button('Cancel', 'cancel')
-                                                .action('Remove', 'destructive', async () => {
-                                                    await getClient().mutateOrganizationRemoveMember({
-                                                        memberId: v.user.id,
-                                                        organizationId: props.router.params.id,
-                                                    });
-                                                    await getClient().refetchOrganization({ organizationId: props.router.params.id });
-                                                })
-                                                .show();
-                                        },
-                                        true,
-                                    );
-                                }
-
-                                builder.show();
-                            }
-                            : undefined
-                        }
-                    />
-                ))}
             </ZListItemGroup>
         </>
     );
-};
 
-class ProfileOrganizationComponent extends React.Component<PageProps> {
-    render() {
-        return (
-            <>
-                <SHeader title="Info" />
-                <SScrollView>
-                    <ProfileOrganizationContent {...this.props} />
-                </SScrollView>
-            </>
-        );
-    }
-}
+    return (
+        <>
+            <SHeader title={organization.name} />
+
+            {(organization.isOwner || organization.isAdmin || canMakePrimary) && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
+
+            <SFlatList
+                data={members}
+                renderItem={({ item }) => (
+                    <UserView
+                        key={item.user.id}
+                        user={item.user}
+                        isAdmin={item.role === 'OWNER' ? 'owner' : item.role === 'ADMIN' ? 'admin' : undefined}
+                        onPress={() => handleMemberPress(item.user)}
+                        onLongPress={() => handleMemberLongPress(item)}
+                    />
+                )}
+                keyExtractor={(item, index) => index + '-' + item.user.id}
+                ListHeaderComponent={content}
+                onEndReached={handleLoadMore}
+                refreshing={loading}
+            />
+        </>
+    );
+});
 
 export const ProfileOrganization = withApp(ProfileOrganizationComponent, {
     navigationAppearance: 'small-hidden',
