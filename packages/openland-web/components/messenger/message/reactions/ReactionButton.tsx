@@ -5,7 +5,7 @@ import { css, cx } from 'linaria';
 import { XPopper } from 'openland-x/XPopper';
 import { useClient } from 'openland-web/utils/useClient';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
-import ReactionThumbsupIcon from 'openland-icons/ic-reaction-thumbsup.svg';
+import ReactionThumbUpIcon from 'openland-icons/ic-reactions-thumbsup.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { ReactionItem } from './MessageReaction';
@@ -32,13 +32,9 @@ const ReactionButtonInner = Glamorous.div<{
     marginLeft: props.marginLeft,
     paddingTop: 3,
     '& svg > path': {
-        fill: props.hovered ? '#d75454' : undefined,
+        fill: props.hovered ? '#f6564e' : undefined,
         opacity: props.hovered ? 1 : undefined,
-    },
-    // '&:hover svg > path': {
-    //     fill: '#d75454',
-    //     opacity: 1,
-    // },
+    }
 }));
 
 const LikeIconClassName = css`
@@ -50,7 +46,7 @@ const LikeIconClassName = css`
     }
 `;
 
-const ThumbsupIconClassName = css`
+const ThumbIconClassName = css`
     width: 24px;
     height: 24px;
 `;
@@ -94,7 +90,7 @@ const ReactionPicker = (props: {
                                 props.setReaction(src);
                             }}
                         >
-                            <ReactionThumbsupIcon className={ThumbsupIconClassName} />
+                            <ReactionThumbUpIcon className={ThumbIconClassName} />
                         </ReactionItem>
                     );
                 }
@@ -199,7 +195,7 @@ export const MessageReactionButton = ({
             }
             placement="top"
             contentContainer={<CustomPickerDiv />}
-            marginBottom={6}
+            marginBottom={10}
             show={beHovered}
         >
             <ReactionButtonInner

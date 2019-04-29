@@ -11,19 +11,19 @@ import { useClient } from 'openland-web/utils/useClient';
 import CommentLikeChannelIcon from 'openland-icons/ic-like-channel.svg';
 import CommentLikeEmptyChannelIcon from 'openland-icons/ic-like-empty-channel.svg';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
-import ReactionThumbsupIcon from 'openland-icons/ic-reaction-thumbsup.svg';
+import ReactionThumbUpIcon from 'openland-icons/ic-reactions-thumbsup.svg';
 import { emojifyReactions } from './emojifyReactions';
 
 const LikeIconClassName = css`
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     & > path {
         fill: #f6564e;
         opacity: 1;
     }
 `;
 
-const ThumbsupIconClassName = css`
+const ThumbIconClassName = css`
     width: 20px;
     height: 20px;
 `;
@@ -271,7 +271,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                 content = <ReactionIcon className={LikeIconClassName} />;
             }
             if (k === '👍') {
-                content = <ReactionThumbsupIcon className={ThumbsupIconClassName} />;
+                content = <ReactionThumbUpIcon className={ThumbIconClassName} />;
             }
             foundMyReaction = true;
             components.push(
@@ -316,7 +316,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
                 content = <ReactionIcon className={LikeIconClassName} />;
             }
             if (k === '👍') {
-                content = <ReactionThumbsupIcon className={ThumbsupIconClassName} />;
+                content = <ReactionThumbUpIcon className={ThumbIconClassName} />;
             }
             components.push(
                 <XPopper
