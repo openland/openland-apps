@@ -98,10 +98,12 @@ const sendIconWrapperClassName = css`
     height: 30px;
     background-color: rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    &:hover {
-        background-color: #1790ff;
-    }
+
     border-radius: 15px;
+`;
+
+const sendIconWrapperActiveWrapperClassName = css`
+    background-color: #1790ff;
 `;
 
 const iconWrapperClassName = css`
@@ -109,10 +111,6 @@ const iconWrapperClassName = css`
     & * {
         cursor: pointer;
         fill: #c1c7cf;
-    }
-
-    &:hover * {
-        fill: #1790ff;
     }
 `;
 
@@ -132,9 +130,16 @@ const DocumentButton = ({ fileSelector }: { fileSelector: () => void }) => {
     );
 };
 
-const SendIconWrapper = ({ onSubmit }: { onSubmit?: () => void }) => {
+const SendIconWrapper = ({ onSubmit, active }: { onSubmit?: () => void; active: boolean }) => {
     return (
-        <div className={cx(iconWrapperClassName, sendIconWrapperClassName)} onClick={onSubmit}>
+        <div
+            className={cx(
+                iconWrapperClassName,
+                sendIconWrapperClassName,
+                active && sendIconWrapperActiveWrapperClassName,
+            )}
+            onClick={onSubmit}
+        >
             <XIcon icon="send" className={sendIconClassName} />
         </div>
     );
@@ -145,18 +150,20 @@ const FileInput = Glamorous.input({
 });
 
 const Icons = ({
+    hasText,
     minimal,
     hideAttach,
     onEmojiPicked,
     onSubmit,
 }: {
+    hasText?: boolean;
     minimal?: boolean;
     hideAttach?: boolean;
     onEmojiPicked: (emoji: EmojiData) => void;
     onSubmit?: () => void;
 }) => {
     const fileInput: React.RefObject<HTMLInputElement> = React.createRef();
-    const { handleDrop } = React.useContext(UploadContext);
+    const { handleDrop, file } = React.useContext(UploadContext);
 
     const fileSelector = () => {
         if (fileInput.current) {
@@ -202,7 +209,7 @@ const Icons = ({
                     <EmojiButton onEmojiPicked={onEmojiPicked} />
                 </XView>
             )}
-            {minimal && <SendIconWrapper onSubmit={onSubmit} />}
+            {minimal && <SendIconWrapper active={!!file || hasText} onSubmit={onSubmit} />}
         </XView>
     );
 };
@@ -308,6 +315,7 @@ export const EditorContainer = (props: EditorContainerContainer) => {
 
             {children}
             <Icons
+                hasText={!!props.value}
                 minimal={minimal}
                 hideAttach={hideAttach}
                 onEmojiPicked={onEmojiPicked}
