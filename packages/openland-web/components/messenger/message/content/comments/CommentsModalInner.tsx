@@ -233,7 +233,9 @@ export const CommentsModalInnerNoRouter = ({
                         : undefined
                 }
                 usernameOfRepliedUser={
-                    parentComment ? parentComment.comment.sender.name : undefined
+                    parentComment && message.depth >= DEPTH_LIMIT
+                        ? parentComment.comment.sender.name
+                        : undefined
                 }
                 deleted={message.id ? commentsMap[message.id].deleted : false}
                 messageId={messageId}
