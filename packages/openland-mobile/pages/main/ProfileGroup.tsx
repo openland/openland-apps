@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { Platform, View } from 'react-native';
+import { Platform } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItem } from '../../components/ZListItem';
 import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
-import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { Room_room_SharedRoom, RoomMemberRole, UserShort, RoomMembers_members, Room_room_SharedRoom_members } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomMemberRole, UserShort, Room_room_SharedRoom_members } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -18,126 +17,135 @@ import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/Acti
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { XMemo } from 'openland-y-utils/XMemo';
+import { SFlatList } from 'react-native-s/SFlatList';
 
-let isMember = (a: RoomMembers_members) => {
-    return a.role === 'MEMBER';
-}
-
-let isAdmin = (a: RoomMembers_members) => {
-    return a.role === 'ADMIN' || a.role === 'OWNER';
-}
-
-function ProfileGroupComponent(props: PageProps & { id: string }) {
-
+const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const client = useClient();
+    const roomId = props.router.params.id;
 
-    const room = client.useRoom({ id: props.id }, { fetchPolicy: 'cache-and-network' }).room as Room_room_SharedRoom;
+    const room = client.useRoomWithoutMembers({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room as Room_room_SharedRoom;
+    const initialMembers = client.useRoomMembersPaginated({ roomId: roomId, first: 10 }, { fetchPolicy: 'cache-and-network' }).members;
+
+    const [ members, setMembers ] = React.useState(initialMembers);
+    const [ loading, setLoading ] = React.useState(false);
 
     const chatTypeStr = room.isChannel ? 'channel' : 'group';
 
-    const handleSend = React.useCallback(() => {
-        props.router.pushAndReset('Conversation', { 'flexibleId': props.router.params.id });
-    }, [props.router.params.id]);
+    // callbacks
+        const handleSend = React.useCallback(() => {
+            props.router.pushAndReset('Conversation', { flexibleId: roomId });
+        }, [ roomId ]);
 
-    const handleLeave = React.useCallback(() => {
-        Alert.builder().title(`Are you sure you want to leave ${chatTypeStr}? You may not be able to join it again.`)
-            .button('Cancel', 'cancel')
-            .action('Leave and delete', 'destructive', async () => {
-                await client.mutateRoomLeave({ roomId: props.router.params.id });
-                props.router.pushAndResetRoot('Home');
-            })
-            .show();
-    }, []);
+        const handleLeave = React.useCallback(() => {
+            Alert.builder().title(`Are you sure you want to leave ${chatTypeStr}? You may not be able to join it again.`)
+                .button('Cancel', 'cancel')
+                .action('Leave and delete', 'destructive', async () => {
+                    await client.mutateRoomLeave({ roomId });
+                    props.router.pushAndResetRoot('Home');
+                })
+                .show();
+        }, [ roomId ]);
 
-    const handleKick = React.useCallback<{ (user: UserShort): void }>((user) => {
-        Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
-            .button('Cancel', 'cancel')
-            .action('Kick', 'destructive', async () => {
-                await client.mutateRoomKick({ userId: user.id, roomId: props.router.params.id });
-            })
-            .show();
-    }, []);
+        const handleKick = React.useCallback((user: UserShort) => {
+            Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
+                .button('Cancel', 'cancel')
+                .action('Kick', 'destructive', async () => {
+                    await client.mutateRoomKick({ userId: user.id, roomId });
+                })
+                .show();
+        }, [ roomId ]);
 
-    const handleMakeAdmin = React.useCallback<{ (user: UserShort): void }>((user) => {
-        Alert.builder().title(`Are you sure you want to make ${user.name} admin?`)
-            .button('Cancel', 'cancel')
-            .action('Promote', 'destructive', async () => {
-                await client.mutateRoomChangeRole({ userId: user.id, roomId: props.router.params.id, newRole: RoomMemberRole.ADMIN });
-            })
-            .show();
-    }, []);
+        const handleMakeAdmin = React.useCallback((user: UserShort) => {
+            Alert.builder().title(`Are you sure you want to make ${user.name} admin?`)
+                .button('Cancel', 'cancel')
+                .action('Promote', 'destructive', async () => {
+                    await client.mutateRoomChangeRole({ userId: user.id, roomId, newRole: RoomMemberRole.ADMIN });
+                })
+                .show();
+        }, [ roomId ]);
 
-    const handleMemberLongPress = React.useCallback<{ (member: Room_room_SharedRoom_members, canKick: boolean, canEdit: boolean): void }>((member, canKick, canEdit) => {
-        let builder = ActionSheet.builder();
+        const handleMemberLongPress = React.useCallback((member: Room_room_SharedRoom_members, canKick: boolean, canEdit: boolean) => {
+            let builder = ActionSheet.builder();
 
-        let user = member.user;
+            let user = member.user;
 
-        if (user.id !== getMessenger().engine.user.id) {
-            builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }));
+            if (user.id !== getMessenger().engine.user.id) {
+                builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }));
 
-            if (canEdit) {
-                if (member.role === RoomMemberRole.MEMBER) {
-                    builder.action('Make admin', () => handleMakeAdmin(user));
-                }
-            }
-            if (canKick) {
-                builder.action('Kick', () => handleKick(user), true);
-            }
-        } else {
-            builder.action('Leave', handleLeave, true);
-        }
-
-        builder.show();
-    }, []);
-
-    const handleAddMember = React.useCallback(() => {
-        Modals.showUserMuptiplePicker(props.router,
-            {
-                title: 'Add', action: async (users) => {
-                    startLoader();
-                    try {
-                        await client.mutateRoomAddMembers({ invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: room.id });
-                        props.router.back();
-                    } catch (e) {
-                        Alert.alert(e.message);
+                if (canEdit) {
+                    if (member.role === RoomMemberRole.MEMBER) {
+                        builder.action('Make admin', () => handleMakeAdmin(user));
                     }
-                    stopLoader();
                 }
-            },
-            'Add members',
-            room.members.map(m => m.user.id),
-            { path: 'ProfileGroupLink', pathParams: { id: room.id } }
-        );
-    }, [room.members]);
+                if (canKick) {
+                    builder.action('Kick', () => handleKick(user), true);
+                }
+            } else {
+                builder.action('Leave', handleLeave, true);
+            }
 
-    let handleManageClick = React.useCallback(() => {
-        let builder = new ActionSheetBuilder();
+            builder.show();
+        }, [ roomId ]);
 
-        if (room.canEdit) {
-            builder.action('Edit', () => props.router.push('EditGroup', { id: room.id }));
-        }
+        const handleAddMember = React.useCallback(() => {
+            Modals.showUserMuptiplePicker(props.router,
+                {
+                    title: 'Add', action: async (users) => {
+                        startLoader();
+                        try {
+                            await client.mutateRoomAddMembers({ invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: room.id });
+                            props.router.back();
+                        } catch (e) {
+                            Alert.alert(e.message);
+                        }
+                        stopLoader();
+                    }
+                },
+                'Add members',
+                room.members.map(m => m.user.id),
+                { path: 'ProfileGroupLink', pathParams: { id: room.id } }
+            );
+        }, [ room.members ]);
 
-        if (room.role === 'OWNER' || room.role === 'ADMIN' || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
-            builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }));
-        }
+        const handleManageClick = React.useCallback(() => {
+            let builder = new ActionSheetBuilder();
 
-        builder.show();
-    }, []);
+            if (room.canEdit) {
+                builder.action('Edit', () => props.router.push('EditGroup', { id: room.id }));
+            }
 
-    // Sort members by name (admins should go first)
-    const sortedMembers = room.members
-        .sort((a, b) => a.user.name.localeCompare(b.user.name))
-        .sort((a, b) => (isAdmin(a) && isMember(b) ? -1 : 1));
+            if (room.role === 'OWNER' || room.role === 'ADMIN' || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
+                builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }));
+            }
+
+            builder.action('Leave and delete', handleLeave, true);
+
+            builder.show();
+        }, [ room ]);
+
+        const handleLoadMore = React.useCallback(async () => {
+            if (members.length < (room.membersCount || 0) && !loading) {
+                setLoading(true);
+
+                const loaded = await client.queryRoomMembersPaginated({
+                    roomId,
+                    first: 10,
+                    after: members[members.length - 1].user.id,
+                });
+
+                setMembers([...members, ...loaded.members]);
+                setLoading(false);
+            }
+        }, [ room, roomId, members, loading ]);
 
     const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member';
 
     const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 
-    return (
+    const content = (
         <>
-            {room.canEdit && <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />}
-
             <ZListItemHeader
                 titleIcon={room.isChannel ? require('assets/ic-channel-18.png') : room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
                 titleColor={room.kind === 'GROUP' ? theme.dialogTitleSecureColor : undefined}
@@ -172,64 +180,49 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
 
             <ZListItemGroup header={Platform.OS === 'android' ? null : 'Settings'} divider={false}>
                 <NotificationSettings id={room.id} mute={!!room.settings.mute} />
-                {/* <ZListItem
-                    text="Change theme"
-                    leftIcon={require('assets/ic-edit.png')}
-                    onPress={editTheme}
-                /> */}
             </ZListItemGroup>
 
-            <ZListItemGroup header="Members" divider={false}>
+            <ZListItemGroup header="Members" divider={false} counter={room.membersCount}>
                 <ZListItem
                     text="Add members"
                     leftIcon={require('assets/ic-add-24.png')}
                     onPress={handleAddMember}
                 />
-                {(room.role === 'ADMIN' || room.role === 'OWNER' || room.role === 'MEMBER') &&
+
+                {(room.role === 'ADMIN' || room.role === 'OWNER' || room.role === 'MEMBER') && (
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
                         text={`Invite to ${chatTypeStr} with a link`}
                         onPress={() => props.router.present('ProfileGroupLink', { id: room!.id })}
                         navigationIcon={false}
-                    />}
-
-                {sortedMembers.map((v) => (
-                    <UserView
-                        isAdmin={v.role === 'OWNER' ? 'owner' : v.role === 'ADMIN' ? 'admin' : undefined}
-                        key={v.user.id}
-                        user={v.user}
-                        onLongPress={() => handleMemberLongPress(v, v.canKick, room.canEdit)}
-                        onPress={() => props.router.push('ProfileUser', { 'id': v.user.id })}
                     />
-                ))}
-            </ZListItemGroup>
-
-            {Platform.OS === 'ios' && <View backgroundColor={theme.separatorColor} height={0.5} alignSelf="stretch" marginLeft={16} />}
-
-            <ZListItemGroup header={Platform.OS === 'ios' ? undefined : null} divider={false}>
-                <ZListItem
-                    leftIcon={require('assets/ic-leave-24.png')}
-                    text="Leave and delete"
-                    appearance="danger"
-                    onPress={handleLeave}
-                />
+                )}
             </ZListItemGroup>
         </>
     );
-}
 
-class ProfileGroupComponentLoader extends React.Component<PageProps> {
+    return (
+        <>
+            <SHeader title={room.title} />
+            <SHeaderButton title="Manage" icon={manageIcon} onPress={handleManageClick} />
 
-    render() {
-        return (
-            <>
-                <SHeader title="Info" />
-                <SScrollView>
-                    <ProfileGroupComponent {...this.props} id={this.props.router.params.id} />
-                </SScrollView>
-            </>
-        );
-    }
-}
+            <SFlatList
+                data={members}
+                renderItem={({ item }) => (
+                    <UserView
+                        isAdmin={item.role === 'OWNER' ? 'owner' : item.role === 'ADMIN' ? 'admin' : undefined}
+                        user={item.user}
+                        onLongPress={() => handleMemberLongPress(item, item.canKick, room.canEdit)}
+                        onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
+                    />
+                )}
+                keyExtractor={(item, index) => index + '-' + item.user.id}
+                ListHeaderComponent={content}
+                onEndReached={handleLoadMore}
+                refreshing={loading}
+            />
+        </>
+    );
+});
 
-export const ProfileGroup = withApp(ProfileGroupComponentLoader, { navigationAppearance: 'small-hidden' });
+export const ProfileGroup = withApp(ProfileGroupComponent, { navigationAppearance: 'small-hidden' });
