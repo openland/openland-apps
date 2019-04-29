@@ -153,8 +153,19 @@ export const CommentsModalInnerNoRouter = ({
             setShowInputId(showInputId === message.key ? null : message.key);
         };
 
-        const offset =
-            message.depth === 0 ? 0 : message.depth === 1 ? 52 : 52 + 42 * (message.depth - 1);
+        let offset;
+
+        let DEPTH_LIMIT = 4;
+
+        if (message.depth === 0) {
+            offset = 0;
+        } else if (message.depth === 1) {
+            offset = 52;
+        } else if (message.depth < DEPTH_LIMIT) {
+            offset = 52 + 42 * (message.depth - 1);
+        } else {
+            offset = 52 + 42 * DEPTH_LIMIT;
+        }
 
         commentsElements.push(
             <CommentView
