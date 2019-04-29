@@ -111,6 +111,8 @@ export interface MessageComponentProps {
     onlyLikes?: boolean;
     haveReactions?: boolean;
     isActive?: boolean | null;
+    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
+    usernameOfRepliedUser?: string;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
@@ -162,14 +164,14 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 });
             } else {
                 this.setState({
-                    isEditView: false
+                    isEditView: false,
                 });
             }
-        }  else {
+        } else {
             this.setState({
                 isEditView: false,
                 selected: false,
-                hideMenu: false
+                hideMenu: false,
             });
         }
     }
@@ -219,7 +221,13 @@ export class DesktopMessageComponentInner extends React.PureComponent<
     };
 
     render() {
-        let { message, onCommentReplyClick, haveReactions } = this.props;
+        let {
+            message,
+            onCommentReplyClick,
+            haveReactions,
+            usernameOfRepliedUser,
+            onCommentBackToUserMessageClick,
+        } = this.props;
         const { isEditView, selected, hideMenu } = this.state;
 
         let content: any[] = [];
@@ -439,6 +447,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     onCommentReplyClick={onCommentReplyClick}
                     conversationId={this.props.conversationId}
                     me={this.props.me}
+                    onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
+                    usernameOfRepliedUser={usernameOfRepliedUser}
                 />
             );
 

@@ -7,6 +7,7 @@ import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import CommentChannelIcon from 'openland-icons/ic-comment-channel.svg';
 import CommentEmptyChannelIcon from 'openland-icons/ic-comment-empty-channel.svg';
+import RepliedIcon from 'openland-icons/ic-replied.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 
@@ -18,6 +19,8 @@ type PostMessageButtonsT = {
     onlyLikes: boolean;
     message: DataSourceWebMessageItem;
     onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
+    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
+    usernameOfRepliedUser?: string;
     conversationId?: string;
     me?: UserShort | null;
 };
@@ -77,6 +80,8 @@ export const PostMessageButtons = React.memo(
         onlyLikes,
         message,
         onCommentReplyClick,
+        onCommentBackToUserMessageClick,
+        usernameOfRepliedUser,
         conversationId,
         me,
         showNumberOfComments,
@@ -124,6 +129,21 @@ export const PostMessageButtons = React.memo(
                             >
                                 Reply
                             </XView>
+                            {usernameOfRepliedUser && (
+                                <XView
+                                    alignItems="center"
+                                    flexDirection="row"
+                                    marginLeft={12}
+                                    color="rgba(0, 0, 0, 0.4)"
+                                    fontWeight="600"
+                                    fontSize={12}
+                                    cursor="pointer"
+                                    onClick={onCommentBackToUserMessageClick}
+                                >
+                                    <RepliedIcon />
+                                    <XView marginLeft={4}>{usernameOfRepliedUser}</XView>
+                                </XView>
+                            )}
                         </XView>
                     </>
                 )}

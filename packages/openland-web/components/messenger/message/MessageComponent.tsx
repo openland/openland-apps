@@ -21,6 +21,8 @@ const MessageComponentInner = React.memo(
         ) : (
             <>
                 <DesktopMessageComponentInner
+                    onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}
+                    usernameOfRepliedUser={props.usernameOfRepliedUser}
                     deleted={props.deleted}
                     showNumberOfComments={props.showNumberOfComments}
                     isModal={props.isModal}
@@ -50,6 +52,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     return (
         <MessageComponentInner
+            onCommentBackToUserMessageClick={props.onCommentBackToUserMessageClick}
+            usernameOfRepliedUser={props.usernameOfRepliedUser}
             deleted={props.deleted}
             showNumberOfComments={props.showNumberOfComments}
             commentDepth={props.commentDepth}

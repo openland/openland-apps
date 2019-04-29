@@ -21,6 +21,8 @@ type CommentViewT = {
     currentCommentsInputRef: React.MutableRefObject<XRichTextInput2RefMethods | null>;
     members: RoomMembers_members[];
     messageId: string;
+    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
+    usernameOfRepliedUser?: string;
 };
 
 export const CommentView = React.memo(
@@ -35,56 +37,63 @@ export const CommentView = React.memo(
         currentCommentsInputRef,
         members,
         messageId,
+        onCommentBackToUserMessageClick,
+        usernameOfRepliedUser,
     }: CommentViewT) => {
         const addComment = useAddComment();
         return (
-            <XView
-                key={message.key}
-                marginLeft={offset}
-                width={`calc(800px - 32px - 32px - ${offset}px)`}
-            >
-                <MessageComponent
-                    deleted={deleted}
-                    commentDepth={message.depth}
-                    noSelector
-                    isComment
-                    onCommentReplyClick={onCommentReplyClick}
-                    message={message}
-                    onlyLikes={true}
-                    me={me}
-                />
+            <div data-comment-id={message.id}>
+                <XView
+                    key={message.key}
+                    marginLeft={offset}
+                    width={`calc(800px - 32px - 32px - ${offset}px)`}
+                >
+                    <MessageComponent
+                        onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}
+                        usernameOfRepliedUser={usernameOfRepliedUser}
+                        deleted={deleted}
+                        commentDepth={message.depth}
+                        noSelector
+                        isComment
+                        onCommentReplyClick={onCommentReplyClick}
+                        message={message}
+                        onlyLikes={true}
+                        me={me}
+                    />
 
-                {showInputId === message.key && (
-                    <UploadContextProvider>
-                        <CommentsInput
-                            topLevelComment={message.depth === 0}
-                            commentsInputRef={currentCommentsInputRef}
-                            members={members}
-                            minimal
-                            onSendFile={async (file: UploadCare.File) => {
-                                return await uploadFile({
-                                    file,
-                                    onProgress: (progress: number) => {
-                                        console.log('onProgress', progress);
-                                    },
-                                });
-                            }}
-                            onSend={async (msgToSend, mentions, uploadedFileKey) => {
-                                await addComment({
-                                    messageId,
-                                    mentions,
-                                    message: msgToSend,
-                                    replyComment: message.key,
-                                    fileAttachments: uploadedFileKey
-                                        ? [{ fileId: uploadedFileKey }]
-                                        : [],
-                                });
-                                setShowInputId(null);
-                            }}
-                        />
-                    </UploadContextProvider>
-                )}
-            </XView>
+                    {showInputId === message.key && (
+                        <UploadContextProvider>
+                            <CommentsInput
+                                topLevelComment={message.depth === 0}
+                                commentsInputRef={currentCommentsInputRef}
+                                members={members}
+                                minimal
+                                onSendFile={async (file: UploadCare.File) => {
+                                    return await uploadFile({
+                                        file,
+                                        onProgress: (progress: number) => {
+                                            console.log('onProgress', progress);
+                                        },
+                                    });
+                                }}
+                                onSend={async (msgToSend, mentions, uploadedFileKey) => {
+                                    await addComment({
+                                        messageId,
+                                        mentions,
+                                        message: msgToSend,
+                                        replyComment: message.key,
+                                        fileAttachments: uploadedFileKey
+                                            ? [{ fileId: uploadedFileKey }]
+                                            : [],
+                                    });
+
+                                    setShowInputId(null);
+                                }}
+                            />
+                        </UploadContextProvider>
+                    )}
+                </XView>
+            </div>
         );
     },
 );

@@ -21,7 +21,6 @@ import { CommentsInput } from './CommentsInput';
 import { FullMessage } from 'openland-api/Types';
 import { useAddComment } from './useAddComment';
 import { uploadFile } from './uploadFile';
-import { showModalBox } from 'openland-x/showModalBox';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
@@ -73,6 +72,7 @@ export const CommentsModalInnerNoRouter = ({
 
     const isMobile = React.useContext(IsMobileContext);
     let messenger = React.useContext(MessengerContext);
+    const [commentToScroll, setCommentToScroll] = React.useState<number>(0);
 
     const [showInputId, setShowInputId] = React.useState<string | null>(null);
 
@@ -105,6 +105,37 @@ export const CommentsModalInnerNoRouter = ({
         }
     };
 
+    const getCommentElem = (commentId: string) => {
+        const items = document.querySelectorAll(`[data-comment-id='${commentId}']`);
+        if (items.length === 1) {
+            return items[0] as HTMLElement;
+        }
+        return null;
+    };
+
+    const scrollToComment = ({
+        commentId,
+        mode = 'bottom',
+    }: {
+        commentId: string;
+        mode?: 'top' | 'bottom';
+    }) => {
+        let targetElem = getCommentElem(commentId);
+        if (targetElem) {
+            if (mode === 'bottom') {
+                scrollRef!!.current!!.scrollToBottomOfElement({
+                    targetElem,
+                    offset: 10,
+                });
+            } else {
+                scrollRef!!.current!!.scrollToTopOfElement({
+                    targetElem,
+                    offset: 10,
+                });
+            }
+        }
+    };
+
     React.useEffect(() => {
         const watcher = new SequenceModernWatcher(
             'comment messageId:' + messageId,
@@ -121,6 +152,22 @@ export const CommentsModalInnerNoRouter = ({
     });
 
     const commentsMap = {};
+
+    const testScrollToCommentBottom = () => {
+        scrollToComment({
+            commentId: messageComments.messageComments.comments[commentToScroll].id,
+            mode: 'bottom',
+        });
+        setCommentToScroll((commentToScroll + 1) % messageComments.messageComments.comments.length);
+    };
+
+    const testScrollToCommentTop = () => {
+        scrollToComment({
+            commentId: messageComments.messageComments.comments[commentToScroll].id,
+            mode: 'top',
+        });
+        setCommentToScroll((commentToScroll + 1) % messageComments.messageComments.comments.length);
+    };
 
     messageComments.messageComments.comments.forEach(comment => {
         commentsMap[comment.id] = comment;
@@ -167,8 +214,26 @@ export const CommentsModalInnerNoRouter = ({
             offset = 52 + 42 * DEPTH_LIMIT;
         }
 
+        const parentCommentId =
+            message.id && commentsMap[message.id] && commentsMap[message.id].parentComment
+                ? commentsMap[message.id].parentComment.id
+                : null;
+        const parentComment = commentsMap[parentCommentId];
+
         commentsElements.push(
             <CommentView
+                onCommentBackToUserMessageClick={
+                    parentComment
+                        ? () => {
+                              scrollToComment({
+                                  commentId: parentCommentId,
+                              });
+                          }
+                        : undefined
+                }
+                usernameOfRepliedUser={
+                    parentComment ? parentComment.comment.sender.name : undefined
+                }
                 deleted={message.id ? commentsMap[message.id].deleted : false}
                 messageId={messageId}
                 message={message}
@@ -252,6 +317,12 @@ export const CommentsModalInnerNoRouter = ({
                 )}
             </XScrollView3>
             <XView>
+                {/* <XView onClick={testScrollToCommentBottom}>
+                    Scroll to comment bottom {commentToScroll}
+                </XView>
+                <XView onClick={testScrollToCommentTop}>
+                    Scroll to comment top {commentToScroll}
+                </XView> */}
                 <CommentsInput
                     members={members.members}
                     onSendFile={async (file: UploadCare.File) => {
@@ -289,7 +360,7 @@ export const CommentsModalInner = () => {
 
     return (
         <UploadContextProvider>
-            <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />{' '}
+            <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />
         </UploadContextProvider>
     );
 };

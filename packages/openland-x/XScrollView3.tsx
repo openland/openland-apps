@@ -56,9 +56,7 @@ const scrollToBottomOfElement = ({
         scrollContainer.scrollTop +
         (offset || 0);
 
-    if (scrollContainer.scrollTop < newScrollTop) {
-        scrollContainer.scrollTop = newScrollTop;
-    }
+    scrollContainer.scrollTop = newScrollTop;
 };
 
 const NativeScrollStyle = css`
