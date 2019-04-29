@@ -36,9 +36,17 @@ const ReactionButtonInner = Glamorous.div<{
     },
 }));
 
+const ReactionsWrapperClassName = css`
+    & > div:nth-child(4) {
+        margin-bottom: -1px;
+    }
+`;
+
 const LikeIconClassName = css`
-    width: 22px;
-    height: 22px;
+    width: 26px;
+    height: 26px;
+    margin-top: -1px;
+    margin-right: -3px !important;
     & > path {
         fill: #f6564e;
         opacity: 1;
@@ -46,8 +54,9 @@ const LikeIconClassName = css`
 `;
 
 const ThumbIconClassName = css`
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
+    margin-top: 1px;
     background-image: url('https://cdn.openland.com/shared/web/ic-reaction-thumbsup.png');
     background-repeat: no-repeat;
     background-size: contain;
@@ -66,6 +75,7 @@ const ReactionPicker = (props: {
             alignItems="center"
             onMouseEnter={() => props.onHover()}
             onMouseLeave={() => props.onHoverLeave()}
+            className={ReactionsWrapperClassName}
         >
             {defaultReactions.map((src: string, i: number) => {
                 if (i === 0) {
@@ -117,10 +127,7 @@ const ReactionPicker = (props: {
 
 const PopperArrow = Glamorous(XPopper.Arrow)({
     position: 'absolute',
-    left: '106px !important',
-    '@media(min-width: 1350px)': {
-        left: '95px !important',
-    }
+    left: '98px !important',
 });
 
 export const MessageReactionButton = ({
