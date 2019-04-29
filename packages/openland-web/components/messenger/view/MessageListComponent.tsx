@@ -6,7 +6,6 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from 'openland-web/fragments/ChatEmptyComponent';
-import { EditPostProps } from 'openland-web/fragments/MessengerRootComponent';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
@@ -20,7 +19,7 @@ import { XScrollViewReverse2 } from 'openland-x/XScrollViewReversed2';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { XLoader } from 'openland-x/XLoader';
 
-let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const messagesWrapperClassName = css`
     display: flex;

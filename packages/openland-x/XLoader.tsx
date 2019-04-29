@@ -5,6 +5,7 @@ import { XLoadingRound } from './XLoadingCircular';
 interface XLoaderProps {
     loading?: boolean;
     height?: number | string;
+    className?: string;
 }
 
 const XCardLoaderDiv = Glamorous.div<XLoaderProps>(props => ({
@@ -25,7 +26,7 @@ const XCardLoaderDiv = Glamorous.div<XLoaderProps>(props => ({
 }));
 
 export const XLoader = (props: XLoaderProps) => (
-    <XCardLoaderDiv loading={props.loading} height={props.height}>
+    <XCardLoaderDiv loading={props.loading} height={props.height} className={props.className}>
         <XLoadingRound />
     </XCardLoaderDiv>
 );

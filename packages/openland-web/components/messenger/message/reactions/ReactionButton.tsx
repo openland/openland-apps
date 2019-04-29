@@ -125,21 +125,26 @@ const ReactionPicker = (props: {
     );
 };
 
-const PopperArrow = Glamorous(XPopper.Arrow)({
+const PopperArrow = Glamorous(XPopper.Arrow)<{ myMessage: boolean }>(props => ({
     position: 'absolute',
-    left: '98px !important',
-});
+    left: `${props.myMessage ? '98px' : '111px'} !important`,
+    '@media(min-width: 1340px)': {
+        left: '98px !important',
+    },
+}));
 
 export const MessageReactionButton = ({
     onlyLikes,
     messageId,
     marginTop,
     marginLeft,
+    myMessage,
 }: {
     onlyLikes?: boolean;
     messageId: string;
     marginTop?: number;
     marginLeft?: number;
+    myMessage: boolean;
 }) => {
     const [hovered, setHovered] = React.useState(false);
     const [beHovered, setBeHovered] = React.useState(false);
@@ -214,7 +219,7 @@ export const MessageReactionButton = ({
             contentContainer={<CustomPickerDiv />}
             marginBottom={10}
             show={beHovered}
-            arrow={<PopperArrow />}
+            arrow={<PopperArrow myMessage={myMessage} />}
         >
             <ReactionButtonInner
                 className="reaction-button"

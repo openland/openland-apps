@@ -150,7 +150,7 @@ export const Menu = React.memo(
                                 />
                             )}
                             {!isComment && hover && (
-                                <MessageReactionButton messageId={message.id!} />
+                                <MessageReactionButton messageId={message.id!} myMessage={out} />
                             )}
                             {hover && !isComment && !isChannel && (
                                 <IconButton onClick={setReplyMessages}>
