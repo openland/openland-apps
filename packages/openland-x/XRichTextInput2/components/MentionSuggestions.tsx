@@ -49,7 +49,7 @@ export const MentionSuggestions = ({
             )}
             style={{
                 width: sizeOfContainer.width,
-                maxHeight: '70vh',
+                maxHeight: '26vh',
                 overflow: 'scroll',
                 left: show ? 0 : sizeOfContainer.width / 2,
                 bottom: show ? 50 : sizeOfContainer.height / 2,
