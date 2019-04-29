@@ -2250,6 +2250,15 @@ fun readMutation(name: String, src: ReadableMap): Mutation<Operation.Data, Opera
        builder.fileAttachments(notNullListItems(readFileAttachmentInputList(src, "fileAttachments")))
        return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "BetaAddMessageComment") {
+       val builder = BetaAddMessageCommentMutation.builder()
+       builder.messageId(notNull(readString(src, "messageId")))
+       builder.message(readString(src, "message"))
+       builder.replyComment(readString(src, "replyComment"))
+       builder.mentions(notNullListItems(readMentionInputList(src, "mentions")))
+       builder.fileAttachments(notNullListItems(readFileAttachmentInputList(src, "fileAttachments")))
+       return builder.build() as Mutation<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "EditComment") {
        val builder = EditCommentMutation.builder()
        builder.id(notNull(readString(src, "id")))

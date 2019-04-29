@@ -2493,6 +2493,26 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
+    if (name == "BetaAddMessageComment") {
+      let messageId = notNull(readString(src, "messageId"))
+      let message = readString(src, "message")
+      let replyComment = readString(src, "replyComment")
+      let mentions = notNullListItems(readMentionInputList(src, "mentions"))
+      let fileAttachments = notNullListItems(readFileAttachmentInputList(src, "fileAttachments"))
+      let requestBody = BetaAddMessageCommentMutation(messageId: messageId, message: message, replyComment: replyComment, mentions: mentions, fileAttachments: fileAttachments)
+      client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.errors != nil) {
+            handler(nil, NativeGraphqlError(src: r!.errors!))
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return
+    }
     if (name == "EditComment") {
       let id = notNull(readString(src, "id"))
       let message = readString(src, "message")

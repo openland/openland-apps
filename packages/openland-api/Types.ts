@@ -28459,6 +28459,31 @@ export interface AddMessageCommentVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: BetaAddMessageComment
+// ====================================================
+
+export interface BetaAddMessageComment_betaAddMessageComment {
+  __typename: "CommentEntry";
+  id: string;
+}
+
+export interface BetaAddMessageComment {
+  betaAddMessageComment: BetaAddMessageComment_betaAddMessageComment;
+}
+
+export interface BetaAddMessageCommentVariables {
+  messageId: string;
+  message?: string | null;
+  replyComment?: string | null;
+  mentions?: MentionInput[] | null;
+  fileAttachments?: FileAttachmentInput[] | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: EditComment
 // ====================================================
 

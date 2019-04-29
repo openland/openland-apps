@@ -223,6 +223,7 @@ export const CommentsModalInnerNoRouter = ({
 
         commentsElements.push(
             <CommentView
+                scrollToComment={scrollToComment}
                 onCommentBackToUserMessageClick={
                     parentComment
                         ? () => {

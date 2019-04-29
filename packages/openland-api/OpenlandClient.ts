@@ -871,6 +871,9 @@ export class OpenlandClient extends BaseApiClient {
     async mutateAddMessageComment(variables: Types.AddMessageCommentVariables): Promise<Types.AddMessageComment> {
         return this.client.mutate(Source.AddMessageCommentMutation, variables);
     }
+    async mutateBetaAddMessageComment(variables: Types.BetaAddMessageCommentVariables): Promise<Types.BetaAddMessageComment> {
+        return this.client.mutate(Source.BetaAddMessageCommentMutation, variables);
+    }
     async mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
         return this.client.mutate(Source.EditCommentMutation, variables);
     }

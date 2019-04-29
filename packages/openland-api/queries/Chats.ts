@@ -908,6 +908,28 @@ export const AddMessageCommentMutation = gql`
     }
 `;
 
+export const BetaAddMessageCommentMutation = gql`
+    mutation BetaAddMessageComment(
+        $messageId: ID!
+        $message: String
+        $replyComment: ID
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+    ) {
+        betaAddMessageComment(
+            messageId: $messageId
+            message: $message
+            replyComment: $replyComment
+            mentions: $mentions
+            fileAttachments: $fileAttachments
+        ) {
+            id
+        }
+    }
+    ${CommentEntryFragment}
+    ${FullMessage}
+`;
+
 export const EditCommentMutation = gql`
     mutation EditComment($id: ID!, $message: String) {
         editComment(id: $id, message: $message)

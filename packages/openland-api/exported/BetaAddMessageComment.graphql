@@ -1,0 +1,6 @@
+mutation BetaAddMessageComment($fileAttachments: [FileAttachmentInput!], $mentions: [MentionInput!], $message: String, $messageId: ID!, $replyComment: ID) {
+  betaAddMessageComment(fileAttachments: $fileAttachments, mentions: $mentions, message: $message, messageId: $messageId, replyComment: $replyComment) {
+    __typename
+    id
+  }
+}

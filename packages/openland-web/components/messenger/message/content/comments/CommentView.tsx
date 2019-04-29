@@ -11,6 +11,7 @@ import { CommentsInput } from './CommentsInput';
 import { uploadFile } from './uploadFile';
 
 type CommentViewT = {
+    scrollToComment: (a: { commentId: string; mode?: 'top' | 'bottom' }) => void;
     message: DataSourceWebMessageItem & { depth: number };
     deleted?: boolean;
     offset: number;
@@ -27,6 +28,7 @@ type CommentViewT = {
 
 export const CommentView = React.memo(
     ({
+        scrollToComment,
         message,
         deleted,
         offset,
@@ -77,7 +79,7 @@ export const CommentView = React.memo(
                                     });
                                 }}
                                 onSend={async (msgToSend, mentions, uploadedFileKey) => {
-                                    await addComment({
+                                    const newCommentId = await addComment({
                                         messageId,
                                         mentions,
                                         message: msgToSend,
@@ -85,6 +87,10 @@ export const CommentView = React.memo(
                                         fileAttachments: uploadedFileKey
                                             ? [{ fileId: uploadedFileKey }]
                                             : [],
+                                    });
+
+                                    scrollToComment({
+                                        commentId: newCommentId,
                                     });
 
                                     setShowInputId(null);

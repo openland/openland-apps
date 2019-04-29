@@ -26,7 +26,9 @@ export const useAddComment = () => {
             text: message,
         });
 
-        await client.mutateAddMessageComment({
+        const {
+            betaAddMessageComment: { id },
+        } = await client.mutateBetaAddMessageComment({
             messageId,
             message,
             replyComment,
@@ -37,5 +39,7 @@ export const useAddComment = () => {
         await client.refetchMessageComments({
             messageId,
         });
+
+        return id;
     };
 };
