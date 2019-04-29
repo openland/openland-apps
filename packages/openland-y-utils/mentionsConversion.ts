@@ -4,7 +4,7 @@ export type UserWithOffset = {
     user: UserShort;
     offset: number;
     length: number;
-}
+};
 
 export const convertToMentionInput = ({
     mentions,

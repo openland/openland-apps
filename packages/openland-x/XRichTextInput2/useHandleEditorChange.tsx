@@ -25,7 +25,10 @@ export const getEditorStateFromText = ({
 }) => {
     return EditorState.moveFocusToEnd(
         EditorState.createWithContent(
-            convertFromRaw(getEmojiAndMentionBlocksAndEntityMap(text, mentions) as any),
+            convertFromRaw(getEmojiAndMentionBlocksAndEntityMap(
+                text,
+                mentions.map(({ user }) => user),
+            ) as any),
             decorator,
         ),
     );

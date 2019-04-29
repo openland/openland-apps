@@ -4,7 +4,7 @@ const {
 } = require('openland-web/components/messenger/message/content/utils/preprocessMentions');
 const emojione = require('emojione');
 
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserShort } from 'openland-api/Types';
 
 let emojiList = emojione.emojioneList;
 const shortnamesRegexp = new RegExp('(:[+-\\d\\w]+:)', 'g');
@@ -48,10 +48,10 @@ const emojifiedLength = (str: string) => {
 
 export const getEmojiAndMentionBlocksAndEntityMap = (
     text: string,
-    mentions: UserWithOffset[],
+    mentions: UserShort[],
     genKeyFunc: Function = genKey,
 ) => {
-    let parsedMentions = preprocessMentions(text, mentions.map(({ user }) => user), undefined);
+    let parsedMentions = preprocessMentions(text, mentions, undefined);
 
     let entityMap = {};
     const entityRanges: any = [];
