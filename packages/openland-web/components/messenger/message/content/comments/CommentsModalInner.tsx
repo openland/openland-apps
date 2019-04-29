@@ -94,7 +94,7 @@ export const CommentsModalInnerNoRouter = ({
         {
             messageId,
         },
-        { fetchPolicy: 'network-only' },
+        { fetchPolicy: 'cache-and-network' },
     );
 
     const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
