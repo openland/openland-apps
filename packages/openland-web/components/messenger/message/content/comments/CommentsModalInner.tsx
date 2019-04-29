@@ -22,6 +22,7 @@ import { FullMessage } from 'openland-api/Types';
 import { useAddComment } from './useAddComment';
 import { uploadFile } from './uploadFile';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -252,103 +253,112 @@ export const CommentsModalInnerNoRouter = ({
 
     return (
         <>
-            <XScrollView3
-                useDefaultScroll
-                flexGrow={1}
-                flexShrink={1}
-                maxHeight={700}
-                ref={scrollRef}
-            >
-                <XView position="absolute" zIndex={100} right={32} top={28}>
-                    <XModalCloser
-                        onClick={() => {
-                            if (modal) {
-                                modal.close();
-                            }
-                            if (modalBox) {
-                                modalBox.close();
-                            }
-                        }}
+            <IsActiveContext.Provider value={true}>
+                <XScrollView3
+                    useDefaultScroll
+                    flexGrow={1}
+                    flexShrink={1}
+                    maxHeight={700}
+                    ref={scrollRef}
+                >
+                    <XView position="absolute" zIndex={100} right={32} top={28}>
+                        <XModalCloser
+                            onClick={() => {
+                                if (modal) {
+                                    modal.close();
+                                }
+                                if (modalBox) {
+                                    modalBox.close();
+                                }
+                            }}
+                        />
+                    </XView>
+                    <XView paddingHorizontal={32} paddingTop={28}>
+                        <MessageComponent
+                            noSelector
+                            message={finalMessages}
+                            showNumberOfComments={false}
+                            onlyLikes={true}
+                            me={messenger.user}
+                            isModal={true}
+                        />
+                    </XView>
+                    <XView
+                        marginTop={28}
+                        height={1}
+                        backgroundColor={'rgba(216, 218, 229, 0.45)'}
+                        width="100%"
                     />
-                </XView>
-                <XView paddingHorizontal={32} paddingTop={28}>
-                    <MessageComponent
-                        noSelector
-                        message={finalMessages}
-                        showNumberOfComments={false}
-                        onlyLikes={true}
-                        me={messenger.user}
-                        isModal={true}
-                    />
-                </XView>
-                <XView
-                    marginTop={28}
-                    height={1}
-                    backgroundColor={'rgba(216, 218, 229, 0.45)'}
-                    width="100%"
-                />
 
-                {commentsElements.length ? (
-                    <>
-                        <XView
-                            paddingHorizontal={32}
-                            paddingTop={isMobile ? 0 : 30}
-                            paddingBottom={28}
-                            flexDirection="column"
-                        >
-                            <XView flexDirection="row" alignItems="center">
-                                <XView fontSize={16} fontWeight="600">
-                                    Comments
+                    {commentsElements.length ? (
+                        <>
+                            <XView
+                                paddingHorizontal={32}
+                                paddingTop={isMobile ? 0 : 30}
+                                paddingBottom={28}
+                                flexDirection="column"
+                            >
+                                <XView flexDirection="row" alignItems="center">
+                                    <XView fontSize={16} fontWeight="600">
+                                        Comments
+                                    </XView>
+                                    <XView
+                                        fontSize={15}
+                                        fontWeight="600"
+                                        opacity={0.3}
+                                        marginLeft={7}
+                                    >
+                                        {messageComments.messageComments.count}
+                                    </XView>
                                 </XView>
-                                <XView fontSize={15} fontWeight="600" opacity={0.3} marginLeft={7}>
-                                    {messageComments.messageComments.count}
+
+                                <XView flexDirection="row" marginBottom={16}>
+                                    <XView flexGrow={1}>
+                                        <XView>{commentsElements}</XView>
+                                    </XView>
                                 </XView>
                             </XView>
-
-                            <XView flexDirection="row" marginBottom={16}>
-                                <XView flexGrow={1}>
-                                    <XView>{commentsElements}</XView>
-                                </XView>
-                            </XView>
-                        </XView>
-                    </>
-                ) : (
-                    undefined
-                )}
-            </XScrollView3>
-            <XView>
-                {/* <XView onClick={testScrollToCommentBottom}>
+                        </>
+                    ) : (
+                        undefined
+                    )}
+                </XScrollView3>
+                <XView>
+                    {/* <XView onClick={testScrollToCommentBottom}>
                     Scroll to comment bottom {commentToScroll}
                 </XView>
                 <XView onClick={testScrollToCommentTop}>
                     Scroll to comment top {commentToScroll}
                 </XView> */}
-                <CommentsInput
-                    members={members.members}
-                    onSendFile={async (file: UploadCare.File) => {
-                        return await uploadFile({
-                            file,
-                            onProgress: (progress: number) => {
-                                console.log('onProgress', progress);
-                            },
-                        });
-                    }}
-                    onSend={async (msgToSend, mentions, uploadedFileKey) => {
-                        await addComment({
-                            messageId,
-                            mentions,
-                            message: msgToSend,
-                            replyComment: null,
-                            fileAttachments: uploadedFileKey ? [{ fileId: uploadedFileKey }] : [],
-                        });
-                        setShowInputId(null);
+                    <CommentsInput
+                        members={members.members}
+                        onSendFile={async (file: UploadCare.File) => {
+                            return await uploadFile({
+                                file,
+                                onProgress: (progress: number) => {
+                                    console.log('onProgress', progress);
+                                },
+                            });
+                        }}
+                        onSend={async (msgToSend, mentions, uploadedFileKey) => {
+                            await addComment({
+                                messageId,
+                                mentions,
+                                message: msgToSend,
+                                replyComment: null,
+                                fileAttachments: uploadedFileKey
+                                    ? [{ fileId: uploadedFileKey }]
+                                    : [],
+                            });
+                            setShowInputId(null);
 
-                        if (scrollRef && scrollRef.current) {
-                            scrollRef.current.scrollToBottom();
-                        }
-                    }}
-                />
-            </XView>
+                            if (scrollRef && scrollRef.current) {
+                                scrollRef.current.scrollToBottom();
+                            }
+                        }}
+                    />
+                </XView>
+            </IsActiveContext.Provider>
         </>
     );
 };
