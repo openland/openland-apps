@@ -85,8 +85,9 @@ export const CommentsList = (props: CommentsListProps) => {
             </View>
 
             <View marginHorizontal={-16}>
-                {commentsSorted.map(commentEntry => (
+                {commentsSorted.map((commentEntry, index) => (
                     <CommentView
+                        key={'comment-' + index}
                         comment={commentEntry.comment}
                         deleted={commentEntry.deleted}
                         depth={getDepthOfComment(commentEntry, commentsMap)}

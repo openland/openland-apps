@@ -31,10 +31,10 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
     let content: JSX.Element[] = [];
 
     if (hasReply) {
-        content.push(<ReplyContent key="msg-reply" quotedMessages={message.quotedMessages} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} theme={theme} />);
+        content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={message.quotedMessages} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} theme={theme} />);
     }
     if (hasText) {
-        content.push(<TextContent key="msg-text" message={message} onUserPress={props.onUserPress} isSmall={isSmall} theme={theme} />);
+        content.push(<TextContent key={'msg-' + message.id + '-text'} message={message} onUserPress={props.onUserPress} isSmall={isSmall} theme={theme} />);
     }
 
     fileAttaches.map((file, index) => {
@@ -44,10 +44,10 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
             let imageLayout = layoutImage(file.fileMetadata, realMaxWidth);
     
             if (imageLayout) {
-                content.push(<MediaContent key={'msg-media-' + index} imageLayout={imageLayout} message={message} attach={file} theme={theme} />);
+                content.push(<MediaContent key={'msg-' + message.id + '-media-' + index} imageLayout={imageLayout} message={message} attach={file} theme={theme} />);
             }
         } else {
-            content.push(<DocumentContent key={'msg-document-' + index} attach={file} message={message} onDocumentPress={props.onDocumentPress} theme={theme} />);
+            content.push(<DocumentContent key={'msg-' + message.id + '-document-' + index} attach={file} message={message} onDocumentPress={props.onDocumentPress} theme={theme} />);
         }
     });
 
@@ -58,7 +58,7 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
             imageLayout = layoutImage(attach.image.metadata, realMaxWidth);
         }
 
-        content.push(<RichAttachContent key={'msg-rich-' + index} attach={attach} imageLayout={imageLayout} message={message} isSmall={isSmall} theme={theme} />);
+        content.push(<RichAttachContent key={'msg-' + message.id + '-rich-' + index} attach={attach} imageLayout={imageLayout} message={message} isSmall={isSmall} theme={theme} />);
     });
 
     return content;
