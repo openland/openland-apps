@@ -18,7 +18,7 @@ export interface XScrollView3Props extends XStyles {
 }
 
 const scrollToBottom = ({ scrollContainer }: { scrollContainer: HTMLElement }) => {
-    scrollContainer.scrollTop = scrollContainer.getBoundingClientRect().height;
+    scrollContainer.scrollTop = scrollContainer.children[0].getBoundingClientRect().height;
 };
 
 const scrollToTopOfElement = ({

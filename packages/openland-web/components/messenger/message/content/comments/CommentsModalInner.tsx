@@ -303,15 +303,15 @@ export const openCommentsModal = ({
     messageId: string;
     conversationId: string;
 }) => {
-    // router.pushQuery('comments', `${messageId}&${conversationId}`);
-    showModalBox(
-        {
-            width: 800,
-        },
-        () => (
-            <UploadContextProvider>
-                <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
-            </UploadContextProvider>
-        ),
-    );
+    router.pushQuery('comments', `${messageId}&${conversationId}`);
+    // showModalBox(
+    //     {
+    //         width: 800,
+    //     },
+    //     () => (
+    //         <UploadContextProvider>
+    //             <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
+    //         </UploadContextProvider>
+    //     ),
+    // );
 };
