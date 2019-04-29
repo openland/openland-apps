@@ -51,7 +51,7 @@ export const getEmojiAndMentionBlocksAndEntityMap = (
     mentions: UserWithOffset[],
     genKeyFunc: Function = genKey,
 ) => {
-    let parsedMentions = preprocessMentions(text, mentions, undefined);
+    let parsedMentions = preprocessMentions(text, mentions.map(({ user }) => user), undefined);
 
     let entityMap = {};
     const entityRanges: any = [];
