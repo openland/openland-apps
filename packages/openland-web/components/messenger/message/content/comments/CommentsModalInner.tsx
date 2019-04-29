@@ -23,6 +23,7 @@ import { useAddComment } from './useAddComment';
 import { uploadFile } from './uploadFile';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
 import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
+import { showModalBox } from 'openland-x/showModalBox';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -387,15 +388,15 @@ export const openCommentsModal = ({
     messageId: string;
     conversationId: string;
 }) => {
-    router.pushQuery('comments', `${messageId}&${conversationId}`);
-    // showModalBox(
-    //     {
-    //         width: 800,
-    //     },
-    //     () => (
-    //         <UploadContextProvider>
-    //             <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
-    //         </UploadContextProvider>
-    //     ),
-    // );
+    // router.pushQuery('comments', `${messageId}&${conversationId}`);
+    showModalBox(
+        {
+            width: 800,
+        },
+        () => (
+            <UploadContextProvider>
+                <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
+            </UploadContextProvider>
+        ),
+    );
 };
