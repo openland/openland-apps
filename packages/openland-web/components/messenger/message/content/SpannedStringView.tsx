@@ -11,6 +11,7 @@ import { SpannedString } from '../../data/SpannedString';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { MessagesStateContext } from '../../MessagesStateContext';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 const EmojiSpaceStyle = css`
     & img {
@@ -103,6 +104,11 @@ interface SpannedStringViewProps {
 
 export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
     const messagesContextProps = React.useContext(MessagesStateContext);
+    const isActive = React.useContext(IsActiveContext);
+    const doRerender = messagesContextProps.useForwardHeader && isActive;
+    if (!isActive) {
+        return null;
+    }
     let res: any[] = [];
     let i = 0;
     for (let s of props.spannedString.spans) {
@@ -133,7 +139,7 @@ export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
             }
             let openlandLink: boolean = !!internalLink;
 
-            if (messagesContextProps.useForwardHeader) {
+            if (doRerender) {
                 path = undefined;
                 href = undefined;
             }
@@ -147,7 +153,7 @@ export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
                             href={href}
                             path={path}
                             hoverTextDecoration={
-                                messagesContextProps.useForwardHeader ? 'none' : undefined
+                                doRerender ? 'none' : undefined
                             }
                         >
                             <SpannedStringView

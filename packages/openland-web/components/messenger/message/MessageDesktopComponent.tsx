@@ -110,13 +110,14 @@ export interface MessageComponentProps {
     me?: UserShort | null;
     onlyLikes?: boolean;
     haveReactions?: boolean;
+    isActive: boolean | null;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
     messagesContext: MessagesStateContextProps;
 }
 
-export class DesktopMessageComponentInner extends React.PureComponent<
+export class DesktopMessageComponentInner extends React.Component<
     MessageComponentInnerProps,
     { isEditView: boolean }
 > {
@@ -142,6 +143,12 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 isEditView: false,
             });
         }
+    }
+
+    shouldComponentUpdate(nextProps: MessageComponentInnerProps) {
+        return (
+            nextProps.isActive === true && nextProps.messagesContext !== this.props.messagesContext
+        );
     }
 
     componentWillUnmount() {

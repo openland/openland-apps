@@ -24,7 +24,6 @@ import { useClient } from 'openland-web/utils/useClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 interface MessengerComponentLoaderProps {
-    isActive: boolean;
     state: MessagesStateContextProps;
     user: UserShort;
     room: RoomChat_room | null;
@@ -105,7 +104,7 @@ class MessagengerFragmentInner extends React.PureComponent<
     }
 }
 
-export const MessengerFragment = React.memo<{ id: string; isActive: boolean }>(props => {
+export const MessengerFragment = React.memo<{ id: string }>(props => {
     const client = useClient();
 
     let data = client.useRoomChat({ id: props.id })!!;
@@ -117,7 +116,6 @@ export const MessengerFragment = React.memo<{ id: string; isActive: boolean }>(p
         <React.Suspense fallback={<XLoader loading={true} />}>
             <MessagengerFragmentInner
                 id={props.id}
-                isActive={props.isActive}
                 state={state}
                 user={user}
                 room={data.room || null}

@@ -21,6 +21,7 @@ import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { ImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
 import { MessagesStateContext } from '../../../MessagesStateContext';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 const LinkContentWrapperClassName = css`
     width: 100%;
@@ -269,6 +270,11 @@ const MessageUrlAugmentationComponentInner = React.memo(
         } = props;
 
         const messagesContextProps = React.useContext(MessagesStateContext);
+        const isActive = React.useContext(IsActiveContext);
+        const doRerender = messagesContextProps.useForwardHeader && isActive;
+        if (!isActive) {
+            return null;
+        }
         let href: string | undefined = props.titleLink || undefined;
         let path: string | undefined = undefined;
 
@@ -475,11 +481,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             fontSize={16}
                                             fontWeight="600"
                                             color="#000"
-                                            hoverColor={
-                                                messagesContextProps.useForwardHeader
-                                                    ? '#000'
-                                                    : '#1790ff'
-                                            }
+                                            hoverColor={doRerender ? '#000' : '#1790ff'}
                                             hoverTextDecoration="none"
                                         >
                                             <span

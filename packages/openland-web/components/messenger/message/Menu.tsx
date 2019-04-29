@@ -8,7 +8,7 @@ import EditIcon from 'openland-icons/ic-edit.svg';
 import CommentIcon from 'openland-icons/ic-comment-channel.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
-import { MessagesStateContext } from '../../messenger/MessagesStateContext';
+import { MessagesStateContext } from '../MessagesStateContext';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 

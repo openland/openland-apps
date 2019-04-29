@@ -261,7 +261,7 @@ const DeletedCommentAvatar = () => {
     );
 };
 
-export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props => {
+export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => {
     let [hover, onHover] = React.useState(false);
     let userPopperRef = React.useRef<UserPopper>(null);
 
@@ -500,7 +500,7 @@ export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props
             {actions}
         </MessageContainerWrapper>
     );
-});
+}
 
 const MobileMessageContainerWrapper = ({ children }: { children: any }) => {
     return (
