@@ -52,12 +52,17 @@ class XRichTextInputStored extends React.PureComponent<
 > {
     onChangeHandler = (value: any) => {
         if (this.props.kind === 'from_store') {
-            this.props.store.writeValue(this.props.valueStoreKey, value);
+            const previosValue = this.props.store.readValue(this.props.valueStoreKey);
+            this.props.store.writeValue(this.props.valueStoreKey, {
+                ...previosValue,
+                ...value,
+            });
         }
     };
 
     render() {
         let value;
+
         const { kind, ...other } = this.props;
         if (this.props.kind === 'from_store') {
             let existing = this.props.store.readValue(this.props.valueStoreKey);
@@ -68,11 +73,11 @@ class XRichTextInputStored extends React.PureComponent<
 
         return (
             <XRichTextInput2
+                {...other}
                 autofocus={true}
                 onChange={data => this.onChangeHandler(data)}
                 value={value.text}
                 mentionsData={this.props.mentionsData}
-                {...other}
             />
         );
     }
@@ -85,12 +90,15 @@ class XTextInput extends React.PureComponent<
         if (this.props.kind === 'from_store') {
             const { valueStoreKey, ...other } = this.props;
             let valueStoreKeyCached = valueStoreKey;
+
             return (
                 <XStoreContext.Consumer>
                     {store => {
+                        console.log(store);
                         if (!store) {
                             throw Error('No store!');
                         }
+
                         return (
                             <XRichTextInputStored
                                 {...other}
@@ -125,12 +133,13 @@ const EditMessageInline = (props: EditMessageInlineT) => {
     return (
         <XForm
             defaultAction={async data => {
+                console.log(data.message);
                 await client.mutateRoomEditMessage({
                     messageId: props.id,
                     message: data.message.text,
                     file: data.message.file,
                     replyMessages: data.message.replyMessages,
-                    mentions: data.message.mentions.map((mention: any) => mention.id),
+                    mentions: data.message.mentions.map((mention: any) => mention.user.id),
                 });
 
                 props.onClose();
