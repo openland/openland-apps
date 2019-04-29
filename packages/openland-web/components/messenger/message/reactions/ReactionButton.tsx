@@ -5,7 +5,6 @@ import { css, cx } from 'linaria';
 import { XPopper } from 'openland-x/XPopper';
 import { useClient } from 'openland-web/utils/useClient';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
-import ReactionThumbUpIcon from 'openland-icons/ic-reactions-thumbsup.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { ReactionItem } from './MessageReaction';
@@ -49,6 +48,9 @@ const LikeIconClassName = css`
 const ThumbIconClassName = css`
     width: 24px;
     height: 24px;
+    background-image: url('https://cdn.openland.com/shared/web/ic-reaction-thumbsup.png');
+    background-repeat: no-repeat;
+    background-size: contain;
 `;
 
 const ReactionPicker = (props: {
@@ -90,7 +92,7 @@ const ReactionPicker = (props: {
                                 props.setReaction(src);
                             }}
                         >
-                            <ReactionThumbUpIcon className={ThumbIconClassName} />
+                            <div className={ThumbIconClassName} />
                         </ReactionItem>
                     );
                 }
