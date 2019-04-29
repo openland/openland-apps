@@ -33,7 +33,7 @@ const ReactionButtonInner = Glamorous.div<{
     '& svg > path': {
         fill: props.hovered ? '#f6564e' : undefined,
         opacity: props.hovered ? 1 : undefined,
-    }
+    },
 }));
 
 const LikeIconClassName = css`
@@ -114,6 +114,11 @@ const ReactionPicker = (props: {
         </XHorizontal>
     );
 };
+
+const PopperArrow = Glamorous(XPopper.Arrow)({
+    position: 'absolute',
+    left: '106px !important',
+});
 
 export const MessageReactionButton = ({
     onlyLikes,
@@ -199,6 +204,7 @@ export const MessageReactionButton = ({
             contentContainer={<CustomPickerDiv />}
             marginBottom={10}
             show={beHovered}
+            arrow={<PopperArrow />}
         >
             <ReactionButtonInner
                 className="reaction-button"
