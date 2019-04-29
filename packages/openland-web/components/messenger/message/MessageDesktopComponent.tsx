@@ -117,39 +117,62 @@ interface MessageComponentInnerProps extends MessageComponentProps {
     messagesContext: MessagesStateContextProps;
 }
 
+interface DesktopMessageComponentInnerState {
+    isEditView: boolean;
+    selected: boolean;
+    hideMenu: boolean;
+}
+
 export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
-    { isEditView: boolean }
+    DesktopMessageComponentInnerState
 > {
     constructor(props: MessageComponentInnerProps) {
         super(props);
 
         this.state = {
             isEditView: false,
+            selected: false,
+            hideMenu: false,
         };
     }
 
     componentDidUpdate() {
-        const isEditView = this.props.messagesContext.editMessageId === this.props.message.id;
+        const { message, messagesContext, isActive } = this.props;
+        const isEditView = messagesContext.editMessageId === message.id;
 
-        if (isEditView) {
-            let el = ReactDOM.findDOMNode(this);
-            (el as Element).scrollIntoView();
+        let selected = false;
+        let hideMenu = messagesContext.useForwardHeader;
+        let { forwardMessagesId } = messagesContext;
+        if (forwardMessagesId) {
+            selected = forwardMessagesId.has(message.id || 'none');
+        }
+
+        if (isActive) {
             this.setState({
-                isEditView: true,
+                selected: selected,
+                hideMenu: hideMenu,
             });
-        } else {
+
+            if (isEditView) {
+                let el = ReactDOM.findDOMNode(this);
+                (el as Element).scrollIntoView();
+                this.setState({
+                    isEditView: true,
+                });
+            } else {
+                this.setState({
+                    isEditView: false
+                });
+            }
+        }  else {
             this.setState({
                 isEditView: false,
+                selected: false,
+                hideMenu: false
             });
         }
     }
-
-    // shouldComponentUpdate(nextProps: MessageComponentInnerProps) {
-    //     return (
-    //         nextProps.messagesContext !== this.props.messagesContext
-    //     );
-    // }
 
     componentWillUnmount() {
         this.props.messagesContext.resetAll();
@@ -197,6 +220,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
     render() {
         let { message, onCommentReplyClick, haveReactions } = this.props;
+        const { isEditView, selected, hideMenu } = this.state;
 
         let content: any[] = [];
         let edited = message.isEdited;
@@ -208,15 +232,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             a => a.__typename === 'MessageRichAttachment',
         )[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
 
-        let selected = false;
-        let hideMenu = this.props.messagesContext.useForwardHeader;
-        let { forwardMessagesId } = this.props.messagesContext;
-        if (forwardMessagesId) {
-            selected = forwardMessagesId.has(message.id || 'none');
-        }
-
         if (!message.isSending) {
-            if (this.state.isEditView && message.text && this.props.conversationId) {
+            if (isEditView && message.text && this.props.conversationId) {
                 content.push(
                     <EditMessageInlineWrapper
                         message={message}
@@ -455,7 +472,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
             <MessageWrapper
                 isModal={this.props.isModal}
                 compact={false}
-                isEditView={this.state.isEditView}
+                isEditView={isEditView}
                 separator={6}
                 alignItems="center"
                 startSelected={hideMenu}
