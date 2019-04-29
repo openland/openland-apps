@@ -456,7 +456,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
 
     // Actions
     let actions = (
-        <XView width={83} marginLeft={12} alignSelf="flex-start">
+        <XView width={120} marginLeft={12} alignSelf="flex-start">
             <Menu
                 conversationId={props.conversationId}
                 hover={hover}
