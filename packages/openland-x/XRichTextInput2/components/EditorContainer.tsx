@@ -209,7 +209,7 @@ const Icons = ({
                     <EmojiButton onEmojiPicked={onEmojiPicked} />
                 </XView>
             )}
-            {minimal && <SendIconWrapper active={!!file || hasText} onSubmit={onSubmit} />}
+            {minimal && <SendIconWrapper active={!!file || !!hasText} onSubmit={onSubmit} />}
         </XView>
     );
 };
