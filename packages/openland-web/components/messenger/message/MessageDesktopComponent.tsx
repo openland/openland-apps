@@ -117,7 +117,7 @@ interface MessageComponentInnerProps extends MessageComponentProps {
     messagesContext: MessagesStateContextProps;
 }
 
-export class DesktopMessageComponentInner extends React.Component<
+export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
 > {
@@ -147,7 +147,7 @@ export class DesktopMessageComponentInner extends React.Component<
 
     // shouldComponentUpdate(nextProps: MessageComponentInnerProps) {
     //     return (
-    //         nextProps.isActive === true && nextProps.messagesContext !== this.props.messagesContext
+    //         nextProps.messagesContext !== this.props.messagesContext
     //     );
     // }
 
