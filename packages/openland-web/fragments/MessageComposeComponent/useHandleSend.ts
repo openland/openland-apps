@@ -3,7 +3,7 @@ import UploadCare from 'uploadcare-widget';
 import {
     MessagesStateContext,
     MessagesStateContextProps,
-} from '../../components/messenger/MessagesStateContext';
+} from 'openland-web/components/messenger/MessagesStateContext';
 import { QuoteStateT } from './useQuote';
 import { DraftStateT } from './useDraft';
 import { InputMethodsStateT } from './useInputMethods';
@@ -74,12 +74,7 @@ export function useHandleSend({
         if (!supportQuote()) {
             return false;
         }
-        return (
-            // TODO move to quote here
-            quoteState!!.quoteMessageReply &&
-            quoteState!!.quoteMessagesId!!.length !== 0 &&
-            quoteState!!.quoteMessageSender
-        );
+        return quoteState!!.getQuote();
     };
 
     const onUploadCareSendFile = async (fileForUc: UploadCare.File) => {
@@ -97,10 +92,7 @@ export function useHandleSend({
         messagesContext.resetAll();
         setInputValue('');
         if (supportQuote()) {
-            // TODO move to quote here
-            quoteState!!.setQuoteMessageReply!!(null);
-            quoteState!!.setQuoteMessageSender!!(null);
-            quoteState!!.setQuoteMessagesId!!([]);
+            quoteState!!.clearQuote();
         }
         if (inputRef && inputRef.current) {
             inputRef.current.innerText = '';

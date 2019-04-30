@@ -12,15 +12,13 @@ export type DraftStateT = {
     cleanDraft: Function;
 };
 
-export function useDraft({
-    conversationId,
-    saveDraftMessage,
-    draft,
-}: {
+type useDraftT = {
     draft?: string | null;
     conversationId?: string;
     saveDraftMessage: (variables: SaveDraftMessageVariables) => Promise<SaveDraftMessage>;
-}) {
+};
+
+export function useDraft({ conversationId, saveDraftMessage, draft }: useDraftT) {
     const [beDrafted, setBeDrafted] = React.useState(false);
 
     const changeDraft = async (message: string, mentions: UserWithOffset[]) => {

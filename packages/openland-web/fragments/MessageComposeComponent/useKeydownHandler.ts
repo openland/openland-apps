@@ -6,8 +6,17 @@ import { QuoteStateT } from './useQuote';
 import {
     MessagesStateContext,
     MessagesStateContextProps,
-} from '../../components/messenger/MessagesStateContext';
+} from 'openland-web/components/messenger/MessagesStateContext';
 import { InputMethodsStateT } from './useInputMethods';
+
+type useKeydownHandlerT = {
+    inputMethodsState: InputMethodsStateT;
+    inputValue: string;
+    quoteState: QuoteStateT;
+    conversation?: ConversationEngine;
+    user: UserShort | null;
+    isActive: boolean | null;
+};
 
 export function useKeydownHandler({
     inputValue,
@@ -16,14 +25,7 @@ export function useKeydownHandler({
     conversation,
     user,
     isActive,
-}: {
-    inputMethodsState: InputMethodsStateT;
-    inputValue: string;
-    quoteState: QuoteStateT;
-    conversation?: ConversationEngine;
-    user: UserShort | null;
-    isActive: boolean | null;
-}) {
+}: useKeydownHandlerT) {
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
     const keydownHandler = (e: any) => {

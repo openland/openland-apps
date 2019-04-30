@@ -6,13 +6,12 @@ export type InputMethodsStateT = XRichTextInput2RefMethods & {
     focusIfNeeded: Function;
 };
 
-export function useInputMethods({
-    inputRef,
-    enabled,
-}: {
+type useInputMethodsT = {
     enabled?: boolean;
     inputRef: React.RefObject<XRichTextInput2RefMethods>;
-}) {
+};
+
+export function useInputMethods({ inputRef, enabled }: useInputMethodsT) {
     const focus = () => {
         if (inputRef.current) {
             inputRef.current.focus();

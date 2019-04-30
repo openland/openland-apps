@@ -201,19 +201,9 @@ export type MessageComposeComponentDraftProps = MessageComposeComponentProps & {
 export const MessageComposeComponentDraft = (props: MessageComposeComponentDraftProps) => {
     let client = useClient();
 
-    const draft = client.useWithoutLoaderGetDraftMessage({
+    const draft = client.useGetDraftMessage({
         conversationId: props.conversationId!!,
     });
 
-    const members = client.useRoomMembers({
-        roomId: props.conversationId!!,
-    });
-
-    return (
-        <MessageComposeComponent
-            draft={draft ? draft.message : null}
-            members={members ? members.members : []}
-            {...props}
-        />
-    );
+    return <MessageComposeComponent draft={draft ? draft.message : null} members={[]} {...props} />;
 };

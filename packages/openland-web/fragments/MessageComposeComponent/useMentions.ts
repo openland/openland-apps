@@ -3,12 +3,23 @@ import { RoomMembers_members } from 'openland-api/Types';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 export type MentionsStateT = {
-    mentionsData: UserWithOffset[];
     listOfMembersNames: string[];
+    mentionsData: UserWithOffset[];
     getMentions: () => UserWithOffset[];
     setCurrentMentions: (a: UserWithOffset[]) => void;
 };
 
+const getMembers = (members?: RoomMembers_members[]) => {
+    return members
+        ? members.map(({ user: { name } }: { user: { name: string } }) => `@${name}`)
+        : [];
+};
+
+type useMentionsT = {
+    members?: RoomMembers_members[];
+};
+
+// TODO remove this
 export const convertChannelMembersDataToMentionsData = (
     data?: RoomMembers_members[],
 ): UserWithOffset[] => {
@@ -24,25 +35,16 @@ export const convertChannelMembersDataToMentionsData = (
     });
 };
 
-const getMembers = (members?: RoomMembers_members[]) => {
-    return members
-        ? members.map(({ user: { name } }: { user: { name: string } }) => `@${name}`)
-        : [];
-};
-
-type useMentionsT = {
-    members?: RoomMembers_members[];
-};
-
-export function useMentions({ members }: useMentionsT) {
+export function useMentions({ members }: useMentionsT): MentionsStateT {
     const [listOfMembersNames, setListOfMembersNames] = React.useState(getMembers(members));
     const [currentMentions, setCurrentMentions] = React.useState<UserWithOffset[]>([]);
+    const [mentionsData, setMentionsData] = React.useState<UserWithOffset[]>([]);
 
     React.useEffect(() => {
         setListOfMembersNames(getMembers(members));
-    }, [members]);
 
-    const mentionsData = convertChannelMembersDataToMentionsData(members);
+        setMentionsData(convertChannelMembersDataToMentionsData(members));
+    }, [members]);
 
     const getMentions = () => {
         return currentMentions;

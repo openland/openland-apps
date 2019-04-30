@@ -6,17 +6,19 @@ export type GeneralComposeStateT = {
     handleChange: Function;
 };
 
+type useHandleChangeT = {
+    setInputValue: Function;
+    mentionsState?: MentionsStateT;
+    onChange: ((text: string) => void) | undefined;
+    draftState?: DraftStateT;
+};
+
 export function useHandleChange({
     setInputValue,
     mentionsState,
     onChange,
     draftState,
-}: {
-    setInputValue: Function;
-    mentionsState?: MentionsStateT;
-    onChange: ((text: string) => void) | undefined;
-    draftState?: DraftStateT;
-}) {
+}: useHandleChangeT) {
     const supportDraft = () => {
         return !!draftState;
     };

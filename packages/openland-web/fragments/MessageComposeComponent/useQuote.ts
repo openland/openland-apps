@@ -6,27 +6,25 @@ import {
     getQuoteMessageReply,
     getQuoteMessagesId,
     getQuoteMessageSender,
-} from '../../components/messenger/MessagesStateContext';
+} from 'openland-web/components/messenger/MessagesStateContext';
 
 import { InputMethodsStateT } from './useInputMethods';
 
 export type QuoteStateT = {
-    setQuoteMessageReply?: Function;
-    setQuoteMessageSender?: Function;
-    setQuoteMessagesId?: Function;
     quoteMessageReply: string | null;
     quoteMessageSender: string | null;
     quoteMessagesId: string[];
     updateQuote: Function;
+    clearQuote: Function;
+    getQuote: () => string | false | null;
 };
 
-export function useQuote({
-    conversationId,
-    inputMethodsState,
-}: {
+type useQuoteT = {
     conversationId?: string;
     inputMethodsState: InputMethodsStateT;
-}) {
+};
+
+export function useQuote({ conversationId, inputMethodsState }: useQuoteT): QuoteStateT {
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
     const [quoteMessagesId, setQuoteMessagesId] = React.useState<string[]>([]);
@@ -39,30 +37,33 @@ export function useQuote({
         setQuoteMessageSender(getQuoteMessageSender(messagesContext));
     };
 
-    React.useEffect(
-        () => {
-            updateQuote();
-            if (!messagesContext.editMessage) {
-                inputMethodsState.focusIfNeeded();
-            }
-        },
-        [messagesContext.replyMessages],
-    );
+    const clearQuote = () => {
+        setQuoteMessageReply!!(null);
+        setQuoteMessageSender!!(null);
+        setQuoteMessagesId!!([]);
+    };
 
-    React.useEffect(
-        () => {
-            updateQuote();
-        },
-        [conversationId],
-    );
+    const getQuote = () => {
+        return quoteMessageReply && quoteMessagesId.length !== 0 && quoteMessageSender;
+    };
+
+    React.useEffect(() => {
+        updateQuote();
+        if (!messagesContext.editMessage) {
+            inputMethodsState.focusIfNeeded();
+        }
+    }, [messagesContext.replyMessages]);
+
+    React.useEffect(() => {
+        updateQuote();
+    }, [conversationId]);
 
     return {
         quoteMessagesId,
         quoteMessageReply,
         quoteMessageSender,
-        setQuoteMessageReply,
-        setQuoteMessageSender,
-        setQuoteMessagesId,
+        clearQuote,
+        getQuote,
         updateQuote,
     };
 }
