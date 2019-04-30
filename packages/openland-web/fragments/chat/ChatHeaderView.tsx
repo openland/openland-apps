@@ -176,6 +176,7 @@ export const ChatOnlinesTitle = (props: { chatId: string }) => {
             color="#1790ff"
             lineHeight="16px"
             marginLeft={6}
+            cursor={'pointer'}
         >
             {`${onlineCount} online`}
         </XView>
