@@ -28,6 +28,7 @@ const ThumbIconClassName = css`
     background-image: url('https://cdn.openland.com/shared/web/ic-reaction-thumbsup.png');
     background-repeat: no-repeat;
     background-size: contain;
+    margin-right: -3px;
 `;
 
 export const ReactionItem = Glamorous.div<{
