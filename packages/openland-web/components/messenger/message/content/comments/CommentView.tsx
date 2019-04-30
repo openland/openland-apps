@@ -16,6 +16,8 @@ type CommentViewT = {
     deleted?: boolean;
     offset: number;
     onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
+    onCommentEditClick?: (event: React.MouseEvent<any>) => void;
+    onCommentDeleteClick?: (event: React.MouseEvent<any>) => void;
     me?: UserShort | null;
     showInputId: string | null;
     setShowInputId: (a: string | null) => void;
@@ -33,6 +35,8 @@ export const CommentView = React.memo(
         deleted,
         offset,
         onCommentReplyClick,
+        onCommentEditClick,
+        onCommentDeleteClick,
         me,
         showInputId,
         setShowInputId,
@@ -58,6 +62,8 @@ export const CommentView = React.memo(
                         noSelector
                         isComment
                         onCommentReplyClick={onCommentReplyClick}
+                        onCommentEditClick={onCommentEditClick}
+                        onCommentDeleteClick={onCommentDeleteClick}
                         message={message}
                         onlyLikes={true}
                         me={me}

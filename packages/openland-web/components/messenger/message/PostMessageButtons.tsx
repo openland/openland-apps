@@ -11,20 +11,6 @@ import RepliedIcon from 'openland-icons/ic-replied.svg';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 
-type PostMessageButtonsT = {
-    showNumberOfComments?: boolean;
-    isComment: boolean;
-    isChannel?: boolean;
-    isModal?: boolean;
-    onlyLikes: boolean;
-    message: DataSourceWebMessageItem;
-    onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
-    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
-    usernameOfRepliedUser?: string;
-    conversationId?: string;
-    me?: UserShort | null;
-};
-
 const DiscussButton = React.memo(
     ({
         commentsCount,
@@ -72,6 +58,22 @@ const DiscussButton = React.memo(
     },
 );
 
+type PostMessageButtonsT = {
+    showNumberOfComments?: boolean;
+    isComment: boolean;
+    isChannel?: boolean;
+    isModal?: boolean;
+    onlyLikes: boolean;
+    message: DataSourceWebMessageItem;
+    onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
+    usernameOfRepliedUser?: string;
+    conversationId?: string;
+    me?: UserShort | null;
+    onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
+    onCommentEditClick?: (event: React.MouseEvent<any, MouseEvent>) => void;
+    onCommentDeleteClick?: (event: React.MouseEvent<any, MouseEvent>) => void;
+};
+
 export const PostMessageButtons = React.memo(
     ({
         isComment,
@@ -85,6 +87,8 @@ export const PostMessageButtons = React.memo(
         conversationId,
         me,
         showNumberOfComments,
+        onCommentEditClick,
+        onCommentDeleteClick,
     }: PostMessageButtonsT) => {
         let showDiscussButton = false;
 
@@ -120,15 +124,41 @@ export const PostMessageButtons = React.memo(
                             >
                                 <XDate value={message.date.toString()} format="time" />
                             </XView>
-                            <XView
-                                color="#1790ff"
-                                fontWeight="600"
-                                fontSize={12}
-                                cursor="pointer"
-                                onClick={onCommentReplyClick}
-                            >
-                                Reply
-                            </XView>
+                            {onCommentReplyClick && (
+                                <XView
+                                    color="#1790ff"
+                                    fontWeight="600"
+                                    fontSize={12}
+                                    cursor="pointer"
+                                    onClick={onCommentReplyClick}
+                                >
+                                    Reply
+                                </XView>
+                            )}
+                            {onCommentEditClick && (
+                                <XView
+                                    marginLeft={12}
+                                    color="rgba(0, 0, 0, 0.4)"
+                                    fontWeight="600"
+                                    fontSize={12}
+                                    cursor="pointer"
+                                    onClick={onCommentEditClick}
+                                >
+                                    Edit
+                                </XView>
+                            )}
+                            {onCommentDeleteClick && (
+                                <XView
+                                    marginLeft={12}
+                                    color="rgba(0, 0, 0, 0.4)"
+                                    fontWeight="600"
+                                    fontSize={12}
+                                    cursor="pointer"
+                                    onClick={onCommentDeleteClick}
+                                >
+                                    Delete
+                                </XView>
+                            )}
                             {usernameOfRepliedUser && (
                                 <XView
                                     alignItems="center"

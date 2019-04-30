@@ -105,6 +105,8 @@ export interface MessageComponentProps {
     noSelector?: boolean;
     isComment?: boolean;
     onCommentReplyClick?: (event: React.MouseEvent<any>) => void;
+    onCommentEditClick?: (event: React.MouseEvent<any>) => void;
+    onCommentDeleteClick?: (event: React.MouseEvent<any>) => void;
     conversationId?: string;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me?: UserShort | null;
@@ -224,6 +226,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         let {
             message,
             onCommentReplyClick,
+            onCommentEditClick,
+            onCommentDeleteClick,
             haveReactions,
             usernameOfRepliedUser,
             onCommentBackToUserMessageClick,
@@ -445,6 +449,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     isChannel={this.props.isChannel}
                     message={this.props.message}
                     onCommentReplyClick={onCommentReplyClick}
+                    onCommentEditClick={onCommentEditClick}
+                    onCommentDeleteClick={onCommentDeleteClick}
                     conversationId={this.props.conversationId}
                     me={this.props.me}
                     onCommentBackToUserMessageClick={onCommentBackToUserMessageClick}

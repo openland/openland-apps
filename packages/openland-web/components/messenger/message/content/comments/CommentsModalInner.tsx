@@ -24,6 +24,7 @@ import { uploadFile } from './uploadFile';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
 import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { showModalBox } from 'openland-x/showModalBox';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
@@ -66,6 +67,7 @@ export const CommentsModalInnerNoRouter = ({
     roomId: string;
 }) => {
     const client = useClient();
+    let ctx = React.useContext(UserInfoContext);
     const modal = React.useContext(XModalContext);
     const modalBox = React.useContext(XModalBoxContext);
     const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
@@ -202,6 +204,23 @@ export const CommentsModalInnerNoRouter = ({
             setShowInputId(showInputId === message.key ? null : message.key);
         };
 
+        const onCommentEditClick = async () => {
+            await client.mutateEditComment({
+                id: message.key,
+                message: 'edit',
+            });
+        };
+
+        const onCommentDeleteClick = async () => {
+            await client.mutateDeleteComment({
+                id: message.key,
+            });
+
+            await client.refetchMessageComments({
+                messageId: message.key,
+            });
+        };
+
         let offset;
 
         let DEPTH_LIMIT = 4;
@@ -244,6 +263,12 @@ export const CommentsModalInnerNoRouter = ({
                 message={message}
                 offset={offset}
                 onCommentReplyClick={onCommentReplyClick}
+                // onCommentEditClick={
+                //     ctx!!.user!!.id === message.senderId ? onCommentEditClick : undefined
+                // }
+                onCommentDeleteClick={
+                    ctx!!.user!!.id === message.senderId ? onCommentDeleteClick : undefined
+                }
                 me={messenger.user}
                 showInputId={showInputId}
                 setShowInputId={setShowInputId}

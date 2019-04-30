@@ -30,6 +30,8 @@ const MessageComponentInner = React.memo(
                     commentDepth={props.commentDepth}
                     isComment={props.isComment}
                     onCommentReplyClick={props.onCommentReplyClick}
+                    onCommentEditClick={props.onCommentEditClick}
+                    onCommentDeleteClick={props.onCommentDeleteClick}
                     noSelector={props.noSelector}
                     message={props.message}
                     conversationId={props.conversationId}
@@ -61,6 +63,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
             isPinned={props.isPinned}
             isComment={props.isComment}
             onCommentReplyClick={props.onCommentReplyClick}
+            onCommentEditClick={props.onCommentEditClick}
+            onCommentDeleteClick={props.onCommentDeleteClick}
             noSelector={props.noSelector}
             onlyLikes={props.onlyLikes}
             isChannel={props.isChannel}
