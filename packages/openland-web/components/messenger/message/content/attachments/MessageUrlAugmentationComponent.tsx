@@ -269,12 +269,6 @@ const MessageUrlAugmentationComponentInner = React.memo(
             keyboard,
         } = props;
 
-        const messagesContextProps = React.useContext(MessagesStateContext);
-        const isActive = React.useContext(IsActiveContext);
-        const doRerender = messagesContextProps.useForwardHeader && isActive;
-        if (!isActive) {
-            return null;
-        }
         let href: string | undefined = props.titleLink || undefined;
         let path: string | undefined = undefined;
 
@@ -481,7 +475,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                                             fontSize={16}
                                             fontWeight="600"
                                             color="#000"
-                                            hoverColor={doRerender ? '#000' : '#1790ff'}
+                                            hoverColor={'#1790ff'}
                                             hoverTextDecoration="none"
                                         >
                                             <span
