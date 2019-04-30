@@ -64,6 +64,13 @@ const GroupIconClass = css`
     height: 19px;
 `;
 
+const EmojiStyle = css`
+    & img {
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+`;
+
 export interface DialogViewProps {
     item: DialogListWebItem;
     handleRef?: any;
@@ -97,7 +104,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         message = dialog.fallback;
         if (dialog.message) {
             message = (
-                <span>
+                <span className={EmojiStyle}>
                     {!isService && sender}
                     {dialog.messageEmojify}
                 </span>
