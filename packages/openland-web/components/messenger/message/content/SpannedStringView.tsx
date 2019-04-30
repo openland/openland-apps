@@ -4,14 +4,11 @@ import { MentionComponentInnerText } from 'openland-x/XRichTextInput';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { UserShort } from 'openland-api/Types';
 import { css, cx } from 'linaria';
-import { isEmoji } from 'openland-y-utils/isEmoji';
 import { LinkToRoom } from './service/views/LinkToRoom';
 import { OthersPopper, JoinedUserPopperRowProps } from './service/views/OthersPopper';
 import { SpannedString } from '../../data/SpannedString';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
-import { MessagesStateContext } from '../../MessagesStateContext';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 const EmojiSpaceStyle = css`
     & img {
@@ -63,20 +60,6 @@ const TextRotatingStyle = css`
         }
     }
 `;
-
-function emojiChecker(messageText: string) {
-    if (isEmoji(messageText)) {
-        return true;
-    }
-    const messageArray = Array.from(messageText);
-    const pattern = /^([a-zа-яё\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]+|\d+)$/i;
-    for (let i = 0; i < messageArray.length; i++) {
-        if (messageArray[i].match(pattern) && messageArray[i] !== '‍' && messageArray[i] !== '️') {
-            return false;
-        }
-    }
-    return true;
-}
 
 const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserShort; text: any; isYou: boolean }) => {

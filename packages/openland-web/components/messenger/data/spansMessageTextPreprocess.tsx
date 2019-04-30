@@ -1,6 +1,5 @@
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { emoji } from 'openland-y-utils/emoji';
-import { FullMessage_ServiceMessage_spans } from 'openland-api/Types';
 
 function emojiChecker(messageText: string) {
     if (isEmoji(messageText)) {
