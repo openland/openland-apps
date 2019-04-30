@@ -165,7 +165,7 @@ export const ChatOnlinesTitle = (props: { chatId: string }) => {
         [props.chatId],
     );
 
-    if (onlineCount === 0) {
+    if (!onlineCount) {
         return null;
     }
 
