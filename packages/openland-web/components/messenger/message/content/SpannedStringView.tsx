@@ -103,12 +103,6 @@ interface SpannedStringViewProps {
 }
 
 export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
-    const messagesContextProps = React.useContext(MessagesStateContext);
-    const isActive = React.useContext(IsActiveContext);
-    const doRerender = messagesContextProps.useForwardHeader && isActive;
-    if (!isActive) {
-        return null;
-    }
     let res: any[] = [];
     let i = 0;
     for (let s of props.spannedString.spans) {
@@ -139,11 +133,6 @@ export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
             }
             let openlandLink: boolean = !!internalLink;
 
-            if (doRerender) {
-                path = undefined;
-                href = undefined;
-            }
-
             if (!props.isService) {
                 res.push(
                     <span key={'link-' + i} className={LinkText}>
@@ -152,9 +141,6 @@ export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
                             target={openlandLink ? undefined : '_blank'}
                             href={href}
                             path={path}
-                            hoverTextDecoration={
-                                doRerender ? 'none' : undefined
-                            }
                         >
                             <SpannedStringView
                                 spannedString={s.child}
