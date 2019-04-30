@@ -653,6 +653,13 @@
       }
     },
     {
+      "signature": "751de0cfe624adb67e1eda76a987e993435bf0e882e0c64337964cd66e202382",
+      "document": "subscription ChatOnlinesCountWatch($chatId:ID!){chatOnlinesCount(chatId:$chatId){__typename onlineMembers}}",
+      "metadata": {
+        "engineSignature": "subscription ChatOnlinesCountWatch($chatId:ID!){chatOnlinesCount(chatId:$chatId){__typename onlineMembers}}"
+      }
+    },
+    {
       "signature": "18e1acb2d2bff7626d60cf903fe233f40c333aca63c64eb7abf04f3a9d05e3c3",
       "document": "mutation UpdateWelcomeMessage($roomId:ID!,$welcomeMessageIsOn:Boolean!,$welcomeMessageSender:ID,$welcomeMessageText:String){updateWelcomeMessage(roomId:$roomId,welcomeMessageIsOn:$welcomeMessageIsOn,welcomeMessageSender:$welcomeMessageSender,welcomeMessageText:$welcomeMessageText)}",
       "metadata": {

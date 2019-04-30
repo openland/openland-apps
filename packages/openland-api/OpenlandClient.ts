@@ -1042,6 +1042,9 @@ export class OpenlandClient extends BaseApiClient {
     subscribeTypingsWatch(): GraphqlActiveSubscription<Types.TypingsWatch, {}> {
         return this.client.subscribe(Source.TypingsWatchSubscription);
     }
+    subscribeChatOnlinesCountWatch(variables: Types.ChatOnlinesCountWatchVariables): GraphqlActiveSubscription<Types.ChatOnlinesCountWatch, Types.ChatOnlinesCountWatchVariables> {
+        return this.client.subscribe(Source.ChatOnlinesCountWatchSubscription, variables);
+    }
     subscribeConferenceMediaWatch(variables: Types.ConferenceMediaWatchVariables): GraphqlActiveSubscription<Types.ConferenceMediaWatch, Types.ConferenceMediaWatchVariables> {
         return this.client.subscribe(Source.ConferenceMediaWatchSubscription, variables);
     }

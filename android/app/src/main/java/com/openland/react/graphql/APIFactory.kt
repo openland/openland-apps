@@ -1951,6 +1951,11 @@ fun readSubscription(name: String, src: ReadableMap): Subscription<Operation.Dat
        val builder = TypingsWatchSubscription.builder()
        return builder.build() as Subscription<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "ChatOnlinesCountWatch") {
+       val builder = ChatOnlinesCountWatchSubscription.builder()
+       builder.chatId(notNull(readString(src, "chatId")))
+       return builder.build() as Subscription<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "ConferenceMediaWatch") {
        val builder = ConferenceMediaWatchSubscription.builder()
        builder.id(notNull(readString(src, "id")))

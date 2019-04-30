@@ -29369,6 +29369,27 @@ export interface TypingsWatch {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL subscription operation: ChatOnlinesCountWatch
+// ====================================================
+
+export interface ChatOnlinesCountWatch_chatOnlinesCount {
+  __typename: "ChatOnlineEvent";
+  onlineMembers: number;
+}
+
+export interface ChatOnlinesCountWatch {
+  chatOnlinesCount: ChatOnlinesCountWatch_chatOnlinesCount;
+}
+
+export interface ChatOnlinesCountWatchVariables {
+  chatId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: UpdateWelcomeMessage
 // ====================================================
 

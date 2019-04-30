@@ -13253,6 +13253,85 @@ public final class TypingsWatchSubscription: GraphQLSubscription {
   }
 }
 
+public final class ChatOnlinesCountWatchSubscription: GraphQLSubscription {
+  public let operationDefinition =
+    "subscription ChatOnlinesCountWatch($chatId: ID!) {\n  chatOnlinesCount(chatId: $chatId) {\n    __typename\n    onlineMembers\n  }\n}"
+
+  public var chatId: GraphQLID
+
+  public init(chatId: GraphQLID) {
+    self.chatId = chatId
+  }
+
+  public var variables: GraphQLMap? {
+    return ["chatId": chatId]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Subscription"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("chatOnlinesCount", arguments: ["chatId": GraphQLVariable("chatId")], type: .nonNull(.object(ChatOnlinesCount.selections))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(chatOnlinesCount: ChatOnlinesCount) {
+      self.init(unsafeResultMap: ["__typename": "Subscription", "chatOnlinesCount": chatOnlinesCount.resultMap])
+    }
+
+    public var chatOnlinesCount: ChatOnlinesCount {
+      get {
+        return ChatOnlinesCount(unsafeResultMap: resultMap["chatOnlinesCount"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "chatOnlinesCount")
+      }
+    }
+
+    public struct ChatOnlinesCount: GraphQLSelectionSet {
+      public static let possibleTypes = ["ChatOnlineEvent"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("onlineMembers", type: .nonNull(.scalar(Int.self))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(onlineMembers: Int) {
+        self.init(unsafeResultMap: ["__typename": "ChatOnlineEvent", "onlineMembers": onlineMembers])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var onlineMembers: Int {
+        get {
+          return resultMap["onlineMembers"]! as! Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "onlineMembers")
+        }
+      }
+    }
+  }
+}
+
 public final class UpdateWelcomeMessageMutation: GraphQLMutation {
   public let operationDefinition =
     "mutation UpdateWelcomeMessage($roomId: ID!, $welcomeMessageIsOn: Boolean!, $welcomeMessageSender: ID, $welcomeMessageText: String) {\n  updateWelcomeMessage(roomId: $roomId, welcomeMessageIsOn: $welcomeMessageIsOn, welcomeMessageSender: $welcomeMessageSender, welcomeMessageText: $welcomeMessageText)\n}"

@@ -30,6 +30,8 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { CommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModal';
+import { TypingsViewProps } from '../../components/messenger/typings/TypingsView';
+import { forever } from '../../../openland-engines/utils/forever';
 
 const inviteButtonClass = css`
     & svg > g > path {
@@ -144,6 +146,42 @@ export const RowWithSeparators = ({
     );
 };
 
+export const ChatOnlinesTitle = (props: { chatId: string }) => {
+    let client = useClient();
+    let [onlineCount, setOnlineCount] = React.useState<number | null>(null);
+
+    React.useEffect(
+        () => {
+            let sub = client.subscribeChatOnlinesCountWatch({ chatId: props.chatId });
+
+            forever(async () => {
+                setOnlineCount((await sub.get()).chatOnlinesCount.onlineMembers);
+            });
+
+            return () => {
+                sub.destroy();
+            };
+        },
+        [props.chatId],
+    );
+
+    if (onlineCount === 0) {
+        return null;
+    }
+
+    return (
+        <XView
+            fontSize={13}
+            fontWeight="400"
+            color="#1790ff"
+            lineHeight="16px"
+            marginLeft={6}
+        >
+            {`${onlineCount} online`}
+        </XView>
+    );
+};
+
 export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const isMobile = React.useContext(IsMobileContext);
     const state = React.useContext(MessagesStateContext);
@@ -180,12 +218,15 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
         } else {
             headerPath = '/mail/p/' + sharedRoom.id;
             subtitle = (
-                <HeaderSubtitle
-                    value={
-                        sharedRoom.membersCount +
-                        (sharedRoom.membersCount === 1 ? ' member' : ' members')
-                    }
-                />
+                <XView flexDirection="row">
+                    <HeaderSubtitle
+                        value={
+                            sharedRoom.membersCount +
+                            (sharedRoom.membersCount === 1 ? ' member' : ' members')
+                        }
+                    />
+                    <ChatOnlinesTitle chatId={sharedRoom.id} />
+                </XView>
             );
 
             threeDots = <HeaderMenu room={sharedRoom} />;

@@ -1046,6 +1046,14 @@ export const TypingsWatchSubscription = gql`
     }
 `;
 
+export const ChatOnlinesCountWatchSubscription = gql`
+    subscription ChatOnlinesCountWatch($chatId: ID!) {
+        chatOnlinesCount(chatId: $chatId) {
+            onlineMembers
+        }
+    }
+`;
+
 export const UpdateWelcomeMessageMutation = gql`
     mutation UpdateWelcomeMessage(
         $roomId: ID!
