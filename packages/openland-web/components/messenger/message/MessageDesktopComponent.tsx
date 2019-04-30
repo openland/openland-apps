@@ -245,7 +245,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 content.push(
                     <EditMessageInlineWrapper
                         message={message}
-                        key={'editForm'}
+                        key={'editForm' + message.id}
                         onClose={this.hideEditView}
                         variables={{
                             roomId: this.props.conversationId,
@@ -297,13 +297,13 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 serviceMetadata={message.serviceMetaData!}
                                 message={message.text || ''}
                                 spans={message.spans || []}
-                                key={'service_message'}
+                                key={'service_message' + message.id}
                             />,
                         );
                     } else {
                         if (this.props.deleted) {
                             content.push(
-                                <XView key={'text'} color={'rgba(0, 0, 0, 0.5)'}>
+                                <XView key={'text' + message.id} color={'rgba(0, 0, 0, 0.5)'}>
                                     {message.text}
                                 </XView>,
                             );
@@ -311,7 +311,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                             content.push(
                                 <MessageTextComponentSpanned
                                     spannedString={message.textSpannedString!}
-                                    key={'text'}
+                                    key={'text' + message.id}
                                     isEdited={!!message.isEdited}
                                     deleted={this.props.deleted}
                                 />,
@@ -325,7 +325,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         if (fileAttach.fileMetadata.imageFormat === 'GIF') {
                             content.push(
                                 <MessageAnimationComponent
-                                    key={'file'}
+                                    key={'file' + message.id}
                                     file={fileAttach.fileId!}
                                     fileName={fileAttach.fileMetadata.name}
                                     width={fileAttach.fileMetadata.imageWidth || 0}
@@ -335,7 +335,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         } else {
                             content.push(
                                 <MessageImageComponent
-                                    key={'file'}
+                                    key={'file' + message.id}
                                     file={fileAttach.fileId!}
                                     fileName={fileAttach.fileMetadata.name}
                                     width={fileAttach.fileMetadata.imageWidth || 0}
@@ -350,7 +350,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     ) {
                         content.push(
                             <MessageVideoComponent
-                                key={'file'}
+                                key={'file' + message.id}
                                 file={fileAttach.fileId}
                                 fileName={fileAttach.fileMetadata.name}
                             />,
@@ -358,7 +358,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     } else {
                         content.push(
                             <MessageFileComponent
-                                key={'file'}
+                                key={'file' + message.id}
                                 file={fileAttach.fileId}
                                 fileName={fileAttach.fileMetadata.name}
                                 fileSize={fileAttach.fileMetadata.size}
@@ -376,7 +376,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     }
                     content.push(
                         <MessageUrlAugmentationComponent
-                            key="urlAugmentation"
+                            key={'urlAugmentation' + message.id}
                             messageId={message.id!}
                             isMe={message.senderId === (this.props.me && this.props.me.id)}
                             {...richAttach}
@@ -390,7 +390,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     <MessageTextComponent
                         message={message.text}
                         spans={message.spans}
-                        key={'text'}
+                        key={'text' + message.id}
                         isService={false}
                         isEdited={!!message.isEdited}
                     />,
@@ -401,7 +401,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 let progress = Math.round(message.progress * 100);
                 let title = 'Uploading (' + progress + '%)';
                 content.push(
-                    <MessageUploadComponent key={'file'} progress={progress} title={title} />,
+                    <MessageUploadComponent key={'file' + message.id} progress={progress} title={title} />,
                 );
             }
             // TODO: recover retry button
@@ -428,7 +428,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 <MessageTextComponent
                     message={''}
                     spans={[]}
-                    key={'text'}
+                    key={'text' + message.id}
                     isService={false}
                     isEdited={!!edited}
                 />,

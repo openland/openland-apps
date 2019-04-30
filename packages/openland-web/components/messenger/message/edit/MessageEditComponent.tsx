@@ -94,7 +94,6 @@ class XTextInput extends React.PureComponent<
             return (
                 <XStoreContext.Consumer>
                     {store => {
-                        console.log(store);
                         if (!store) {
                             throw Error('No store!');
                         }
@@ -133,7 +132,6 @@ const EditMessageInline = (props: EditMessageInlineT) => {
     return (
         <XForm
             defaultAction={async data => {
-                console.log(data.message);
                 await client.mutateRoomEditMessage({
                     messageId: props.id,
                     message: data.message.text,
@@ -202,6 +200,7 @@ class EditMessageInlineWrapperInner extends React.Component<EditMessageInlineWra
 type EditMessageInlineWrapperT = {
     message: DataSourceMessageItem;
     onClose: any;
+    key?: string;
 };
 
 export const EditMessageInlineWrapper = (
@@ -223,6 +222,7 @@ export const EditMessageInlineWrapper = (
             mentionsData={mentionsData}
             message={props.message}
             onClose={props.onClose}
+            key={props.key}
         />
     );
 };

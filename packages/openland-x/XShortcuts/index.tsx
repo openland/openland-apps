@@ -88,7 +88,12 @@ export class XShortcuts extends React.Component<{
 
     render() {
         return (
-            <Shortcuts name="App" handler={this.handleActions} isolate alwaysFireHandler>
+            <Shortcuts
+                name="App"
+                handler={this.handleActions}
+                isolate
+                alwaysFireHandler
+            >
                 {this.props.children}
             </Shortcuts>
         );

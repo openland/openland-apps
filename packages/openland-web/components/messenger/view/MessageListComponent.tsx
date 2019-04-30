@@ -108,7 +108,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         if (i.type === 'message') {
             return (
                 <MessageComponent
-                    key={i.key}
+                    key={i.id}
                     message={i}
                     isChannel={this.props.isChannel}
                     conversationId={this.props.conversationId}
@@ -127,7 +127,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             }
             return (
                 <XView
-                    key={'date-' + i.key}
+                    key={'date-' + i.date}
                     justifyContent="center"
                     alignItems="center"
                     zIndex={1}
