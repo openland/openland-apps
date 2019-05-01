@@ -1,6 +1,6 @@
 import * as React from 'react';
 import UploadCare from 'uploadcare-widget';
-import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { UserInfoContext } from '../../components/UserInfo';
 import {

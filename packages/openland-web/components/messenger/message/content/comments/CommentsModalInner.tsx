@@ -4,7 +4,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
 import {
     CommentWatch_event_CommentUpdateSingle_update,
     FullMessage_GeneralMessage_attachments,

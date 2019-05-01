@@ -1,14 +1,51 @@
 import * as React from 'react';
-import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import { EditorState, convertToRaw, convertFromRaw, CompositeDecorator } from 'draft-js';
 import { EmojiData } from 'emoji-mart';
-import { addEmoji } from './modifiers/addEmoji';
-import { getSearchText } from './utils/getSearchText';
-import { addMention, findActiveWord } from './modifiers/addMention';
+import { addEmoji } from '../../modules/emoji/addEmojiModifier';
+import { addMention, findActiveWord } from '../../modules/mentions/addMentionModifier';
+import { mentionDecorator } from '../../modules/mentions/decorator';
+import { emojiDecorator } from '../../modules/emoji/decorator';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
-import { decorator } from './decorator';
 import { UserShort } from 'openland-api/Types';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
+
+const getWordAt = (maybeString: any, position: any) => {
+    // Perform type conversions.
+    const str = String(maybeString);
+    // eslint-disable-next-line no-bitwise
+    const pos = Number(position) >>> 0;
+
+    // Search for the word's beginning and end.
+    const left = str.slice(0, pos + 1).search(/\S+$/);
+    const right = str.slice(pos).search(/\s/);
+
+    // The last word in the string is a special case.
+    if (right < 0) {
+        return {
+            word: str.slice(left),
+            begin: left,
+            end: str.length,
+        };
+    }
+
+    // Return the word, using the located bounds to extract it from the string.
+    return {
+        word: str.slice(left, right + pos),
+        begin: left,
+        end: right + pos,
+    };
+};
+
+const getSearchText = (editorState: EditorState, selection: any) => {
+    const anchorKey = selection.getAnchorKey();
+    const anchorOffset = selection.getAnchorOffset() - 1;
+    const currentContent = editorState.getCurrentContent();
+    const currentBlock = currentContent.getBlockForKey(anchorKey);
+    const blockText = currentBlock.getText();
+
+    return getWordAt(blockText, anchorOffset);
+};
 
 type useHandleEditorChangeT = {
     onChange?: (a: { text: string; mentions: UserWithOffset[] }) => void;
@@ -29,7 +66,7 @@ export const getEditorStateFromText = ({
                 text,
                 mentions.map(({ user }) => user),
             ) as any),
-            decorator,
+            new CompositeDecorator([mentionDecorator, emojiDecorator]),
         ),
     );
 };

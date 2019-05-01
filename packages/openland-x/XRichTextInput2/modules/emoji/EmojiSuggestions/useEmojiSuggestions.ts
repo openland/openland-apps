@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { useKeyupDown } from './useKeyupDown';
-import { emojiList } from './utils/emojiList';
-import { getSplittedEmoji, isShortNameEmoji } from './dataConversion';
+import { useKeyupDown } from '../../useKeyupDown';
+import { emojiList } from '../utils/emojiList';
+import {
+    getSplittedEmoji,
+    isShortNameEmoji,
+} from '../../../hooks/useHandleEditorChange/dataConversion';
 
 export type useEmojiSuggestionsT = {
     activeWord: string;
@@ -28,6 +31,9 @@ const getCursorXPosition = () => {
     const X_OFFSET = 15;
     try {
         const s = window.getSelection();
+        if (s === null) {
+            return 0;
+        }
         const oRange = s.getRangeAt(0);
 
         const parentNode = oRange.commonAncestorContainer!!.parentNode!!.parentNode!!.parentNode;

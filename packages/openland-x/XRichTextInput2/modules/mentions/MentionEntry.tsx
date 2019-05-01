@@ -2,7 +2,7 @@ import * as React from 'react';
 import { emoji } from 'openland-y-utils/emoji';
 import { css } from 'linaria';
 
-const mentionComponentInnerTextClassName = css`
+const MentionEntryClassName = css`
     background: #e6f3ff;
     color: #1790ff;
     padding-top: 1px;
@@ -12,17 +12,14 @@ const mentionComponentInnerTextClassName = css`
     border-radius: 5px;
 `;
 
-type MentionComponentInnerTextT = {
+type MentionEntryT = {
     offsetKey: string;
     decoratedText: string;
 };
 
-export const MentionComponentInnerText = ({
-    offsetKey,
-    decoratedText,
-}: MentionComponentInnerTextT) => {
+export const MentionEntry = ({ offsetKey, decoratedText }: MentionEntryT) => {
     return (
-        <span className={mentionComponentInnerTextClassName} data-offset-key={offsetKey}>
+        <span className={MentionEntryClassName} data-offset-key={offsetKey}>
             {emoji({
                 src: decoratedText,
                 size: 16,

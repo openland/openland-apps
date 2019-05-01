@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DumpSendMessage } from 'openland-web/fragments/MessageComposeComponent/DumpSendMessage';
 import { DesktopSendMessage } from 'openland-web/fragments/MessageComposeComponent/SendMessage/DesktopSendMessage';
 import UploadCare from 'uploadcare-widget';
-import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
 import { RoomMembers_members } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { useHandleSend } from 'openland-web/fragments/MessageComposeComponent/useHandleSend';

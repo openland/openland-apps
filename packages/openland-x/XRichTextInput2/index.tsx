@@ -3,13 +3,16 @@ import { Editor } from 'draft-js';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles } from '../basics/Flex';
 import { EditorContainer } from './components/EditorContainer';
-import { useMentionSuggestions } from './useMentionSuggestions';
-import { useEmojiSuggestions, EmojiDataT } from './useEmojiSuggestions';
-import { useInputMethods, XRichTextInput2RefMethods } from './useInputMethods';
-import { useHandleEditorChange } from './useHandleEditorChange';
-import { useDraftKeyHandling } from './useDraftKeyHandling';
-import { usePasteFiles } from './usePasteFiles';
-import { useHandlePastedText } from './useHandlePastedText';
+import { useMentionSuggestions } from './modules/mentions/MentionSuggestions/useMentionSuggestions';
+import {
+    useEmojiSuggestions,
+    EmojiDataT,
+} from './modules/emoji/EmojiSuggestions/useEmojiSuggestions';
+import { useInputMethods, XRichTextInput2RefMethods } from './hooks/useInputMethods';
+import { useHandleEditorChange } from './hooks/useHandleEditorChange/useHandleEditorChange';
+import { useDraftKeyHandling } from './hooks/useDraftKeyHandling';
+import { usePasteFiles } from './hooks/usePasteFiles';
+import { useHandlePastedText } from './hooks/useHandlePastedText';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UserShort } from 'openland-api/Types';
 export interface XRichTextInput2Props extends XFlexStyles {
@@ -113,7 +116,7 @@ export const XRichTextInput2 = React.memo(
                 onSubmit,
                 mentionState,
                 emojiState,
-                applyCurrentSuggestedMention: applyCurrentSuggestedMention,
+                applyCurrentSuggestedMention,
                 applyCurrentSuggestedEmoji,
             });
 

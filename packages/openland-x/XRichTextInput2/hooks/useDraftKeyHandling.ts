@@ -1,6 +1,6 @@
 import { getDefaultKeyBinding } from 'draft-js';
-import { EmojiSuggestionsStateT } from './useEmojiSuggestions';
-import { MentionSuggestionsStateT } from './useMentionSuggestions';
+import { EmojiSuggestionsStateT } from '../modules/emoji/EmojiSuggestions/useEmojiSuggestions';
+import { MentionSuggestionsStateT } from '../modules/mentions/MentionSuggestions/useMentionSuggestions';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 const keyBinding = (e: React.KeyboardEvent<any>): string | null => {

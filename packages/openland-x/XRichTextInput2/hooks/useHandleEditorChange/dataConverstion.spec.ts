@@ -2,7 +2,7 @@ import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
 const {
     preprocessMentions,
 } = require('openland-web/components/messenger/message/content/utils/preprocessMentions');
-import { UserWithOffset } from '../../openland-y-utils/mentionsConversion';
+import { UserShort } from '../../../../openland-api/Types';
 
 const makeIncrementFunc = () => {
     let i = 0;
@@ -91,7 +91,7 @@ describe('Draft data conversion', () => {
     });
 
     it('should convert mentions string to draft format', () => {
-        const mentions = [{ name: 'Sergey Lapin' }, { name: 'dev lapin 🎉' }] as UserWithOffset[];
+        const mentions = [{ name: 'Sergey Lapin' }, { name: 'dev lapin 🎉' }] as UserShort[];
         const text = '@Sergey Lapin @dev lapin 🎉 ';
 
         const genKeyFunction = makeIncrementFunc();
@@ -147,7 +147,7 @@ describe('Draft data conversion', () => {
     });
 
     it('should convert mixed mentions and emojies string to draft format', () => {
-        const mentions = [{ name: 'Sergey Lapin' }, { name: 'dev lapin 🎉' }] as UserWithOffset[];
+        const mentions = [{ name: 'Sergey Lapin' }, { name: 'dev lapin 🎉' }] as UserShort[];
         const text = '@Sergey Lapin 😎🧚👩‍❤️‍💋‍👩 @dev lapin 🎉';
 
         let parsedMentions = preprocessMentions(text, mentions, undefined);

@@ -1,6 +1,6 @@
 import { EditorState, Modifier } from 'draft-js';
-import { convertShortNameToUnicode } from '../utils/convertShortNameToUnicode';
-import { getShortNameForImage } from '../utils/getShortNameForImage';
+import { convertShortNameToUnicode } from './utils/convertShortNameToUnicode';
+import { getShortNameForImage } from './utils/getShortNameForImage';
 
 // This modifier can inserted emoji to current cursor position (with replace selected fragment),
 // or replaced emoji shortname like ":thumbsup:". Behavior determined by `Mode` parameter.

@@ -1,7 +1,7 @@
 import React from 'react';
-import { getShortNameForImage } from '../utils/getShortNameForImage';
 import { css, cx } from 'linaria';
-import { EmojiDataT } from '../useEmojiSuggestions';
+import { getShortNameForImage } from '../utils/getShortNameForImage';
+import { EmojiDataT } from './useEmojiSuggestions';
 
 const emojiSuggestionsEntryFocusedClassName = css`
     background-color: #f9f9f9;

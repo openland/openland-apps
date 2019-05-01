@@ -1,6 +1,6 @@
 import React from 'react';
 import { css, cx } from 'linaria';
-import { getShortNameForImage } from '../utils/getShortNameForImage';
+import { getShortNameForImage } from './utils/getShortNameForImage';
 import { ContentState } from 'draft-js';
 const emojione = require('emojione');
 

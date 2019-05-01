@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useKeyupDown } from './useKeyupDown';
+import { useKeyupDown } from '../../../modules/useKeyupDown';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UserShort } from 'openland-api/Types';
 

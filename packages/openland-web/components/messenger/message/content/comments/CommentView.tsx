@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
 import { RoomMembers_members } from 'openland-api/Types';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
