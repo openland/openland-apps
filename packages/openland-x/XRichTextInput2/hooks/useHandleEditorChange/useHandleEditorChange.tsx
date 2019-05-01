@@ -9,6 +9,7 @@ import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
 import { UserShort } from 'openland-api/Types';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
+import { EmojiDataT } from '../../modules/emoji/EmojiSuggestions/useEmojiSuggestions';
 
 const getWordAt = (maybeString: any, position: any) => {
     // Perform type conversions.
@@ -126,30 +127,36 @@ export function useHandleEditorChange({
     };
 
     const finalAddMention = (mention: UserShort) => {
-        const newEditorState = addMention({
-            editorState,
-            mention,
-        });
-        if (newEditorState) {
-            updateEditorState(newEditorState);
+        if (mention) {
+            const newEditorState = addMention({
+                editorState,
+                mention,
+            });
+            if (newEditorState) {
+                updateEditorState(newEditorState);
+            }
+            setActiveWord('');
         }
     };
 
-    const finalAddEmoji = ({ shortName, unified }: { shortName: string; unified: string }) => {
-        const { begin, end, word } = getSearchText(editorState, editorState.getSelection());
+    const finalAddEmoji = (emojiData: EmojiDataT) => {
+        if (emojiData) {
+            const { begin, end, word } = getSearchText(editorState, editorState.getSelection());
 
-        const newEditorState = addEmoji({
-            editorState,
-            emojiShortName: shortName,
-            unified,
-            mode: {
-                type: 'REPLACE',
-                begin: begin + word.indexOf(':'),
-                end,
-            },
-        });
-        if (newEditorState) {
-            updateEditorState(newEditorState);
+            const newEditorState = addEmoji({
+                editorState,
+                emojiShortName: emojiData.shortName,
+                unified: emojiData.unified,
+                mode: {
+                    type: 'REPLACE',
+                    begin: begin + word.indexOf(':'),
+                    end,
+                },
+            });
+            if (newEditorState) {
+                updateEditorState(newEditorState);
+            }
+            setActiveWord('');
         }
     };
 
@@ -176,7 +183,6 @@ export function useHandleEditorChange({
 
     return {
         activeWord,
-        setActiveWord,
         addMention: finalAddMention,
         addEmoji: finalAddEmoji,
         handleEditorChange,

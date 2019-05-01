@@ -14,26 +14,26 @@ type useKeyHandlingT = {
     onSubmit?: () => void;
     mentionState: MentionSuggestionsStateT;
     emojiState: EmojiSuggestionsStateT;
-    applyCurrentSuggestedMention: Function;
-    applyCurrentSuggestedEmoji: Function;
+    addMention: Function;
+    addEmoji: Function;
     updateEditorStateFromTextAndMentions: (a: { text: string; mentions: UserWithOffset[] }) => void;
 };
 
 export function useDraftKeyHandling({
     onSubmit,
     mentionState,
-    applyCurrentSuggestedMention,
+    addMention,
     emojiState,
-    applyCurrentSuggestedEmoji,
+    addEmoji,
     updateEditorStateFromTextAndMentions,
 }: useKeyHandlingT) {
     const onHandleKey = (command: string) => {
         if (command === 'x-editor-submit') {
             if (emojiState.isSelecting) {
-                applyCurrentSuggestedEmoji();
+                addEmoji(emojiState.suggestions[emojiState.selectedEntryIndex]);
                 return 'handled';
             } else if (mentionState.isSelecting) {
-                applyCurrentSuggestedMention();
+                addMention(mentionState.suggestions[mentionState.selectedEntryIndex]);
                 return 'handled';
             }
 
