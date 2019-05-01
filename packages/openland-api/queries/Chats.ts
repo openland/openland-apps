@@ -257,6 +257,7 @@ export const RoomChatQuery = gql`
                 membership
                 isChannel
                 canEdit
+                photo
                 pinnedMessage {
                     ...FullMessage
                 }
@@ -1042,6 +1043,14 @@ export const TypingsWatchSubscription = gql`
                 photo
             }
             cancel
+        }
+    }
+`;
+
+export const ChatOnlinesCountWatchSubscription = gql`
+    subscription ChatOnlinesCountWatch($chatId: ID!) {
+        chatOnlinesCount(chatId: $chatId) {
+            onlineMembers
         }
     }
 `;

@@ -137,6 +137,8 @@ export function showAppInviteModal() {
                 paddingHorizontal={XModalBoxStyles.contentPadding}
                 paddingBottom={24}
                 paddingTop={6}
+                borderRadius={8}
+                overflow="hidden"
             >
                 <OwnerLinkOrganization />
             </XView>

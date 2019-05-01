@@ -3452,6 +3452,20 @@ class ApiFactory: ApiFactoryBase {
       }
       return { () in res.cancel() }
     }
+    if (name == "ChatOnlinesCountWatch") {
+      let chatId = notNull(readString(src, "chatId"))
+      let requestBody = ChatOnlinesCountWatchSubscription(chatId: chatId)
+      let res = client.subscribe(subscription: requestBody, queue: GraphQLQueue) { (r, e) in
+          if e != nil {
+            handler(nil, e)
+          } else if (r != nil && r!.data != nil) {
+            handler(r!.data!.resultMap, nil)
+          } else {
+            handler(nil, nil)
+          }
+      }
+      return { () in res.cancel() }
+    }
     if (name == "ConferenceMediaWatch") {
       let id = notNull(readString(src, "id"))
       let peerId = notNull(readString(src, "peerId"))
