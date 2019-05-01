@@ -7,7 +7,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import org.json.JSONArray
 import java.util.concurrent.CopyOnWriteArrayList
 
-data class AsyncDataViewItem(val key: String, val spec: AsyncViewSpec)
+data class AsyncDataViewItem(val key: String, val spec: AsyncViewSpec, var applyModes: List<String>?)
 
 data class AsyncDataViewState(val items: List<AsyncDataViewItem>, val competed: Boolean)
 
@@ -122,7 +122,7 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
         val items = mutableListOf<AsyncDataViewItem>()
         for (i in 0 until parsed.length()) {
             val itm = parsed.getJSONObject(i)
-            items.add(AsyncDataViewItem(itm.getString("key"), resolveSpec(itm.getJSONObject("config"), reactApplicationContext)))
+            items.add(AsyncDataViewItem(itm.getString("key"), resolveSpec(itm.getJSONObject("config"), reactApplicationContext), null))
         }
         Log.d("SView-DataView", "Inited in " + (System.currentTimeMillis() - start) + " ms")
         getDataView(dataSourceKey, this.reactApplicationContext).handleInit(items, completed)
@@ -130,12 +130,12 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
 
     @ReactMethod
     fun dataViewAddItem(dataSourceKey: String, key: String, config: String, index: Int) {
-        getDataView(dataSourceKey, this.reactApplicationContext).handleAddItem(AsyncDataViewItem(key, parseSpec(config, reactApplicationContext)), index)
+        getDataView(dataSourceKey, this.reactApplicationContext).handleAddItem(AsyncDataViewItem(key, parseSpec(config, reactApplicationContext), null), index)
     }
 
     @ReactMethod
     fun dataViewUpdateItem(dataSourceKey: String, key: String, config: String, index: Int) {
-        getDataView(dataSourceKey, this.reactApplicationContext).handleUpdateItem(AsyncDataViewItem(key, parseSpec(config, reactApplicationContext)), index)
+        getDataView(dataSourceKey, this.reactApplicationContext).handleUpdateItem(AsyncDataViewItem(key, parseSpec(config, reactApplicationContext), null), index)
     }
 
     @ReactMethod
@@ -154,7 +154,7 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
         val items = mutableListOf<AsyncDataViewItem>()
         for (i in 0 until parsed.length()) {
             val itm = parsed.getJSONObject(i)
-            items.add(AsyncDataViewItem(itm.getString("key"), resolveSpec(itm.getJSONObject("config"), reactApplicationContext)))
+            items.add(AsyncDataViewItem(itm.getString("key"), resolveSpec(itm.getJSONObject("config"), reactApplicationContext), null))
         }
         getDataView(dataSourceKey, this.reactApplicationContext).handleLoadedMore(items, completed)
     }

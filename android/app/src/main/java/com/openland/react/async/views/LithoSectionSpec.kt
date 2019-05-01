@@ -33,7 +33,7 @@ object LithoSectionSpec {
                                   @Prop headerPadding: Float,
                                   @Prop(optional = true) overflowColor: Int?,
                                   @Prop(optional = true) loaderColor: Int?
-                                  ): Children {
+    ): Children {
 
         var footer = Column.create(c)
                 .heightDip(64.0f)
@@ -42,14 +42,13 @@ object LithoSectionSpec {
                 .justifyContent(YogaJustify.CENTER)
 
 
-
         val progress = Progress.create(c)
                 .heightDip(32.0f)
                 .widthDip(32.0f)
                 .color(if (loaderColor !== null) loaderColor else 0xFF0084fe.toInt())
                 .marginDip(YogaEdge.BOTTOM, 16.0f)
 
-        if(overflowColor != null){
+        if (overflowColor != null) {
             footer.backgroundColor(overflowColor)
                     .justifyContent(YogaJustify.FLEX_END)
                     .clipToOutline(false)
@@ -65,14 +64,14 @@ object LithoSectionSpec {
                 footer.child(progress)
             }
 
-        }else{
+        } else {
             if (loading) {
                 footer.child(progress)
             }
         }
 
         var header = Row.create(c).heightDip(headerPadding)
-        if(overflowColor !== null){
+        if (overflowColor !== null) {
             header.backgroundColor(overflowColor)
         }
         return Children.create()
@@ -103,9 +102,13 @@ object LithoSectionSpec {
     @OnEvent(RenderEvent::class)
     @JvmName("onRenderEdge")
     internal fun onRenderEdge(c: SectionContext, @FromEvent model: AsyncDataViewItem, @Prop reactContext: ReactContext): RenderInfo {
+        var spec = model.spec
+        if (spec is AsyncFlexSpec && model.applyModes != null) {
+            spec = spec.applyModes(model.applyModes!!.toTypedArray())
+        }
         return ComponentRenderInfo.create()
                 .component(Column.create(c)
-                        .child(resolveNode(c, model.spec, reactContext))
+                        .child(resolveNode(c, spec, reactContext))
                         .alignItems(YogaAlign.STRETCH)
                         .clipToOutline(false)
                         .widthPercent(100.0f))

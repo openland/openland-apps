@@ -31,16 +31,26 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const fwd = React.useCallback(() => {
         forward(props.conversation, props.conversation.messagesActionsState.getState().messages);
     }, [])
+    const cancel = React.useCallback(() => {
+        props.conversation.messagesActionsState.clear();
+    }, [])
+    let height = Platform.OS === 'ios' ? 50 : 64;
     let res =
         <View flexGrow={1} flexDirection="row" alignItems="center">
             <TouchableOpacity onPress={del}>
-                <View style={{ height: 50, alignItems: 'center', justifyContent: 'center', marginLeft: 30 }}>
+                <View style={{ height: height, alignItems: 'center', justifyContent: 'center', marginLeft: 30 }}>
                     <Image source={require('assets/ic-delete-ios-26.png')} style={{ tintColor: theme.inputIconsColor }} />
                 </View>
             </TouchableOpacity>
             <View flexGrow={1} />
+            <TouchableOpacity onPress={cancel}>
+                <View style={{ height: height, alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={require('assets/ic-cancel-gray-26.png')} style={{ tintColor: theme.inputIconsColor }} />
+                </View>
+            </TouchableOpacity>
+            <View flexGrow={1} />
             <TouchableOpacity onPress={fwd}>
-                <View style={{ height: 50, alignItems: 'center', justifyContent: 'center', marginRight: 30 }}>
+                <View style={{ height: height, alignItems: 'center', justifyContent: 'center', marginRight: 30 }}>
                     <Image source={require('assets/ic-forward-ios-26.png')} style={{ tintColor: theme.inputIconsColor }} />
                 </View>
             </TouchableOpacity >

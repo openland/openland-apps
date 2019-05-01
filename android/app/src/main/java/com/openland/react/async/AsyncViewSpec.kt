@@ -65,16 +65,38 @@ class AsyncViewStyle {
     var flexShrink: Float = 0.0f
     var flexBasis: Float? = null
     var alignSelf: AsyncFlexAlignSelf? = null
-
     var marginBottom: Float? = null
     var marginTop: Float? = null
     var marginLeft: Float? = null
     var marginRight: Float? = null
-
     var backgroundColor: Int? = null
     var borderRadius: Float? = null
     var backgroundPatch: AsyncPatch? = null
     var backgroundPatchTintColor: Int? = null
+
+    fun merge(with: AsyncViewStyle): AsyncViewStyle {
+        val res = AsyncViewStyle()
+        res.height = with.height.let { height -> if (height !== null) height else this.height }
+
+        res.height = with.height.let { height -> if (height !== null) height else this.height }
+        res.width = with.width.let { width -> if (width !== null) width else this.width }
+        res.maxWidth = with.maxWidth.let { maxWidth -> if (maxWidth !== null) maxWidth else this.maxWidth }
+        res.maxHeight = with.maxHeight.let { maxHeight -> if (maxHeight !== null) maxHeight else this.maxHeight }
+        res.flexGrow = with.flexGrow.let { flexGrow -> if (flexGrow !== null) flexGrow else this.flexGrow }
+        res.flexShrink = with.flexShrink.let { flexShrink -> if (flexShrink !== null) flexShrink else this.flexShrink }
+        res.flexBasis = with.flexBasis.let { flexBasis -> if (flexBasis !== null) flexBasis else this.flexBasis }
+        res.alignSelf = with.alignSelf.let { alignSelf -> if (alignSelf !== null) alignSelf else this.alignSelf }
+        res.marginBottom = with.marginBottom.let { marginBottom -> if (marginBottom !== null) marginBottom else this.marginBottom }
+        res.marginTop = with.marginTop.let { marginTop -> if (marginTop !== null) marginTop else this.marginTop }
+        res.marginLeft = with.marginLeft.let { marginLeft -> if (marginLeft !== null) marginLeft else this.marginLeft }
+        res.marginRight = with.marginRight.let { marginRight -> if (marginRight !== null) marginRight else this.marginRight }
+        res.backgroundColor = with.backgroundColor.let { backgroundColor -> if (backgroundColor !== null) backgroundColor else this.backgroundColor }
+        res.borderRadius = with.borderRadius.let { borderRadius -> if (borderRadius !== null) borderRadius else this.borderRadius }
+        res.backgroundPatch = with.backgroundPatch.let { backgroundPatch -> if (backgroundPatch !== null) backgroundPatch else this.backgroundPatch }
+        res.backgroundPatchTintColor = with.backgroundPatchTintColor.let { backgroundPatchTintColor -> if (backgroundPatchTintColor !== null) backgroundPatchTintColor else this.backgroundPatchTintColor }
+
+        return res
+    }
 
 //    var backgroundGradient: [UIColor]?
 }
@@ -108,12 +130,39 @@ enum class AsyncFlexAlignSelf {
 
 class AsyncFlexSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncViewSpec(key) {
     var style: AsyncViewStyle = AsyncViewStyle()
+    var renderModes: MutableMap<String, AsyncViewStyle> = mutableMapOf()
     var direction: AsyncFlexDirection = AsyncFlexDirection.row
     var alignItems: AsyncFlexAlignItems = AsyncFlexAlignItems.start
     var justifyContent: AsyncFlexJustifyContent = AsyncFlexJustifyContent.start
     var touchableKey: String? = null
     var highlightColor: Int? = null
     var overlay: Boolean = false
+    var appliedModes: Array<String> = arrayOf()
+
+    fun applyModes(modesToApply: Array<String>): AsyncFlexSpec {
+        val res = AsyncFlexSpec(this.key, this.children.map {
+            when (it) {
+                is AsyncFlexSpec -> it.applyModes(modesToApply)
+                else -> it
+            }
+        }.toTypedArray())
+        res.style = this.style
+        res.direction = this.direction
+        res.alignItems = this.alignItems
+        res.justifyContent = this.justifyContent
+        res.touchableKey = this.touchableKey
+        res.highlightColor = this.highlightColor
+        res.overlay = this.overlay
+
+        modesToApply.forEach { mode ->
+            renderModes[mode]?.let {
+                res.style = res.style.merge(it)
+            }
+        }
+
+        res.appliedModes = modesToApply
+        return res
+    }
 }
 
 class AsyncTextSpec(key: String, val children: List<Any>) : AsyncViewSpec(key) {
@@ -280,6 +329,16 @@ fun resolveSpec(src: JSONObject, context: ReactContext): AsyncViewSpec {
         props.nullableBoolean("overlay")?.let { res.overlay = it }
 
         props.nullableInt("highlightColor")?.let { res.highlightColor = it }
+
+        if (props.has("renderModes")) {
+            props.getJSONObject("renderModes").let {
+                it.keys().forEach { key ->
+                    val style = AsyncViewStyle()
+                    res.renderModes[key] = style
+                    resolveStyle(it.getJSONObject(key), style, context)
+                }
+            }
+        }
         return res
     } else if (type == "text") {
         val props = src["props"] as JSONObject

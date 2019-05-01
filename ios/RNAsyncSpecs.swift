@@ -294,7 +294,7 @@ private func resolveStyle(_ src: JSON) -> AsyncStyleSpec {
     let source = v["source"]!.stringValue
     res.backgroundPatch = AsyncPatch(source: source, top: top, right: right, bottom: bottom, left: left, tint: res.backgroundPatchTintColor)
   }
-  if let v = src["props"]["rendeModes"].dictionary {
+  if let v = src["props"]["renderModes"].dictionary {
     res.modes = [:]
     for key in v.keys{
       res.modes![key] =  resolveStyle(v[key]!)
