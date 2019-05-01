@@ -536,7 +536,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   func onRemoved(index: Int, state: RNAsyncDataViewState) {
-    self.activeCellsStrong.removeValue(forKey: self.state.items[index].key)
+    if(self.state.items.count > index){
+      // TODO: investigate
+      // items could be empty here - wtf
+      // looks like other async update affects it, but it should not clear items
+      self.activeCellsStrong.removeValue(forKey: self.state.items[index].key)
+    }
     self.queue.async {
       DispatchQueue.main.async {
         self.node.performBatch(animated: false, updates: {
