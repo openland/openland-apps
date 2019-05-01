@@ -5,6 +5,7 @@ import { ASEventEmitter } from './platform/ASEventEmitter';
 import { ASPressEvent } from './ASPressEvent';
 import { baseStyleProcessor } from './internals/baseStyleProcessor';
 import { randomTag } from './internals/randomTag';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 export interface ASFlexProps extends ASViewStyle {
     flexDirection?: 'row' | 'column';
@@ -14,6 +15,8 @@ export interface ASFlexProps extends ASViewStyle {
     onLongPress?: (event: ASPressEvent) => void;
     highlightColor?: string;
     overlay?: boolean;
+    modes?: { [key: string]: ASFlexProps };
+    applyModes?: string[];
 }
 
 export class ASFlex extends React.Component<ASFlexProps> {
@@ -68,15 +71,28 @@ export class ASFlex extends React.Component<ASFlexProps> {
         }
     }
 
-    render() {
-        let { children, highlightColor, onPress, backgroundPatchTintColor, ...other } = this.props;
+    processProps = (props: ASFlexProps & { children?: any }) => {
+        let { children, highlightColor, onPress, backgroundPatchTintColor, modes, ...other } = props;
         let realProps = other;
+        if (modes) {
+            let keys = Object.keys(modes);
+            for (let k of keys) {
+                let [p] = this.processProps(modes[k])
+                modes[k] = { props: p } as any
+            }
+        }
         realProps = {
             ...baseStyleProcessor(other),
             backgroundPatchTintColor: backgroundPatchTintColor ? (processColor(backgroundPatchTintColor)) : undefined,
             touchableKey: (this.props.onPress || this.props.onLongPress) && this.tag,
             highlightColor: (this.props.onPress || this.props.onLongPress) && (highlightColor ? processColor(highlightColor) : undefined),
-        } as any;
+            modes,
+        }
+        return [realProps, children];
+    }
+
+    render() {
+        let [realProps, children] = this.processProps(this.props);
         return <asyncview asyncViewName="flex" {...realProps}>{children}</asyncview>;
     }
 }

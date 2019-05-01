@@ -19,9 +19,9 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
 const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: AppTheme }>((props) => {
-    let [selected, selectionActive] = useMessageSelected(props.engine.messagesActionsState, props.message);
+    let selected = useMessageSelected(props.engine.messagesActionsState, props.message);
     let toggleSelect = React.useCallback(() => props.engine.messagesActionsState.selectToggle(props.message), [props.message]);
-    return selectionActive ? <ASFlex marginLeft={8} overlay={true} alignItems="center">
+    return <ASFlex marginLeft={-20} overlay={true} alignItems="center" >
         <ASFlex onPress={toggleSelect} width={24} height={24} borderRadius={12} backgroundColor={selected ? props.theme.accentColor : props.theme.radioBorderColor} >
             <ASFlex overlay={true} alignItems="center" justifyContent="center">
                 <ASFlex width={22} height={22} borderRadius={11} alignItems="center" justifyContent="center" backgroundColor={selected ? props.theme.accentColor : props.theme.backgroundColor}>
@@ -29,7 +29,7 @@ const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMe
                 </ASFlex>
             </ASFlex>
         </ASFlex>
-    </ASFlex> : null;
+    </ASFlex >;
 });
 
 export interface AsyncMessageViewProps {
@@ -95,8 +95,10 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
 
     return (
-        <ASFlex flexDirection="column" alignItems="stretch" onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundColor : undefined}>
+        <ASFlex modes={{ 'selection': { backgroundColor: 'red' } }} flexDirection="column" alignItems="stretch" onLongPress={handleLongPress} >
             <SelectCheckbox engine={props.engine} message={props.message} theme={theme} />
+
+            <ASFlex width={20} height={20} modes={{ 'selection': { backgroundColor: 'red' } }} backgroundColor="green" />
 
             <ASFlex key="margin-top" backgroundColor={theme.backgroundColor} height={(props.message.attachTop ? 2 : 14) + 2} marginTop={-2} />
 

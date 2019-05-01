@@ -82,6 +82,11 @@ class RNAsyncListView: RCTView {
     self.node.setOverscrollCompensation(enabled)
   }
   
+  @objc public func setApplyModes(_ applyModes: NSArray) {
+    print(applyModes)
+    self.node.setApplyModes(applyModes.map({String($0 as! NSString)}).sorted())
+  }
+  
   @objc override func reactSetFrame(_ frame: CGRect) {
     super.reactSetFrame(frame)
     self.node.frame = frame

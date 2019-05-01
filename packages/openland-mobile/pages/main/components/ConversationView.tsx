@@ -12,11 +12,13 @@ import { trackEvent } from 'openland-mobile/analytics';
 import { SRouter } from 'react-native-s/SRouter';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useMessageSelected, useChatSelectionMode } from 'openland-engines/messenger/MessagesActionsState';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
     messagesPaddingBottom?: number;
     inverted: boolean;
+    selectionMode: boolean;
 }
 export const androidMessageInputListOverlap = 50;
 
@@ -107,6 +109,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     paddingBottom={this.props.messagesPaddingBottom}
                     loaded={this.state.conversation.historyFullyLoaded}
                     engine={this.props.engine}
+                    selectionMode={this.props.selectionMode}
                 />
                 {
                     !this.state.conversation.loading && this.state.conversation.messages.length === 0 && (
@@ -129,9 +132,10 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
 export const ConversationView = (props: MessagesListProps) => {
     let theme = React.useContext(ThemeContext);
+    let selectionMode = useChatSelectionMode(props.engine.messagesActionsState);
     return (
         <ASSafeAreaContext.Consumer>
-            {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} theme={theme} />)}
+            {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} theme={theme} selectionMode={selectionMode} />)}
         </ASSafeAreaContext.Consumer>
     );
 };

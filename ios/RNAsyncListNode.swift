@@ -43,6 +43,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var isApplying = false
   private var didRenderContent = false
   
+  private var applyModes: [String] = []
+  
   init(parent: RNAsyncListView) {
     self.parent = parent
     self.queue = DispatchQueue(label: "rn-async-node")
@@ -163,6 +165,22 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       print("contentSize.height \(size.height)")
       if insetsDiff < 0 {
         self.node.contentOffset = CGPoint(x: originalOffset.x, y: originalOffset.y + insetsDiff)
+      }
+    }
+  }
+  
+  public func setApplyModes(_ applyModes: [String]){
+    if !self.loaded {
+      self.applyModes = applyModes
+    } else {
+      if !self.applyModes.elementsEqual(applyModes) {
+        DispatchQueue.main.async {
+          self.node.performBatch(animated: false, updates: {
+            print("Boom", "setApplyModes", applyModes)
+            self.applyModes = applyModes
+            self.node.reloadSections(IndexSet(integer: 1))
+          }, completion: nil)
+        }
       }
     }
   }
@@ -403,6 +421,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         fatalError("Item already exists!")
       }
       let cell = RNAsyncCell(spec: state.items[index].config, context: self.context)
+      cell.applyModes = self.applyModes
       self.activeCellsStrong[state.items[index].key] = cell
       
       DispatchQueue.main.async {
@@ -434,6 +453,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           if(c == nil){
             return
           }
+          c!.applyModes = self.applyModes
           c!.setSpec(spec: state.items[index].config)
           self.state = state
            // hack for disabling animations
@@ -474,6 +494,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           let wasCompleted = self.state.completed
           self.state = state
           for itm in pendingCells {
+            itm.value.applyModes = self.applyModes
             self.activeCells.set(key: itm.key, value: itm.value)
           }
           if count > 0 {
@@ -575,6 +596,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         if cached == nil {
           fatalError("Unable to find cell: " + d.key)
         }
+        cached?.applyModes(modesToApply: self.applyModes)
+        print("Boom", "collectionNode", self.applyModes)
         return cached!
       }
     } else if indexPath.section == 2 {
