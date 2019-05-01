@@ -37,6 +37,8 @@ const ReactionButtonInner = Glamorous.div<{
 }));
 
 const ReactionsWrapperClassName = css`
+    padding-top: 1px;
+    padding-bottom: 1px;
     & > div:nth-child(4) {
         margin-bottom: -1px;
     }

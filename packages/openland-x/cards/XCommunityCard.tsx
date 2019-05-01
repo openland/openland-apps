@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { XOverflow } from '../../openland-web/components/XOverflow';
+import { XOverflow } from 'openland-web/components/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
 import { TextDirectory } from 'openland-text/TextDirectory';
