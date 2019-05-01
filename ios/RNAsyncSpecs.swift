@@ -299,7 +299,6 @@ private func resolveStyle(_ src: JSON) -> AsyncStyleSpec {
     for key in v.keys{
       res.modes![key] =  resolveStyle(v[key]!)
     }
-    print("Boom", "resolveStyle", src["props"]["modes"].debugDescription)
   }
   if let v = src["props"]["opacity"].float {
     res.opacity = v

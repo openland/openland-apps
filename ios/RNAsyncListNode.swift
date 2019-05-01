@@ -176,7 +176,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       if !self.applyModes.elementsEqual(applyModes) {
         DispatchQueue.main.async {
           self.node.performBatch(animated: false, updates: {
-            print("Boom", "setApplyModes", applyModes)
             self.applyModes = applyModes
             self.node.reloadSections(IndexSet(integer: 1))
           }, completion: nil)
@@ -597,7 +596,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           fatalError("Unable to find cell: " + d.key)
         }
         cached?.applyModes(modesToApply: self.applyModes)
-        print("Boom", "collectionNode", self.applyModes)
         return cached!
       }
     } else if indexPath.section == 2 {

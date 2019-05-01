@@ -49,7 +49,6 @@ class RNAsyncCell: ASCellNode {
     res.alignItems = ASStackLayoutAlignItems.stretch
     res.child = self.node
     res.style.width = ASDimension(unit: ASDimensionUnit.points, value: UIScreen.main.bounds.width)
-    print("Boom", "layoutSpecThatFits", self.applyModes)
     return res
   }
 }

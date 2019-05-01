@@ -15,7 +15,7 @@ export interface ASFlexProps extends ASViewStyle {
     onLongPress?: (event: ASPressEvent) => void;
     highlightColor?: string;
     overlay?: boolean;
-    modes?: { [key: string]: ASFlexProps };
+    rendeModes?: { [key: string]: { props: ASFlexProps } };
     applyModes?: string[];
 }
 
@@ -72,21 +72,13 @@ export class ASFlex extends React.Component<ASFlexProps> {
     }
 
     processProps = (props: ASFlexProps & { children?: any }) => {
-        let { children, highlightColor, onPress, backgroundPatchTintColor, modes, ...other } = props;
+        let { children, highlightColor, onPress, backgroundPatchTintColor, rendeModes: modes, ...other } = props;
         let realProps = other;
-        if (modes) {
-            let keys = Object.keys(modes);
-            for (let k of keys) {
-                let [p] = this.processProps(modes[k])
-                modes[k] = { props: p } as any
-            }
-        }
         realProps = {
             ...baseStyleProcessor(other),
             backgroundPatchTintColor: backgroundPatchTintColor ? (processColor(backgroundPatchTintColor)) : undefined,
             touchableKey: (this.props.onPress || this.props.onLongPress) && this.tag,
             highlightColor: (this.props.onPress || this.props.onLongPress) && (highlightColor ? processColor(highlightColor) : undefined),
-            modes,
         }
         return [realProps, children];
     }
