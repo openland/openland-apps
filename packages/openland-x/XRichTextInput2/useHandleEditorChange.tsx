@@ -13,7 +13,7 @@ import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 type useHandleEditorChangeT = {
     onChange?: (a: { text: string; mentions: UserWithOffset[] }) => void;
     value: string;
-    mentionsData?: UserWithOffset[];
+    initialMentions?: UserWithOffset[];
 };
 
 export const getEditorStateFromText = ({
@@ -34,11 +34,15 @@ export const getEditorStateFromText = ({
     );
 };
 
-export function useHandleEditorChange({ onChange, value, mentionsData }: useHandleEditorChangeT) {
+export function useHandleEditorChange({
+    onChange,
+    value,
+    initialMentions,
+}: useHandleEditorChangeT) {
     const [plainText, setPlainText] = React.useState('');
     const [activeWord, setActiveWord] = React.useState<string>('');
     const [editorState, setEditorState] = React.useState(() =>
-        getEditorStateFromText({ text: value, mentions: mentionsData || [] }),
+        getEditorStateFromText({ text: value, mentions: initialMentions || [] }),
     );
 
     const updateEditorState = (newEditorState: EditorState) => {

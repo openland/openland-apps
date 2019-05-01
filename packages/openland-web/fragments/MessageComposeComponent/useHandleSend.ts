@@ -15,7 +15,6 @@ import { ReplyMessageVariables, ReplyMessage, RoomMembers_members } from 'openla
 export type useReplyPropsT = {
     replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
     conversationId?: string;
-    members?: RoomMembers_members[];
     mentionsState?: MentionsStateT;
     quoteState?: QuoteStateT;
     inputValue: string;
@@ -38,7 +37,7 @@ export function useHandleSend({
     onSend,
     onSendFile,
     replyMessage,
-    members,
+
     conversationId,
     inputValue,
     inputMethodsState,
@@ -50,7 +49,7 @@ export function useHandleSend({
     scrollToBottom,
 }: useHandleSendT) {
     const supportMentions = () => {
-        return !!mentionsState && !!members;
+        return !!mentionsState;
     };
 
     const supportDraft = () => {

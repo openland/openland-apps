@@ -22,7 +22,7 @@ type CommentViewT = {
     showInputId: string | null;
     setShowInputId: (a: string | null) => void;
     currentCommentsInputRef: React.MutableRefObject<XRichTextInput2RefMethods | null>;
-    members: RoomMembers_members[];
+    getMembers: () => Promise<RoomMembers_members[]>;
     messageId: string;
     onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
@@ -41,7 +41,7 @@ export const CommentView = React.memo(
         showInputId,
         setShowInputId,
         currentCommentsInputRef,
-        members,
+        getMembers,
         messageId,
         onCommentBackToUserMessageClick,
         usernameOfRepliedUser,
@@ -74,7 +74,7 @@ export const CommentView = React.memo(
                             <CommentsInput
                                 topLevelComment={message.depth === 0}
                                 commentsInputRef={currentCommentsInputRef}
-                                members={members}
+                                getMembers={getMembers}
                                 minimal
                                 onSendFile={async (file: UploadCare.File) => {
                                     return await uploadFile({

@@ -48,7 +48,11 @@ export type XTextInputProps =
       } & XRichTextInput2Props;
 
 class XRichTextInputStored extends React.PureComponent<
-    XTextInputProps & { store: XStoreState; mentionsData?: UserWithOffset[] }
+    XTextInputProps & {
+        store: XStoreState;
+        initialMentions?: UserWithOffset[];
+        getMentionsSuggestions: () => Promise<UserWithOffset[]>;
+    }
 > {
     onChangeHandler = (value: any) => {
         if (this.props.kind === 'from_store') {
@@ -77,14 +81,18 @@ class XRichTextInputStored extends React.PureComponent<
                 autofocus={true}
                 onChange={data => this.onChangeHandler(data)}
                 value={value.text}
-                mentionsData={this.props.mentionsData}
+                initialMentions={this.props.initialMentions}
+                getMentionsSuggestions={this.props.getMentionsSuggestions}
             />
         );
     }
 }
 
 class XTextInput extends React.PureComponent<
-    XTextInputProps & { mentionsData?: UserWithOffset[] }
+    XTextInputProps & {
+        initialMentions?: UserWithOffset[];
+        getMentionsSuggestions: () => Promise<UserWithOffset[]>;
+    }
 > {
     render() {
         if (this.props.kind === 'from_store') {
@@ -123,7 +131,8 @@ type EditMessageInlineT = {
     id: string;
     message: any;
     onClose: any;
-    mentionsData: UserWithOffset[];
+    initialMentions: UserWithOffset[];
+    getMentionsSuggestions: () => Promise<UserWithOffset[]>;
 };
 
 const EditMessageInline = (props: EditMessageInlineT) => {
@@ -150,7 +159,8 @@ const EditMessageInline = (props: EditMessageInlineT) => {
                 <XTextInput
                     valueStoreKey="fields.message"
                     kind="from_store"
-                    mentionsData={props.mentionsData}
+                    initialMentions={props.initialMentions}
+                    getMentionsSuggestions={props.getMentionsSuggestions}
                 />
             </TextInputWrapper>
             <Footer separator={5}>
@@ -168,7 +178,8 @@ const EditMessageInline = (props: EditMessageInlineT) => {
 };
 
 type EditMessageInlineWrapperInnerT = {
-    mentionsData: UserWithOffset[];
+    initialMentions: UserWithOffset[];
+    getMentionsSuggestions: () => Promise<UserWithOffset[]>;
 } & EditMessageInlineWrapperT;
 class EditMessageInlineWrapperInner extends React.Component<EditMessageInlineWrapperInnerT> {
     onCloseHandler = () => {
@@ -189,7 +200,8 @@ class EditMessageInlineWrapperInner extends React.Component<EditMessageInlineWra
                 <EditMessageInline
                     id={this.props.message.id!}
                     message={this.props.message}
-                    mentionsData={this.props.mentionsData}
+                    initialMentions={this.props.initialMentions}
+                    getMentionsSuggestions={this.props.getMentionsSuggestions}
                     onClose={this.onCloseHandler}
                 />
             </XShortcuts>
@@ -212,14 +224,15 @@ export const EditMessageInlineWrapper = (
 ) => {
     const client = useClient();
 
-    const data = client.useRoomMembers(props.variables);
-
-    const mentionsData =
-        data && data.members ? convertChannelMembersDataToMentionsData(data.members) : [];
+    const getMentionsSuggestions = async () => {
+        const data = await client.queryRoomMembers(props.variables);
+        return data && data.members ? convertChannelMembersDataToMentionsData(data.members) : [];
+    };
 
     return (
         <EditMessageInlineWrapperInner
-            mentionsData={mentionsData}
+            initialMentions={[]}
+            getMentionsSuggestions={getMentionsSuggestions}
             message={props.message}
             onClose={props.onClose}
             key={props.key}

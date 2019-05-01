@@ -1,22 +1,14 @@
-import * as React from 'react';
 import { RoomMembers_members } from 'openland-api/Types';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 export type MentionsStateT = {
-    listOfMembersNames: string[];
-    mentionsData: UserWithOffset[];
+    getMentionsSuggestions: () => Promise<UserWithOffset[]>;
     getMentions: () => UserWithOffset[];
     setCurrentMentions: (a: UserWithOffset[]) => void;
 };
 
-const getMembers = (members?: RoomMembers_members[]) => {
-    return members
-        ? members.map(({ user: { name } }: { user: { name: string } }) => `@${name}`)
-        : [];
-};
-
 type useMentionsT = {
-    members?: RoomMembers_members[];
+    getMembers: () => Promise<RoomMembers_members[]>;
 };
 
 // TODO remove this
@@ -35,20 +27,20 @@ export const convertChannelMembersDataToMentionsData = (
     });
 };
 
-export function useMentions({ members }: useMentionsT): MentionsStateT {
-    const [listOfMembersNames, setListOfMembersNames] = React.useState(getMembers(members));
-    const [currentMentions, setCurrentMentions] = React.useState<UserWithOffset[]>([]);
-    const [mentionsData, setMentionsData] = React.useState<UserWithOffset[]>([]);
-
-    React.useEffect(() => {
-        setListOfMembersNames(getMembers(members));
-
-        setMentionsData(convertChannelMembersDataToMentionsData(members));
-    }, [members]);
-
+export function useMentions({ getMembers }: useMentionsT): MentionsStateT {
     const getMentions = () => {
-        return currentMentions;
+        return [];
     };
 
-    return { mentionsData, listOfMembersNames, getMentions, setCurrentMentions };
+    const setCurrentMentions = () => {
+        return [];
+    };
+
+    const getMentionsSuggestions = async () => {
+        const members = await getMembers();
+
+        return convertChannelMembersDataToMentionsData(members);
+    };
+
+    return { getMentionsSuggestions, getMentions, setCurrentMentions };
 }

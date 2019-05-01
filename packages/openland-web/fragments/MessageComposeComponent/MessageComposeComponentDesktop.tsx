@@ -88,12 +88,11 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     });
 
     const mentionsState = useMentions({
-        members: messageComposeProps.members,
+        getMembers: messageComposeProps.getMembers,
     });
 
     const { handleSend, closeEditor } = useHandleSend({
         replyMessage: messageComposeProps.replyMessage,
-        members: messageComposeProps.members,
         conversationId: messageComposeProps.conversationId,
         onSend: messageComposeProps.onSend,
         onSendFile: messageComposeProps.onSendFile,
@@ -164,7 +163,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
 };
 
 type MessageComposeComponentT = MessageComposeWithDraft & {
-    members?: RoomMembers_members[];
+    getMembers: () => Promise<RoomMembers_members[]>;
 };
 
 export const MessageComposeComponent = (props => {
@@ -205,5 +204,19 @@ export const MessageComposeComponentDraft = (props: MessageComposeComponentDraft
         conversationId: props.conversationId!!,
     });
 
-    return <MessageComposeComponent draft={draft ? draft.message : null} members={[]} {...props} />;
+    const getMembers = async () => {
+        const data = await client.queryRoomMembers({
+            roomId: props.conversationId!!,
+        });
+
+        return data.members;
+    };
+
+    return (
+        <MessageComposeComponent
+            draft={draft ? draft.message : null}
+            getMembers={getMembers}
+            {...props}
+        />
+    );
 };

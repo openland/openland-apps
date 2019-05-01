@@ -20,14 +20,14 @@ type CommentsInputProps = {
     onSendFile?: (file: UploadCare.File) => Promise<string> | void;
     onChange?: (text: string) => void;
     getMessages?: () => ModelMessage[];
-    members?: RoomMembers_members[];
+    getMembers: () => Promise<RoomMembers_members[]>;
     commentsInputRef?: React.RefObject<XRichTextInput2RefMethods | null>;
 };
 
 export const CommentsInput = ({
     topLevelComment,
     minimal,
-    members,
+    getMembers,
     onSend,
     onSendFile,
     onChange,
@@ -48,11 +48,10 @@ export const CommentsInput = ({
     });
 
     const mentionsState = useMentions({
-        members,
+        getMembers,
     });
 
     const { handleSend, closeEditor } = useHandleSend({
-        members,
         onSend,
         onSendFile,
         inputValue,

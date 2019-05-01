@@ -5,7 +5,7 @@ import { UserShort } from 'openland-api/Types';
 
 export type useMentionSuggestionsT = {
     activeWord: string;
-    mentionsData?: UserWithOffset[];
+    getMentionsSuggestions: () => Promise<UserWithOffset[]>;
 };
 
 export type MentionSuggestionsStateT = {
@@ -18,11 +18,12 @@ export type MentionSuggestionsStateT = {
 };
 
 export const useMentionSuggestions = ({
-    mentionsData,
+    getMentionsSuggestions,
     activeWord,
 }: useMentionSuggestionsT): MentionSuggestionsStateT => {
     const [isSelecting, setIsSelecting] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<UserShort[]>([]);
+    const [mentionsData, setMentionsData] = React.useState<UserWithOffset[]>([]);
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
 
     const { handleUp, handleDown } = useKeyupDown({
@@ -31,6 +32,18 @@ export const useMentionSuggestions = ({
         setSelectedEntryIndex,
         isSelecting,
     });
+
+    React.useEffect(() => {
+        (async () => {
+            if (
+                activeWord.startsWith('@') &&
+                activeWord.length === 1 &&
+                mentionsData.length === 0
+            ) {
+                setMentionsData(await getMentionsSuggestions());
+            }
+        })();
+    }, [getMentionsSuggestions, activeWord]);
 
     React.useLayoutEffect(() => {
         const alphabetSort = activeWord.startsWith('@') && activeWord.length === 1;
