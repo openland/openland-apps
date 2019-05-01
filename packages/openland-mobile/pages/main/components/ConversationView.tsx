@@ -18,17 +18,16 @@ export interface MessagesListProps {
     engine: ConversationEngine;
     messagesPaddingBottom?: number;
     inverted: boolean;
-    selectionMode: boolean;
 }
 export const androidMessageInputListOverlap = 50;
 
-class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme }, { conversation: ConversationState }> implements ConversationStateHandler {
+class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme, selectionMode: boolean }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     // private listRef = React.createRef<ConversationMessagesView>();
     private rotation = new Animated.Value(0);
 
-    constructor(props: MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme }) {
+    constructor(props: MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme, selectionMode: boolean }) {
         super(props);
         let initialState = props.engine.getState();
 
