@@ -191,9 +191,8 @@ const ModalBoxComponent = React.memo<{
                             </XView>
                         </XView>
                     )}
-                    <XScrollView3 flexShrink={1} useDefaultScroll={true}>
-                        <React.Suspense fallback={Loader}>{contents}</React.Suspense>
-                    </XScrollView3>
+
+                    <React.Suspense fallback={Loader}>{contents}</React.Suspense>
                 </div>
             </div>
         </XModalBoxContext.Provider>
