@@ -9,7 +9,7 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { convertChannelMembersDataToMentionsData } from 'openland-web/fragments/MessageComposeComponent/useMentions';
+import { convertChannelMembersDataToMentionsData } from 'openland-web/fragments/MessageComposeComponent/hooks/useMentions';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 

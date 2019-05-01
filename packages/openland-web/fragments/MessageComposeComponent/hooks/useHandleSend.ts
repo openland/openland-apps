@@ -5,11 +5,11 @@ import {
     MessagesStateContextProps,
 } from 'openland-web/components/messenger/MessagesStateContext';
 import { QuoteStateT } from './useQuote';
-import { DraftStateT } from './useDraft';
+import { DraftStateT } from './useDraft/useDraft';
 import { InputMethodsStateT } from './useInputMethods';
 import { MentionsStateT } from './useMentions';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
-import { UploadContext } from '../../modules/FileUploading/UploadContext';
+import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { ReplyMessageVariables, ReplyMessage, RoomMembers_members } from 'openland-api/Types';
 
 export type useReplyPropsT = {

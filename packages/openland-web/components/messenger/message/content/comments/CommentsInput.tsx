@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { DumpSendMessage } from 'openland-web/fragments/MessageComposeComponent/DumpSendMessage';
-import { DesktopSendMessage } from 'openland-web/fragments/MessageComposeComponent/SendMessage/DesktopSendMessage';
+import { DumpSendMessage } from 'openland-web/fragments/MessageComposeComponent/components/DumpSendMessage';
+import { DesktopSendMessage } from 'openland-web/fragments/MessageComposeComponent/components/SendMessage/DesktopSendMessage';
 import UploadCare from 'uploadcare-widget';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
 import { RoomMembers_members } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
-import { useHandleSend } from 'openland-web/fragments/MessageComposeComponent/useHandleSend';
-import { useInputMethods } from 'openland-web/fragments/MessageComposeComponent/useInputMethods';
-import { useQuote } from 'openland-web/fragments/MessageComposeComponent/useQuote';
-import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/useHandleChange';
-import { useMentions } from 'openland-web/fragments/MessageComposeComponent/useMentions';
+import { useHandleSend } from 'openland-web/fragments/MessageComposeComponent/hooks/useHandleSend';
+import { useInputMethods } from 'openland-web/fragments/MessageComposeComponent/hooks/useInputMethods';
+import { useQuote } from 'openland-web/fragments/MessageComposeComponent/hooks/useQuote';
+import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/hooks/useHandleChange';
+import { useMentions } from 'openland-web/fragments/MessageComposeComponent/hooks/useMentions';
 import { UploadContext } from 'openland-web/modules/FileUploading/UploadContext';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 

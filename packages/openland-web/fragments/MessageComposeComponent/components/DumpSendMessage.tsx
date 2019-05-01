@@ -2,15 +2,57 @@ import * as React from 'react';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { FileUploader } from '../../modules/FileUploading/FileUploader';
-import { SendMessageWrapper, SendMessageContent } from './Components';
+import { FileUploader } from '../../../modules/FileUploading/FileUploader';
 import { AttachmentButtons } from './AttachmentButtons';
 import { EditView } from './EditView';
-import { MentionsStateT } from './useMentions';
-import { QuoteStateT } from './useQuote';
-import { DropZone } from '../../modules/FileUploading/DropZone';
-import { UploadContext } from '../../modules/FileUploading/UploadContext';
+import { MentionsStateT } from '../hooks/useMentions';
+import { QuoteStateT } from '../hooks/useQuote';
+import { DropZone } from '../../../modules/FileUploading/DropZone';
+import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import Glamorous from 'glamorous';
+import { XThemeDefault } from 'openland-x/XTheme';
+
+const SendMessageContent = Glamorous(XHorizontal)(({ fullWidth }: { fullWidth?: boolean }) => {
+    return {
+        width: '100%',
+        maxWidth: fullWidth ? '100%' : 930,
+        minWidth: fullWidth ? '100%' : 512,
+        flexBasis: '100%',
+        paddingLeft: fullWidth ? 0 : 97,
+        paddingRight: fullWidth ? 0 : 112,
+        '@media (max-width: 750px)': {
+            minWidth: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+        },
+    };
+});
+
+const SendMessageWrapper = Glamorous.div<{
+    fullWidth?: boolean;
+    minimal?: boolean;
+    topLevelComment?: boolean;
+}>(({ fullWidth, minimal, topLevelComment }) => {
+    return {
+        display: 'flex',
+        borderBottomLeftRadius: '8px',
+        borderBottomRightRadius: '8px',
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        flexShrink: 0,
+        marginBottom: minimal ? -6 : undefined,
+        minHeight: minimal ? undefined : 114,
+        backgroundColor: minimal ? undefined : XThemeDefault.backyardColor,
+        paddingLeft: minimal ? (topLevelComment ? 39 : 26) : fullWidth ? 32 : 16,
+        paddingRight: minimal ? 0 : fullWidth ? 32 : 16,
+        paddingTop: 12,
+        paddingBottom: minimal ? 0 : 12,
+        borderTopStyle: 'solid',
+        borderTopWidth: minimal ? undefined : '1px',
+        borderTopColor: minimal ? undefined : XThemeDefault.separatorColor,
+    };
+});
 
 export type TextInputComponentT = {
     topLevelComment?: boolean;

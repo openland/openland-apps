@@ -1,4 +1,4 @@
-import { DraftStateT } from './useDraft';
+import { DraftStateT } from './useDraft/useDraft';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { MentionsStateT } from './useMentions';
 

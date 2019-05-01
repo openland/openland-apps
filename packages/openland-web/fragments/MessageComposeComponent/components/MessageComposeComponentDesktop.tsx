@@ -2,11 +2,11 @@ import * as React from 'react';
 import UploadCare from 'uploadcare-widget';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { UserInfoContext } from '../../components/UserInfo';
+import { UserInfoContext } from '../../../components/UserInfo';
 import {
     MessagesStateContext,
     MessagesStateContextProps,
-} from '../../components/messenger/MessagesStateContext';
+} from '../../../components/messenger/MessagesStateContext';
 import {
     ReplyMessageVariables,
     ReplyMessage,
@@ -19,16 +19,16 @@ import {
     UserShort,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
-import { useKeydownHandler } from './useKeydownHandler';
-import { useDraft } from './useDraft';
-import { useHandleSend } from './useHandleSend';
-import { useInputMethods } from './useInputMethods';
-import { useQuote } from './useQuote';
-import { useHandleChange } from './useHandleChange';
-import { useMentions } from './useMentions';
+import { useKeydownHandler } from '../hooks/useKeydownHandler';
+import { useDraft } from '../hooks/useDraft/useDraft';
+import { useHandleSend } from '../hooks/useHandleSend';
+import { useInputMethods } from '../hooks/useInputMethods';
+import { useQuote } from '../hooks/useQuote';
+import { useHandleChange } from '../hooks/useHandleChange';
+import { useMentions } from '../hooks/useMentions';
 import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
-import { UploadContext } from '../../modules/FileUploading/UploadContext';
+import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';

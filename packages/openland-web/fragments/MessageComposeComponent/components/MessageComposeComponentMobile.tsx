@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { UploadContext } from '../../modules/FileUploading/UploadContext';
+import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { MessageComposeComponentDraftProps } from './MessageComposeComponentDesktop';
-import { useHandleSend } from './useHandleSend';
-import { useHandleChange } from './useHandleChange';
+import { useHandleSend } from '../hooks/useHandleSend';
+import { useHandleChange } from '../hooks/useHandleChange';
 import { DumpSendMessage } from './DumpSendMessage';
 import { MobileSendMessage } from './SendMessage/MobileSendMessage';
 
