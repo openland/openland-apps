@@ -226,7 +226,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                             (sharedRoom.membersCount === 1 ? ' member' : ' members')
                         }
                     />
-                    <ChatOnlinesTitle chatId={sharedRoom.id} />
+                    {!isMobile && <ChatOnlinesTitle chatId={sharedRoom.id} />}
                 </XView>
             );
 
