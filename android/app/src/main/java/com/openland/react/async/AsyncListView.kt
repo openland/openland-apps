@@ -114,10 +114,10 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     }
 
     private fun updateData() {
-        val items = this.state.items
-        items.forEach {
-            if (it.spec is AsyncFlexSpec) {
-                it.applyModes = this.applyModes.toList()
+        val items = this.state.items.map {
+            when (it.spec) {
+                is AsyncFlexSpec -> AsyncDataViewItem(it.key, it.spec.applyModes(this.applyModes))
+                else -> it
             }
         }
         val recycler = RecyclerCollectionComponent.create(asyncContext)
@@ -194,7 +194,9 @@ class AsyncListViewManager : SimpleViewManager<AsyncListView>() {
 
     @ReactProp(name = "applyModes")
     fun setApplyModes(view: AsyncListView, value: ReadableArray) {
-        view.setApplyModes(value.toArrayList().toArray(arrayOf()))
+        val res = value.toArrayList().toArray(arrayOf<String>())
+        res.sort()
+        view.setApplyModes(res)
     }
 
     @ReactProp(name = "loaderColor")

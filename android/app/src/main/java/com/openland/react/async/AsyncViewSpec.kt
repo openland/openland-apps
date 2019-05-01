@@ -137,7 +137,6 @@ class AsyncFlexSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncView
     var touchableKey: String? = null
     var highlightColor: Int? = null
     var overlay: Boolean = false
-    var appliedModes: Array<String> = arrayOf()
 
     fun applyModes(modesToApply: Array<String>): AsyncFlexSpec {
         val res = AsyncFlexSpec(this.key, this.children.map {
@@ -160,7 +159,6 @@ class AsyncFlexSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncView
             }
         }
 
-        res.appliedModes = modesToApply
         return res
     }
 }

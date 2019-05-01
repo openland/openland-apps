@@ -11,6 +11,7 @@ import com.facebook.litho.sections.annotations.GroupSectionSpec
 import com.facebook.litho.sections.annotations.OnCreateChildren
 import com.facebook.litho.sections.annotations.OnViewportChanged
 import com.facebook.litho.sections.common.DataDiffSection
+import com.facebook.litho.sections.common.OnCheckIsSameItemEvent
 import com.facebook.litho.sections.common.RenderEvent
 import com.facebook.litho.sections.common.SingleComponentSection
 import com.facebook.litho.widget.ComponentRenderInfo
@@ -79,6 +80,8 @@ object LithoSectionSpec {
                         .component(header))
                 .child(DataDiffSection.create<AsyncDataViewItem>(c)
                         .data(dataModel)
+                        .detectMoves(false)
+                        .onCheckIsSameItemEventHandler(LithoSection.isSameItem(c))
                         .renderEventHandler(LithoSection.onRenderEdge(c)))
                 .child(SingleComponentSection.create(c)
                         .component(footer))
@@ -99,16 +102,19 @@ object LithoSectionSpec {
         }
     }
 
+    @OnEvent(OnCheckIsSameItemEvent::class)
+    @JvmName("isSameItem")
+    fun isSameItem(
+            c: SectionContext,
+            @FromEvent previousItem: AsyncDataViewItem,
+            @FromEvent nextItem: AsyncDataViewItem): Boolean = previousItem.key == nextItem.key
+
     @OnEvent(RenderEvent::class)
     @JvmName("onRenderEdge")
     internal fun onRenderEdge(c: SectionContext, @FromEvent model: AsyncDataViewItem, @Prop reactContext: ReactContext): RenderInfo {
-        var spec = model.spec
-        if (spec is AsyncFlexSpec && model.applyModes != null) {
-            spec = spec.applyModes(model.applyModes!!.toTypedArray())
-        }
         return ComponentRenderInfo.create()
                 .component(Column.create(c)
-                        .child(resolveNode(c, spec, reactContext))
+                        .child(resolveNode(c, model.spec, reactContext))
                         .alignItems(YogaAlign.STRETCH)
                         .clipToOutline(false)
                         .widthPercent(100.0f))
