@@ -6055,7 +6055,7 @@ public final class RoomQuery: GraphQLQuery {
 
 public final class RoomChatQuery: GraphQLQuery {
   public let operationDefinition =
-    "query RoomChat($id: ID!) {\n  room(id: $id) {\n    __typename\n    ... on PrivateRoom {\n      id\n      user {\n        __typename\n        id\n        name\n      }\n    }\n    ... on SharedRoom {\n      id\n      kind\n      title\n      membership\n      isChannel\n      canEdit\n      pinnedMessage {\n        __typename\n        ...FullMessage\n      }\n    }\n  }\n}"
+    "query RoomChat($id: ID!) {\n  room(id: $id) {\n    __typename\n    ... on PrivateRoom {\n      id\n      user {\n        __typename\n        id\n        name\n      }\n    }\n    ... on SharedRoom {\n      id\n      kind\n      title\n      membership\n      isChannel\n      canEdit\n      photo\n      pinnedMessage {\n        __typename\n        ...FullMessage\n      }\n    }\n  }\n}"
 
   public var queryDocument: String { return operationDefinition.appending(FullMessage.fragmentDefinition).appending(UserShort.fragmentDefinition).appending(OrganizationShort.fragmentDefinition).appending(UserTiny.fragmentDefinition) }
 
@@ -6117,8 +6117,8 @@ public final class RoomChatQuery: GraphQLQuery {
         return Room(unsafeResultMap: ["__typename": "PrivateRoom", "id": id, "user": user.resultMap])
       }
 
-      public static func makeSharedRoom(id: GraphQLID, kind: SharedRoomKind, title: String, membership: SharedRoomMembershipStatus, isChannel: Bool, canEdit: Bool, pinnedMessage: AsSharedRoom.PinnedMessage? = nil) -> Room {
-        return Room(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "membership": membership, "isChannel": isChannel, "canEdit": canEdit, "pinnedMessage": pinnedMessage.flatMap { (value: AsSharedRoom.PinnedMessage) -> ResultMap in value.resultMap }])
+      public static func makeSharedRoom(id: GraphQLID, kind: SharedRoomKind, title: String, membership: SharedRoomMembershipStatus, isChannel: Bool, canEdit: Bool, photo: String, pinnedMessage: AsSharedRoom.PinnedMessage? = nil) -> Room {
+        return Room(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "membership": membership, "isChannel": isChannel, "canEdit": canEdit, "photo": photo, "pinnedMessage": pinnedMessage.flatMap { (value: AsSharedRoom.PinnedMessage) -> ResultMap in value.resultMap }])
       }
 
       public var __typename: String {
@@ -6257,6 +6257,7 @@ public final class RoomChatQuery: GraphQLQuery {
           GraphQLField("membership", type: .nonNull(.scalar(SharedRoomMembershipStatus.self))),
           GraphQLField("isChannel", type: .nonNull(.scalar(Bool.self))),
           GraphQLField("canEdit", type: .nonNull(.scalar(Bool.self))),
+          GraphQLField("photo", type: .nonNull(.scalar(String.self))),
           GraphQLField("pinnedMessage", type: .object(PinnedMessage.selections)),
         ]
 
@@ -6266,8 +6267,8 @@ public final class RoomChatQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public init(id: GraphQLID, kind: SharedRoomKind, title: String, membership: SharedRoomMembershipStatus, isChannel: Bool, canEdit: Bool, pinnedMessage: PinnedMessage? = nil) {
-          self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "membership": membership, "isChannel": isChannel, "canEdit": canEdit, "pinnedMessage": pinnedMessage.flatMap { (value: PinnedMessage) -> ResultMap in value.resultMap }])
+        public init(id: GraphQLID, kind: SharedRoomKind, title: String, membership: SharedRoomMembershipStatus, isChannel: Bool, canEdit: Bool, photo: String, pinnedMessage: PinnedMessage? = nil) {
+          self.init(unsafeResultMap: ["__typename": "SharedRoom", "id": id, "kind": kind, "title": title, "membership": membership, "isChannel": isChannel, "canEdit": canEdit, "photo": photo, "pinnedMessage": pinnedMessage.flatMap { (value: PinnedMessage) -> ResultMap in value.resultMap }])
         }
 
         public var __typename: String {
@@ -6330,6 +6331,15 @@ public final class RoomChatQuery: GraphQLQuery {
           }
           set {
             resultMap.updateValue(newValue, forKey: "canEdit")
+          }
+        }
+
+        public var photo: String {
+          get {
+            return resultMap["photo"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "photo")
           }
         }
 
