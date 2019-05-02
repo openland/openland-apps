@@ -38,7 +38,7 @@ class RNAsyncViewNode: ASDisplayNode {
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-    let res = resolveNode(spec: self.spec!, context: self.context)
+    let res = resolveNode(spec: self.spec!, modesToApply: [], context: self.context)
     if res is ASLayoutSpec {
       return res as! ASLayoutSpec
     } else {

@@ -9,13 +9,13 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.litho.*
 import com.facebook.litho.sections.SectionContext
 import com.facebook.litho.sections.widget.*
-import com.facebook.litho.utils.IncrementalMountUtils
 import com.facebook.litho.widget.SolidColor
 import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.openland.react.async.views.LithoSection
 import com.facebook.react.common.MapBuilder
 import com.facebook.react.bridge.ReactContext
+import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.uimanager.UIManagerModule
 import com.facebook.react.views.scroll.ScrollEvent
 import com.facebook.react.views.scroll.ScrollEventType
@@ -35,6 +35,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private var headerPadding: Float = 0.0f
     private var overflowColor: Int? = null
     private var loaderColor: Int? = null
+    private var applyModes: Array<String> = arrayOf()
     private val scrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -105,14 +106,27 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
         updateData()
     }
 
+    fun setApplyModes(value: Array<String>) {
+        if (!value.contentDeepEquals(this.applyModes)) {
+            this.applyModes = value
+            updateData()
+        }
+    }
+
     private fun updateData() {
+        val items = this.state.items.map {
+            when (it.spec) {
+                is AsyncFlexSpec -> AsyncDataViewItem(it.key, it.spec.applyModes(this.applyModes))
+                else -> it
+            }
+        }
         val recycler = RecyclerCollectionComponent.create(asyncContext)
                 .backgroundColor(if (this.state.items.isEmpty()) (if (this.overflowColor !== null) this.overflowColor!! else 0x00ffffff) else 0x00ffffff)
                 .clipToPadding(false)
                 .clipChildren(false)
                 .disablePTR(true)
                 .section(LithoSection.create(SectionContext(asyncContext))
-                        .dataModel(this.state.items)
+                        .dataModel(items)
                         .headerPadding(this.headerPadding)
                         .overflowColor(this.overflowColor)
                         .loaderColor(this.loaderColor)
@@ -176,6 +190,13 @@ class AsyncListViewManager : SimpleViewManager<AsyncListView>() {
     @ReactProp(name = "overflowColor")
     fun setOverflowColor(view: AsyncListView, value: Int) {
         view.setOverflowColor(value)
+    }
+
+    @ReactProp(name = "applyModes")
+    fun setApplyModes(view: AsyncListView, value: ReadableArray) {
+        val res = value.toArrayList().toArray(arrayOf<String>())
+        res.sort()
+        view.setApplyModes(res)
     }
 
     @ReactProp(name = "loaderColor")

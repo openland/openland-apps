@@ -13,6 +13,7 @@ import { MessageFileComponent } from './MessageFileComponent';
 import { XDate } from 'openland-x/XDate';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { MessageVideoComponent } from './MessageVideoComponent';
 
 interface ReplyMessageProps {
     sender: FullMessage_GeneralMessage_sender;
@@ -74,6 +75,17 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
                     );
                 }
             }
+        } else if (
+            props.attach.fileMetadata.name.endsWith('.mp4') ||
+            props.attach.fileMetadata.name.endsWith('.mov')
+        ) {
+            content.push(
+                <MessageVideoComponent
+                    key={'file' + props.attach.fileId}
+                    file={props.attach.fileId}
+                    fileName={props.attach.fileMetadata.name}
+                />,
+            );
         } else {
             content.push(
                 <MessageFileComponent

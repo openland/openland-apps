@@ -438,7 +438,8 @@
             "name": "ic-cancel-gray",
             "src": "ic-cancel-gray.svg",
             "sizes": [
-                18
+                18,
+                26
             ]
         },
         {

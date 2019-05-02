@@ -105,6 +105,14 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                         let isCompact =
                             index > 0 ? array[index - 1].sender.id === item.sender.id : false;
 
+                        let qfileAttach = (item.__typename === 'GeneralMessage'
+                            ? (item.attachments || []).filter(
+                                  a => a.__typename === 'MessageAttachmentFile',
+                              )[0]
+                            : undefined) as
+                            | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
+                            | undefined;
+
                         return (
                             <MessageReplyComponent
                                 spans={message.spans}
@@ -116,7 +124,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                                 edited={
                                     !!(item.__typename === 'GeneralMessage' && message.isEdited)
                                 }
-                                attach={fileAttach}
+                                attach={qfileAttach}
                                 startSelected={hideMenu}
                                 compact={isCompact || undefined}
                             />

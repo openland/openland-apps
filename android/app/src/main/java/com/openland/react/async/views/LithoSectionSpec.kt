@@ -11,6 +11,7 @@ import com.facebook.litho.sections.annotations.GroupSectionSpec
 import com.facebook.litho.sections.annotations.OnCreateChildren
 import com.facebook.litho.sections.annotations.OnViewportChanged
 import com.facebook.litho.sections.common.DataDiffSection
+import com.facebook.litho.sections.common.OnCheckIsSameItemEvent
 import com.facebook.litho.sections.common.RenderEvent
 import com.facebook.litho.sections.common.SingleComponentSection
 import com.facebook.litho.widget.ComponentRenderInfo
@@ -33,7 +34,7 @@ object LithoSectionSpec {
                                   @Prop headerPadding: Float,
                                   @Prop(optional = true) overflowColor: Int?,
                                   @Prop(optional = true) loaderColor: Int?
-                                  ): Children {
+    ): Children {
 
         var footer = Column.create(c)
                 .heightDip(64.0f)
@@ -42,14 +43,13 @@ object LithoSectionSpec {
                 .justifyContent(YogaJustify.CENTER)
 
 
-
         val progress = Progress.create(c)
                 .heightDip(32.0f)
                 .widthDip(32.0f)
                 .color(if (loaderColor !== null) loaderColor else 0xFF0084fe.toInt())
                 .marginDip(YogaEdge.BOTTOM, 16.0f)
 
-        if(overflowColor != null){
+        if (overflowColor != null) {
             footer.backgroundColor(overflowColor)
                     .justifyContent(YogaJustify.FLEX_END)
                     .clipToOutline(false)
@@ -65,14 +65,14 @@ object LithoSectionSpec {
                 footer.child(progress)
             }
 
-        }else{
+        } else {
             if (loading) {
                 footer.child(progress)
             }
         }
 
         var header = Row.create(c).heightDip(headerPadding)
-        if(overflowColor !== null){
+        if (overflowColor !== null) {
             header.backgroundColor(overflowColor)
         }
         return Children.create()
@@ -80,6 +80,8 @@ object LithoSectionSpec {
                         .component(header))
                 .child(DataDiffSection.create<AsyncDataViewItem>(c)
                         .data(dataModel)
+                        .detectMoves(false)
+                        .onCheckIsSameItemEventHandler(LithoSection.isSameItem(c))
                         .renderEventHandler(LithoSection.onRenderEdge(c)))
                 .child(SingleComponentSection.create(c)
                         .component(footer))
@@ -99,6 +101,13 @@ object LithoSectionSpec {
             AsyncDataViewManager.getDataView(dataViewKey, reactContext).handleLoadMore()
         }
     }
+
+    @OnEvent(OnCheckIsSameItemEvent::class)
+    @JvmName("isSameItem")
+    fun isSameItem(
+            c: SectionContext,
+            @FromEvent previousItem: AsyncDataViewItem,
+            @FromEvent nextItem: AsyncDataViewItem): Boolean = previousItem.key == nextItem.key
 
     @OnEvent(RenderEvent::class)
     @JvmName("onRenderEdge")

@@ -12,6 +12,7 @@ import { trackEvent } from 'openland-mobile/analytics';
 import { SRouter } from 'react-native-s/SRouter';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useMessageSelected, useChatSelectionMode } from 'openland-engines/messenger/MessagesActionsState';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -20,13 +21,13 @@ export interface MessagesListProps {
 }
 export const androidMessageInputListOverlap = 50;
 
-class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme }, { conversation: ConversationState }> implements ConversationStateHandler {
+class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme, selectionMode: boolean }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     // private listRef = React.createRef<ConversationMessagesView>();
     private rotation = new Animated.Value(0);
 
-    constructor(props: MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme }) {
+    constructor(props: MessagesListProps & { bottomInset: number, topInset: number, theme: AppTheme, selectionMode: boolean }) {
         super(props);
         let initialState = props.engine.getState();
 
@@ -107,6 +108,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     paddingBottom={this.props.messagesPaddingBottom}
                     loaded={this.state.conversation.historyFullyLoaded}
                     engine={this.props.engine}
+                    selectionMode={this.props.selectionMode}
                 />
                 {
                     !this.state.conversation.loading && this.state.conversation.messages.length === 0 && (
@@ -129,9 +131,10 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
 export const ConversationView = (props: MessagesListProps) => {
     let theme = React.useContext(ThemeContext);
+    let selectionMode = useChatSelectionMode(props.engine.messagesActionsState);
     return (
         <ASSafeAreaContext.Consumer>
-            {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} theme={theme} />)}
+            {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} theme={theme} selectionMode={selectionMode} />)}
         </ASSafeAreaContext.Consumer>
     );
 };

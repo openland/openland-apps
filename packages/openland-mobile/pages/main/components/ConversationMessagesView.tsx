@@ -12,6 +12,7 @@ export interface ConversationMessagesViewProps {
     engine: ConversationEngine;
     paddingBottom?: number;
     inverted: boolean;
+    selectionMode: boolean;
 }
 
 export const ConversationMessagesView = React.memo<ConversationMessagesViewProps>((props) => {
@@ -28,6 +29,7 @@ export const ConversationMessagesView = React.memo<ConversationMessagesViewProps
                 style={{ flexGrow: 1 }}
                 headerPadding={Platform.select({ ios: 6, android: androidMessageInputListOverlap })}
                 overflowColor={theme.backgroundColor}
+                applyModes={props.selectionMode ? ['selection'] : undefined}
             />
         </View>
     );
