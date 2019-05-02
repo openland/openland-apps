@@ -133,7 +133,6 @@ const OwnerLinkOrganization = (props: { onCopied: () => void }) => {
 
 export function showAppInviteModal() {
     showModalBox({ title: 'Invite people to Openland' }, ctx => {
-        console.log(ctx);
         return (
             <XView
                 maxWidth={575}
