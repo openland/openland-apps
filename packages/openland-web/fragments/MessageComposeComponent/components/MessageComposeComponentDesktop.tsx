@@ -112,7 +112,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         onChange: messageComposeProps.onChange,
         setInputValue,
         draftState,
-        inputMethodsState,
     });
 
     const hasReply = () => {

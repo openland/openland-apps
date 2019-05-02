@@ -10,7 +10,6 @@ type useHandleChangeT = {
     setInputValue: Function;
     onChange: ((text: string) => void) | undefined;
     draftState?: DraftStateT;
-    inputMethodsState: InputMethodsStateT;
 };
 
 export function useHandleChange({ setInputValue, onChange, draftState }: useHandleChangeT) {
