@@ -4,6 +4,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles } from '../basics/Flex';
 import { EditorContainer } from './components/EditorContainer';
 import { useMentionSuggestions } from './modules/mentions/MentionSuggestions/useMentionSuggestions';
+import { UserShort } from 'openland-api/Types';
 import { useEmojiSuggestions } from './modules/emoji/EmojiSuggestions/useEmojiSuggestions';
 import { useInputMethods, XRichTextInput2RefMethods } from './hooks/useInputMethods';
 import { useHandleEditorChange } from './hooks/useHandleEditorChange/useHandleEditorChange';
@@ -18,7 +19,7 @@ export interface XRichTextInput2Props extends XFlexStyles {
     placeholder?: string;
     autofocus?: boolean;
     initialMentions?: UserWithOffset[];
-    getMentionsSuggestions: () => Promise<UserWithOffset[]>;
+    getMentionsSuggestions: () => Promise<UserShort[]>;
     onPasteFile?: (file: any) => void;
     onCurrentWordChanged?: (word: string | undefined) => void;
     minimal?: boolean;

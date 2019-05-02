@@ -9,7 +9,6 @@ import { useHandleSend } from 'openland-web/fragments/MessageComposeComponent/ho
 import { useInputMethods } from 'openland-web/fragments/MessageComposeComponent/hooks/useInputMethods';
 import { useQuote } from 'openland-web/fragments/MessageComposeComponent/hooks/useQuote';
 import { useHandleChange } from 'openland-web/fragments/MessageComposeComponent/hooks/useHandleChange';
-import { useMentions } from 'openland-web/fragments/MessageComposeComponent/hooks/useMentions';
 import { UploadContext } from 'openland-web/modules/FileUploading/UploadContext';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 
@@ -47,33 +46,31 @@ export const CommentsInput = ({
         inputMethodsState,
     });
 
-    const mentionsState = useMentions({
-        getMembers,
-    });
-
     const { handleSend, closeEditor } = useHandleSend({
         onSend,
         onSendFile,
         inputValue,
         setInputValue,
         quoteState,
-        mentionsState,
         inputMethodsState,
     });
 
     const { handleChange } = useHandleChange({
-        mentionsState,
         onChange,
         setInputValue,
     });
+
+    const initialMentions: any[] = [];
 
     return (
         <DumpSendMessage
             placeholder={'Write a comment...'}
             topLevelComment={topLevelComment}
+            getMentionsSuggestions={async () => []}
             round
             fullWidth
             minimal={minimal}
+            initialMentions={initialMentions}
             TextInputComponent={DesktopSendMessage}
             quoteState={quoteState}
             handleChange={handleChange}
@@ -82,7 +79,6 @@ export const CommentsInput = ({
             inputValue={inputValue}
             enabled={true}
             closeEditor={closeEditor}
-            mentionsState={mentionsState}
         />
     );
 };

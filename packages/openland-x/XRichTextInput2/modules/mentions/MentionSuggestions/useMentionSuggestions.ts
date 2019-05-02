@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { useKeyupDown } from '../../../modules/useKeyupDown';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UserShort } from 'openland-api/Types';
 
 export type useMentionSuggestionsT = {
     activeWord: string;
-    getMentionsSuggestions: () => Promise<UserWithOffset[]>;
+    getMentionsSuggestions: () => Promise<UserShort[]>;
 };
 
 export type MentionSuggestionsStateT = {
@@ -22,12 +21,12 @@ export const useMentionSuggestions = ({
     activeWord,
 }: useMentionSuggestionsT): MentionSuggestionsStateT => {
     const [isSelecting, setIsSelecting] = React.useState(false);
-    const [suggestions, setSuggestions] = React.useState<UserShort[]>([]);
-    const [mentionsData, setMentionsData] = React.useState<UserWithOffset[]>([]);
+    const [finalFilteredSuggestions, setFilteredSuggestions] = React.useState<UserShort[]>([]);
+    const [initialSuggestions, setInitialSuggestions] = React.useState<UserShort[]>([]);
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
 
     const { handleUp, handleDown } = useKeyupDown({
-        suggestionsList: suggestions,
+        suggestionsList: finalFilteredSuggestions,
         selectedEntryIndex,
         setSelectedEntryIndex,
         isSelecting,
@@ -38,9 +37,9 @@ export const useMentionSuggestions = ({
             if (
                 activeWord.startsWith('@') &&
                 activeWord.length === 1 &&
-                mentionsData.length === 0
+                initialSuggestions.length === 0
             ) {
-                setMentionsData(await getMentionsSuggestions());
+                setInitialSuggestions(await getMentionsSuggestions());
             }
         })();
     }, [getMentionsSuggestions, activeWord]);
@@ -49,8 +48,8 @@ export const useMentionSuggestions = ({
         const alphabetSort = activeWord.startsWith('@') && activeWord.length === 1;
         const searchText = activeWord.slice(1).toLowerCase();
 
-        let filteredSuggestions = (mentionsData ? mentionsData : [])
-            .filter(({ user: { name } }: { user: { name: string } }) => {
+        let filteredSuggestions = (initialSuggestions ? initialSuggestions : [])
+            .filter(({ name }: { name: string }) => {
                 const validator = activeWord !== '' && activeWord[0] === '@';
                 const user = name.split(' ');
                 const finedFirstName = user[0].toLowerCase().startsWith(searchText);
@@ -63,22 +62,23 @@ export const useMentionSuggestions = ({
                     return name.toLowerCase().startsWith(searchText) && validator;
                 }
             })
-            .sort((a, b) => b.user.name.toLowerCase().localeCompare(a.user.name.toLowerCase()));
+            .sort((a, b) => b.name.toLowerCase().localeCompare(a.name.toLowerCase()));
+
         if (alphabetSort) {
-            filteredSuggestions = (mentionsData ? mentionsData : []).sort((a, b) =>
-                a.user.name.toLowerCase().localeCompare(b.user.name.toLowerCase()),
+            filteredSuggestions = (initialSuggestions ? initialSuggestions : []).sort((a, b) =>
+                a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
             );
         }
 
         setIsSelecting(activeWord.startsWith('@') && !!filteredSuggestions.length);
-        setSuggestions(filteredSuggestions.map(({ user }: { user: UserShort }) => user));
-    }, [mentionsData, activeWord]);
+        setFilteredSuggestions(filteredSuggestions);
+    }, [initialSuggestions, activeWord]);
 
     return {
         isSelecting,
         handleUp,
         handleDown,
-        suggestions,
+        suggestions: finalFilteredSuggestions,
         setSelectedEntryIndex,
         selectedEntryIndex,
     };

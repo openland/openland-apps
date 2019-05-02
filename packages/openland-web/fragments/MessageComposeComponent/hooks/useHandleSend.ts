@@ -7,7 +7,6 @@ import {
 import { QuoteStateT } from './useQuote';
 import { DraftStateT } from './useDraft/useDraft';
 import { InputMethodsStateT } from './useInputMethods';
-import { MentionsStateT } from './useMentions';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
 import { ReplyMessageVariables, ReplyMessage, RoomMembers_members } from 'openland-api/Types';
@@ -15,7 +14,6 @@ import { ReplyMessageVariables, ReplyMessage, RoomMembers_members } from 'openla
 export type useReplyPropsT = {
     replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
     conversationId?: string;
-    mentionsState?: MentionsStateT;
     quoteState?: QuoteStateT;
     inputValue: string;
 };
@@ -23,13 +21,11 @@ export type useReplyPropsT = {
 export type useHandleSendT = {
     onSend?: (text: string, mentions: UserWithOffset[] | null, uploadedFileKey?: string) => void;
     onSendFile?: (file: UploadCare.File) => Promise<string> | void;
-    mentionsState?: MentionsStateT;
     inputMethodsState?: InputMethodsStateT;
     draftState?: DraftStateT;
     setInputValue: Function;
     quoteState?: QuoteStateT;
     inputValue: string;
-    inputRef?: any;
     scrollToBottom?: () => void;
 } & useReplyPropsT;
 
@@ -37,21 +33,14 @@ export function useHandleSend({
     onSend,
     onSendFile,
     replyMessage,
-
     conversationId,
     inputValue,
     inputMethodsState,
     draftState,
     setInputValue,
     quoteState,
-    mentionsState,
-    inputRef,
     scrollToBottom,
 }: useHandleSendT) {
-    const supportMentions = () => {
-        return !!mentionsState;
-    };
-
     const supportDraft = () => {
         return !!draftState;
     };
@@ -93,9 +82,6 @@ export function useHandleSend({
         if (supportQuote()) {
             quoteState!!.clearQuote();
         }
-        if (inputRef && inputRef.current) {
-            inputRef.current.innerText = '';
-        }
 
         if (inputMethodsState) {
             inputMethodsState.resetAndFocus();
@@ -103,9 +89,6 @@ export function useHandleSend({
     };
 
     const clearAfterSend = () => {
-        if (supportMentions() && mentionsState) {
-            mentionsState.setCurrentMentions([]);
-        }
         if (supportDraft()) {
             draftState!!.cleanDraft!!();
             draftState!!.setBeDrafted!!(false);
@@ -124,8 +107,8 @@ export function useHandleSend({
         if (replyMessage && hasQuoteInState()) {
             const finalQuoteMessagesId = quoteState ? quoteState.quoteMessagesId || [] : [];
             let mentions: UserWithOffset[] = [];
-            if (supportMentions() && mentionsState!!.getMentions) {
-                mentions = mentionsState!!.getMentions().map((user: any) => user);
+            if (inputMethodsState) {
+                mentions = inputMethodsState.getMentions().map((user: any) => user);
             }
             await replyMessage({
                 roomId: conversationId!!,
@@ -134,8 +117,8 @@ export function useHandleSend({
                 replyMessages: finalQuoteMessagesId,
             });
         } else if (onSend && (inputValue || uploadedFileKey)) {
-            if (supportMentions() && mentionsState) {
-                await onSend(msg, mentionsState.getMentions(), uploadedFileKey);
+            if (inputMethodsState) {
+                await onSend(msg, inputMethodsState.getMentions(), uploadedFileKey);
             } else {
                 await onSend(msg, null, uploadedFileKey);
             }

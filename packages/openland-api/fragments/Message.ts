@@ -213,12 +213,12 @@ export const FullMessage = gql`
             length
             ... on MessageSpanUserMention {
                 user {
-                    ...UserTiny
+                    ...UserShort
                 }
             }
             ... on MessageSpanMultiUserMention {
                 users {
-                    ...UserTiny
+                    ...UserShort
                 }
             }
             ... on MessageSpanRoomMention {

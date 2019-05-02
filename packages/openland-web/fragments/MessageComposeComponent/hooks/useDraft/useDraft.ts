@@ -39,6 +39,7 @@ export function useDraft({ conversationId, saveDraftMessage, draft }: useDraftT)
     const getNextDraft = () => {
         let text = '';
         let mentions: UserWithOffset[] = [];
+
         const storedDraft = DraftStore.getDraftMessage(conversationId);
 
         if (storedDraft.text === null) {

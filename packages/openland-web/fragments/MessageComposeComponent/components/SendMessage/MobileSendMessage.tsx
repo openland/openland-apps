@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { ContentEditableTextInput } from '../ContentEditableTextInput';
-import { TextInputComponentInnerT } from '../DumpSendMessage';
+import { TextInputComponentT } from '../DumpSendMessage';
 
 export const MobileSendMessage = ({
     inputValue,
@@ -9,7 +9,7 @@ export const MobileSendMessage = ({
     inputRef,
     handleSend,
     handleDrop,
-}: TextInputComponentInnerT) => {
+}: TextInputComponentT) => {
     return (
         <XView flexGrow={1} maxHeight="100%" maxWidth="100%">
             <ContentEditableTextInput

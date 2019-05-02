@@ -1,6 +1,6 @@
 import { DraftStateT } from './useDraft/useDraft';
+import { InputMethodsStateT } from './useInputMethods';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
-import { MentionsStateT } from './useMentions';
 
 export type GeneralComposeStateT = {
     handleChange: Function;
@@ -8,26 +8,17 @@ export type GeneralComposeStateT = {
 
 type useHandleChangeT = {
     setInputValue: Function;
-    mentionsState?: MentionsStateT;
     onChange: ((text: string) => void) | undefined;
     draftState?: DraftStateT;
+    inputMethodsState: InputMethodsStateT;
 };
 
-export function useHandleChange({
-    setInputValue,
-    mentionsState,
-    onChange,
-    draftState,
-}: useHandleChangeT) {
+export function useHandleChange({ setInputValue, onChange, draftState }: useHandleChangeT) {
     const supportDraft = () => {
         return !!draftState;
     };
 
     const handleChange = ({ text, mentions }: { text: string; mentions: UserWithOffset[] }) => {
-        if (mentionsState) {
-            mentionsState.setCurrentMentions(mentions);
-        }
-
         setInputValue(text);
 
         if (onChange) {

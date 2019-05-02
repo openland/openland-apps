@@ -25,7 +25,6 @@ import { useHandleSend } from '../hooks/useHandleSend';
 import { useInputMethods } from '../hooks/useInputMethods';
 import { useQuote } from '../hooks/useQuote';
 import { useHandleChange } from '../hooks/useHandleChange';
-import { useMentions } from '../hooks/useMentions';
 import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
@@ -87,10 +86,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         conversationId: messageComposeProps.conversationId,
     });
 
-    const mentionsState = useMentions({
-        getMembers: messageComposeProps.getMembers,
-    });
-
     const { handleSend, closeEditor } = useHandleSend({
         replyMessage: messageComposeProps.replyMessage,
         conversationId: messageComposeProps.conversationId,
@@ -100,7 +95,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         inputValue,
         setInputValue,
         quoteState,
-        mentionsState,
         draftState,
         inputMethodsState,
     });
@@ -115,10 +109,10 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     });
 
     const { handleChange } = useHandleChange({
-        mentionsState,
         onChange: messageComposeProps.onChange,
         setInputValue,
         draftState,
+        inputMethodsState,
     });
 
     const hasReply = () => {
@@ -141,10 +135,18 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         }
     }, [isActive, currentConversationId]);
 
+    const getMentionsSuggestions = async () => {
+        return (await messageComposeProps.getMembers()).map(({ user }) => user);
+    };
+
+    const initialMentions: UserWithOffset[] = draftState.getDefaultValue().mentions;
+
     return (
         <>
             {isActive && (
                 <DumpSendMessage
+                    initialMentions={initialMentions}
+                    getMentionsSuggestions={getMentionsSuggestions}
                     TextInputComponent={
                         messageComposeProps.TextInputComponent || DesktopSendMessage
                     }
@@ -155,7 +157,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
                     inputValue={inputValue}
                     enabled={messageComposeProps.enabled}
                     closeEditor={closeEditor}
-                    mentionsState={mentionsState}
                 />
             )}
         </>

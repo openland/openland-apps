@@ -4,8 +4,8 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { FileUploader } from '../../../modules/FileUploading/FileUploader';
 import { AttachmentButtons } from './AttachmentButtons';
+import { UserShort } from 'openland-api/Types';
 import { EditView } from './EditView';
-import { MentionsStateT } from '../hooks/useMentions';
 import { QuoteStateT } from '../hooks/useQuote';
 import { DropZone } from '../../../modules/FileUploading/DropZone';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
@@ -64,12 +64,11 @@ export type TextInputComponentT = {
     handleSend: () => any;
     inputValue: string;
     handleDrop?: ((file: any) => void) | undefined;
-    mentionsState?: MentionsStateT;
+    getMentionsSuggestions: () => Promise<UserShort[]>;
+    initialMentions: UserWithOffset[];
     inputRef: any;
     placeholder?: string;
 };
-
-export type TextInputComponentInnerT = TextInputComponentT;
 
 export type DumpSendMessagePropsT = TextInputComponentT & {
     enabled?: boolean;
@@ -78,14 +77,15 @@ export type DumpSendMessagePropsT = TextInputComponentT & {
 };
 
 type DumpSendMessageT = {
-    TextInputComponent: React.ComponentType<TextInputComponentInnerT>;
+    TextInputComponent: React.ComponentType<TextInputComponentT>;
 } & DumpSendMessagePropsT;
 
 export const DumpSendMessage = React.memo(
     ({
         TextInputComponent,
+        initialMentions,
+        getMentionsSuggestions,
         topLevelComment,
-        mentionsState,
         handleChange,
         handleSend,
         inputRef,
@@ -118,8 +118,9 @@ export const DumpSendMessage = React.memo(
                         )}
                         <FileUploader />
                         <TextInputComponent
+                            initialMentions={initialMentions}
+                            getMentionsSuggestions={getMentionsSuggestions}
                             placeholder={placeholder || 'Write a message...'}
-                            mentionsState={mentionsState}
                             handleChange={handleChange}
                             handleSend={handleSend}
                             inputRef={inputRef}

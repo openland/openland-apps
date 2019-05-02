@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XRichTextInput2 } from 'openland-x/XRichTextInput2';
-import { TextInputComponentInnerT } from '../DumpSendMessage';
+import { TextInputComponentT } from '../DumpSendMessage';
 
 export const TextInputWrapper = Glamorous.div<{ minimal?: boolean }>(({ minimal }) => {
     return {
@@ -34,12 +34,13 @@ export const DesktopSendMessage = ({
     inputRef,
     handleSend,
     handleDrop,
-    mentionsState,
+    getMentionsSuggestions,
+    initialMentions,
     minimal,
     hideAttach,
     round,
     placeholder,
-}: TextInputComponentInnerT) => {
+}: TextInputComponentT) => {
     return (
         <TextInputWrapper minimal={minimal}>
             <XRichTextInput2
@@ -47,8 +48,8 @@ export const DesktopSendMessage = ({
                 hideAttach={hideAttach}
                 round={round}
                 flexGrow={1}
-                getMentionsSuggestions={mentionsState!!.getMentionsSuggestions}
-                initialMentions={[]}
+                getMentionsSuggestions={getMentionsSuggestions}
+                initialMentions={initialMentions}
                 placeholder={placeholder || 'Write a message...'}
                 onChange={handleChange}
                 onSubmit={handleSend}

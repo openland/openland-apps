@@ -24288,7 +24288,7 @@ public struct TinyMessage: GraphQLFragment {
 
 public struct FullMessage: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}"
+    "fragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}"
 
   public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
 
@@ -24575,7 +24575,7 @@ public struct FullMessage: GraphQLFragment {
 
         public static let selections: [GraphQLSelection] = [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLFragmentSpread(UserTiny.self),
+          GraphQLFragmentSpread(UserShort.self),
         ]
 
         public private(set) var resultMap: ResultMap
@@ -24609,9 +24609,9 @@ public struct FullMessage: GraphQLFragment {
             self.resultMap = unsafeResultMap
           }
 
-          public var userTiny: UserTiny {
+          public var userShort: UserShort {
             get {
-              return UserTiny(unsafeResultMap: resultMap)
+              return UserShort(unsafeResultMap: resultMap)
             }
             set {
               resultMap += newValue.resultMap
@@ -24693,7 +24693,7 @@ public struct FullMessage: GraphQLFragment {
 
         public static let selections: [GraphQLSelection] = [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLFragmentSpread(UserTiny.self),
+          GraphQLFragmentSpread(UserShort.self),
         ]
 
         public private(set) var resultMap: ResultMap
@@ -24727,9 +24727,9 @@ public struct FullMessage: GraphQLFragment {
             self.resultMap = unsafeResultMap
           }
 
-          public var userTiny: UserTiny {
+          public var userShort: UserShort {
             get {
-              return UserTiny(unsafeResultMap: resultMap)
+              return UserShort(unsafeResultMap: resultMap)
             }
             set {
               resultMap += newValue.resultMap
@@ -28556,7 +28556,7 @@ public struct FullMessage: GraphQLFragment {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(UserTiny.self),
+            GraphQLFragmentSpread(UserShort.self),
           ]
 
           public private(set) var resultMap: ResultMap
@@ -28590,9 +28590,9 @@ public struct FullMessage: GraphQLFragment {
               self.resultMap = unsafeResultMap
             }
 
-            public var userTiny: UserTiny {
+            public var userShort: UserShort {
               get {
-                return UserTiny(unsafeResultMap: resultMap)
+                return UserShort(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
@@ -28674,7 +28674,7 @@ public struct FullMessage: GraphQLFragment {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(UserTiny.self),
+            GraphQLFragmentSpread(UserShort.self),
           ]
 
           public private(set) var resultMap: ResultMap
@@ -28708,9 +28708,9 @@ public struct FullMessage: GraphQLFragment {
               self.resultMap = unsafeResultMap
             }
 
-            public var userTiny: UserTiny {
+            public var userShort: UserShort {
               get {
-                return UserTiny(unsafeResultMap: resultMap)
+                return UserShort(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
@@ -29415,7 +29415,7 @@ public struct FullMessage: GraphQLFragment {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(UserTiny.self),
+            GraphQLFragmentSpread(UserShort.self),
           ]
 
           public private(set) var resultMap: ResultMap
@@ -29449,9 +29449,9 @@ public struct FullMessage: GraphQLFragment {
               self.resultMap = unsafeResultMap
             }
 
-            public var userTiny: UserTiny {
+            public var userShort: UserShort {
               get {
-                return UserTiny(unsafeResultMap: resultMap)
+                return UserShort(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
@@ -29533,7 +29533,7 @@ public struct FullMessage: GraphQLFragment {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(UserTiny.self),
+            GraphQLFragmentSpread(UserShort.self),
           ]
 
           public private(set) var resultMap: ResultMap
@@ -29567,9 +29567,9 @@ public struct FullMessage: GraphQLFragment {
               self.resultMap = unsafeResultMap
             }
 
-            public var userTiny: UserTiny {
+            public var userShort: UserShort {
               get {
-                return UserTiny(unsafeResultMap: resultMap)
+                return UserShort(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap

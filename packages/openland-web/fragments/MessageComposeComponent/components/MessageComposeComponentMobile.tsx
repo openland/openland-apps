@@ -23,13 +23,14 @@ export const MobileMessageCompose = (messageComposeProps: MessageComposeComponen
         scrollToBottom: messageComposeProps.scrollToBottom,
         inputValue,
         setInputValue,
-        inputRef,
     });
 
     // TODO maybe some other pattern here
     return (
         <DumpSendMessage
             TextInputComponent={MobileSendMessage}
+            getMentionsSuggestions={async () => []}
+            initialMentions={[]}
             handleDrop={handleDrop}
             handleChange={handleChange}
             handleSend={handleSend}
