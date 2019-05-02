@@ -133,7 +133,7 @@ export function showAppInviteModal() {
     showModalBox({ title: 'Invite people to Openland' }, ctx => {
         return (
             <XView
-                width={575}
+                maxWidth={575}
                 paddingHorizontal={XModalBoxStyles.contentPadding}
                 paddingBottom={24}
                 paddingTop={6}
