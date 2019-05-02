@@ -18,6 +18,7 @@ export interface ASListViewProps {
     headerPadding?: number;
     overscrollCompensation?: boolean;
     onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    applyModes?: string[];
 }
 export const ASListView = XMemo<ASListViewProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -33,6 +34,7 @@ export const ASListView = XMemo<ASListViewProps>((props) => {
             onScroll={props.onScroll}
             overflowColor={props.overflowColor ? processColor(props.overflowColor) : undefined}
             loaderColor={processColor(props.loaderColor ? props.loaderColor : (Platform.OS === 'android' ? theme.loaderColorAndroid : theme.loaderColorIos))}
+            applyModes={props.applyModes || []}
         />
     );
 })

@@ -27,6 +27,8 @@ export const SendMessageWrapper = Glamorous.div<{
 }>(({ fullWidth, minimal, topLevelComment }) => {
     return {
         display: 'flex',
+        borderBottomLeftRadius: '8px',
+        borderBottomRightRadius: '8px',
         justifyContent: 'center',
         alignItems: 'stretch',
         flexShrink: 0,

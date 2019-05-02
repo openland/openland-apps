@@ -14,12 +14,13 @@ class RNAsyncCell: ASCellNode {
   let context: RNAsyncViewContext
   var spec: AsyncViewSpec
   var node: ASLayoutElement!
+  var applyModes: [String] = []
   
   init(spec: AsyncViewSpec, context: RNAsyncViewContext) {
     self.context = context
     self.spec = spec
     super.init()
-    self.node = resolveNode(spec: spec, context: self.context)
+    self.node = resolveNode(spec: spec, modesToApply: self.applyModes, context: self.context)
     self.automaticallyManagesSubnodes = true
     self.setNeedsLayout()
     self.layoutThatFits(range)
@@ -28,7 +29,16 @@ class RNAsyncCell: ASCellNode {
   // We are updating cell always from background thread
   func setSpec(spec: AsyncViewSpec) {
     self.spec = spec
-    self.node = resolveNode(spec: spec, context: self.context)
+    updateNode()
+  }
+  
+  func applyModes(modesToApply: [String]){
+    self.applyModes = modesToApply
+    updateNode()
+  }
+  
+  func updateNode(){
+    self.node = resolveNode(spec: self.spec, modesToApply: self.applyModes, context: self.context)
     self.layoutThatFits(range)
     self.setNeedsLayout()
   }

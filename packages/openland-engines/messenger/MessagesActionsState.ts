@@ -50,12 +50,20 @@ export class MessagesActionsStateEngine {
 
 export const useMessageSelected = (engine: MessagesActionsStateEngine, self: DataSourceMessageItem) => {
     let [selected, setSelected] = React.useState(false);
-    let [selectionActive, setSelectionActive] = React.useState(false);
     React.useEffect(() => {
         return engine.listen((s) => {
             setSelected(s.messages.includes(self));
-            setSelectionActive(s.messages.length > 0 && !s.action);
         })
     }, [self])
-    return [selected, selectionActive];
+    return selected;
+}
+
+export const useChatSelectionMode = (engine: MessagesActionsStateEngine) => {
+    let [selectionActive, setSelectionActive] = React.useState(false);
+    React.useEffect(() => {
+        return engine.listen((s) => {
+            setSelectionActive(s.messages.length > 0 && !s.action);
+        })
+    })
+    return selectionActive;
 }

@@ -12,9 +12,9 @@ import Foundation
 // Root Resolvers
 //
 
-func resolveNode(spec: AsyncViewSpec, context: RNAsyncViewContext) -> ASLayoutElement {
+func resolveNode(spec: AsyncViewSpec, modesToApply: [String], context: RNAsyncViewContext) -> ASLayoutElement {
   if let flexSpec = spec as? AsyncFlexSpec {
-    return createFlexNode(spec: flexSpec, context: context)
+    return createFlexNode(spec: flexSpec, modesToApply: modesToApply, context: context)
   } else if let textSpec = spec as? AsyncTextSpec {
     return createTextNode(spec: textSpec, context: context)
   } else if let imageSpec = spec as? AsyncImageSpec {
@@ -28,7 +28,8 @@ func resolveNode(spec: AsyncViewSpec, context: RNAsyncViewContext) -> ASLayoutEl
 // View Resolvers
 //
 
-func createFlexNode(spec: AsyncFlexSpec, context: RNAsyncViewContext) -> ASLayoutElement {
+func createFlexNode(spec: AsyncFlexSpec, modesToApply: [String], context: RNAsyncViewContext) -> ASLayoutElement {
+  
   let direct = spec.children.filter({ (s) -> Bool in
     return !(s is AsyncFlexSpec) || !(s as! AsyncFlexSpec).overlay
   })
@@ -63,16 +64,17 @@ func createFlexNode(spec: AsyncFlexSpec, context: RNAsyncViewContext) -> ASLayou
       return ASStackLayoutJustifyContent.end
     }
   }()
-  res.children = resolveNodes(direct, context)
+  res.children = resolveNodes(direct, modesToApply, context)
 
   var res2: ASLayoutElement = res
-  res2 = resolveStyle(spec, res, context)
+  let style = spec.style.applyModes(applyModes: modesToApply )
+  res2 = resolveStyle(spec.key, style, res, context)
   
   if overlay.count > 1 {
     fatalError("Only one overlay supported")
   }
   if overlay.count == 1 {
-    res2 = ASOverlayLayoutSpec(child: res2, overlay: resolveNode(spec: overlay[0], context: context))
+    res2 = ASOverlayLayoutSpec(child: res2, overlay: resolveNode(spec: overlay[0], modesToApply: modesToApply, context: context))
   }
   
   if (spec.touchableKey != nil) {
@@ -87,7 +89,7 @@ func createTextNode(spec: AsyncTextSpec, context: RNAsyncViewContext) -> ASLayou
     return RNAsyncTextNode()
   }
   res.setSpec(spec: spec)
-  return resolveStyle(spec, res, context)
+  return resolveStyle(spec.key, spec.style, res, context)
 }
 
 func createImageNode(spec: AsyncImageSpec, context: RNAsyncViewContext) -> ASLayoutElement {
@@ -95,70 +97,70 @@ func createImageNode(spec: AsyncImageSpec, context: RNAsyncViewContext) -> ASLay
     return RNImageNode()
   }
   res.setSpec(spec: spec)
-  return resolveStyle(spec, res, context)
+  return resolveStyle(spec.key, spec.style, res, context)
 }
 
 //
 // Helpers
 //
 
-func resolveStyle(_ spec: AsyncViewSpec, _ source: ASLayoutElement, _ context: RNAsyncViewContext) -> ASLayoutElement {
+func resolveStyle(_ key: String, _ style: AsyncStyleSpec, _ source: ASLayoutElement, _ context: RNAsyncViewContext) -> ASLayoutElement {
   var res = source
   
   // Apply basic styles
-  if let v = spec.style.width {
+  if let v = style.width {
     res.style.width = ASDimension(unit: .points, value: CGFloat(v))
   }
-  if let v = spec.style.height {
+  if let v = style.height {
     res.style.height = ASDimension(unit: .points, value: CGFloat(v))
   }
   
-  if let v = spec.style.minWidth {
+  if let v = style.minWidth {
     res.style.minWidth = ASDimension(unit: .points, value: CGFloat(v))
   }
-  if let v = spec.style.minHeight {
+  if let v = style.minHeight {
     res.style.minHeight = ASDimension(unit: .points, value: CGFloat(v))
   }
-  if let v = spec.style.maxWidth {
+  if let v = style.maxWidth {
     res.style.maxWidth = ASDimension(unit: .points, value: CGFloat(v))
   }
-  if let v = spec.style.maxHeight {
+  if let v = style.maxHeight {
     res.style.maxHeight = ASDimension(unit: .points, value: CGFloat(v))
   }
   
-  if let v = spec.style.borderRadius {
+  if let v = style.borderRadius {
     if let g = source as? ASDisplayNode {
       g.cornerRadius = CGFloat(v)
       g.cornerRoundingType = .precomposited
     }
   }
   
-  if let v = spec.style.backgroundPatch {
-    let g = context.fetchCached(key: spec.key+"-bg-patch" + String(v.source.hashValue) + (v.tint !== nil ? String(v.tint!.cgColor.hashValue) : "")) { () -> RNPatchNode in
+  if let v = style.backgroundPatch {
+    let g = context.fetchCached(key: key+"-bg-patch" + String(v.source.hashValue) + (v.tint !== nil ? String(v.tint!.cgColor.hashValue) : "")) { () -> RNPatchNode in
       return RNPatchNode()
     }
     g.setSpec(spec: v)
     res = ASBackgroundLayoutSpec(child: res, background: g)
-  } else if let v = spec.style.backgroundGradient {
+  } else if let v = style.backgroundGradient {
     var bgr: CGFloat = 0.0
-    if let br = spec.style.borderRadius {
+    if let br = style.borderRadius {
       bgr = CGFloat(br)
     }
-    let g = context.fetchCached(key: spec.key+"-bg-gradient") { () -> RNAsyncGradient in
+    let g = context.fetchCached(key: key+"-bg-gradient") { () -> RNAsyncGradient in
       return RNAsyncGradient(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v, borderRadius: bgr)
     }
     g.update(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v,borderRadius: bgr)
-//    if let br = spec.style.borderRadius {
+//    if let br = style.borderRadius {
 //      g.cornerRadius = CGFloat(br)
 //      g.cornerRoundingType = .precomposited
 //    }
     res = ASBackgroundLayoutSpec(child: res, background: g)
-  } else if let v = spec.style.backgroundColor {
-    let g = context.fetchCached(key: spec.key+"-bg-color") { () -> RNAsyncColor in
+  } else if let v = style.backgroundColor {
+    let g = context.fetchCached(key: key+"-bg-color") { () -> RNAsyncColor in
       return RNAsyncColor(v)
     }
     g.update(color: v)
-    if let br = spec.style.borderRadius {
+    if let br = style.borderRadius {
       g.cornerRadius = CGFloat(br)
       g.cornerRoundingType = .defaultSlowCALayer // WTF?
     }
@@ -166,31 +168,31 @@ func resolveStyle(_ spec: AsyncViewSpec, _ source: ASLayoutElement, _ context: R
   }
   
   // Apply margins
-  let marginTop: Float = spec.style.marginTop ?? 0.0
-  let marginBottom: Float = spec.style.marginBottom ?? 0.0
-  let marginLeft: Float = spec.style.marginLeft ?? 0.0
-  let marginRight: Float = spec.style.marginRight ?? 0.0
+  let marginTop: Float = style.marginTop ?? 0.0
+  let marginBottom: Float = style.marginBottom ?? 0.0
+  let marginLeft: Float = style.marginLeft ?? 0.0
+  let marginRight: Float = style.marginRight ?? 0.0
   if marginTop != 0 || marginBottom != 0 || marginRight != 0 || marginLeft != 0 {
     res = ASInsetLayoutSpec(insets: UIEdgeInsets(top: CGFloat(marginTop), left: CGFloat(marginLeft), bottom: CGFloat(marginBottom), right: CGFloat(marginRight)), child: res)
   }
   
   // Apply flex params
-  if let v = spec.style.flexBasis {
+  if let v = style.flexBasis {
     res.style.flexBasis = ASDimension(unit: .points, value: CGFloat(v))
   }
-  if let v = spec.style.flexGrow {
+  if let v = style.flexGrow {
     res.style.flexGrow = CGFloat(v)
   }
-  if let v = spec.style.flexShrink {
+  if let v = style.flexShrink {
     res.style.flexShrink = CGFloat(v)
   }
 
   return res
 }
 
-func resolveNodes(_ specs: [AsyncViewSpec], _ context: RNAsyncViewContext) -> [ASLayoutElement] {
+func resolveNodes(_ specs: [AsyncViewSpec], _ modesToApply: [String], _ context: RNAsyncViewContext) -> [ASLayoutElement] {
   return specs.map {
-    return resolveNode(spec: $0, context: context)
+    return resolveNode(spec: $0, modesToApply: modesToApply, context: context)
   }
 }
 

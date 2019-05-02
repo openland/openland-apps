@@ -75,7 +75,9 @@ export const SearchBox = XMemo<SearchBoxProps>(props => {
                             autofocus={!isMobile}
                         />
                     </XHorizontal>
-                    {props.value.length > 0 && <XButton text="Clear" onClick={onClear} />}
+                    {props.value.length > 0 && (
+                        <XButton text="Clear" onClick={onClear} flexShrink={0} />
+                    )}
                     <XButton text="Search" style="primary" />
                 </SearchInner>
             </XContentWrapper>

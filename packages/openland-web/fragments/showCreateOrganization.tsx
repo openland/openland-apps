@@ -64,7 +64,7 @@ const CreateOrgForm = React.memo<{ type: 'organization' | 'community'; ctx: XMod
             <>
                 {form.loading && <XLoader loading={form.loading} />}
                 {form.error && <XErrorMessage message={form.error} />}
-                <XView flexDirection="column">
+                <XView flexDirection="column" borderRadius={8} overflow="hidden">
                     <XView
                         flexDirection="row"
                         paddingHorizontal={XModalBoxStyles.contentPadding}

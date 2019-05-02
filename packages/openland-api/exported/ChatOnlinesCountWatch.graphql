@@ -1,0 +1,6 @@
+subscription ChatOnlinesCountWatch($chatId: ID!) {
+  chatOnlinesCount(chatId: $chatId) {
+    __typename
+    onlineMembers
+  }
+}

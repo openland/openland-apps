@@ -17,11 +17,12 @@ import { useMessageSelected } from 'openland-engines/messenger/MessagesActionsSt
 import { ASImage } from 'react-native-async-view/ASImage';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { AppTheme } from 'openland-mobile/themes/themes';
+import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 
 const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: AppTheme }>((props) => {
-    let [selected, selectionActive] = useMessageSelected(props.engine.messagesActionsState, props.message);
+    let selected = useMessageSelected(props.engine.messagesActionsState, props.message);
     let toggleSelect = React.useCallback(() => props.engine.messagesActionsState.selectToggle(props.message), [props.message]);
-    return selectionActive ? <ASFlex marginLeft={8} overlay={true} alignItems="center">
+    return <ASFlex marginLeft={-200} renderModes={rm({ 'selection': { marginLeft: 8 } })} overlay={true} alignItems="center">
         <ASFlex onPress={toggleSelect} width={24} height={24} borderRadius={12} backgroundColor={selected ? props.theme.accentColor : props.theme.radioBorderColor} >
             <ASFlex overlay={true} alignItems="center" justifyContent="center">
                 <ASFlex width={22} height={22} borderRadius={11} alignItems="center" justifyContent="center" backgroundColor={selected ? props.theme.accentColor : props.theme.backgroundColor}>
@@ -29,7 +30,7 @@ const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMe
                 </ASFlex>
             </ASFlex>
         </ASFlex>
-    </ASFlex> : null;
+    </ASFlex >;
 });
 
 export interface AsyncMessageViewProps {
@@ -96,13 +97,12 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch" onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundColor : undefined}>
-            <SelectCheckbox engine={props.engine} message={props.message} theme={theme} />
 
             <ASFlex key="margin-top" backgroundColor={theme.backgroundColor} height={(props.message.attachTop ? 2 : 14) + 2} marginTop={-2} />
 
             <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
                 <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
-                    <ASFlex key="margin-left-1" backgroundColor={theme.backgroundColor} width={(props.message.attachBottom ? 36 : 0) + 10} />
+                    <ASFlex key="margin-left-1" renderModes={props.message.isOut ? undefined : rm({ 'selection': { width: (props.message.attachBottom ? 36 : 0) + 40 } })} backgroundColor={theme.backgroundColor} width={(props.message.attachBottom ? 36 : 0) + 10} />
 
                     {!props.message.isOut && !props.message.attachBottom &&
                         <ASFlex marginRight={3} onPress={() => handleAvatarPress(props.message.senderId)} alignItems="flex-end">
@@ -130,6 +130,8 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
             </ASFlex>
 
             <ASFlex key="margin-bottom" backgroundColor={theme.backgroundColor} height={4} marginBottom={-2} />
+            <SelectCheckbox engine={props.engine} message={props.message} theme={theme} />
+
         </ASFlex>
     );
 });

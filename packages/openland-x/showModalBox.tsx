@@ -2,14 +2,13 @@ import * as React from 'react';
 import { XModal, showModal, XModalController } from './showModal';
 import { css } from 'linaria';
 import * as className from 'classnames';
-import { XScrollView3 } from './XScrollView3';
 import { XView } from 'react-mental';
 import { XLoader } from './XLoader';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import ResizeObserver from 'resize-observer-polyfill';
 
 const boxStyle = css`
-    overflow: hidden;
+    overflow: visible;
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -191,9 +190,8 @@ const ModalBoxComponent = React.memo<{
                             </XView>
                         </XView>
                     )}
-                    <XScrollView3 flexShrink={1} useDefaultScroll={true}>
-                        <React.Suspense fallback={Loader}>{contents}</React.Suspense>
-                    </XScrollView3>
+
+                    <React.Suspense fallback={Loader}>{contents}</React.Suspense>
                 </div>
             </div>
         </XModalBoxContext.Provider>

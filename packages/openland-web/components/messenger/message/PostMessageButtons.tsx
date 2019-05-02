@@ -46,7 +46,9 @@ const DiscussButton = React.memo(
                 {commentsCount ? (
                     <XView flexDirection="row">
                         <CommentChannelIcon />{' '}
-                        <XView marginLeft={4}>{commentsCount} comments</XView>
+                        <XView marginLeft={4}>
+                            {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
+                        </XView>
                     </XView>
                 ) : (
                     <XView flexDirection="row">

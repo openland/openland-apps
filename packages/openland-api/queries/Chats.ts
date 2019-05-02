@@ -257,6 +257,7 @@ export const RoomChatQuery = gql`
                 membership
                 isChannel
                 canEdit
+                photo
                 pinnedMessage {
                     ...FullMessage
                 }

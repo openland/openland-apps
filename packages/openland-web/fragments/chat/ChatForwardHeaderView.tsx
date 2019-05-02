@@ -55,9 +55,9 @@ const DeleteMessagesFrom = (props: { messagesIds: string[]; onDelete: () => void
             target={<XButton text="Delete" style="default" />}
             defaultAction={async () => {
                 await client.mutateRoomDeleteMessages({
-                    mids: (props as any).messagesIds,
+                    mids: props.messagesIds,
                 });
-                await (props as any).onDelete();
+                await props.onDelete();
             }}
         >
             <XText>Delete selected messages for everyone? This cannot be undone.</XText>

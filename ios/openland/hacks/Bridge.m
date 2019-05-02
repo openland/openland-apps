@@ -29,6 +29,7 @@ RCT_EXPORT_VIEW_PROPERTY(headerPadding, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(inverted, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(overscrollCompensation, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(applyModes, NSArray)
 @end
 
 @interface RCT_EXTERN_MODULE(RNAsyncKeyboardViewManager, RCTViewManager)

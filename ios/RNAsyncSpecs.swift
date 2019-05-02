@@ -46,7 +46,7 @@ enum AsyncTextAlignment: String {
 }
 
 protocol AsyncViewSpec {
-  var style: AsyncStyleSpec {get}
+  var style: AsyncStyleSpec {get set}
   var key: String {get}
 }
 
@@ -100,20 +100,118 @@ class AsyncStyleSpec {
   var flexShrink: Float?
   var flexBasis: Float?
   var alignSelf: AsyncFlexAlignSelf?
-  
   var backgroundGradient: [UIColor]?
   var backgroundColor: UIColor?
   var backgroundPatch: AsyncPatch?
   var backgroundPatchTintColor: UIColor?
   var borderRadius: Float?
-  
   var marginTop: Float?
   var marginBottom: Float?
   var marginRight: Float?
   var marginLeft: Float?
-  
   var opacity: Float?
+  
+  var modes: [String: AsyncStyleSpec]?
+  
+  func applyModes(applyModes: [String]) -> AsyncStyleSpec{
+    var res = self.merge(with: self);
+    for m in applyModes {
+      if let mode = self.modes?[m]{
+        res = res.merge(with: mode)
+      }
+    }
+    return res;
+  }
+  
+  func merge(with: AsyncStyleSpec) -> AsyncStyleSpec{
+    let res = AsyncStyleSpec()
+    
+    res.height = self.height
+    if let height = with.height{
+      res.height = height
+    }
+    res.width = self.width
+    if let width = with.width{
+      res.width = width
+    }
+    res.minWidth = self.minWidth
+    if let minWidth = with.minWidth{
+      res.minWidth = minWidth
+    }
+    res.minHeight = self.minHeight
+    if let minHeight = with.minHeight{
+      res.minHeight = minHeight
+    }
+    res.maxWidth = self.maxWidth
+    if let maxWidth = with.maxWidth{
+      res.maxWidth = maxWidth
+    }
+    res.maxHeight = self.maxHeight
+    if let maxHeight = with.maxHeight{
+      res.maxHeight = maxHeight
+    }
+    res.flexGrow = self.flexGrow
+    if let flexGrow = with.flexGrow{
+      res.flexGrow = flexGrow
+    }
+    res.flexShrink = self.flexShrink
+    if let flexShrink = with.flexShrink{
+      res.flexShrink = flexShrink
+    }
+    res.flexBasis = self.flexBasis
+    if let flexBasis = with.flexBasis{
+      res.flexBasis = flexBasis
+    }
+    res.alignSelf = self.alignSelf
+    if let alignSelf = with.alignSelf{
+      res.alignSelf = alignSelf
+    }
+    res.backgroundGradient = self.backgroundGradient
+    if let backgroundGradient = with.backgroundGradient{
+      res.backgroundGradient = backgroundGradient
+    }
+    res.backgroundColor = self.backgroundColor
+    if let backgroundColor = with.backgroundColor{
+      res.backgroundColor = backgroundColor
+    }
+    res.backgroundPatch = self.backgroundPatch
+    if let backgroundPatch = with.backgroundPatch{
+      res.backgroundPatch = backgroundPatch
+    }
+    res.backgroundPatchTintColor = self.backgroundPatchTintColor
+    if let backgroundPatchTintColor = with.backgroundPatchTintColor{
+      res.backgroundPatchTintColor = backgroundPatchTintColor
+    }
+    res.borderRadius = self.borderRadius
+    if let borderRadius = with.borderRadius{
+      res.borderRadius = borderRadius
+    }
+    res.marginTop = self.marginTop
+    if let marginTop = with.marginTop{
+      res.marginTop = marginTop
+    }
+    res.marginBottom = self.marginBottom
+    if let marginBottom = with.marginBottom{
+      res.marginBottom = marginBottom
+    }
+    res.marginRight = self.marginRight
+    if let marginRight = with.marginRight{
+      res.marginRight = marginRight
+    }
+    res.marginLeft = self.marginLeft
+    if let marginLeft = with.marginLeft{
+      res.marginLeft = marginLeft
+    }
+    res.opacity = self.opacity
+    if let opacity = with.opacity{
+      res.opacity = opacity
+    }
+    
+    return res;
+  }
+
 }
+
 
 class AsyncPatch {
   let source: String;
@@ -195,6 +293,12 @@ private func resolveStyle(_ src: JSON) -> AsyncStyleSpec {
     let right = v["right"]!.floatValue
     let source = v["source"]!.stringValue
     res.backgroundPatch = AsyncPatch(source: source, top: top, right: right, bottom: bottom, left: left, tint: res.backgroundPatchTintColor)
+  }
+  if let v = src["props"]["renderModes"].dictionary {
+    res.modes = [:]
+    for key in v.keys{
+      res.modes![key] =  resolveStyle(v[key]!)
+    }
   }
   if let v = src["props"]["opacity"].float {
     res.opacity = v
