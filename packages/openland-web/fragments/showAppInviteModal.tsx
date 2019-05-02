@@ -26,6 +26,7 @@ const CopyIconClassName = css`
 
 interface OwnerLinkComponentProps {
     appInvite: string | null;
+    onCopied: () => void;
 }
 
 class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
@@ -60,6 +61,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
             this.setState({
                 copied: false,
             });
+            this.props.onCopied();
         }, 1500);
     };
 
@@ -118,7 +120,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
     }
 }
 
-const OwnerLinkOrganization = () => {
+const OwnerLinkOrganization = (props: { onCopied: () => void }) => {
     const client = useClient();
     const data = client.useAccountAppInvite();
 
@@ -126,21 +128,21 @@ const OwnerLinkOrganization = () => {
         return null;
     }
 
-    return <OwnerLinkComponent appInvite={data ? data.invite : null} />;
+    return <OwnerLinkComponent appInvite={data ? data.invite : null} onCopied={props.onCopied} />;
 };
 
 export function showAppInviteModal() {
     showModalBox({ title: 'Invite people to Openland' }, ctx => {
         return (
             <XView
-                width={575}
+                maxWidth={575}
                 paddingHorizontal={XModalBoxStyles.contentPadding}
                 paddingBottom={24}
                 paddingTop={6}
                 borderRadius={8}
                 overflow="hidden"
             >
-                <OwnerLinkOrganization />
+                <OwnerLinkOrganization onCopied={ctx.hide} />
             </XView>
         );
     });
