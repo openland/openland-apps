@@ -7,7 +7,7 @@ import { ZListItem } from '../../components/ZListItem';
 import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { Room_room_SharedRoom, RoomMemberRole, UserShort, Room_room_SharedRoom_members } from 'openland-api/Types';
+import { RoomMemberRole, UserShort, Room_room_SharedRoom_members, RoomWithoutMembers_room_SharedRoom } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -25,7 +25,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const client = useClient();
     const roomId = props.router.params.id;
 
-    const room = client.useRoomWithoutMembers({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room as Room_room_SharedRoom;
+    const room = client.useRoomWithoutMembers({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room as RoomWithoutMembers_room_SharedRoom;
     const initialMembers = client.useRoomMembersPaginated({ roomId: roomId, first: 10 }, { fetchPolicy: 'cache-and-network' }).members;
 
     const [ members, setMembers ] = React.useState(initialMembers);
@@ -104,10 +104,10 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                     }
                 },
                 'Add members',
-                room.members.map(m => m.user.id),
+                members.map(m => m.user.id),
                 { path: 'ProfileGroupLink', pathParams: { id: room.id } }
             );
-        }, [ room.members ]);
+        }, [ members ]);
 
         const handleManageClick = React.useCallback(() => {
             let builder = new ActionSheetBuilder();
