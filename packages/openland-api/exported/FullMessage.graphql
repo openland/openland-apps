@@ -84,6 +84,7 @@ fragment FullMessage on ModernMessage {
           }
           url
         }
+        id
         image {
           __typename
           metadata {
@@ -102,6 +103,7 @@ fragment FullMessage on ModernMessage {
           __typename
           buttons {
             __typename
+            id
             style
             title
             url
@@ -116,6 +118,7 @@ fragment FullMessage on ModernMessage {
     }
     commentsCount
     edited
+    id
     quotedMessages {
       __typename
       date
@@ -181,6 +184,7 @@ fragment FullMessage on ModernMessage {
               size
             }
             filePreview
+            id
           }
           ... on MessageRichAttachment {
             fallback
@@ -198,6 +202,7 @@ fragment FullMessage on ModernMessage {
               }
               url
             }
+            id
             image {
               __typename
               metadata {
@@ -221,6 +226,7 @@ fragment FullMessage on ModernMessage {
         }
         commentsCount
         edited
+        id
       }
     }
     reactions {
@@ -233,6 +239,7 @@ fragment FullMessage on ModernMessage {
     }
   }
   ... on ServiceMessage {
+    id
     serviceMetadata {
       __typename
       ... on InviteServiceMetadata {

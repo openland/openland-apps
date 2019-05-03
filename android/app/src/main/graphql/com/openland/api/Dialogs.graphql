@@ -16,6 +16,7 @@ query Dialogs($after: String) {
       cid
       fid
       haveMention
+      id
       isChannel
       isMuted
       kind

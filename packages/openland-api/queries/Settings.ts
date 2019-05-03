@@ -33,6 +33,7 @@ export const ProfileQuery = gql`
             }
             joinedAt: alphaJoinedAt
             invitedBy: alphaInvitedBy {
+                id
                 name
             }
         }
@@ -64,6 +65,7 @@ export const ProfileUpdateMutation = gql`
             primaryOrganizationId: alphaPrimaryOrganizationId
             joinedAt: alphaJoinedAt
             invitedBy: alphaInvitedBy {
+                id
                 name
             }
         }

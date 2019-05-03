@@ -9,6 +9,7 @@ query Profile {
     about
     invitedBy: alphaInvitedBy {
       __typename
+      id
       name
     }
     joinedAt: alphaJoinedAt

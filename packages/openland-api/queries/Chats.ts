@@ -12,6 +12,7 @@ export const DialogsQuery = gql`
     query Dialogs($after: String) {
         dialogs(first: 20, after: $after) {
             items {
+                id
                 cid
                 fid
                 kind
@@ -661,6 +662,7 @@ export const RoomLeaveMutation = gql`
 export const RoomSearchTextQuery = gql`
     query RoomSearchText($query: String!) {
         items: betaDialogTextSearch(query: $query) {
+            id2: id
             id: cid
             title
             flexibleId: fid
@@ -684,6 +686,7 @@ export const RoomSearchQuery = gql`
                         membership
                         membersCount
                         organization {
+                            id
                             photo
                             name
                         }
@@ -856,6 +859,7 @@ export const ResolvedInviteQuery = gql`
         invite: alphaResolveInvite(key: $key) {
             __typename
             ... on InviteInfo {
+                id
                 orgId
                 title
                 creator {
@@ -868,6 +872,7 @@ export const ResolvedInviteQuery = gql`
                 }
             }
             ... on RoomInvite {
+                id
                 invitedByUser {
                     ...UserShort
                 }

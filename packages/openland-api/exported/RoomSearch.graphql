@@ -14,6 +14,7 @@ query RoomSearch($page: Int, $query: String, $sort: String) {
           membership
           organization {
             __typename
+            id
             name
             photo
           }

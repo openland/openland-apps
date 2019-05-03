@@ -13,6 +13,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     private var connected = false
     private val client = SpaceXClient("wss:$endpoint", token)
     private val watches = mutableMapOf<String, () -> Unit>()
+    private val subscriptions = mutableMapOf<String, SpaceXClient.SpaceXSubscription>()
 
     init {
         client.setConnectionStateListener {
@@ -148,15 +149,41 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     }
 
     fun subscribe(id: String, query: String, arguments: ReadableMap) {
-        // TODO: Implement
+        subscriptions[id] = client.subscribe(Operations.operationByName(query), arguments.toKotlinX(), object : OperationCallback {
+            override fun onResult(result: JsonObject) {
+                val res = result.toReact()
+
+                val map = WritableNativeMap()
+                map.putString("key", key)
+                map.putString("type", "response")
+                map.putString("id", id)
+
+                map.putMap("data", res)
+
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                        .emit("apollo_client", map)
+            }
+
+            override fun onError(result: JsonObject) {
+                val res = result.toReact()
+                val map = WritableNativeMap()
+                map.putString("key", key)
+                map.putString("type", "failure")
+                map.putString("id", id)
+                map.putString("kind", "graphql")
+                map.putMap("data", res)
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                        .emit("apollo_client", map)
+            }
+        })
     }
 
     fun subscribeUpdate(id: String, arguments: ReadableMap) {
-        // TODO: Implement
+        subscriptions[id]?.updateArguments(arguments.toKotlinX())
     }
 
     fun unsubscribe(id: String) {
-        // TODO: Implement
+        subscriptions.remove(id)?.stop()
     }
 
     fun dispose() {

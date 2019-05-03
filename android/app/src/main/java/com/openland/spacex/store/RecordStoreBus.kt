@@ -7,6 +7,9 @@ class RecordStoreBus {
     private val subsciptions = mutableMapOf<Int, Subscription>()
 
     fun publish(changes: Map<String, ChangedRecord>) {
+        if (changes.isEmpty()) {
+            return
+        }
         val subskeys = mutableSetOf<String>()
         for (e in changes) {
             for (k in e.value.fields) {

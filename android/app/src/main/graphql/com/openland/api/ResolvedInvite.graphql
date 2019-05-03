@@ -6,6 +6,7 @@ query ResolvedInvite($key: String!) {
         __typename
         ...UserShort
       }
+      id
       orgId
       title
     }
@@ -16,6 +17,7 @@ query ResolvedInvite($key: String!) {
       }
     }
     ... on RoomInvite {
+      id
       invitedByUser {
         __typename
         ...UserShort

@@ -13,10 +13,10 @@ class NormalizedCollection {
     }
 }
 
-class Scope(parentCacheKey: String, val collection: NormalizedCollection, val obj: JsonObject) {
+class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val obj: JsonObject) {
 
-    val id: String
-    val map: MutableMap<String, RecordValue>
+    val id: String?
+    val map: MutableMap<String, RecordValue>?
 
     init {
         if (obj.containsKey("id")) {
@@ -24,12 +24,16 @@ class Scope(parentCacheKey: String, val collection: NormalizedCollection, val ob
         } else {
             this.id = parentCacheKey
         }
-        val ex = collection.records[id]
-        if (ex == null) {
-            map = mutableMapOf()
-            collection.records[id] = map
+        if (id != null) {
+            val ex = collection.records[id]
+            if (ex == null) {
+                map = mutableMapOf()
+                collection.records[id] = map
+            } else {
+                map = ex
+            }
         } else {
-            map = ex
+            map = null
         }
     }
 
@@ -60,11 +64,11 @@ class Scope(parentCacheKey: String, val collection: NormalizedCollection, val ob
     //
 
     inline fun set(key: String, value: RecordValue) {
-        map[key] = value
+        map?.let { it[key] = value }
     }
 
     inline fun setNull(key: String) {
-        map[key] = RecordValue.Null
+        map?.let { it[key] = RecordValue.Null }
     }
 
     //
@@ -72,13 +76,13 @@ class Scope(parentCacheKey: String, val collection: NormalizedCollection, val ob
     //
 
     inline fun child(requestKey: String, storeKey: String): Scope {
-        val res = Scope("$id.$storeKey", collection, obj.getObject(requestKey))
-        map[storeKey] = RecordValue.Reference(res.id)
+        val res = Scope(if (id != null) "$id.$storeKey" else null, collection, obj.getObject(requestKey))
+        map?.let { map[storeKey] = RecordValue.Reference(res.id!!) }
         return res
     }
 
     inline fun childList(requestKey: String, storeKey: String): ListScope {
-        val res = ListScope("$id.$storeKey", collection, obj.getArray(requestKey))
+        val res = ListScope(if (id != null) "$id.$storeKey" else null, collection, obj.getArray(requestKey))
 
         return res
     }
@@ -178,12 +182,12 @@ class Scope(parentCacheKey: String, val collection: NormalizedCollection, val ob
     }
 }
 
-class ListScope(val key: String, val collection: NormalizedCollection, val arr: JsonArray) {
+class ListScope(val key: String?, val collection: NormalizedCollection, val arr: JsonArray) {
     val size: Int = arr.size
-    val res = mutableListOf<RecordValue>()
+    val res: MutableList<RecordValue>? = if (key != null) mutableListOf() else null
 
     inline fun next(src: RecordValue) {
-        res.add(src)
+        res?.add(src)
     }
 
     inline fun isNotNull(index: Int): Boolean {
@@ -191,8 +195,10 @@ class ListScope(val key: String, val collection: NormalizedCollection, val arr: 
     }
 
     inline fun child(index: Int): Scope {
-        val scp = Scope("$key.$index", collection, arr[index].jsonObject)
-        res.add(RecordValue.Reference(scp.id))
+        val scp = Scope(if (key != null) "$key.$index" else null, collection, arr[index].jsonObject)
+        if (res != null) {
+            res.add(RecordValue.Reference(scp.id!!))
+        }
         return scp
     }
 
@@ -201,7 +207,11 @@ class ListScope(val key: String, val collection: NormalizedCollection, val arr: 
     }
 
     inline fun completed(): RecordValue {
-        return RecordValue.List(res)
+        if (res != null) {
+            return RecordValue.List(res)
+        } else {
+            return RecordValue.Null
+        }
     }
 
     inline fun assertObject(index: Int): Boolean {

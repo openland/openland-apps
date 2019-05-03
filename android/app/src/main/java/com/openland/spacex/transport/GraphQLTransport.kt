@@ -9,6 +9,11 @@ interface TransportOperationCallback {
     fun onCompleted()
 }
 
+interface RunningOperation {
+    fun cancel()
+    fun lazyUpdate(operation: JsonObject)
+}
+
 interface GraphQLTransport {
-    fun operation(operation: OperationDefinition, callback: TransportOperationCallback)
+    fun operation(operation: OperationDefinition, callback: TransportOperationCallback): RunningOperation
 }

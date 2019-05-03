@@ -5,6 +5,7 @@ query AccountAppInviteInfo($inviteKey: String!) {
       __typename
       ...UserShort
     }
+    id
   }
   appInvite: appInviteInfo(key: $inviteKey) {
     __typename

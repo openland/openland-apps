@@ -21,9 +21,11 @@ fragment TinyMessage on ModernMessage {
           isImage
         }
         filePreview
+        id
       }
     }
     commentsCount
+    id
     quotedMessages {
       __typename
       id

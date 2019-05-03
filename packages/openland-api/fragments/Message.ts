@@ -12,11 +12,13 @@ export const TinyMessage = gql`
         message
         fallback
         ... on GeneralMessage {
+            id
             commentsCount
             attachments {
                 id
                 fallback
                 ... on MessageAttachmentFile {
+                    id
                     fileId
                     fileMetadata {
                         isImage
@@ -44,6 +46,7 @@ export const FullMessage = gql`
         fallback
 
         ... on GeneralMessage {
+            id
             edited
             commentsCount
             attachments {
@@ -64,6 +67,7 @@ export const FullMessage = gql`
                 }
 
                 ... on MessageRichAttachment {
+                    id
                     title
                     subTitle
                     titleLink
@@ -95,6 +99,7 @@ export const FullMessage = gql`
                     }
                     keyboard {
                         buttons {
+                            id
                             title
                             style
                             url
@@ -146,11 +151,13 @@ export const FullMessage = gql`
                 }
 
                 ... on GeneralMessage {
+                    id
                     commentsCount
                     edited
                     attachments {
                         fallback
                         ... on MessageAttachmentFile {
+                            id
                             fileId
                             fileMetadata {
                                 name
@@ -165,6 +172,7 @@ export const FullMessage = gql`
                         }
 
                         ... on MessageRichAttachment {
+                            id
                             title
                             subTitle
                             titleLink
@@ -246,6 +254,7 @@ export const FullMessage = gql`
         }
 
         ... on ServiceMessage {
+            id
             serviceMetadata {
                 ... on InviteServiceMetadata {
                     users {

@@ -5,8 +5,6 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import java.util.concurrent.Executors
 
-class PendingOperation(val id: String, val query: JsonObject, val callback: TransportOperationCallback)
-
 class WebSocketTransport {
     private val url: String
     private val token: String?
@@ -70,15 +68,16 @@ class WebSocketTransport {
     // External Methods
     //
 
-    fun operation(operation: JsonObject, callback: TransportOperationCallback) {
+    fun operation(operation: JsonObject, callback: TransportOperationCallback): RunningOperation {
+        val id = nextId++.toString()
+        val op = PendingOperation(id, operation, callback)
         queue.submit {
-            val id = nextId++.toString()
-            val op = PendingOperation(id, operation, callback)
             liveOperations[id] = op
             if (this.connected) {
                 postMessage("start", operation, id)
             }
         }
+        return op
     }
 
     //
@@ -146,5 +145,19 @@ class WebSocketTransport {
                         "payload" to payload
                 )
         )))
+    }
+
+    private inner class PendingOperation(val id: String, var query: JsonObject, val callback: TransportOperationCallback) : RunningOperation {
+        override fun cancel() {
+            queue.submit {
+                liveOperations.remove(id)
+            }
+        }
+
+        override fun lazyUpdate(operation: JsonObject) {
+            queue.submit {
+                query = operation
+            }
+        }
     }
 }

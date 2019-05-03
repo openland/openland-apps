@@ -103,7 +103,7 @@ private fun readSelector(
                 if (!rv.first) {
                     return false
                 }
-                fields[key] = rv.second!!
+                fields[f.alias] = rv.second!!
             } else {
                 return false
             }

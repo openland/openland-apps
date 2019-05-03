@@ -198,6 +198,7 @@ fun normalizeFullMessage(scope12: Scope) {
                     } else {
                         scope22.setNull("icon")
                     }
+                    scope22.set("id", scope22.readString("id"))
                     if (scope22.hasKey("image")) {
                         val scope26 = scope22.child("image", "image")
                         scope26.set("__typename", scope26.readString("__typename"))
@@ -230,6 +231,7 @@ fun normalizeFullMessage(scope12: Scope) {
                                         scope30.assertObject(i)
                                         val scope31 = scope30.child(i)
                                         scope31.set("__typename", scope31.readString("__typename"))
+                                        scope31.set("id", scope31.readString("id"))
                                         scope31.set("style", scope31.readString("style"))
                                         scope31.set("title", scope31.readString("title"))
                                         scope31.set("url", scope31.readStringOptional("url"))
@@ -252,6 +254,7 @@ fun normalizeFullMessage(scope12: Scope) {
         }
         scope12.set("commentsCount", scope12.readInt("commentsCount"))
         scope12.set("edited", scope12.readBoolean("edited"))
+        scope12.set("id", scope12.readString("id"))
         if (scope12.assertList("quotedMessages")) {
             val scope32 = scope12.childList("quotedMessages", "quotedMessages")
             for (i in 0 until scope32.size) {
@@ -337,6 +340,7 @@ fun normalizeFullMessage(scope12: Scope) {
                                 scope44.set("name", scope44.readString("name"))
                                 scope44.set("size", scope44.readInt("size"))
                                 scope43.set("filePreview", scope43.readStringOptional("filePreview"))
+                                scope43.set("id", scope43.readString("id"))
                             }
                             if (scope43.isType("MessageRichAttachment")) {
                                 scope43.set("fallback", scope43.readString("fallback"))
@@ -360,6 +364,7 @@ fun normalizeFullMessage(scope12: Scope) {
                                 } else {
                                     scope43.setNull("icon")
                                 }
+                                scope43.set("id", scope43.readString("id"))
                                 if (scope43.hasKey("image")) {
                                     val scope47 = scope43.child("image", "image")
                                     scope47.set("__typename", scope47.readString("__typename"))
@@ -391,6 +396,7 @@ fun normalizeFullMessage(scope12: Scope) {
                     }
                     scope33.set("commentsCount", scope33.readInt("commentsCount"))
                     scope33.set("edited", scope33.readBoolean("edited"))
+                    scope33.set("id", scope33.readString("id"))
                 }
             }
             scope12.set("quotedMessages", scope32.completed())
@@ -411,6 +417,7 @@ fun normalizeFullMessage(scope12: Scope) {
         }
     }
     if (scope12.isType("ServiceMessage")) {
+        scope12.set("id", scope12.readString("id"))
         if (scope12.hasKey("serviceMetadata")) {
             val scope52 = scope12.child("serviceMetadata", "serviceMetadata")
             scope52.set("__typename", scope52.readString("__typename"))
@@ -665,11 +672,13 @@ fun normalizeTinyMessage(scope87: Scope) {
                     scope91.set("imageFormat", scope91.readStringOptional("imageFormat"))
                     scope91.set("isImage", scope91.readBoolean("isImage"))
                     scope90.set("filePreview", scope90.readStringOptional("filePreview"))
+                    scope90.set("id", scope90.readString("id"))
                 }
             }
             scope87.set("attachments", scope89.completed())
         }
         scope87.set("commentsCount", scope87.readInt("commentsCount"))
+        scope87.set("id", scope87.readString("id"))
         if (scope87.assertList("quotedMessages")) {
             val scope92 = scope87.childList("quotedMessages", "quotedMessages")
             for (i in 0 until scope92.size) {
@@ -1183,6 +1192,7 @@ fun normalizeAccountAppInviteInfo(scope158: Scope) {
         } else {
             scope159.setNull("creator")
         }
+        scope159.set("id", scope159.readString("id"))
     } else {
         scope158.setNull("alphaInviteInfo" + scope158.formatArguments("key" to scope158.argumentKey("inviteKey")))
     }
@@ -1220,6 +1230,7 @@ fun normalizeAccountInviteInfo(scope163: Scope) {
             scope166.set("__typename", scope166.readString("__typename"))
             scope166.set("about", scope166.readStringOptional("about"))
             scope166.set("alphaIsCommunity", scope166.readBoolean("isCommunity"))
+            scope166.set("id", scope166.readString("id"))
         } else {
             scope164.setNull("organization")
         }
@@ -1437,6 +1448,7 @@ fun normalizeDialogs(scope203: Scope) {
             scope207.set("cid", scope207.readString("cid"))
             scope207.set("fid", scope207.readString("fid"))
             scope207.set("haveMention", scope207.readBoolean("haveMention"))
+            scope207.set("id", scope207.readString("id"))
             scope207.set("isChannel", scope207.readBoolean("isChannel"))
             scope207.set("isMuted", scope207.readBoolean("isMuted"))
             scope207.set("kind", scope207.readString("kind"))
@@ -1786,6 +1798,7 @@ fun normalizeProfile(scope282: Scope) {
         if (scope284.hasKey("invitedBy")) {
             val scope285 = scope284.child("invitedBy", "alphaInvitedBy")
             scope285.set("__typename", scope285.readString("__typename"))
+            scope285.set("id", scope285.readString("id"))
             scope285.set("name", scope285.readString("name"))
         } else {
             scope284.setNull("alphaInvitedBy")
@@ -1866,6 +1879,7 @@ fun normalizeResolvedInvite(scope293: Scope) {
             } else {
                 scope294.setNull("creator")
             }
+            scope294.set("id", scope294.readString("id"))
             scope294.set("orgId", scope294.readString("orgId"))
             scope294.set("title", scope294.readString("title"))
         }
@@ -1876,6 +1890,7 @@ fun normalizeResolvedInvite(scope293: Scope) {
             normalizeUserShort(scope296)
         }
         if (scope294.isType("RoomInvite")) {
+            scope294.set("id", scope294.readString("id"))
             scope294.assertObject("invitedByUser")
             val scope297 = scope294.child("invitedByUser", "invitedByUser")
             scope297.set("__typename", scope297.readString("__typename"))
@@ -2138,6 +2153,7 @@ fun normalizeRoomSearch(scope335: Scope) {
                 if (scope339.hasKey("organization")) {
                     val scope340 = scope339.child("organization", "organization")
                     scope340.set("__typename", scope340.readString("__typename"))
+                    scope340.set("id", scope340.readString("id"))
                     scope340.set("name", scope340.readString("name"))
                     scope340.set("photo", scope340.readStringOptional("photo"))
                 } else {
@@ -2168,6 +2184,7 @@ fun normalizeRoomSearchText(scope342: Scope) {
             scope344.set("__typename", scope344.readString("__typename"))
             scope344.set("cid", scope344.readString("id"))
             scope344.set("fid", scope344.readString("flexibleId"))
+            scope344.set("id", scope344.readString("id2"))
             scope344.set("kind", scope344.readString("kind"))
             scope344.set("photo", scope344.readString("photo"))
             scope344.set("title", scope344.readString("title"))
@@ -2219,6 +2236,7 @@ fun normalizeSuperAccount(scope353: Scope) {
     if (scope354.hasKey("createdBy")) {
         val scope355 = scope354.child("createdBy", "createdBy")
         scope355.set("__typename", scope355.readString("__typename"))
+        scope355.set("id", scope355.readString("id"))
         scope355.set("name", scope355.readString("name"))
     } else {
         scope354.setNull("createdBy")
@@ -2680,6 +2698,7 @@ fun normalizeProfileUpdate(scope466: Scope) {
     if (scope467.hasKey("invitedBy")) {
         val scope468 = scope467.child("invitedBy", "alphaInvitedBy")
         scope468.set("__typename", scope468.readString("__typename"))
+        scope468.set("id", scope468.readString("id"))
         scope468.set("name", scope468.readString("name"))
     } else {
         scope467.setNull("alphaInvitedBy")
@@ -3316,6 +3335,7 @@ val FullMessageSelector = obj(listOf(
                                         ))),
                                     field("url","url", notNull(scalar("String")))
                                 ))),
+                            field("id","id", notNull(scalar("ID"))),
                             field("image","image", obj(listOf(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     field("metadata","metadata", obj(listOf(
@@ -3334,6 +3354,7 @@ val FullMessageSelector = obj(listOf(
                                     field("__typename","__typename", notNull(scalar("String"))),
                                     field("buttons","buttons", notNull(list(list(notNull(obj(listOf(
                                             field("__typename","__typename", notNull(scalar("String"))),
+                                            field("id","id", notNull(scalar("ID"))),
                                             field("style","style", notNull(scalar("String"))),
                                             field("title","title", notNull(scalar("String"))),
                                             field("url","url", scalar("String"))
@@ -3348,6 +3369,7 @@ val FullMessageSelector = obj(listOf(
                     )))))),
                 field("commentsCount","commentsCount", notNull(scalar("Int"))),
                 field("edited","edited", notNull(scalar("Boolean"))),
+                field("id","id", notNull(scalar("ID"))),
                 field("quotedMessages","quotedMessages", notNull(list(notNull(obj(listOf(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("date","date", notNull(scalar("Date"))),
@@ -3412,7 +3434,8 @@ val FullMessageSelector = obj(listOf(
                                                 field("name","name", notNull(scalar("String"))),
                                                 field("size","size", notNull(scalar("Int")))
                                             )))),
-                                        field("filePreview","filePreview", scalar("String"))
+                                        field("filePreview","filePreview", scalar("String")),
+                                        field("id","id", notNull(scalar("ID")))
                                     ))),
                                     inline("MessageRichAttachment", obj(listOf(
                                         field("fallback","fallback", notNull(scalar("String"))),
@@ -3430,6 +3453,7 @@ val FullMessageSelector = obj(listOf(
                                                     ))),
                                                 field("url","url", notNull(scalar("String")))
                                             ))),
+                                        field("id","id", notNull(scalar("ID"))),
                                         field("image","image", obj(listOf(
                                                 field("__typename","__typename", notNull(scalar("String"))),
                                                 field("metadata","metadata", obj(listOf(
@@ -3452,7 +3476,8 @@ val FullMessageSelector = obj(listOf(
                                     )))
                                 )))))),
                             field("commentsCount","commentsCount", notNull(scalar("Int"))),
-                            field("edited","edited", notNull(scalar("Boolean")))
+                            field("edited","edited", notNull(scalar("Boolean"))),
+                            field("id","id", notNull(scalar("ID")))
                         )))
                     )))))),
                 field("reactions","reactions", notNull(list(notNull(obj(listOf(
@@ -3465,6 +3490,7 @@ val FullMessageSelector = obj(listOf(
                     ))))))
             ))),
             inline("ServiceMessage", obj(listOf(
+                field("id","id", notNull(scalar("ID"))),
                 field("serviceMetadata","serviceMetadata", obj(listOf(
                         field("__typename","__typename", notNull(scalar("String"))),
                         inline("InviteServiceMetadata", obj(listOf(
@@ -3669,10 +3695,12 @@ val TinyMessageSelector = obj(listOf(
                                     field("imageFormat","imageFormat", scalar("String")),
                                     field("isImage","isImage", notNull(scalar("Boolean")))
                                 )))),
-                            field("filePreview","filePreview", scalar("String"))
+                            field("filePreview","filePreview", scalar("String")),
+                            field("id","id", notNull(scalar("ID")))
                         )))
                     )))))),
                 field("commentsCount","commentsCount", notNull(scalar("Int"))),
+                field("id","id", notNull(scalar("ID"))),
                 field("quotedMessages","quotedMessages", notNull(list(notNull(obj(listOf(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("id","id", notNull(scalar("ID")))
@@ -4084,7 +4112,8 @@ val AccountAppInviteInfoSelector = obj(listOf(
                     field("creator","creator", obj(listOf(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        )))
+                        ))),
+                    field("id","id", notNull(scalar("ID")))
                 ))),
             field("appInviteInfo","appInvite", mapOf("key" to reference("inviteKey")), obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -4111,7 +4140,8 @@ val AccountInviteInfoSelector = obj(listOf(
                     field("organization","organization", obj(listOf(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("about","about", scalar("String")),
-                            field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean")))
+                            field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
+                            field("id","id", notNull(scalar("ID")))
                         ))),
                     field("photo","photo", scalar("String")),
                     field("title","title", notNull(scalar("String")))
@@ -4240,6 +4270,7 @@ val DialogsSelector = obj(listOf(
                             field("cid","cid", notNull(scalar("ID"))),
                             field("fid","fid", notNull(scalar("ID"))),
                             field("haveMention","haveMention", notNull(scalar("Boolean"))),
+                            field("id","id", notNull(scalar("ID"))),
                             field("isChannel","isChannel", notNull(scalar("Boolean"))),
                             field("isMuted","isMuted", notNull(scalar("Boolean"))),
                             field("kind","kind", notNull(scalar("String"))),
@@ -4499,6 +4530,7 @@ val ProfileSelector = obj(listOf(
                     field("about","about", scalar("String")),
                     field("alphaInvitedBy","invitedBy", obj(listOf(
                             field("__typename","__typename", notNull(scalar("String"))),
+                            field("id","id", notNull(scalar("ID"))),
                             field("name","name", notNull(scalar("String")))
                         ))),
                     field("alphaJoinedAt","joinedAt", scalar("String")),
@@ -4556,6 +4588,7 @@ val ResolvedInviteSelector = obj(listOf(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
                             ))),
+                        field("id","id", notNull(scalar("ID"))),
                         field("orgId","orgId", notNull(scalar("ID"))),
                         field("title","title", notNull(scalar("String")))
                     ))),
@@ -4566,6 +4599,7 @@ val ResolvedInviteSelector = obj(listOf(
                             ))))
                     ))),
                     inline("RoomInvite", obj(listOf(
+                        field("id","id", notNull(scalar("ID"))),
                         field("invitedByUser","invitedByUser", notNull(obj(listOf(
                                 field("__typename","__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
@@ -4768,6 +4802,7 @@ val RoomSearchSelector = obj(listOf(
                                         field("membership","membership", notNull(scalar("String"))),
                                         field("organization","organization", obj(listOf(
                                                 field("__typename","__typename", notNull(scalar("String"))),
+                                                field("id","id", notNull(scalar("ID"))),
                                                 field("name","name", notNull(scalar("String"))),
                                                 field("photo","photo", scalar("String"))
                                             ))),
@@ -4792,6 +4827,7 @@ val RoomSearchTextSelector = obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("cid","id", notNull(scalar("ID"))),
                     field("fid","flexibleId", notNull(scalar("ID"))),
+                    field("id","id2", notNull(scalar("ID"))),
                     field("kind","kind", notNull(scalar("String"))),
                     field("photo","photo", notNull(scalar("String"))),
                     field("title","title", notNull(scalar("String")))
@@ -4830,6 +4866,7 @@ val SuperAccountSelector = obj(listOf(
                     field("createdAt","createdAt", scalar("String")),
                     field("createdBy","createdBy", obj(listOf(
                             field("__typename","__typename", notNull(scalar("String"))),
+                            field("id","id", notNull(scalar("ID"))),
                             field("name","name", notNull(scalar("String")))
                         ))),
                     field("features","features", notNull(list(notNull(obj(listOf(
@@ -4928,7 +4965,7 @@ object Operations {
     val AccountAppInviteInfo = object: OperationDefinition {
         override val name = "AccountAppInviteInfo"
         override val kind = OperationKind.QUERY
-        override val body = "query AccountAppInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename creator{__typename ...UserShort}}appInvite:appInviteInfo(key:\$inviteKey){__typename inviter{__typename ...UserShort}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "query AccountAppInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename creator{__typename ...UserShort}id}appInvite:appInviteInfo(key:\$inviteKey){__typename inviter{__typename ...UserShort}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = AccountAppInviteInfoSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -4939,7 +4976,7 @@ object Operations {
     val AccountInviteInfo = object: OperationDefinition {
         override val name = "AccountInviteInfo"
         override val kind = OperationKind.QUERY
-        override val body = "query AccountInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename creator{__typename ...UserShort}forEmail forName id joined key membersCount orgId organization{__typename about isCommunity:alphaIsCommunity}photo title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "query AccountInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename creator{__typename ...UserShort}forEmail forName id joined key membersCount orgId organization{__typename about isCommunity:alphaIsCommunity id}photo title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = AccountInviteInfoSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -4994,7 +5031,7 @@ object Operations {
     val ChatHistory = object: OperationDefinition {
         override val name = "ChatHistory"
         override val kind = OperationKind.QUERY
-        override val body = "query ChatHistory(\$before:ID,\$chatId:ID!,\$first:Int!){state:conversationState(id:\$chatId){__typename state}messages(before:\$before,chatId:\$chatId,first:\$first){__typename ...FullMessage}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query ChatHistory(\$before:ID,\$chatId:ID!,\$first:Int!){state:conversationState(id:\$chatId){__typename state}messages(before:\$before,chatId:\$chatId,first:\$first){__typename ...FullMessage}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = ChatHistorySelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5005,7 +5042,7 @@ object Operations {
     val ChatInit = object: OperationDefinition {
         override val name = "ChatInit"
         override val kind = OperationKind.QUERY
-        override val body = "query ChatInit(\$before:ID,\$chatId:ID!,\$first:Int!){state:conversationState(id:\$chatId){__typename state}messages(before:\$before,chatId:\$chatId,first:\$first){__typename ...FullMessage}room(id:\$chatId){__typename ...RoomShort}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}"
+        override val body = "query ChatInit(\$before:ID,\$chatId:ID!,\$first:Int!){state:conversationState(id:\$chatId){__typename state}messages(before:\$before,chatId:\$chatId,first:\$first){__typename ...FullMessage}room(id:\$chatId){__typename ...RoomShort}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}"
         override val selector = ChatInitSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5049,7 +5086,7 @@ object Operations {
     val Dialogs = object: OperationDefinition {
         override val name = "Dialogs"
         override val kind = OperationKind.QUERY
-        override val body = "query Dialogs(\$after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:\$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename ...TinyMessage}cid fid haveMention isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview}}commentsCount quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "query Dialogs(\$after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:\$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename ...TinyMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = DialogsSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5159,7 +5196,7 @@ object Operations {
     val Message = object: OperationDefinition {
         override val name = "Message"
         override val kind = OperationKind.QUERY
-        override val body = "query Message(\$messageId:ID!){message(messageId:\$messageId){__typename ...FullMessage}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query Message(\$messageId:ID!){message(messageId:\$messageId){__typename ...FullMessage}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = MessageSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5170,7 +5207,7 @@ object Operations {
     val MessageComments = object: OperationDefinition {
         override val name = "MessageComments"
         override val kind = OperationKind.QUERY
-        override val body = "query MessageComments(\$messageId:ID!){messageComments(messageId:\$messageId){__typename comments{__typename ...CommentEntryFragment}count id state{__typename state}}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query MessageComments(\$messageId:ID!){messageComments(messageId:\$messageId){__typename comments{__typename ...CommentEntryFragment}count id state{__typename state}}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = MessageCommentsSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5214,7 +5251,7 @@ object Operations {
     val Organization = object: OperationDefinition {
         override val name = "Organization"
         override val kind = OperationKind.QUERY
-        override val body = "query Organization(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query Organization(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5236,7 +5273,7 @@ object Operations {
     val OrganizationMembersShort = object: OperationDefinition {
         override val name = "OrganizationMembersShort"
         override val kind = OperationKind.QUERY
-        override val body = "query OrganizationMembersShort(\$organizationId:ID!){organization(id:\$organizationId){__typename members:alphaOrganizationMembers{__typename user{__typename id}}...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query OrganizationMembersShort(\$organizationId:ID!){organization(id:\$organizationId){__typename members:alphaOrganizationMembers{__typename user{__typename id}}...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationMembersShortSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5247,7 +5284,7 @@ object Operations {
     val OrganizationMembersShortPaginated = object: OperationDefinition {
         override val name = "OrganizationMembersShortPaginated"
         override val kind = OperationKind.QUERY
-        override val body = "query OrganizationMembersShortPaginated(\$after:ID,\$first:Int,\$organizationId:ID!){organization(id:\$organizationId){__typename members:alphaOrganizationMembers(after:\$after,first:\$first){__typename role user{__typename ...UserFull}}...OrganizationWithoutMembersFragment}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query OrganizationMembersShortPaginated(\$after:ID,\$first:Int,\$organizationId:ID!){organization(id:\$organizationId){__typename members:alphaOrganizationMembers(after:\$after,first:\$first){__typename role user{__typename ...UserFull}}...OrganizationWithoutMembersFragment}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationMembersShortPaginatedSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5280,7 +5317,7 @@ object Operations {
     val OrganizationWithoutMembers = object: OperationDefinition {
         override val name = "OrganizationWithoutMembers"
         override val kind = OperationKind.QUERY
-        override val body = "query OrganizationWithoutMembers(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query OrganizationWithoutMembers(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationWithoutMembersSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5302,7 +5339,7 @@ object Operations {
     val Profile = object: OperationDefinition {
         override val name = "Profile"
         override val kind = OperationKind.QUERY
-        override val body = "query Profile{user:me{__typename id shortname}profile:myProfile{__typename about invitedBy:alphaInvitedBy{__typename name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}primaryOrganization{__typename id name}website}}"
+        override val body = "query Profile{user:me{__typename id shortname}profile:myProfile{__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}primaryOrganization{__typename id name}website}}"
         override val selector = ProfileSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5324,7 +5361,7 @@ object Operations {
     val ResolveShortName = object: OperationDefinition {
         override val name = "ResolveShortName"
         override val kind = OperationKind.QUERY
-        override val body = "query ResolveShortName(\$shortname:String!){item:alphaResolveShortName(shortname:\$shortname){__typename ... on User{...UserFull}... on Organization{...OrganizationFull}}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query ResolveShortName(\$shortname:String!){item:alphaResolveShortName(shortname:\$shortname){__typename ... on User{...UserFull}... on Organization{...OrganizationFull}}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = ResolveShortNameSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5335,7 +5372,7 @@ object Operations {
     val ResolvedInvite = object: OperationDefinition {
         override val name = "ResolvedInvite"
         override val kind = OperationKind.QUERY
-        override val body = "query ResolvedInvite(\$key:String!){invite:alphaResolveInvite(key:\$key){__typename ... on InviteInfo{creator{__typename ...UserShort}orgId title}... on AppInvite{inviter{__typename ...UserShort}}... on RoomInvite{invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind membersCount membership photo socialImage title}}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "query ResolvedInvite(\$key:String!){invite:alphaResolveInvite(key:\$key){__typename ... on InviteInfo{creator{__typename ...UserShort}id orgId title}... on AppInvite{inviter{__typename ...UserShort}}... on RoomInvite{id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind membersCount membership photo socialImage title}}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = ResolvedInviteSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5346,7 +5383,7 @@ object Operations {
     val Room = object: OperationDefinition {
         override val name = "Room"
         override val kind = OperationKind.QUERY
-        override val body = "query Room(\$id:ID!){room(id:\$id){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query Room(\$id:ID!){room(id:\$id){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = RoomSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5357,7 +5394,7 @@ object Operations {
     val RoomChat = object: OperationDefinition {
         override val name = "RoomChat"
         override val kind = OperationKind.QUERY
-        override val body = "query RoomChat(\$id:ID!){room(id:\$id){__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{canEdit id isChannel kind membership photo pinnedMessage{__typename ...FullMessage}title}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query RoomChat(\$id:ID!){room(id:\$id){__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{canEdit id isChannel kind membership photo pinnedMessage{__typename ...FullMessage}title}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = RoomChatSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5445,7 +5482,7 @@ object Operations {
     val RoomSearch = object: OperationDefinition {
         override val name = "RoomSearch"
         override val kind = OperationKind.QUERY
-        override val body = "query RoomSearch(\$page:Int,\$query:String,\$sort:String){items:betaRoomSearch(first:25,page:\$page,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename ... on SharedRoom{id isChannel kind membersCount membership organization{__typename name photo}photo title}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}"
+        override val body = "query RoomSearch(\$page:Int,\$query:String,\$sort:String){items:betaRoomSearch(first:25,page:\$page,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename ... on SharedRoom{id isChannel kind membersCount membership organization{__typename id name photo}photo title}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}"
         override val selector = RoomSearchSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5456,7 +5493,7 @@ object Operations {
     val RoomSearchText = object: OperationDefinition {
         override val name = "RoomSearchText"
         override val kind = OperationKind.QUERY
-        override val body = "query RoomSearchText(\$query:String!){items:betaDialogTextSearch(query:\$query){__typename id:cid flexibleId:fid kind photo title}}"
+        override val body = "query RoomSearchText(\$query:String!){items:betaDialogTextSearch(query:\$query){__typename id:cid flexibleId:fid id2:id kind photo title}}"
         override val selector = RoomSearchTextSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5478,7 +5515,7 @@ object Operations {
     val RoomTiny = object: OperationDefinition {
         override val name = "RoomTiny"
         override val kind = OperationKind.QUERY
-        override val body = "query RoomTiny(\$id:ID!){room(id:\$id){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query RoomTiny(\$id:ID!){room(id:\$id){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = RoomTinySelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5489,7 +5526,7 @@ object Operations {
     val RoomWithoutMembers = object: OperationDefinition {
         override val name = "RoomWithoutMembers"
         override val kind = OperationKind.QUERY
-        override val body = "query RoomWithoutMembers(\$id:ID!){room(id:\$id){__typename ...RoomFullWithoutMembers}}fragment RoomFullWithoutMembers on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "query RoomWithoutMembers(\$id:ID!){room(id:\$id){__typename ...RoomFullWithoutMembers}}fragment RoomFullWithoutMembers on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = RoomWithoutMembersSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5511,7 +5548,7 @@ object Operations {
     val SuperAccount = object: OperationDefinition {
         override val name = "SuperAccount"
         override val kind = OperationKind.QUERY
-        override val body = "query SuperAccount(\$accountId:ID!,\$viaOrgId:Boolean){superAccount(id:\$accountId,viaOrgId:\$viaOrgId){__typename published:alphaPublished createdAt createdBy{__typename name}features{__typename id key title}id members{__typename ...UserShort}orgId state title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "query SuperAccount(\$accountId:ID!,\$viaOrgId:Boolean){superAccount(id:\$accountId,viaOrgId:\$viaOrgId){__typename published:alphaPublished createdAt createdBy{__typename id name}features{__typename id key title}id members{__typename ...UserShort}orgId state title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = SuperAccountSelector
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
@@ -5581,7 +5618,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountCreateInvite(Scope("ROOT_QUERY", collection, response))
+            normalizeAccountCreateInvite(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5592,7 +5629,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountDestroyInvite(Scope("ROOT_QUERY", collection, response))
+            normalizeAccountDestroyInvite(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5603,7 +5640,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountInviteJoin(Scope("ROOT_QUERY", collection, response))
+            normalizeAccountInviteJoin(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5614,7 +5651,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAddAppToChat(Scope("ROOT_QUERY", collection, response))
+            normalizeAddAppToChat(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5625,7 +5662,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAddMessageComment(Scope("ROOT_QUERY", collection, response))
+            normalizeAddMessageComment(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5636,7 +5673,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeBetaAddMessageComment(Scope("ROOT_QUERY", collection, response))
+            normalizeBetaAddMessageComment(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5647,7 +5684,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCancelTyping(Scope("ROOT_QUERY", collection, response))
+            normalizeCancelTyping(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5658,7 +5695,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCommentSetReaction(Scope("ROOT_QUERY", collection, response))
+            normalizeCommentSetReaction(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5669,7 +5706,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCommentUnsetReaction(Scope("ROOT_QUERY", collection, response))
+            normalizeCommentUnsetReaction(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5680,7 +5717,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceAnswer(Scope("ROOT_QUERY", collection, response))
+            normalizeConferenceAnswer(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5691,7 +5728,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceCandidate(Scope("ROOT_QUERY", collection, response))
+            normalizeConferenceCandidate(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5702,7 +5739,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceJoin(Scope("ROOT_QUERY", collection, response))
+            normalizeConferenceJoin(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5713,7 +5750,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceKeepAlive(Scope("ROOT_QUERY", collection, response))
+            normalizeConferenceKeepAlive(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5724,7 +5761,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceLeave(Scope("ROOT_QUERY", collection, response))
+            normalizeConferenceLeave(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5735,7 +5772,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceOffer(Scope("ROOT_QUERY", collection, response))
+            normalizeConferenceOffer(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5746,7 +5783,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCreateApp(Scope("ROOT_QUERY", collection, response))
+            normalizeCreateApp(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5757,7 +5794,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCreateOrganization(Scope("ROOT_QUERY", collection, response))
+            normalizeCreateOrganization(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5768,7 +5805,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCreateUserProfileAndOrganization(Scope("ROOT_QUERY", collection, response))
+            normalizeCreateUserProfileAndOrganization(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5779,7 +5816,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeDebugMails(Scope("ROOT_QUERY", collection, response))
+            normalizeDebugMails(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5790,7 +5827,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeDeleteComment(Scope("ROOT_QUERY", collection, response))
+            normalizeDeleteComment(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5801,7 +5838,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeDeleteOrganization(Scope("ROOT_QUERY", collection, response))
+            normalizeDeleteOrganization(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5812,7 +5849,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeDeleteUser(Scope("ROOT_QUERY", collection, response))
+            normalizeDeleteUser(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5823,7 +5860,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeEditComment(Scope("ROOT_QUERY", collection, response))
+            normalizeEditComment(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5834,7 +5871,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeEditPostMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeEditPostMessage(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5845,7 +5882,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeFeatureFlagAdd(Scope("ROOT_QUERY", collection, response))
+            normalizeFeatureFlagAdd(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5856,7 +5893,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeFeatureFlagDisable(Scope("ROOT_QUERY", collection, response))
+            normalizeFeatureFlagDisable(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5867,7 +5904,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeFeatureFlagEnable(Scope("ROOT_QUERY", collection, response))
+            normalizeFeatureFlagEnable(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5878,7 +5915,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeFeedPost(Scope("ROOT_QUERY", collection, response))
+            normalizeFeedPost(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5889,7 +5926,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMarkSequenceRead(Scope("ROOT_QUERY", collection, response))
+            normalizeMarkSequenceRead(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5900,7 +5937,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMediaAnswer(Scope("ROOT_QUERY", collection, response))
+            normalizeMediaAnswer(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5911,7 +5948,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMediaCandidate(Scope("ROOT_QUERY", collection, response))
+            normalizeMediaCandidate(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5922,7 +5959,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMediaOffer(Scope("ROOT_QUERY", collection, response))
+            normalizeMediaOffer(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5933,7 +5970,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMessageSetReaction(Scope("ROOT_QUERY", collection, response))
+            normalizeMessageSetReaction(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5944,7 +5981,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMessageUnsetReaction(Scope("ROOT_QUERY", collection, response))
+            normalizeMessageUnsetReaction(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5955,18 +5992,18 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationActivateByInvite(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationActivateByInvite(Scope(null, collection, response))
             return collection.build()
         }
     }
     val OrganizationAddMember = object: OperationDefinition {
         override val name = "OrganizationAddMember"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation OrganizationAddMember(\$organizationId:ID!,\$userIds:[ID!]){betaOrganizationMemberAdd(organizationId:\$organizationId,userIds:\$userIds){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation OrganizationAddMember(\$organizationId:ID!,\$userIds:[ID!]){betaOrganizationMemberAdd(organizationId:\$organizationId,userIds:\$userIds){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationAddMember(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationAddMember(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5977,7 +6014,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationAlterPublished(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationAlterPublished(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5988,7 +6025,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationChangeMemberRole(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationChangeMemberRole(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -5999,7 +6036,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationCreatePublicInvite(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationCreatePublicInvite(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6010,7 +6047,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationInviteMembers(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationInviteMembers(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6021,7 +6058,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationMemberRemove(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationMemberRemove(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6032,7 +6069,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationRemoveMember(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationRemoveMember(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6043,18 +6080,18 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizePersistEvents(Scope("ROOT_QUERY", collection, response))
+            normalizePersistEvents(Scope(null, collection, response))
             return collection.build()
         }
     }
     val PinMessage = object: OperationDefinition {
         override val name = "PinMessage"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation PinMessage(\$chatId:ID!,\$messageId:ID!){pinMessage:betaPinMessage(chatId:\$chatId,messageId:\$messageId){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation PinMessage(\$chatId:ID!,\$messageId:ID!){pinMessage:betaPinMessage(chatId:\$chatId,messageId:\$messageId){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizePinMessage(Scope("ROOT_QUERY", collection, response))
+            normalizePinMessage(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6065,18 +6102,18 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeProfileCreate(Scope("ROOT_QUERY", collection, response))
+            normalizeProfileCreate(Scope(null, collection, response))
             return collection.build()
         }
     }
     val ProfileUpdate = object: OperationDefinition {
         override val name = "ProfileUpdate"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation ProfileUpdate(\$input:UpdateProfileInput!,\$uid:ID){updateProfile(input:\$input,uid:\$uid){__typename about invitedBy:alphaInvitedBy{__typename name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
+        override val body = "mutation ProfileUpdate(\$input:UpdateProfileInput!,\$uid:ID){updateProfile(input:\$input,uid:\$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeProfileUpdate(Scope("ROOT_QUERY", collection, response))
+            normalizeProfileUpdate(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6087,7 +6124,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRefreshAppToken(Scope("ROOT_QUERY", collection, response))
+            normalizeRefreshAppToken(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6098,7 +6135,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRegisterPush(Scope("ROOT_QUERY", collection, response))
+            normalizeRegisterPush(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6109,7 +6146,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRegisterWebPush(Scope("ROOT_QUERY", collection, response))
+            normalizeRegisterWebPush(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6120,7 +6157,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeReplyMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeReplyMessage(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6131,7 +6168,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeReportOnline(Scope("ROOT_QUERY", collection, response))
+            normalizeReportOnline(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6142,29 +6179,29 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRespondPostMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeRespondPostMessage(Scope(null, collection, response))
             return collection.build()
         }
     }
     val RoomAddMember = object: OperationDefinition {
         override val name = "RoomAddMember"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomAddMember(\$roomId:ID!,\$userId:ID!){betaRoomInvite(invites:[{userId:\$userId,role:MEMBER}],roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomAddMember(\$roomId:ID!,\$userId:ID!){betaRoomInvite(invites:[{userId:\$userId,role:MEMBER}],roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomAddMember(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomAddMember(Scope(null, collection, response))
             return collection.build()
         }
     }
     val RoomAddMembers = object: OperationDefinition {
         override val name = "RoomAddMembers"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomAddMembers(\$invites:[RoomInviteInput!]!,\$roomId:ID!){betaRoomInvite(invites:\$invites,roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomAddMembers(\$invites:[RoomInviteInput!]!,\$roomId:ID!){betaRoomInvite(invites:\$invites,roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomAddMembers(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomAddMembers(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6175,7 +6212,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomAlterFeatured(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomAlterFeatured(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6186,18 +6223,18 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomAlterHidden(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomAlterHidden(Scope(null, collection, response))
             return collection.build()
         }
     }
     val RoomChangeRole = object: OperationDefinition {
         override val name = "RoomChangeRole"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomChangeRole(\$newRole:RoomMemberRole!,\$roomId:ID!,\$userId:ID!){betaRoomChangeRole(newRole:\$newRole,roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomChangeRole(\$newRole:RoomMemberRole!,\$roomId:ID!,\$userId:ID!){betaRoomChangeRole(newRole:\$newRole,roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomChangeRole(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomChangeRole(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6208,7 +6245,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomCreate(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomCreate(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6219,18 +6256,18 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomCreateIntro(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomCreateIntro(Scope(null, collection, response))
             return collection.build()
         }
     }
     val RoomDeclineJoinReuest = object: OperationDefinition {
         override val name = "RoomDeclineJoinReuest"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomDeclineJoinReuest(\$roomId:ID!,\$userId:ID!){betaRoomDeclineJoinRequest(roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomDeclineJoinReuest(\$roomId:ID!,\$userId:ID!){betaRoomDeclineJoinRequest(roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomDeclineJoinReuest(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomDeclineJoinReuest(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6241,7 +6278,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomDeleteMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomDeleteMessage(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6252,7 +6289,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomDeleteMessages(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomDeleteMessages(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6263,7 +6300,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomDeleteUrlAugmentation(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomDeleteUrlAugmentation(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6274,7 +6311,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomEditIntro(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomEditIntro(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6285,51 +6322,51 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomEditMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomEditMessage(Scope(null, collection, response))
             return collection.build()
         }
     }
     val RoomJoin = object: OperationDefinition {
         override val name = "RoomJoin"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomJoin(\$roomId:ID!){join:betaRoomJoin(roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomJoin(\$roomId:ID!){join:betaRoomJoin(roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomJoin(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomJoin(Scope(null, collection, response))
             return collection.build()
         }
     }
     val RoomJoinInviteLink = object: OperationDefinition {
         override val name = "RoomJoinInviteLink"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomJoinInviteLink(\$invite:String!){join:betaRoomInviteLinkJoin(invite:\$invite){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomJoinInviteLink(\$invite:String!){join:betaRoomInviteLinkJoin(invite:\$invite){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomJoinInviteLink(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomJoinInviteLink(Scope(null, collection, response))
             return collection.build()
         }
     }
     val RoomKick = object: OperationDefinition {
         override val name = "RoomKick"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomKick(\$roomId:ID!,\$userId:ID!){betaRoomKick(roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomKick(\$roomId:ID!,\$userId:ID!){betaRoomKick(roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomKick(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomKick(Scope(null, collection, response))
             return collection.build()
         }
     }
     val RoomLeave = object: OperationDefinition {
         override val name = "RoomLeave"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomLeave(\$roomId:ID!){betaRoomLeave(roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation RoomLeave(\$roomId:ID!){betaRoomLeave(roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomLeave(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomLeave(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6340,7 +6377,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomRead(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomRead(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6351,7 +6388,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomRenewInviteLink(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomRenewInviteLink(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6362,7 +6399,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomSendEmailInvite(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomSendEmailInvite(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6373,7 +6410,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomSettingsUpdate(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomSettingsUpdate(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6384,7 +6421,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomUpdate(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomUpdate(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6395,7 +6432,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSaveDraftMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeSaveDraftMessage(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6406,7 +6443,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSendMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeSendMessage(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6417,7 +6454,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSendPostMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeSendPostMessage(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6428,7 +6465,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSetOrgShortname(Scope("ROOT_QUERY", collection, response))
+            normalizeSetOrgShortname(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6439,7 +6476,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSetTyping(Scope("ROOT_QUERY", collection, response))
+            normalizeSetTyping(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6450,7 +6487,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSetUserShortname(Scope("ROOT_QUERY", collection, response))
+            normalizeSetUserShortname(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6461,7 +6498,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSettingsUpdate(Scope("ROOT_QUERY", collection, response))
+            normalizeSettingsUpdate(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6472,7 +6509,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountActivate(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAccountActivate(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6483,7 +6520,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountAdd(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAccountAdd(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6494,7 +6531,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountMemberAdd(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAccountMemberAdd(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6505,7 +6542,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountMemberRemove(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAccountMemberRemove(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6516,7 +6553,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountPend(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAccountPend(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6527,7 +6564,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountRename(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAccountRename(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6538,7 +6575,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountSuspend(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAccountSuspend(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6549,7 +6586,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAdminAdd(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAdminAdd(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6560,7 +6597,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAdminRemove(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAdminRemove(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6571,18 +6608,18 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSwitchReaction(Scope("ROOT_QUERY", collection, response))
+            normalizeSwitchReaction(Scope(null, collection, response))
             return collection.build()
         }
     }
     val UnpinMessage = object: OperationDefinition {
         override val name = "UnpinMessage"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation UnpinMessage(\$chatId:ID!){unpinMessage:betaUnpinMessage(chatId:\$chatId){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "mutation UnpinMessage(\$chatId:ID!){unpinMessage:betaUnpinMessage(chatId:\$chatId){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUnpinMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeUnpinMessage(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6593,7 +6630,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUpdateApp(Scope("ROOT_QUERY", collection, response))
+            normalizeUpdateApp(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6604,7 +6641,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUpdateOrganization(Scope("ROOT_QUERY", collection, response))
+            normalizeUpdateOrganization(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6615,7 +6652,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUpdateWelcomeMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeUpdateWelcomeMessage(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6626,7 +6663,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUserStorageSet(Scope("ROOT_QUERY", collection, response))
+            normalizeUserStorageSet(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6637,29 +6674,29 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeChatOnlinesCountWatch(Scope("ROOT_QUERY", collection, response))
+            normalizeChatOnlinesCountWatch(Scope(null, collection, response))
             return collection.build()
         }
     }
     val ChatWatch = object: OperationDefinition {
         override val name = "ChatWatch"
         override val kind = OperationKind.SUBSCRIPTION
-        override val body = "subscription ChatWatch(\$chatId:ID!,\$state:String){event:chatUpdates(chatId:\$chatId,fromState:\$state){__typename ... on ChatUpdateSingle{seq state update{__typename ...ChatUpdateFragment}}... on ChatUpdateBatch{fromSeq seq state updates{__typename ...ChatUpdateFragment}}}}fragment ChatUpdateFragment on ChatUpdate{__typename ... on ChatMessageReceived{message{__typename ...FullMessage}repeatKey}... on ChatMessageUpdated{message{__typename ...FullMessage}}... on ChatMessageDeleted{message{__typename id}}... on ChatUpdated{chat{__typename ...RoomShort}}... on ChatLostAccess{lostAccess}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}"
+        override val body = "subscription ChatWatch(\$chatId:ID!,\$state:String){event:chatUpdates(chatId:\$chatId,fromState:\$state){__typename ... on ChatUpdateSingle{seq state update{__typename ...ChatUpdateFragment}}... on ChatUpdateBatch{fromSeq seq state updates{__typename ...ChatUpdateFragment}}}}fragment ChatUpdateFragment on ChatUpdate{__typename ... on ChatMessageReceived{message{__typename ...FullMessage}repeatKey}... on ChatMessageUpdated{message{__typename ...FullMessage}}... on ChatMessageDeleted{message{__typename id}}... on ChatUpdated{chat{__typename ...RoomShort}}... on ChatLostAccess{lostAccess}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeChatWatch(Scope("ROOT_QUERY", collection, response))
+            normalizeChatWatch(Scope(null, collection, response))
             return collection.build()
         }
     }
     val CommentWatch = object: OperationDefinition {
         override val name = "CommentWatch"
         override val kind = OperationKind.SUBSCRIPTION
-        override val body = "subscription CommentWatch(\$fromState:String,\$peerId:ID!){event:commentUpdates(fromState:\$fromState,peerId:\$peerId){__typename ... on CommentUpdateSingle{seq state update{__typename ...CommentUpdateFragment}}... on CommentUpdateBatch{fromSeq seq state updates{__typename ...CommentUpdateFragment}}}}fragment CommentUpdateFragment on CommentUpdate{__typename ... on CommentReceived{comment{__typename ...CommentEntryFragment}}... on CommentUpdated{comment{__typename ...CommentEntryFragment}}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+        override val body = "subscription CommentWatch(\$fromState:String,\$peerId:ID!){event:commentUpdates(fromState:\$fromState,peerId:\$peerId){__typename ... on CommentUpdateSingle{seq state update{__typename ...CommentUpdateFragment}}... on CommentUpdateBatch{fromSeq seq state updates{__typename ...CommentUpdateFragment}}}}fragment CommentUpdateFragment on CommentUpdate{__typename ... on CommentReceived{comment{__typename ...CommentEntryFragment}}... on CommentUpdated{comment{__typename ...CommentEntryFragment}}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCommentWatch(Scope("ROOT_QUERY", collection, response))
+            normalizeCommentWatch(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6670,7 +6707,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceMediaWatch(Scope("ROOT_QUERY", collection, response))
+            normalizeConferenceMediaWatch(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6681,18 +6718,18 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceWatch(Scope("ROOT_QUERY", collection, response))
+            normalizeConferenceWatch(Scope(null, collection, response))
             return collection.build()
         }
     }
     val DialogsWatch = object: OperationDefinition {
         override val name = "DialogsWatch"
         override val kind = OperationKind.SUBSCRIPTION
-        override val body = "subscription DialogsWatch(\$state:String){event:dialogsUpdates(fromState:\$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread unread}... on DialogMessageRead{cid globalUnread unread}... on DialogMessageRead{cid globalUnread unread}... on DialogTitleUpdated{cid title}... on DialogMuteChanged{cid mute}... on DialogMentionedChanged{cid haveMention}... on DialogPhotoUpdated{cid photo}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview}}commentsCount quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "subscription DialogsWatch(\$state:String){event:dialogsUpdates(fromState:\$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread unread}... on DialogMessageRead{cid globalUnread unread}... on DialogMessageRead{cid globalUnread unread}... on DialogTitleUpdated{cid title}... on DialogMuteChanged{cid mute}... on DialogMentionedChanged{cid haveMention}... on DialogPhotoUpdated{cid photo}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeDialogsWatch(Scope("ROOT_QUERY", collection, response))
+            normalizeDialogsWatch(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6703,7 +6740,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOnlineWatch(Scope("ROOT_QUERY", collection, response))
+            normalizeOnlineWatch(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6714,7 +6751,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSettingsWatch(Scope("ROOT_QUERY", collection, response))
+            normalizeSettingsWatch(Scope(null, collection, response))
             return collection.build()
         }
     }
@@ -6725,7 +6762,7 @@ object Operations {
         override val selector = null
         override fun normalizeResponse(response: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeTypingsWatch(Scope("ROOT_QUERY", collection, response))
+            normalizeTypingsWatch(Scope(null, collection, response))
             return collection.build()
         }
     }

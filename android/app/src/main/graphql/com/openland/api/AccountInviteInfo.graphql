@@ -16,6 +16,7 @@ query AccountInviteInfo($inviteKey: String!) {
       __typename
       about
       isCommunity: alphaIsCommunity
+      id
     }
     photo
     title

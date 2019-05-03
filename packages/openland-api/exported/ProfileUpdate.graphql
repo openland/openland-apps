@@ -4,6 +4,7 @@ mutation ProfileUpdate($input: UpdateProfileInput!, $uid: ID) {
     about
     invitedBy: alphaInvitedBy {
       __typename
+      id
       name
     }
     joinedAt: alphaJoinedAt

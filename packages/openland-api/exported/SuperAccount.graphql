@@ -5,6 +5,7 @@ query SuperAccount($accountId: ID!, $viaOrgId: Boolean) {
     createdAt
     createdBy {
       __typename
+      id
       name
     }
     features {

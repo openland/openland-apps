@@ -55,7 +55,7 @@ sealed class InputValue {
 sealed class Selector {
     class Field(
             val name: String,
-            val alias: String?,
+            val alias: String,
             val type: OutputType,
             val arguments: Map<String, InputValue>
     ) : Selector()

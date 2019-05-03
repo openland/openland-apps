@@ -5,6 +5,7 @@ import com.openland.spacex.model.OperationKind
 import com.openland.spacex.store.RecordStore
 import com.openland.spacex.store.RecordStoreBus
 import com.openland.spacex.store.readFromStore
+import com.openland.spacex.transport.RunningOperation
 import com.openland.spacex.transport.TransportOperationCallback
 import com.openland.spacex.transport.WebSocketTransport
 import kotlinx.serialization.json.JsonObject
@@ -140,10 +141,99 @@ class SpaceXClient(url: String, token: String?) {
         }
     }
 
+    fun subscribe(operation: OperationDefinition, arguments: JsonObject, callback: OperationCallback): SpaceXSubscription {
+        val res = SpaceXSubscription(operation, arguments, callback)
+        res.start()
+        return res
+    }
+
     fun setConnectionStateListener(handler: (connected: Boolean) -> Unit) {
         this.connectionStateListener = handler
         handler(isConnected)
     }
+
+    inner class SpaceXSubscription(
+            val operation: OperationDefinition,
+            val arguments: JsonObject,
+            val callback: OperationCallback
+    ) {
+
+        private var completed = false
+        private var runningOperation: (RunningOperation)? = null
+
+        fun start() {
+            transportQueue.submit {
+                runningOperation = transport.operation(JsonObject(
+                        mapOf(
+                                "query" to JsonPrimitive(
+                                        operation.body
+                                ),
+                                "name" to JsonPrimitive(
+                                        operation.name
+                                ),
+                                "variables" to arguments
+                        )
+                ), object : TransportOperationCallback {
+                    override fun onError(error: JsonObject) {
+                        transportQueue.submit {
+                            restart()
+                        }
+                    }
+
+                    override fun onResult(data: JsonObject) {
+                        cacheQueue.submit {
+                            if (!completed) {
+                                completed = true
+                                val normalized = operation.normalizeResponse(data)
+                                val changed = store.merge(normalized)
+                                bus.publish(changed)
+                                callback.onResult(data)
+                            }
+                        }
+                    }
+
+                    override fun onCompleted() {
+                        transportQueue.submit {
+                            restart()
+                        }
+                    }
+                })
+            }
+        }
+
+        private fun restart() {
+            if (!completed) {
+                this.runningOperation?.cancel()
+                this.runningOperation = null
+                start()
+            }
+        }
+
+        fun updateArguments(arguments: JsonObject) {
+            transportQueue.submit {
+                this.runningOperation?.lazyUpdate(JsonObject(
+                        mapOf(
+                                "query" to JsonPrimitive(
+                                        operation.body
+                                ),
+                                "name" to JsonPrimitive(
+                                        operation.name
+                                ),
+                                "variables" to arguments
+                        )
+                ))
+            }
+        }
+
+        fun stop() {
+            transportQueue.submit {
+                this.completed = true
+                this.runningOperation?.cancel()
+                this.runningOperation = null
+            }
+        }
+    }
+
 
     private inner class QueryWatch(val operation: OperationDefinition,
                                    val arguments: JsonObject,
