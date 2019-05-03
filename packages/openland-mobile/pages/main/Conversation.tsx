@@ -348,7 +348,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                                                 </Text>
                                                             }
                                                         </View>}
-                                                        <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: 1, opacity: 0.8, lineHeight: 21, color: this.props.theme.textColor } as TextStyle}>
+                                                        <Text numberOfLines={1} style={{ fontSize: 14, fontWeight: TextStyles.weight.regular, marginTop: showPinAuthor ? 1 : 3, opacity: 0.8, lineHeight: 21, color: this.props.theme.textColor } as TextStyle}>
                                                             {formatMessage(sharedRoom!.pinnedMessage as any)}
                                                         </Text>
                                                     </View>
