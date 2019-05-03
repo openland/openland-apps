@@ -318,7 +318,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 </SHeaderView>
                 <SHeaderButton
                     title="Call"
-                    icon={require('assets/ic-call-20.png')}
+                    icon={require('assets/ic-call-26.png')}
                     onPress={async () => { showCallModal(this.props.chat.id); }}
                 />
                 <SDeferred>
