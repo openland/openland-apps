@@ -35,7 +35,7 @@ export interface DesktopMessageContainerProps {
 
     children?: any;
     selectMessage: () => void;
-    room: RoomChat_room;
+    room?: RoomChat_room;
 }
 
 interface PreambulaContainerProps {

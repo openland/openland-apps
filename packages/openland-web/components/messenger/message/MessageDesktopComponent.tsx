@@ -116,7 +116,7 @@ export interface MessageComponentProps {
     isActive?: boolean | null;
     onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
-    room: RoomChat_room;
+    room?: RoomChat_room;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {

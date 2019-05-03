@@ -105,7 +105,7 @@ interface MenuProps {
     isChannel: boolean;
     hover: boolean;
     selectMessage: () => void;
-    room: RoomChat_room;
+    room?: RoomChat_room;
 }
 
 export const Menu = React.memo(
@@ -172,7 +172,7 @@ export const Menu = React.memo(
         let out = message.isOut;
 
         const sharedRoom =
-            room.__typename === 'SharedRoom' ? (room as RoomChat_room_SharedRoom) : null;
+            room && room.__typename === 'SharedRoom' ? (room as RoomChat_room_SharedRoom) : null;
         const pinMessageAccess = out && sharedRoom && sharedRoom.canEdit && !message.isService;
 
         if (!message.isSending && !messagesContext.useForwardHeader && !isModal) {
@@ -281,7 +281,8 @@ export const Menu = React.memo(
                                                 Select
                                             </XMenuItem>
                                             {pinMessageAccess &&
-                                                message.id && (
+                                                message.id &&
+                                                room && (
                                                     <PinMessageButton
                                                         variables={{
                                                             chatId: room.id,
