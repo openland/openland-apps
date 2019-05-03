@@ -57,7 +57,7 @@ export interface ZListItemHeaderProps {
     titleIcon?: any;
     titleColor?: string;
     titleLines?: number;
-    subtitle?: string | null,
+    subtitle?: string | null | JSX.Element,
     subtitleColor?: string,
     subsubtitle?: string | null,
     path?: string,

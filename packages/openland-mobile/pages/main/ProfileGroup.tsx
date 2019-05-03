@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { Platform } from 'react-native';
+import { Platform, Text } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItem } from '../../components/ZListItem';
@@ -19,6 +19,7 @@ import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { SFlatList } from 'react-native-s/SFlatList';
+import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 
 const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -30,6 +31,12 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
 
     const [ members, setMembers ] = React.useState(initialMembers);
     const [ loading, setLoading ] = React.useState(false);
+
+    const [ onlineCount, setOnlineCount ] = React.useState<number>(0);
+
+    getChatOnlinesCount(roomId, client, (count) => {
+        setOnlineCount(count);
+    });
 
     const chatTypeStr = room.isChannel ? 'channel' : 'group';
 
@@ -140,7 +147,12 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             }
         }, [ room, roomId, members, loading ]);
 
-    const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member';
+    let subtitle = (
+        <>
+            <Text>{(room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member'}</Text>
+            {onlineCount > 0 && (<Text style={{ color: theme.accentColor }}>{'   '}{onlineCount} online</Text>)}
+        </>
+    );
 
     const manageIcon = Platform.OS === 'android' ? require('assets/ic-more-android-24.png') : require('assets/ic-more-24.png');
 
