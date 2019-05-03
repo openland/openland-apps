@@ -5,7 +5,6 @@ import { preprocessText } from 'openland-mobile/utils/TextProcessor';
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages } from 'openland-api/Types';
 import { renderPreprocessedText } from '../renderPreprocessedText';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
 interface TextContentProps {

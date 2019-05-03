@@ -5,6 +5,7 @@ export interface ZPictureTransitionConfig {
     isGif: boolean;
     animate?: { x: number, y: number, width: number, height: number, borderRadius?: number };
     title?: string;
+    subtitle?: string;
     onBegin?: () => void;
     onEnd?: () => void;
 }

@@ -39,7 +39,7 @@ export interface AsyncMessageViewProps {
     onMessageLongPress: (message: DataSourceMessageItem, chatId: string) => void;
     onAvatarPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onReactionPress: (message: DataSourceMessageItem, r: string) => void;
     onCommentsPress: (message: DataSourceMessageItem, chatId: string) => void;
     onReactionsPress: (message: DataSourceMessageItem) => void;
