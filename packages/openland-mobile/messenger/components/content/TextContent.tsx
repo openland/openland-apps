@@ -46,10 +46,10 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                 {!!message.text && <ASText
                     key={'text-' + mainTextColor}
                     color={mainTextColor}
-                    lineHeight={big ? undefined : 20}
+                    lineHeight={big ? 28 : 20}
                     letterSpacing={-0.3}
-                    fontSize={big ? 52 : 16}
-                    fontWeight={TextStyles.weight.regular}
+                    fontSize={big ? 26 : 16}
+                    fontWeight={big ? TextStyles.weight.medium : TextStyles.weight.regular}
                     fontStyle={this.props.fontStyle}
                 >
                     {parts}
