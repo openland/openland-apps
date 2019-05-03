@@ -72,7 +72,7 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
             return ""
         }
         val rargs2 = rargs.sortedBy { it.first }
-        return "(" + rargs2.joinToString(",") + ")"
+        return "(" + rargs2.joinToString(",") { it.first + ":" + it.second!! } + ")"
     }
 
     fun formatObjectKey(vararg args: Pair<String, String?>): String? {
@@ -81,7 +81,7 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
             return ""
         }
         val rargs2 = rargs.sortedBy { it.first }
-        return "(" + rargs2.joinToString(",") + ")"
+        return "{" + rargs2.joinToString(",") { it.first + ":" + it.second!! } + "}"
     }
 
     fun argumentKey(key: String): String? {
