@@ -237,8 +237,6 @@ dependencies {
     kapt 'com.facebook.litho:litho-sections-processor:0.23.0'
     annotationProcessor 'com.facebook.litho:litho-sections-processor:0.23.0'
 
-    implementation 'com.eclipsesource.j2v8:j2v8:4.8.2@aar'
-
     implementation 'com.apollographql.apollo:apollo-runtime:1.0.0-alpha5'
     implementation 'com.apollographql.apollo:apollo-android-support:1.0.0-alpha5'
 
