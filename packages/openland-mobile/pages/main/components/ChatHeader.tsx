@@ -55,9 +55,7 @@ const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: str
     const { room, typing, theme } = props;
     const [ onlineCount, setOnlineCount ] = React.useState<number>(0);
 
-    getChatOnlinesCount(room.id, useClient(), (count) => {
-        setOnlineCount(count);
-    });
+    getChatOnlinesCount(room.id, useClient(), (count) => setOnlineCount(count));
 
     let title = room.title;
     let accent = false;

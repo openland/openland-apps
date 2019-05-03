@@ -34,9 +34,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
 
     const [ onlineCount, setOnlineCount ] = React.useState<number>(0);
 
-    getChatOnlinesCount(roomId, client, (count) => {
-        setOnlineCount(count);
-    });
+    getChatOnlinesCount(roomId, client, (count) => setOnlineCount(count));
 
     const chatTypeStr = room.isChannel ? 'channel' : 'group';
 

@@ -151,9 +151,7 @@ export const ChatOnlinesTitle = (props: { chatId: string }) => {
     let client = useClient();
     let [onlineCount, setOnlineCount] = React.useState<number>(0);
 
-    getChatOnlinesCount(props.chatId, client, (count) => {
-        setOnlineCount(count);
-    });
+    getChatOnlinesCount(props.chatId, client, (count) => setOnlineCount(count));
 
     if (onlineCount <= 0) {
         return null;
