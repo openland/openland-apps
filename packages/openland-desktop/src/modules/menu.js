@@ -73,7 +73,7 @@ module.exports = {
                         accelerator: 'CmdOrCtrl+R',
                         click: (item, focusedWindow) => {
                             if (focusedWindow) {
-                                focusedWindow.reload();
+                                focusedWindow.reloadIgnoringCache();
                             }
                         },
                     },
