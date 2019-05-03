@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Animated, Dimensions, Platform, CameraRoll, BackHandler, Text } from 'react-native';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { SDevice } from 'react-native-s/SDevice';
-import { SCloseButton } from 'react-native-s/SCloseButton';
+import { SCloseButton, SCloseIconButton } from 'react-native-s/SCloseButton';
 import { FastImageViewer } from 'react-native-s/FastImageViewer';
 import { SShareButton } from 'react-native-s/SShareButton';
 import { ActionSheetBuilder } from '../ActionSheet';
@@ -255,7 +255,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                 }}
             >
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <SCloseButton tintColor="#fff" onPress={handleCloseClick} />
+                    <SCloseIconButton tintColor="#fff" onPress={handleCloseClick} />
                     <SShareButton tintColor="#fff" onPress={handleShareClick} />
                 </View>
             </Animated.View>

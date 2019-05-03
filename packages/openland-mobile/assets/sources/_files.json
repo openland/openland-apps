@@ -475,6 +475,20 @@
             "sizes": [
                 10
             ]
+        },
+        {
+            "name": "ic-export",
+            "src": "ic-export.svg",
+            "sizes": [
+                28
+            ]
+        },
+        {
+            "name": "ic-modal-close",
+            "src": "ic-modal-close.svg",
+            "sizes": [
+                20
+            ]
         }
     ]
 }

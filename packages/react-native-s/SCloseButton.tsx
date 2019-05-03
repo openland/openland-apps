@@ -15,3 +15,15 @@ export class SCloseButton extends React.PureComponent<{ tintColor?: string, onPr
         );
     }
 }
+
+export class SCloseIconButton extends React.PureComponent<{ tintColor?: string, onPress?: () => void }> {
+    render() {
+        return (
+            <STouchable onPress={this.props.onPress}>
+                <View style={{ backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center' }} marginHorizontal={15} height={SDevice.navigationBarHeight}>
+                    <Image source={require('assets/ic-modal-close-20.png')} style={{ tintColor: this.props.tintColor }} />
+                </View>
+            </STouchable>
+        );
+    }
+}
