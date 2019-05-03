@@ -15,5 +15,5 @@ interface OperationDefinition {
     val selector: OutputType.Object?
     val name: String
     val body: String
-    fun normalizeResponse(response: JsonObject): RecordSet
+    fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet
 }

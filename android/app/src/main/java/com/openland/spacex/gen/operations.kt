@@ -4945,9 +4945,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Account{me:me{__typename ...UserShort}myPermissions{__typename roles}sessionState:sessionState{__typename ...SessionStateFull}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment SessionStateFull on SessionState{__typename isAccountActivated isAccountExists isAccountPicked isBlocked isCompleted isLoggedIn isProfileCreated}"
         override val selector = AccountSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccount(Scope("ROOT_QUERY", collection, response))
+            normalizeAccount(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -4956,9 +4956,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query AccountAppInvite{invite:appInvite}"
         override val selector = AccountAppInviteSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountAppInvite(Scope("ROOT_QUERY", collection, response))
+            normalizeAccountAppInvite(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -4967,9 +4967,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query AccountAppInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename creator{__typename ...UserShort}id}appInvite:appInviteInfo(key:\$inviteKey){__typename inviter{__typename ...UserShort}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = AccountAppInviteInfoSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountAppInviteInfo(Scope("ROOT_QUERY", collection, response))
+            normalizeAccountAppInviteInfo(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -4978,9 +4978,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query AccountInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename creator{__typename ...UserShort}forEmail forName id joined key membersCount orgId organization{__typename about isCommunity:alphaIsCommunity id}photo title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = AccountInviteInfoSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountInviteInfo(Scope("ROOT_QUERY", collection, response))
+            normalizeAccountInviteInfo(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -4989,9 +4989,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query AccountInvites{invites:alphaInvites{__typename id key}}"
         override val selector = AccountInvitesSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountInvites(Scope("ROOT_QUERY", collection, response))
+            normalizeAccountInvites(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5000,9 +5000,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query AccountInvitesHistory{invites:alphaInvitesHistory{__typename acceptedBy{__typename id name picture}forEmail isGlobal}}"
         override val selector = AccountInvitesHistorySelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountInvitesHistory(Scope("ROOT_QUERY", collection, response))
+            normalizeAccountInvitesHistory(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5011,9 +5011,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query AccountSettings{me:me{__typename ...UserShort}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = AccountSettingsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountSettings(Scope("ROOT_QUERY", collection, response))
+            normalizeAccountSettings(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5022,9 +5022,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query AvailableRooms{rooms:betaAvailableRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
         override val selector = AvailableRoomsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAvailableRooms(Scope("ROOT_QUERY", collection, response))
+            normalizeAvailableRooms(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5033,9 +5033,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query ChatHistory(\$before:ID,\$chatId:ID!,\$first:Int!){state:conversationState(id:\$chatId){__typename state}messages(before:\$before,chatId:\$chatId,first:\$first){__typename ...FullMessage}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = ChatHistorySelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeChatHistory(Scope("ROOT_QUERY", collection, response))
+            normalizeChatHistory(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5044,9 +5044,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query ChatInit(\$before:ID,\$chatId:ID!,\$first:Int!){state:conversationState(id:\$chatId){__typename state}messages(before:\$before,chatId:\$chatId,first:\$first){__typename ...FullMessage}room(id:\$chatId){__typename ...RoomShort}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}"
         override val selector = ChatInitSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeChatInit(Scope("ROOT_QUERY", collection, response))
+            normalizeChatInit(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5055,9 +5055,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query ChatSearchGroup(\$members:[ID!]!){group:alphaChatSearch(members:\$members){__typename flexibleId id}}"
         override val selector = ChatSearchGroupSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeChatSearchGroup(Scope("ROOT_QUERY", collection, response))
+            normalizeChatSearchGroup(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5066,9 +5066,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Conference(\$id:ID!){conference(id:\$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = ConferenceSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConference(Scope("ROOT_QUERY", collection, response))
+            normalizeConference(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5077,9 +5077,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query ConferenceMedia(\$id:ID!,\$peerId:ID!){conferenceMedia(id:\$id,peerId:\$peerId){__typename iceServers{__typename credential urls username}id streams{__typename ice id sdp state}}}"
         override val selector = ConferenceMediaSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceMedia(Scope("ROOT_QUERY", collection, response))
+            normalizeConferenceMedia(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5088,9 +5088,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Dialogs(\$after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:\$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename ...TinyMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = DialogsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeDialogs(Scope("ROOT_QUERY", collection, response))
+            normalizeDialogs(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5099,9 +5099,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query ExploreCommunity(\$page:Int,\$query:String,\$sort:String){items:alphaComunityPrefixSearch(first:25,page:\$page,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename ...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured id isMine membersCount name photo status superAccountId}"
         override val selector = ExploreCommunitySelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeExploreCommunity(Scope("ROOT_QUERY", collection, response))
+            normalizeExploreCommunity(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5110,9 +5110,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query ExploreOrganizations(\$after:String,\$all:Boolean,\$page:Int,\$prefix:String,\$query:String,\$sort:String){items:alphaOrganizations(after:\$after,all:\$all,first:25,page:\$page,prefix:\$prefix,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename ...OrganizationSearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}"
         override val selector = ExploreOrganizationsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeExploreOrganizations(Scope("ROOT_QUERY", collection, response))
+            normalizeExploreOrganizations(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5121,9 +5121,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query ExplorePeople(\$after:String,\$page:Int,\$query:String,\$sort:String){items:userSearch(after:\$after,first:25,page:\$page,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename isYou ...UserShort}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = ExplorePeopleSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeExplorePeople(Scope("ROOT_QUERY", collection, response))
+            normalizeExplorePeople(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5132,9 +5132,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query FeatureFlags{featureFlags{__typename id key title}}"
         override val selector = FeatureFlagsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeFeatureFlags(Scope("ROOT_QUERY", collection, response))
+            normalizeFeatureFlags(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5143,9 +5143,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query FeedHome{homeFeed:alphaHomeFeed{__typename by:alphaBy{__typename ...UserShort}date id text}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = FeedHomeSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeFeedHome(Scope("ROOT_QUERY", collection, response))
+            normalizeFeedHome(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5154,9 +5154,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query FetchPushSettings{pushSettings{__typename webPushKey}}"
         override val selector = FetchPushSettingsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeFetchPushSettings(Scope("ROOT_QUERY", collection, response))
+            normalizeFetchPushSettings(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5165,9 +5165,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query GetDraftMessage(\$conversationId:ID!){message:conversationDraft(conversationId:\$conversationId)}"
         override val selector = GetDraftMessageSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeGetDraftMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeGetDraftMessage(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5176,9 +5176,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query GlobalCounter{alphaNotificationCounter{__typename id unreadCount}}"
         override val selector = GlobalCounterSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeGlobalCounter(Scope("ROOT_QUERY", collection, response))
+            normalizeGlobalCounter(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5187,9 +5187,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query GlobalSearch(\$query:String!){items:alphaGlobalSearch(query:\$query){__typename ... on Organization{...OrganizationShort}... on User{...UserShort}... on SharedRoom{id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}}}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = GlobalSearchSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeGlobalSearch(Scope("ROOT_QUERY", collection, response))
+            normalizeGlobalSearch(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5198,9 +5198,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Message(\$messageId:ID!){message(messageId:\$messageId){__typename ...FullMessage}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = MessageSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMessage(Scope("ROOT_QUERY", collection, response))
+            normalizeMessage(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5209,9 +5209,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query MessageComments(\$messageId:ID!){messageComments(messageId:\$messageId){__typename comments{__typename ...CommentEntryFragment}count id state{__typename state}}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = MessageCommentsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMessageComments(Scope("ROOT_QUERY", collection, response))
+            normalizeMessageComments(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5220,9 +5220,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query MyApps{apps:myApps{__typename ...AppFull}}fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}"
         override val selector = MyAppsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMyApps(Scope("ROOT_QUERY", collection, response))
+            normalizeMyApps(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5231,9 +5231,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query MyOrganizations{myOrganizations{__typename isPrimary:betaIsPrimary ...OrganizationShort}}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = MyOrganizationsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMyOrganizations(Scope("ROOT_QUERY", collection, response))
+            normalizeMyOrganizations(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5242,9 +5242,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Online(\$userId:ID!){user:user(id:\$userId){__typename id lastSeen online}}"
         override val selector = OnlineSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOnline(Scope("ROOT_QUERY", collection, response))
+            normalizeOnline(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5253,9 +5253,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Organization(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganization(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganization(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5264,9 +5264,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query OrganizationByPrefix(\$query:String!){organizationByPrefix:alphaOrganizationByPrefix(query:\$query){__typename ...OrganizationSearch}}fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}"
         override val selector = OrganizationByPrefixSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationByPrefix(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationByPrefix(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5275,9 +5275,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query OrganizationMembersShort(\$organizationId:ID!){organization(id:\$organizationId){__typename members:alphaOrganizationMembers{__typename user{__typename id}}...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationMembersShortSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationMembersShort(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationMembersShort(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5286,9 +5286,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query OrganizationMembersShortPaginated(\$after:ID,\$first:Int,\$organizationId:ID!){organization(id:\$organizationId){__typename members:alphaOrganizationMembers(after:\$after,first:\$first){__typename role user{__typename ...UserFull}}...OrganizationWithoutMembersFragment}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationMembersShortPaginatedSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationMembersShortPaginated(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationMembersShortPaginated(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5297,9 +5297,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query OrganizationProfile(\$organizationId:ID!){organizationProfile(id:\$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
         override val selector = OrganizationProfileSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationProfile(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationProfile(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5308,9 +5308,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query OrganizationPublicInvite(\$organizationId:ID){publicInvite:alphaOrganizationInviteLink(organizationId:\$organizationId){__typename id key ttl}}"
         override val selector = OrganizationPublicInviteSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationPublicInvite(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationPublicInvite(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5319,9 +5319,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query OrganizationWithoutMembers(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = OrganizationWithoutMembersSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationWithoutMembers(Scope("ROOT_QUERY", collection, response))
+            normalizeOrganizationWithoutMembers(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5330,9 +5330,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Permissions{myPermissions{__typename roles}}"
         override val selector = PermissionsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizePermissions(Scope("ROOT_QUERY", collection, response))
+            normalizePermissions(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5341,9 +5341,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Profile{user:me{__typename id shortname}profile:myProfile{__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}primaryOrganization{__typename id name}website}}"
         override val selector = ProfileSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeProfile(Scope("ROOT_QUERY", collection, response))
+            normalizeProfile(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5352,9 +5352,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query ProfilePrefill{prefill:myProfilePrefill{__typename firstName lastName picture}}"
         override val selector = ProfilePrefillSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeProfilePrefill(Scope("ROOT_QUERY", collection, response))
+            normalizeProfilePrefill(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5363,9 +5363,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query ResolveShortName(\$shortname:String!){item:alphaResolveShortName(shortname:\$shortname){__typename ... on User{...UserFull}... on Organization{...OrganizationFull}}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = ResolveShortNameSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeResolveShortName(Scope("ROOT_QUERY", collection, response))
+            normalizeResolveShortName(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5374,9 +5374,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query ResolvedInvite(\$key:String!){invite:alphaResolveInvite(key:\$key){__typename ... on InviteInfo{creator{__typename ...UserShort}id orgId title}... on AppInvite{inviter{__typename ...UserShort}}... on RoomInvite{id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind membersCount membership photo socialImage title}}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = ResolvedInviteSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeResolvedInvite(Scope("ROOT_QUERY", collection, response))
+            normalizeResolvedInvite(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5385,9 +5385,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Room(\$id:ID!){room(id:\$id){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = RoomSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoom(Scope("ROOT_QUERY", collection, response))
+            normalizeRoom(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5396,9 +5396,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomChat(\$id:ID!){room(id:\$id){__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{canEdit id isChannel kind membership photo pinnedMessage{__typename ...FullMessage}title}}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = RoomChatSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomChat(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomChat(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5407,9 +5407,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomHeader(\$id:ID!){room(id:\$id){__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo primaryOrganization{__typename id name}}}... on SharedRoom{canEdit description id isChannel kind membersCount organization{__typename isAdmin:betaIsAdmin isOwner:betaIsOwner id name}photo role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}}"
         override val selector = RoomHeaderSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomHeader(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomHeader(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5418,9 +5418,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo socialImage title}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = RoomInviteInfoSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomInviteInfo(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomInviteInfo(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5429,9 +5429,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomInviteLink(\$roomId:ID!){link:betaRoomInviteLink(roomId:\$roomId)}"
         override val selector = RoomInviteLinkSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomInviteLink(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomInviteLink(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5440,9 +5440,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomMemberShort(\$memberId:ID!,\$roomId:ID!){member:roomMember(memberId:\$memberId,roomId:\$roomId){__typename user{__typename firstName id name}}}"
         override val selector = RoomMemberShortSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomMemberShort(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomMemberShort(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5451,9 +5451,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomMembers(\$roomId:ID!){members:roomMembers(roomId:\$roomId){__typename canKick membership role user{__typename ...UserShort}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = RoomMembersSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomMembers(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomMembers(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5462,9 +5462,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomMembersPaginated(\$after:ID,\$first:Int,\$roomId:ID!){members:roomMembers(after:\$after,first:\$first,roomId:\$roomId){__typename canKick membership role user{__typename ...UserShort}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = RoomMembersPaginatedSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomMembersPaginated(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomMembersPaginated(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5473,9 +5473,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomMembersShort(\$roomId:ID!){members:roomMembers(roomId:\$roomId){__typename user{__typename id}}}"
         override val selector = RoomMembersShortSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomMembersShort(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomMembersShort(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5484,9 +5484,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomSearch(\$page:Int,\$query:String,\$sort:String){items:betaRoomSearch(first:25,page:\$page,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename ... on SharedRoom{id isChannel kind membersCount membership organization{__typename id name photo}photo title}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}"
         override val selector = RoomSearchSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomSearch(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomSearch(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5495,9 +5495,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomSearchText(\$query:String!){items:betaDialogTextSearch(query:\$query){__typename id:cid flexibleId:fid id2:id kind photo title}}"
         override val selector = RoomSearchTextSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomSearchText(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomSearchText(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5506,9 +5506,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomSuper(\$id:ID!){roomSuper(id:\$id){__typename featured id listed}}"
         override val selector = RoomSuperSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomSuper(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomSuper(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5517,9 +5517,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomTiny(\$id:ID!){room(id:\$id){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = RoomTinySelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomTiny(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomTiny(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5528,9 +5528,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query RoomWithoutMembers(\$id:ID!){room(id:\$id){__typename ...RoomFullWithoutMembers}}fragment RoomFullWithoutMembers on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = RoomWithoutMembersSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomWithoutMembers(Scope("ROOT_QUERY", collection, response))
+            normalizeRoomWithoutMembers(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5539,9 +5539,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Settings{settings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
         override val selector = SettingsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSettings(Scope("ROOT_QUERY", collection, response))
+            normalizeSettings(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5550,9 +5550,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query SuperAccount(\$accountId:ID!,\$viaOrgId:Boolean){superAccount(id:\$accountId,viaOrgId:\$viaOrgId){__typename published:alphaPublished createdAt createdBy{__typename id name}features{__typename id key title}id members{__typename ...UserShort}orgId state title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = SuperAccountSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccount(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAccount(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5561,9 +5561,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query SuperAccounts{superAccounts{__typename id orgId state title}}"
         override val selector = SuperAccountsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccounts(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAccounts(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5572,9 +5572,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query SuperAdmins{superAdmins{__typename email role user{__typename ...UserShort}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = SuperAdminsSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAdmins(Scope("ROOT_QUERY", collection, response))
+            normalizeSuperAdmins(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5583,9 +5583,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query User(\$userId:ID!){conversation:room(id:\$userId){__typename ... on PrivateRoom{id settings{__typename id mute}}}user:user(id:\$userId){__typename ...UserFull}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = UserSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUser(Scope("ROOT_QUERY", collection, response))
+            normalizeUser(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5594,9 +5594,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query UserStorage(\$keys:[String!]!,\$namespace:String!){userStorage(keys:\$keys,namespace:\$namespace){__typename id key value}}"
         override val selector = UserStorageSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUserStorage(Scope("ROOT_QUERY", collection, response))
+            normalizeUserStorage(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5605,9 +5605,9 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query Users(\$query:String!){items:users(query:\$query){__typename subtitle:email id title:name}}"
         override val selector = UsersSelector
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUsers(Scope("ROOT_QUERY", collection, response))
+            normalizeUsers(Scope("ROOT_QUERY", collection, response, arguments))
             return collection.build()
         }
     }
@@ -5616,9 +5616,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation AccountCreateInvite{alphaCreateInvite{__typename id key}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountCreateInvite(Scope(null, collection, response))
+            normalizeAccountCreateInvite(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5627,9 +5627,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation AccountDestroyInvite(\$id:ID!){alphaDeleteInvite(id:\$id)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountDestroyInvite(Scope(null, collection, response))
+            normalizeAccountDestroyInvite(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5638,9 +5638,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation AccountInviteJoin(\$inviteKey:String!){alphaJoinInvite(key:\$inviteKey)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAccountInviteJoin(Scope(null, collection, response))
+            normalizeAccountInviteJoin(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5649,9 +5649,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation AddAppToChat(\$appId:ID!,\$chatId:ID!){addAppToChat(appId:\$appId,chatId:\$chatId){__typename ...AppChat}}fragment AppChat on AppChat{__typename chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}webhook}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAddAppToChat(Scope(null, collection, response))
+            normalizeAddAppToChat(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5660,9 +5660,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID){addMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeAddMessageComment(Scope(null, collection, response))
+            normalizeAddMessageComment(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5671,9 +5671,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation BetaAddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID){betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment){__typename id}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeBetaAddMessageComment(Scope(null, collection, response))
+            normalizeBetaAddMessageComment(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5682,9 +5682,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation CancelTyping(\$conversationId:ID!){typingCancel(conversationId:\$conversationId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCancelTyping(Scope(null, collection, response))
+            normalizeCancelTyping(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5693,9 +5693,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation CommentSetReaction(\$commentId:ID!,\$reaction:MessageReactionType!){commentReactionAdd(commentId:\$commentId,reaction:\$reaction)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCommentSetReaction(Scope(null, collection, response))
+            normalizeCommentSetReaction(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5704,9 +5704,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation CommentUnsetReaction(\$commentId:ID!,\$reaction:MessageReactionType!){commentReactionRemove(commentId:\$commentId,reaction:\$reaction)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCommentUnsetReaction(Scope(null, collection, response))
+            normalizeCommentUnsetReaction(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5715,9 +5715,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation ConferenceAnswer(\$answer:String!,\$id:ID!,\$ownPeerId:ID!,\$peerId:ID!){peerConnectionAnswer(answer:\$answer,id:\$id,ownPeerId:\$ownPeerId,peerId:\$peerId){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceAnswer(Scope(null, collection, response))
+            normalizeConferenceAnswer(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5726,9 +5726,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation ConferenceCandidate(\$candidate:String!,\$id:ID!,\$ownPeerId:ID!,\$peerId:ID!){peerConnectionCandidate(candidate:\$candidate,id:\$id,ownPeerId:\$ownPeerId,peerId:\$peerId){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceCandidate(Scope(null, collection, response))
+            normalizeConferenceCandidate(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5737,9 +5737,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation ConferenceJoin(\$id:ID!){conferenceJoin(id:\$id){__typename conference{__typename ...ConferenceFull}peerId}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceJoin(Scope(null, collection, response))
+            normalizeConferenceJoin(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5748,9 +5748,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation ConferenceKeepAlive(\$id:ID!,\$peerId:ID!){conferenceKeepAlive(id:\$id,peerId:\$peerId){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceKeepAlive(Scope(null, collection, response))
+            normalizeConferenceKeepAlive(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5759,9 +5759,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation ConferenceLeave(\$id:ID!,\$peerId:ID!){conferenceLeave(id:\$id,peerId:\$peerId){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceLeave(Scope(null, collection, response))
+            normalizeConferenceLeave(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5770,9 +5770,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation ConferenceOffer(\$id:ID!,\$offer:String!,\$ownPeerId:ID!,\$peerId:ID!){peerConnectionOffer(id:\$id,offer:\$offer,ownPeerId:\$ownPeerId,peerId:\$peerId){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceOffer(Scope(null, collection, response))
+            normalizeConferenceOffer(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5781,9 +5781,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation CreateApp(\$about:String,\$name:String!,\$photoRef:ImageRefInput,\$shortname:String){createApp(about:\$about,name:\$name,photoRef:\$photoRef,shortname:\$shortname){__typename ...AppFull}}fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCreateApp(Scope(null, collection, response))
+            normalizeCreateApp(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5792,9 +5792,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation CreateOrganization(\$input:CreateOrganizationInput!){organization:createOrganization(input:\$input){__typename id name}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCreateOrganization(Scope(null, collection, response))
+            normalizeCreateOrganization(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5803,9 +5803,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation CreateUserProfileAndOrganization(\$organization:CreateOrganizationInput!,\$user:ProfileInput!){alphaCreateUserProfileAndOrganization(organization:\$organization,user:\$user){__typename organization{__typename id name}user{__typename ...UserFull}}}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCreateUserProfileAndOrganization(Scope(null, collection, response))
+            normalizeCreateUserProfileAndOrganization(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5814,9 +5814,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation DebugMails(\$type:DebugEmailType!){debugSendEmail(type:\$type)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeDebugMails(Scope(null, collection, response))
+            normalizeDebugMails(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5825,9 +5825,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation DeleteComment(\$id:ID!){deleteComment(id:\$id)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeDeleteComment(Scope(null, collection, response))
+            normalizeDeleteComment(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5836,9 +5836,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation DeleteOrganization(\$organizationId:ID!){deleteOrganization(id:\$organizationId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeDeleteOrganization(Scope(null, collection, response))
+            normalizeDeleteOrganization(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5847,9 +5847,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation DeleteUser(\$id:ID!){superDeleteUser(id:\$id)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeDeleteUser(Scope(null, collection, response))
+            normalizeDeleteUser(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5858,9 +5858,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation EditComment(\$id:ID!,\$message:String){editComment(id:\$id,message:\$message)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeEditComment(Scope(null, collection, response))
+            normalizeEditComment(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5869,9 +5869,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation EditPostMessage(\$attachments:[String!],\$messageId:ID!,\$postType:PostMessageType!,\$text:String!,\$title:String!){editPostMessage:alphaEditPostMessage(attachments:\$attachments,messageId:\$messageId,postType:\$postType,text:\$text,title:\$title){__typename seq}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeEditPostMessage(Scope(null, collection, response))
+            normalizeEditPostMessage(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5880,9 +5880,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation FeatureFlagAdd(\$key:String!,\$title:String!){featureFlagAdd(key:\$key,title:\$title){__typename id key title}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeFeatureFlagAdd(Scope(null, collection, response))
+            normalizeFeatureFlagAdd(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5891,9 +5891,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation FeatureFlagDisable(\$accountId:ID!,\$featureId:ID!){superAccountFeatureRemove(featureId:\$featureId,id:\$accountId){__typename features{__typename id key title}id}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeFeatureFlagDisable(Scope(null, collection, response))
+            normalizeFeatureFlagDisable(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5902,9 +5902,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation FeatureFlagEnable(\$accountId:ID!,\$featureId:ID!){superAccountFeatureAdd(featureId:\$featureId,id:\$accountId){__typename features{__typename id key title}id}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeFeatureFlagEnable(Scope(null, collection, response))
+            normalizeFeatureFlagEnable(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5913,9 +5913,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation FeedPost(\$message:String!){alphaCreateFeedPost(message:\$message){__typename id}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeFeedPost(Scope(null, collection, response))
+            normalizeFeedPost(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5924,9 +5924,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation MarkSequenceRead(\$seq:Int!){alphaGlobalRead(toSeq:\$seq)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMarkSequenceRead(Scope(null, collection, response))
+            normalizeMarkSequenceRead(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5935,9 +5935,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation MediaAnswer(\$answer:String!,\$id:ID!,\$peerId:ID!){mediaStreamAnswer(answer:\$answer,id:\$id,peerId:\$peerId){__typename id streams{__typename ice id sdp state}}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMediaAnswer(Scope(null, collection, response))
+            normalizeMediaAnswer(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5946,9 +5946,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation MediaCandidate(\$candidate:String!,\$id:ID!,\$peerId:ID!){mediaStreamCandidate(candidate:\$candidate,id:\$id,peerId:\$peerId){__typename id streams{__typename ice id sdp state}}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMediaCandidate(Scope(null, collection, response))
+            normalizeMediaCandidate(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5957,9 +5957,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation MediaOffer(\$id:ID!,\$offer:String!,\$peerId:ID!){mediaStreamOffer(id:\$id,offer:\$offer,peerId:\$peerId){__typename id streams{__typename ice id sdp state}}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMediaOffer(Scope(null, collection, response))
+            normalizeMediaOffer(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5968,9 +5968,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation MessageSetReaction(\$messageId:ID!,\$reaction:String!){betaReactionSet(mid:\$messageId,reaction:\$reaction)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMessageSetReaction(Scope(null, collection, response))
+            normalizeMessageSetReaction(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5979,9 +5979,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation MessageUnsetReaction(\$messageId:ID!,\$reaction:String!){betaReactionRemove(mid:\$messageId,reaction:\$reaction)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeMessageUnsetReaction(Scope(null, collection, response))
+            normalizeMessageUnsetReaction(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -5990,9 +5990,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation OrganizationActivateByInvite(\$inviteKey:String!){joinAppInvite(key:\$inviteKey)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationActivateByInvite(Scope(null, collection, response))
+            normalizeOrganizationActivateByInvite(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6001,9 +6001,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation OrganizationAddMember(\$organizationId:ID!,\$userIds:[ID!]){betaOrganizationMemberAdd(organizationId:\$organizationId,userIds:\$userIds){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationAddMember(Scope(null, collection, response))
+            normalizeOrganizationAddMember(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6012,9 +6012,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation OrganizationAlterPublished(\$organizationId:ID!,\$published:Boolean!){alphaAlterPublished(id:\$organizationId,published:\$published){__typename ...OrganizationSearch}}fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationAlterPublished(Scope(null, collection, response))
+            normalizeOrganizationAlterPublished(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6023,9 +6023,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation OrganizationChangeMemberRole(\$memberId:ID!,\$newRole:OrganizationMemberRole!,\$organizationId:ID!){alphaOrganizationChangeMemberRole(memberId:\$memberId,newRole:\$newRole,organizationId:\$organizationId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationChangeMemberRole(Scope(null, collection, response))
+            normalizeOrganizationChangeMemberRole(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6034,9 +6034,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation OrganizationCreatePublicInvite(\$expirationDays:Int,\$organizationId:ID){alphaOrganizationRefreshInviteLink(expirationDays:\$expirationDays,organizationId:\$organizationId){__typename id key ttl}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationCreatePublicInvite(Scope(null, collection, response))
+            normalizeOrganizationCreatePublicInvite(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6045,9 +6045,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation OrganizationInviteMembers(\$inviteRequests:[InviteRequest!]!,\$organizationId:ID){alphaOrganizationInviteMembers(inviteRequests:\$inviteRequests,organizationId:\$organizationId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationInviteMembers(Scope(null, collection, response))
+            normalizeOrganizationInviteMembers(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6056,9 +6056,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation OrganizationMemberRemove(\$organizationId:ID!,\$userId:ID!){betaOrganizationMemberRemove(organizationId:\$organizationId,userId:\$userId){__typename id}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationMemberRemove(Scope(null, collection, response))
+            normalizeOrganizationMemberRemove(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6067,9 +6067,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation OrganizationRemoveMember(\$memberId:ID!,\$organizationId:ID!){alphaOrganizationRemoveMember(memberId:\$memberId,organizationId:\$organizationId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOrganizationRemoveMember(Scope(null, collection, response))
+            normalizeOrganizationRemoveMember(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6078,9 +6078,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation PersistEvents(\$did:String!,\$events:[Event!]!,\$isProd:Boolean,\$platform:EventPlatform){track(did:\$did,events:\$events,isProd:\$isProd,platform:\$platform)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizePersistEvents(Scope(null, collection, response))
+            normalizePersistEvents(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6089,9 +6089,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation PinMessage(\$chatId:ID!,\$messageId:ID!){pinMessage:betaPinMessage(chatId:\$chatId,messageId:\$messageId){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizePinMessage(Scope(null, collection, response))
+            normalizePinMessage(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6100,9 +6100,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation ProfileCreate(\$input:CreateProfileInput!){createProfile(input:\$input){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeProfileCreate(Scope(null, collection, response))
+            normalizeProfileCreate(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6111,9 +6111,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation ProfileUpdate(\$input:UpdateProfileInput!,\$uid:ID){updateProfile(input:\$input,uid:\$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt linkedin:alphaLinkedin primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeProfileUpdate(Scope(null, collection, response))
+            normalizeProfileUpdate(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6122,9 +6122,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RefreshAppToken(\$appId:ID!){refreshAppToken(appId:\$appId){__typename ...AppFull}}fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRefreshAppToken(Scope(null, collection, response))
+            normalizeRefreshAppToken(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6133,9 +6133,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RegisterPush(\$endpoint:String!,\$type:PushType!){registerPush(endpoint:\$endpoint,type:\$type)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRegisterPush(Scope(null, collection, response))
+            normalizeRegisterPush(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6144,9 +6144,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RegisterWebPush(\$endpoint:String!){registerWebPush(endpoint:\$endpoint)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRegisterWebPush(Scope(null, collection, response))
+            normalizeRegisterWebPush(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6155,9 +6155,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation ReplyMessage(\$mentions:[ID!],\$message:String,\$replyMessages:[ID!],\$roomId:ID!){replyMessage:betaMessageSend(mentions:\$mentions,message:\$message,replyMessages:\$replyMessages,room:\$roomId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeReplyMessage(Scope(null, collection, response))
+            normalizeReplyMessage(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6166,9 +6166,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation ReportOnline(\$active:Boolean,\$platform:String){presenceReportOnline(active:\$active,platform:\$platform,timeout:5000)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeReportOnline(Scope(null, collection, response))
+            normalizeReportOnline(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6177,9 +6177,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RespondPostMessage(\$buttonId:ID!,\$messageId:ID!,\$reaction:String!){alphaRespondPostMessage(buttonId:\$buttonId,messageId:\$messageId)betaReactionSet(mid:\$messageId,reaction:\$reaction)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRespondPostMessage(Scope(null, collection, response))
+            normalizeRespondPostMessage(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6188,9 +6188,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomAddMember(\$roomId:ID!,\$userId:ID!){betaRoomInvite(invites:[{userId:\$userId,role:MEMBER}],roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomAddMember(Scope(null, collection, response))
+            normalizeRoomAddMember(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6199,9 +6199,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomAddMembers(\$invites:[RoomInviteInput!]!,\$roomId:ID!){betaRoomInvite(invites:\$invites,roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomAddMembers(Scope(null, collection, response))
+            normalizeRoomAddMembers(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6210,9 +6210,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomAlterFeatured(\$featured:Boolean!,\$roomId:ID!){betaRoomAlterFeatured(featured:\$featured,roomId:\$roomId){__typename featured id listed}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomAlterFeatured(Scope(null, collection, response))
+            normalizeRoomAlterFeatured(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6221,9 +6221,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomAlterHidden(\$listed:Boolean!,\$roomId:ID!){betaRoomAlterListed(listed:\$listed,roomId:\$roomId){__typename featured id listed}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomAlterHidden(Scope(null, collection, response))
+            normalizeRoomAlterHidden(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6232,9 +6232,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomChangeRole(\$newRole:RoomMemberRole!,\$roomId:ID!,\$userId:ID!){betaRoomChangeRole(newRole:\$newRole,roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomChangeRole(Scope(null, collection, response))
+            normalizeRoomChangeRole(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6243,9 +6243,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomCreate(\$channel:Boolean!,\$description:String,\$kind:SharedRoomKind!,\$members:[ID!]!,\$message:String,\$organizationId:ID,\$photoRef:ImageRefInput,\$title:String){room:betaRoomCreate(channel:\$channel,description:\$description,kind:\$kind,members:\$members,message:\$message,organizationId:\$organizationId,photoRef:\$photoRef,title:\$title){__typename id}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomCreate(Scope(null, collection, response))
+            normalizeRoomCreate(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6254,9 +6254,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomCreateIntro(\$about:String,\$file:String,\$roomId:ID!,\$uid:ID!){intro:betaIntroSend(about:\$about,file:\$file,message:\$about,room:\$roomId,uid:\$uid)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomCreateIntro(Scope(null, collection, response))
+            normalizeRoomCreateIntro(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6265,9 +6265,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomDeclineJoinReuest(\$roomId:ID!,\$userId:ID!){betaRoomDeclineJoinRequest(roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomDeclineJoinReuest(Scope(null, collection, response))
+            normalizeRoomDeclineJoinReuest(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6276,9 +6276,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomDeleteMessage(\$messageId:ID!){betaMessageDelete(mid:\$messageId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomDeleteMessage(Scope(null, collection, response))
+            normalizeRoomDeleteMessage(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6287,9 +6287,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomDeleteMessages(\$mids:[ID!]!){betaMessageDelete(mids:\$mids)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomDeleteMessages(Scope(null, collection, response))
+            normalizeRoomDeleteMessages(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6298,9 +6298,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomDeleteUrlAugmentation(\$messageId:ID!){betaMessageDeleteAugmentation(mid:\$messageId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomDeleteUrlAugmentation(Scope(null, collection, response))
+            normalizeRoomDeleteUrlAugmentation(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6309,9 +6309,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomEditIntro(\$about:String,\$file:String,\$messageId:ID!,\$uid:ID!){intro:betaIntroEdit(about:\$about,file:\$file,message:\$about,mid:\$messageId,uid:\$uid)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomEditIntro(Scope(null, collection, response))
+            normalizeRoomEditIntro(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6320,9 +6320,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomEditMessage(\$file:String,\$mentions:[ID!],\$message:String,\$messageId:ID!,\$replyMessages:[ID!]){betaMessageEdit(file:\$file,mentions:\$mentions,message:\$message,mid:\$messageId,replyMessages:\$replyMessages)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomEditMessage(Scope(null, collection, response))
+            normalizeRoomEditMessage(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6331,9 +6331,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomJoin(\$roomId:ID!){join:betaRoomJoin(roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomJoin(Scope(null, collection, response))
+            normalizeRoomJoin(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6342,9 +6342,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomJoinInviteLink(\$invite:String!){join:betaRoomInviteLinkJoin(invite:\$invite){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomJoinInviteLink(Scope(null, collection, response))
+            normalizeRoomJoinInviteLink(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6353,9 +6353,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomKick(\$roomId:ID!,\$userId:ID!){betaRoomKick(roomId:\$roomId,userId:\$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomKick(Scope(null, collection, response))
+            normalizeRoomKick(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6364,9 +6364,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomLeave(\$roomId:ID!){betaRoomLeave(roomId:\$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description id isChannel kind members{__typename canKick membership role user{__typename ...UserShort}}membersCount membership organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment OrganizationMedium on Organization{__typename isCommunity:alphaIsCommunity adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo}fragment UserFull on User{__typename about email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomLeave(Scope(null, collection, response))
+            normalizeRoomLeave(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6375,9 +6375,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomRead(\$id:ID!,\$mid:ID!){roomRead(id:\$id,mid:\$mid)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomRead(Scope(null, collection, response))
+            normalizeRoomRead(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6386,9 +6386,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomRenewInviteLink(\$roomId:ID!){link:betaRoomInviteLinkRenew(roomId:\$roomId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomRenewInviteLink(Scope(null, collection, response))
+            normalizeRoomRenewInviteLink(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6397,9 +6397,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomSendEmailInvite(\$inviteRequests:[RoomInviteEmailRequest!]!,\$roomId:ID!){betaRoomInviteLinkSendEmail(inviteRequests:\$inviteRequests,roomId:\$roomId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomSendEmailInvite(Scope(null, collection, response))
+            normalizeRoomSendEmailInvite(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6408,9 +6408,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomSettingsUpdate(\$roomId:ID!,\$settings:RoomUserNotificaionSettingsInput!){betaRoomUpdateUserNotificationSettings(roomId:\$roomId,settings:\$settings){__typename id mute}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomSettingsUpdate(Scope(null, collection, response))
+            normalizeRoomSettingsUpdate(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6419,9 +6419,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RoomUpdate(\$input:RoomUpdateInput!,\$roomId:ID!){betaRoomUpdate(input:\$input,roomId:\$roomId){__typename ... on PrivateRoom{id}... on SharedRoom{description id photo socialImage title}}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeRoomUpdate(Scope(null, collection, response))
+            normalizeRoomUpdate(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6430,9 +6430,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SaveDraftMessage(\$conversationId:ID!,\$message:String!){conversationDraftUpdate(conversationId:\$conversationId,message:\$message)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSaveDraftMessage(Scope(null, collection, response))
+            normalizeSaveDraftMessage(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6441,9 +6441,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SendMessage(\$file:String,\$mentions:[ID!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$room:ID!){sentMessage:betaMessageSend(file:\$file,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,room:\$room)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSendMessage(Scope(null, collection, response))
+            normalizeSendMessage(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6452,9 +6452,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SendPostMessage(\$attachments:[String!],\$conversationId:ID!,\$postType:PostMessageType!,\$text:String!,\$title:String!){sendPostMessage:alphaSendPostMessage(attachments:\$attachments,conversationId:\$conversationId,postType:\$postType,text:\$text,title:\$title){__typename seq}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSendPostMessage(Scope(null, collection, response))
+            normalizeSendPostMessage(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6463,9 +6463,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SetOrgShortname(\$organizationId:ID!,\$shortname:String!){alphaSetOrgShortName(id:\$organizationId,shortname:\$shortname)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSetOrgShortname(Scope(null, collection, response))
+            normalizeSetOrgShortname(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6474,9 +6474,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SetTyping(\$conversationId:ID!){typingSend(conversationId:\$conversationId,type:TEXT)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSetTyping(Scope(null, collection, response))
+            normalizeSetTyping(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6485,9 +6485,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SetUserShortname(\$shortname:String!){alphaSetUserShortName(shortname:\$shortname)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSetUserShortname(Scope(null, collection, response))
+            normalizeSetUserShortname(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6496,9 +6496,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SettingsUpdate(\$input:UpdateSettingsInput){updateSettings(settings:\$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSettingsUpdate(Scope(null, collection, response))
+            normalizeSettingsUpdate(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6507,9 +6507,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SuperAccountActivate(\$accountId:ID!){superAccountActivate(id:\$accountId){__typename id state}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountActivate(Scope(null, collection, response))
+            normalizeSuperAccountActivate(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6518,9 +6518,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SuperAccountAdd(\$title:String!){superAccountAdd(title:\$title){__typename id}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountAdd(Scope(null, collection, response))
+            normalizeSuperAccountAdd(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6529,9 +6529,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SuperAccountMemberAdd(\$accountId:ID!,\$userId:ID!){superAccountMemberAdd(id:\$accountId,userId:\$userId){__typename id members{__typename ...UserShort}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountMemberAdd(Scope(null, collection, response))
+            normalizeSuperAccountMemberAdd(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6540,9 +6540,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SuperAccountMemberRemove(\$accountId:ID!,\$userId:ID!){superAccountMemberRemove(id:\$accountId,userId:\$userId){__typename id members{__typename ...UserShort}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountMemberRemove(Scope(null, collection, response))
+            normalizeSuperAccountMemberRemove(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6551,9 +6551,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SuperAccountPend(\$accountId:ID!){superAccountPend(id:\$accountId){__typename id state}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountPend(Scope(null, collection, response))
+            normalizeSuperAccountPend(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6562,9 +6562,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SuperAccountRename(\$accountId:ID!,\$title:String!){superAccountRename(id:\$accountId,title:\$title){__typename id title}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountRename(Scope(null, collection, response))
+            normalizeSuperAccountRename(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6573,9 +6573,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SuperAccountSuspend(\$accountId:ID!){superAccountSuspend(id:\$accountId){__typename id state}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAccountSuspend(Scope(null, collection, response))
+            normalizeSuperAccountSuspend(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6584,9 +6584,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SuperAdminAdd(\$role:SuperAdminRole!,\$userId:ID!){superAdminAdd(role:\$role,userId:\$userId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAdminAdd(Scope(null, collection, response))
+            normalizeSuperAdminAdd(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6595,9 +6595,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SuperAdminRemove(\$userId:ID!){superAdminRemove(userId:\$userId)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSuperAdminRemove(Scope(null, collection, response))
+            normalizeSuperAdminRemove(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6606,9 +6606,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation SwitchReaction(\$from:String!,\$messageId:ID!,\$to:String!){betaReactionRemove(mid:\$messageId,reaction:\$from)betaReactionSet(mid:\$messageId,reaction:\$to)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSwitchReaction(Scope(null, collection, response))
+            normalizeSwitchReaction(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6617,9 +6617,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation UnpinMessage(\$chatId:ID!){unpinMessage:betaUnpinMessage(chatId:\$chatId){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUnpinMessage(Scope(null, collection, response))
+            normalizeUnpinMessage(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6628,9 +6628,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation UpdateApp(\$appId:ID!,\$input:AppProfileInput!){updateAppProfile(appId:\$appId,input:\$input){__typename ...AppFull}}fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUpdateApp(Scope(null, collection, response))
+            normalizeUpdateApp(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6639,9 +6639,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation UpdateOrganization(\$input:UpdateOrganizationProfileInput!,\$organizationId:ID){updateOrganizationProfile(id:\$organizationId,input:\$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about featured:alphaFeatured facebook id linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUpdateOrganization(Scope(null, collection, response))
+            normalizeUpdateOrganization(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6650,9 +6650,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation UpdateWelcomeMessage(\$roomId:ID!,\$welcomeMessageIsOn:Boolean!,\$welcomeMessageSender:ID,\$welcomeMessageText:String){updateWelcomeMessage(roomId:\$roomId,welcomeMessageIsOn:\$welcomeMessageIsOn,welcomeMessageSender:\$welcomeMessageSender,welcomeMessageText:\$welcomeMessageText)}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUpdateWelcomeMessage(Scope(null, collection, response))
+            normalizeUpdateWelcomeMessage(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6661,9 +6661,9 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation UserStorageSet(\$data:[AppStorageValueInput!]!,\$namespace:String!){userStorageSet(data:\$data,namespace:\$namespace){__typename id key value}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeUserStorageSet(Scope(null, collection, response))
+            normalizeUserStorageSet(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6672,9 +6672,9 @@ object Operations {
         override val kind = OperationKind.SUBSCRIPTION
         override val body = "subscription ChatOnlinesCountWatch(\$chatId:ID!){chatOnlinesCount(chatId:\$chatId){__typename onlineMembers}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeChatOnlinesCountWatch(Scope(null, collection, response))
+            normalizeChatOnlinesCountWatch(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6683,9 +6683,9 @@ object Operations {
         override val kind = OperationKind.SUBSCRIPTION
         override val body = "subscription ChatWatch(\$chatId:ID!,\$state:String){event:chatUpdates(chatId:\$chatId,fromState:\$state){__typename ... on ChatUpdateSingle{seq state update{__typename ...ChatUpdateFragment}}... on ChatUpdateBatch{fromSeq seq state updates{__typename ...ChatUpdateFragment}}}}fragment ChatUpdateFragment on ChatUpdate{__typename ... on ChatMessageReceived{message{__typename ...FullMessage}repeatKey}... on ChatMessageUpdated{message{__typename ...FullMessage}}... on ChatMessageDeleted{message{__typename id}}... on ChatUpdated{chat{__typename ...RoomShort}}... on ChatLostAccess{lostAccess}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeChatWatch(Scope(null, collection, response))
+            normalizeChatWatch(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6694,9 +6694,9 @@ object Operations {
         override val kind = OperationKind.SUBSCRIPTION
         override val body = "subscription CommentWatch(\$fromState:String,\$peerId:ID!){event:commentUpdates(fromState:\$fromState,peerId:\$peerId){__typename ... on CommentUpdateSingle{seq state update{__typename ...CommentUpdateFragment}}... on CommentUpdateBatch{fromSeq seq state updates{__typename ...CommentUpdateFragment}}}}fragment CommentUpdateFragment on CommentUpdate{__typename ... on CommentReceived{comment{__typename ...CommentEntryFragment}}... on CommentUpdated{comment{__typename ...CommentEntryFragment}}}fragment CommentEntryFragment on CommentEntry{__typename childComments{__typename id}comment{__typename id ...FullMessage}deleted id parentComment{__typename id}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserTiny}}... on MessageSpanMultiUserMention{users{__typename ...UserTiny}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanBold{length offset}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeCommentWatch(Scope(null, collection, response))
+            normalizeCommentWatch(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6705,9 +6705,9 @@ object Operations {
         override val kind = OperationKind.SUBSCRIPTION
         override val body = "subscription ConferenceMediaWatch(\$id:ID!,\$peerId:ID!){media:alphaConferenceMediaWatch(id:\$id,peerId:\$peerId){__typename id streams{__typename ice id sdp state}}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceMediaWatch(Scope(null, collection, response))
+            normalizeConferenceMediaWatch(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6716,9 +6716,9 @@ object Operations {
         override val kind = OperationKind.SUBSCRIPTION
         override val body = "subscription ConferenceWatch(\$id:ID!){alphaConferenceWatch(id:\$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename iceServers{__typename credential urls username}id peers{__typename connection{__typename ice sdp state}id user{__typename ...UserShort}}startTime}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeConferenceWatch(Scope(null, collection, response))
+            normalizeConferenceWatch(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6727,9 +6727,9 @@ object Operations {
         override val kind = OperationKind.SUBSCRIPTION
         override val body = "subscription DialogsWatch(\$state:String){event:dialogsUpdates(fromState:\$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread unread}... on DialogMessageRead{cid globalUnread unread}... on DialogMessageRead{cid globalUnread unread}... on DialogTitleUpdated{cid title}... on DialogMuteChanged{cid mute}... on DialogMentionedChanged{cid haveMention}... on DialogPhotoUpdated{cid photo}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeDialogsWatch(Scope(null, collection, response))
+            normalizeDialogsWatch(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6738,9 +6738,9 @@ object Operations {
         override val kind = OperationKind.SUBSCRIPTION
         override val body = "subscription OnlineWatch(\$conversations:[ID!]!){alphaSubscribeChatOnline(conversations:\$conversations){__typename timeout type user:user{__typename id lastSeen online}}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeOnlineWatch(Scope(null, collection, response))
+            normalizeOnlineWatch(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6749,9 +6749,9 @@ object Operations {
         override val kind = OperationKind.SUBSCRIPTION
         override val body = "subscription SettingsWatch{watchSettings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename desktopNotifications emailFrequency id mobileAlert mobileIncludeText mobileNotifications primaryEmail}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeSettingsWatch(Scope(null, collection, response))
+            normalizeSettingsWatch(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }
@@ -6760,9 +6760,9 @@ object Operations {
         override val kind = OperationKind.SUBSCRIPTION
         override val body = "subscription TypingsWatch{typings{__typename cancel conversation{__typename id}user{__typename id name photo}}}"
         override val selector = null
-        override fun normalizeResponse(response: JsonObject): RecordSet {
+        override fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet {
             val collection = NormalizedCollection()
-            normalizeTypingsWatch(Scope(null, collection, response))
+            normalizeTypingsWatch(Scope(null, collection, response, arguments))
             return collection.build()
         }
     }

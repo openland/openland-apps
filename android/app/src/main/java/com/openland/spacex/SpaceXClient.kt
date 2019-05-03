@@ -69,7 +69,7 @@ class SpaceXClient(url: String, token: String?) {
                         cacheQueue.submit {
                             if (!completed) {
                                 completed = true
-                                val normalized = operation.normalizeResponse(data)
+                                val normalized = operation.normalizeResponse(data, arguments)
                                 val changed = store.merge(normalized)
                                 bus.publish(changed)
                                 callback.onResult(data)
@@ -126,7 +126,7 @@ class SpaceXClient(url: String, token: String?) {
                     cacheQueue.submit {
                         if (!completed) {
                             completed = true
-                            val normalized = operation.normalizeResponse(data)
+                            val normalized = operation.normalizeResponse(data, arguments)
                             val changed = store.merge(normalized)
                             bus.publish(changed)
                             callback.onResult(data)
@@ -184,7 +184,7 @@ class SpaceXClient(url: String, token: String?) {
                         cacheQueue.submit {
                             if (!completed) {
                                 completed = true
-                                val normalized = operation.normalizeResponse(data)
+                                val normalized = operation.normalizeResponse(data, arguments)
                                 val changed = store.merge(normalized)
                                 bus.publish(changed)
                                 callback.onResult(data)
@@ -260,7 +260,7 @@ class SpaceXClient(url: String, token: String?) {
                         callback.onResult(existing.second!!)
                         if (policy == FetchPolicy.CACHE_FIRST) {
                             // TODO: Optimize!!
-                            storeSubscription = bus.subscribe(operation.normalizeResponse(existing.second!!)) { reload() }
+                            storeSubscription = bus.subscribe(operation.normalizeResponse(existing.second!!, arguments)) { reload() }
                             return@submit
                         }
                     }
@@ -290,7 +290,7 @@ class SpaceXClient(url: String, token: String?) {
                             override fun onResult(data: JsonObject) {
                                 cacheQueue.submit {
                                     if (!completed) {
-                                        val normalized = operation.normalizeResponse(data)
+                                        val normalized = operation.normalizeResponse(data, arguments)
                                         val changed = store.merge(normalized)
                                         bus.publish(changed)
                                         storeSubscription = bus.subscribe(normalized) { reload() }
@@ -319,7 +319,7 @@ class SpaceXClient(url: String, token: String?) {
                 callback.onResult(existing.second!!)
                 if (policy == FetchPolicy.CACHE_FIRST) {
                     // TODO: Optimize!!
-                    storeSubscription = bus.subscribe(operation.normalizeResponse(existing.second!!)) { reload() }
+                    storeSubscription = bus.subscribe(operation.normalizeResponse(existing.second!!, arguments)) { reload() }
                     return
                 }
             } else {
@@ -348,7 +348,7 @@ class SpaceXClient(url: String, token: String?) {
                             override fun onResult(data: JsonObject) {
                                 cacheQueue.submit {
                                     if (!completed) {
-                                        val normalized = operation.normalizeResponse(data)
+                                        val normalized = operation.normalizeResponse(data, arguments)
                                         val changed = store.merge(normalized)
                                         bus.publish(changed)
                                         storeSubscription = bus.subscribe(normalized) { reload() }

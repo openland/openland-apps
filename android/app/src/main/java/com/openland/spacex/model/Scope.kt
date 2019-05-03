@@ -4,7 +4,36 @@ import com.openland.spacex.store.Record
 import com.openland.spacex.store.RecordSet
 import com.openland.spacex.store.RecordValue
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+
+fun formatArgumentKey(element: JsonObject): String {
+    val sortedKeys = element.keys.sortedBy { it }
+    val converted = mutableListOf<String>()
+    for (k in sortedKeys) {
+        converted.add(k + ":" + formatArgumentKey(element[k]!!))
+    }
+    return "{" + converted.joinToString(",") + "}"
+}
+
+fun formatArgumentKey(element: JsonElement): String {
+    if (element.isNull) {
+        return "null"
+    } else if (element is JsonPrimitive) {
+        return element.content
+    } else if (element is JsonObject) {
+        return formatArgumentKey(element)
+    } else if (element is JsonArray) {
+        val res = mutableListOf<String>()
+        for (i in 0 until element.size) {
+            res.add(formatArgumentKey(element[i]))
+        }
+        return "[" + res.joinToString(",") + "]"
+    } else {
+        error("Unknown element type")
+    }
+}
 
 class NormalizedCollection {
     val records = mutableMapOf<String, MutableMap<String, RecordValue>>()
@@ -13,7 +42,7 @@ class NormalizedCollection {
     }
 }
 
-class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val obj: JsonObject) {
+class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val obj: JsonObject, val args: JsonObject) {
 
     val id: String?
     val map: MutableMap<String, RecordValue>?
@@ -56,6 +85,9 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     }
 
     fun argumentKey(key: String): String? {
+        if (this.args.containsKey(key)) {
+            return formatArgumentKey(this.args[key]!!)
+        }
         return null
     }
 
@@ -76,13 +108,13 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     //
 
     inline fun child(requestKey: String, storeKey: String): Scope {
-        val res = Scope(if (id != null) "$id.$storeKey" else null, collection, obj.getObject(requestKey))
+        val res = Scope(if (id != null) "$id.$storeKey" else null, collection, obj.getObject(requestKey), args)
         map?.let { map[storeKey] = RecordValue.Reference(res.id!!) }
         return res
     }
 
     inline fun childList(requestKey: String, storeKey: String): ListScope {
-        val res = ListScope(if (id != null) "$id.$storeKey" else null, collection, obj.getArray(requestKey))
+        val res = ListScope(if (id != null) "$id.$storeKey" else null, collection, obj.getArray(requestKey), args)
 
         return res
     }
@@ -182,7 +214,7 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     }
 }
 
-class ListScope(val key: String?, val collection: NormalizedCollection, val arr: JsonArray) {
+class ListScope(val key: String?, val collection: NormalizedCollection, val arr: JsonArray, val args: JsonObject) {
     val size: Int = arr.size
     val res: MutableList<RecordValue>? = if (key != null) mutableListOf() else null
 
@@ -195,7 +227,7 @@ class ListScope(val key: String?, val collection: NormalizedCollection, val arr:
     }
 
     inline fun child(index: Int): Scope {
-        val scp = Scope(if (key != null) "$key.$index" else null, collection, arr[index].jsonObject)
+        val scp = Scope(if (key != null) "$key.$index" else null, collection, arr[index].jsonObject, args)
         if (res != null) {
             res.add(RecordValue.Reference(scp.id!!))
         }
@@ -203,7 +235,7 @@ class ListScope(val key: String?, val collection: NormalizedCollection, val arr:
     }
 
     inline fun childList(index: Int): ListScope {
-        return ListScope("$key.$index", collection, arr[index].jsonArray)
+        return ListScope("$key.$index", collection, arr[index].jsonArray, args)
     }
 
     inline fun completed(): RecordValue {
