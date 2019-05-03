@@ -14,7 +14,11 @@ module.exports = {
         });
         let win = new BrowserWindow({
             width: mainWindowState.width,
-            height: mainWindowState.height
+            height: mainWindowState.height,
+            title: 'Openland',
+            webPreferences: {
+                nodeIntegration: true
+            }
         });
         mainWindowState.manage(win);
 
