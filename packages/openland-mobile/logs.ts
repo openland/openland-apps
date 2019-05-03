@@ -4,7 +4,7 @@ import { disableTag, disableAll } from 'mental-log';
 disableTag('Throttler');
 disableTag('API');
 disableTag('NavigationManager');
-disableTag('GraphQL-Native');
+// disableTag('GraphQL-Native');
 disableTag('SAnimated');
 disableTag('reactions');
 

@@ -101,16 +101,16 @@ function generateApi() {
         }
     }
 
-    for (let f of queries.fragments) {
-        // let name = op.operationName;
-        // if (name.endsWith('Subscription')) {
-        //     name = name.substring(0, name.length - 'Subscription'.length);
-        // }
-        output += '    write' + f.fragmentName + '(data: Types.' + f.fragmentName + ') {\n'
-        output += '      return this.client.writeFragment(data, Source.' + f.fragmentName + 'Fragment);\n'
-        // return this.client.writeFragment(data, Source.AppChatFragment);
-        output += '    }\n'
-    }
+    // for (let f of queries.fragments) {
+    //     // let name = op.operationName;
+    //     // if (name.endsWith('Subscription')) {
+    //     //     name = name.substring(0, name.length - 'Subscription'.length);
+    //     // }
+    //     output += '    write' + f.fragmentName + '(data: Types.' + f.fragmentName + ') {\n'
+    //     output += '      return this.client.writeFragment(data, Source.' + f.fragmentName + 'Fragment);\n'
+    //     // return this.client.writeFragment(data, Source.AppChatFragment);
+    //     output += '    }\n'
+    // }
 
     output += '}\n';
     // console.log(output);
