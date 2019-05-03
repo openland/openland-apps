@@ -29,6 +29,7 @@ const PinMessageButton = ({
         </XMutation>
     );
 };
+
 const ClearIconClass = css`
     margin-top: 4px;
     margin-left: 5px;

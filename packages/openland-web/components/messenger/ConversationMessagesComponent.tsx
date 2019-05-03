@@ -4,8 +4,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
-import { UserShort, SharedRoomKind } from 'openland-api/Types';
-import { EditPostProps } from '../../fragments/MessengerRootComponent';
+import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { TypingsView } from './typings/TypingsView';
 import { XView } from 'react-mental';
 
@@ -42,6 +41,7 @@ interface ConversationMessagesComponentProps {
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
     scrollPosition?: (data: number) => void;
+    room: RoomChat_room;
 }
 
 export class ConversationMessagesComponent extends React.PureComponent<
@@ -67,6 +67,7 @@ export class ConversationMessagesComponent extends React.PureComponent<
                     ref={this.messagesList}
                     conversationId={this.props.conversationId}
                     scrollPosition={this.props.scrollPosition}
+                    room={this.props.room}
                 />
                 {this.props.loading && <XLoader loading={this.props.loading} />}
                 <TypingComponent chatId={this.props.conversationId} />

@@ -41,6 +41,7 @@ const MessageComponentInner = React.memo(
                     conversationType={props.conversationType}
                     messagesContext={props.messagesContextProps}
                     isActive={props.isActive}
+                    room={props.room}
                 />
             </>
         );
@@ -75,6 +76,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
             messagesContextProps={messagesContextProps}
             isMobile={isMobile}
             isActive={isActive}
+            room={props.room}
         />
     );
 };

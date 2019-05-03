@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { MessageSelector } from './MessageSelector';
-import { UserShort } from 'openland-api/Types';
+import { RoomChat_room, UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/UserPopper';
@@ -10,6 +10,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { Menu } from './Menu';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import CommentIcon from 'openland-icons/ic-comment-channel.svg';
+import { MessagesStateContextProps } from '../MessagesStateContext';
 
 export interface DesktopMessageContainerProps {
     deleted?: boolean;
@@ -33,6 +34,8 @@ export interface DesktopMessageContainerProps {
     haveReactions: boolean;
 
     children?: any;
+    selectMessage: () => void;
+    room: RoomChat_room;
 }
 
 interface PreambulaContainerProps {
@@ -463,6 +466,8 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                 isChannel={!!props.isChannel}
                 isComment={!!props.isComment}
                 isModal={!!props.isModal}
+                selectMessage={props.selectMessage}
+                room={props.room}
             />
         </XView>
     );

@@ -86,6 +86,27 @@ const NotificationButton = Glamorous.div<{ active: boolean }>(props => ({
     },
 }));
 
+export class XOverflowDefalutTarget extends React.PureComponent<
+    DottedMenuButtonStyleProps & { onClick: () => void }
+> {
+    render() {
+        const { props } = this;
+        return (
+            <DottedMenuButtonStyle
+                onClick={props.onClick}
+                active={props.active}
+                small={props.small}
+                horizontal={props.horizontal}
+                flat={props.flat}
+            >
+                <div />
+                <div />
+                <div />
+            </DottedMenuButtonStyle>
+        );
+    }
+}
+
 interface XOverflowProps {
     small?: boolean;
     placement?: Placement;
@@ -98,6 +119,7 @@ interface XOverflowProps {
     flat?: boolean;
     notificationStyle?: boolean;
     onClickTarget?: any;
+    useCustomTarget?: boolean;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -134,7 +156,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
     };
 
     render() {
-        const { target, shadow, small } = this.props;
+        const { target, shadow, small, useCustomTarget } = this.props;
 
         let targetElement: any;
 
@@ -145,6 +167,10 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                 onClick: this.switch,
                 innerRef: this.createRef,
             });
+        }
+
+        if (useCustomTarget) {
+            targetElement = target
         }
 
         return (

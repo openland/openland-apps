@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import {
+    FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
+    RoomChat_room,
+    RoomChat_room_SharedRoom,
+} from 'openland-api/Types';
 import { CommentReactionButton, MessageReactionButton } from './reactions/ReactionButton';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
@@ -11,6 +15,11 @@ import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { MessagesStateContext } from '../MessagesStateContext';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { openCommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
+import { XOverflow, XOverflowDefalutTarget } from 'openland-web/components/XOverflow';
+import { XMenuItem } from 'openland-x/XMenuItem';
+import { XMutation } from 'openland-x/XMutation';
+import { useClient } from 'openland-web/utils/useClient';
+import { MutationFunc } from 'react-apollo';
 
 let iconButtonClass = css`
     cursor: pointer;
@@ -71,6 +80,34 @@ const CommentsIconWrapper = ({
     );
 };
 
+const PinMessageButton = ({
+    variables,
+    onSuccess,
+}: {
+    variables: { chatId: string; messageId: string };
+    onSuccess: () => void;
+}) => {
+    const client = useClient();
+    const pinMessage = async () => await client.mutatePinMessage(variables);
+
+    return (
+        <XMutation mutation={pinMessage as MutationFunc} onSuccess={onSuccess}>
+            <XMenuItem>Pin</XMenuItem>
+        </XMutation>
+    );
+};
+
+interface MenuProps {
+    conversationId: string;
+    message: DataSourceWebMessageItem;
+    isModal: boolean;
+    isComment: boolean;
+    isChannel: boolean;
+    hover: boolean;
+    selectMessage: () => void;
+    room: RoomChat_room;
+}
+
 export const Menu = React.memo(
     ({
         conversationId,
@@ -79,15 +116,11 @@ export const Menu = React.memo(
         isModal,
         isChannel,
         isComment,
-    }: {
-        conversationId: string;
-        message: DataSourceWebMessageItem;
-        isModal: boolean;
-        isComment: boolean;
-        isChannel: boolean;
-        hover: boolean;
-    }) => {
+        selectMessage,
+        room,
+    }: MenuProps) => {
         let router = React.useContext(XRouterContext)!;
+        let [showMenu, setShowMenu] = React.useState<boolean>(false);
 
         const messagesContext = React.useContext(MessagesStateContext);
         const setEditMessage = (e: any) => {
@@ -97,6 +130,15 @@ export const Menu = React.memo(
                 messagesContext.setEditMessage(message.id!, message.text!);
             }
         };
+
+        React.useEffect(
+            () => {
+                if (!hover) {
+                    setShowMenu(false);
+                }
+            },
+            [hover],
+        );
 
         const setReplyMessages = (e: any) => {
             if (!message.isSending) {
@@ -129,6 +171,10 @@ export const Menu = React.memo(
 
         let out = message.isOut;
 
+        const sharedRoom =
+            room.__typename === 'SharedRoom' ? (room as RoomChat_room_SharedRoom) : null;
+        const pinMessageAccess = out && sharedRoom && sharedRoom.canEdit && !message.isService;
+
         if (!message.isSending && !messagesContext.useForwardHeader && !isModal) {
             return (
                 <XHorizontal
@@ -149,31 +195,105 @@ export const Menu = React.memo(
                                     reactions={message.reactions}
                                 />
                             )}
-                            {!isComment && hover && (
-                                <MessageReactionButton messageId={message.id!} myMessage={out} />
-                            )}
-                            {hover && !isComment && !isChannel && (
-                                <IconButton onClick={setReplyMessages}>
-                                    <ReplyIcon />
-                                </IconButton>
-                            )}
-                            {hover && !isComment && out && message.text && (
-                                <IconButton onClick={setEditMessage}>
-                                    <EditIcon />
-                                </IconButton>
-                            )}
-                            {hover && !isComment && (
-                                <CommentsIconWrapper
-                                    onClick={() => {
-                                        openCommentsModal({
-                                            router,
-                                            messageId: message.id!!,
-                                            conversationId,
-                                        });
-                                    }}
-                                >
-                                    <CommentIcon />
-                                </CommentsIconWrapper>
+                            {!isComment &&
+                                hover && (
+                                    <MessageReactionButton
+                                        messageId={message.id!}
+                                        myMessage={out}
+                                    />
+                                )}
+                            {hover &&
+                                !isComment &&
+                                !isChannel && (
+                                    <IconButton onClick={setReplyMessages}>
+                                        <ReplyIcon />
+                                    </IconButton>
+                                )}
+                            {hover &&
+                                !isComment &&
+                                out &&
+                                message.text && (
+                                    <IconButton onClick={setEditMessage}>
+                                        <EditIcon />
+                                    </IconButton>
+                                )}
+                            {hover &&
+                                !isComment && (
+                                    <CommentsIconWrapper
+                                        onClick={() => {
+                                            openCommentsModal({
+                                                router,
+                                                messageId: message.id!!,
+                                                conversationId,
+                                            });
+                                        }}
+                                    >
+                                        <CommentIcon />
+                                    </CommentsIconWrapper>
+                                )}
+                            {hover && (
+                                <XOverflow
+                                    show={showMenu}
+                                    placement="bottom-end"
+                                    useCustomTarget={true}
+                                    target={
+                                        <XOverflowDefalutTarget
+                                            onClick={() => setShowMenu(!showMenu)}
+                                            active={showMenu}
+                                            flat={true}
+                                        />
+                                    }
+                                    content={
+                                        <>
+                                            {out && (
+                                                <XMenuItem
+                                                    onClick={(e: any) => {
+                                                        setEditMessage(e);
+                                                        setShowMenu(false);
+                                                    }}
+                                                >
+                                                    Edit
+                                                </XMenuItem>
+                                            )}
+                                            <XMenuItem
+                                                onClick={() => {
+                                                    setShowMenu(false);
+                                                    selectMessage();
+                                                    messagesContext.forwardMessages();
+                                                }}
+                                            >
+                                                Forward
+                                            </XMenuItem>
+                                            <XMenuItem
+                                                onClick={(e: any) => {
+                                                    setReplyMessages(e);
+                                                    setShowMenu(false);
+                                                }}
+                                            >
+                                                Reply
+                                            </XMenuItem>
+                                            <XMenuItem
+                                                onClick={() => {
+                                                    selectMessage();
+                                                    setShowMenu(false);
+                                                }}
+                                            >
+                                                Select
+                                            </XMenuItem>
+                                            {pinMessageAccess &&
+                                                message.id && (
+                                                    <PinMessageButton
+                                                        variables={{
+                                                            chatId: room.id,
+                                                            messageId: message.id,
+                                                        }}
+                                                        onSuccess={() => setShowMenu(false)}
+                                                    />
+                                                )}
+                                            {/*<XMenuItem style="danger">Delete</XMenuItem>*/}
+                                        </>
+                                    }
+                                />
                             )}
                         </XHorizontal>
                     </XView>
