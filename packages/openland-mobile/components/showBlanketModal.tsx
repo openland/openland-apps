@@ -6,9 +6,18 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
 import { isPad } from 'openland-mobile/pages/Root';
+import { AppTheme } from 'openland-mobile/themes/themes';
+import { XMemo } from 'openland-y-utils/XMemo';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea, cancelable?: boolean }> implements ZModalController {
+interface BlanketModalProps {
+    modal: ZModal;
+    ctx: ZModalController;
+    safe: ASSafeArea;
+    cancelable?: boolean;
+}
 
+class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: AppTheme }> implements ZModalController {
     key = randomKey();
     contents: any;
 
@@ -110,10 +119,10 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
     }
 
     render() {
-        console.log('')
+        const { theme } = this.props;
+
         return (
             <View width="100%" height="100%" flexDirection="column" alignItems="stretch">
-
                 <TouchableWithoutFeedback onPress={this.props.cancelable !== false ? this.hide : undefined}>
                     <View
                         style={{
@@ -132,7 +141,7 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
                                 left: 0,
                                 right: 0,
                                 bottom: 0,
-                                backgroundColor: 'rgba(0,0,0,0.3)',
+                                backgroundColor: theme.modalOverlay,
                                 opacity: 0
                             }}
                         />
@@ -152,7 +161,7 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
                     <View flexGrow={1} flexBasis={0} minHeight={0} minWidth={0} alignItems="stretch" alignSelf="stretch" flexDirection="column" justifyContent="center" marginBottom={this.props.safe.bottom} marginTop={this.props.safe.top + 48}>
                         {!isPad && (
                             <View
-                                backgroundColor="#fff"
+                                backgroundColor={theme.modalBackground}
                                 borderRadius={16}
                                 marginHorizontal={16}
                                 onLayout={this.onLayout}
@@ -163,7 +172,7 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
                         {isPad && (
                             <View width={420} alignSelf="center">
                                 <View
-                                    backgroundColor="#fff"
+                                    backgroundColor={theme.modalBackground}
                                     borderRadius={16}
                                     marginHorizontal={16}
                                     onLayout={this.onLayout}
@@ -179,11 +188,16 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
     }
 }
 
+const ThemedBlanketModal = XMemo((props: BlanketModalProps) => {
+    let theme = React.useContext(ThemeContext);
+    return <BlanketModal {...props} theme={theme} />
+})
+
 export function showBlanketModal(render: (ctx: ZModalController) => React.ReactElement<{}>, cancelable?: boolean) {
     showModal((modal) => {
         return (
             <ASSafeAreaContext.Consumer>
-                {safe => (<BlanketModal ctx={modal} modal={render} safe={safe} cancelable={cancelable} />)}
+                {safe => (<ThemedBlanketModal ctx={modal} modal={render} safe={safe} cancelable={cancelable} />)}
             </ASSafeAreaContext.Consumer>
         )
     });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZModalController, showModal, ZModal } from './ZModal';
-import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform, ScrollView, Dimensions, PlatformIOS } from 'react-native';
+import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform, ScrollView, Dimensions } from 'react-native';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
@@ -12,8 +12,14 @@ import { AppTheme } from 'openland-mobile/themes/themes';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea, flat: boolean, theme: AppTheme }> implements ZModalController {
+interface SheetModalProps {
+    ctx: ZModalController;
+    modal: ZModal;
+    flat: boolean;
+    safe: ASSafeArea;
+}
 
+class SheetModal extends React.PureComponent<SheetModalProps & { theme: AppTheme }> implements ZModalController {
     key = randomKey();
     contents: any;
 
@@ -126,7 +132,8 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
     }
 
     render() {
-        const maxScrollHeight = Dimensions.get('screen').height - this.props.safe.top - this.props.safe.bottom - 100;
+        const { theme, flat, safe } = this.props;
+        const maxScrollHeight = Dimensions.get('screen').height - safe.top - safe.bottom - 100;
 
         return (
             <View width="100%" height="100%" flexDirection="column" alignItems="stretch" justifyContent={isPad ? 'center' : 'flex-end'}>
@@ -148,7 +155,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                                 left: 0,
                                 right: 0,
                                 bottom: 0,
-                                backgroundColor: Platform.OS === 'android' ? 'rgba(0,0,0,0.3)' : 'rgba(4, 4, 15, 0.4)',
+                                backgroundColor: theme.modalOverlay,
                                 opacity: 0
                             }}
                         />
@@ -160,18 +167,18 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                     style={{ opacity: 0 }}
                     pointerEvents={isPad ? 'box-none' : undefined}
                 >
-                    {this.props.flat && (
+                    {flat && (
                         <>
                             {!isPad && (
                                 <View
-                                    backgroundColor={this.props.theme.backgroundColor}
+                                    backgroundColor={theme.modalBackground}
                                     borderTopRightRadius={12}
                                     borderTopLeftRadius={12}
-                                    paddingBottom={Platform.select({ ios: undefined, android: this.props.safe.bottom + 8 })}
+                                    paddingBottom={Platform.select({ ios: undefined, android: safe.bottom + 8 })}
                                     onLayout={this.onLayout}
                                     overflow="hidden"
                                 >
-                                    <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight} contentContainerStyle={{ paddingBottom: Platform.select({ ios: this.props.safe.bottom, android: undefined }) }}>
+                                    <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight} contentContainerStyle={{ paddingBottom: Platform.select({ ios: safe.bottom, android: undefined }) }}>
                                         {this.contents}
                                     </ScrollView>
                                 </View>
@@ -183,7 +190,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                                     overflow="hidden"
                                     width={350}
                                     alignSelf="center"
-                                    backgroundColor={this.props.theme.backgroundColor}
+                                    backgroundColor={theme.modalBackground}
                                     onLayout={this.onLayout}
                                 >
                                     <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight}>
@@ -193,7 +200,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                             )}
                         </>
                     )}
-                    {!this.props.flat && (
+                    {!flat && (
                         <View onLayout={this.onLayout} pointerEvents={isPad ? 'box-none' : undefined}>
                             {!isPad && (
                                 <>
@@ -209,7 +216,7 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
                                     </ZBlurredView>
                                     <ZBlurredView
                                         borderRadius={14}
-                                        marginBottom={this.props.safe.bottom || 10}
+                                        marginBottom={safe.bottom || 10}
                                         marginTop={10}
                                         marginHorizontal={10}
                                         overflow="hidden"
@@ -241,16 +248,16 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
     }
 }
 
-const ThemedSheetModal = XMemo((props: { modal: ZModalController, render: (ctx: ZModalController) => React.ReactElement<{}>, flat: boolean, safe: ASSafeArea }) => {
+const ThemedSheetModal = XMemo((props: SheetModalProps) => {
     let theme = React.useContext(ThemeContext);
-    return <SheetModal ctx={props.modal} modal={props.render} safe={props.safe} flat={props.flat} theme={theme} />
+    return <SheetModal {...props} theme={theme} />
 })
 
 export function showSheetModal(render: (ctx: ZModalController) => React.ReactElement<{}>, flat: boolean) {
-    showModal((modal) => {
+    showModal((ctx) => {
         return (
             <ASSafeAreaContext.Consumer>
-                {safe => <ThemedSheetModal render={render} safe={safe} flat={flat} modal={modal} />}
+                {safe => <ThemedSheetModal modal={render} safe={safe} flat={flat} ctx={ctx} />}
             </ASSafeAreaContext.Consumer>
         )
     });

@@ -66,6 +66,9 @@ export interface AppTheme {
     settingsRateIcon: string;
 
     radioBorderColor: string;
+
+    modalOverlay: string;
+    modalBackground: string;
 }
 
 export const DefaultTheme: AppTheme = {
@@ -129,7 +132,10 @@ export const DefaultTheme: AppTheme = {
     settingsHelpIcon: '#00bfff',
     settingsRateIcon: '#8a54ff',
 
-    radioBorderColor: '#c7cdd7'
+    radioBorderColor: '#c7cdd7',
+
+    modalOverlay: Platform.OS === 'android' ? 'rgba(0,0,0,0.3)' : 'rgba(4, 4, 15, 0.4)',
+    modalBackground: 'white',
 }
 
 export const DarkTheme: AppTheme = {
@@ -192,5 +198,8 @@ export const DarkTheme: AppTheme = {
     settingsInviteIcon: '#262626',
     settingsHelpIcon: '#262626',
     settingsRateIcon: '#262626',
-    radioBorderColor: '#fff'
+    radioBorderColor: '#fff',
+
+    modalOverlay: Platform.OS === 'android' ? 'rgba(0,0,0,0.4)' : 'rgba(4, 4, 15, 0.5)',
+    modalBackground: '#1a1a1a',
 }
