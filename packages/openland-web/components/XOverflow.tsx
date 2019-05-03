@@ -21,10 +21,14 @@ interface DottedMenuButtonStyleProps {
     active?: boolean;
     horizontal?: boolean;
     flat?: boolean;
+    marginLeft?: number;
+    marginRight?: number;
 }
 
 const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(
-    ({ small, horizontal, flat, active }) => ({
+    ({ small, horizontal, flat, active, marginLeft, marginRight }) => ({
+        marginLeft: marginLeft !== undefined ? `${marginLeft}px !important` : undefined,
+        marginRight: marginRight !== undefined ? `${marginRight}px !important` : undefined,
         width: small ? 10 : 22,
         height: 17,
         display: 'flex',
@@ -98,6 +102,8 @@ export class XOverflowDefalutTarget extends React.PureComponent<
                 small={props.small}
                 horizontal={props.horizontal}
                 flat={props.flat}
+                marginLeft={props.marginLeft}
+                marginRight={props.marginRight}
             >
                 <div />
                 <div />
@@ -170,7 +176,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
         }
 
         if (useCustomTarget) {
-            targetElement = target
+            targetElement = target;
         }
 
         return (

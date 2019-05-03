@@ -10,7 +10,6 @@ import { emoji } from 'openland-y-utils/emoji';
 import { Menu } from './Menu';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import CommentIcon from 'openland-icons/ic-comment-channel.svg';
-import { MessagesStateContextProps } from '../MessagesStateContext';
 
 export interface DesktopMessageContainerProps {
     deleted?: boolean;
@@ -19,7 +18,6 @@ export interface DesktopMessageContainerProps {
     compact: boolean;
     isModal?: boolean;
     isPinned?: boolean;
-    isChannel?: boolean;
     commentDepth?: number;
     isComment?: boolean;
     noSelector?: boolean;
@@ -107,7 +105,6 @@ interface MessageContainerWrapperProps {
     onMouseLeave: (event: React.MouseEvent<any>) => void;
     onClick?: (e: any) => void;
     cursorPointer: boolean;
-    selected: boolean;
 }
 
 const CompactMessageContainerWrapper = ({
@@ -116,7 +113,6 @@ const CompactMessageContainerWrapper = ({
     onMouseLeave,
     onClick,
     cursorPointer,
-    selected,
 }: MessageContainerWrapperProps) => {
     return (
         <XView
@@ -133,7 +129,6 @@ const CompactMessageContainerWrapper = ({
             borderRadius={4}
             onClick={onClick}
             cursor={cursorPointer ? 'pointer' : undefined}
-            // backgroundColor={selected ? '#f7f7f7' : undefined}
         >
             {children}
         </XView>
@@ -146,7 +141,6 @@ const NotCompactMessageContainerWrapper = ({
     onMouseLeave,
     onClick,
     cursorPointer,
-    selected,
 }: MessageContainerWrapperProps) => {
     return (
         <XView
@@ -163,7 +157,6 @@ const NotCompactMessageContainerWrapper = ({
             borderRadius={4}
             onClick={onClick}
             cursor={cursorPointer ? 'pointer' : undefined}
-            // backgroundColor={selected ? '#f7f7f7' : undefined}
         >
             {children}
         </XView>
@@ -458,12 +451,11 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
 
     // Actions
     let actions = (
-        <XView width={120} marginLeft={12} alignSelf="flex-start">
+        <XView width={85} marginLeft={12} alignSelf="flex-start">
             <Menu
                 conversationId={props.conversationId}
                 hover={hover}
                 message={props.message}
-                isChannel={!!props.isChannel}
                 isComment={!!props.isComment}
                 isModal={!!props.isModal}
                 selectMessage={props.selectMessage}
@@ -489,7 +481,6 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             cursorPointer={props.selecting}
-            selected={props.selected}
             onClick={(e: any) => {
                 if (props.selecting) {
                     e.preventDefault();

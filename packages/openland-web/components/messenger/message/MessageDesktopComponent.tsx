@@ -472,7 +472,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     isPinned={this.props.isPinned}
                     commentDepth={this.props.commentDepth}
                     isModal={this.props.isModal}
-                    isChannel={this.props.isChannel}
                     isComment={this.props.isComment}
                     noSelector={this.props.noSelector}
                     message={this.props.message}

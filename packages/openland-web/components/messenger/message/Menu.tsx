@@ -7,8 +7,6 @@ import {
     RoomChat_room_SharedRoom,
 } from 'openland-api/Types';
 import { CommentReactionButton, MessageReactionButton } from './reactions/ReactionButton';
-import ReplyIcon from 'openland-icons/ic-reply1.svg';
-import EditIcon from 'openland-icons/ic-edit.svg';
 import CommentIcon from 'openland-icons/ic-comment-channel.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
@@ -20,33 +18,6 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { XMutation } from 'openland-x/XMutation';
 import { useClient } from 'openland-web/utils/useClient';
 import { MutationFunc } from 'react-apollo';
-
-let iconButtonClass = css`
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 6;
-
-    &:hover svg path {
-        fill: #1790ff;
-        opacity: 1;
-    }
-`;
-
-const IconButton = ({
-    children,
-    onClick,
-}: {
-    children: any;
-    onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-}) => {
-    return (
-        <div className={iconButtonClass} onClick={onClick}>
-            {children}
-        </div>
-    );
-};
 
 let commentsIconWrapperClass = css`
     cursor: pointer;
@@ -102,23 +73,13 @@ interface MenuProps {
     message: DataSourceWebMessageItem;
     isModal: boolean;
     isComment: boolean;
-    isChannel: boolean;
     hover: boolean;
     selectMessage: () => void;
     room?: RoomChat_room;
 }
 
 export const Menu = React.memo(
-    ({
-        conversationId,
-        hover,
-        message,
-        isModal,
-        isChannel,
-        isComment,
-        selectMessage,
-        room,
-    }: MenuProps) => {
+    ({ conversationId, hover, message, isModal, isComment, selectMessage, room }: MenuProps) => {
         let router = React.useContext(XRouterContext)!;
         let [showMenu, setShowMenu] = React.useState<boolean>(false);
 
@@ -181,7 +142,7 @@ export const Menu = React.memo(
                     alignItems="center"
                     alignSelf="flex-start"
                     justifyContent={isComment ? 'flex-end' : 'flex-end'}
-                    width={120}
+                    width={85}
                     flexShrink={0}
                     separator={5}
                     className="menu-wrapper"
@@ -199,23 +160,7 @@ export const Menu = React.memo(
                                 hover && (
                                     <MessageReactionButton
                                         messageId={message.id!}
-                                        myMessage={out}
                                     />
-                                )}
-                            {hover &&
-                                !isComment &&
-                                !isChannel && (
-                                    <IconButton onClick={setReplyMessages}>
-                                        <ReplyIcon />
-                                    </IconButton>
-                                )}
-                            {hover &&
-                                !isComment &&
-                                out &&
-                                message.text && (
-                                    <IconButton onClick={setEditMessage}>
-                                        <EditIcon />
-                                    </IconButton>
                                 )}
                             {hover &&
                                 !isComment && (
@@ -240,6 +185,7 @@ export const Menu = React.memo(
                                         <XOverflowDefalutTarget
                                             onClick={() => setShowMenu(!showMenu)}
                                             active={showMenu}
+                                            marginLeft={0}
                                             flat={true}
                                         />
                                     }
