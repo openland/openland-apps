@@ -11,8 +11,29 @@ export interface DataSourceStoredProvider<T extends DataSourceItem> {
     loadMore: (cursor?: string) => Promise<{ state: string, cursor?: string, items: T[] }>
 }
 
+class KeyValueStoreVersioned implements KeyValueStore {
+    source: KeyValueStore;
+    version = 6;
+    versionStr = 'v' + this.version + '.';
+    constructor(source: KeyValueStore) {
+        this.source = source;
+    }
+    writeKey(key: string, value: string | null): Promise<void> {
+        return this.source.writeKey(this.versionStr + key, value);
+    }
+    writeKeys(items: { key: string; value: string | null; }[]): Promise<void> {
+        return this.source.writeKeys(items.map(i => ({ ...i, key: this.versionStr + i.key })));
+    }
+    readKey(key: string): Promise<string | null> {
+        return this.source.readKey(this.versionStr + key);
+    }
+    readKeys(keys: string[]): Promise<{ key: string; value: string | null; }[]> {
+        return this.source.readKeys(keys.map(k => this.versionStr + k)).then(objs => objs.map(i => ({ ...i, key: i.key.replace(this.versionStr, "") })));
+    }
+}
+
 export class DataSourceStored<T extends DataSourceItem> {
-    private readonly _wireVersion = 4;
+    private readonly _wireVersion = 8;
     readonly dataSource: DataSource<T>;
     readonly pageSize: number;
     readonly name: string;
@@ -33,6 +54,7 @@ export class DataSourceStored<T extends DataSourceItem> {
         this.name = name;
         this.pageSize = pageSize;
         this.dataSource = new DataSource<T>(() => { this.needMore(); });
+        storage = new KeyValueStoreVersioned(storage)
         this._storage = storage;
         this._queue.post(async () => {
             let start = currentTimeMillis();
@@ -82,7 +104,7 @@ export class DataSourceStored<T extends DataSourceItem> {
                 // Read page
                 let toLoad = this._index;
                 if (toLoad.length > this.pageSize) {
-                    toLoad = toLoad.slice(0, this.pageSize - 1);
+                    toLoad = toLoad.slice(0, this.pageSize);
                     this._loaded = this.pageSize;
                     this._loadCompleted = false;
                 } else {
@@ -217,7 +239,6 @@ export class DataSourceStored<T extends DataSourceItem> {
             r.splice(index, 0, item.key);
             this._index = r;
             await this._storage.writeKey('ds.' + this.name + '.index', JSON.stringify(this._index))
-
             if (this._loadCompleted) {
                 this.dataSource.addItem(item, index);
             } else {
@@ -250,7 +271,7 @@ export class DataSourceStored<T extends DataSourceItem> {
                     toLoad = this._index.slice(this._loaded);
                     this._loadCompleted = true;
                 } else {
-                    toLoad = this._index.slice(this._loaded, this._loaded + this.pageSize - 1);
+                    toLoad = this._index.slice(this._loaded, this._loaded + this.pageSize);
                     this._loaded += this.pageSize;
                 }
 
