@@ -30,8 +30,6 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { CommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModal';
-import { TypingsViewProps } from '../../components/messenger/typings/TypingsView';
-import { forever } from '../../../openland-engines/utils/forever';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 
 const inviteButtonClass = css`
