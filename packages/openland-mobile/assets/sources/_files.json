@@ -469,6 +469,13 @@
             "sizes": [
                 26
             ]
+        },
+        {
+            "name": "ic-edited",
+            "src": "ic-edited.svg",
+            "sizes": [
+                10
+            ]
         }
     ]
 }
