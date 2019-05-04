@@ -247,7 +247,7 @@ export const Menu = React.memo(
                                         <CommentIcon />
                                     </CommentsIconWrapper>
                                 )}
-                            {hover && (
+                            {hover && !isComment && (
                                 <XOverflow
                                     show={showMenu}
                                     placement="bottom-end"
