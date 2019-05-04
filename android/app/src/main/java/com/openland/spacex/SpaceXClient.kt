@@ -18,6 +18,15 @@ interface OperationCallback {
     fun onError(result: JSONObject)
 }
 
+interface StoreReadCallback {
+    fun onResult(result: JSONObject?)
+}
+
+interface StoreWriteCallback {
+    fun onResult()
+    fun onError()
+}
+
 class SpaceXClient(url: String, token: String?) {
     private var isConnected = false
     private val transport: WebSocketTransport = WebSocketTransport(url, token) {
@@ -37,7 +46,7 @@ class SpaceXClient(url: String, token: String?) {
         var completed = false
         cacheQueue.async {
             if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
-                val existing = readFromStore("ROOT_QUERY", store, operation.selector!!)
+                val existing = readFromStore("ROOT_QUERY", store, operation.selector!!, arguments)
                 if (existing.first) {
                     callback.onResult(existing.second!!)
                     if (policy == FetchPolicy.CACHE_FIRST) {
@@ -78,6 +87,31 @@ class SpaceXClient(url: String, token: String?) {
                         // Nothing to do
                     }
                 })
+            }
+        }
+    }
+
+    fun read(operation: OperationDefinition, arguments: JSONObject, callback: StoreReadCallback) {
+        cacheQueue.async {
+            val existing = readFromStore("ROOT_QUERY", store, operation.selector!!, arguments)
+            if (existing.first) {
+                callback.onResult(existing.second!!)
+            } else {
+                callback.onResult(null)
+            }
+        }
+    }
+
+    fun write(operation: OperationDefinition, arguments: JSONObject, data: JSONObject, callback: StoreWriteCallback) {
+        cacheQueue.async {
+            try {
+                val normalized = operation.normalizeResponse(data, arguments)
+                val changes = store.merge(normalized)
+                bus.publish(changes)
+                callback.onResult()
+            } catch (e: Throwable) {
+                e.printStackTrace()
+                callback.onError()
             }
         }
     }
@@ -241,7 +275,7 @@ class SpaceXClient(url: String, token: String?) {
         fun start() {
             cacheQueue.async {
                 if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
-                    val existing = readFromStore("ROOT_QUERY", store, operation.selector!!)
+                    val existing = readFromStore("ROOT_QUERY", store, operation.selector!!, arguments)
                     if (existing.first) {
                         callback.onResult(existing.second!!)
                         if (policy == FetchPolicy.CACHE_FIRST) {
@@ -299,7 +333,7 @@ class SpaceXClient(url: String, token: String?) {
                 this.storeSubscription!!()
                 this.storeSubscription = null
             }
-            val existing = readFromStore("ROOT_QUERY", store, operation.selector!!)
+            val existing = readFromStore("ROOT_QUERY", store, operation.selector!!, arguments)
             if (existing.first) {
                 callback.onResult(existing.second!!)
                 if (policy == FetchPolicy.CACHE_FIRST) {

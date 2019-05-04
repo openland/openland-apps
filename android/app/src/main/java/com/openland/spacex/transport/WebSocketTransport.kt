@@ -1,5 +1,6 @@
 package com.openland.spacex.transport
 
+import android.util.Log
 import com.openland.spacex.utils.DispatchQueue
 import org.json.JSONObject
 
@@ -92,7 +93,10 @@ class WebSocketTransport {
     }
 
     private fun handleMessage(msg: String) {
+        val start1 = System.currentTimeMillis()
         val response = JSONObject(msg)
+        val end1 = System.currentTimeMillis()
+        Log.d("SpaceX", "message parsed in " + (end1 - start1) + " ms, size: " + msg.length)
         val type = response.getString("type")
         if (type == "ka") {
             // Keep Alive

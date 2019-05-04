@@ -2,9 +2,7 @@ package com.openland.react.graphql
 
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
-import com.openland.spacex.FetchPolicy
-import com.openland.spacex.OperationCallback
-import com.openland.spacex.SpaceXClient
+import com.openland.spacex.*
 import com.openland.spacex.gen.Operations
 import org.json.JSONObject
 
@@ -15,16 +13,31 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     private val watches = mutableMapOf<String, () -> Unit>()
     private val subscriptions = mutableMapOf<String, SpaceXClient.SpaceXSubscription>()
 
+    //
+    // Init and Destroy
+    //
+
     init {
         client.setConnectionStateListener {
-            if (it) {
-                onConnected()
-            } else {
-                onDisconnected()
+            if (this.connected != it) {
+                this.connected = it
+                val map = WritableNativeMap()
+                map.putString("key", key)
+                map.putString("type", "status")
+                map.putString("status", if (it) "connected" else "connecting")
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                        .emit("apollo_client", map)
             }
         }
     }
 
+    fun dispose() {
+        // TODO: Implement
+    }
+
+    //
+    // Query
+    //
 
     fun query(id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
 
@@ -65,6 +78,10 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
             }
         })
     }
+
+    //
+    // Query Watch
+    //
 
     fun watch(id: String, query: String, arguments: ReadableMap, parameters: ReadableMap) {
         // Resolve Fetch Policy
@@ -110,6 +127,10 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
         watches.remove(id)?.invoke()
     }
 
+    //
+    // Mutation
+    //
+
     fun mutate(id: String, query: String, arguments: ReadableMap) {
         client.mutation(Operations.operationByName(query), arguments.toKotlinX(), object : OperationCallback {
             override fun onResult(result: JSONObject) {
@@ -140,13 +161,9 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
         })
     }
 
-    fun read(id: String, query: String, arguments: ReadableMap) {
-        // TODO: Implement
-    }
-
-    fun write(id: String, data: ReadableMap, query: String, arguments: ReadableMap) {
-        // TODO: Implement
-    }
+    //
+    // Subscriptions
+    //
 
     fun subscribe(id: String, query: String, arguments: ReadableMap) {
         subscriptions[id] = client.subscribe(Operations.operationByName(query), arguments.toKotlinX(), object : OperationCallback {
@@ -186,33 +203,46 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
         subscriptions.remove(id)?.stop()
     }
 
-    fun dispose() {
-        // TODO: Implement
+    //
+    // Store operations
+    //
+
+    fun read(id: String, query: String, arguments: ReadableMap) {
+        client.read(Operations.operationByName(query), arguments.toKotlinX(), object : StoreReadCallback {
+            override fun onResult(result: JSONObject?) {
+                val res = result?.toReact()
+                val map = WritableNativeMap()
+                map.putString("key", key)
+                map.putString("type", "response")
+                map.putString("id", id)
+
+                if (res != null) {
+                    map.putMap("data", res)
+                } else {
+                    map.putNull("data")
+                }
+
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                        .emit("apollo_client", map)
+            }
+        })
     }
 
-    private fun onDisconnected() {
-        if (!this.connected) {
-            return
-        }
-        this.connected = false
-        val map = WritableNativeMap()
-        map.putString("key", key)
-        map.putString("type", "status")
-        map.putString("status", "connecting")
-        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                .emit("apollo_client", map)
-    }
+    fun write(id: String, data: ReadableMap, query: String, arguments: ReadableMap) {
+        client.write(Operations.operationByName(query), arguments.toKotlinX(), data.toKotlinX(), object : StoreWriteCallback {
+            override fun onResult() {
+                val map = WritableNativeMap()
+                map.putString("key", key)
+                map.putString("type", "response")
+                map.putString("id", id)
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                        .emit("apollo_client", map)
+            }
 
-    private fun onConnected() {
-        if (this.connected) {
-            return
-        }
-        this.connected = true
-        val map = WritableNativeMap()
-        map.putString("key", key)
-        map.putString("type", "status")
-        map.putString("status", "connected")
-        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                .emit("apollo_client", map)
+            override fun onError() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        })
     }
 }

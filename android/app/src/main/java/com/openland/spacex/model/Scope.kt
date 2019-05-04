@@ -170,7 +170,7 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     //
 
     fun readInt(key: String): RecordValue {
-        return RecordValue.Number((obj[key] as Number).toFloat())
+        return RecordValue.Number((obj.getDouble(key)).toFloat())
     }
 
     fun readIntOptional(key: String): RecordValue {
