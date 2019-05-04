@@ -210,6 +210,7 @@ export const Menu = React.memo(
         const sharedRoom =
             room && room.__typename === 'SharedRoom' ? (room as RoomChat_room_SharedRoom) : null;
         const pinMessageAccess = out && sharedRoom && sharedRoom.canEdit && !message.isService;
+        // console.log(lol?)
 
         if (!message.isSending && !messagesContext.useForwardHeader && !isModal) {
             return (
