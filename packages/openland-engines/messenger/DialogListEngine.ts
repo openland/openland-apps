@@ -264,6 +264,7 @@ export class DialogListEngine {
 
         if (existing && existing.messageId === mid) {
             await this._dataSourceStored.updateItem(extractDialog({
+                id: existing.key,
                 cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, isChannel: !!existing.isChannel, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
             }, uid));
         }

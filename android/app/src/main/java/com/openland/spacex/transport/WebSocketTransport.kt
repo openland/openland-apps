@@ -1,8 +1,6 @@
 package com.openland.spacex.transport
 
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
+import org.json.JSONObject
 import java.util.concurrent.Executors
 
 class WebSocketTransport {
@@ -68,7 +66,7 @@ class WebSocketTransport {
     // External Methods
     //
 
-    fun operation(operation: JsonObject, callback: TransportOperationCallback): RunningOperation {
+    fun operation(operation: JSONObject, callback: TransportOperationCallback): RunningOperation {
         val id = nextId++.toString()
         val op = PendingOperation(id, operation, callback)
         queue.submit {
@@ -85,7 +83,7 @@ class WebSocketTransport {
     //
 
     private fun onConnected() {
-        postMessage("connection_init", JsonObject(mapOf("x-openland-token" to JsonPrimitive(this.token))), nextId++.toString())
+        postMessage("connection_init", JSONObject(mapOf("x-openland-token" to this.token)), nextId++.toString())
     }
 
     private fun onDisconnected() {
@@ -93,8 +91,8 @@ class WebSocketTransport {
     }
 
     private fun handleMessage(msg: String) {
-        val response = Json.parse(JsonObject.serializer(), msg)
-        val type = response["type"]!!.primitive.content
+        val response = JSONObject(msg)
+        val type = response.getString("type")
         if (type == "ka") {
             // Keep Alive
             // TODO: Handle
@@ -107,28 +105,28 @@ class WebSocketTransport {
         } else if (type == "data") {
 
             // Handle data and resolver level errors
-            val id = response["id"]!!.primitive.content
-            val payload = response["payload"]!!.jsonObject
-            val errors = payload["error"]
-            val data = payload["data"]
+            val id = response.getString("id")
+            val payload = response.getJSONObject("payload")
+            val errors = payload.optJSONObject("error")
+            val data = payload.optJSONObject("data")
             if (this.liveOperations.containsKey(id)) {
                 if (errors != null) {
-                    this.liveOperations[id]!!.callback.onError(errors.jsonObject)
+                    this.liveOperations[id]!!.callback.onError(errors)
                 } else {
-                    this.liveOperations[id]!!.callback.onResult(data!!.jsonObject)
+                    this.liveOperations[id]!!.callback.onResult(data!!)
                 }
             }
         } else if (type == "error") {
 
             // Handle low level error
-            val id = response["id"]!!.primitive.content
-            val payload = response["payload"]!!.jsonObject
+            val id = response.getString("id")
+            val payload = response.getJSONObject("payload")
             if (this.liveOperations.containsKey(id)) {
                 this.liveOperations[id]!!.callback.onError(payload)
             }
 
         } else if (type == "complete") {
-            val id = response["id"]!!.primitive.content
+            val id = response.getString("id")
             if (this.liveOperations.containsKey(id)) {
                 this.liveOperations.remove(id)!!.callback.onCompleted()
             }
@@ -137,24 +135,24 @@ class WebSocketTransport {
         }
     }
 
-    private fun postMessage(type: String, payload: JsonObject, id: String) {
-        this.ws!!.postMessage(Json.stringify(JsonObject.serializer(), JsonObject(
+    private fun postMessage(type: String, payload: JSONObject, id: String) {
+        this.ws!!.postMessage(JSONObject(
                 mapOf(
-                        "id" to JsonPrimitive(id),
-                        "type" to JsonPrimitive(type),
+                        "id" to id,
+                        "type" to type,
                         "payload" to payload
                 )
-        )))
+        ).toString())
     }
 
-    private inner class PendingOperation(val id: String, var query: JsonObject, val callback: TransportOperationCallback) : RunningOperation {
+    private inner class PendingOperation(val id: String, var query: JSONObject, val callback: TransportOperationCallback) : RunningOperation {
         override fun cancel() {
             queue.submit {
                 liveOperations.remove(id)
             }
         }
 
-        override fun lazyUpdate(operation: JsonObject) {
+        override fun lazyUpdate(operation: JSONObject) {
             queue.submit {
                 query = operation
             }

@@ -71,7 +71,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         fontWeight={TextStyles.weight.regular}
                                     >
 
-                                        {preprocessText(generalMesage!.message!, generalMesage.spans).map((p: Span, j: number) => renderPreprocessedText(p, j, this.props.message, this.props.theme, this.props.onUserPress))}
+                                        {preprocessText(generalMesage!.message!, generalMesage.spans as any).map((p: Span, j: number) => renderPreprocessedText(p, j, this.props.message, this.props.theme, this.props.onUserPress))}
                                         {(!this.props.message.text && (i + 1 === this.props.message.reply!!.length)) ? (this.props.message.isOut ? paddedTextOut : paddedText) : undefined}
                                     </ASText>}
                                     {attachFile && attachFile.fileMetadata.isImage ? <AsyncReplyMessageMediaView attach={attachFile} onPress={this.props.onMediaPress} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}

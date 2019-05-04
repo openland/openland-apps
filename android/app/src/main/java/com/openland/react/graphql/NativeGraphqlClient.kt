@@ -6,7 +6,7 @@ import com.openland.spacex.FetchPolicy
 import com.openland.spacex.OperationCallback
 import com.openland.spacex.SpaceXClient
 import com.openland.spacex.gen.Operations
-import kotlinx.serialization.json.JsonObject
+import org.json.JSONObject
 
 class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?, storage: String?) {
 
@@ -39,7 +39,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
         }
 
         client.query(Operations.operationByName(query), arguments.toKotlinX(), policy, object : OperationCallback {
-            override fun onResult(result: JsonObject) {
+            override fun onResult(result: JSONObject) {
                 val res = result.toReact()
 
                 val map = WritableNativeMap()
@@ -52,7 +52,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                         .emit("apollo_client", map)
             }
 
-            override fun onError(result: JsonObject) {
+            override fun onError(result: JSONObject) {
                 val res = result.toReact()
                 val map = WritableNativeMap()
                 map.putString("key", key)
@@ -78,7 +78,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
         }
 
         val res = client.watch(Operations.operationByName(query), arguments.toKotlinX(), policy, object : OperationCallback {
-            override fun onResult(result: JsonObject) {
+            override fun onResult(result: JSONObject) {
                 val res = result.toReact()
 
                 val map = WritableNativeMap()
@@ -91,7 +91,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                         .emit("apollo_client", map)
             }
 
-            override fun onError(result: JsonObject) {
+            override fun onError(result: JSONObject) {
                 val res = result.toReact()
                 val map = WritableNativeMap()
                 map.putString("key", key)
@@ -112,7 +112,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
 
     fun mutate(id: String, query: String, arguments: ReadableMap) {
         client.mutation(Operations.operationByName(query), arguments.toKotlinX(), object : OperationCallback {
-            override fun onResult(result: JsonObject) {
+            override fun onResult(result: JSONObject) {
                 val res = result.toReact()
 
                 val map = WritableNativeMap()
@@ -126,7 +126,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                         .emit("apollo_client", map)
             }
 
-            override fun onError(result: JsonObject) {
+            override fun onError(result: JSONObject) {
                 val res = result.toReact()
                 val map = WritableNativeMap()
                 map.putString("key", key)
@@ -150,7 +150,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
 
     fun subscribe(id: String, query: String, arguments: ReadableMap) {
         subscriptions[id] = client.subscribe(Operations.operationByName(query), arguments.toKotlinX(), object : OperationCallback {
-            override fun onResult(result: JsonObject) {
+            override fun onResult(result: JSONObject) {
                 val res = result.toReact()
 
                 val map = WritableNativeMap()
@@ -164,7 +164,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
                         .emit("apollo_client", map)
             }
 
-            override fun onError(result: JsonObject) {
+            override fun onError(result: JSONObject) {
                 val res = result.toReact()
                 val map = WritableNativeMap()
                 map.putString("key", key)

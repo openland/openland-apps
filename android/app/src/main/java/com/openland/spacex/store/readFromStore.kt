@@ -1,7 +1,8 @@
 package com.openland.spacex.store
 
 import com.openland.spacex.model.*
-import kotlinx.serialization.json.*
+import org.json.JSONArray
+import org.json.JSONObject
 
 private fun selectorKey(name: String, arguments: Map<String, InputValue>): String {
     if (arguments.isEmpty()) {
@@ -11,43 +12,43 @@ private fun selectorKey(name: String, arguments: Map<String, InputValue>): Strin
     return name
 }
 
-private fun readValue(value: RecordValue, type: OutputType, store: RecordStore): Pair<Boolean, JsonElement?> {
+private fun readValue(value: RecordValue, type: OutputType, store: RecordStore): Pair<Boolean, Any?> {
     if (type is OutputType.Scalar) {
         if (value == RecordValue.Null) {
-            return true to JsonNull
+            return true to null
         } else if (type.name == "String") {
             return if (value is RecordValue.String) {
-                true to JsonPrimitive(value.value)
+                true to value.value
             } else {
                 false to null
             }
         } else if (type.name == "Int") {
             return if (value is RecordValue.Number) {
-                true to JsonPrimitive(value.value)
+                true to value.value
             } else {
                 false to null
             }
         } else if (type.name == "Float") {
             return if (value is RecordValue.Number) {
-                true to JsonPrimitive(value.value)
+                true to value.value
             } else {
                 false to null
             }
         } else if (type.name == "ID") {
             return if (value is RecordValue.String) {
-                true to JsonPrimitive(value.value)
+                true to value.value
             } else {
                 false to null
             }
         } else if (type.name == "Date") {
             return if (value is RecordValue.String) {
-                true to JsonPrimitive(value.value)
+                true to value.value
             } else {
                 false to null
             }
         } else if (type.name == "Boolean") {
             return if (value is RecordValue.Boolean) {
-                true to JsonPrimitive(value.value)
+                true to value.value
             } else {
                 false to null
             }
@@ -62,7 +63,7 @@ private fun readValue(value: RecordValue, type: OutputType, store: RecordStore):
         }
     } else if (type is OutputType.List) {
         if (value == RecordValue.Null) {
-            return true to JsonNull
+            return true to null
         } else {
             if (value is RecordValue.List) {
                 val mapped = value.items.map { readValue(it, type.inner, store) }
@@ -70,14 +71,14 @@ private fun readValue(value: RecordValue, type: OutputType, store: RecordStore):
                     return false to null
                 }
                 val v = mapped.map { it.second!! }
-                return true to JsonArray(v)
+                return true to JSONArray(v)
             } else {
                 error("Invalid record value")
             }
         }
     } else if (type is OutputType.Object) {
         if (value == RecordValue.Null) {
-            return true to JsonNull
+            return true to null
         } else {
             if (value is RecordValue.Reference) {
                 return readSelector(value.key, store, type.selectors)
@@ -91,7 +92,7 @@ private fun readValue(value: RecordValue, type: OutputType, store: RecordStore):
 
 private fun readSelector(
         record: Record,
-        fields: MutableMap<String, JsonElement>,
+        fields: MutableMap<String, Any?>,
         store: RecordStore,
         selectors: List<Selector>
 ): Boolean {
@@ -103,7 +104,7 @@ private fun readSelector(
                 if (!rv.first) {
                     return false
                 }
-                fields[f.alias] = rv.second!!
+                fields[f.alias] = rv.second
             } else {
                 return false
             }
@@ -127,19 +128,19 @@ private fun readSelector(
     return true
 }
 
-private fun readSelector(cacheKey: String, store: RecordStore, selectors: List<Selector>): Pair<Boolean, JsonObject?> {
+private fun readSelector(cacheKey: String, store: RecordStore, selectors: List<Selector>): Pair<Boolean, JSONObject?> {
     val value = store.read(cacheKey)
     if (value.fields.isEmpty()) {
         return false to null
     }
     val k = store.read(value.key)
-    val fields = mutableMapOf<String, JsonElement>()
+    val fields = mutableMapOf<String, Any?>()
     if (!readSelector(k, fields, store, selectors)) {
         return false to null
     }
-    return true to JsonObject(fields)
+    return true to JSONObject(fields)
 }
 
-fun readFromStore(cacheKey: String, store: RecordStore, type: OutputType.Object): Pair<Boolean, JsonObject?> {
+fun readFromStore(cacheKey: String, store: RecordStore, type: OutputType.Object): Pair<Boolean, JSONObject?> {
     return readSelector(cacheKey, store, type.selectors)
 }

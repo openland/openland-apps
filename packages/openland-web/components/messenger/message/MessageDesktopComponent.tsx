@@ -279,7 +279,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 return (
                                     <MessageReplyComponent
                                         attach={qfileAttach}
-                                        spans={item.spans}
+                                        spans={item.spans as any}
                                         sender={item.sender}
                                         date={item.date}
                                         message={item.message}

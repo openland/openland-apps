@@ -1,7 +1,7 @@
 package com.openland.spacex.model
 
 import com.openland.spacex.store.RecordSet
-import kotlinx.serialization.json.JsonObject
+import org.json.JSONObject
 
 enum class OperationKind {
     QUERY,
@@ -15,5 +15,5 @@ interface OperationDefinition {
     val selector: OutputType.Object?
     val name: String
     val body: String
-    fun normalizeResponse(response: JsonObject, arguments: JsonObject): RecordSet
+    fun normalizeResponse(response: JSONObject, arguments: JSONObject): RecordSet
 }

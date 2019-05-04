@@ -1,17 +1,17 @@
 package com.openland.spacex.transport
 
 import com.openland.spacex.model.OperationDefinition
-import kotlinx.serialization.json.JsonObject
+import org.json.JSONObject
 
 interface TransportOperationCallback {
-    fun onError(error: JsonObject)
-    fun onResult(data: JsonObject)
+    fun onError(error: JSONObject)
+    fun onResult(data: JSONObject)
     fun onCompleted()
 }
 
 interface RunningOperation {
     fun cancel()
-    fun lazyUpdate(operation: JsonObject)
+    fun lazyUpdate(operation: JSONObject)
 }
 
 interface GraphQLTransport {

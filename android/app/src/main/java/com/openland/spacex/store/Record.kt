@@ -1,6 +1,7 @@
 package com.openland.spacex.store
 
-import kotlinx.serialization.json.*
+import org.json.JSONArray
+import org.json.JSONObject
 
 sealed class RecordValue {
     class String(val value: kotlin.String) : RecordValue() {
@@ -89,52 +90,47 @@ class Record(val key: String, val fields: Map<String, RecordValue>) {
 
 class RecordSet(val records: Map<String, Record>)
 
-private fun serializeValue(value: RecordValue): JsonElement {
+private fun serializeValue(value: RecordValue): Any? {
     return when (value) {
-        is RecordValue.String -> JsonLiteral(value.value)
-        is RecordValue.Number -> JsonLiteral(value.value)
-        is RecordValue.Boolean -> JsonLiteral(value.value)
-        RecordValue.Null -> JsonNull
-        is RecordValue.Reference -> JsonObject(mapOf("key" to JsonLiteral(value.key)))
-        is RecordValue.List -> JsonArray(value.items.map { serializeValue(it) })
+        is RecordValue.String -> value.value
+        is RecordValue.Number -> value.value
+        is RecordValue.Boolean -> value.value
+        RecordValue.Null -> null
+        is RecordValue.Reference -> JSONObject(mapOf("key" to value.key))
+        is RecordValue.List -> JSONArray(value.items.map { serializeValue(it) })
     }
 }
 
 fun serializeRecord(record: Record): String {
-    return Json.unquoted.stringify(
-            JsonElement.serializer(),
-            JsonObject(record.fields.mapValues { serializeValue(it.value) })
-    )
+    return JSONObject(record.fields.mapValues { serializeValue(it.value) }).toString()
 }
 
-fun parseValue(f: JsonElement): RecordValue {
-    if (f.isNull) {
+fun parseValue(f: Any?): RecordValue {
+    if (f == null) {
         return RecordValue.Null
-    } else if (f is JsonLiteral) {
-        val b = f.booleanOrNull
-        if (b != null) {
-            return RecordValue.Boolean(b)
-        } else {
-            val fl = f.floatOrNull
-            if (fl != null) {
-                return RecordValue.Number(fl)
-            } else {
-                return RecordValue.String(f.body as String)
-            }
+    } else if (f is String) {
+        return RecordValue.String(f)
+    } else if (f is Boolean) {
+        return RecordValue.Boolean(f)
+    } else if (f is Float) {
+        return RecordValue.Number(f)
+    } else if (f is JSONObject) {
+        return RecordValue.Reference(f["key"] as String)
+    } else if (f is JSONArray) {
+        val res = mutableListOf<RecordValue>()
+        for (i in 0 until f.length()) {
+            res.add(parseValue(f.get(i)))
         }
-    } else if (f is JsonObject) {
-        return RecordValue.Reference((f["key"] as JsonLiteral).body as String)
-    } else if (f is JsonArray) {
-        return RecordValue.List(f.map { parseValue(it) })
+        return RecordValue.List(res)
     } else {
         throw Error()
     }
 }
 
 fun parseRecord(key: String, src: String): Record {
-    val field = Json.unquoted.parseJson(src).jsonObject
+    val field = JSONObject(src)
     val fields = mutableMapOf<String, RecordValue>()
-    for (key in field.keys) {
+    for (key in field.keys()) {
         val f = field[key]!!
         fields[key] = parseValue(f)
     }

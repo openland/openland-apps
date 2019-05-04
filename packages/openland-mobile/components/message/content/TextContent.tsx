@@ -34,7 +34,7 @@ export const TextContent = (props: TextContentProps) => {
         message = { ...message, message: text!.slice(1, text!.length - 1) };
     }
 
-    let preprocessed = preprocessText(message.message || '', message.spans);
+    let preprocessed = preprocessText(message.message || '', message.spans as any);
     let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, props.onUserPress, theme));
 
     if (message.message) {

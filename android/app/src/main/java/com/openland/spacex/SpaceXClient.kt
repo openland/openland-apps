@@ -1,5 +1,6 @@
 package com.openland.spacex
 
+import android.util.Log
 import com.openland.spacex.model.OperationDefinition
 import com.openland.spacex.model.OperationKind
 import com.openland.spacex.store.RecordStore
@@ -8,13 +9,12 @@ import com.openland.spacex.store.readFromStore
 import com.openland.spacex.transport.RunningOperation
 import com.openland.spacex.transport.TransportOperationCallback
 import com.openland.spacex.transport.WebSocketTransport
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
+import org.json.JSONObject
 import java.util.concurrent.Executors
 
 interface OperationCallback {
-    fun onResult(result: JsonObject)
-    fun onError(result: JsonObject)
+    fun onResult(result: JSONObject)
+    fun onError(result: JSONObject)
 }
 
 class SpaceXClient(url: String, token: String?) {
@@ -29,7 +29,7 @@ class SpaceXClient(url: String, token: String?) {
     private val cacheQueue = Executors.newSingleThreadExecutor()
     private var connectionStateListener: ((connected: Boolean) -> Unit)? = null
 
-    fun query(operation: OperationDefinition, arguments: JsonObject, policy: FetchPolicy, callback: OperationCallback) {
+    fun query(operation: OperationDefinition, arguments: JSONObject, policy: FetchPolicy, callback: OperationCallback) {
         if (operation.kind != OperationKind.QUERY) {
             throw Error("Invalid operation kind")
         }
@@ -45,18 +45,14 @@ class SpaceXClient(url: String, token: String?) {
                 }
             }
             transportQueue.submit {
-                transport.operation(JsonObject(
+                transport.operation(JSONObject(
                         mapOf(
-                                "query" to JsonPrimitive(
-                                        operation.body
-                                ),
-                                "name" to JsonPrimitive(
-                                        operation.name
-                                ),
+                                "query" to operation.body,
+                                "name" to operation.name,
                                 "variables" to arguments
                         )
                 ), object : TransportOperationCallback {
-                    override fun onError(error: JsonObject) {
+                    override fun onError(error: JSONObject) {
                         cacheQueue.submit {
                             if (!completed) {
                                 completed = true
@@ -65,14 +61,18 @@ class SpaceXClient(url: String, token: String?) {
                         }
                     }
 
-                    override fun onResult(data: JsonObject) {
+                    override fun onResult(data: JSONObject) {
                         cacheQueue.submit {
-                            if (!completed) {
-                                completed = true
-                                val normalized = operation.normalizeResponse(data, arguments)
-                                val changed = store.merge(normalized)
-                                bus.publish(changed)
-                                callback.onResult(data)
+                            try {
+                                if (!completed) {
+                                    completed = true
+                                    val normalized = operation.normalizeResponse(data, arguments)
+                                    val changed = store.merge(normalized)
+                                    bus.publish(changed)
+                                    callback.onResult(data)
+                                }
+                            } catch (e: Throwable) {
+                                e.printStackTrace()
                             }
                         }
                     }
@@ -85,7 +85,7 @@ class SpaceXClient(url: String, token: String?) {
         }
     }
 
-    fun watch(operation: OperationDefinition, arguments: JsonObject, policy: FetchPolicy, callback: OperationCallback): () -> Unit {
+    fun watch(operation: OperationDefinition, arguments: JSONObject, policy: FetchPolicy, callback: OperationCallback): () -> Unit {
         if (operation.kind != OperationKind.QUERY) {
             throw Error("Invalid operation kind")
         }
@@ -96,40 +96,44 @@ class SpaceXClient(url: String, token: String?) {
         }
     }
 
-    fun mutation(operation: OperationDefinition, arguments: JsonObject, callback: OperationCallback) {
+    fun mutation(operation: OperationDefinition, arguments: JSONObject, callback: OperationCallback) {
         if (operation.kind != OperationKind.MUTATION) {
             throw Error("Invalid operation kind")
         }
         var completed = false
         transportQueue.submit {
-            transport.operation(JsonObject(
+            transport.operation(JSONObject(
                     mapOf(
-                            "query" to JsonPrimitive(
-                                    operation.body
-                            ),
-                            "name" to JsonPrimitive(
-                                    operation.name
-                            ),
+                            "query" to operation.body,
+                            "name" to operation.name,
                             "variables" to arguments
                     )
             ), object : TransportOperationCallback {
-                override fun onError(error: JsonObject) {
+                override fun onError(error: JSONObject) {
                     cacheQueue.submit {
-                        if (!completed) {
-                            completed = true
-                            callback.onError(error)
+                        try {
+                            if (!completed) {
+                                completed = true
+                                callback.onError(error)
+                            }
+                        } catch (e: Throwable) {
+                            e.printStackTrace()
                         }
                     }
                 }
 
-                override fun onResult(data: JsonObject) {
+                override fun onResult(data: JSONObject) {
                     cacheQueue.submit {
-                        if (!completed) {
-                            completed = true
-                            val normalized = operation.normalizeResponse(data, arguments)
-                            val changed = store.merge(normalized)
-                            bus.publish(changed)
-                            callback.onResult(data)
+                        try {
+                            if (!completed) {
+                                completed = true
+                                val normalized = operation.normalizeResponse(data, arguments)
+                                val changed = store.merge(normalized)
+                                bus.publish(changed)
+                                callback.onResult(data)
+                            }
+                        } catch (e: Throwable) {
+                            e.printStackTrace()
                         }
                     }
                 }
@@ -141,7 +145,7 @@ class SpaceXClient(url: String, token: String?) {
         }
     }
 
-    fun subscribe(operation: OperationDefinition, arguments: JsonObject, callback: OperationCallback): SpaceXSubscription {
+    fun subscribe(operation: OperationDefinition, arguments: JSONObject, callback: OperationCallback): SpaceXSubscription {
         val res = SpaceXSubscription(operation, arguments, callback)
         res.start()
         return res
@@ -154,7 +158,7 @@ class SpaceXClient(url: String, token: String?) {
 
     inner class SpaceXSubscription(
             val operation: OperationDefinition,
-            val arguments: JsonObject,
+            val arguments: JSONObject,
             val callback: OperationCallback
     ) {
 
@@ -163,24 +167,20 @@ class SpaceXClient(url: String, token: String?) {
 
         fun start() {
             transportQueue.submit {
-                runningOperation = transport.operation(JsonObject(
+                runningOperation = transport.operation(JSONObject(
                         mapOf(
-                                "query" to JsonPrimitive(
-                                        operation.body
-                                ),
-                                "name" to JsonPrimitive(
-                                        operation.name
-                                ),
+                                "query" to operation.body,
+                                "name" to operation.name,
                                 "variables" to arguments
                         )
                 ), object : TransportOperationCallback {
-                    override fun onError(error: JsonObject) {
+                    override fun onError(error: JSONObject) {
                         transportQueue.submit {
                             restart()
                         }
                     }
 
-                    override fun onResult(data: JsonObject) {
+                    override fun onResult(data: JSONObject) {
                         cacheQueue.submit {
                             if (!completed) {
                                 completed = true
@@ -209,16 +209,12 @@ class SpaceXClient(url: String, token: String?) {
             }
         }
 
-        fun updateArguments(arguments: JsonObject) {
+        fun updateArguments(arguments: JSONObject) {
             transportQueue.submit {
-                this.runningOperation?.lazyUpdate(JsonObject(
+                this.runningOperation?.lazyUpdate(JSONObject(
                         mapOf(
-                                "query" to JsonPrimitive(
-                                        operation.body
-                                ),
-                                "name" to JsonPrimitive(
-                                        operation.name
-                                ),
+                                "query" to operation.body,
+                                "name" to operation.name,
                                 "variables" to arguments
                         )
                 ))
@@ -236,7 +232,7 @@ class SpaceXClient(url: String, token: String?) {
 
 
     private inner class QueryWatch(val operation: OperationDefinition,
-                                   val arguments: JsonObject,
+                                   val arguments: JSONObject,
                                    val policy: FetchPolicy,
                                    val callback: OperationCallback) {
         private var completed = false
@@ -254,115 +250,130 @@ class SpaceXClient(url: String, token: String?) {
 
         fun start() {
             cacheQueue.submit {
-                if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
-                    val existing = readFromStore("ROOT_QUERY", store, operation.selector!!)
-                    if (existing.first) {
-                        callback.onResult(existing.second!!)
-                        if (policy == FetchPolicy.CACHE_FIRST) {
-                            // TODO: Optimize!!
-                            storeSubscription = bus.subscribe(operation.normalizeResponse(existing.second!!, arguments)) { reload() }
-                            return@submit
+                try {
+                    if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
+                        val existing = readFromStore("ROOT_QUERY", store, operation.selector!!)
+                        if (existing.first) {
+                            callback.onResult(existing.second!!)
+                            if (policy == FetchPolicy.CACHE_FIRST) {
+                                // TODO: Optimize!!
+                                storeSubscription = bus.subscribe(operation.normalizeResponse(existing.second!!, arguments)) { reload() }
+                                return@submit
+                            }
                         }
                     }
-                }
-                if (!completed) {
-                    transportQueue.submit {
-                        transport.operation(JsonObject(
-                                mapOf(
-                                        "query" to JsonPrimitive(
-                                                operation.body
-                                        ),
-                                        "name" to JsonPrimitive(
-                                                operation.name
-                                        ),
-                                        "variables" to arguments
-                                )
-                        ), object : TransportOperationCallback {
-                            override fun onError(error: JsonObject) {
-                                cacheQueue.submit {
-                                    if (!completed) {
-                                        completed = true
-                                        callback.onError(error)
+                    if (!completed) {
+                        transportQueue.submit {
+                            transport.operation(JSONObject(
+                                    mapOf(
+                                            "query" to operation.body,
+                                            "name" to operation.name,
+                                            "variables" to arguments
+                                    )
+                            ), object : TransportOperationCallback {
+                                override fun onError(error: JSONObject) {
+                                    cacheQueue.submit {
+                                        if (!completed) {
+                                            completed = true
+                                            callback.onError(error)
+                                        }
                                     }
                                 }
-                            }
 
-                            override fun onResult(data: JsonObject) {
-                                cacheQueue.submit {
-                                    if (!completed) {
-                                        val normalized = operation.normalizeResponse(data, arguments)
-                                        val changed = store.merge(normalized)
-                                        bus.publish(changed)
-                                        storeSubscription = bus.subscribe(normalized) { reload() }
-                                        callback.onResult(data)
+                                override fun onResult(data: JSONObject) {
+                                    cacheQueue.submit {
+                                        try {
+                                            if (!completed) {
+                                                var start = System.currentTimeMillis()
+                                                val normalized = operation.normalizeResponse(data, arguments)
+                                                Log.d("SpaceX", "Normalized in " + (System.currentTimeMillis() - start) + " ms")
+                                                start = System.currentTimeMillis()
+                                                val changed = store.merge(normalized)
+                                                Log.d("SpaceX", "Merged in " + (System.currentTimeMillis() - start) + " ms")
+                                                bus.publish(changed)
+                                                storeSubscription = bus.subscribe(normalized) { reload() }
+                                                callback.onResult(data)
+                                            }
+                                        } catch (e: Throwable) {
+                                            e.printStackTrace()
+                                        }
                                     }
                                 }
-                            }
 
-                            override fun onCompleted() {
-                                // Nothing to do
-                            }
-                        })
+                                override fun onCompleted() {
+                                    // Nothing to do
+                                }
+                            })
+                        }
                     }
+                } catch (e: Throwable) {
+                    e.printStackTrace()
                 }
             }
         }
 
         private fun reload() {
-
-            if (this.storeSubscription != null) {
-                this.storeSubscription!!()
-                this.storeSubscription = null
-            }
-            val existing = readFromStore("ROOT_QUERY", store, operation.selector!!)
-            if (existing.first) {
-                callback.onResult(existing.second!!)
-                if (policy == FetchPolicy.CACHE_FIRST) {
-                    // TODO: Optimize!!
-                    storeSubscription = bus.subscribe(operation.normalizeResponse(existing.second!!, arguments)) { reload() }
-                    return
+            try {
+                if (this.storeSubscription != null) {
+                    this.storeSubscription!!()
+                    this.storeSubscription = null
                 }
-            } else {
-                if (!completed) {
-                    transportQueue.submit {
-                        transport.operation(JsonObject(
-                                mapOf(
-                                        "query" to JsonPrimitive(
-                                                operation.body
-                                        ),
-                                        "name" to JsonPrimitive(
-                                                operation.name
-                                        ),
-                                        "variables" to arguments
-                                )
-                        ), object : TransportOperationCallback {
-                            override fun onError(error: JsonObject) {
-                                cacheQueue.submit {
-                                    if (!completed) {
-                                        completed = true
-                                        callback.onError(error)
+                val existing = readFromStore("ROOT_QUERY", store, operation.selector!!)
+                if (existing.first) {
+                    callback.onResult(existing.second!!)
+                    if (policy == FetchPolicy.CACHE_FIRST) {
+                        // TODO: Optimize!!
+                        storeSubscription = bus.subscribe(operation.normalizeResponse(existing.second!!, arguments)) { reload() }
+                        return
+                    }
+                } else {
+                    if (!completed) {
+                        transportQueue.submit {
+                            transport.operation(JSONObject(
+                                    mapOf(
+                                            "query" to operation.body,
+                                            "name" to operation.name,
+                                            "variables" to arguments
+                                    )
+                            ), object : TransportOperationCallback {
+                                override fun onError(error: JSONObject) {
+                                    cacheQueue.submit {
+                                        try {
+                                            if (!completed) {
+                                                completed = true
+                                                callback.onError(error)
+                                            }
+                                        } catch (e: Throwable) {
+                                            e.printStackTrace()
+                                        }
                                     }
                                 }
-                            }
 
-                            override fun onResult(data: JsonObject) {
-                                cacheQueue.submit {
-                                    if (!completed) {
-                                        val normalized = operation.normalizeResponse(data, arguments)
-                                        val changed = store.merge(normalized)
-                                        bus.publish(changed)
-                                        storeSubscription = bus.subscribe(normalized) { reload() }
-                                        callback.onResult(data)
+                                override fun onResult(data: JSONObject) {
+                                    cacheQueue.submit {
+                                        try {
+                                            if (!completed) {
+                                                val normalized = operation.normalizeResponse(data, arguments)
+                                                val changed = store.merge(normalized)
+                                                bus.publish(changed)
+                                                storeSubscription = bus.subscribe(normalized) { reload() }
+                                                callback.onResult(data)
+                                            }
+                                        } catch (e: Throwable) {
+                                            e.printStackTrace()
+                                        }
                                     }
                                 }
-                            }
 
-                            override fun onCompleted() {
-                                // Nothing to do
-                            }
-                        })
+                                override fun onCompleted() {
+                                    // Nothing to do
+                                }
+                            })
+                        }
                     }
                 }
+            } catch (e: Throwable) {
+                e.printStackTrace()
             }
         }
     }

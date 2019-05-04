@@ -3,13 +3,11 @@ package com.openland.spacex.model
 import com.openland.spacex.store.Record
 import com.openland.spacex.store.RecordSet
 import com.openland.spacex.store.RecordValue
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
+import org.json.JSONArray
+import org.json.JSONObject
 
-fun formatArgumentKey(element: JsonObject): String {
-    val sortedKeys = element.keys.sortedBy { it }
+fun formatArgumentKey(element: JSONObject): String {
+    val sortedKeys = element.keys().asSequence().toList().sortedBy { it }
     val converted = mutableListOf<String>()
     for (k in sortedKeys) {
         converted.add(k + ":" + formatArgumentKey(element[k]!!))
@@ -17,16 +15,18 @@ fun formatArgumentKey(element: JsonObject): String {
     return "{" + converted.joinToString(",") + "}"
 }
 
-fun formatArgumentKey(element: JsonElement): String {
-    if (element.isNull) {
+fun formatArgumentKey(element: Any?): String {
+    if (element == null) {
         return "null"
-    } else if (element is JsonPrimitive) {
-        return element.content
-    } else if (element is JsonObject) {
+    } else if (element is String) {
+        return "\"" + element + "\""
+    } else if (element is Boolean) {
+        return element.toString()
+    } else if (element is JSONObject) {
         return formatArgumentKey(element)
-    } else if (element is JsonArray) {
+    } else if (element is JSONArray) {
         val res = mutableListOf<String>()
-        for (i in 0 until element.size) {
+        for (i in 0 until element.length()) {
             res.add(formatArgumentKey(element[i]))
         }
         return "[" + res.joinToString(",") + "]"
@@ -42,14 +42,14 @@ class NormalizedCollection {
     }
 }
 
-class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val obj: JsonObject, val args: JsonObject) {
+class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val obj: JSONObject, val args: JSONObject) {
 
     val id: String?
     val map: MutableMap<String, RecordValue>?
 
     init {
-        if (obj.containsKey("id")) {
-            this.id = obj["id"]!!.primitive.content
+        if (obj.has("id")) {
+            this.id = obj.getString("id")
         } else {
             this.id = parentCacheKey
         }
@@ -85,7 +85,7 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     }
 
     fun argumentKey(key: String): String? {
-        if (this.args.containsKey(key)) {
+        if (this.args.has(key)) {
             return formatArgumentKey(this.args[key]!!)
         }
         return null
@@ -108,13 +108,13 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     //
 
     inline fun child(requestKey: String, storeKey: String): Scope {
-        val res = Scope(if (id != null) "$id.$storeKey" else null, collection, obj.getObject(requestKey), args)
+        val res = Scope(if (id != null) "$id.$storeKey" else null, collection, obj.getJSONObject(requestKey), args)
         map?.let { map[storeKey] = RecordValue.Reference(res.id!!) }
         return res
     }
 
     inline fun childList(requestKey: String, storeKey: String): ListScope {
-        val res = ListScope(if (id != null) "$id.$storeKey" else null, collection, obj.getArray(requestKey), args)
+        val res = ListScope(if (id != null) "$id.$storeKey" else null, collection, obj.getJSONArray(requestKey), args)
 
         return res
     }
@@ -124,7 +124,7 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     //
 
     inline fun isType(name: String): Boolean {
-        if (obj["__typename"]?.primitive?.content == name) {
+        if (obj.optString("__typename") == name) {
             return true
         }
         return false
@@ -134,7 +134,7 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
         if (!hasKey("__typename")) {
             throw Error("Unable to find __typename")
         }
-        if (obj["__typename"]!!.primitive.content != name) {
+        if (obj.optString("__typename") != name) {
             throw Error("Invalid type")
         }
     }
@@ -144,14 +144,14 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     //
 
     inline fun assertObject(key: String): Boolean {
-        if (obj[key] !is JsonObject) {
+        if (obj[key] !is JSONObject) {
             throw Error("Not an object")
         }
         return true
     }
 
     inline fun assertList(key: String): Boolean {
-        if (obj[key] !is JsonArray) {
+        if (obj[key] !is JSONArray) {
             throw Error("Not a list")
         }
         return true
@@ -162,7 +162,7 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     //
 
     fun hasKey(key: String): Boolean {
-        return obj.containsKey(key) && !obj[key]!!.isNull
+        return obj.has(key) && !obj.isNull(key)
     }
 
     //
@@ -170,12 +170,12 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     //
 
     fun readInt(key: String): RecordValue {
-        return RecordValue.Number(obj[key]!!.primitive.int.toFloat())
+        return RecordValue.Number((obj[key] as Number).toFloat())
     }
 
     fun readIntOptional(key: String): RecordValue {
         return if (hasKey(key)) {
-            RecordValue.Number(obj[key]!!.primitive.int.toFloat())
+            RecordValue.Number(obj.getDouble(key).toFloat())
         } else {
             RecordValue.Null
         }
@@ -186,12 +186,12 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     //
 
     fun readString(key: String): RecordValue {
-        return RecordValue.String(obj[key]!!.primitive.content)
+        return RecordValue.String(obj.getString(key))
     }
 
     fun readStringOptional(key: String): RecordValue {
         return if (hasKey(key)) {
-            RecordValue.String(obj[key]!!.primitive.content)
+            RecordValue.String(obj.optString(key))
         } else {
             RecordValue.Null
         }
@@ -202,20 +202,20 @@ class Scope(parentCacheKey: String?, val collection: NormalizedCollection, val o
     //
 
     fun readBoolean(key: String): RecordValue {
-        return RecordValue.Boolean(obj[key]!!.primitive.boolean)
+        return RecordValue.Boolean(obj.getBoolean(key))
     }
 
     fun readBooleanOptional(key: String): RecordValue {
         return if (hasKey(key)) {
-            RecordValue.Boolean(obj[key]!!.primitive.boolean)
+            RecordValue.Boolean(obj.optBoolean(key))
         } else {
             RecordValue.Null
         }
     }
 }
 
-class ListScope(val key: String?, val collection: NormalizedCollection, val arr: JsonArray, val args: JsonObject) {
-    val size: Int = arr.size
+class ListScope(val key: String?, val collection: NormalizedCollection, val arr: JSONArray, val args: JSONObject) {
+    val size: Int = arr.length()
     val res: MutableList<RecordValue>? = if (key != null) mutableListOf() else null
 
     inline fun next(src: RecordValue) {
@@ -227,7 +227,7 @@ class ListScope(val key: String?, val collection: NormalizedCollection, val arr:
     }
 
     inline fun child(index: Int): Scope {
-        val scp = Scope(if (key != null) "$key.$index" else null, collection, arr[index].jsonObject, args)
+        val scp = Scope(if (key != null) "$key.$index" else null, collection, arr.getJSONObject(index), args)
         if (res != null) {
             res.add(RecordValue.Reference(scp.id!!))
         }
@@ -235,7 +235,7 @@ class ListScope(val key: String?, val collection: NormalizedCollection, val arr:
     }
 
     inline fun childList(index: Int): ListScope {
-        return ListScope("$key.$index", collection, arr[index].jsonArray, args)
+        return ListScope("$key.$index", collection, arr.getJSONArray(index), args)
     }
 
     inline fun completed(): RecordValue {
@@ -247,7 +247,7 @@ class ListScope(val key: String?, val collection: NormalizedCollection, val arr:
     }
 
     inline fun assertObject(index: Int): Boolean {
-        if (arr[index] !is JsonObject) {
+        if (arr[index] !is JSONObject) {
             throw Error("Invalid response")
         }
         return true
