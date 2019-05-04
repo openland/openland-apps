@@ -1,13 +1,14 @@
 package com.openland.spacex.transport
 
+import com.openland.spacex.utils.DispatchQueue
 import org.json.JSONObject
-import java.util.concurrent.Executors
 
 class WebSocketTransport {
+
     private val url: String
     private val token: String?
     private var ws: WebSocketClient? = null
-    private val queue = Executors.newSingleThreadExecutor()
+    private val queue = DispatchQueue()
     private var nextId = 1
     private var connected = false
     private var liveOperations = mutableMapOf<String, PendingOperation>()
@@ -21,24 +22,24 @@ class WebSocketTransport {
     }
 
     private fun connect() {
-        queue.submit {
+        queue.async {
             val ws = WebSocketClient(url)
             ws.onConnected {
-                queue.submit {
+                queue.async {
                     if (this.ws == ws) {
                         this.onConnected()
                     }
                 }
             }
             ws.onDisconnected {
-                queue.submit {
+                queue.async {
                     if (this.ws == ws) {
                         this.onDisconnected()
                     }
                 }
             }
             ws.onMessage {
-                queue.submit {
+                queue.async {
                     if (this.ws == ws) {
                         this.handleMessage(it)
                     }
@@ -50,7 +51,7 @@ class WebSocketTransport {
     }
 
     private fun reconnect() {
-        queue.submit {
+        queue.async {
             if (!this.connected) {
                 statusCallback(false)
                 this.connected = false
@@ -69,7 +70,7 @@ class WebSocketTransport {
     fun operation(operation: JSONObject, callback: TransportOperationCallback): RunningOperation {
         val id = nextId++.toString()
         val op = PendingOperation(id, operation, callback)
-        queue.submit {
+        queue.async {
             liveOperations[id] = op
             if (this.connected) {
                 postMessage("start", operation, id)
@@ -147,13 +148,13 @@ class WebSocketTransport {
 
     private inner class PendingOperation(val id: String, var query: JSONObject, val callback: TransportOperationCallback) : RunningOperation {
         override fun cancel() {
-            queue.submit {
+            queue.async {
                 liveOperations.remove(id)
             }
         }
 
         override fun lazyUpdate(operation: JSONObject) {
-            queue.submit {
+            queue.async {
                 query = operation
             }
         }

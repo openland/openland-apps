@@ -16,7 +16,7 @@ class RecordStoreBus {
                 subskeys.add(e.key + "." + k)
             }
         }
-        for (cb in subsciptions) {
+        for (cb in HashMap(subsciptions)) {
             if (cb.value.ids.any { subskeys.contains(it) }) {
                 cb.value.callback()
             }
