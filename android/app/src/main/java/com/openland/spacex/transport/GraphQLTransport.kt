@@ -1,6 +1,5 @@
 package com.openland.spacex.transport
 
-import com.openland.spacex.model.OperationDefinition
 import org.json.JSONObject
 
 interface TransportOperationCallback {
@@ -12,8 +11,4 @@ interface TransportOperationCallback {
 interface RunningOperation {
     fun cancel()
     fun lazyUpdate(operation: JSONObject)
-}
-
-interface GraphQLTransport {
-    fun operation(operation: OperationDefinition, callback: TransportOperationCallback): RunningOperation
 }

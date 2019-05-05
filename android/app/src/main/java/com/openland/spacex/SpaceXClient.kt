@@ -1,5 +1,6 @@
 package com.openland.spacex
 
+import android.content.Context
 import android.util.Log
 import com.openland.spacex.model.OperationDefinition
 import com.openland.spacex.model.OperationKind
@@ -27,9 +28,9 @@ interface StoreWriteCallback {
     fun onError()
 }
 
-class SpaceXClient(url: String, token: String?) {
+class SpaceXClient(url: String, token: String?, context: Context) {
     private var isConnected = false
-    private val transport: WebSocketTransport = WebSocketTransport(url, token) {
+    private val transport: WebSocketTransport = WebSocketTransport(context, url, token) {
         isConnected = it
         this.connectionStateListener?.invoke(it)
     }

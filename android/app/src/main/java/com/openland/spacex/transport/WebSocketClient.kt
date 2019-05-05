@@ -76,7 +76,7 @@ class WebSocketClient {
             return
         }
         this.closed = true
-        this.connection?.close(0, "")
+        this.connection?.close(1000, "")
     }
 
     private fun terminate() {
@@ -84,7 +84,7 @@ class WebSocketClient {
             return
         }
         this.closed = true
-        this.connection?.close(0, "")
+        this.connection?.close(1000, "")
         this.onDisconnectedHandler?.invoke()
     }
 }
