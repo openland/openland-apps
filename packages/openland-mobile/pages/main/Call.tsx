@@ -85,8 +85,9 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
     }, [callsState.status]);
 
+    // todo: move to engine
     React.useEffect(() => {
-        if (conference && conference.conference.peers.length === 0 && callsState.status !== 'initial') {
+        if (conference && conference.conference.peers.length === 0 && callsState.status !== 'initial' && callsState.status !== 'connecting') {
             onCallEnd();
         }
     }, [(conference && conference.conference.peers.length) || 0, callsState.status])
