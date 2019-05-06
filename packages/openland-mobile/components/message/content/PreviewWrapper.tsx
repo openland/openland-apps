@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import { showPictureModal } from 'openland-mobile/components/modal/ZPictureModal';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata, FullMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata } from 'openland-api/Types';
-import { formatDate } from 'openland-mobile/utils/formatDate';
+import { formatDateTime } from 'openland-mobile/utils/formatTime';
 
 interface PreviewWrapperProps {
     path?: string;
@@ -28,7 +28,7 @@ export class PreviewWrapper extends React.PureComponent<PreviewWrapperProps> {
         view.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
             showPictureModal({
                 title: this.props.senderName,
-                subtitle: this.props.date ? formatDate(parseInt(this.props.date, 10)) : undefined,
+                subtitle: this.props.date ? formatDateTime(parseInt(this.props.date, 10)) : undefined,
                 url: this.props.path!,
                 width: this.props.metadata.imageWidth || 1024,
                 height: this.props.metadata.imageHeight || 1024,

@@ -11,7 +11,6 @@ import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { RoomMembersPaginated } from 'openland-api/Types';
-import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
@@ -93,6 +92,8 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     const canEdit = chat.canEdit;
 
     const canSeeAdvancedSettings = checkCanSeeAdvancedSettings({ chat });
+    const sharedRoom = chat.__typename === 'SharedRoom' ? (chat as Room_room_SharedRoom) : null;
+    const isChannel = !!(sharedRoom && sharedRoom.isChannel);
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -181,6 +182,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                 description={chat.description}
                                 photo={chat.photo}
                                 socialImage={chat.socialImage}
+                                isChannel={isChannel}
                             />
                         </>
                     )}

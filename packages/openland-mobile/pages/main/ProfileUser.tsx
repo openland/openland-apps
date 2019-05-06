@@ -15,7 +15,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 // import { changeThemeModal } from './themes/ThemeChangeModal';
 import { XMemo } from 'openland-y-utils/XMemo';
 
-const ProfileUserContent = XMemo<PageProps>((props) => {
+const ProfileUserComponent = XMemo<PageProps>((props) => {
     let userQuery = getClient().useUser({ userId: props.router.params.id }, { fetchPolicy: 'cache-and-network' });
     let user = userQuery.user;
     let conversation = userQuery.conversation;
@@ -43,80 +43,69 @@ const ProfileUserContent = XMemo<PageProps>((props) => {
 
     return (
         <>
-            <ZListItemHeader
-                photo={user.photo}
-                id={user.id}
-                userId={user.id}
-                title={user.name}
-                subtitle={sub}
-                subtitleColor={subColor}
-                action={(myID === user.id) ? 'Edit profile' : 'Send message'}
-                onPress={() => {
-                    if (myID === user.id) {
-                        props.router.push('SettingsProfile');
-                    } else {
-                        props.router.pushAndReset('Conversation', {
-                            flexibleId: props.router.params.id,
-                        });
-                    }
-                }}
-            />
+            <SHeader title={user.name} />
+            <SScrollView>
+                <ZListItemHeader
+                    photo={user.photo}
+                    id={user.id}
+                    userId={user.id}
+                    title={user.name}
+                    subtitle={sub}
+                    subtitleColor={subColor}
+                    action={(myID === user.id) ? 'Edit profile' : 'Send message'}
+                    onPress={() => {
+                        if (myID === user.id) {
+                            props.router.push('SettingsProfile');
+                        } else {
+                            props.router.pushAndReset('Conversation', {
+                                flexibleId: props.router.params.id,
+                            });
+                        }
+                    }}
+                />
 
-            <ZListItemGroup header="About" divider={false}>
-                {!!user.about && <ZListItem multiline={true} text={user.about} copy={true} />}
-                {!!user.about && <View height={10} />}
-                {!!user.shortname && (<ZListItem title="Username" text={'@' + user.shortname} copy={true} />)}
-                {!!user.email && <ZListItem title="Email" text={user.email} copy={true} />}
-                {!!user.phone && <ZListItem title="Phone" text={'tel:' + user.phone} copy={true} />}
-                {!!user.website && <ZListItem title="Website" text={user.website} copy={true} />}
-                {!!user.location && <ZListItem title="Location" text={user.location} copy={true} />}
-                {!!user.linkedin && <ZListItem title="Linkedin" text={user.linkedin} copy={true} />}
-            </ZListItemGroup>
-
-            {!!user.primaryOrganization && (
-                <ZListItemGroup header="Organization" footer={null} divider={false}>
-                    <ZListItem
-                        leftAvatar={{
-                            photo: user.primaryOrganization.photo,
-                            key: user.primaryOrganization.id,
-                            title: user.primaryOrganization.name,
-                        }}
-                        text={user.primaryOrganization.name}
-                        path="ProfileOrganization"
-                        pathParams={{ id: user.primaryOrganization.id }}
-                    />
+                <ZListItemGroup header="About" divider={false}>
+                    {!!user.about && <ZListItem multiline={true} text={user.about} copy={true} />}
+                    {!!user.about && <View height={10} />}
+                    {!!user.shortname && (<ZListItem title="Username" text={'@' + user.shortname} copy={true} />)}
+                    {!!user.email && <ZListItem title="Email" text={user.email} copy={true} />}
+                    {!!user.phone && <ZListItem title="Phone" text={'tel:' + user.phone} copy={true} />}
+                    {!!user.website && <ZListItem title="Website" text={user.website} copy={true} />}
+                    {!!user.location && <ZListItem title="Location" text={user.location} copy={true} />}
+                    {!!user.linkedin && <ZListItem title="Linkedin" text={user.linkedin} copy={true} />}
                 </ZListItemGroup>
-            )}
 
-            {(myID !== user.id) && (
-                <ZListItemGroup header="Settings" footer={null} divider={false}>
-                    <NotificationSettings
-                        id={(conversation as User_conversation_PrivateRoom).id}
-                        mute={!!(conversation as User_conversation_PrivateRoom).settings.mute}
-                    />
-                    {/* <ZListItem
-                        text="Change theme"
-                        leftIcon={require('assets/ic-edit.png')}
-                        onPress={editTheme}
-                    /> */}
-                </ZListItemGroup>
-            )}
+                {!!user.primaryOrganization && (
+                    <ZListItemGroup header="Organization" footer={null} divider={false}>
+                        <ZListItem
+                            leftAvatar={{
+                                photo: user.primaryOrganization.photo,
+                                key: user.primaryOrganization.id,
+                                title: user.primaryOrganization.name,
+                            }}
+                            text={user.primaryOrganization.name}
+                            path="ProfileOrganization"
+                            pathParams={{ id: user.primaryOrganization.id }}
+                        />
+                    </ZListItemGroup>
+                )}
+
+                {(myID !== user.id) && (
+                    <ZListItemGroup header="Settings" footer={null} divider={false}>
+                        <NotificationSettings
+                            id={(conversation as User_conversation_PrivateRoom).id}
+                            mute={!!(conversation as User_conversation_PrivateRoom).settings.mute}
+                        />
+                        {/* <ZListItem
+                            text="Change theme"
+                            leftIcon={require('assets/ic-edit.png')}
+                            onPress={editTheme}
+                        /> */}
+                    </ZListItemGroup>
+                )}
+            </SScrollView>
         </>
     );
 });
-ProfileUserContent.displayName = 'ProfileUserContent';
-
-class ProfileUserComponent extends React.Component<PageProps> {
-    render() {
-        return (
-            <>
-                <SHeader title="Info" />
-                <SScrollView>
-                    <ProfileUserContent {...this.props} />
-                </SScrollView>
-            </>
-        );
-    }
-}
 
 export const ProfileUser = withApp(ProfileUserComponent, { navigationAppearance: 'small-hidden' });

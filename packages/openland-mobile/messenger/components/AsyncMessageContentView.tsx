@@ -20,8 +20,8 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessa
 import { OthersUsersWrapper } from './service/views/OthersUsersWrapper';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
-export const paddedText = <ASText key="padded-text" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 13, ios: 11 }))}</ASText>;
-export const paddedTextOut = <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 17, ios: 15 }))}</ASText>;
+export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 14 : 11, ios: edited ? 14 : 11 }))}</ASText>;
+export const paddedTextOut = (edited?: boolean) => <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 17 : 14, ios: edited ? 17 : 14 }))}</ASText>;
 
 interface AsyncMessageTextViewProps {
     theme: AppTheme;

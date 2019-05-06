@@ -50,7 +50,7 @@ export const SearchCardsOrShowProfile = XMemo(
         const [itemCount, setItemCount] = React.useState(0);
         const [query, setQuery] = React.useState('');
         const [sort, setSort] = React.useState({
-            orderBy: 'createdAt',
+            orderBy: 'membersCount',
             featured: true,
         });
 

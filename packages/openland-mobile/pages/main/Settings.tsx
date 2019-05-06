@@ -51,14 +51,12 @@ let SettingsContent = ((props: PageProps) => {
                 action="Edit profile"
             />
             <ZListItemGroup header="Settings" divider={false}>
-                {NON_PRODUCTION && (
-                    <ZListItem
-                        leftIconColor={theme.settingsAppearanceIcon}
-                        leftIcon={Platform.OS === 'android' ? require('assets/ic-appearance-24.png') : require('assets/ic-appearance-fill-24.png')}
-                        text="Appearance"
-                        path="SettingsAppearance"
-                    />
-                )}
+                <ZListItem
+                    leftIconColor={theme.settingsAppearanceIcon}
+                    leftIcon={Platform.OS === 'android' ? require('assets/ic-appearance-24.png') : require('assets/ic-appearance-fill-24.png')}
+                    text="Appearance"
+                    path="SettingsAppearance"
+                />
                 <ZListItem
                     leftIconColor={theme.settingsNotificationIcon}
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}

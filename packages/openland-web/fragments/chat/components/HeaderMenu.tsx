@@ -11,6 +11,9 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room_SharedRoom }) => {
     const { id, canEdit } = room;
 
     const canSeeAdvancedSettings = checkCanSeeAdvancedSettings({ chat: room });
+    const sharedRoom =
+        room.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
+    const isChannel = !!(sharedRoom && sharedRoom.isChannel);
     return (
         <XOverflow
             flat={true}
@@ -37,7 +40,7 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room_SharedRoom }) => {
                         }}
                         style="danger"
                     >
-                        Leave group
+                        {isChannel ? 'Leave channel' : 'Leave group'}
                     </XMenuItem>
                     <XWithRole role="super-admin" or={canSeeAdvancedSettings}>
                         <XMenuItemSeparator />

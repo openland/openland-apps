@@ -15,7 +15,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 
 const SetOrgShortnameContent = XMemo<PageProps>((props) => {
     let account = getClient().useAccount();
-    let organization = getClient().useOrganization({ organizationId: props.router.params.id }).organization;
+    let organization = getClient().useOrganizationWithoutMembers({ organizationId: props.router.params.id }).organization;
 
     const [shortname, setShortname] = React.useState(organization.shortname);
     const [error, setError] = React.useState<string | undefined>(undefined);

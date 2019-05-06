@@ -12,11 +12,10 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const EditOrganizationComponent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
-    let organization = getClient().useOrganization({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organization;
+    let organization = getClient().useOrganizationWithoutMembers({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organization;
     let profile = getClient().useOrganizationProfile({ organizationId: props.router.params.id }, { fetchPolicy: 'network-only' }).organizationProfile;
     return (
         <>

@@ -51,7 +51,7 @@ export const MentionSuggestions = ({
             )}
             style={{
                 width: sizeOfContainer.width,
-                maxHeight: '26vh',
+                maxHeight: '23vh',
                 overflow: 'scroll',
                 left: mentionState.isSelecting ? 0 : sizeOfContainer.width / 2,
                 bottom: mentionState.isSelecting ? 50 : sizeOfContainer.height / 2,
