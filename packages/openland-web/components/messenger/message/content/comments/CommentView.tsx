@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
-import { RoomMembers_members } from 'openland-api/Types';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
 import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
 import { DataSourceWebMessageItem } from 'openland-web/components/messenger/data/WebMessageItemDataSource';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
@@ -9,6 +8,7 @@ import { UserShort } from 'openland-api/Types';
 import { useAddComment } from './useAddComment';
 import { CommentsInput } from './CommentsInput';
 import { uploadFile } from './uploadFile';
+import { UserForMention } from 'openland-api/Types';
 
 type CommentViewT = {
     scrollToComment: (a: { commentId: string; mode?: 'top' | 'bottom' }) => void;
@@ -22,10 +22,10 @@ type CommentViewT = {
     showInputId: string | null;
     setShowInputId: (a: string | null) => void;
     currentCommentsInputRef: React.MutableRefObject<XRichTextInput2RefMethods | null>;
-    members: RoomMembers_members[];
     messageId: string;
     onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
+    getMentionsSuggestions: () => Promise<UserForMention[]>;
 };
 
 export const CommentView = React.memo(
@@ -41,7 +41,7 @@ export const CommentView = React.memo(
         showInputId,
         setShowInputId,
         currentCommentsInputRef,
-        members,
+        getMentionsSuggestions,
         messageId,
         onCommentBackToUserMessageClick,
         usernameOfRepliedUser,
@@ -74,7 +74,7 @@ export const CommentView = React.memo(
                             <CommentsInput
                                 topLevelComment={message.depth === 0}
                                 commentsInputRef={currentCommentsInputRef}
-                                members={members}
+                                getMentionsSuggestions={getMentionsSuggestions}
                                 minimal
                                 onSendFile={async (file: UploadCare.File) => {
                                     return await uploadFile({

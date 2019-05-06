@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
+import { UserForMention } from '../fragments/UserForMention';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { OrganizationMedium } from '../fragments/OrganizationMedium';
 import { RoomFull, RoomFullWithoutMembers } from '../fragments/RoomFull';
@@ -760,6 +761,17 @@ export const RoomMembersQuery = gql`
         }
     }
     ${UserShort}
+`;
+
+export const RoomMembersForMentionsPaginatedQuery = gql`
+    query RoomMembersForMentionsPaginated($roomId: ID!, $first: Int, $after: ID) {
+        members: roomMembers(roomId: $roomId, first: $first, after: $after) {
+            user {
+                ...UserForMention
+            }
+        }
+    }
+    ${UserForMention}
 `;
 
 export const RoomMembersPaginatedQuery = gql`

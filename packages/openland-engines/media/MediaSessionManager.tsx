@@ -75,7 +75,7 @@ export class MediaSessionManager {
                 if (this.destroyed) {
                     return null;
                 }
-                return (await this.client.queryConference({ id: this.conversationId })).conference.id;
+                return (await this.client.queryConference({ id: this.conversationId }, { fetchPolicy: 'network-only' })).conference.id;
             }))!;
             if (!conferenceId) {
                 return;

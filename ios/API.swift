@@ -10737,6 +10737,141 @@ public final class RoomMembersQuery: GraphQLQuery {
   }
 }
 
+public final class RoomMembersForMentionsPaginatedQuery: GraphQLQuery {
+  public let operationDefinition =
+    "query RoomMembersForMentionsPaginated($roomId: ID!, $first: Int, $after: ID) {\n  members: roomMembers(roomId: $roomId, first: $first, after: $after) {\n    __typename\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n}"
+
+  public var queryDocument: String { return operationDefinition.appending(UserForMention.fragmentDefinition) }
+
+  public var roomId: GraphQLID
+  public var first: Int?
+  public var after: GraphQLID?
+
+  public init(roomId: GraphQLID, first: Int? = nil, after: GraphQLID? = nil) {
+    self.roomId = roomId
+    self.first = first
+    self.after = after
+  }
+
+  public var variables: GraphQLMap? {
+    return ["roomId": roomId, "first": first, "after": after]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("roomMembers", alias: "members", arguments: ["roomId": GraphQLVariable("roomId"), "first": GraphQLVariable("first"), "after": GraphQLVariable("after")], type: .nonNull(.list(.nonNull(.object(Member.selections))))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(members: [Member]) {
+      self.init(unsafeResultMap: ["__typename": "Query", "members": members.map { (value: Member) -> ResultMap in value.resultMap }])
+    }
+
+    public var members: [Member] {
+      get {
+        return (resultMap["members"] as! [ResultMap]).map { (value: ResultMap) -> Member in Member(unsafeResultMap: value) }
+      }
+      set {
+        resultMap.updateValue(newValue.map { (value: Member) -> ResultMap in value.resultMap }, forKey: "members")
+      }
+    }
+
+    public struct Member: GraphQLSelectionSet {
+      public static let possibleTypes = ["RoomMember"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("user", type: .nonNull(.object(User.selections))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(user: User) {
+        self.init(unsafeResultMap: ["__typename": "RoomMember", "user": user.resultMap])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var user: User {
+        get {
+          return User(unsafeResultMap: resultMap["user"]! as! ResultMap)
+        }
+        set {
+          resultMap.updateValue(newValue.resultMap, forKey: "user")
+        }
+      }
+
+      public struct User: GraphQLSelectionSet {
+        public static let possibleTypes = ["User"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(UserForMention.self),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var fragments: Fragments {
+          get {
+            return Fragments(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+
+        public struct Fragments {
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public var userForMention: UserForMention {
+            get {
+              return UserForMention(unsafeResultMap: resultMap)
+            }
+            set {
+              resultMap += newValue.resultMap
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class RoomMembersPaginatedQuery: GraphQLQuery {
   public let operationDefinition =
     "query RoomMembersPaginated($roomId: ID!, $first: Int, $after: ID) {\n  members: roomMembers(roomId: $roomId, first: $first, after: $after) {\n    __typename\n    user {\n      __typename\n      ...UserShort\n    }\n    role\n    membership\n    canKick\n  }\n}"
@@ -24390,7 +24525,7 @@ public struct TinyMessage: GraphQLFragment {
 
 public struct FullMessage: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        id\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            id\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            id\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserTiny\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanBold {\n      offset\n      length\n    }\n  }\n  ... on ServiceMessage {\n    id\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}"
+    "fragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      message\n      fallback\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n      }\n      ... on GeneralMessage {\n        id\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            id\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            id\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n  }\n  ... on ServiceMessage {\n    id\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}"
 
   public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
 
@@ -24543,7 +24678,7 @@ public struct FullMessage: GraphQLFragment {
 
     public static let selections: [GraphQLSelection] = [
       GraphQLTypeCase(
-        variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanLink": AsMessageSpanLink.selections, "MessageSpanBold": AsMessageSpanBold.selections],
+        variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanLink": AsMessageSpanLink.selections],
         default: [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
@@ -24556,6 +24691,10 @@ public struct FullMessage: GraphQLFragment {
 
     public init(unsafeResultMap: ResultMap) {
       self.resultMap = unsafeResultMap
+    }
+
+    public static func makeMessageSpanBold(offset: Int, length: Int) -> Span {
+      return Span(unsafeResultMap: ["__typename": "MessageSpanBold", "offset": offset, "length": length])
     }
 
     public static func makeMessageSpanCodeBlock(offset: Int, length: Int) -> Span {
@@ -24600,10 +24739,6 @@ public struct FullMessage: GraphQLFragment {
 
     public static func makeMessageSpanLink(offset: Int, length: Int, url: String) -> Span {
       return Span(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length, "url": url])
-    }
-
-    public static func makeMessageSpanBold(offset: Int, length: Int) -> Span {
-      return Span(unsafeResultMap: ["__typename": "MessageSpanBold", "offset": offset, "length": length])
     }
 
     public var __typename: String {
@@ -24705,7 +24840,7 @@ public struct FullMessage: GraphQLFragment {
 
         public static let selections: [GraphQLSelection] = [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLFragmentSpread(UserTiny.self),
+          GraphQLFragmentSpread(UserShort.self),
         ]
 
         public private(set) var resultMap: ResultMap
@@ -24739,9 +24874,9 @@ public struct FullMessage: GraphQLFragment {
             self.resultMap = unsafeResultMap
           }
 
-          public var userTiny: UserTiny {
+          public var userShort: UserShort {
             get {
-              return UserTiny(unsafeResultMap: resultMap)
+              return UserShort(unsafeResultMap: resultMap)
             }
             set {
               resultMap += newValue.resultMap
@@ -24823,7 +24958,7 @@ public struct FullMessage: GraphQLFragment {
 
         public static let selections: [GraphQLSelection] = [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLFragmentSpread(UserTiny.self),
+          GraphQLFragmentSpread(UserShort.self),
         ]
 
         public private(set) var resultMap: ResultMap
@@ -24857,9 +24992,9 @@ public struct FullMessage: GraphQLFragment {
             self.resultMap = unsafeResultMap
           }
 
-          public var userTiny: UserTiny {
+          public var userShort: UserShort {
             get {
-              return UserTiny(unsafeResultMap: resultMap)
+              return UserShort(unsafeResultMap: resultMap)
             }
             set {
               resultMap += newValue.resultMap
@@ -25200,66 +25335,6 @@ public struct FullMessage: GraphQLFragment {
         }
         set {
           resultMap.updateValue(newValue, forKey: "url")
-        }
-      }
-    }
-
-    public var asMessageSpanBold: AsMessageSpanBold? {
-      get {
-        if !AsMessageSpanBold.possibleTypes.contains(__typename) { return nil }
-        return AsMessageSpanBold(unsafeResultMap: resultMap)
-      }
-      set {
-        guard let newValue = newValue else { return }
-        resultMap = newValue.resultMap
-      }
-    }
-
-    public struct AsMessageSpanBold: GraphQLSelectionSet {
-      public static let possibleTypes = ["MessageSpanBold"]
-
-      public static let selections: [GraphQLSelection] = [
-        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("length", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("length", type: .nonNull(.scalar(Int.self))),
-      ]
-
-      public private(set) var resultMap: ResultMap
-
-      public init(unsafeResultMap: ResultMap) {
-        self.resultMap = unsafeResultMap
-      }
-
-      public init(offset: Int, length: Int) {
-        self.init(unsafeResultMap: ["__typename": "MessageSpanBold", "offset": offset, "length": length])
-      }
-
-      public var __typename: String {
-        get {
-          return resultMap["__typename"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "__typename")
-        }
-      }
-
-      public var offset: Int {
-        get {
-          return resultMap["offset"]! as! Int
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "offset")
-        }
-      }
-
-      public var length: Int {
-        get {
-          return resultMap["length"]! as! Int
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "length")
         }
       }
     }
@@ -28650,7 +28725,7 @@ public struct FullMessage: GraphQLFragment {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLTypeCase(
-          variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanLink": AsMessageSpanLink.selections, "MessageSpanBold": AsMessageSpanBold.selections],
+          variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanLink": AsMessageSpanLink.selections],
           default: [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
@@ -28663,6 +28738,10 @@ public struct FullMessage: GraphQLFragment {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
+      }
+
+      public static func makeMessageSpanBold(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanBold", "offset": offset, "length": length])
       }
 
       public static func makeMessageSpanCodeBlock(offset: Int, length: Int) -> Span {
@@ -28707,10 +28786,6 @@ public struct FullMessage: GraphQLFragment {
 
       public static func makeMessageSpanLink(offset: Int, length: Int, url: String) -> Span {
         return Span(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length, "url": url])
-      }
-
-      public static func makeMessageSpanBold(offset: Int, length: Int) -> Span {
-        return Span(unsafeResultMap: ["__typename": "MessageSpanBold", "offset": offset, "length": length])
       }
 
       public var __typename: String {
@@ -28812,7 +28887,7 @@ public struct FullMessage: GraphQLFragment {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(UserTiny.self),
+            GraphQLFragmentSpread(UserShort.self),
           ]
 
           public private(set) var resultMap: ResultMap
@@ -28846,9 +28921,9 @@ public struct FullMessage: GraphQLFragment {
               self.resultMap = unsafeResultMap
             }
 
-            public var userTiny: UserTiny {
+            public var userShort: UserShort {
               get {
-                return UserTiny(unsafeResultMap: resultMap)
+                return UserShort(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
@@ -28930,7 +29005,7 @@ public struct FullMessage: GraphQLFragment {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(UserTiny.self),
+            GraphQLFragmentSpread(UserShort.self),
           ]
 
           public private(set) var resultMap: ResultMap
@@ -28964,9 +29039,9 @@ public struct FullMessage: GraphQLFragment {
               self.resultMap = unsafeResultMap
             }
 
-            public var userTiny: UserTiny {
+            public var userShort: UserShort {
               get {
-                return UserTiny(unsafeResultMap: resultMap)
+                return UserShort(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
@@ -29307,66 +29382,6 @@ public struct FullMessage: GraphQLFragment {
           }
           set {
             resultMap.updateValue(newValue, forKey: "url")
-          }
-        }
-      }
-
-      public var asMessageSpanBold: AsMessageSpanBold? {
-        get {
-          if !AsMessageSpanBold.possibleTypes.contains(__typename) { return nil }
-          return AsMessageSpanBold(unsafeResultMap: resultMap)
-        }
-        set {
-          guard let newValue = newValue else { return }
-          resultMap = newValue.resultMap
-        }
-      }
-
-      public struct AsMessageSpanBold: GraphQLSelectionSet {
-        public static let possibleTypes = ["MessageSpanBold"]
-
-        public static let selections: [GraphQLSelection] = [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
-          GraphQLField("length", type: .nonNull(.scalar(Int.self))),
-          GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
-          GraphQLField("length", type: .nonNull(.scalar(Int.self))),
-        ]
-
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
-        }
-
-        public init(offset: Int, length: Int) {
-          self.init(unsafeResultMap: ["__typename": "MessageSpanBold", "offset": offset, "length": length])
-        }
-
-        public var __typename: String {
-          get {
-            return resultMap["__typename"]! as! String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        public var offset: Int {
-          get {
-            return resultMap["offset"]! as! Int
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "offset")
-          }
-        }
-
-        public var length: Int {
-          get {
-            return resultMap["length"]! as! Int
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "length")
           }
         }
       }
@@ -29538,7 +29553,7 @@ public struct FullMessage: GraphQLFragment {
 
       public static let selections: [GraphQLSelection] = [
         GraphQLTypeCase(
-          variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanLink": AsMessageSpanLink.selections, "MessageSpanBold": AsMessageSpanBold.selections],
+          variants: ["MessageSpanUserMention": AsMessageSpanUserMention.selections, "MessageSpanMultiUserMention": AsMessageSpanMultiUserMention.selections, "MessageSpanRoomMention": AsMessageSpanRoomMention.selections, "MessageSpanLink": AsMessageSpanLink.selections],
           default: [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
@@ -29551,6 +29566,10 @@ public struct FullMessage: GraphQLFragment {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
+      }
+
+      public static func makeMessageSpanBold(offset: Int, length: Int) -> Span {
+        return Span(unsafeResultMap: ["__typename": "MessageSpanBold", "offset": offset, "length": length])
       }
 
       public static func makeMessageSpanCodeBlock(offset: Int, length: Int) -> Span {
@@ -29595,10 +29614,6 @@ public struct FullMessage: GraphQLFragment {
 
       public static func makeMessageSpanLink(offset: Int, length: Int, url: String) -> Span {
         return Span(unsafeResultMap: ["__typename": "MessageSpanLink", "offset": offset, "length": length, "url": url])
-      }
-
-      public static func makeMessageSpanBold(offset: Int, length: Int) -> Span {
-        return Span(unsafeResultMap: ["__typename": "MessageSpanBold", "offset": offset, "length": length])
       }
 
       public var __typename: String {
@@ -29700,7 +29715,7 @@ public struct FullMessage: GraphQLFragment {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(UserTiny.self),
+            GraphQLFragmentSpread(UserShort.self),
           ]
 
           public private(set) var resultMap: ResultMap
@@ -29734,9 +29749,9 @@ public struct FullMessage: GraphQLFragment {
               self.resultMap = unsafeResultMap
             }
 
-            public var userTiny: UserTiny {
+            public var userShort: UserShort {
               get {
-                return UserTiny(unsafeResultMap: resultMap)
+                return UserShort(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
@@ -29818,7 +29833,7 @@ public struct FullMessage: GraphQLFragment {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(UserTiny.self),
+            GraphQLFragmentSpread(UserShort.self),
           ]
 
           public private(set) var resultMap: ResultMap
@@ -29852,9 +29867,9 @@ public struct FullMessage: GraphQLFragment {
               self.resultMap = unsafeResultMap
             }
 
-            public var userTiny: UserTiny {
+            public var userShort: UserShort {
               get {
-                return UserTiny(unsafeResultMap: resultMap)
+                return UserShort(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
@@ -30195,66 +30210,6 @@ public struct FullMessage: GraphQLFragment {
           }
           set {
             resultMap.updateValue(newValue, forKey: "url")
-          }
-        }
-      }
-
-      public var asMessageSpanBold: AsMessageSpanBold? {
-        get {
-          if !AsMessageSpanBold.possibleTypes.contains(__typename) { return nil }
-          return AsMessageSpanBold(unsafeResultMap: resultMap)
-        }
-        set {
-          guard let newValue = newValue else { return }
-          resultMap = newValue.resultMap
-        }
-      }
-
-      public struct AsMessageSpanBold: GraphQLSelectionSet {
-        public static let possibleTypes = ["MessageSpanBold"]
-
-        public static let selections: [GraphQLSelection] = [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
-          GraphQLField("length", type: .nonNull(.scalar(Int.self))),
-          GraphQLField("offset", type: .nonNull(.scalar(Int.self))),
-          GraphQLField("length", type: .nonNull(.scalar(Int.self))),
-        ]
-
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
-        }
-
-        public init(offset: Int, length: Int) {
-          self.init(unsafeResultMap: ["__typename": "MessageSpanBold", "offset": offset, "length": length])
-        }
-
-        public var __typename: String {
-          get {
-            return resultMap["__typename"]! as! String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        public var offset: Int {
-          get {
-            return resultMap["offset"]! as! Int
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "offset")
-          }
-        }
-
-        public var length: Int {
-          get {
-            return resultMap["length"]! as! Int
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "length")
           }
         }
       }
@@ -34609,6 +34564,123 @@ public struct SettingsFull: GraphQLFragment {
     }
     set {
       resultMap.updateValue(newValue, forKey: "mobileIncludeText")
+    }
+  }
+}
+
+public struct UserForMention: GraphQLFragment {
+  public static let fragmentDefinition =
+    "fragment UserForMention on User {\n  __typename\n  id\n  name\n  photo\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}"
+
+  public static let possibleTypes = ["User"]
+
+  public static let selections: [GraphQLSelection] = [
+    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+    GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+    GraphQLField("name", type: .nonNull(.scalar(String.self))),
+    GraphQLField("photo", type: .scalar(String.self)),
+    GraphQLField("primaryOrganization", type: .object(PrimaryOrganization.selections)),
+  ]
+
+  public private(set) var resultMap: ResultMap
+
+  public init(unsafeResultMap: ResultMap) {
+    self.resultMap = unsafeResultMap
+  }
+
+  public init(id: GraphQLID, name: String, photo: String? = nil, primaryOrganization: PrimaryOrganization? = nil) {
+    self.init(unsafeResultMap: ["__typename": "User", "id": id, "name": name, "photo": photo, "primaryOrganization": primaryOrganization.flatMap { (value: PrimaryOrganization) -> ResultMap in value.resultMap }])
+  }
+
+  public var __typename: String {
+    get {
+      return resultMap["__typename"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  public var id: GraphQLID {
+    get {
+      return resultMap["id"]! as! GraphQLID
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  public var name: String {
+    get {
+      return resultMap["name"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "name")
+    }
+  }
+
+  public var photo: String? {
+    get {
+      return resultMap["photo"] as? String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "photo")
+    }
+  }
+
+  public var primaryOrganization: PrimaryOrganization? {
+    get {
+      return (resultMap["primaryOrganization"] as? ResultMap).flatMap { PrimaryOrganization(unsafeResultMap: $0) }
+    }
+    set {
+      resultMap.updateValue(newValue?.resultMap, forKey: "primaryOrganization")
+    }
+  }
+
+  public struct PrimaryOrganization: GraphQLSelectionSet {
+    public static let possibleTypes = ["Organization"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+      GraphQLField("name", type: .nonNull(.scalar(String.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: GraphQLID, name: String) {
+      self.init(unsafeResultMap: ["__typename": "Organization", "id": id, "name": name])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    public var name: String {
+      get {
+        return resultMap["name"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "name")
+      }
     }
   }
 }

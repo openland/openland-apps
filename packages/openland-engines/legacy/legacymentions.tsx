@@ -43,6 +43,10 @@ export const prepareLegacyMentions = (message: string, intermediateMentions: Use
                     shortname: mention.shortname,
                     photo: mention.photo,
                     primaryOrganization: mention.primaryOrganization,
+                    email: mention.email,
+                    online: mention.online,
+                    lastSeen: mention.lastSeen,
+                    isBot: mention.isBot,
                 },
             });
         }

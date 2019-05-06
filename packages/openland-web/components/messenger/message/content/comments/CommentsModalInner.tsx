@@ -4,7 +4,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
 import {
     CommentWatch_event_CommentUpdateSingle_update,
     FullMessage_GeneralMessage_attachments,
@@ -102,9 +102,13 @@ export const CommentsModalInnerNoRouter = ({
         messageId,
     });
 
-    const members = client.useRoomMembers({
-        roomId,
-    });
+    const getMentionsSuggestions = async () => {
+        const data = await client.queryRoomMembersForMentionsPaginated({
+            roomId,
+        });
+
+        return data.members.map(({ user }) => user)
+    };
 
     const maybeGeneralMessage = commentedMessage.message;
 
@@ -291,7 +295,7 @@ export const CommentsModalInnerNoRouter = ({
                 showInputId={showInputId}
                 setShowInputId={setShowInputId}
                 currentCommentsInputRef={currentCommentsInputRef}
-                members={members.members}
+                getMentionsSuggestions={getMentionsSuggestions}
             />,
         );
     }
@@ -378,7 +382,7 @@ export const CommentsModalInnerNoRouter = ({
                     Scroll to comment top {commentToScroll}
                 </XView> */}
                     <CommentsInput
-                        members={members.members}
+                        getMentionsSuggestions={getMentionsSuggestions}
                         onSendFile={async (file: UploadCare.File) => {
                             return await uploadFile({
                                 file,

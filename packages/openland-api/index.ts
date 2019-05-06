@@ -33,6 +33,7 @@ import * as RoomFull from './fragments/RoomFull';
 import * as RoomShort from './fragments/RoomShort';
 import * as SessionStateFull from './fragments/SessionStateFull';
 import * as SettingsFragment from './fragments/SettingsFragment';
+import * as UserForMention from './fragments/UserForMention';
 import * as UserFull from './fragments/UserFull';
 import * as UserShort from './fragments/UserShort';
 import * as UserTiny from './fragments/UserTiny';
@@ -107,6 +108,7 @@ export const RoomAlterHiddenMutation = typedMutation<Types.RoomAlterHidden, Type
 export const RoomMembersShortQuery = typedQuery<Types.RoomMembersShort, Types.RoomMembersShortVariables>(Chats.RoomMembersShortQuery);
 export const RoomMemberShortQuery = typedQuery<Types.RoomMemberShort, Types.RoomMemberShortVariables>(Chats.RoomMemberShortQuery);
 export const RoomMembersQuery = typedQuery<Types.RoomMembers, Types.RoomMembersVariables>(Chats.RoomMembersQuery);
+export const RoomMembersForMentionsPaginatedQuery = typedQuery<Types.RoomMembersForMentionsPaginated, Types.RoomMembersForMentionsPaginatedVariables>(Chats.RoomMembersForMentionsPaginatedQuery);
 export const RoomMembersPaginatedQuery = typedQuery<Types.RoomMembersPaginated, Types.RoomMembersPaginatedVariables>(Chats.RoomMembersPaginatedQuery);
 export const RoomSettingsUpdateMutation = typedMutation<Types.RoomSettingsUpdate, Types.RoomSettingsUpdateVariables>(Chats.RoomSettingsUpdateMutation);
 export const RoomJoinMutation = typedMutation<Types.RoomJoin, Types.RoomJoinVariables>(Chats.RoomJoinMutation);
@@ -221,6 +223,7 @@ export const RoomFullWithoutMembersFragment = typedFragment<Types.RoomFullWithou
 export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomShort);
 export const SessionStateFullFragment = typedFragment<Types.SessionStateFull>(SessionStateFull.SessionStateFull);
 export const SettingsFullFragment = typedFragment<Types.SettingsFull>(SettingsFragment.SettingsFull);
+export const UserForMentionFragment = typedFragment<Types.UserForMention>(UserForMention.UserForMention);
 export const UserFullFragment = typedFragment<Types.UserFull>(UserFull.UserFull);
 export const UserShortFragment = typedFragment<Types.UserShort>(UserShort.UserShort);
 export const UserTinyFragment = typedFragment<Types.UserTiny>(UserTiny.UserTiny);

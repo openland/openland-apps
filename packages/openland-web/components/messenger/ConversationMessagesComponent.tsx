@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { MessageListComponent } from './view/MessageListComponent';
 import { XLoader } from 'openland-x/XLoader';
 import { MessagesContainer } from './view/MessagesContainer';
@@ -6,7 +7,6 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { TypingsView } from './typings/TypingsView';
-import { XView } from 'react-mental';
 
 const TypingComponent = React.memo((props: { chatId: string }) => (
     <XView

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { UserForMention } from 'openland-api/Types';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XRichTextInput2, XRichTextInput2Props } from 'openland-x/XRichTextInput2';
@@ -9,9 +10,8 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { convertChannelMembersDataToMentionsData } from 'openland-web/fragments/MessageComposeComponent/useMentions';
 import { useClient } from 'openland-web/utils/useClient';
-import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { UserWithOffset, convertSpansToUserWithOffset } from 'openland-y-utils/mentionsConversion';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -48,7 +48,11 @@ export type XTextInputProps =
       } & XRichTextInput2Props;
 
 class XRichTextInputStored extends React.PureComponent<
-    XTextInputProps & { store: XStoreState; mentionsData?: UserWithOffset[] }
+    XTextInputProps & {
+        store: XStoreState;
+        initialMentions?: UserWithOffset[];
+        getMentionsSuggestions: () => Promise<UserForMention[]>;
+    }
 > {
     onChangeHandler = (value: any) => {
         if (this.props.kind === 'from_store') {
@@ -77,14 +81,18 @@ class XRichTextInputStored extends React.PureComponent<
                 autofocus={true}
                 onChange={data => this.onChangeHandler(data)}
                 value={value.text}
-                mentionsData={this.props.mentionsData}
+                initialMentions={this.props.initialMentions}
+                getMentionsSuggestions={this.props.getMentionsSuggestions}
             />
         );
     }
 }
 
 class XTextInput extends React.PureComponent<
-    XTextInputProps & { mentionsData?: UserWithOffset[] }
+    XTextInputProps & {
+        initialMentions?: UserWithOffset[];
+        getMentionsSuggestions: () => Promise<UserForMention[]>;
+    }
 > {
     render() {
         if (this.props.kind === 'from_store') {
@@ -123,7 +131,8 @@ type EditMessageInlineT = {
     id: string;
     message: any;
     onClose: any;
-    mentionsData: UserWithOffset[];
+    initialMentions: UserWithOffset[];
+    getMentionsSuggestions: () => Promise<UserForMention[]>;
 };
 
 const EditMessageInline = (props: EditMessageInlineT) => {
@@ -150,7 +159,8 @@ const EditMessageInline = (props: EditMessageInlineT) => {
                 <XTextInput
                     valueStoreKey="fields.message"
                     kind="from_store"
-                    mentionsData={props.mentionsData}
+                    initialMentions={props.initialMentions}
+                    getMentionsSuggestions={props.getMentionsSuggestions}
                 />
             </TextInputWrapper>
             <Footer separator={5}>
@@ -168,7 +178,8 @@ const EditMessageInline = (props: EditMessageInlineT) => {
 };
 
 type EditMessageInlineWrapperInnerT = {
-    mentionsData: UserWithOffset[];
+    initialMentions: UserWithOffset[];
+    getMentionsSuggestions: () => Promise<UserForMention[]>;
 } & EditMessageInlineWrapperT;
 class EditMessageInlineWrapperInner extends React.Component<EditMessageInlineWrapperInnerT> {
     onCloseHandler = () => {
@@ -189,7 +200,8 @@ class EditMessageInlineWrapperInner extends React.Component<EditMessageInlineWra
                 <EditMessageInline
                     id={this.props.message.id!}
                     message={this.props.message}
-                    mentionsData={this.props.mentionsData}
+                    initialMentions={this.props.initialMentions}
+                    getMentionsSuggestions={this.props.getMentionsSuggestions}
                     onClose={this.onCloseHandler}
                 />
             </XShortcuts>
@@ -212,14 +224,19 @@ export const EditMessageInlineWrapper = (
 ) => {
     const client = useClient();
 
-    const data = client.useRoomMembers(props.variables);
-
-    const mentionsData =
-        data && data.members ? convertChannelMembersDataToMentionsData(data.members) : [];
+    const getMentionsSuggestions = async () => {
+        const data = await client.queryRoomMembers(props.variables);
+        return data && data.members.map(({ user }) => user);
+    };
 
     return (
         <EditMessageInlineWrapperInner
-            mentionsData={mentionsData}
+            initialMentions={
+                props.message.spans
+                    ? convertSpansToUserWithOffset({ spans: props.message.spans })
+                    : []
+            }
+            getMentionsSuggestions={getMentionsSuggestions}
             message={props.message}
             onClose={props.onClose}
             key={props.key}

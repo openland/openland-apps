@@ -159,7 +159,7 @@ export class GlobalStateEngine {
             await this.engine.dialogList.handleMessageDeleted(event.cid, event.message.id, event.prevMessage, event.unread, event.haveMention, this.engine.user.id);
         } else if (event.__typename === 'DialogTitleUpdated') {
             log.warn('new title ' + event);
-            this.engine.dialogList.handleTitleUpdated(event.cid, event.title);
+            await this.engine.dialogList.handleTitleUpdated(event.cid, event.title);
             this.engine.getConversation(event.cid).handleTitleUpdated(event.title)
         } else if (event.__typename === 'DialogBump') {
             let visible = this.visibleConversations.has(event.cid);

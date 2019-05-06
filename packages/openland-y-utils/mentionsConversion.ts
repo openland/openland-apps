@@ -1,7 +1,12 @@
-import { MentionInput, UserShort } from 'openland-api/Types';
+import {
+    MentionInput,
+    FullMessage_ServiceMessage_spans,
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention_user,
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
+} from 'openland-api/Types';
 
 export type UserWithOffset = {
-    user: UserShort;
+    user: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user;
     offset: number;
     length: number;
 };
@@ -28,4 +33,22 @@ export const convertToMentionInput = ({
     }
 
     return mentionsCleared.length > 0 ? mentionsCleared : null;
+};
+
+export const convertSpansToUserWithOffset = ({
+    spans,
+}: {
+    spans: FullMessage_ServiceMessage_spans[];
+}): UserWithOffset[] => {
+    return spans
+        .filter(span => {
+            return span.__typename === 'MessageSpanUserMention';
+        })
+        .map((span: FullMessage_GeneralMessage_spans_MessageSpanUserMention) => {
+            return {
+                user: span.user,
+                offset: span.offset,
+                length: span.length,
+            };
+        });
 };

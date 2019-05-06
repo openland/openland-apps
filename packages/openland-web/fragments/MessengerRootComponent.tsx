@@ -11,8 +11,8 @@ import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContex
 import {
     MessageComposeComponentDraft,
     MessageComposeComponentProps,
-} from './MessageComposeComponent/MessageComposeComponentDesktop';
-import { MobileMessageCompose } from './MessageComposeComponent/MessageComposeComponentMobile';
+} from './MessageComposeComponent/components/MessageComposeComponentDesktop';
+import { MobileMessageCompose } from './MessageComposeComponent/components/MessageComposeComponentMobile';
 import { ConversationMessagesComponent } from '../components/messenger/ConversationMessagesComponent';
 import { UploadCareUploading } from '../utils/UploadCareUploading';
 import {

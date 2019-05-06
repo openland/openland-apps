@@ -23,14 +23,16 @@ interface DottedMenuButtonStyleProps {
     flat?: boolean;
     marginLeft?: number;
     marginRight?: number;
+    opacity?: number;
 }
 
 const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(
-    ({ small, horizontal, flat, active, marginLeft, marginRight }) => ({
+    ({ small, horizontal, flat, active, marginLeft, marginRight, opacity }) => ({
         marginLeft: marginLeft !== undefined ? `${marginLeft}px !important` : undefined,
         marginRight: marginRight !== undefined ? `${marginRight}px !important` : undefined,
         width: small ? 10 : 22,
-        height: 17,
+        height: 20,
+        opacity: opacity !== undefined ? opacity : undefined,
         display: 'flex',
         flexDirection: horizontal ? 'row' : 'column',
         alignItems: 'center',
@@ -104,6 +106,7 @@ export class XOverflowDefalutTarget extends React.PureComponent<
                 flat={props.flat}
                 marginLeft={props.marginLeft}
                 marginRight={props.marginRight}
+                opacity={props.opacity}
             >
                 <div />
                 <div />
@@ -126,6 +129,8 @@ interface XOverflowProps {
     notificationStyle?: boolean;
     onClickTarget?: any;
     useCustomTarget?: boolean;
+    showOnHover?: boolean;
+    onClickOutside?: () => void;
 }
 
 export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
@@ -141,19 +146,23 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
 
     switch = (e: any) => {
         e.stopPropagation();
+        const { show, onClickTarget } = this.props;
 
-        if (typeof this.props.show === 'undefined') {
+        if (typeof show === 'undefined') {
             this.setState({ show: !this.state.show });
         }
 
-        if (this.props.onClickTarget) {
-            this.props.onClickTarget();
+        if (onClickTarget) {
+            onClickTarget();
         }
     };
 
     handleClose = () => {
-        if (typeof this.props.show === 'undefined') {
+        const { show, onClickOutside } = this.props;
+        if (typeof show === 'undefined') {
             this.setState({ show: false });
+        } else if (onClickOutside !== undefined) {
+            onClickOutside();
         }
     };
 
@@ -166,22 +175,25 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
 
         let targetElement: any;
 
-        let show = typeof this.props.show === 'undefined' ? this.state.show : this.props.show;
+        let show: boolean | undefined =
+            typeof this.props.show === 'undefined' ? this.state.show : this.props.show;
 
-        if (target !== undefined) {
+        if (this.props.showOnHover) {
+            show = undefined;
+        }
+
+        if (useCustomTarget) {
+            targetElement = target;
+        } else if (target !== undefined && !useCustomTarget) {
             targetElement = React.cloneElement(target as any, {
                 onClick: this.switch,
                 innerRef: this.createRef,
             });
         }
 
-        if (useCustomTarget) {
-            targetElement = target;
-        }
-
         return (
             <>
-                {shadow && <Shadow active={show} />}
+                {shadow && typeof show !== 'undefined' && <Shadow active={show} />}
                 <XPopper
                     show={show}
                     contentContainer={<XMenuVertical />}
@@ -190,10 +202,11 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                     placement={this.props.placement || 'auto'}
                     width={this.props.width}
                     onClickOutside={this.handleClose}
+                    showOnHover={this.props.showOnHover}
                 >
                     {targetElement ? (
                         targetElement
-                    ) : this.props.notificationStyle === true ? (
+                    ) : this.props.notificationStyle === true && typeof show !== 'undefined' ? (
                         <NotificationButton
                             onClick={this.switch}
                             active={show}

@@ -15,13 +15,13 @@ fragment FullMessage on ModernMessage {
     ... on MessageSpanUserMention {
       user {
         __typename
-        ...UserTiny
+        ...UserShort
       }
     }
     ... on MessageSpanMultiUserMention {
       users {
         __typename
-        ...UserTiny
+        ...UserShort
       }
     }
     ... on MessageSpanRoomMention {
@@ -43,10 +43,6 @@ fragment FullMessage on ModernMessage {
     }
     ... on MessageSpanLink {
       url
-    }
-    ... on MessageSpanBold {
-      length
-      offset
     }
   }
   ... on GeneralMessage {

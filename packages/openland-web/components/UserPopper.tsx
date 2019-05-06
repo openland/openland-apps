@@ -102,6 +102,12 @@ export class UserPopper extends React.PureComponent<
         }
     };
 
+    hidePopperInstantly = () => {
+        if (this.xPopperRef.current) {
+            this.xPopperRef.current.hide();
+        }
+    };
+
     getXPopperTargetNode = (elem: Element | null | Text) => {
         return elem && elem instanceof Element ? elem.children[0] : elem;
     };
@@ -118,6 +124,7 @@ export class UserPopper extends React.PureComponent<
                 content={
                     <div onMouseEnter={this.showPopper} onMouseLeave={this.hidePopper}>
                         <UserPopperContent
+                            hidePopper={this.hidePopperInstantly}
                             noCardOnMe={noCardOnMe}
                             isMe={isMe}
                             user={user}

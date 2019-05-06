@@ -10,7 +10,7 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
     let calls = React.useContext(MessengerContext).calls;
     let callState = calls.useState();
     let client = useClient();
-    let data = client.useWithoutLoaderConference({ id: props.conversationId });
+    let data = client.useWithoutLoaderConference({ id: props.conversationId }, { fetchPolicy: 'network-only' });
     if (!data) {
         return null;
     }
@@ -73,7 +73,7 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
                                     callState.conversationId
                                         ? () => calls.leaveCall()
                                         : () =>
-                                              calls.joinCall(props.conversationId, props.isPrivate)
+                                            calls.joinCall(props.conversationId, props.isPrivate)
                                 }
                             />
                         )}

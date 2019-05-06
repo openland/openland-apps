@@ -60,8 +60,8 @@ const DialogsComponent = XMemo<PageProps>((props) => {
             )}
             {Platform.OS === 'android' && (
                 <>
-                    {props.router.params.share && <SHeader title="Share with" />}
-                    {!props.router.params.share && < CenteredHeader title="Messages" padding={98} />}
+                    {(props.router.params.share || props.router.params.title) && <SHeader title={props.router.params.title || 'Share with'} />}
+                    {!props.router.params.share && !props.router.params.title && <CenteredHeader title="Messages" padding={98} />}
                 </>
             )}
             {!props.router.params.share && !props.router.params.title && <SHeaderButton

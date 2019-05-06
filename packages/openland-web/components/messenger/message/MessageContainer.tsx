@@ -383,18 +383,19 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
                             </XView>
                         )}
                     </XView>
-                    {!props.isComment && !props.isModal && (
-                        <XView
-                            paddingLeft={8}
-                            fontSize={12}
-                            color="rgba(0, 0, 0, 0.4)"
-                            fontWeight="600"
-                            alignSelf="flex-end"
-                            marginBottom={-1}
-                        >
-                            <XDate value={props.date.toString()} format="time" />
-                        </XView>
-                    )}
+                    {!props.isComment &&
+                        !props.isModal && (
+                            <XView
+                                paddingLeft={8}
+                                fontSize={12}
+                                color="rgba(0, 0, 0, 0.4)"
+                                fontWeight="600"
+                                alignSelf="flex-end"
+                                marginBottom={-1}
+                            >
+                                <XDate value={props.date.toString()} format="time" />
+                            </XView>
+                        )}
                 </XView>
             ),
             [props.date, props.sender, props.sender.primaryOrganization, props.selecting],
@@ -451,7 +452,12 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
 
     // Actions
     let actions = (
-        <XView width={85} marginLeft={12} alignSelf="flex-start">
+        <XView
+            width={85}
+            marginLeft={12}
+            marginTop={!compact ? 24 : undefined}
+            alignSelf="flex-start"
+        >
             <Menu
                 conversationId={props.conversationId}
                 hover={hover}
@@ -495,7 +501,7 @@ export const DesktopMessageContainer = (props: DesktopMessageContainerProps) => 
             {actions}
         </MessageContainerWrapper>
     );
-}
+};
 
 const MobileMessageContainerWrapper = ({ children }: { children: any }) => {
     return (

@@ -23,12 +23,13 @@ interface ReplyContentProps {
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
     render() {
-        let mainTextColor = this.props.message.isOut ? this.props.theme.textColorOut : this.props.theme.textColor;
+        let { message } = this.props;
+        let mainTextColor = message.isOut ? this.props.theme.textColorOut : this.props.theme.textColor;
 
         let lineBAckgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
 
-        if (this.props.message.reply) {
+        if (message.reply) {
             // for left accent line
             let image = require('assets/chat-link-line-my.png');
             lineBAckgroundPatch = Image.resolveAssetSource(image);
@@ -36,16 +37,15 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
         return (
             <>
-                {/* forward/reply */}
-                {this.props.message.reply && (
-
-                    this.props.message.reply.map((m, i) => {
+                {message.reply && (
+                    message.reply.map((m, i) => {
                         let generalMesage = m.__typename === 'GeneralMessage' ? m as FullMessage_GeneralMessage_quotedMessages_GeneralMessage : undefined;
 
                         if (generalMesage) {
                             let attachFile = generalMesage.attachments && generalMesage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+
                             return (
-                                <ASFlex key={'repl-' + m.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkColor}>
+                                <ASFlex key={'repl-' + m.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkColor}>
                                     <ASText
                                         key={'asd' + m.id}
                                         marginTop={-2}
@@ -53,7 +53,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         textAlign="center"
                                         lineHeight={15}
                                         marginLeft={10}
-                                        color={this.props.message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkColor}
+                                        color={message.isOut ? this.props.theme.linkOutColor : this.props.theme.linkColor}
                                         letterSpacing={-0.3}
                                         fontSize={13}
                                         onPress={() => this.props.onUserPress(generalMesage!.sender.id!)}
@@ -70,21 +70,23 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         fontSize={16}
                                         fontWeight={TextStyles.weight.regular}
                                     >
+<<<<<<< HEAD
 
                                         {preprocessText(generalMesage!.message!, generalMesage.spans as any).map((p: Span, j: number) => renderPreprocessedText(p, j, this.props.message, this.props.theme, this.props.onUserPress))}
                                         {(!this.props.message.text && (i + 1 === this.props.message.reply!!.length)) ? (this.props.message.isOut ? paddedTextOut : paddedText) : undefined}
+=======
+                                        {preprocessText(generalMesage!.message!, generalMesage.spans).map((p: Span, j: number) => renderPreprocessedText(p, j, message, this.props.theme, this.props.onUserPress))}
+                                        {(!message.text && (i + 1 === message.reply!!.length)) ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
+>>>>>>> e856ce6a18dcd02049a66f1aa05f370d2ed24b2f
                                     </ASText>}
                                     {attachFile && attachFile.fileMetadata.isImage ? <AsyncReplyMessageMediaView attach={attachFile} onPress={this.props.onMediaPress} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
-                                    {attachFile && !attachFile.fileMetadata.isImage ? <AsyncReplyMessageDocumentView attach={attachFile} onPress={this.props.onDocumentPress} parent={this.props.message} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
-
+                                    {attachFile && !attachFile.fileMetadata.isImage ? <AsyncReplyMessageDocumentView theme={this.props.theme} attach={attachFile} onPress={this.props.onDocumentPress} parent={message} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
                                 </ASFlex>
                             )
                         } else {
                             return null;
                         }
-
                     })
-
                 )}
             </>
         )

@@ -86,12 +86,6 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     }, [callsState.status]);
 
     React.useEffect(() => {
-        if (conference && conference.conference.peers.length === 0 && callsState.status !== 'initial') {
-            onCallEnd();
-        }
-    }, [(conference && conference.conference.peers.length) || 0, callsState.status])
-
-    React.useEffect(() => {
         if (status === 'connected') {
             setTimeout(() => {
                 setTimer(initialTime ? Date.now() - initialTime : 0);
