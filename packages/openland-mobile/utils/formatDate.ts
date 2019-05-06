@@ -28,3 +28,11 @@ export function formatDate(date: number) {
     }
     return month + ' ' + day;
 }
+
+export function formatAbsoluteDate(date: number) {
+    let dt = new Date(date);
+    let month = months[dt.getMonth()];
+    let day = dt.getDate();
+
+    return month + ' ' + day;
+}

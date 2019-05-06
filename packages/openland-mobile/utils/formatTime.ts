@@ -1,5 +1,5 @@
 import * as humanize from 'humanize';
-import { formatDate } from './formatDate';
+import { formatDate, formatAbsoluteDate } from './formatDate';
 
 const addLeadingZero = (time: number) => {
     return ('0' + time).substr(-2)
@@ -11,6 +11,14 @@ export function formatTime(date: number) {
     let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
     hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
     return hours + ':' + addLeadingZero(dt.getMinutes()) + ampm;
+}
+
+export function formatDateTime(date: number) {
+    let dt = new Date(date);
+    let hours = dt.getHours();
+    let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
+    hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
+    return formatAbsoluteDate(date) + ', ' + hours + ':' + addLeadingZero(dt.getMinutes()) + ' ' + ampm;
 }
 
 export function formatTimerTime(date: number) {

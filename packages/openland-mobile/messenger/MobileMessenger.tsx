@@ -19,7 +19,7 @@ import { ZModalController } from 'openland-mobile/components/ZModal';
 import { reactionsImagesMap, defaultReactions, reactionMap } from './components/AsyncMessageReactionsView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
-import { formatDate } from 'openland-mobile/utils/formatDate';
+import { formatDateTime } from 'openland-mobile/utils/formatTime';
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     let actionsState = conversationEngine.messagesActionsState;
@@ -73,7 +73,7 @@ export class MobileMessenger {
     handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {
         showPictureModal({
             title: senderName,
-            subtitle: date ? formatDate(date) : undefined,
+            subtitle: date ? formatDateTime(date) : undefined,
             url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
             width: fileMeta.imageWidth,
             height: fileMeta.imageHeight,
