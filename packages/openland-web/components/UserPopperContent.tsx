@@ -81,7 +81,6 @@ const UserPopperContent = XMemo(
         noCardOnMe?: boolean;
         hidePopper: Function;
     }) => {
-        let router = React.useContext(XViewRouterContext);
         let usrPath: string | undefined = undefined;
         if (!startSelected) {
             usrPath = '/mail/u/' + user.id;
@@ -143,9 +142,8 @@ const UserPopperContent = XMemo(
                                     size="small"
                                     autoClose={true}
                                     onClick={(e: any) => {
-                                        e.preventDefault();
+                                        e.stopPropagation();
                                         hidePopper();
-                                        router!.navigate('/mail/' + user.id);
                                     }}
                                 />
                             </>
@@ -157,9 +155,8 @@ const UserPopperContent = XMemo(
                             size="small"
                             autoClose={true}
                             onClick={(e: any) => {
-                                e.preventDefault();
+                                e.stopPropagation();
                                 hidePopper();
-                                router!.navigate('/mail/u/' + user.id);
                             }}
                         />
                     </Buttons>

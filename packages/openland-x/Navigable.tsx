@@ -157,7 +157,7 @@ export function makeNavigable<T>(
                 return;
             }
 
-            if (autoClose && __modal.close) {
+            if (autoClose && __modal && __modal.close) {
                 __modal.close();
             }
 
