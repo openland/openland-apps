@@ -23,6 +23,7 @@ export const useMentionSuggestions = ({
 }: useMentionSuggestionsT): MentionSuggestionsStateT => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [isLoaded, setIsLoaded] = React.useState(false);
+    const [isPreload, setIsPreload] = React.useState(true);
     const [isSelecting, setIsSelecting] = React.useState(false);
     const [finalFilteredSuggestions, setFilteredSuggestions] = React.useState<UserForMention[]>([]);
     const [initialSuggestions, setInitialSuggestions] = React.useState<UserForMention[]>([]);
@@ -39,12 +40,20 @@ export const useMentionSuggestions = ({
         setIsLoading(true);
         if (!isLoaded && !isLoading) {
             (async () => {
-                const result = await getMentionsSuggestions()
+                const result = await getMentionsSuggestions();
                 setInitialSuggestions(result);
                 setIsLoaded(true);
             })();
         }
     }, []);
+
+    // React.useEffect(() => {
+    //     if (finalFilteredSuggestions.length && isPreload && isSelecting) {
+    //         setTimeout(() => {
+    //             setIsPreload(false);
+    //         }, 1000);
+    //     }
+    // }, [finalFilteredSuggestions, isSelecting]);
 
     React.useEffect(() => {
         const alphabetSort = activeWord.startsWith('@') && activeWord.length === 1;
@@ -73,14 +82,14 @@ export const useMentionSuggestions = ({
         }
 
         setIsSelecting(activeWord.startsWith('@') && !!filteredSuggestions.length);
-        setFilteredSuggestions(filteredSuggestions.slice(0, 50));
+        setFilteredSuggestions(filteredSuggestions);
     }, [initialSuggestions, activeWord]);
 
     return {
         isSelecting,
         handleUp,
         handleDown,
-        suggestions: finalFilteredSuggestions,
+        suggestions: isPreload ? finalFilteredSuggestions.slice(0, 50) : finalFilteredSuggestions,
         setSelectedEntryIndex,
         selectedEntryIndex,
         isLoaded,
