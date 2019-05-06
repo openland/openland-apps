@@ -268,6 +268,25 @@ export const Menu = React.memo(
                                                 </XMenuItem>
                                             )}
                                             <XMenuItem
+                                                onClick={(e: any) => {
+                                                    setReplyMessages(e);
+                                                    setShowMenu(false);
+                                                }}
+                                            >
+                                                Reply
+                                            </XMenuItem>
+                                            {pinMessageAccess &&
+                                            message.id &&
+                                            room && (
+                                                <PinMessageButton
+                                                    variables={{
+                                                        chatId: room.id,
+                                                        messageId: message.id,
+                                                    }}
+                                                    onSuccess={() => setShowMenu(false)}
+                                                />
+                                            )}
+                                            <XMenuItem
                                                 onClick={() => {
                                                     setShowMenu(false);
                                                     selectMessage();
@@ -277,14 +296,6 @@ export const Menu = React.memo(
                                                 Forward
                                             </XMenuItem>
                                             <XMenuItem
-                                                onClick={(e: any) => {
-                                                    setReplyMessages(e);
-                                                    setShowMenu(false);
-                                                }}
-                                            >
-                                                Reply
-                                            </XMenuItem>
-                                            <XMenuItem
                                                 onClick={() => {
                                                     selectMessage();
                                                     setShowMenu(false);
@@ -292,17 +303,6 @@ export const Menu = React.memo(
                                             >
                                                 Select
                                             </XMenuItem>
-                                            {pinMessageAccess &&
-                                                message.id &&
-                                                room && (
-                                                    <PinMessageButton
-                                                        variables={{
-                                                            chatId: room.id,
-                                                            messageId: message.id,
-                                                        }}
-                                                        onSuccess={() => setShowMenu(false)}
-                                                    />
-                                                )}
                                             {message.id &&
                                                 out && (
                                                     <XMenuItem
