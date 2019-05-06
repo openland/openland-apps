@@ -4,9 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.openland.spacex.model.OperationDefinition
 import com.openland.spacex.model.OperationKind
-import com.openland.spacex.store.RecordStore
-import com.openland.spacex.store.RecordStoreBus
-import com.openland.spacex.store.readFromStore
+import com.openland.spacex.store.*
 import com.openland.spacex.transport.RunningOperation
 import com.openland.spacex.transport.TransportOperationCallback
 import com.openland.spacex.transport.WebSocketTransport
@@ -47,7 +45,7 @@ class SpaceXClient(url: String, token: String?, context: Context) {
         var completed = false
         cacheQueue.async {
             if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
-                val existing = readFromStore("ROOT_QUERY", store, operation.selector!!, arguments)
+                val existing = readRootFromStore("ROOT_QUERY", store, operation.selector, arguments)
                 if (existing.first) {
                     callback.onResult(existing.second!!)
                     if (policy == FetchPolicy.CACHE_FIRST) {
@@ -76,7 +74,7 @@ class SpaceXClient(url: String, token: String?, context: Context) {
                         cacheQueue.async {
                             if (!completed) {
                                 completed = true
-                                val normalized = operation.normalizeResponse(data, arguments)
+                                val normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, data)
                                 val changed = store.merge(normalized)
                                 bus.publish(changed)
                                 callback.onResult(data)
@@ -106,7 +104,7 @@ class SpaceXClient(url: String, token: String?, context: Context) {
     fun write(operation: OperationDefinition, arguments: JSONObject, data: JSONObject, callback: StoreWriteCallback) {
         cacheQueue.async {
             try {
-                val normalized = operation.normalizeResponse(data, arguments)
+                val normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, data)
                 val changes = store.merge(normalized)
                 bus.publish(changes)
                 callback.onResult()
@@ -154,7 +152,7 @@ class SpaceXClient(url: String, token: String?, context: Context) {
                     cacheQueue.async {
                         if (!completed) {
                             completed = true
-                            val normalized = operation.normalizeResponse(data, arguments)
+                            val normalized = normalizeResponse(null, operation.selector, arguments, data)
                             val changed = store.merge(normalized)
                             bus.publish(changed)
                             callback.onResult(data)
@@ -209,7 +207,7 @@ class SpaceXClient(url: String, token: String?, context: Context) {
                     override fun onResult(data: JSONObject) {
                         cacheQueue.async {
                             if (!completed) {
-                                val normalized = operation.normalizeResponse(data, arguments)
+                                val normalized = normalizeResponse(null, operation.selector, arguments, data)
                                 val changed = store.merge(normalized)
                                 bus.publish(changed)
                                 callback.onResult(data)
@@ -276,12 +274,13 @@ class SpaceXClient(url: String, token: String?, context: Context) {
         fun start() {
             cacheQueue.async {
                 if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
-                    val existing = readFromStore("ROOT_QUERY", store, operation.selector!!, arguments)
+                    val existing = readRootFromStore("ROOT_QUERY", store, operation.selector, arguments)
                     if (existing.first) {
                         callback.onResult(existing.second!!)
                         if (policy == FetchPolicy.CACHE_FIRST) {
                             // TODO: Optimize!!
-                            storeSubscription = bus.subscribe(operation.normalizeResponse(existing.second!!, arguments)) { reload() }
+                            val normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, existing.second!!)
+                            storeSubscription = bus.subscribe(normalized) { reload() }
                             return@async
                         }
                     }
@@ -308,7 +307,7 @@ class SpaceXClient(url: String, token: String?, context: Context) {
                                 cacheQueue.async {
                                     if (!completed) {
                                         var start = System.currentTimeMillis()
-                                        val normalized = operation.normalizeResponse(data, arguments)
+                                        val normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, data)
                                         Log.d("SpaceX", "Normalized in " + (System.currentTimeMillis() - start) + " ms")
                                         start = System.currentTimeMillis()
                                         val changed = store.merge(normalized)
@@ -334,12 +333,13 @@ class SpaceXClient(url: String, token: String?, context: Context) {
                 this.storeSubscription!!()
                 this.storeSubscription = null
             }
-            val existing = readFromStore("ROOT_QUERY", store, operation.selector!!, arguments)
+            val existing = readRootFromStore("ROOT_QUERY", store, operation.selector, arguments)
             if (existing.first) {
                 callback.onResult(existing.second!!)
                 if (policy == FetchPolicy.CACHE_FIRST) {
                     // TODO: Optimize!!
-                    storeSubscription = bus.subscribe(operation.normalizeResponse(existing.second!!, arguments)) { reload() }
+                    val normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, existing.second!!)
+                    storeSubscription = bus.subscribe(normalized) { reload() }
                     return
                 }
             } else {
@@ -368,7 +368,7 @@ class SpaceXClient(url: String, token: String?, context: Context) {
                             override fun onResult(data: JSONObject) {
                                 cacheQueue.async {
                                     if (!completed) {
-                                        val normalized = operation.normalizeResponse(data, arguments)
+                                        val normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, data)
                                         val changed = store.merge(normalized)
                                         bus.publish(changed)
                                         storeSubscription = bus.subscribe(normalized) { reload() }

@@ -47,9 +47,25 @@ fun i(value: Int): InputValue.Int {
     return InputValue.Int(value)
 }
 
+fun s(value: String): InputValue.String {
+    return InputValue.String(value)
+}
+
+fun listValue(vararg inputValue: InputValue): InputValue.List {
+    return InputValue.List(inputValue as Array<InputValue>)
+}
+
+fun objectValue(vararg args: Pair<String, InputValue>): InputValue.Object {
+    return InputValue.Object(args.toMap())
+}
+
 sealed class InputValue {
-    class Reference(val name: String) : InputValue()
+    class Reference(val name: kotlin.String) : InputValue()
+    class List(val items: Array<InputValue>) : InputValue()
+    class Object(val fields: Map<kotlin.String, InputValue>) : InputValue()
+
     class Int(val value: kotlin.Int) : InputValue()
+    class String(val value: kotlin.String) : InputValue()
 }
 
 sealed class Selector {

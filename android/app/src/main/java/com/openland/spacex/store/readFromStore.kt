@@ -33,7 +33,7 @@ private fun selectorKey(value: InputValue, arguments: JSONObject): String? {
     }
 }
 
-private fun selectorKey(name: String, fieldArguments: Map<String, InputValue>, arguments: JSONObject): String {
+fun selectorKey(name: String, fieldArguments: Map<String, InputValue>, arguments: JSONObject): String {
     if (fieldArguments.isEmpty()) {
         return name
     }
@@ -171,9 +171,8 @@ private fun readSelector(cacheKey: String, store: RecordStore, selectors: List<S
     if (value.fields.isEmpty()) {
         return false to null
     }
-    val k = store.read(value.key)
     val fields = mutableMapOf<String, Any?>()
-    if (!readSelector(k, fields, store, selectors, arguments)) {
+    if (!readSelector(value, fields, store, selectors, arguments)) {
         return false to null
     }
     return true to JSONObject(fields)
@@ -181,4 +180,24 @@ private fun readSelector(cacheKey: String, store: RecordStore, selectors: List<S
 
 fun readFromStore(cacheKey: String, store: RecordStore, type: OutputType.Object, arguments: JSONObject): Pair<Boolean, JSONObject?> {
     return readSelector(cacheKey, store, type.selectors, arguments)
+}
+
+fun readRootFromStore(rootCacheKey: String, store: RecordStore, type: OutputType.Object, arguments: JSONObject): Pair<Boolean, JSONObject?> {
+    val fields = mutableMapOf<String, Any?>()
+    for (f in type.selectors) {
+        if (f !is Selector.Field) {
+            error("Root query cant't contain fragments")
+        }
+        val key = selectorKey(f.name, f.arguments, arguments)
+        // val id = "$rootCacheKey.$key"
+        val refId = "$rootCacheKey.\$ref.$key"
+        val value = store.read(refId)
+        val ex = value.fields["data"] ?: return false to null
+        val rv = readValue(ex, f.type, store, arguments)
+        if (!rv.first) {
+            return false to null
+        }
+        fields[f.alias] = rv.second
+    }
+    return true to JSONObject(fields)
 }

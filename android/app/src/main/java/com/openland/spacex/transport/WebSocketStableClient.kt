@@ -56,11 +56,11 @@ class WebSocketStableClient(val context: Context,
             }
         }
 
-//        override fun onUnavailable() {
-//            queue.async {
-//                onNetworkingLost()
-//            }
-//        }
+        override fun onUnavailable() {
+            queue.async {
+                onNetworkingLost()
+            }
+        }
 
         override fun onLost(network: Network?) {
             queue.async {
@@ -117,6 +117,8 @@ class WebSocketStableClient(val context: Context,
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             connectivityManager.unregisterNetworkCallback(connectivityCallback)
         }
+
+        connection?.close()
     }
 
     private fun connect() {
