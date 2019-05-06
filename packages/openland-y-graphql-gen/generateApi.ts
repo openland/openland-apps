@@ -43,8 +43,8 @@ function generateApi() {
                 output += '    use' + name + '(variables: Types.' + name + 'Variables, opts?: QueryWatchParameters): Types.' + name + ' {\n';
                 output += '        return this.useQuerySuspense(Source.' + op.operationName + 'Query, variables, opts);\n';
                 output += '    }\n';
-                output += '    useWithoutLoader' + name + '(variables: Types.' + name + 'Variables): Types.' + name + ' | null {\n';
-                output += '        return this.useQuery(Source.' + op.operationName + 'Query, variables);\n';
+                output += '    useWithoutLoader' + name + '(variables: Types.' + name + 'Variables, opts?: QueryWatchParameters): Types.' + name + ' | null {\n';
+                output += '        return this.useQuery(Source.' + op.operationName + 'Query, variables, opts);\n';
                 output += '    }\n';
             } else {
                 output += '    async query' + name + '(opts?: OperationParameters): Promise<Types.' + name + '> {\n';

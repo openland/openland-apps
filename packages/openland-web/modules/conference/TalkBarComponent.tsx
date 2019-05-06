@@ -10,14 +10,20 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
     let calls = React.useContext(MessengerContext).calls;
     let callState = calls.useState();
     let client = useClient();
-    let data = client.useWithoutLoaderConference({ id: props.conversationId });
+    let data = client.useWithoutLoaderConference({ id: props.conversationId }, { fetchPolicy: 'network-only' });
     // todo: move to engine
     React.useEffect(() => {
+        if (callState.conversationId !== props.conversationId) {
+            return;
+        }
         if (data && data.conference.peers.length === 0 && callState.status !== 'initial' && callState.status !== 'connecting') {
             calls.leaveCall();
         }
     }, [callState.status, (data && data.conference.peers.length) || 0]);
     if (!data) {
+        return null;
+    }
+    if (callState.conversationId !== props.conversationId) {
         return null;
     }
     return (
