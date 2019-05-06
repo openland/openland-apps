@@ -91,8 +91,8 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
     }
 
     render() {
-        let theme = this.props.theme;
-        let out = this.props.message.isOut;
+        let { theme, message } = this.props;
+        let out = message.isOut;
         let link = this.props.attach!.titleLink || '';
         let { text, subTitle, keyboard } = this.props.attach;
 
@@ -111,10 +111,10 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         if (isInvite(this.props.attach) && !this.props.attach.image) {
             imgCompact = true;
             imgLayout = { width: 36, height: 36 };
-            imageSource = this.props.message.isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
+            imageSource = message.isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
         }
 
-        let maxWidth = this.props.maxWidth || ((imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
+        let maxWidth = this.props.maxWidth || ((imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
         return (
 
             <ASFlex flexDirection="column" alignItems="stretch" alignSelf={'stretch'}>
@@ -204,7 +204,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             onPress={this.onTitleClick}
                         >
                             {this.props.attach.title}
-                            {this.props.padded && !subTitle && (this.props.message.isOut ? paddedTextOut : paddedText)}
+                            {this.props.padded && !subTitle && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
                         </ASText>}
                         {!!subTitle && <ASText
                             marginTop={(Platform.OS === 'android' ? -4 : -1)}
@@ -217,7 +217,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             fontWeight={TextStyles.weight.regular}
                         >
                             {subTitle}
-                            {this.props.padded && (this.props.message.isOut ? paddedTextOut : paddedText)}
+                            {this.props.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
                         </ASText>}
                     </ASFlex>
                 </ASFlex>
@@ -234,7 +234,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 >
                     {!subTitle && this.imageCompact && imgLayout && paddedTextPrfix}
                     {text}
-                    {this.props.padded && (this.props.message.isOut ? paddedTextOut : paddedText)}
+                    {this.props.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
                 </ASText>}
 
                 {!!keyboard && keyboard.buttons.map((line, i) =>

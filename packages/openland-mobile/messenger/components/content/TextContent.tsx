@@ -53,7 +53,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                     fontStyle={this.props.fontStyle}
                 >
                     {parts}
-                    {this.props.padded !== false ? (message.isOut ? paddedTextOut : paddedText) : undefined}
+                    {this.props.padded !== false ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
                 </ASText>}
             </>
         )
