@@ -167,15 +167,6 @@ export const Menu = React.memo(
             }
         };
 
-        React.useEffect(
-            () => {
-                if (!hover) {
-                    setShowMenu(false);
-                }
-            },
-            [hover],
-        );
-
         const setReplyMessages = (e: any) => {
             if (!message.isSending) {
                 e.stopPropagation();
@@ -210,7 +201,6 @@ export const Menu = React.memo(
         const sharedRoom =
             room && room.__typename === 'SharedRoom' ? (room as RoomChat_room_SharedRoom) : null;
         const pinMessageAccess = out && sharedRoom && sharedRoom.canEdit && !message.isService;
-        // console.log(lol?)
 
         if (!message.isSending && !messagesContext.useForwardHeader && !isModal) {
             return (
@@ -223,7 +213,7 @@ export const Menu = React.memo(
                     separator={5}
                     className="menu-wrapper"
                 >
-                    <XView paddingTop={isComment ? 24 : 0}>
+                    <XView paddingTop={isComment ? 24 : 0} flexShrink={0}>
                         <XHorizontal alignItems="center" separator={8}>
                             {isComment && (
                                 <CommentReactionButton
@@ -248,17 +238,19 @@ export const Menu = React.memo(
                                         <CommentIcon />
                                     </CommentsIconWrapper>
                                 )}
-                            {hover && !isComment && (
+                            {!isComment && (
                                 <XOverflow
                                     show={showMenu}
                                     placement="bottom-end"
                                     useCustomTarget={true}
+                                    onClickOutside={() => setShowMenu(false)}
                                     target={
                                         <XOverflowDefalutTarget
                                             onClick={() => setShowMenu(!showMenu)}
                                             active={showMenu}
                                             marginLeft={0}
                                             flat={true}
+                                            opacity={hover || showMenu ? 1 : 0}
                                         />
                                     }
                                     content={
