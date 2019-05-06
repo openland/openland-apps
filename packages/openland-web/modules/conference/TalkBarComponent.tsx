@@ -23,9 +23,6 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
     if (!data) {
         return null;
     }
-    if (callState.conversationId !== props.conversationId) {
-        return null;
-    }
     return (
         <XView height={0} alignSelf="stretch">
             {data.conference.peers.length === 0 && <TalkWatchComponent id={data.conference.id} />}
