@@ -15,12 +15,14 @@ const styles = StyleSheet.create({
     body: {
         flexDirection: 'column',
         flexGrow: 1,
+        flexShrink: 1,
         minWidth: 0,
         paddingLeft: 16,
         paddingRight: 16,
     } as ViewStyle,
     header: {
         flexGrow: 1,
+        flexShrink: 1,
         flexDirection: 'column',
         minWidth: 0,
     } as ViewStyle,
@@ -55,7 +57,7 @@ export interface ZListItemHeaderProps {
     titleIcon?: any;
     titleColor?: string;
     titleLines?: number;
-    subtitle?: string | null,
+    subtitle?: string | null | JSX.Element,
     subtitleColor?: string,
     subsubtitle?: string | null,
     path?: string,

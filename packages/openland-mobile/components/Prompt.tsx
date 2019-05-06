@@ -1,17 +1,14 @@
 import * as React from 'react';
-import { View, Text, Keyboard, } from 'react-native';
 import { showBlanketModal } from './showBlanketModal';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { TextInput } from 'react-native-gesture-handler';
-import { ZRoundedButton } from './ZRoundedButton';
+import { PromptComponent } from './PromptComponent';
 
 type BlanketButtonsStyle = 'destructive' | 'cancel' | 'default';
 
 export class PromptBuilder {
-    private _title?: string;
-    private _callback?: (text: string) => void;
-    private _value?: string;
-    private _actions: { name: string, callback?: (value?: string) => void, style?: BlanketButtonsStyle }[] = [];
+    _title?: string;
+    _callback?: (text: string) => void;
+    _value?: string;
+    _actions: { name: string, callback?: (value?: string) => void, style?: BlanketButtonsStyle }[] = [];
 
     title(title: string): PromptBuilder {
         this._title = title;
@@ -33,45 +30,13 @@ export class PromptBuilder {
     }
 
     show() {
-
         if (this._actions.length === 0) {
             this._actions.push({ name: 'Cancel', style: 'cancel' });
             this._actions.push({ name: 'Save', callback: this._callback });
         }
 
         showBlanketModal((ctx) => {
-            return (
-                <View
-                    flexDirection="column"
-                    justifyContent="flex-start"
-                    paddingHorizontal={24}
-                    paddingVertical={20}
-                >
-                    {this._title && <Text style={{ marginBottom: 12, color: '#000', fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{this._title}</Text>}
-                    <TextInput defaultValue={this._value} onChangeText={this.onTextChange} autoFocus={true} multiline={true} maxHeight={100} marginBottom={15} />
-                    <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
-                        {this._actions.map((a, i) => (
-                            <>
-                                <View style={{ width: 4 }} />
-                                <ZRoundedButton
-                                    key={i + '-ac'}
-                                    size="big"
-                                    style={a.style === 'cancel' ? 'flat' : a.style === 'destructive' ? 'danger' : 'default'}
-                                    title={a.name}
-                                    onPress={() => {
-                                        Keyboard.dismiss();
-                                        ctx.hide();
-                                        if (a.callback) {
-                                            a.callback(this._value);
-                                        }
-                                    }}
-                                />
-                            </>
-                        ))}
-                    </View>
-                </View>
-
-            )
+            return <PromptComponent builder={this} modalController={ctx} />;
         });
     }
 }

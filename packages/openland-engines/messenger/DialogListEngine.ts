@@ -120,7 +120,7 @@ export class DialogListEngine {
 
         let provider: DataSourceStoredProvider<DialogDataSourceItemStored> = {
             loadMore: async (cursor?: string) => {
-                let res = await this.engine.client.queryDialogs({ after: cursor });
+                let res = await this.engine.client.queryDialogs({ after: cursor }, { fetchPolicy: 'network-only' });
                 // for (let c of res.dialogs.items) {
                 //     if (c.kind === 'PRIVATE' && c.fid) {
                 //         this.userConversationMap.set(c.fid, c.cid);

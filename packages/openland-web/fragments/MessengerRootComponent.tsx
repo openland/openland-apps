@@ -312,6 +312,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                     conversationId={this.props.conversationId}
                     conversationType={this.props.conversationType}
                     inputShower={this.handleShowIput}
+                    room={this.props.room}
                 />
 
                 {!this.state.hideInput && this.conversation.canSendMessage && (

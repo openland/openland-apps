@@ -19,7 +19,7 @@ interface MediaContentProps {
     message: DataSourceMessageItem;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
     onUserPress: (id: string) => void;
-    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     layout: { width: number, height: number },
     compensateBubble?: boolean;
@@ -54,7 +54,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
             let w = this.props.attach.fileMetadata.imageWidth;
             let h = this.props.attach.fileMetadata.imageHeight;
 
-            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { path, ...event });
+            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { path, ...event }, undefined, this.props.message.senderName, this.props.message.date);
         }
     }
 

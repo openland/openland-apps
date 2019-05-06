@@ -5,18 +5,19 @@ import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XPopperStyleType } from '../XPopper';
 
 interface ContentDivProps {
-    width?: number;
-    height?: number;
-    maxWidth?: number;
-    maxHeight?: number;
-    minWidth?: number;
-    minHeight?: number;
+    width?: number | string;
+    height?: number | string;
+    maxWidth?: number | string;
+    maxHeight?: number | string;
+    minWidth?: number | string;
+    minHeight?: number | string;
 
     colorStyle?: XPopperStyleType;
+    className?: string;
 }
 
 let colorStyles = styleResolver({
-    'dark': {
+    dark: {
         background: '#6E7588',
         color: '#ffffff',
         borderRadius: 10,
@@ -24,21 +25,22 @@ let colorStyles = styleResolver({
         lineHeight: '16px',
         boxShadow: '0 2px 4px 0 rgba(0, 0, 0, .2)',
     },
-    'default': {
+    default: {
         borderRadius: 10,
         background: '#ffffff',
         color: '#525f7f',
         padding: 10,
         lineHeight: 'normal',
-        boxShadow: '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
-    }
+        boxShadow:
+            '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
+    },
 });
 
 export const ContentDiv = Glamorous.div<ContentDivProps>(
-    (props) => ({
+    props => ({
         position: 'relative',
         maxWidth: props.maxWidth,
-        maxHeight: props.maxHeight,
+        maxHeight: props.maxHeight ? props.maxHeight : '70vh',
         minWidth: props.minWidth,
         minHeight: props.minHeight,
         width: props.width,
@@ -46,14 +48,27 @@ export const ContentDiv = Glamorous.div<ContentDivProps>(
         fontSize: 14,
         fontWeight: 400,
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        overflowY: 'scroll',
     }),
 
-    (props) => colorStyles(props.colorStyle),
+    props => colorStyles(props.colorStyle),
 );
 
-export class XPopperContent extends React.PureComponent<{ captureContent?: (arrow: any) => void, width?: number, height?: number, maxWidth?: number, maxHeight?: number, minWidth?: number, minHeight?: number, className?: string, colorStyle?: XPopperStyleType}> {
+interface XPopperContentProps {
+    captureContent?: (arrow: any) => void;
+    width?: number | string;
+    height?: number | string;
+    maxWidth?: number | string;
+    maxHeight?: number | string;
+    minWidth?: number | string;
+    minHeight?: number | string;
 
+    colorStyle?: XPopperStyleType;
+    className?: string;
+}
+
+export class XPopperContent extends React.PureComponent<XPopperContentProps> {
     render() {
         return (
             <ContentDiv
@@ -68,6 +83,7 @@ export class XPopperContent extends React.PureComponent<{ captureContent?: (arro
                 colorStyle={this.props.colorStyle}
             >
                 {this.props.children}
-            </ContentDiv>);
+            </ContentDiv>
+        );
     }
 }

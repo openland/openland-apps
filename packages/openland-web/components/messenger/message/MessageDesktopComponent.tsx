@@ -16,6 +16,7 @@ import {
     SharedRoomKind,
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
+    RoomChat_room,
 } from 'openland-api/Types';
 import { MessagesStateContextProps } from '../MessagesStateContext';
 import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
@@ -115,6 +116,7 @@ export interface MessageComponentProps {
     isActive?: boolean | null;
     onCommentBackToUserMessageClick?: (event: React.MouseEvent<any>) => void;
     usernameOfRepliedUser?: string;
+    room?: RoomChat_room;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
@@ -405,7 +407,11 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                 let progress = Math.round(message.progress * 100);
                 let title = 'Uploading (' + progress + '%)';
                 content.push(
-                    <MessageUploadComponent key={'file' + message.id} progress={progress} title={title} />,
+                    <MessageUploadComponent
+                        key={'file' + message.id}
+                        progress={progress}
+                        title={title}
+                    />,
                 );
             }
             // TODO: recover retry button
@@ -466,7 +472,6 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     isPinned={this.props.isPinned}
                     commentDepth={this.props.commentDepth}
                     isModal={this.props.isModal}
-                    isChannel={this.props.isChannel}
                     isComment={this.props.isComment}
                     noSelector={this.props.noSelector}
                     message={this.props.message}
@@ -477,6 +482,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                     sender={message.sender}
                     senderNameEmojify={message.senderNameEmojify}
                     selected={!!selected}
+                    selectMessage={this.selectMessage}
+                    room={this.props.room}
                 >
                     {content}
                     {postMessageButtons}

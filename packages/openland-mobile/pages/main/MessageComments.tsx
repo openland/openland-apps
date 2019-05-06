@@ -240,7 +240,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
     let content = (
         <View paddingHorizontal={16} paddingBottom={Platform.OS === 'ios' ? 68 : undefined}>
-            <SenderView sender={message.sender} date={message.date} />
+            <SenderView sender={message.sender} date={message.date} edited={message.edited} />
             <ZMessageView message={message} showReactions={true} />
             <CommentsList
                 comments={comments}

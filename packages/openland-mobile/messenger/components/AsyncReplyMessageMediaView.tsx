@@ -11,7 +11,7 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'op
 
 export interface AsyncMessageMediaViewProps {
     message: DataSourceMessageItem;
-    onPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number) => void;
+    onPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
 }
 
@@ -29,7 +29,7 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
         if (this.state.downloadState && this.state.downloadState.path && this.props.attach.fileMetadata.imageHeight && this.props.attach.fileMetadata.imageWidth) {
             let w = this.props.attach.fileMetadata.imageWidth;
             let h = this.props.attach.fileMetadata.imageHeight;
-            this.props.onPress({ imageHeight: h, imageWidth: w }, { path: this.state.downloadState.path, ...event }, radius);
+            this.props.onPress({ imageHeight: h, imageWidth: w }, { path: this.state.downloadState.path, ...event }, radius, this.props.message.senderName, this.props.message.date);
         }
     }
 

@@ -30,8 +30,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { AddMembersModal } from 'openland-web/fragments/AddMembersModal';
 import { CommentsModal } from 'openland-web/components/messenger/message/content/comments/CommentsModal';
-import { TypingsViewProps } from '../../components/messenger/typings/TypingsView';
-import { forever } from '../../../openland-engines/utils/forever';
+import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 
 const inviteButtonClass = css`
     & svg > g > path {
@@ -148,24 +147,11 @@ export const RowWithSeparators = ({
 
 export const ChatOnlinesTitle = (props: { chatId: string }) => {
     let client = useClient();
-    let [onlineCount, setOnlineCount] = React.useState<number | null>(null);
+    let [onlineCount, setOnlineCount] = React.useState<number>(0);
 
-    React.useEffect(
-        () => {
-            let sub = client.subscribeChatOnlinesCountWatch({ chatId: props.chatId });
+    getChatOnlinesCount(props.chatId, client, (count) => setOnlineCount(count));
 
-            forever(async () => {
-                setOnlineCount((await sub.get()).chatOnlinesCount.onlineMembers);
-            });
-
-            return () => {
-                sub.destroy();
-            };
-        },
-        [props.chatId],
-    );
-
-    if (!onlineCount) {
+    if (onlineCount <= 0) {
         return null;
     }
 

@@ -20,8 +20,8 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessa
 import { OthersUsersWrapper } from './service/views/OthersUsersWrapper';
 import { AppTheme } from 'openland-mobile/themes/themes';
 
-export const paddedText = <ASText key="padded-text" fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
-export const paddedTextOut = <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</ASText>;
+export const paddedText = <ASText key="padded-text" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 13, ios: 11 }))}</ASText>;
+export const paddedTextOut = <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 17, ios: 15 }))}</ASText>;
 
 interface AsyncMessageTextViewProps {
     theme: AppTheme;
@@ -156,6 +156,11 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                             alignItems="center"
                             justifyContent="center"
                         >
+                            {props.message.isEdited && (
+                                <ASFlex width={10} height={10} marginTop={1} justifyContent="flex-start" alignItems="center">
+                                    <ASImage source={require('assets/ic-edited-10.png')} width={10} height={10} tintColor={props.message.isOut ? props.theme.textColorOut : props.theme.textColor} opacity={props.message.isOut ? 0.7 : 0.5} />
+                                </ASFlex>
+                            )}
                             <ASText
                                 marginLeft={3}
                                 marginTop={Platform.OS === 'android' ? -2 : undefined}

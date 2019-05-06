@@ -163,9 +163,6 @@ export class MediaSessionManager {
                 console.log('[WEBRTC] Destroy stream ' + s);
                 this.streams.get(s)!.destroy();
                 this.streams.delete(s);
-                if (this.isPrivate && this.streams.keys.length === 0) {
-                    this.onDestroyRequested();
-                }
             }
         }
 
