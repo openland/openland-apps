@@ -120,7 +120,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
             <ASFlex flexDirection="column" alignItems="stretch" alignSelf={'stretch'}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && <ASText
                     maxWidth={maxWidth}
-                    color={out ? theme.textColorOut : theme.textColorOut}
+                    color={out ? theme.textColorOut : theme.textColor}
                     opacity={out ? 0.7 : 0.6}
                     fontSize={14}
                     numberOfLines={1}

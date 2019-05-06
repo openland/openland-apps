@@ -74,7 +74,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         {(!message.text && (i + 1 === message.reply!!.length)) ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
                                     </ASText>}
                                     {attachFile && attachFile.fileMetadata.isImage ? <AsyncReplyMessageMediaView attach={attachFile} onPress={this.props.onMediaPress} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
-                                    {attachFile && !attachFile.fileMetadata.isImage ? <AsyncReplyMessageDocumentView attach={attachFile} onPress={this.props.onDocumentPress} parent={message} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
+                                    {attachFile && !attachFile.fileMetadata.isImage ? <AsyncReplyMessageDocumentView theme={this.props.theme} attach={attachFile} onPress={this.props.onDocumentPress} parent={message} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
                                 </ASFlex>
                             )
                         } else {
