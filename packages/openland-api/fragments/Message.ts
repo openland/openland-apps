@@ -239,10 +239,6 @@ export const FullMessage = gql`
             ... on MessageSpanLink {
                 url
             }
-            ... on MessageSpanBold {
-                offset
-                length
-            }
         }
 
         ... on ServiceMessage {

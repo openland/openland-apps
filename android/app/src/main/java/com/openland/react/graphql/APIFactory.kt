@@ -1751,6 +1751,13 @@ fun readQuery(name: String, src: ReadableMap): Query<Operation.Data, Operation.D
        builder.roomId(notNull(readString(src, "roomId")))
        return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
     }
+    if (name == "RoomMembersForMentionsPaginated") {
+       val builder = RoomMembersForMentionsPaginatedQuery.builder()
+       builder.roomId(notNull(readString(src, "roomId")))
+       builder.first(readInt(src, "first"))
+       builder.after(readString(src, "after"))
+       return builder.build() as Query<Operation.Data, Operation.Data, Operation.Variables>
+    }
     if (name == "RoomMembersPaginated") {
        val builder = RoomMembersPaginatedQuery.builder()
        builder.roomId(notNull(readString(src, "roomId")))
@@ -2621,6 +2628,10 @@ fun readFragment(name: String, src: ReadableMap): Pair<String, GraphqlFragment> 
     }
     if (name == "SettingsFull") {
         val res = SettingsFull.Mapper().map(responseReader(src))
+        return (res.__typename() + "$" + res.id()) to res
+    }
+    if (name == "UserForMention") {
+        val res = UserForMention.Mapper().map(responseReader(src))
         return (res.__typename() + "$" + res.id()) to res
     }
     if (name == "UserFull") {

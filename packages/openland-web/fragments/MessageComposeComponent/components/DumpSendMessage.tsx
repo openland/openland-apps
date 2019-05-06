@@ -4,7 +4,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { FileUploader } from '../../../modules/FileUploading/FileUploader';
 import { AttachmentButtons } from './AttachmentButtons';
-import { UserShort } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/Types';
 import { EditView } from './EditView';
 import { QuoteStateT } from '../hooks/useQuote';
 import { DropZone } from '../../../modules/FileUploading/DropZone';
@@ -64,7 +64,7 @@ export type TextInputComponentT = {
     handleSend: () => any;
     inputValue: string;
     handleDrop?: ((file: any) => void) | undefined;
-    getMentionsSuggestions: () => Promise<UserShort[]>;
+    getMentionsSuggestions: () => Promise<UserForMention[]>;
     initialMentions: UserWithOffset[];
     inputRef: any;
     placeholder?: string;

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { UserShort } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/Types';
 import { MentionEntry } from './MentionSuggestionsEntry';
 import { MentionSuggestionsStateT } from './useMentionSuggestions';
-
 export type SizeT = { width: number; height: number };
+
 const mentionSuggestionsShow = css`
     transform: scale(1);
 `;
@@ -16,7 +16,6 @@ const mentionSuggestionsHide = css`
 const mentionSuggestionsClassName = css`
     transform-origin: 1em 0%;
     transition: all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1);
-
     left: 0px;
     bottom: 0px;
     position: absolute;
@@ -41,7 +40,7 @@ export const MentionSuggestions = ({
     sizeOfContainer,
 }: {
     mentionState: MentionSuggestionsStateT;
-    onMentionPicked: (mention: UserShort) => void;
+    onMentionPicked: (mention: UserForMention) => void;
     sizeOfContainer: SizeT;
 }) => {
     return (
@@ -58,15 +57,15 @@ export const MentionSuggestions = ({
                 bottom: mentionState.isSelecting ? 50 : sizeOfContainer.height / 2,
             }}
         >
-            {mentionState.suggestions.map((mention: UserShort, key: number) => {
+            {mentionState.suggestions.map((mention: UserForMention, key: number) => {
                 return (
                     <MentionEntry
                         id={mention.id}
                         name={mention.name}
                         title={mention.primaryOrganization ? mention.primaryOrganization.name : ''}
                         avatar={mention.photo}
-                        isYou={mention.isYou}
-                        online={mention.online}
+                        isYou={false}
+                        online={false}
                         key={key}
                         isSelected={key === mentionState.selectedEntryIndex}
                         onClick={() => {

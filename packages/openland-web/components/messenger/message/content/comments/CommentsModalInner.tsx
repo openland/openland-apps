@@ -102,12 +102,12 @@ export const CommentsModalInnerNoRouter = ({
         messageId,
     });
 
-    const getMembers = async () => {
-        const data = await client.queryRoomMembers({
+    const getMentionsSuggestions = async () => {
+        const data = await client.queryRoomMembersForMentionsPaginated({
             roomId,
         });
 
-        return data.members;
+        return data.members.map(({ user }) => user)
     };
 
     const maybeGeneralMessage = commentedMessage.message;
@@ -295,7 +295,7 @@ export const CommentsModalInnerNoRouter = ({
                 showInputId={showInputId}
                 setShowInputId={setShowInputId}
                 currentCommentsInputRef={currentCommentsInputRef}
-                getMembers={getMembers}
+                getMentionsSuggestions={getMentionsSuggestions}
             />,
         );
     }
@@ -382,7 +382,7 @@ export const CommentsModalInnerNoRouter = ({
                     Scroll to comment top {commentToScroll}
                 </XView> */}
                     <CommentsInput
-                        getMembers={getMembers}
+                        getMentionsSuggestions={getMentionsSuggestions}
                         onSendFile={async (file: UploadCare.File) => {
                             return await uploadFile({
                                 file,

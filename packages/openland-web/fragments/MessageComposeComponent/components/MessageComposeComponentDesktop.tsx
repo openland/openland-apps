@@ -15,7 +15,7 @@ import {
     EditPostMessageVariables,
     EditPostMessage,
     SharedRoomKind,
-    RoomMembers_members,
+    RoomMembersForMentionsPaginated_members,
     UserShort,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
@@ -163,7 +163,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
 };
 
 type MessageComposeComponentT = MessageComposeWithDraft & {
-    getMembers: () => Promise<RoomMembers_members[]>;
+    getMembers: () => Promise<RoomMembersForMentionsPaginated_members[]>;
 };
 
 export const MessageComposeComponent = (props => {
@@ -205,11 +205,11 @@ export const MessageComposeComponentDraft = (props: MessageComposeComponentDraft
     });
 
     const getMembers = async () => {
-        const data = await client.queryRoomMembers({
+        const data = await client.queryRoomMembersForMentionsPaginated({
             roomId: props.conversationId!!,
         });
 
-        return data.members;
+        return data.members
     };
 
     return (

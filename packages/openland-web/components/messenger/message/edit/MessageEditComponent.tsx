@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { UserShort } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/Types';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XRichTextInput2, XRichTextInput2Props } from 'openland-x/XRichTextInput2';
@@ -51,7 +51,7 @@ class XRichTextInputStored extends React.PureComponent<
     XTextInputProps & {
         store: XStoreState;
         initialMentions?: UserWithOffset[];
-        getMentionsSuggestions: () => Promise<UserShort[]>;
+        getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
 > {
     onChangeHandler = (value: any) => {
@@ -91,7 +91,7 @@ class XRichTextInputStored extends React.PureComponent<
 class XTextInput extends React.PureComponent<
     XTextInputProps & {
         initialMentions?: UserWithOffset[];
-        getMentionsSuggestions: () => Promise<UserShort[]>;
+        getMentionsSuggestions: () => Promise<UserForMention[]>;
     }
 > {
     render() {
@@ -132,7 +132,7 @@ type EditMessageInlineT = {
     message: any;
     onClose: any;
     initialMentions: UserWithOffset[];
-    getMentionsSuggestions: () => Promise<UserShort[]>;
+    getMentionsSuggestions: () => Promise<UserForMention[]>;
 };
 
 const EditMessageInline = (props: EditMessageInlineT) => {
@@ -179,7 +179,7 @@ const EditMessageInline = (props: EditMessageInlineT) => {
 
 type EditMessageInlineWrapperInnerT = {
     initialMentions: UserWithOffset[];
-    getMentionsSuggestions: () => Promise<UserShort[]>;
+    getMentionsSuggestions: () => Promise<UserForMention[]>;
 } & EditMessageInlineWrapperT;
 class EditMessageInlineWrapperInner extends React.Component<EditMessageInlineWrapperInnerT> {
     onCloseHandler = () => {

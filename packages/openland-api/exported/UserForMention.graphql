@@ -1,0 +1,11 @@
+fragment UserForMention on User {
+  __typename
+  id
+  name
+  photo
+  primaryOrganization {
+    __typename
+    id
+    name
+  }
+}

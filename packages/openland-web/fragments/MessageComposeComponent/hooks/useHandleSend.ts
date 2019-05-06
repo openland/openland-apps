@@ -9,7 +9,7 @@ import { DraftStateT } from './useDraft/useDraft';
 import { InputMethodsStateT } from './useInputMethods';
 import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
 import { UploadContext } from '../../../modules/FileUploading/UploadContext';
-import { ReplyMessageVariables, ReplyMessage, RoomMembers_members } from 'openland-api/Types';
+import { ReplyMessageVariables, ReplyMessage } from 'openland-api/Types';
 
 export type useReplyPropsT = {
     replyMessage?: (variables: ReplyMessageVariables) => Promise<ReplyMessage>;
