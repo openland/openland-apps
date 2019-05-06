@@ -7,6 +7,7 @@ import {
     MyOrganizations_myOrganizations,
     SharedRoomKind,
     Organization_organization,
+    OrganizationWithoutMembersFragment,
 } from 'openland-api/Types';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
@@ -266,7 +267,7 @@ const CoverUpload = (props: CoverUploadProps) => {
 };
 
 interface OrganizationItemProps {
-    organization: MyOrganizations_myOrganizations | Organization_organization;
+    organization: MyOrganizations_myOrganizations | Organization_organization | OrganizationWithoutMembersFragment;
     onSelect: (v: string) => void;
     isSelected: boolean;
 }
@@ -332,7 +333,7 @@ const SelectOrganizationWrapperClassName = css`
 
 const InOtherOrganization = (props: { inOrgId: string }) => {
     const client = useClient();
-    const data = client.useOrganization({ organizationId: props.inOrgId });
+    const data = client.useOrganizationWithoutMembers({ organizationId: props.inOrgId });
     if (!data.organization) {
         return (
             <XView
