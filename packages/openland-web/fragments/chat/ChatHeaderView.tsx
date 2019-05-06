@@ -149,7 +149,7 @@ export const ChatOnlinesTitle = (props: { chatId: string }) => {
     let client = useClient();
     let [onlineCount, setOnlineCount] = React.useState<number>(0);
 
-    getChatOnlinesCount(props.chatId, client, (count) => setOnlineCount(count));
+    getChatOnlinesCount(props.chatId, client, count => setOnlineCount(count));
 
     if (onlineCount <= 0) {
         return null;
@@ -175,8 +175,10 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const userContext = React.useContext(UserInfoContext);
     const myId = userContext!!.user!!.id!!;
 
-    let sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
-    let privateRoom =
+    const sharedRoom =
+        room.__typename === 'SharedRoom' ? (room as RoomHeader_room_SharedRoom) : null;
+    const isChannel = !!(sharedRoom && sharedRoom.isChannel);
+    const privateRoom =
         room.__typename === 'PrivateRoom' ? (room as RoomHeader_room_PrivateRoom) : null;
 
     if (state.useForwardHeader) {
@@ -185,7 +187,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                 roomId={room.id}
                 me={me}
                 privateRoom={room.__typename === 'PrivateRoom'}
-                isChannel={!!(sharedRoom && sharedRoom.isChannel)}
+                isChannel={isChannel}
                 canMePinMessage={!!(sharedRoom && sharedRoom.canEdit)}
                 myId={myId}
             />
@@ -255,6 +257,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
                     photo={sharedRoom.photo}
                     socialImage={sharedRoom.socialImage}
                     roomId={sharedRoom.id}
+                    isChannel={isChannel}
                 />
             </>
         );

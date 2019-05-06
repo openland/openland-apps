@@ -15,18 +15,21 @@ type RoomEditModalT = {
     socialImage: string | null;
     description: string | null;
     roomId: string;
+    isChannel: boolean;
 };
 
 export const RoomEditModal = (props: RoomEditModalT) => {
-    let client = useClient();
-    let editPhotoRef = props.photo;
-    let editSocialImageRef = props.socialImage;
+    const client = useClient();
+    const editPhotoRef = props.photo;
+    const editSocialImageRef = props.socialImage;
+    const title = props.isChannel ? 'Channel settings' : 'Group settings';
+    const inputTitle = props.isChannel ? 'Channel name' : 'Group name';
     return (
         <XModalForm
             scrollableContent={true}
             targetQuery="editChat"
             useTopCloser={true}
-            title="Group settings"
+            title={title}
             defaultAction={async data => {
                 let newTitle = data.input.title;
                 let newDescription = data.input.description;
@@ -68,7 +71,7 @@ export const RoomEditModal = (props: RoomEditModalT) => {
                         }}
                     />
                     <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
-                        <XInput title="Group name" field="input.title" size="large" />
+                        <XInput title={inputTitle} field="input.title" size="large" />
                         <XWithRole role="feature-chat-embedded-attach">
                             <XInput
                                 field="input.longDescription"
