@@ -9,6 +9,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
+import { XViewRouterContext } from 'react-mental';
 
 const StatusWrapper = Glamorous.div<{ online: boolean }>(props => ({
     flex: 1,
@@ -72,12 +73,15 @@ const UserPopperContent = XMemo(
         isMe,
         user,
         startSelected,
+        hidePopper,
     }: {
         user: UserShort;
         isMe: boolean;
         startSelected: boolean;
         noCardOnMe?: boolean;
+        hidePopper: Function;
     }) => {
+        let router = React.useContext(XViewRouterContext);
         let usrPath: string | undefined = undefined;
         if (!startSelected) {
             usrPath = '/mail/u/' + user.id;
@@ -131,16 +135,20 @@ const UserPopperContent = XMemo(
                     <OrgTitle>{organizationName}</OrgTitle>
                     <Buttons separator={6}>
                         {!isMe && (
-                            <XButton
-                                path={'/mail/' + user.id}
-                                style="primary"
-                                text="Direct chat"
-                                size="small"
-                                autoClose={true}
-                                onClick={(e: any) => {
-                                    e.stopPropagation();
-                                }}
-                            />
+                            <>
+                                <XButton
+                                    path={'/mail/' + user.id}
+                                    style="primary"
+                                    text="Direct chat"
+                                    size="small"
+                                    autoClose={true}
+                                    onClick={(e: any) => {
+                                        e.preventDefault();
+                                        hidePopper();
+                                        router!.navigate('/mail/' + user.id);
+                                    }}
+                                />
+                            </>
                         )}
                         <XButton
                             path={'/mail/u/' + user.id}
@@ -149,7 +157,9 @@ const UserPopperContent = XMemo(
                             size="small"
                             autoClose={true}
                             onClick={(e: any) => {
-                                e.stopPropagation();
+                                e.preventDefault();
+                                hidePopper();
+                                router!.navigate('/mail/u/' + user.id);
                             }}
                         />
                     </Buttons>
