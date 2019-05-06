@@ -201,6 +201,7 @@ export const Menu = React.memo(
         const sharedRoom =
             room && room.__typename === 'SharedRoom' ? (room as RoomChat_room_SharedRoom) : null;
         const pinMessageAccess = out && sharedRoom && sharedRoom.canEdit && !message.isService;
+        const isChannel = sharedRoom && sharedRoom.isChannel;
 
         if (!message.isSending && !messagesContext.useForwardHeader && !isModal) {
             return (
@@ -225,7 +226,8 @@ export const Menu = React.memo(
                             {!isComment &&
                                 hover && <MessageReactionButton messageId={message.id!} />}
                             {hover &&
-                                !isComment && (
+                                !isComment &&
+                                !isChannel && (
                                     <CommentsIconWrapper
                                         onClick={() => {
                                             openCommentsModal({
