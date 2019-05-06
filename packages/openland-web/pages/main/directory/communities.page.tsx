@@ -73,12 +73,12 @@ export default withApp('Communities', 'viewer', () => {
     return (
         <DirectoryNavigation
             id={getCommunityProfile(path)}
-            title={'Communities'}
+            title="Communities"
             ProfileComponent={SearchOrganizationProfileComponent}
             CardsComponent={CardsComponent}
-            searchPlaceholder={'Search communities'}
-            noQueryText={'All communities'}
-            hasQueryText={'Communities'}
+            searchPlaceholder="Search communities"
+            noQueryText="Featured communities"
+            hasQueryText="Communities"
             page={page}
         />
     );
