@@ -338,10 +338,10 @@
       }
     },
     {
-      "signature": "3f75e1f3499bbd9cdcb48fc037363cf0e22d93b6b9ac16f1e955b727e26aa1e0",
-      "document": "mutation SendMessage($file:String,$mentions:[ID!],$message:String,$repeatKey:String,$replyMessages:[ID!],$room:ID!){sentMessage:betaMessageSend(file:$file,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyMessages:$replyMessages,room:$room)}",
+      "signature": "f9524106807e74c3727c91cbdeb27e3888f05757e9c422ff4376ad568c3a89a0",
+      "document": "mutation SendMessage($chatId:ID!,$fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$repeatKey:String,$replyMessages:[ID!],$spans:[MessageSpanInput!]){sentMessage:sendMessage(chatId:$chatId,fileAttachments:$fileAttachments,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyMessages:$replyMessages,spans:$spans)}",
       "metadata": {
-        "engineSignature": "mutation SendMessage($file:String,$mentions:[ID!],$message:String,$repeatKey:String,$replyMessages:[ID!],$room:ID!){betaMessageSend(file:$file,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyMessages:$replyMessages,room:$room)}"
+        "engineSignature": "mutation SendMessage($chatId:ID!,$fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$repeatKey:String,$replyMessages:[ID!],$spans:[MessageSpanInput!]){sendMessage(chatId:$chatId,fileAttachments:$fileAttachments,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyMessages:$replyMessages,spans:$spans)}"
       }
     },
     {
@@ -639,10 +639,10 @@
       }
     },
     {
-      "signature": "8f0345c1da19789db9b2b10686ccf339f4fba3a1f6ad3e50415897f20f4e0c3d",
-      "document": "mutation RoomEditMessage($file:String,$mentions:[ID!],$message:String,$messageId:ID!,$replyMessages:[ID!]){betaMessageEdit(file:$file,mentions:$mentions,message:$message,mid:$messageId,replyMessages:$replyMessages)}",
+      "signature": "27ac3bd22724459fd7ed78c099658f63c47b4e2e5231027171b735f61f111ae3",
+      "document": "mutation EditMessage($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$messageId:ID!,$replyMessages:[ID!],$spans:[MessageSpanInput!]){editMessage(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,messageId:$messageId,replyMessages:$replyMessages,spans:$spans)}",
       "metadata": {
-        "engineSignature": "mutation RoomEditMessage($file:String,$mentions:[ID!],$message:String,$messageId:ID!,$replyMessages:[ID!]){betaMessageEdit(file:$file,mentions:$mentions,message:$message,mid:$messageId,replyMessages:$replyMessages)}"
+        "engineSignature": "mutation EditMessage($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$messageId:ID!,$replyMessages:[ID!],$spans:[MessageSpanInput!]){editMessage(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,messageId:$messageId,replyMessages:$replyMessages,spans:$spans)}"
       }
     },
     {

@@ -4113,15 +4113,11 @@
 			"rootType": "Mutation",
 			"variables": [
 				{
+					"name": "chatId",
+					"type": "ID!"
+				},
+				{
 					"name": "message",
-					"type": "String"
-				},
-				{
-					"name": "file",
-					"type": "String"
-				},
-				{
-					"name": "repeatKey",
 					"type": "String"
 				},
 				{
@@ -4130,41 +4126,41 @@
 				},
 				{
 					"name": "mentions",
-					"type": "[ID!]"
+					"type": "[MentionInput!]"
 				},
 				{
-					"name": "room",
-					"type": "ID!"
+					"name": "fileAttachments",
+					"type": "[FileAttachmentInput!]"
+				},
+				{
+					"name": "spans",
+					"type": "[MessageSpanInput!]"
+				},
+				{
+					"name": "repeatKey",
+					"type": "String"
 				}
 			],
-			"source": "mutation SendMessage($message: String, $file: String, $repeatKey: String, $replyMessages: [ID!], $mentions: [ID!], $room: ID!) {\n  sentMessage: betaMessageSend(message: $message, file: $file, repeatKey: $repeatKey, replyMessages: $replyMessages, mentions: $mentions, room: $room)\n}",
+			"source": "mutation SendMessage($chatId: ID!, $message: String, $replyMessages: [ID!], $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!], $repeatKey: String) {\n  sentMessage: sendMessage(chatId: $chatId, message: $message, replyMessages: $replyMessages, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans, repeatKey: $repeatKey)\n}",
 			"fields": [
 				{
 					"responseName": "sentMessage",
-					"fieldName": "betaMessageSend",
+					"fieldName": "sendMessage",
 					"type": "Boolean!",
 					"args": [
+						{
+							"name": "chatId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "chatId"
+							},
+							"type": "ID!"
+						},
 						{
 							"name": "message",
 							"value": {
 								"kind": "Variable",
 								"variableName": "message"
-							},
-							"type": "String"
-						},
-						{
-							"name": "file",
-							"value": {
-								"kind": "Variable",
-								"variableName": "file"
-							},
-							"type": "String"
-						},
-						{
-							"name": "repeatKey",
-							"value": {
-								"kind": "Variable",
-								"variableName": "repeatKey"
 							},
 							"type": "String"
 						},
@@ -4182,15 +4178,31 @@
 								"kind": "Variable",
 								"variableName": "mentions"
 							},
-							"type": "[ID!]"
+							"type": "[MentionInput!]"
 						},
 						{
-							"name": "room",
+							"name": "fileAttachments",
 							"value": {
 								"kind": "Variable",
-								"variableName": "room"
+								"variableName": "fileAttachments"
 							},
-							"type": "ID!"
+							"type": "[FileAttachmentInput!]"
+						},
+						{
+							"name": "spans",
+							"value": {
+								"kind": "Variable",
+								"variableName": "spans"
+							},
+							"type": "[MessageSpanInput!]"
+						},
+						{
+							"name": "repeatKey",
+							"value": {
+								"kind": "Variable",
+								"variableName": "repeatKey"
+							},
+							"type": "String"
 						}
 					],
 					"isConditional": false,
@@ -4200,8 +4212,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation SendMessage($message: String, $file: String, $repeatKey: String, $replyMessages: [ID!], $mentions: [ID!], $room: ID!) {\n  sentMessage: betaMessageSend(message: $message, file: $file, repeatKey: $repeatKey, replyMessages: $replyMessages, mentions: $mentions, room: $room)\n}",
-			"operationId": "f83e4d60bb8a91b3e6e60713479fe006a01d0e9e15f9e44024b8d7ccf8dbd3fe"
+			"sourceWithFragments": "mutation SendMessage($chatId: ID!, $message: String, $replyMessages: [ID!], $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!], $repeatKey: String) {\n  sentMessage: sendMessage(chatId: $chatId, message: $message, replyMessages: $replyMessages, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans, repeatKey: $repeatKey)\n}",
+			"operationId": "17897dd83cbaed23e3d1c9177f48590e9807ff68a149500fb3a5de2993330297"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -7638,7 +7650,7 @@
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
-			"operationName": "RoomEditMessage",
+			"operationName": "EditMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
 			"variables": [
@@ -7651,27 +7663,31 @@
 					"type": "String"
 				},
 				{
-					"name": "file",
-					"type": "String"
-				},
-				{
 					"name": "replyMessages",
 					"type": "[ID!]"
 				},
 				{
 					"name": "mentions",
-					"type": "[ID!]"
+					"type": "[MentionInput!]"
+				},
+				{
+					"name": "fileAttachments",
+					"type": "[FileAttachmentInput!]"
+				},
+				{
+					"name": "spans",
+					"type": "[MessageSpanInput!]"
 				}
 			],
-			"source": "mutation RoomEditMessage($messageId: ID!, $message: String, $file: String, $replyMessages: [ID!], $mentions: [ID!]) {\n  betaMessageEdit(mid: $messageId, message: $message, file: $file, replyMessages: $replyMessages, mentions: $mentions)\n}",
+			"source": "mutation EditMessage($messageId: ID!, $message: String, $replyMessages: [ID!], $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  editMessage(messageId: $messageId, message: $message, replyMessages: $replyMessages, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans)\n}",
 			"fields": [
 				{
-					"responseName": "betaMessageEdit",
-					"fieldName": "betaMessageEdit",
+					"responseName": "editMessage",
+					"fieldName": "editMessage",
 					"type": "Boolean!",
 					"args": [
 						{
-							"name": "mid",
+							"name": "messageId",
 							"value": {
 								"kind": "Variable",
 								"variableName": "messageId"
@@ -7683,14 +7699,6 @@
 							"value": {
 								"kind": "Variable",
 								"variableName": "message"
-							},
-							"type": "String"
-						},
-						{
-							"name": "file",
-							"value": {
-								"kind": "Variable",
-								"variableName": "file"
 							},
 							"type": "String"
 						},
@@ -7708,7 +7716,23 @@
 								"kind": "Variable",
 								"variableName": "mentions"
 							},
-							"type": "[ID!]"
+							"type": "[MentionInput!]"
+						},
+						{
+							"name": "fileAttachments",
+							"value": {
+								"kind": "Variable",
+								"variableName": "fileAttachments"
+							},
+							"type": "[FileAttachmentInput!]"
+						},
+						{
+							"name": "spans",
+							"value": {
+								"kind": "Variable",
+								"variableName": "spans"
+							},
+							"type": "[MessageSpanInput!]"
 						}
 					],
 					"isConditional": false,
@@ -7718,8 +7742,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation RoomEditMessage($messageId: ID!, $message: String, $file: String, $replyMessages: [ID!], $mentions: [ID!]) {\n  betaMessageEdit(mid: $messageId, message: $message, file: $file, replyMessages: $replyMessages, mentions: $mentions)\n}",
-			"operationId": "9689fa47e09d3e8cced675a37afa95971be6a31c36f7f55501744362c057eea7"
+			"sourceWithFragments": "mutation EditMessage($messageId: ID!, $message: String, $replyMessages: [ID!], $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  editMessage(messageId: $messageId, message: $message, replyMessages: $replyMessages, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans)\n}",
+			"operationId": "94f5de73e975267e6ebc5c7a11451658a897e784627c758aec1e3259c0110b8a"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -21838,6 +21862,98 @@
 		},
 		{
 			"kind": "InputObjectType",
+			"name": "MentionInput",
+			"fields": [
+				{
+					"name": "chatId",
+					"type": "ID"
+				},
+				{
+					"name": "userId",
+					"type": "ID"
+				},
+				{
+					"name": "userIds",
+					"type": "[ID!]"
+				},
+				{
+					"name": "offset",
+					"type": "Int!"
+				},
+				{
+					"name": "length",
+					"type": "Int!"
+				}
+			]
+		},
+		{
+			"kind": "InputObjectType",
+			"name": "FileAttachmentInput",
+			"fields": [
+				{
+					"name": "fileId",
+					"type": "String!"
+				}
+			]
+		},
+		{
+			"kind": "InputObjectType",
+			"name": "MessageSpanInput",
+			"fields": [
+				{
+					"name": "offset",
+					"type": "Int!"
+				},
+				{
+					"name": "length",
+					"type": "Int!"
+				},
+				{
+					"name": "type",
+					"type": "MessageSpanType!"
+				}
+			]
+		},
+		{
+			"kind": "EnumType",
+			"name": "MessageSpanType",
+			"values": [
+				{
+					"name": "Bold",
+					"isDeprecated": false
+				},
+				{
+					"name": "Italic",
+					"isDeprecated": false
+				},
+				{
+					"name": "Irony",
+					"isDeprecated": false
+				},
+				{
+					"name": "InlineCode",
+					"isDeprecated": false
+				},
+				{
+					"name": "CodeBlock",
+					"isDeprecated": false
+				},
+				{
+					"name": "Insane",
+					"isDeprecated": false
+				},
+				{
+					"name": "Loud",
+					"isDeprecated": false
+				},
+				{
+					"name": "Rotating",
+					"isDeprecated": false
+				}
+			]
+		},
+		{
+			"kind": "InputObjectType",
 			"name": "RoomInviteInput",
 			"fields": [
 				{
@@ -21879,42 +21995,6 @@
 				{
 					"name": "lastName",
 					"type": "String"
-				}
-			]
-		},
-		{
-			"kind": "InputObjectType",
-			"name": "MentionInput",
-			"fields": [
-				{
-					"name": "chatId",
-					"type": "ID"
-				},
-				{
-					"name": "userId",
-					"type": "ID"
-				},
-				{
-					"name": "userIds",
-					"type": "[ID!]"
-				},
-				{
-					"name": "offset",
-					"type": "Int!"
-				},
-				{
-					"name": "length",
-					"type": "Int!"
-				}
-			]
-		},
-		{
-			"kind": "InputObjectType",
-			"name": "FileAttachmentInput",
-			"fields": [
-				{
-					"name": "fileId",
-					"type": "String!"
 				}
 			]
 		},

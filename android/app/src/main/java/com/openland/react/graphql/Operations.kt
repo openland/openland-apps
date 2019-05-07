@@ -1961,6 +1961,9 @@ private val DeleteUserSelector = obj(listOf(
 private val EditCommentSelector = obj(listOf(
             field("editComment","editComment", mapOf("id" to refValue("id"), "message" to refValue("message")), notNull(scalar("Boolean")))
         ))
+private val EditMessageSelector = obj(listOf(
+            field("editMessage","editMessage", mapOf("fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "messageId" to refValue("messageId"), "replyMessages" to refValue("replyMessages"), "spans" to refValue("spans")), notNull(scalar("Boolean")))
+        ))
 private val EditPostMessageSelector = obj(listOf(
             field("alphaEditPostMessage","editPostMessage", mapOf("attachments" to refValue("attachments"), "messageId" to refValue("messageId"), "postType" to refValue("postType"), "text" to refValue("text"), "title" to refValue("title")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2240,9 +2243,6 @@ private val RoomDeleteUrlAugmentationSelector = obj(listOf(
 private val RoomEditIntroSelector = obj(listOf(
             field("betaIntroEdit","intro", mapOf("about" to refValue("about"), "file" to refValue("file"), "message" to refValue("about"), "mid" to refValue("messageId"), "uid" to refValue("uid")), notNull(scalar("Boolean")))
         ))
-private val RoomEditMessageSelector = obj(listOf(
-            field("betaMessageEdit","betaMessageEdit", mapOf("file" to refValue("file"), "mentions" to refValue("mentions"), "message" to refValue("message"), "mid" to refValue("messageId"), "replyMessages" to refValue("replyMessages")), notNull(scalar("Boolean")))
-        ))
 private val RoomJoinSelector = obj(listOf(
             field("betaRoomJoin","join", mapOf("roomId" to refValue("roomId")), notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2302,7 +2302,7 @@ private val SaveDraftMessageSelector = obj(listOf(
             field("conversationDraftUpdate","conversationDraftUpdate", mapOf("conversationId" to refValue("conversationId"), "message" to refValue("message")), notNull(scalar("String")))
         ))
 private val SendMessageSelector = obj(listOf(
-            field("betaMessageSend","sentMessage", mapOf("file" to refValue("file"), "mentions" to refValue("mentions"), "message" to refValue("message"), "repeatKey" to refValue("repeatKey"), "replyMessages" to refValue("replyMessages"), "room" to refValue("room")), notNull(scalar("Boolean")))
+            field("sendMessage","sentMessage", mapOf("chatId" to refValue("chatId"), "fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "repeatKey" to refValue("repeatKey"), "replyMessages" to refValue("replyMessages"), "spans" to refValue("spans")), notNull(scalar("Boolean")))
         ))
 private val SendPostMessageSelector = obj(listOf(
             field("alphaSendPostMessage","sendPostMessage", mapOf("attachments" to refValue("attachments"), "conversationId" to refValue("conversationId"), "postType" to refValue("postType"), "text" to refValue("text"), "title" to refValue("title")), notNull(obj(listOf(
@@ -3056,6 +3056,12 @@ object Operations {
         override val body = "mutation EditComment(\$id:ID!,\$message:String){editComment(id:\$id,message:\$message)}"
         override val selector = EditCommentSelector
     }
+    val EditMessage = object: OperationDefinition {
+        override val name = "EditMessage"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation EditMessage(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){editMessage(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyMessages:\$replyMessages,spans:\$spans)}"
+        override val selector = EditMessageSelector
+    }
     val EditPostMessage = object: OperationDefinition {
         override val name = "EditPostMessage"
         override val kind = OperationKind.MUTATION
@@ -3302,12 +3308,6 @@ object Operations {
         override val body = "mutation RoomEditIntro(\$about:String,\$file:String,\$messageId:ID!,\$uid:ID!){intro:betaIntroEdit(about:\$about,file:\$file,message:\$about,mid:\$messageId,uid:\$uid)}"
         override val selector = RoomEditIntroSelector
     }
-    val RoomEditMessage = object: OperationDefinition {
-        override val name = "RoomEditMessage"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation RoomEditMessage(\$file:String,\$mentions:[ID!],\$message:String,\$messageId:ID!,\$replyMessages:[ID!]){betaMessageEdit(file:\$file,mentions:\$mentions,message:\$message,mid:\$messageId,replyMessages:\$replyMessages)}"
-        override val selector = RoomEditMessageSelector
-    }
     val RoomJoin = object: OperationDefinition {
         override val name = "RoomJoin"
         override val kind = OperationKind.MUTATION
@@ -3371,7 +3371,7 @@ object Operations {
     val SendMessage = object: OperationDefinition {
         override val name = "SendMessage"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation SendMessage(\$file:String,\$mentions:[ID!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$room:ID!){sentMessage:betaMessageSend(file:\$file,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,room:\$room)}"
+        override val body = "mutation SendMessage(\$chatId:ID!,\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){sentMessage:sendMessage(chatId:\$chatId,fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,spans:\$spans)}"
         override val selector = SendMessageSelector
     }
     val SendPostMessage = object: OperationDefinition {
@@ -3634,6 +3634,7 @@ object Operations {
         if (name == "DeleteOrganization") return DeleteOrganization
         if (name == "DeleteUser") return DeleteUser
         if (name == "EditComment") return EditComment
+        if (name == "EditMessage") return EditMessage
         if (name == "EditPostMessage") return EditPostMessage
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
         if (name == "FeatureFlagDisable") return FeatureFlagDisable
@@ -3675,7 +3676,6 @@ object Operations {
         if (name == "RoomDeleteMessages") return RoomDeleteMessages
         if (name == "RoomDeleteUrlAugmentation") return RoomDeleteUrlAugmentation
         if (name == "RoomEditIntro") return RoomEditIntro
-        if (name == "RoomEditMessage") return RoomEditMessage
         if (name == "RoomJoin") return RoomJoin
         if (name == "RoomJoinInviteLink") return RoomJoinInviteLink
         if (name == "RoomKick") return RoomKick
