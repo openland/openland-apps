@@ -249,6 +249,8 @@ routes.add('/ui/signin/create-profile', '/dev/ui/signin/create-profile');
 routes.add('/ui/signin/create-organization', '/dev/ui/signin/create-organization');
 routes.add('/ui/shortcuts', '/dev/ui/shortcuts');
 routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
+routes.add('/ui/spanparse', '/dev/ui/spanparse');
+routes.add('/ui/spanparse/', '/dev/ui/spanparse');
 
 //
 // Dev Tools
