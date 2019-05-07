@@ -20,8 +20,6 @@ import DeleteIcon from 'openland-icons/ic-close.svg';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { ImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
-import { MessagesStateContext } from '../../../MessagesStateContext';
-import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 const LinkContentWrapperClassName = css`
     width: 100%;
