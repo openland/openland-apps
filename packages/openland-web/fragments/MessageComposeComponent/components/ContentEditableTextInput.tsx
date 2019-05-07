@@ -58,6 +58,7 @@ export const ContentEditableTextInput = React.forwardRef(
         },
         ref: any,
     ) => {
+        const [html, setHtml] = React.useState(value);
         const onInput = () => {
             if (!ref || !ref.current) {
                 return;
@@ -65,6 +66,7 @@ export const ContentEditableTextInput = React.forwardRef(
 
             const msg = ref.current.innerText;
 
+            setHtml(msg);
             onChange({ text: msg, mentions: [] });
         };
 
@@ -76,6 +78,12 @@ export const ContentEditableTextInput = React.forwardRef(
                 ref.current.scrollTop = ref.current.scrollHeight;
             }
         };
+
+        React.useEffect(() => {
+            if (value !== html) {
+                ref.current.innerHTML = value;
+            }
+        }, [value]);
 
         return (
             <>
