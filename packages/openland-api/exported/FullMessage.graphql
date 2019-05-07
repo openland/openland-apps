@@ -44,6 +44,9 @@ fragment FullMessage on ModernMessage {
     ... on MessageSpanLink {
       url
     }
+    ... on MessageSpanDate {
+      date
+    }
   }
   ... on GeneralMessage {
     attachments {

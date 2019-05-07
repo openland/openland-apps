@@ -19,6 +19,7 @@ import { DocumentContent } from './content/DocumentContent';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { OthersUsersWrapper } from './service/views/OthersUsersWrapper';
 import { AppTheme } from 'openland-mobile/themes/themes';
+import { openCalendar } from 'openland-mobile/utils/openCalendar';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 14 : 11, ios: edited ? 14 : 11 }))}</ASText>;
 export const paddedTextOut = (edited?: boolean) => <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 17 : 14, ios: edited ? 17 : 14 }))}</ASText>;
@@ -42,6 +43,8 @@ export let renderPreprocessedText = (v: Span, i: number, message: DataSourceMess
         return <OthersUsersWrapper key={'mentions-' + i} theme={theme} onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={true} />
     } else if (v.type === 'bold') {
         return <ASText key={'text-bold-' + i} fontWeight={TextStyles.weight.bold}>{v.text}</ASText>
+    } else if (v.type === 'date') {
+        return <ASText key={'date-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={openCalendar(v.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{v.text}</ASText>
     } else {
         return <ASText key={'text-' + i}>{v.text}</ASText>;
     }

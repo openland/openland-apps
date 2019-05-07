@@ -7,6 +7,7 @@ import { OthersUsersWrapper } from 'openland-mobile/messenger/components/service
 import { ActionSheetBuilder } from '../ActionSheet';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { openCalendar, openCalendarContextMenu } from 'openland-mobile/utils/openCalendar';
 
 let openContextMenu = (link: string) => {
     let builder = new ActionSheetBuilder();
@@ -48,6 +49,18 @@ export const renderPreprocessedText = (v: Span, i: number, onUserPress: (id: str
         return <OthersUsersWrapper key={'mentions-' + i} theme={theme} onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={false} />
     } else if (v.type === 'bold') {
         return <Text key={'text-bold-' + i} allowFontScaling={false} style={{ fontWeight: TextStyles.weight.bold } as TextStyle}>{v.text}</Text>
+    } else if (v.type === 'date') {
+        return (
+            <Text
+                key={'date-' + i}
+                style={{ color: theme.accentColor }}
+                onPress={openCalendar(v.date)}
+                onLongPress={() => openCalendarContextMenu(v.date, v.text!)}
+                allowFontScaling={false}
+            >
+                {v.text}
+            </Text>
+        );
     } else {
         return <Text key={'text-' + i} allowFontScaling={false}>{v.text}</Text>;
     }

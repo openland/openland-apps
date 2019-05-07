@@ -3,9 +3,9 @@ import tlds from 'tlds';
 import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans, UserShort, UserTiny } from 'openland-api/Types';
 import { Stopwatch } from 'openland-y-utils/stopwatch';
 
-type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold';
+type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold' | 'date';
 
-export type Span = SpanUser | SpanRoom | SpanText | SpanLink | SpanUsers | SpanBold;
+export type Span = SpanUser | SpanRoom | SpanText | SpanLink | SpanUsers | SpanBold | SpanDate;
 interface SpanAbs {
     type: SpanType;
     text?: string;
@@ -18,6 +18,11 @@ export interface SpanText extends SpanAbs {
 
 export interface SpanBold extends SpanAbs {
     type: 'bold';
+}
+
+export interface SpanDate extends SpanAbs {
+    type: 'date';
+    date: string;
 }
 
 export interface SpanLink extends SpanAbs {
@@ -88,6 +93,8 @@ function preprocessMentions(text: string, spans: (FullMessage_GeneralMessage_spa
             span = { type: 'mention_users', users: s.users }
         } else if (s.__typename === 'MessageSpanBold') {
             span = { type: 'bold' }
+        } else if (s.__typename === 'MessageSpanDate') {
+            span = { type: 'date', date: s.date }
         } else {
             span = { type: 'text' };
         }

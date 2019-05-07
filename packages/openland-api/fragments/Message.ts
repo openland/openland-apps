@@ -251,6 +251,7 @@ export const FullMessage = gql`
         spans {
             offset
             length
+
             ... on MessageSpanUserMention {
                 user {
                     ...UserShort
@@ -278,6 +279,9 @@ export const FullMessage = gql`
             }
             ... on MessageSpanLink {
                 url
+            }
+            ... on MessageSpanDate {
+                date
             }
         }
 
