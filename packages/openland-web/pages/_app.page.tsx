@@ -14,6 +14,7 @@ XStyleFactoryRegistry.registerFactory({
 import './_app.css';
 import './init';
 import '../globals';
+import { XView } from 'react-mental';
 import { CommentsModalInnerNoRouter } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import React from 'react';
 import App, { AppProps, Container } from 'next/app';
@@ -103,10 +104,18 @@ export default withData(
                                         <RootErrorBoundary>
                                             <AppContainer>
                                                 <React.Suspense fallback={<div />}>
-                                                    <CommentsModalInnerNoRouter
-                                                        messageId={'nqOxVzlxrvtmRy5a0pRlcOZWbV'}
-                                                        roomId={'Om49WwAP7rfOwP49ZWbbcrdXbx'}
-                                                    />
+                                                    <div style={{ margin: 'auto' }}>
+                                                        <XView justifyContent="center">
+                                                            <CommentsModalInnerNoRouter
+                                                                messageId={
+                                                                    'nqOxVzlxrvtmRy5a0pRlcOZWbV'
+                                                                }
+                                                                roomId={
+                                                                    'Om49WwAP7rfOwP49ZWbbcrdXbx'
+                                                                }
+                                                            />
+                                                        </XView>
+                                                    </div>
                                                 </React.Suspense>
                                             </AppContainer>
                                         </RootErrorBoundary>

@@ -303,7 +303,7 @@ export const CommentsModalInnerNoRouter = ({
     const finalMessages = convertDsMessage(convertMessage(maybeGeneralMessage));
 
     return (
-        <>
+        <XView>
             <IsActiveContext.Provider value={true}>
                 <XScrollView3
                     useDefaultScroll
@@ -410,7 +410,7 @@ export const CommentsModalInnerNoRouter = ({
                     />
                 </XView>
             </IsActiveContext.Provider>
-        </>
+        </XView>
     );
 };
 
