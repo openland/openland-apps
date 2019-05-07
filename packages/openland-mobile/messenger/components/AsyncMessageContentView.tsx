@@ -58,9 +58,9 @@ export let renderPreprocessedText = (v: Span, i: number, message: DataSourceMess
     } else if (v.type === 'irony') {
         return <ASText key={'irony-' + i}>{v.text}</ASText>;
     } else if (v.type === 'italic') {
-        return <ASText key={'italic-' + i}>{v.text}</ASText>;
+        return <ASText key={'italic-' + i} fontStyle="italic">{v.text}</ASText>;
     } else if (v.type === 'loud') {
-        return <ASText key={'loud-' + i}>{v.text}</ASText>;
+        return <ASText key={'loud-' + i} fontSize={26} lineHeight={28}>{v.text}</ASText>;
     } else if (v.type === 'rotating') {
         return <ASText key={'rotating-' + i}>{v.text}</ASText>;
     } else {

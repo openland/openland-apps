@@ -9,7 +9,7 @@ const spanMap: { [key: string]: { type: MessageSpanType, master?: boolean }} = {
     '🌈': { type: MessageSpanType.Insane },
     '~': { type: MessageSpanType.Irony },
     '_': { type: MessageSpanType.Italic },
-    ':': { type: MessageSpanType.Loud },
+    ':': { type: MessageSpanType.Loud, master: true },
     '🔄': { type: MessageSpanType.Rotating },
 };
 

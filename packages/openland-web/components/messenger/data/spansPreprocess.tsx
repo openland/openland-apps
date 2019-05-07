@@ -11,17 +11,17 @@ const cropEmailSymbolIfAny = (message: string) => {
     return finalMessage;
 };
 
-const cropSpecSymbols = (message: string, symbol: string) => {
-    let finalMessage = message;
+const cropSpecSymbols = (text: string, symbol: string) => {
+    let res = text;
 
-    if (finalMessage.startsWith(symbol) && finalMessage.endsWith(symbol)) {
+    if (res.startsWith(symbol) && res.endsWith(symbol)) {
         // remove first symbol
-        finalMessage = finalMessage.replace(symbol, '');
+        res = res.replace(symbol, '');
         // remove last symbol
-        finalMessage = finalMessage.substr(0, finalMessage.lastIndexOf(symbol));
+        res = res.substr(0, res.lastIndexOf(symbol));
     }
 
-    return finalMessage;
+    return res;
 };
 
 function _spansPreprocess(

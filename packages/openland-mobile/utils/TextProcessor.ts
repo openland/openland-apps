@@ -72,6 +72,19 @@ export interface SpanRoom extends SpanAbs {
     id: string;
 }
 
+const cropSpecSymbols = (text: string, symbol: string) => {
+    let res = text;
+
+    if (res.startsWith(symbol) && res.endsWith(symbol)) {
+        // remove first symbol
+        res = res.replace(symbol, '');
+        // remove last symbol
+        res = res.substr(0, res.lastIndexOf(symbol));
+    }
+
+    return res;
+};
+
 function preprocessRawText(text: string, spans?: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
     let res: Span[] = [];
     for (let p of text.split('\n')) {
@@ -111,22 +124,30 @@ function preprocessSpans(text: string, spans: (FullMessage_GeneralMessage_spans 
         } else if (s.__typename === 'MessageSpanMultiUserMention') {
             span = { type: 'mention_users', users: s.users }
         } else if (s.__typename === 'MessageSpanBold') {
+            spanText = cropSpecSymbols(spanText, '*');
             span = { type: 'bold' }
         } else if (s.__typename === 'MessageSpanDate') {
             span = { type: 'date', date: s.date }
         } else if (s.__typename === 'MessageSpanCodeBlock') {
+            // spanText = cropSpecSymbols(spanText, '```');
             span = { type: 'code_block' }
         } else if (s.__typename === 'MessageSpanInlineCode') {
+            // spanText = cropSpecSymbols(spanText, '`');
             span = { type: 'code_inline' }
         } else if (s.__typename === 'MessageSpanInsane') {
+            // spanText = cropSpecSymbols(spanText, '🌈');
             span = { type: 'insane' }
         } else if (s.__typename === 'MessageSpanIrony') {
+            spanText = cropSpecSymbols(spanText, '~');
             span = { type: 'irony' }
         } else if (s.__typename === 'MessageSpanItalic') {
+            spanText = cropSpecSymbols(spanText, '_');
             span = { type: 'italic' }
         } else if (s.__typename === 'MessageSpanLoud') {
+            spanText = cropSpecSymbols(spanText, ':');
             span = { type: 'loud' }
         } else if (s.__typename === 'MessageSpanRotating') {
+            // spanText = cropSpecSymbols(spanText, '🔄');
             span = { type: 'rotating' }
         } else {
             span = { type: 'text' };
