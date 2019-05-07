@@ -11,6 +11,19 @@ const cropEmailSymbolIfAny = (message: string) => {
     return finalMessage;
 };
 
+const cropSpecSymbols = (message: string, symbol: string) => {
+    let finalMessage = message;
+
+    if (finalMessage.startsWith(symbol) && finalMessage.endsWith(symbol)) {
+        // remove first symbol
+        finalMessage = finalMessage.replace(symbol, '');
+        // remove last symbol
+        finalMessage = finalMessage.substr(0, finalMessage.lastIndexOf(symbol));
+    }
+
+    return finalMessage;
+};
+
 function _spansPreprocess(
     root: boolean,
     message: string,
@@ -22,11 +35,11 @@ function _spansPreprocess(
         if (root) {
             res.push(
                 spansMessageTextPreprocess(message, {
-                    disableBig: false || (opts && opts.disableBig),
+                    disableBigEmoji: false || (opts && opts.disableBig),
                 }),
             );
         } else {
-            res.push(spansMessageTextPreprocess(message, { disableBig: true }));
+            res.push(spansMessageTextPreprocess(message, { disableBigEmoji: true }));
         }
     } else {
         const sortedSpans = spans.sort((span1: any, span2: any) => {
@@ -45,12 +58,15 @@ function _spansPreprocess(
                     'MessageSpanLink',
                     'MessageSpanBold',
                     'MessageSpanItalic',
+                    'MessageSpanLoud',
+                    'MessageSpanRotating',
+                    'MessageSpanInsane',
                 ].indexOf(span.__typename) >= 0
             ) {
                 if (lastOffset < span.offset) {
                     res.push(
                         spansMessageTextPreprocess(message.slice(lastOffset, span.offset), {
-                            disableBig: true,
+                            disableBigEmoji: true,
                         }),
                     );
                 }
@@ -110,22 +126,57 @@ function _spansPreprocess(
                 lastOffset = span.offset + span.length;
             }
             if (span.__typename === 'MessageSpanBold') {
+                let finalMessage = cropSpecSymbols(
+                    message.slice(span.offset, span.offset + span.length),
+                    '*'
+                );
                 res.push({
                     type: 'bold',
-                    child: _spansPreprocess(
-                        false,
-                        message.slice(span.offset, span.offset + span.length),
-                    ),
+                    child: _spansPreprocess(false, finalMessage),
                 });
                 lastOffset = span.offset + span.length;
             }
             if (span.__typename === 'MessageSpanItalic') {
+                let finalMessage = cropSpecSymbols(
+                    message.slice(span.offset, span.offset + span.length),
+                    '_'
+                );
                 res.push({
                     type: 'italic',
-                    child: _spansPreprocess(
-                        false,
-                        message.slice(span.offset, span.offset + span.length),
-                    ),
+                    child: _spansPreprocess(false, finalMessage),
+                });
+                lastOffset = span.offset + span.length;
+            }
+            if (span.__typename === 'MessageSpanLoud') {
+                let finalMessage = cropSpecSymbols(
+                    message.slice(span.offset, span.offset + span.length),
+                    ':'
+                );
+                res.push({
+                    type: 'loud',
+                    child: _spansPreprocess(false, finalMessage),
+                });
+                lastOffset = span.offset + span.length;
+            }
+            if (span.__typename === 'MessageSpanRotating') {
+                let finalMessage = cropSpecSymbols(
+                    message.slice(span.offset, span.offset + span.length),
+                    '🔄'
+                );
+                res.push({
+                    type: 'rotating',
+                    child: _spansPreprocess(false, finalMessage),
+                });
+                lastOffset = span.offset + span.length;
+            }
+            if (span.__typename === 'MessageSpanInsane') {
+                let finalMessage = cropSpecSymbols(
+                    message.slice(span.offset, span.offset + span.length),
+                    '🌈'
+                );
+                res.push({
+                    type: 'insane',
+                    child: _spansPreprocess(false, finalMessage),
                 });
                 lastOffset = span.offset + span.length;
             }
@@ -135,7 +186,7 @@ function _spansPreprocess(
         if (lastOffset < message.length) {
             res.push(
                 spansMessageTextPreprocess(message.slice(lastOffset, message.length), {
-                    disableBig: true,
+                    disableBigEmoji: true,
                 }),
             );
         }

@@ -15,33 +15,15 @@ function emojiChecker(messageText: string) {
     return true;
 }
 
-export const spansMessageTextPreprocess = (text: string, opts?: { disableBig?: boolean }) => {
+export const spansMessageTextPreprocess = (text: string, opts?: { disableBigEmoji?: boolean }) => {
     let isOnlyEmoji = emojiChecker(text);
-    let isRotating = text.startsWith('🔄') && text.endsWith('🔄');
-    let isInsane = text.startsWith('🌈') && text.endsWith('🌈');
-    let isMouthpiece = text.startsWith('📣') && text.endsWith('📣');
-    let isBig =
-        isOnlyEmoji ||
-        isInsane ||
-        isRotating ||
-        isMouthpiece ||
-        (text.length <= 302 && text.startsWith(':') && text.endsWith(':'));
-    const isTextSticker = !isOnlyEmoji && isBig;
-    if (isInsane || isMouthpiece || isRotating) {
-        text = text
-            .replace(/🌈/g, '')
-            .replace(/📣/g, '')
-            .replace(/🔄/g, '');
-    } else if (isTextSticker) {
-        text = text.slice(1, text.length - 1);
-    }
-    if (opts && opts.disableBig) {
-        isBig = false;
-        isInsane = false;
-        isRotating = false;
+
+    if (opts && opts.disableBigEmoji) {
         isOnlyEmoji = false;
     }
-    let smileSize: 38 | 16 = isBig ? 38 : 16;
+
+    let smileSize: 38 | 16 = isOnlyEmoji ? 38 : 16;
+
     return {
         type: 'text' as 'text',
         text,
@@ -49,9 +31,6 @@ export const spansMessageTextPreprocess = (text: string, opts?: { disableBig?: b
             src: text,
             size: smileSize,
         }),
-        isBig,
-        isInsane,
-        isRotating,
         isOnlyEmoji,
     };
 };

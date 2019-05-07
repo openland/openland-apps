@@ -25,33 +25,14 @@ const italicTextClassName = css`
     font-style: italic;
 `;
 
-const TextOnlyEmojiStyle = css`
-    letter-spacing: 3px;
-    & img {
-        margin-right: 4px;
-    }
-`;
-
-const TextLargeStyle = css`
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
+const loudTextClassName = css`
     font-size: 36px;
-    min-height: 44px;
     line-height: 40px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.8);
 `;
 
-const TextInsaneStyle = css`
-    background: url(https://cdn.openland.com/shared/web/insane.gif);
-    background-clip: text, border;
-    -webkit-background-clip: text;
-    color: transparent;
-`;
-
-const TextRotatingStyle = css`
+const rotatingTextClassName = css`
     animation: rotate 1s linear infinite;
     display: inline-block;
 
@@ -62,6 +43,20 @@ const TextRotatingStyle = css`
         to {
             transform: rotate(360deg);
         }
+    }
+`;
+
+const insaneTextClassName = css`
+    background: url(https://cdn.openland.com/shared/web/insane.gif);
+    background-clip: text, border;
+    -webkit-background-clip: text;
+    color: transparent;
+`;
+
+const TextOnlyEmojiStyle = css`
+    letter-spacing: 3px;
+    & img {
+        margin-right: 4px;
     }
 `;
 
@@ -99,9 +94,6 @@ export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
                     key={'text-' + i}
                     className={cx(
                         EmojiSpaceStyle,
-                        s.isBig && TextLargeStyle,
-                        s.isInsane && TextInsaneStyle,
-                        s.isRotating && TextRotatingStyle,
                         s.isOnlyEmoji && TextOnlyEmojiStyle,
                     )}
                 >
@@ -146,6 +138,24 @@ export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
         } else if (s.type === 'italic') {
             res.push(
                 <span key={'italic-' + i} className={italicTextClassName}>
+                    <SpannedStringView spannedString={s.child} />
+                </span>,
+            );
+        } else if (s.type === 'loud') {
+            res.push(
+                <span key={'loud-' + i} className={loudTextClassName}>
+                    <SpannedStringView spannedString={s.child} />
+                </span>,
+            );
+        } else if (s.type === 'rotating') {
+            res.push(
+                <span key={'rotating-' + i} className={loudTextClassName + ' ' + rotatingTextClassName}>
+                    <SpannedStringView spannedString={s.child} />
+                </span>,
+            );
+        } else if (s.type === 'insane') {
+            res.push(
+                <span key={'insane-' + i} className={loudTextClassName + ' ' + insaneTextClassName}>
                     <SpannedStringView spannedString={s.child} />
                 </span>,
             );

@@ -8,9 +8,6 @@ export type SpannedStringSpanText = {
     type: 'text';
     text: string;
     textEmoji: any;
-    isBig: boolean;
-    isInsane: boolean;
-    isRotating: boolean;
     isOnlyEmoji: boolean;
 };
 
@@ -42,6 +39,21 @@ export type SpannedStringSpanItalic = {
     child: SpannedString;
 };
 
+export type SpannedStringSpanLoud = {
+    type: 'loud';
+    child: SpannedString;
+};
+
+export type SpannedStringSpanRotating = {
+    type: 'rotating';
+    child: SpannedString;
+};
+
+export type SpannedStringSpanInsane = {
+    type: 'insane';
+    child: SpannedString;
+};
+
 export type SpannedStringSpanLink = {
     type: 'link';
     url: string;
@@ -55,6 +67,9 @@ export type SpannedStringSpan =
     | SpannedStringSpanGroup
     | SpannedStringSpanBold
     | SpannedStringSpanItalic
+    | SpannedStringSpanLoud
+    | SpannedStringSpanRotating
+    | SpannedStringSpanInsane
     | SpannedStringSpanLink;
 
 export interface SpannedString {
