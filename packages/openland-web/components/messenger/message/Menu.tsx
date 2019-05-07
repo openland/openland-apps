@@ -295,14 +295,6 @@ export const Menu = React.memo(
                                             >
                                                 Forward
                                             </XMenuItem>
-                                            <XMenuItem
-                                                onClick={() => {
-                                                    selectMessage();
-                                                    setShowMenu(false);
-                                                }}
-                                            >
-                                                Select
-                                            </XMenuItem>
                                             {message.id &&
                                                 out && (
                                                     <XMenuItem
