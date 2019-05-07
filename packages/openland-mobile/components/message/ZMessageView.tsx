@@ -24,6 +24,10 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         router.push('ProfileUser', { id });
     }, []);
 
+    const handleGroupPress = React.useCallback((id: string) => {
+        router.push('ProfileGroup', { id });
+    }, []);
+
     const handleDocumentPress = React.useCallback((document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => {
         router.push('FilePreview', { config: { uuid: document.fileId, name: document.fileMetadata.name, size: document.fileMetadata.size } });
     }, []);
@@ -31,6 +35,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     const content = extractContent({
         message,
         onUserPress: handleUserPress,
+        onGroupPress: handleGroupPress,
         onDocumentPress: handleDocumentPress,
         theme
     }, small, maxWidth);

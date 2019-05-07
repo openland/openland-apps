@@ -37,7 +37,8 @@ export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
     engine: ConversationEngine;
     onMessageLongPress: (message: DataSourceMessageItem, chatId: string) => void;
-    onAvatarPress: (id: string) => void;
+    onUserPress: (id: string) => void;
+    onGroupPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onReactionPress: (message: DataSourceMessageItem, r: string) => void;
@@ -50,8 +51,11 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
     let theme = useThemeGlobal();
 
-    let handleAvatarPress = (id: string) => {
-        props.onAvatarPress(id);
+    let handleUserPress = (id: string) => {
+        props.onUserPress(id);
+    }
+    let handleGroupPress = (id: string) => {
+        props.onGroupPress(id);
     }
     let handleLongPress = () => {
         if (!props.message.isSending) {
@@ -68,12 +72,12 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     let res;
 
     if (props.message.isService) {
-        return <ServiceMessageDefault message={props.message} onUserPress={handleAvatarPress} theme={theme} />
+        return <ServiceMessageDefault message={props.message} onUserPress={handleUserPress} onGroupPress={handleGroupPress} theme={theme} />
     }
 
     if ((props.message.text || props.message.reply || (props.message.attachments && props.message.attachments.length))) {
         res =
-            <AsyncMessageContentView theme={theme} key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onAvatarPress} />;
+            <AsyncMessageContentView theme={theme} key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onUserPress} onGroupPress={handleGroupPress} />;
     }
     if (!res) {
         res =
@@ -87,7 +91,8 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                         padded={false}
                         fontStyle="italic"
                         message={{ ...props.message, spans: undefined, attachments: [], text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }}
-                        onUserPress={props.onAvatarPress}
+                        onUserPress={props.onUserPress}
+                        onGroupPress={props.onGroupPress}
                         onDocumentPress={props.onDocumentPress}
                         onMediaPress={props.onMediaPress}
                     />
@@ -105,7 +110,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-left-1" renderModes={props.message.isOut ? undefined : rm({ 'selection': { width: (props.message.attachBottom ? 36 : 0) + 40 } })} backgroundColor={theme.backgroundColor} width={(props.message.attachBottom ? 36 : 0) + 10} />
 
                     {!props.message.isOut && !props.message.attachBottom &&
-                        <ASFlex marginRight={3} onPress={() => handleAvatarPress(props.message.senderId)} alignItems="flex-end">
+                        <ASFlex marginRight={3} onPress={() => handleUserPress(props.message.senderId)} alignItems="flex-end">
                             <AsyncAvatar
                                 size={32}
                                 src={props.message.senderPhoto}

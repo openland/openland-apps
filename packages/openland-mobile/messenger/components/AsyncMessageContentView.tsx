@@ -29,22 +29,40 @@ interface AsyncMessageTextViewProps {
     engine: ConversationEngine;
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
+    onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
-export let renderPreprocessedText = (v: Span, i: number, message: DataSourceMessageItem, theme: AppTheme, onUserPress: (id: string) => void) => {
+
+export let renderPreprocessedText = (v: Span, i: number, message: DataSourceMessageItem, theme: AppTheme, onUserPress: (id: string) => void, onGroupPress: (id: string) => void) => {
     if (v.type === 'new_line') {
         return <ASText key={'br-' + i} >{'\n'}</ASText>;
     } else if (v.type === 'link') {
-        return <ASText key={'link-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={resolveInternalLink(v.link!, async () => await Linking.openURL(v.link!))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{v.text}</ASText>;
+        return <ASText key={'link-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={resolveInternalLink(v.link, async () => await Linking.openURL(v.link))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{v.text}</ASText>;
     } else if (v.type === 'mention_user') {
-        return <ASText key={'mention-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(v.id)}>{useNonBreakingSpaces(v.text)}</ASText>;
+        return <ASText key={'mention-user-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(v.id)}>{useNonBreakingSpaces(v.text)}</ASText>;
+    } else if (v.type === 'mention_room') {
+        return <ASText key={'mention-room-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onGroupPress(v.id)}>{useNonBreakingSpaces(v.text)}</ASText>;
     } else if (v.type === 'mention_users') {
-        return <OthersUsersWrapper key={'mentions-' + i} theme={theme} onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={true} />
+        return <OthersUsersWrapper key={'mentions-' + i} theme={theme} onUserPress={uid => onUserPress(uid)} users={v.users} text={v.text!} useAsync={true} />;
     } else if (v.type === 'bold') {
-        return <ASText key={'text-bold-' + i} fontWeight={TextStyles.weight.bold}>{v.text}</ASText>
+        return <ASText key={'text-bold-' + i} fontWeight={TextStyles.weight.bold}>{v.text}</ASText>;
     } else if (v.type === 'date') {
-        return <ASText key={'date-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={openCalendar(v.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{v.text}</ASText>
+        return <ASText key={'date-' + i} color={(message.isOut && !message.isService) ? theme.linkOutColor : theme.linkColor} onPress={openCalendar(v.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{v.text}</ASText>;
+    } else if (v.type === 'code_block') {
+        return <ASText key={'code-block-' + i}>{v.text}</ASText>;
+    } else if (v.type === 'code_inline') {
+        return <ASText key={'code-inline-' + i}>{v.text}</ASText>;
+    } else if (v.type === 'insane') {
+        return <ASText key={'insane-' + i}>{v.text}</ASText>;
+    } else if (v.type === 'irony') {
+        return <ASText key={'irony-' + i}>{v.text}</ASText>;
+    } else if (v.type === 'italic') {
+        return <ASText key={'italic-' + i}>{v.text}</ASText>;
+    } else if (v.type === 'loud') {
+        return <ASText key={'loud-' + i}>{v.text}</ASText>;
+    } else if (v.type === 'rotating') {
+        return <ASText key={'rotating-' + i}>{v.text}</ASText>;
     } else {
         return <ASText key={'text-' + i}>{v.text}</ASText>;
     }
@@ -76,16 +94,16 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     let topContent = [];
 
     if (hasReply) {
-        topContent.push(<ReplyContent key="msg-reply" theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<ReplyContent key="msg-reply" theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasText) {
-        topContent.push(<TextContent key="msg-text" theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<TextContent key="msg-text" theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
     }
     if (hasImage && imageLayout) {
-        topContent.push(<MediaContent key="msg-media" theme={props.theme} compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />);
+        topContent.push(<MediaContent key="msg-media" theme={props.theme} compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />);
     }
     if (hasDocument) {
-        topContent.push(<DocumentContent key="msg-document" theme={props.theme} compensateBubble={compensateBubble} attach={fileAttach!} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<DocumentContent key="msg-document" theme={props.theme} compensateBubble={compensateBubble} attach={fileAttach!} message={props.message} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
     }
 
     let bottomContent: any[] = [];

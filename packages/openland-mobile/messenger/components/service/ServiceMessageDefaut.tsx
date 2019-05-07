@@ -10,13 +10,14 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 export interface ServiceMessageDefaultProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
+    onGroupPress: (id: string) => void;
     theme: AppTheme;
 }
 
 export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
     let preprocessed = preprocessText(props.message.text || '', props.message.spans);
 
-    let parts = preprocessed.map((span, i) => renderPreprocessedText(span, i, props.message, props.theme, props.onUserPress));
+    let parts = preprocessed.map((span, i) => renderPreprocessedText(span, i, props.message, props.theme, props.onUserPress, props.onGroupPress));
 
     return (
         <ASFlex

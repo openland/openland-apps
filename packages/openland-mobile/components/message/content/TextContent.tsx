@@ -15,6 +15,7 @@ interface TextContentProps {
     theme: AppTheme;
 
     onUserPress: (id: string) => void;
+    onGroupPress: (id: string) => void;
 }
 
 export const TextContent = (props: TextContentProps) => {
@@ -35,7 +36,7 @@ export const TextContent = (props: TextContentProps) => {
     }
 
     let preprocessed = preprocessText(message.message || '', message.spans as any);
-    let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, props.onUserPress, theme));
+    let parts = preprocessed.map((p, i) => renderPreprocessedText(p, i, props.onUserPress, props.onGroupPress, theme));
 
     if (message.message) {
         return (

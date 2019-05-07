@@ -39,7 +39,7 @@ const ReactionsList = (props: ReactionsListProps) => {
 
                         <View marginHorizontal={-16}>
                             {users.map((u) => (
-                                <ZUserView user={u} onPress={(id) => { ctx.hide(); getMessenger().handleAvatarClick(id); }} />
+                                <ZUserView user={u} onPress={(id) => { ctx.hide(); getMessenger().handleUserClick(id); }} />
                             ))}
                         </View>
                     </View>
