@@ -1025,20 +1025,22 @@ export const RoomDeleteUrlAugmentationMutation = gql`
     }
 `;
 
-export const RoomEditMessageMutation = gql`
-    mutation RoomEditMessage(
+export const EditMessageMutation = gql`
+    mutation EditMessage(
         $messageId: ID!
         $message: String
-        $file: String
         $replyMessages: [ID!]
-        $mentions: [ID!]
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
     ) {
-        betaMessageEdit(
-            mid: $messageId
+        editMessage(
+            messageId: $messageId
             message: $message
-            file: $file
             replyMessages: $replyMessages
             mentions: $mentions
+            fileAttachments: $fileAttachments
+            spans: $spans
         )
     }
 `;

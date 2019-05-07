@@ -13268,33 +13268,35 @@ public final class RoomDeleteUrlAugmentationMutation: GraphQLMutation {
   }
 }
 
-public final class RoomEditMessageMutation: GraphQLMutation {
+public final class EditMessageMutation: GraphQLMutation {
   public let operationDefinition =
-    "mutation RoomEditMessage($messageId: ID!, $message: String, $file: String, $replyMessages: [ID!], $mentions: [ID!]) {\n  betaMessageEdit(mid: $messageId, message: $message, file: $file, replyMessages: $replyMessages, mentions: $mentions)\n}"
+    "mutation EditMessage($messageId: ID!, $message: String, $replyMessages: [ID!], $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  editMessage(messageId: $messageId, message: $message, replyMessages: $replyMessages, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans)\n}"
 
   public var messageId: GraphQLID
   public var message: String?
-  public var file: String?
   public var replyMessages: [GraphQLID]?
-  public var mentions: [GraphQLID]?
+  public var mentions: [MentionInput]?
+  public var fileAttachments: [FileAttachmentInput]?
+  public var spans: [MessageSpanInput]?
 
-  public init(messageId: GraphQLID, message: String? = nil, file: String? = nil, replyMessages: [GraphQLID]?, mentions: [GraphQLID]?) {
+  public init(messageId: GraphQLID, message: String? = nil, replyMessages: [GraphQLID]?, mentions: [MentionInput]?, fileAttachments: [FileAttachmentInput]?, spans: [MessageSpanInput]?) {
     self.messageId = messageId
     self.message = message
-    self.file = file
     self.replyMessages = replyMessages
     self.mentions = mentions
+    self.fileAttachments = fileAttachments
+    self.spans = spans
   }
 
   public var variables: GraphQLMap? {
-    return ["messageId": messageId, "message": message, "file": file, "replyMessages": replyMessages, "mentions": mentions]
+    return ["messageId": messageId, "message": message, "replyMessages": replyMessages, "mentions": mentions, "fileAttachments": fileAttachments, "spans": spans]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("betaMessageEdit", arguments: ["mid": GraphQLVariable("messageId"), "message": GraphQLVariable("message"), "file": GraphQLVariable("file"), "replyMessages": GraphQLVariable("replyMessages"), "mentions": GraphQLVariable("mentions")], type: .nonNull(.scalar(Bool.self))),
+      GraphQLField("editMessage", arguments: ["messageId": GraphQLVariable("messageId"), "message": GraphQLVariable("message"), "replyMessages": GraphQLVariable("replyMessages"), "mentions": GraphQLVariable("mentions"), "fileAttachments": GraphQLVariable("fileAttachments"), "spans": GraphQLVariable("spans")], type: .nonNull(.scalar(Bool.self))),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -13303,16 +13305,16 @@ public final class RoomEditMessageMutation: GraphQLMutation {
       self.resultMap = unsafeResultMap
     }
 
-    public init(betaMessageEdit: Bool) {
-      self.init(unsafeResultMap: ["__typename": "Mutation", "betaMessageEdit": betaMessageEdit])
+    public init(editMessage: Bool) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "editMessage": editMessage])
     }
 
-    public var betaMessageEdit: Bool {
+    public var editMessage: Bool {
       get {
-        return resultMap["betaMessageEdit"]! as! Bool
+        return resultMap["editMessage"]! as! Bool
       }
       set {
-        resultMap.updateValue(newValue, forKey: "betaMessageEdit")
+        resultMap.updateValue(newValue, forKey: "editMessage")
       }
     }
   }

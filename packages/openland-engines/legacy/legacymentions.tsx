@@ -56,6 +56,20 @@ export const prepareLegacyMentions = (message: string, intermediateMentions: Use
     return spans;
 };
 
+export const prepareMentionsToSend = (mentions: FullMessage_GeneralMessage_spans_MessageSpanUserMention[]): MentionInput[] => {
+    let preparedMentions: MentionInput[] = [];
+
+    mentions.map(m => {
+        preparedMentions.push({
+            offset: m.offset,
+            length: m.length,
+            userId: m.user.id
+        })
+    });
+
+    return preparedMentions;
+};
+
 export const prepareLegacyMentionsForSend = (message: string, intermediateMentions: UserShort[]): MentionInput[] => {
     let preparedMentions: MentionInput[] = [];
     let legacyMentions = prepareLegacyMentions(message, intermediateMentions);

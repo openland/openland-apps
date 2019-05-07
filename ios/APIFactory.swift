@@ -2678,13 +2678,14 @@ class ApiFactory: ApiFactoryBase {
       }
       return
     }
-    if (name == "RoomEditMessage") {
+    if (name == "EditMessage") {
       let messageId = notNull(readString(src, "messageId"))
       let message = readString(src, "message")
-      let file = readString(src, "file")
       let replyMessages = notNullListItems(readStringList(src, "replyMessages"))
-      let mentions = notNullListItems(readStringList(src, "mentions"))
-      let requestBody = RoomEditMessageMutation(messageId: messageId, message: message, file: file, replyMessages: replyMessages, mentions: mentions)
+      let mentions = notNullListItems(readMentionInputList(src, "mentions"))
+      let fileAttachments = notNullListItems(readFileAttachmentInputList(src, "fileAttachments"))
+      let spans = notNullListItems(readMessageSpanInputList(src, "spans"))
+      let requestBody = EditMessageMutation(messageId: messageId, message: message, replyMessages: replyMessages, mentions: mentions, fileAttachments: fileAttachments, spans: spans)
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)

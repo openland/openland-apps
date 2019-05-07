@@ -30589,19 +30589,20 @@ export interface RoomDeleteUrlAugmentationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: RoomEditMessage
+// GraphQL mutation operation: EditMessage
 // ====================================================
 
-export interface RoomEditMessage {
-  betaMessageEdit: boolean;
+export interface EditMessage {
+  editMessage: boolean;
 }
 
-export interface RoomEditMessageVariables {
+export interface EditMessageVariables {
   messageId: string;
   message?: string | null;
-  file?: string | null;
   replyMessages?: string[] | null;
-  mentions?: string[] | null;
+  mentions?: MentionInput[] | null;
+  fileAttachments?: FileAttachmentInput[] | null;
+  spans?: MessageSpanInput[] | null;
 }
 
 /* tslint:disable */

@@ -1,0 +1,3 @@
+mutation EditMessage($fileAttachments: [FileAttachmentInput!], $mentions: [MentionInput!], $message: String, $messageId: ID!, $replyMessages: [ID!], $spans: [MessageSpanInput!]) {
+  editMessage(fileAttachments: $fileAttachments, mentions: $mentions, message: $message, messageId: $messageId, replyMessages: $replyMessages, spans: $spans)
+}
