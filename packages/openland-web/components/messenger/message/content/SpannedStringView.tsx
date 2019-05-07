@@ -25,6 +25,27 @@ const italicTextClassName = css`
     font-style: italic;
 `;
 
+const ironyTextClassName = css`
+    font-style: italic;
+    color: #d75454;
+`;
+
+const codeInlineClassName = css`
+    padding-left: 6px;
+    padding-right: 6px;
+    background-color: rgba(255, 171, 0, 0.1);
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+`;
+
+const codeBlockClassName = css`
+    display: block;
+    padding: 8px 16px;
+    background-color: rgba(255, 171, 0, 0.1);
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+    white-space: pre;
+    word-wrap: normal;
+`;
+
 const loudTextClassName = css`
     font-size: 36px;
     line-height: 40px;
@@ -57,6 +78,39 @@ const TextOnlyEmojiStyle = css`
     letter-spacing: 3px;
     & img {
         margin-right: 4px;
+    }
+`;
+
+const TextLargeStyle = css`
+    display: inline;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    font-size: 36px;
+    min-height: 44px;
+    line-height: 40px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.8);
+`;
+
+const TextInsaneStyle = css`
+    background: url(https://cdn.openland.com/shared/web/insane.gif);
+    background-clip: text, border;
+    -webkit-background-clip: text;
+    color: transparent;
+`;
+
+const TextRotatingStyle = css`
+    animation: rotate 1s linear infinite;
+    display: inline-block;
+
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
 `;
 
@@ -94,6 +148,9 @@ export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
                     key={'text-' + i}
                     className={cx(
                         EmojiSpaceStyle,
+                        s.isBig && TextLargeStyle,
+                        s.isInsane && TextInsaneStyle,
+                        s.isRotating && TextRotatingStyle,
                         s.isOnlyEmoji && TextOnlyEmojiStyle,
                     )}
                 >
@@ -156,6 +213,24 @@ export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
         } else if (s.type === 'insane') {
             res.push(
                 <span key={'insane-' + i} className={loudTextClassName + ' ' + insaneTextClassName}>
+                    <SpannedStringView spannedString={s.child} />
+                </span>,
+            );
+        } else if (s.type === 'irony') {
+            res.push(
+                <span key={'insane-' + i} className={ironyTextClassName}>
+                    <SpannedStringView spannedString={s.child} />
+                </span>,
+            );
+        } else if (s.type === 'code_inline') {
+            res.push(
+                <span key={'insane-' + i} className={codeInlineClassName}>
+                    <SpannedStringView spannedString={s.child} />
+                </span>,
+            );
+        } else if (s.type === 'code_block') {
+            res.push(
+                <span key={'insane-' + i} className={codeBlockClassName}>
                     <SpannedStringView spannedString={s.child} />
                 </span>,
             );

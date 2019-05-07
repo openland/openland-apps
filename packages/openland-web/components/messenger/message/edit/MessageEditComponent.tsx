@@ -12,6 +12,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserWithOffset, convertSpansToUserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { findSpans } from 'openland-y-utils/findSpans';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -147,6 +148,7 @@ const EditMessageInline = (props: EditMessageInlineT) => {
                     file: data.message.file,
                     replyMessages: data.message.replyMessages,
                     mentions: data.message.mentions.map((mention: any) => mention.user.id),
+                    spans: findSpans(data.message.text)
                 });
 
                 props.onClose();

@@ -35,11 +35,11 @@ function _spansPreprocess(
         if (root) {
             res.push(
                 spansMessageTextPreprocess(message, {
-                    disableBigEmoji: false || (opts && opts.disableBig),
+                    disableBig: false || (opts && opts.disableBig),
                 }),
             );
         } else {
-            res.push(spansMessageTextPreprocess(message, { disableBigEmoji: true }));
+            res.push(spansMessageTextPreprocess(message, { disableBig: true }));
         }
     } else {
         const sortedSpans = spans.sort((span1: any, span2: any) => {
@@ -61,12 +61,15 @@ function _spansPreprocess(
                     'MessageSpanLoud',
                     'MessageSpanRotating',
                     'MessageSpanInsane',
+                    'MessageSpanIrony',
+                    'MessageSpanInlineCode',
+                    'MessageSpanCodeBlock',
                 ].indexOf(span.__typename) >= 0
             ) {
                 if (lastOffset < span.offset) {
                     res.push(
                         spansMessageTextPreprocess(message.slice(lastOffset, span.offset), {
-                            disableBigEmoji: true,
+                            disableBig: true,
                         }),
                     );
                 }
@@ -180,13 +183,46 @@ function _spansPreprocess(
                 });
                 lastOffset = span.offset + span.length;
             }
+            if (span.__typename === 'MessageSpanIrony') {
+                let finalMessage = cropSpecSymbols(
+                    message.slice(span.offset, span.offset + span.length),
+                    '~'
+                );
+                res.push({
+                    type: 'irony',
+                    child: _spansPreprocess(false, finalMessage),
+                });
+                lastOffset = span.offset + span.length;
+            }
+            if (span.__typename === 'MessageSpanInlineCode') {
+                let finalMessage = cropSpecSymbols(
+                    message.slice(span.offset, span.offset + span.length),
+                    '`'
+                );
+                res.push({
+                    type: 'code_inline',
+                    child: _spansPreprocess(false, finalMessage),
+                });
+                lastOffset = span.offset + span.length;
+            }
+            if (span.__typename === 'MessageSpanCodeBlock') {
+                let finalMessage = cropSpecSymbols(
+                    message.slice(span.offset, span.offset + span.length),
+                    '```'
+                );
+                res.push({
+                    type: 'code_block',
+                    child: _spansPreprocess(false, finalMessage),
+                });
+                lastOffset = span.offset + span.length;
+            }
         }
 
         // Suffix
         if (lastOffset < message.length) {
             res.push(
                 spansMessageTextPreprocess(message.slice(lastOffset, message.length), {
-                    disableBigEmoji: true,
+                    disableBig: true,
                 }),
             );
         }

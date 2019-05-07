@@ -42,7 +42,7 @@ describe('Spans Parser', () => {
     });
 
     it('should check whitelisted symbols before and after span', () => {
-        let res = findSpans('_123_ 123 *123*123 🌈123🌈 123 _123_ https://openland.com/123_123_123');
+        let res = findSpans('_123_ 123 *123*123 🌈123🌈 123 _123_');
 
         expect(res.length).toBe(3);
 
@@ -57,6 +57,12 @@ describe('Spans Parser', () => {
         expect(res[2].type).toBe("Italic");
         expect(res[2].offset).toBe(31);
         expect(res[2].length).toBe(5);
+    });
+
+    it('should ignore links', () => {
+        let res = findSpans('https://openland.com/123_123_123');
+
+        expect(res.length).toBe(0);
     });
 
     it('should ignore stupid users', () => {
