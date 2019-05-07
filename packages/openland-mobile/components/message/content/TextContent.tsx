@@ -43,7 +43,7 @@ export const TextContent = (props: TextContentProps) => {
             <Text
                 style={{
                     color: theme.textColor,
-                    lineHeight: big ? 28 : (props.isSmall ? 20 : 22),
+                    lineHeight: big ? 28 : undefined,
                     fontSize: big ? 26 : (props.isSmall ? 15 : 16),
                     fontWeight: big ? TextStyles.weight.medium : TextStyles.weight.regular,
                     fontStyle: props.fontStyle,

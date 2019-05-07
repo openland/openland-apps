@@ -98,9 +98,9 @@ export const renderPreprocessedText = (v: Span, i: number, onUserPress: (id: str
     } else if (v.type === 'irony') {
         return <Text key={'irony-' + i} allowFontScaling={false}>{v.text}</Text>;
     } else if (v.type === 'italic') {
-        return <Text key={'italic-' + i} allowFontScaling={false}>{v.text}</Text>;
+        return <Text key={'italic-' + i} allowFontScaling={false} style={{ fontStyle: 'italic' }}>{v.text}</Text>;
     } else if (v.type === 'loud') {
-        return <Text key={'loud-' + i} allowFontScaling={false}>{v.text}</Text>;
+        return <Text key={'loud-' + i} allowFontScaling={false} style={{ fontWeight: TextStyles.weight.medium, fontSize: 26, lineHeight: 28}}>{v.text}</Text>;
     } else if (v.type === 'rotating') {
         return <Text key={'rotating-' + i} allowFontScaling={false}>{v.text}</Text>;
     } else {
