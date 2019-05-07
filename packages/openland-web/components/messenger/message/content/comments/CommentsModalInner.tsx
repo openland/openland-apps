@@ -3,12 +3,8 @@ import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/hooks/useInputMethods';
-import {
-    CommentWatch_event_CommentUpdateSingle_update,
-    FullMessage_GeneralMessage_attachments,
-} from 'openland-api/Types';
+import { CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
@@ -19,63 +15,47 @@ import { convertDsMessage } from 'openland-web/components/messenger/data/WebMess
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
-import { CommentView } from './CommentView';
 import { CommentsInput } from './CommentsInput';
-import { FullMessage } from 'openland-api/Types';
 import { useAddComment } from './useAddComment';
 import { uploadFile } from './uploadFile';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
 import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
-import { showModalBox } from 'openland-x/showModalBox';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { UserWithOffset } from 'openland-y-utils/mentionsConversion';
+import { DeleteCommentConfirmModal } from './DeleteCommentConfirmModal';
+import { convertMessage } from './convertMessage';
 
-export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
-    let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
-    let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
+const getCommentElem = (commentId: string) => {
+    const items = document.querySelectorAll(`[data-comment-id='${commentId}']`);
+    if (items.length === 1) {
+        return items[0] as HTMLElement;
+    }
+    return null;
+};
 
-    const attachments =
-        generalMessage &&
-        generalMessage.attachments.map((attachment: FullMessage_GeneralMessage_attachments) => {
-            if (attachment.__typename === 'MessageAttachmentFile') {
-                return {
-                    ...attachment,
-                    fileMetadata: {
-                        ...attachment.fileMetadata,
-                        imageWidth: 180,
-                        imageHeight: 120,
-                    },
-                };
-            }
-            return attachment;
-        });
-    return {
-        chatId: '',
-        type: 'message',
-        id: src.id,
-        key: src.repeatKey || src.id,
-        date: parseInt(src.date, 10),
-        isOut: true,
-        senderId: src.sender.id,
-        senderName: src.sender.name,
-        senderPhoto: src.sender.photo || undefined,
-        sender: src.sender,
-        text: src.message || undefined,
-        isSending: false,
-        attachTop: false,
-        attachBottom: false,
-        reactions: generalMessage && generalMessage.reactions,
-        serviceMetaData: (serviceMessage && serviceMessage.serviceMetadata) || undefined,
-        isService: !!serviceMessage,
-        attachments,
-        reply:
-            generalMessage && generalMessage.quotedMessages
-                ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date)
-                : undefined,
-        isEdited: generalMessage && generalMessage.edited,
-        spans: src.spans || [],
-        commentsCount: generalMessage ? generalMessage.commentsCount : null,
-    };
-}
+const scrollToComment = ({
+    commentId,
+    scrollRef,
+    mode = 'bottom',
+}: {
+    commentId: string;
+    scrollRef: React.RefObject<XScrollView3>;
+    mode?: 'top' | 'bottom';
+}) => {
+    let targetElem = getCommentElem(commentId);
+    if (targetElem) {
+        if (mode === 'bottom') {
+            scrollRef!!.current!!.scrollToBottomOfElement({
+                targetElem,
+                offset: 10,
+            });
+        } else {
+            scrollRef!!.current!!.scrollToTopOfElement({
+                targetElem,
+                offset: 10,
+            });
+        }
+    }
+};
 
 export const CommentsModalInnerNoRouter = ({
     messageId,
@@ -85,7 +65,6 @@ export const CommentsModalInnerNoRouter = ({
     roomId: string;
 }) => {
     const client = useClient();
-    let ctx = React.useContext(UserInfoContext);
     const modal = React.useContext(XModalContext);
     const modalBox = React.useContext(XModalBoxContext);
     const currentCommentsInputRef = React.useRef<XRichTextInput2RefMethods | null>(null);
@@ -94,7 +73,6 @@ export const CommentsModalInnerNoRouter = ({
 
     const isMobile = React.useContext(IsMobileContext);
     let messenger = React.useContext(MessengerContext);
-    const [commentToScroll, setCommentToScroll] = React.useState<number>(0);
 
     const [showInputId, setShowInputId] = React.useState<string | null>(null);
 
@@ -123,51 +101,18 @@ export const CommentsModalInnerNoRouter = ({
         { fetchPolicy: 'cache-and-network' },
     );
 
-    const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
-        if (event.__typename === 'CommentReceived') {
-            await client.refetchMessageComments({
-                messageId,
-            });
-        }
-    };
-
-    const getCommentElem = (commentId: string) => {
-        const items = document.querySelectorAll(`[data-comment-id='${commentId}']`);
-        if (items.length === 1) {
-            return items[0] as HTMLElement;
-        }
-        return null;
-    };
-
-    const scrollToComment = ({
-        commentId,
-        mode = 'bottom',
-    }: {
-        commentId: string;
-        mode?: 'top' | 'bottom';
-    }) => {
-        let targetElem = getCommentElem(commentId);
-        if (targetElem) {
-            if (mode === 'bottom') {
-                scrollRef!!.current!!.scrollToBottomOfElement({
-                    targetElem,
-                    offset: 10,
-                });
-            } else {
-                scrollRef!!.current!!.scrollToTopOfElement({
-                    targetElem,
-                    offset: 10,
-                });
-            }
-        }
-    };
-
     React.useEffect(() => {
         const watcher = new SequenceModernWatcher(
             'comment messageId:' + messageId,
             client.subscribeCommentWatch({ peerId: messageId }),
             client.client,
-            updateHandler,
+            async (event: CommentWatch_event_CommentUpdateSingle_update) => {
+                if (event.__typename === 'CommentReceived') {
+                    await client.refetchMessageComments({
+                        messageId,
+                    });
+                }
+            },
             undefined,
             { peerId: messageId },
             null,
@@ -178,22 +123,6 @@ export const CommentsModalInnerNoRouter = ({
     });
 
     const commentsMap = {};
-
-    const testScrollToCommentBottom = () => {
-        scrollToComment({
-            commentId: messageComments.messageComments.comments[commentToScroll].id,
-            mode: 'bottom',
-        });
-        setCommentToScroll((commentToScroll + 1) % messageComments.messageComments.comments.length);
-    };
-
-    const testScrollToCommentTop = () => {
-        scrollToComment({
-            commentId: messageComments.messageComments.comments[commentToScroll].id,
-            mode: 'top',
-        });
-        setCommentToScroll((commentToScroll + 1) % messageComments.messageComments.comments.length);
-    };
 
     messageComments.messageComments.comments.forEach(comment => {
         commentsMap[comment.id] = comment;
@@ -218,6 +147,31 @@ export const CommentsModalInnerNoRouter = ({
             }
         }
     }, [showInputId]);
+
+    const onSendFile = async (file: UploadCare.File) => {
+        return await uploadFile({
+            file,
+            onProgress: (progress: number) => {
+                console.log('onProgress', progress);
+            },
+        });
+    };
+
+    const onSend = async (
+        msgToSend: string,
+        mentions: UserWithOffset[] | null,
+        uploadedFileKey: string,
+    ) => {
+        const newCommentId = await addComment({
+            messageId,
+            mentions,
+            message: msgToSend,
+            replyComment: null,
+            fileAttachments: uploadedFileKey ? [{ fileId: uploadedFileKey }] : [],
+        });
+        setShowInputId(null);
+        return newCommentId;
+    };
 
     const commentsElements = [];
 
@@ -264,39 +218,68 @@ export const CommentsModalInnerNoRouter = ({
         const parentComment = commentsMap[parentCommentId];
 
         commentsElements.push(
-            <CommentView
-                scrollToComment={scrollToComment}
-                onCommentBackToUserMessageClick={
-                    parentComment
-                        ? () => {
-                              scrollToComment({
-                                  commentId: parentCommentId,
-                              });
-                          }
-                        : undefined
-                }
-                usernameOfRepliedUser={
-                    parentComment && message.depth >= DEPTH_LIMIT
-                        ? parentComment.comment.sender.name
-                        : undefined
-                }
-                deleted={message.id ? commentsMap[message.id].deleted : false}
-                messageId={messageId}
-                message={message}
-                offset={offset}
-                onCommentReplyClick={onCommentReplyClick}
-                // onCommentEditClick={
-                //     ctx!!.user!!.id === message.senderId ? onCommentEditClick : undefined
-                // }
-                onCommentDeleteClick={
-                    ctx!!.user!!.id === message.senderId ? onCommentDeleteClick : undefined
-                }
-                me={messenger.user}
-                showInputId={showInputId}
-                setShowInputId={setShowInputId}
-                currentCommentsInputRef={currentCommentsInputRef}
-                getMentionsSuggestions={getMentionsSuggestions}
-            />,
+            <div data-comment-id={message.id}>
+                <XView
+                    key={message.key}
+                    marginLeft={offset}
+                    width={`calc(800px - 32px - 32px - ${offset}px)`}
+                >
+                    <MessageComponent
+                        onCommentBackToUserMessageClick={
+                            parentComment
+                                ? () => {
+                                      scrollToComment({
+                                          scrollRef,
+                                          commentId: parentCommentId,
+                                      });
+                                  }
+                                : undefined
+                        }
+                        usernameOfRepliedUser={
+                            parentComment && message.depth >= DEPTH_LIMIT
+                                ? parentComment.comment.sender.name
+                                : undefined
+                        }
+                        deleted={message.id ? commentsMap[message.id].deleted : false}
+                        commentDepth={message.depth}
+                        noSelector
+                        isComment
+                        onCommentReplyClick={onCommentReplyClick}
+                        onCommentEditClick={onCommentEditClick}
+                        onCommentDeleteClick={onCommentDeleteClick}
+                        message={message}
+                        onlyLikes={true}
+                        me={messenger.user}
+                    />
+
+                    {showInputId === message.key && (
+                        <UploadContextProvider>
+                            <CommentsInput
+                                topLevelComment={message.depth === 0}
+                                commentsInputRef={currentCommentsInputRef}
+                                getMentionsSuggestions={getMentionsSuggestions}
+                                minimal
+                                onSendFile={onSendFile}
+                                onSend={async (
+                                    msgToSend: string,
+                                    mentions: UserWithOffset[] | null,
+                                    uploadedFileKey: string,
+                                ) => {
+                                    const newCommentId = await onSend(
+                                        msgToSend,
+                                        mentions,
+                                        uploadedFileKey,
+                                    );
+                                    scrollToComment({
+                                        scrollRef,
+                                        commentId: newCommentId,
+                                    });
+                                }}
+                            />
+                        </UploadContextProvider>
+                    )}
+                </XView>
+            </div>,
         );
     }
 
@@ -304,6 +287,7 @@ export const CommentsModalInnerNoRouter = ({
 
     return (
         <XView>
+            <DeleteCommentConfirmModal />
             <IsActiveContext.Provider value={true}>
                 <XScrollView3
                     useDefaultScroll
@@ -375,33 +359,15 @@ export const CommentsModalInnerNoRouter = ({
                     )}
                 </XScrollView3>
                 <XView>
-                    {/* <XView onClick={testScrollToCommentBottom}>
-                    Scroll to comment bottom {commentToScroll}
-                </XView>
-                <XView onClick={testScrollToCommentTop}>
-                    Scroll to comment top {commentToScroll}
-                </XView> */}
                     <CommentsInput
                         getMentionsSuggestions={getMentionsSuggestions}
-                        onSendFile={async (file: UploadCare.File) => {
-                            return await uploadFile({
-                                file,
-                                onProgress: (progress: number) => {
-                                    console.log('onProgress', progress);
-                                },
-                            });
-                        }}
-                        onSend={async (msgToSend, mentions, uploadedFileKey) => {
-                            await addComment({
-                                messageId,
-                                mentions,
-                                message: msgToSend,
-                                replyComment: null,
-                                fileAttachments: uploadedFileKey
-                                    ? [{ fileId: uploadedFileKey }]
-                                    : [],
-                            });
-                            setShowInputId(null);
+                        onSendFile={onSendFile}
+                        onSend={async (
+                            msgToSend: string,
+                            mentions: UserWithOffset[] | null,
+                            uploadedFileKey: string,
+                        ) => {
+                            await onSend(msgToSend, mentions, uploadedFileKey);
 
                             if (scrollRef && scrollRef.current) {
                                 scrollRef.current.scrollToBottom();
@@ -424,6 +390,16 @@ export const CommentsModalInner = () => {
             <CommentsModalInnerNoRouter messageId={messageId} roomId={roomId} />
         </UploadContextProvider>
     );
+};
+
+export const openDeleteCommentsModal = ({
+    router,
+    commentId,
+}: {
+    router: XRouter;
+    commentId: string;
+}) => {
+    router.pushQuery('deleteComment', `${commentId}`);
 };
 
 export const openCommentsModal = ({

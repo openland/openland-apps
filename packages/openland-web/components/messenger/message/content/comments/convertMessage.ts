@@ -1,0 +1,51 @@
+import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { FullMessage_GeneralMessage_attachments } from 'openland-api/Types';
+import { FullMessage } from 'openland-api/Types';
+
+export function convertMessage(src: FullMessage & { repeatKey?: string }): DataSourceMessageItem {
+    let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
+    let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
+
+    const attachments =
+        generalMessage &&
+        generalMessage.attachments.map((attachment: FullMessage_GeneralMessage_attachments) => {
+            if (attachment.__typename === 'MessageAttachmentFile') {
+                return {
+                    ...attachment,
+                    fileMetadata: {
+                        ...attachment.fileMetadata,
+                        imageWidth: 180,
+                        imageHeight: 120,
+                    },
+                };
+            }
+            return attachment;
+        });
+    return {
+        chatId: '',
+        type: 'message',
+        id: src.id,
+        key: src.repeatKey || src.id,
+        date: parseInt(src.date, 10),
+        isOut: true,
+        senderId: src.sender.id,
+        senderName: src.sender.name,
+        senderPhoto: src.sender.photo || undefined,
+        sender: src.sender,
+        text: src.message || undefined,
+        isSending: false,
+        attachTop: false,
+        attachBottom: false,
+        reactions: generalMessage && generalMessage.reactions,
+        serviceMetaData: (serviceMessage && serviceMessage.serviceMetadata) || undefined,
+        isService: !!serviceMessage,
+        attachments,
+        reply:
+            generalMessage && generalMessage.quotedMessages
+                ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date)
+                : undefined,
+        isEdited: generalMessage && generalMessage.edited,
+        spans: src.spans || [],
+        commentsCount: generalMessage ? generalMessage.commentsCount : null,
+    };
+}
