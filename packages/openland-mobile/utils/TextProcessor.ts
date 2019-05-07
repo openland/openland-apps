@@ -138,7 +138,7 @@ function preprocessSpans(text: string, spans: (FullMessage_GeneralMessage_spans 
             // spanText = cropSpecSymbols(spanText, '🌈');
             span = { type: 'insane' }
         } else if (s.__typename === 'MessageSpanIrony') {
-            spanText = cropSpecSymbols(spanText, '~');
+            // spanText = cropSpecSymbols(spanText, '~');
             span = { type: 'irony' }
         } else if (s.__typename === 'MessageSpanItalic') {
             spanText = cropSpecSymbols(spanText, '_');
