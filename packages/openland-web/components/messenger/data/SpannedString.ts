@@ -37,6 +37,11 @@ export type SpannedStringSpanBold = {
     child: SpannedString;
 };
 
+export type SpannedStringSpanItalic = {
+    type: 'italic';
+    child: SpannedString;
+};
+
 export type SpannedStringSpanLink = {
     type: 'link';
     url: string;
@@ -49,6 +54,7 @@ export type SpannedStringSpan =
     | SpannedStringSpanUser
     | SpannedStringSpanGroup
     | SpannedStringSpanBold
+    | SpannedStringSpanItalic
     | SpannedStringSpanLink;
 
 export interface SpannedString {

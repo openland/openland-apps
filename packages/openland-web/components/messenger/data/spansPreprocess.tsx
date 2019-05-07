@@ -44,6 +44,7 @@ function _spansPreprocess(
                     'MessageSpanRoomMention',
                     'MessageSpanLink',
                     'MessageSpanBold',
+                    'MessageSpanItalic',
                 ].indexOf(span.__typename) >= 0
             ) {
                 if (lastOffset < span.offset) {
@@ -111,6 +112,16 @@ function _spansPreprocess(
             if (span.__typename === 'MessageSpanBold') {
                 res.push({
                     type: 'bold',
+                    child: _spansPreprocess(
+                        false,
+                        message.slice(span.offset, span.offset + span.length),
+                    ),
+                });
+                lastOffset = span.offset + span.length;
+            }
+            if (span.__typename === 'MessageSpanItalic') {
+                res.push({
+                    type: 'italic',
                     child: _spansPreprocess(
                         false,
                         message.slice(span.offset, span.offset + span.length),

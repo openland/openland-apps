@@ -21,6 +21,10 @@ const boldTextClassName = css`
     font-weight: bold;
 `;
 
+const italicTextClassName = css`
+    font-style: italic;
+`;
+
 const TextOnlyEmojiStyle = css`
     letter-spacing: 3px;
     & img {
@@ -136,6 +140,12 @@ export const SpannedStringView = React.memo<SpannedStringViewProps>(props => {
         } else if (s.type === 'bold') {
             res.push(
                 <span key={'bold-' + i} className={boldTextClassName}>
+                    <SpannedStringView spannedString={s.child} />
+                </span>,
+            );
+        } else if (s.type === 'italic') {
+            res.push(
+                <span key={'italic-' + i} className={italicTextClassName}>
                     <SpannedStringView spannedString={s.child} />
                 </span>,
             );
