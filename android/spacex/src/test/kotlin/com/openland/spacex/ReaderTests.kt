@@ -29,7 +29,7 @@ class ReaderTests {
                 field("field8", "alias8", emptyMap(), scalar("Boolean"))
         ))
         val store = RecordStore()
-        store.merge(Record("1", mapOf(
+        store.loaded(Record("1", mapOf(
                 "field1" to RecordValue.String("value1"),
                 "field2" to RecordValue.Number(1.0),
                 "field3" to RecordValue.Null,
