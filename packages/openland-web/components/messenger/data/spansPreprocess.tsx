@@ -19,6 +19,10 @@ const cropSpecSymbols = (text: string, symbol: string) => {
         res = res.replace(symbol, '');
         // remove last symbol
         res = res.substr(0, res.lastIndexOf(symbol));
+        // remove first line-breaker
+        if (res.charAt(0) === '\n') {
+            res = res.replace('\n', '');
+        }
     }
 
     return res;
