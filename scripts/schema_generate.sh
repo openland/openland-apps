@@ -29,18 +29,9 @@ yarn apollo codegen:generate --target=typescript --outputFlat=./packages/openlan
 ./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateTypes.ts
 ./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateApi.ts
 
-#
-# Native
-#
+# Android Client
+ ./scripts/spacex-cli generate --queries ./packages/openland-api/exported/ --schema ./schema.json --target kotlin --package com.openland.react.graphql -output ./android/app/src/main/java/com/openland/react/graphql/Operations.kt
 
-# Android Schemas
-rimraf ./android/app/src/main/graphql
-mkdir -p ./android/app/src/main/graphql/com/openland/api
-cp ./schema.json ./android/app/src/main/graphql/com/openland/api/
-cp ./packages/openland-api/exported/*.graphql ./android/app/src/main/graphql/com/openland/api/
-
-# iOS Schemas
+# iOS Client
 yarn apollo codegen:generate --queries="$(find . -name './packages/openland-api/exported/*.graphql')" --target swift ./ios/API.swift
-
-# Native Bindings
 ./node_modules/.bin/ts-node --compilerOptions '{"module":"commonjs"}' ./packages/openland-y-graphql-gen/generateNativeApi.ts

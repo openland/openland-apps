@@ -1101,7 +1101,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -1245,7 +1245,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -1474,7 +1474,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_c
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentReceived_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -1759,7 +1759,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -1903,7 +1903,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -2132,7 +2132,7 @@ export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_co
 }
 
 export interface CommentWatch_event_CommentUpdateSingle_update_CommentUpdated_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -2426,7 +2426,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -2570,7 +2570,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -2799,7 +2799,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_c
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentReceived_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -3084,7 +3084,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -3228,7 +3228,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -3457,7 +3457,7 @@ export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_co
 }
 
 export interface CommentWatch_event_CommentUpdateBatch_updates_CommentUpdated_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -3659,7 +3659,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -3875,7 +3875,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -4019,7 +4019,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -4293,7 +4293,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -4555,7 +4555,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -4771,7 +4771,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -4915,7 +4915,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -5189,7 +5189,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -5500,7 +5500,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -5716,7 +5716,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -5860,7 +5860,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -6134,7 +6134,7 @@ export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateSingle_update_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -6442,7 +6442,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -6658,7 +6658,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -6802,7 +6802,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -7076,7 +7076,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_mes
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -7338,7 +7338,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -7554,7 +7554,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -7698,7 +7698,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -7972,7 +7972,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_mess
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -8283,7 +8283,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -8499,7 +8499,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -8643,7 +8643,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -8917,7 +8917,7 @@ export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_Shared
 }
 
 export interface ChatWatch_event_ChatUpdateBatch_updates_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -10644,7 +10644,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -10860,7 +10860,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -11004,7 +11004,7 @@ export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -11278,7 +11278,7 @@ export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_sender {
 }
 
 export interface Room_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -11586,7 +11586,7 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
 }
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -11802,7 +11802,7 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -11946,7 +11946,7 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -12220,7 +12220,7 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_sender {
 }
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -12700,7 +12700,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -12916,7 +12916,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -13060,7 +13060,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -13334,7 +13334,7 @@ export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage
 }
 
 export interface RoomWithoutMembers_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -13665,7 +13665,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -13881,7 +13881,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -14025,7 +14025,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -14299,7 +14299,7 @@ export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_sender {
 }
 
 export interface RoomTiny_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -14627,7 +14627,7 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_sender {
 }
 
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -14843,7 +14843,7 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessag
 }
 
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -14987,7 +14987,7 @@ export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessag
 }
 
 export interface PinMessage_pinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -15261,7 +15261,7 @@ export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_sender {
 }
 
 export interface PinMessage_pinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -15565,7 +15565,7 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_sender {
 }
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -15781,7 +15781,7 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMe
 }
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -15925,7 +15925,7 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMe
 }
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -16199,7 +16199,7 @@ export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_sender {
 }
 
 export interface UnpinMessage_unpinMessage_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -16675,7 +16675,7 @@ export interface ChatHistory_messages_GeneralMessage_sender {
 }
 
 export interface ChatHistory_messages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -16891,7 +16891,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessa
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -17035,7 +17035,7 @@ export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessa
 }
 
 export interface ChatHistory_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -17309,7 +17309,7 @@ export interface ChatHistory_messages_ServiceMessage_sender {
 }
 
 export interface ChatHistory_messages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -17589,7 +17589,7 @@ export interface ChatInit_messages_GeneralMessage_sender {
 }
 
 export interface ChatInit_messages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -17805,7 +17805,7 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_
 }
 
 export interface ChatInit_messages_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -17949,7 +17949,7 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_
 }
 
 export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -18223,7 +18223,7 @@ export interface ChatInit_messages_ServiceMessage_sender {
 }
 
 export interface ChatInit_messages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -18521,7 +18521,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_sender {
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -18737,7 +18737,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -18881,7 +18881,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -19155,7 +19155,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_sender {
 }
 
 export interface ChatInit_room_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -19810,7 +19810,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -20026,7 +20026,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -20170,7 +20170,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMe
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -20444,7 +20444,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMe
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -20910,7 +20910,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -21126,7 +21126,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -21270,7 +21270,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -21544,7 +21544,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pin
 }
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -22007,7 +22007,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -22223,7 +22223,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -22367,7 +22367,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralM
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -22641,7 +22641,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceM
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -23107,7 +23107,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_s
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -23323,7 +23323,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -23467,7 +23467,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_q
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -23741,7 +23741,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_s
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -24204,7 +24204,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -24420,7 +24420,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -24564,7 +24564,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Gene
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -24838,7 +24838,7 @@ export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_Serv
 }
 
 export interface RoomChangeRole_betaRoomChangeRole_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -25302,7 +25302,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -25518,7 +25518,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -25662,7 +25662,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -25936,7 +25936,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -26750,7 +26750,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_sender {
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -26966,7 +26966,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -27110,7 +27110,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -27384,7 +27384,7 @@ export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_sender {
 }
 
 export interface RoomJoin_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -27866,7 +27866,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -28082,7 +28082,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -28226,7 +28226,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -28500,7 +28500,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -29215,7 +29215,7 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
 }
 
 export interface MessageComments_messageComments_comments_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -29359,7 +29359,7 @@ export interface MessageComments_messageComments_comments_comment_quotedMessages
 }
 
 export interface MessageComments_messageComments_comments_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -29588,7 +29588,7 @@ export interface MessageComments_messageComments_comments_comment_reactions {
 }
 
 export interface MessageComments_messageComments_comments_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -30002,7 +30002,7 @@ export interface Message_message_GeneralMessage_sender {
 }
 
 export interface Message_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -30218,7 +30218,7 @@ export interface Message_message_GeneralMessage_quotedMessages_ServiceMessage_se
 }
 
 export interface Message_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -30362,7 +30362,7 @@ export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_se
 }
 
 export interface Message_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -30636,7 +30636,7 @@ export interface Message_message_ServiceMessage_sender {
 }
 
 export interface Message_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -32065,7 +32065,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_se
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -32281,7 +32281,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -32425,7 +32425,7 @@ export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_qu
 }
 
 export interface Organization_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -32699,7 +32699,7 @@ export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_se
 }
 
 export interface Organization_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -33064,7 +33064,7 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
 }
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -33280,7 +33280,7 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
 }
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -33424,7 +33424,7 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Gen
 }
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -33698,7 +33698,7 @@ export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_Ser
 }
 
 export interface OrganizationWithoutMembers_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -34062,7 +34062,7 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
 }
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -34278,7 +34278,7 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
 }
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -34422,7 +34422,7 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Gener
 }
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -34696,7 +34696,7 @@ export interface OrganizationMembersShort_organization_rooms_pinnedMessage_Servi
 }
 
 export interface OrganizationMembersShort_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -35071,7 +35071,7 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 }
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -35287,7 +35287,7 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 }
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -35431,7 +35431,7 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 }
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -35705,7 +35705,7 @@ export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMess
 }
 
 export interface OrganizationMembersShortPaginated_organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -36335,7 +36335,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -36551,7 +36551,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -36695,7 +36695,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -36969,7 +36969,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMes
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -38497,7 +38497,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -38713,7 +38713,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -38857,7 +38857,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralM
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -39131,7 +39131,7 @@ export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceM
 }
 
 export interface ResolveShortName_item_Organization_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -39653,7 +39653,7 @@ export interface CommentEntryFragment_comment_quotedMessages_ServiceMessage_send
 }
 
 export interface CommentEntryFragment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -39797,7 +39797,7 @@ export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_send
 }
 
 export interface CommentEntryFragment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -40026,7 +40026,7 @@ export interface CommentEntryFragment_comment_reactions {
 }
 
 export interface CommentEntryFragment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -40513,7 +40513,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_sender
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -40657,7 +40657,7 @@ export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_sender
 }
 
 export interface FullMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -40886,7 +40886,7 @@ export interface FullMessage_GeneralMessage_reactions {
 }
 
 export interface FullMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -41035,7 +41035,7 @@ export interface FullMessage_ServiceMessage_sender {
 }
 
 export interface FullMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -41371,7 +41371,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_sender {
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -41587,7 +41587,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -41731,7 +41731,7 @@ export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessa
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -42005,7 +42005,7 @@ export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_sender {
 }
 
 export interface OrganizationFull_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -42509,7 +42509,7 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
 }
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -42725,7 +42725,7 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
 }
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -42869,7 +42869,7 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralM
 }
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -43143,7 +43143,7 @@ export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceM
 }
 
 export interface OrganizationWithoutMembersFragment_rooms_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -43629,7 +43629,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_sender {
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -43845,7 +43845,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -43989,7 +43989,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -44263,7 +44263,7 @@ export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_sender {
 }
 
 export interface RoomFull_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -44656,7 +44656,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -44872,7 +44872,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -45016,7 +45016,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -45290,7 +45290,7 @@ export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_
 }
 
 export interface RoomFullWithoutMembers_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -45613,7 +45613,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_sender {
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -45829,7 +45829,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -45973,7 +45973,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessage
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -46247,7 +46247,7 @@ export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_sender {
 }
 
 export interface RoomShort_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -46817,7 +46817,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
 }
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -46961,7 +46961,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMes
 }
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -47190,7 +47190,7 @@ export interface CommentUpdateFragment_CommentReceived_comment_comment_reactions
 }
 
 export interface CommentUpdateFragment_CommentReceived_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -47475,7 +47475,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
 }
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -47619,7 +47619,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMess
 }
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -47848,7 +47848,7 @@ export interface CommentUpdateFragment_CommentUpdated_comment_comment_reactions 
 }
 
 export interface CommentUpdateFragment_CommentUpdated_comment_comment_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -48031,7 +48031,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_s
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -48247,7 +48247,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -48391,7 +48391,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_q
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -48665,7 +48665,7 @@ export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_s
 }
 
 export interface ChatUpdateFragment_ChatMessageReceived_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -48927,7 +48927,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_se
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -49143,7 +49143,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -49287,7 +49287,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_qu
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -49561,7 +49561,7 @@ export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_se
 }
 
 export interface ChatUpdateFragment_ChatMessageUpdated_message_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -49872,7 +49872,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -50088,7 +50088,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -50232,7 +50232,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Ge
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
@@ -50506,7 +50506,7 @@ export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_Se
 }
 
 export interface ChatUpdateFragment_ChatUpdated_chat_SharedRoom_pinnedMessage_ServiceMessage_spans_MessageSpanBold {
-  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
+  __typename: "MessageSpanBold" | "MessageSpanCodeBlock" | "MessageSpanDate" | "MessageSpanInlineCode" | "MessageSpanInsane" | "MessageSpanIrony" | "MessageSpanItalic" | "MessageSpanLoud" | "MessageSpanRotating";
   offset: number;
   length: number;
 }
