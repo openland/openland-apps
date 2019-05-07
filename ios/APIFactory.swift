@@ -2138,13 +2138,14 @@ class ApiFactory: ApiFactoryBase {
       return
     }
     if (name == "SendMessage") {
+      let chatId = notNull(readString(src, "chatId"))
       let message = readString(src, "message")
-      let file = readString(src, "file")
-      let repeatKey = readString(src, "repeatKey")
       let replyMessages = notNullListItems(readStringList(src, "replyMessages"))
-      let mentions = notNullListItems(readStringList(src, "mentions"))
-      let room = notNull(readString(src, "room"))
-      let requestBody = SendMessageMutation(message: message, file: file, repeatKey: repeatKey, replyMessages: replyMessages, mentions: mentions, room: room)
+      let mentions = notNullListItems(readMentionInputList(src, "mentions"))
+      let fileAttachments = notNullListItems(readFileAttachmentInputList(src, "fileAttachments"))
+      let spans = notNullListItems(readMessageSpanInputList(src, "spans"))
+      let repeatKey = readString(src, "repeatKey")
+      let requestBody = SendMessageMutation(chatId: chatId, message: message, replyMessages: replyMessages, mentions: mentions, fileAttachments: fileAttachments, spans: spans, repeatKey: repeatKey)
       client.perform(mutation: requestBody, queue: GraphQLQueue) { (r, e) in
           if e != nil {
             handler(nil, e)
@@ -5571,6 +5572,68 @@ class ApiFactory: ApiFactoryBase {
     } else {
       return nil
     }
+  }
+  func parseMessageSpanInput(_ src: NSDictionary) -> MessageSpanInput {
+    let offset = optionalNotNull(readOptionalInt(src, "offset"))
+    let length = optionalNotNull(readOptionalInt(src, "length"))
+    let type = optionalNotNull(readMessageSpanTypeOptional(src, "type"))
+    return MessageSpanInput(offset: offset, length: length, type: type)
+  }
+  func readMessageSpanInput(_ src: NSDictionary, _ name: String) -> MessageSpanInput? {
+    let v = src[name]
+    if v != nil && !(v is NSNull) {
+      return self.parseMessageSpanInput(v as! NSDictionary)
+    } else {
+      return nil
+    }
+  }
+  func readMessageSpanInputOptional(_ src: NSDictionary, _ name: String) -> Optional<MessageSpanInput?> {
+    let v = src[name]
+    if v != nil {
+      if (v is NSNull) {        return Optional.some(nil)      } else {
+        return Optional.some(self.parseMessageSpanInput(v as! NSDictionary))
+      }
+    } else {
+      return Optional.none
+    }
+  }
+  func readMessageSpanInputList(_ src: NSDictionary, _ name: String) -> [MessageSpanInput?]? {
+    let v = src[name]
+    if v != nil && !(v is NSNull) {
+      let items = v as! [NSDictionary?]
+      var res: [MessageSpanInput?] = []
+      for i in 0..<items.count {
+        let itm = items[i]
+        if itm != nil && !(itm is NSNull) {
+          res.append(self.parseMessageSpanInput(itm!))
+        } else {
+          res.append(nil)
+        }
+      }
+      return res
+    } else {
+      return nil
+    }
+  }
+  func readMessageSpanType(_ src: NSDictionary, _ name: String) -> MessageSpanType? {
+    let v = self.readString(src, name);
+    if v != nil && !(v is NSNull) {
+      return MessageSpanType.init(rawValue: v!)
+     } else {
+       return nil
+     }
+  }
+  func readMessageSpanTypeOptional(_ src: NSDictionary, _ name: String) -> Optional<MessageSpanType?> {
+    let v = self.readString(src, name);
+    if v != nil {
+      if (v is NSNull) {
+        return Optional.some(nil)
+      } else {
+        return Optional.some(MessageSpanType.init(rawValue: v!))
+      }
+     } else {
+       return Optional.none
+     }
   }
   func parseAppProfileInput(_ src: NSDictionary) -> AppProfileInput {
     let name = readOptionalString(src, "name")

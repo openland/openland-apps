@@ -493,20 +493,22 @@ export const ChatInitQuery = gql`
 
 export const SendMessageMutation = gql`
     mutation SendMessage(
+        $chatId: ID!
         $message: String
-        $file: String
-        $repeatKey: String
         $replyMessages: [ID!]
-        $mentions: [ID!]
-        $room: ID!
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
+        $repeatKey: String
     ) {
-        sentMessage: betaMessageSend(
+        sentMessage: sendMessage(
+            chatId: $chatId
             message: $message
-            file: $file
-            repeatKey: $repeatKey
             replyMessages: $replyMessages
             mentions: $mentions
-            room: $room
+            fileAttachments: $fileAttachments
+            spans: $spans
+            repeatKey: $repeatKey
         )
     }
 `;

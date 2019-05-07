@@ -1,8 +1,9 @@
 import UUID from 'uuid/v4';
 import { UploadingFile, UploadStatus } from './types';
-import { UserShort } from 'openland-api/Types';
+import { UserShort, MentionInput, FileAttachmentInput } from 'openland-api/Types';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { Track } from 'openland-engines/Tracking';
+import { prepareLegacyMentions, prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
     onCompleted(key: string): void;
@@ -12,9 +13,9 @@ export interface MessageSendHandler {
 type MessageBodyT = {
     conversationId: string;
     message: string | null;
-    file: string | null;
+    fileAttachments: FileAttachmentInput[] | null;
     replyMessages: string[] | null;
-    mentions: UserShort[] | null;
+    mentions: MentionInput[] | null;
     quoted?: string[];
 };
 
@@ -34,7 +35,7 @@ export class MessageSender {
                 replyMessages: null,
                 mentions: null,
                 conversationId,
-                file: uuid,
+                fileAttachments: [{ fileId: uuid }],
                 key: UUID(),
                 callback: {
                     onProgress(key: string, progress: number) {
@@ -82,7 +83,7 @@ export class MessageSender {
                 callback.onFailed(key);
             }
             this.doSendMessage({
-                file: this.uploadedFiles.get(key)!!,
+                fileAttachments: [{ fileId: this.uploadedFiles.get(key)!! }],
                 mentions: null,
                 replyMessages: null,
                 message: null,
@@ -114,8 +115,8 @@ export class MessageSender {
         let key = UUID();
 
         this.doSendMessage({
-            file: null,
-            mentions,
+            fileAttachments: null,
+            mentions: prepareLegacyMentionsForSend(message, mentions || []),
             conversationId,
             message,
             key,
@@ -169,7 +170,7 @@ export class MessageSender {
     private doSendMessage({
         conversationId,
         message,
-        file,
+        fileAttachments,
         replyMessages,
         mentions,
         key,
@@ -181,7 +182,7 @@ export class MessageSender {
         const messageBody = {
             room: conversationId,
             message,
-            file,
+            fileAttachments,
             conversationId,
             replyMessages,
             mentions,
@@ -189,18 +190,16 @@ export class MessageSender {
 
         this.pending.set(key, messageBody);
 
-        const { mentions: mentionsToStrings, ...restMessageBody } = messageBody;
         (async () => {
             let start = Date.now();
             try {
-                console.log(file);
                 await this.client.mutateSendMessage({
                     repeatKey: key,
-                    mentions: mentionsToStrings ? mentionsToStrings.map(({ id }) => id) : null,
+                    mentions,
                     message,
-                    file,
+                    fileAttachments,
                     replyMessages,
-                    room: conversationId,
+                    chatId: conversationId,
                 });
             } catch (e) {
                 if (

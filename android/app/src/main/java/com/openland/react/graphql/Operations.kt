@@ -2290,7 +2290,7 @@ private val SaveDraftMessageSelector = obj(listOf(
             field("conversationDraftUpdate","conversationDraftUpdate", mapOf("conversationId" to refValue("conversationId"), "message" to refValue("message")), notNull(scalar("String")))
         ))
 private val SendMessageSelector = obj(listOf(
-            field("betaMessageSend","sentMessage", mapOf("file" to refValue("file"), "mentions" to refValue("mentions"), "message" to refValue("message"), "repeatKey" to refValue("repeatKey"), "replyMessages" to refValue("replyMessages"), "room" to refValue("room")), notNull(scalar("Boolean")))
+            field("sendMessage","sentMessage", mapOf("chatId" to refValue("chatId"), "fileAttachments" to refValue("fileAttachments"), "mentions" to refValue("mentions"), "message" to refValue("message"), "repeatKey" to refValue("repeatKey"), "replyMessages" to refValue("replyMessages"), "spans" to refValue("spans")), notNull(scalar("Boolean")))
         ))
 private val SendPostMessageSelector = obj(listOf(
             field("alphaSendPostMessage","sendPostMessage", mapOf("attachments" to refValue("attachments"), "conversationId" to refValue("conversationId"), "postType" to refValue("postType"), "text" to refValue("text"), "title" to refValue("title")), notNull(obj(listOf(
@@ -3359,7 +3359,7 @@ object Operations {
     val SendMessage = object: OperationDefinition {
         override val name = "SendMessage"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation SendMessage(\$file:String,\$mentions:[ID!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$room:ID!){sentMessage:betaMessageSend(file:\$file,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,room:\$room)}"
+        override val body = "mutation SendMessage(\$chatId:ID!,\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){sentMessage:sendMessage(chatId:\$chatId,fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,spans:\$spans)}"
         override val selector = SendMessageSelector
     }
     val SendPostMessage = object: OperationDefinition {
