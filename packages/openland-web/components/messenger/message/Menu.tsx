@@ -21,7 +21,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { MutationFunc } from 'react-apollo';
 import { XButton } from 'openland-x/XButton';
 import { showModalBox } from 'openland-x/showModalBox';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { IsActiveContext } from 'openland-web/pages/main/mail/components/Components';
 
 const DeleteMessageButton = ({ msgId, onSuccess }: { msgId: string; onSuccess: () => void }) => {
     const client = useClient();
@@ -159,6 +159,7 @@ export const Menu = React.memo(
         let [showMenu, setShowMenu] = React.useState<boolean>(false);
 
         const messagesContext = React.useContext(MessagesStateContext);
+        const isActive = React.useContext(IsActiveContext);
         const setEditMessage = (e: any) => {
             if (!message.isSending) {
                 e.stopPropagation();
@@ -166,6 +167,10 @@ export const Menu = React.memo(
                 messagesContext.setEditMessage(message.id!, message.text!);
             }
         };
+
+        React.useEffect(() => {
+            // do nothing if dont active chat
+        }, [isActive])
 
         const setReplyMessages = (e: any) => {
             if (!message.isSending) {
