@@ -1,18 +1,19 @@
 import { MessageSpanType, MessageSpanInput } from 'openland-api/Types';
 
 const whiteListBeforeSpec = ['', ' ', '\n', ',', '.', '(', ')'];
-const spanMap: { [key: string]: MessageSpanType } = {
-    '*': MessageSpanType.Bold,
-    '```': MessageSpanType.CodeBlock,
-    '`': MessageSpanType.InlineCode,
-    '🌈': MessageSpanType.Insane,
-    '~': MessageSpanType.Irony,
-    '_': MessageSpanType.Italic,
-    ':': MessageSpanType.Loud,
-    '🔄': MessageSpanType.Rotating,
+
+const spanMap: { [key: string]: { type: MessageSpanType, master?: boolean }} = {
+    '*': { type: MessageSpanType.Bold },
+    '```': { type: MessageSpanType.CodeBlock, master: true },
+    '`': { type: MessageSpanType.InlineCode },
+    '🌈': { type: MessageSpanType.Insane },
+    '~': { type: MessageSpanType.Irony },
+    '_': { type: MessageSpanType.Italic },
+    ':': { type: MessageSpanType.Loud },
+    '🔄': { type: MessageSpanType.Rotating },
 };
 
-const getCurrentSymbol = (text: string, index: number, isOpened: boolean): string | false => {
+const getCurrentSymbol = (text: string, index: number, currentSpecSymbol: string): string | false => {
     let isSpec = false;
     let symbol = '';
 
@@ -26,7 +27,7 @@ const getCurrentSymbol = (text: string, index: number, isOpened: boolean): strin
     }
 
     if (isSpec) {
-        const arroundSymbolIndex = isOpened ? (index + symbol.length) : (index - 1);
+        const arroundSymbolIndex = (currentSpecSymbol === symbol) ? (index + symbol.length) : (index - 1);
 
         return whiteListBeforeSpec.includes(text.charAt(arroundSymbolIndex)) ? symbol : false;
     }
@@ -34,31 +35,34 @@ const getCurrentSymbol = (text: string, index: number, isOpened: boolean): strin
     return false;
 }
 
+const isSpanMaster = (symbol: string) => {
+    return spanMap[symbol] ? !!spanMap[symbol].master : false;
+}
+
 export const findSpans = (text: string): MessageSpanInput[] => {
     let res: MessageSpanInput[] = [];
 
     let currentSpecSymbol = '';
-    let isOpened = false;
     let lastPos = 0;
 
     for (var i = 0; i < text.length; i++) {
-        let mayBeSymbol = getCurrentSymbol(text, i, isOpened);
+        let mayBeSymbol = getCurrentSymbol(text, i, currentSpecSymbol);
 
         if (typeof mayBeSymbol === 'string') {
-            if (currentSpecSymbol === '') {
-                currentSpecSymbol = mayBeSymbol;
-                isOpened = true;
-                lastPos = i;
-            } else if ((currentSpecSymbol === mayBeSymbol) && isOpened) {
+            if (mayBeSymbol !== currentSpecSymbol) {
+                if (!isSpanMaster(currentSpecSymbol)) {
+                    currentSpecSymbol = mayBeSymbol;
+                    lastPos = i;
+                }
+            } else {
                 res.push({
-                    type: spanMap[currentSpecSymbol],
+                    type: spanMap[currentSpecSymbol].type,
                     offset: lastPos,
                     length: i - lastPos + currentSpecSymbol.length
                 });
 
-                isOpened = false;
                 currentSpecSymbol = '';
-                lastPos = i;
+                lastPos = 0;
             }
         }
     }

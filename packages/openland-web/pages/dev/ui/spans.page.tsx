@@ -8,16 +8,16 @@ import { XTitle } from 'openland-x/XTitle';
 import { MessageSpanInput } from 'openland-api/Types';
 import { findSpans } from 'openland-y-utils/findSpans';
 
-export default withApp('UI Framework - Spans parsing', 'viewer', props => {
+export default withApp('UI Framework - Spans', 'viewer', props => {
     const [ spans, setSpans ] = React.useState<MessageSpanInput[]>([]);
 
     return (
-        <DevDocsScaffold title="Spans parsing">
+        <DevDocsScaffold title="Spans">
             <XContent>
                 <XVertical2>
                     <XTextArea onChange={(text) => setSpans(findSpans(text))} />
 
-                    <XTitle>Spans:</XTitle>
+                    <XTitle>Parsed:</XTitle>
                     {JSON.stringify(spans)}
                 </XVertical2>
             </XContent>
