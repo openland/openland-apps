@@ -107,7 +107,7 @@ export const CommentsModalInnerNoRouter = ({
             roomId,
         });
 
-        return data.members.map(({ user }) => user)
+        return data.members.map(({ user }) => user);
     };
 
     const maybeGeneralMessage = commentedMessage.message;
@@ -435,15 +435,15 @@ export const openCommentsModal = ({
     messageId: string;
     conversationId: string;
 }) => {
-    // router.pushQuery('comments', `${messageId}&${conversationId}`);
-    showModalBox(
-        {
-            width: 800,
-        },
-        () => (
-            <UploadContextProvider>
-                <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
-            </UploadContextProvider>
-        ),
-    );
+    router.pushQuery('comments', `${messageId}&${conversationId}`);
+    // showModalBox(
+    //     {
+    //         width: 800,
+    //     },
+    //     () => (
+    //         <UploadContextProvider>
+    //             <CommentsModalInnerNoRouter messageId={messageId} roomId={conversationId} />
+    //         </UploadContextProvider>
+    //     ),
+    // );
 };

@@ -155,6 +155,7 @@ interface MenuProps {
 
 export const Menu = React.memo(
     ({ conversationId, hover, message, isModal, isComment, selectMessage, room }: MenuProps) => {
+        hover = true;
         let router = React.useContext(XRouterContext)!;
         let [showMenu, setShowMenu] = React.useState<boolean>(false);
 
@@ -228,23 +229,22 @@ export const Menu = React.memo(
                                     reactions={message.reactions}
                                 />
                             )}
-                            {!isComment &&
-                                hover && <MessageReactionButton messageId={message.id!} />}
-                            {hover &&
-                                !isComment &&
-                                !isChannel && (
-                                    <CommentsIconWrapper
-                                        onClick={() => {
-                                            openCommentsModal({
-                                                router,
-                                                messageId: message.id!!,
-                                                conversationId,
-                                            });
-                                        }}
-                                    >
-                                        <CommentIcon />
-                                    </CommentsIconWrapper>
-                                )}
+                            {!isComment && hover && (
+                                <MessageReactionButton messageId={message.id!} />
+                            )}
+                            {hover && !isComment && !isChannel && (
+                                <CommentsIconWrapper
+                                    onClick={() => {
+                                        openCommentsModal({
+                                            router,
+                                            messageId: message.id!!,
+                                            conversationId,
+                                        });
+                                    }}
+                                >
+                                    <CommentIcon />
+                                </CommentsIconWrapper>
+                            )}
                             {!isComment && (
                                 <XOverflow
                                     show={showMenu}
@@ -280,9 +280,7 @@ export const Menu = React.memo(
                                             >
                                                 Reply
                                             </XMenuItem>
-                                            {pinMessageAccess &&
-                                            message.id &&
-                                            room && (
+                                            {pinMessageAccess && message.id && room && (
                                                 <PinMessageButton
                                                     variables={{
                                                         chatId: room.id,
@@ -300,17 +298,16 @@ export const Menu = React.memo(
                                             >
                                                 Forward
                                             </XMenuItem>
-                                            {message.id &&
-                                                out && (
-                                                    <XMenuItem
-                                                        style="danger"
-                                                        onClick={() =>
-                                                            ShowDeleteMessageModal(message.id!!)
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </XMenuItem>
-                                                )}
+                                            {message.id && out && (
+                                                <XMenuItem
+                                                    style="danger"
+                                                    onClick={() =>
+                                                        ShowDeleteMessageModal(message.id!!)
+                                                    }
+                                                >
+                                                    Delete
+                                                </XMenuItem>
+                                            )}
                                         </>
                                     }
                                 />

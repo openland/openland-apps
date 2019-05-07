@@ -52,7 +52,7 @@ const ModalRender = XMemo<ModalRenderProps>(props => {
             closeTimeoutMS={300}
             style={{
                 overlay: {
-                    zIndex: 100,
+                    zIndex: 2,
                     backgroundColor:
                         props.size !== 'x-large' && props.size !== 'large'
                             ? 'rgba(0, 0, 0, 0.4)'

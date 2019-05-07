@@ -14,6 +14,7 @@ XStyleFactoryRegistry.registerFactory({
 import './_app.css';
 import './init';
 import '../globals';
+import { CommentsModalInnerNoRouter } from 'openland-web/components/messenger/message/content/comments/CommentsModalInner';
 import React from 'react';
 import App, { AppProps, Container } from 'next/app';
 import * as Sentry from '@sentry/browser';
@@ -101,7 +102,12 @@ export default withData(
                                     <OpenlandApiContext.Provider value={this.props.apollo}>
                                         <RootErrorBoundary>
                                             <AppContainer>
-                                                <Component {...pageProps} />
+                                                <React.Suspense fallback={<div />}>
+                                                    <CommentsModalInnerNoRouter
+                                                        messageId={'nqOxVzlxrvtmRy5a0pRlcOZWbV'}
+                                                        roomId={'Om49WwAP7rfOwP49ZWbbcrdXbx'}
+                                                    />
+                                                </React.Suspense>
                                             </AppContainer>
                                         </RootErrorBoundary>
                                     </OpenlandApiContext.Provider>

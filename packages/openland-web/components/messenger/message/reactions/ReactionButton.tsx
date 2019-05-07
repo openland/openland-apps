@@ -288,14 +288,31 @@ export const CommentReactionButton = React.memo(
         const myId = userContext!!.user!!.id!!;
         const likeReaction = MessageReactionType.LIKE;
 
-        let isActive =
-            reactions &&
-            reactions.filter(
-                (userReaction: FullMessage_GeneralMessage_reactions) =>
-                    userReaction.user.id === myId && userReaction.reaction === likeReaction,
-            ).length > 0;
+        let reactionsCount = 0;
+        let isActive = false;
+        let userNamesLiked: string[] = [];
+        let numberOfUsersExtraLiked = null;
 
-        let reactionsCount = reactions ? reactions.length : 0;
+        if (reactions) {
+            userNamesLiked = reactions.slice(0, 10).map(reaction => {
+                return reaction.user.name;
+            });
+
+            if (reactions.length > 10) {
+                numberOfUsersExtraLiked = reactions.length - 10;
+            }
+
+            isActive =
+                reactions.filter(
+                    (userReaction: FullMessage_GeneralMessage_reactions) =>
+                        userReaction.user.id === myId && userReaction.reaction === likeReaction,
+                ).length > 0;
+
+            reactionsCount = reactions.length;
+        }
+
+        hover = true;
+
         return reactionsCount || hover ? (
             <XView flexDirection="row" alignItems="center" position="relative">
                 <XView alignItems="center">
@@ -316,7 +333,6 @@ export const CommentReactionButton = React.memo(
                         }}
                     />
                 </XView>
-
                 <XView alignItems="center" position="absolute" left={20}>
                     <XView fontSize={12} fontWeight={'600'} opacity={0.8}>
                         {reactionsCount ? reactionsCount : null}
