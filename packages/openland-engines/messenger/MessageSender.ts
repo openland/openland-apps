@@ -1,9 +1,10 @@
 import UUID from 'uuid/v4';
 import { UploadingFile, UploadStatus } from './types';
-import { UserShort, MentionInput, FileAttachmentInput } from 'openland-api/Types';
+import { UserShort, MentionInput, FileAttachmentInput, MessageSpanInput } from 'openland-api/Types';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { Track } from 'openland-engines/Tracking';
 import { prepareLegacyMentions, prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
+import { findSpans } from 'openland-y-utils/findSpans';
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
     onCompleted(key: string): void;
@@ -17,6 +18,7 @@ type MessageBodyT = {
     replyMessages: string[] | null;
     mentions: MentionInput[] | null;
     quoted?: string[];
+    spans: MessageSpanInput[] | null;
 };
 
 export class MessageSender {
@@ -47,7 +49,8 @@ export class MessageSender {
                     onFailed(key: string) {
                         reject();
                     }
-                }
+                },
+                spans: null
             });
         });
     }
@@ -89,7 +92,8 @@ export class MessageSender {
                 message: null,
                 conversationId,
                 key,
-                callback
+                callback,
+                spans: null
             });
         })();
         return key;
@@ -121,7 +125,8 @@ export class MessageSender {
             message,
             key,
             callback,
-            replyMessages: quoted || null
+            replyMessages: quoted || null,
+            spans: findSpans(message)
         });
         return key;
     }
@@ -175,6 +180,7 @@ export class MessageSender {
         mentions,
         key,
         callback,
+        spans,
     }: MessageBodyT & {
         key: string;
         callback: MessageSendHandler;
@@ -186,6 +192,7 @@ export class MessageSender {
             conversationId,
             replyMessages,
             mentions,
+            spans
         };
 
         this.pending.set(key, messageBody);
@@ -200,6 +207,7 @@ export class MessageSender {
                     fileAttachments,
                     replyMessages,
                     chatId: conversationId,
+                    spans: spans
                 });
             } catch (e) {
                 if (
