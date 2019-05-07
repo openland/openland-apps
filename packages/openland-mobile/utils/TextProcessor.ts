@@ -1,4 +1,5 @@
 import { FullMessage_GeneralMessage_spans, FullMessage_ServiceMessage_spans, UserTiny } from 'openland-api/Types';
+import { cropSpecSymbols } from 'openland-y-utils/cropSpecSymbols';
 
 type SpanType = 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_users' | 'mention_room' | 'bold' | 'date' | 'code_block' | 'code_inline' | 'insane' | 'irony' | 'italic' | 'loud' | 'rotating';
 
@@ -71,19 +72,6 @@ export interface SpanRoom extends SpanAbs {
     title: string;
     id: string;
 }
-
-const cropSpecSymbols = (text: string, symbol: string) => {
-    let res = text;
-
-    if (res.startsWith(symbol) && res.endsWith(symbol)) {
-        // remove first symbol
-        res = res.replace(symbol, '');
-        // remove last symbol
-        res = res.substr(0, res.lastIndexOf(symbol));
-    }
-
-    return res;
-};
 
 function preprocessRawText(text: string, spans?: (FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans)[]): Span[] {
     let res: Span[] = [];

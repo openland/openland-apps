@@ -1,6 +1,7 @@
 import { FullMessage_ServiceMessage_spans } from 'openland-api/Types';
 import { SpannedStringSpan, SpannedString } from './SpannedString';
 import { spansMessageTextPreprocess } from './spansMessageTextPreprocess';
+import { cropSpecSymbols } from 'openland-y-utils/cropSpecSymbols';
 
 const cropEmailSymbolIfAny = (message: string) => {
     let finalMessage = message;
@@ -9,23 +10,6 @@ const cropEmailSymbolIfAny = (message: string) => {
         finalMessage = finalMessage.slice(1);
     }
     return finalMessage;
-};
-
-const cropSpecSymbols = (text: string, symbol: string) => {
-    let res = text;
-
-    if (res.startsWith(symbol) && res.endsWith(symbol)) {
-        // remove first symbol
-        res = res.replace(symbol, '');
-        // remove last symbol
-        res = res.substr(0, res.lastIndexOf(symbol));
-        // remove first line-breaker
-        if (res.charAt(0) === '\n') {
-            res = res.replace('\n', '');
-        }
-    }
-
-    return res;
 };
 
 function _spansPreprocess(
