@@ -271,7 +271,9 @@ class SpaceXClient(url: String, token: String?, context: Context) {
         fun start() {
             cacheQueue.async {
                 if (policy == FetchPolicy.CACHE_FIRST || policy == FetchPolicy.CACHE_AND_NETWORK) {
+                    val startr = System.currentTimeMillis()
                     val existing = readRootFromStore("ROOT_QUERY", store, operation.selector, arguments)
+                    Log.d("SpaceX", "[" + operation.name + "] Read from store in " + (System.currentTimeMillis() - startr) + " ms")
                     if (existing.first) {
                         callback.onResult(existing.second!!)
                         if (policy == FetchPolicy.CACHE_FIRST) {
@@ -283,6 +285,7 @@ class SpaceXClient(url: String, token: String?, context: Context) {
                     }
                 }
                 if (!completed) {
+                    val start1 = System.currentTimeMillis()
                     transportQueue.async {
                         transport.operation(JSONObject(
                                 mapOf(
@@ -301,14 +304,15 @@ class SpaceXClient(url: String, token: String?, context: Context) {
                             }
 
                             override fun onResult(data: JSONObject) {
+                                Log.d("SpaceX", "[" + operation.name + "] Request completed in " + (System.currentTimeMillis() - start1) + " ms")
                                 cacheQueue.async {
                                     if (!completed) {
                                         var start = System.currentTimeMillis()
                                         val normalized = normalizeResponse("ROOT_QUERY", operation.selector, arguments, data)
-                                        Log.d("SpaceX", "Normalized in " + (System.currentTimeMillis() - start) + " ms")
+                                        Log.d("SpaceX", "[" + operation.name + "] Normalized in " + (System.currentTimeMillis() - start) + " ms")
                                         start = System.currentTimeMillis()
                                         val changed = store.merge(normalized)
-                                        Log.d("SpaceX", "Merged in " + (System.currentTimeMillis() - start) + " ms")
+                                        Log.d("SpaceX", "[" + operation.name + "] Merged in " + (System.currentTimeMillis() - start) + " ms")
                                         bus.publish(changed)
                                         storeSubscription = bus.subscribe(normalized) { reload() }
                                         callback.onResult(data)
