@@ -503,6 +503,40 @@ private val ConferenceFullSelector = obj(listOf(
             field("startTime","startTime", scalar("Date"))
         ))
 
+private val DaialogListMessageSelector = obj(listOf(
+            field("__typename","__typename", notNull(scalar("String"))),
+            field("date","date", notNull(scalar("Date"))),
+            field("fallback","fallback", notNull(scalar("String"))),
+            field("id","id", notNull(scalar("ID"))),
+            field("message","message", scalar("String")),
+            field("sender","sender", notNull(obj(listOf(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("id","id", notNull(scalar("ID"))),
+                    field("name","name", notNull(scalar("String")))
+                )))),
+            inline("GeneralMessage", obj(listOf(
+                field("attachments","attachments", notNull(list(notNull(obj(listOf(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("fallback","fallback", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID"))),
+                        inline("MessageAttachmentFile", obj(listOf(
+                            field("fileId","fileId", notNull(scalar("String"))),
+                            field("fileMetadata","fileMetadata", notNull(obj(listOf(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    field("imageFormat","imageFormat", scalar("String")),
+                                    field("isImage","isImage", notNull(scalar("Boolean")))
+                                )))),
+                            field("id","id", notNull(scalar("ID")))
+                        )))
+                    )))))),
+                field("id","id", notNull(scalar("ID"))),
+                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(listOf(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("id","id", notNull(scalar("ID")))
+                    ))))))
+            )))
+        ))
+
 private val TinyMessageSelector = obj(listOf(
             field("__typename","__typename", notNull(scalar("String"))),
             field("date","date", notNull(scalar("Date"))),
@@ -1107,7 +1141,7 @@ private val DialogsSelector = obj(listOf(
                             field("__typename","__typename", notNull(scalar("String"))),
                             field("alphaTopMessage","topMessage", obj(listOf(
                                     field("__typename","__typename", notNull(scalar("String"))),
-                                    fragment("ModernMessage", TinyMessageSelector)
+                                    fragment("ModernMessage", DaialogListMessageSelector)
                                 ))),
                             field("cid","cid", notNull(scalar("ID"))),
                             field("fid","fid", notNull(scalar("ID"))),
@@ -2574,7 +2608,7 @@ object Operations {
     val Dialogs = object: OperationDefinition {
         override val name = "Dialogs"
         override val kind = OperationKind.QUERY
-        override val body = "query Dialogs(\$after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:\$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename ...TinyMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename isCommunity:alphaIsCommunity id name photo}"
+        override val body = "query Dialogs(\$after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:\$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename ...DaialogListMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}fragment DaialogListMessage on ModernMessage{__typename date fallback id message sender{__typename id name}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}"
         override val selector = DialogsSelector
     }
     val ExploreCommunity = object: OperationDefinition {

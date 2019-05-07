@@ -6,7 +6,7 @@ import { OrganizationMedium } from '../fragments/OrganizationMedium';
 import { RoomFull, RoomFullWithoutMembers } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
-import { TinyMessage, FullMessage } from 'openland-api/fragments/Message';
+import { TinyMessage, FullMessage, DaialogListMessage } from 'openland-api/fragments/Message';
 import { CommentEntryFragment } from 'openland-api/fragments/Comment';
 
 export const DialogsQuery = gql`
@@ -24,7 +24,7 @@ export const DialogsQuery = gql`
                 isMuted
                 haveMention
                 topMessage: alphaTopMessage {
-                    ...TinyMessage
+                    ...DaialogListMessage
                 }
             }
             cursor
@@ -37,8 +37,7 @@ export const DialogsQuery = gql`
             unreadCount
         }
     }
-    ${UserTiny}
-    ${TinyMessage}
+    ${DaialogListMessage}
 `;
 
 export const CommentUpdateFragment = gql`

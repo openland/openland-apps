@@ -2,6 +2,37 @@ import gql from 'graphql-tag';
 import { UserTiny } from './UserTiny';
 import { UserShort } from './UserShort';
 
+export const DaialogListMessage = gql`
+    fragment DaialogListMessage on ModernMessage {
+        id
+        date
+        sender {
+            id
+            name
+        }
+        message
+        fallback
+        ... on GeneralMessage {
+            id
+            attachments {
+                id
+                fallback
+                ... on MessageAttachmentFile {
+                    id
+                    fileId
+                    fileMetadata {
+                        isImage
+                        imageFormat
+                    }
+                }
+            }
+            quotedMessages {
+                id
+            }
+        }
+    }
+`;
+
 export const TinyMessage = gql`
     fragment TinyMessage on ModernMessage {
         id

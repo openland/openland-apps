@@ -11,7 +11,7 @@ query Dialogs($after: String) {
       __typename
       topMessage: alphaTopMessage {
         __typename
-        ...TinyMessage
+        ...DaialogListMessage
       }
       cid
       fid

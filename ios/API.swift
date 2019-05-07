@@ -4571,9 +4571,9 @@ public final class UserStorageSetMutation: GraphQLMutation {
 
 public final class DialogsQuery: GraphQLQuery {
   public let operationDefinition =
-    "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      id\n      cid\n      fid\n      kind\n      isChannel\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...TinyMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}"
+    "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      id\n      cid\n      fid\n      kind\n      isChannel\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...DaialogListMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}"
 
-  public var queryDocument: String { return operationDefinition.appending(TinyMessage.fragmentDefinition).appending(UserTiny.fragmentDefinition).appending(OrganizationShort.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending(DaialogListMessage.fragmentDefinition) }
 
   public var after: String?
 
@@ -4818,7 +4818,7 @@ public final class DialogsQuery: GraphQLQuery {
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLFragmentSpread(TinyMessage.self),
+            GraphQLFragmentSpread(DaialogListMessage.self),
           ]
 
           public private(set) var resultMap: ResultMap
@@ -4852,9 +4852,9 @@ public final class DialogsQuery: GraphQLQuery {
               self.resultMap = unsafeResultMap
             }
 
-            public var tinyMessage: TinyMessage {
+            public var daialogListMessage: DaialogListMessage {
               get {
-                return TinyMessage(unsafeResultMap: resultMap)
+                return DaialogListMessage(unsafeResultMap: resultMap)
               }
               set {
                 resultMap += newValue.resultMap
@@ -23968,6 +23968,530 @@ public struct ConferenceFull: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "credential")
+      }
+    }
+  }
+}
+
+public struct DaialogListMessage: GraphQLFragment {
+  public static let fragmentDefinition =
+    "fragment DaialogListMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    id\n    name\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}"
+
+  public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
+
+  public static let selections: [GraphQLSelection] = [
+    GraphQLTypeCase(
+      variants: ["GeneralMessage": AsGeneralMessage.selections],
+      default: [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("date", type: .nonNull(.scalar(String.self))),
+        GraphQLField("sender", type: .nonNull(.object(Sender.selections))),
+        GraphQLField("message", type: .scalar(String.self)),
+        GraphQLField("fallback", type: .nonNull(.scalar(String.self))),
+      ]
+    )
+  ]
+
+  public private(set) var resultMap: ResultMap
+
+  public init(unsafeResultMap: ResultMap) {
+    self.resultMap = unsafeResultMap
+  }
+
+  public static func makeServiceMessage(id: GraphQLID, date: String, sender: Sender, message: String? = nil, fallback: String) -> DaialogListMessage {
+    return DaialogListMessage(unsafeResultMap: ["__typename": "ServiceMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback])
+  }
+
+  public static func makeGeneralMessage(id: GraphQLID, date: String, sender: AsGeneralMessage.Sender, message: String? = nil, fallback: String, attachments: [AsGeneralMessage.Attachment], quotedMessages: [AsGeneralMessage.QuotedMessage]) -> DaialogListMessage {
+    return DaialogListMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "attachments": attachments.map { (value: AsGeneralMessage.Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: AsGeneralMessage.QuotedMessage) -> ResultMap in value.resultMap }])
+  }
+
+  public var __typename: String {
+    get {
+      return resultMap["__typename"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  /// State
+  public var id: GraphQLID {
+    get {
+      return resultMap["id"]! as! GraphQLID
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  public var date: String {
+    get {
+      return resultMap["date"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "date")
+    }
+  }
+
+  public var sender: Sender {
+    get {
+      return Sender(unsafeResultMap: resultMap["sender"]! as! ResultMap)
+    }
+    set {
+      resultMap.updateValue(newValue.resultMap, forKey: "sender")
+    }
+  }
+
+  /// Content
+  public var message: String? {
+    get {
+      return resultMap["message"] as? String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "message")
+    }
+  }
+
+  public var fallback: String {
+    get {
+      return resultMap["fallback"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "fallback")
+    }
+  }
+
+  public struct Sender: GraphQLSelectionSet {
+    public static let possibleTypes = ["User"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+      GraphQLField("name", type: .nonNull(.scalar(String.self))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: GraphQLID, name: String) {
+      self.init(unsafeResultMap: ["__typename": "User", "id": id, "name": name])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    public var name: String {
+      get {
+        return resultMap["name"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "name")
+      }
+    }
+  }
+
+  public var asGeneralMessage: AsGeneralMessage? {
+    get {
+      if !AsGeneralMessage.possibleTypes.contains(__typename) { return nil }
+      return AsGeneralMessage(unsafeResultMap: resultMap)
+    }
+    set {
+      guard let newValue = newValue else { return }
+      resultMap = newValue.resultMap
+    }
+  }
+
+  public struct AsGeneralMessage: GraphQLSelectionSet {
+    public static let possibleTypes = ["GeneralMessage"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+      GraphQLField("date", type: .nonNull(.scalar(String.self))),
+      GraphQLField("sender", type: .nonNull(.object(Sender.selections))),
+      GraphQLField("message", type: .scalar(String.self)),
+      GraphQLField("fallback", type: .nonNull(.scalar(String.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+      GraphQLField("attachments", type: .nonNull(.list(.nonNull(.object(Attachment.selections))))),
+      GraphQLField("quotedMessages", type: .nonNull(.list(.nonNull(.object(QuotedMessage.selections))))),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: GraphQLID, date: String, sender: Sender, message: String? = nil, fallback: String, attachments: [Attachment], quotedMessages: [QuotedMessage]) {
+      self.init(unsafeResultMap: ["__typename": "GeneralMessage", "id": id, "date": date, "sender": sender.resultMap, "message": message, "fallback": fallback, "attachments": attachments.map { (value: Attachment) -> ResultMap in value.resultMap }, "quotedMessages": quotedMessages.map { (value: QuotedMessage) -> ResultMap in value.resultMap }])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    /// State
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    public var date: String {
+      get {
+        return resultMap["date"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "date")
+      }
+    }
+
+    public var sender: Sender {
+      get {
+        return Sender(unsafeResultMap: resultMap["sender"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "sender")
+      }
+    }
+
+    /// Content
+    public var message: String? {
+      get {
+        return resultMap["message"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "message")
+      }
+    }
+
+    public var fallback: String {
+      get {
+        return resultMap["fallback"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "fallback")
+      }
+    }
+
+    public var attachments: [Attachment] {
+      get {
+        return (resultMap["attachments"] as! [ResultMap]).map { (value: ResultMap) -> Attachment in Attachment(unsafeResultMap: value) }
+      }
+      set {
+        resultMap.updateValue(newValue.map { (value: Attachment) -> ResultMap in value.resultMap }, forKey: "attachments")
+      }
+    }
+
+    public var quotedMessages: [QuotedMessage] {
+      get {
+        return (resultMap["quotedMessages"] as! [ResultMap]).map { (value: ResultMap) -> QuotedMessage in QuotedMessage(unsafeResultMap: value) }
+      }
+      set {
+        resultMap.updateValue(newValue.map { (value: QuotedMessage) -> ResultMap in value.resultMap }, forKey: "quotedMessages")
+      }
+    }
+
+    public struct Sender: GraphQLSelectionSet {
+      public static let possibleTypes = ["User"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+        GraphQLField("name", type: .nonNull(.scalar(String.self))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, name: String) {
+        self.init(unsafeResultMap: ["__typename": "User", "id": id, "name": name])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var name: String {
+        get {
+          return resultMap["name"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "name")
+        }
+      }
+    }
+
+    public struct Attachment: GraphQLSelectionSet {
+      public static let possibleTypes = ["MessageAttachmentFile", "MessageAttachmentPost", "MessageRichAttachment"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLTypeCase(
+          variants: ["MessageAttachmentFile": AsMessageAttachmentFile.selections],
+          default: [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+            GraphQLField("fallback", type: .nonNull(.scalar(String.self))),
+          ]
+        )
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public static func makeMessageAttachmentPost(id: GraphQLID, fallback: String) -> Attachment {
+        return Attachment(unsafeResultMap: ["__typename": "MessageAttachmentPost", "id": id, "fallback": fallback])
+      }
+
+      public static func makeMessageRichAttachment(id: GraphQLID, fallback: String) -> Attachment {
+        return Attachment(unsafeResultMap: ["__typename": "MessageRichAttachment", "id": id, "fallback": fallback])
+      }
+
+      public static func makeMessageAttachmentFile(id: GraphQLID, fallback: String, fileId: String, fileMetadata: AsMessageAttachmentFile.FileMetadatum) -> Attachment {
+        return Attachment(unsafeResultMap: ["__typename": "MessageAttachmentFile", "id": id, "fallback": fallback, "fileId": fileId, "fileMetadata": fileMetadata.resultMap])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var fallback: String {
+        get {
+          return resultMap["fallback"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "fallback")
+        }
+      }
+
+      public var asMessageAttachmentFile: AsMessageAttachmentFile? {
+        get {
+          if !AsMessageAttachmentFile.possibleTypes.contains(__typename) { return nil }
+          return AsMessageAttachmentFile(unsafeResultMap: resultMap)
+        }
+        set {
+          guard let newValue = newValue else { return }
+          resultMap = newValue.resultMap
+        }
+      }
+
+      public struct AsMessageAttachmentFile: GraphQLSelectionSet {
+        public static let possibleTypes = ["MessageAttachmentFile"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("fallback", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("fileId", type: .nonNull(.scalar(String.self))),
+          GraphQLField("fileMetadata", type: .nonNull(.object(FileMetadatum.selections))),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: GraphQLID, fallback: String, fileId: String, fileMetadata: FileMetadatum) {
+          self.init(unsafeResultMap: ["__typename": "MessageAttachmentFile", "id": id, "fallback": fallback, "fileId": fileId, "fileMetadata": fileMetadata.resultMap])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: GraphQLID {
+          get {
+            return resultMap["id"]! as! GraphQLID
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        public var fallback: String {
+          get {
+            return resultMap["fallback"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "fallback")
+          }
+        }
+
+        public var fileId: String {
+          get {
+            return resultMap["fileId"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "fileId")
+          }
+        }
+
+        public var fileMetadata: FileMetadatum {
+          get {
+            return FileMetadatum(unsafeResultMap: resultMap["fileMetadata"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "fileMetadata")
+          }
+        }
+
+        public struct FileMetadatum: GraphQLSelectionSet {
+          public static let possibleTypes = ["FileMetadata"]
+
+          public static let selections: [GraphQLSelection] = [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("isImage", type: .nonNull(.scalar(Bool.self))),
+            GraphQLField("imageFormat", type: .scalar(String.self)),
+          ]
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(isImage: Bool, imageFormat: String? = nil) {
+            self.init(unsafeResultMap: ["__typename": "FileMetadata", "isImage": isImage, "imageFormat": imageFormat])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var isImage: Bool {
+            get {
+              return resultMap["isImage"]! as! Bool
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "isImage")
+            }
+          }
+
+          public var imageFormat: String? {
+            get {
+              return resultMap["imageFormat"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "imageFormat")
+            }
+          }
+        }
+      }
+    }
+
+    public struct QuotedMessage: GraphQLSelectionSet {
+      public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public static func makeGeneralMessage(id: GraphQLID) -> QuotedMessage {
+        return QuotedMessage(unsafeResultMap: ["__typename": "GeneralMessage", "id": id])
+      }
+
+      public static func makeServiceMessage(id: GraphQLID) -> QuotedMessage {
+        return QuotedMessage(unsafeResultMap: ["__typename": "ServiceMessage", "id": id])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// State
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
       }
     }
   }

@@ -808,24 +808,10 @@ export interface UserStorageSetVariables {
 // GraphQL query operation: Dialogs
 // ====================================================
 
-export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
 export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  shortname: string | null;
-  primaryOrganization: Dialogs_dialogs_items_topMessage_ServiceMessage_sender_primaryOrganization | null;
 }
 
 export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
@@ -843,24 +829,10 @@ export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
   fallback: string;
 }
 
-export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
-  isYou: boolean;
   name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  shortname: string | null;
-  primaryOrganization: Dialogs_dialogs_items_topMessage_GeneralMessage_sender_primaryOrganization | null;
 }
 
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -881,7 +853,6 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_Mes
   fallback: string;
   fileId: string;
   fileMetadata: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
-  filePreview: string | null;
 }
 
 export type Dialogs_dialogs_items_topMessage_GeneralMessage_attachments = Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost | Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
@@ -907,7 +878,6 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage {
    */
   message: string | null;
   fallback: string;
-  commentsCount: number;
   attachments: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments[];
   quotedMessages: Dialogs_dialogs_items_topMessage_GeneralMessage_quotedMessages[];
 }
@@ -40253,6 +40223,90 @@ export interface ConferenceFull {
   peers: ConferenceFull_peers[];
   iceServers: ConferenceFull_iceServers[];
 }
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: DaialogListMessage
+// ====================================================
+
+export interface DaialogListMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface DaialogListMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DaialogListMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface DaialogListMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface DaialogListMessage_GeneralMessage_attachments_MessageAttachmentPost {
+  __typename: "MessageAttachmentPost" | "MessageRichAttachment";
+  id: string;
+  fallback: string;
+}
+
+export interface DaialogListMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface DaialogListMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: DaialogListMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+}
+
+export type DaialogListMessage_GeneralMessage_attachments = DaialogListMessage_GeneralMessage_attachments_MessageAttachmentPost | DaialogListMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface DaialogListMessage_GeneralMessage_quotedMessages {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
+export interface DaialogListMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: DaialogListMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: DaialogListMessage_GeneralMessage_attachments[];
+  quotedMessages: DaialogListMessage_GeneralMessage_quotedMessages[];
+}
+
+export type DaialogListMessage = DaialogListMessage_ServiceMessage | DaialogListMessage_GeneralMessage;
 
 /* tslint:disable */
 /* eslint-disable */
