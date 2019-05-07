@@ -6,6 +6,7 @@ fragment DaialogListMessage on ModernMessage {
   message
   sender {
     __typename
+    firstName
     id
     name
   }

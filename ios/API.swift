@@ -23975,7 +23975,7 @@ public struct ConferenceFull: GraphQLFragment {
 
 public struct DaialogListMessage: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment DaialogListMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    id\n    name\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}"
+    "fragment DaialogListMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    id\n    name\n    firstName\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}"
 
   public static let possibleTypes = ["GeneralMessage", "ServiceMessage"]
 
@@ -24070,6 +24070,7 @@ public struct DaialogListMessage: GraphQLFragment {
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
       GraphQLField("name", type: .nonNull(.scalar(String.self))),
+      GraphQLField("firstName", type: .nonNull(.scalar(String.self))),
     ]
 
     public private(set) var resultMap: ResultMap
@@ -24078,8 +24079,8 @@ public struct DaialogListMessage: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, name: String) {
-      self.init(unsafeResultMap: ["__typename": "User", "id": id, "name": name])
+    public init(id: GraphQLID, name: String, firstName: String) {
+      self.init(unsafeResultMap: ["__typename": "User", "id": id, "name": name, "firstName": firstName])
     }
 
     public var __typename: String {
@@ -24106,6 +24107,15 @@ public struct DaialogListMessage: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "name")
+      }
+    }
+
+    public var firstName: String {
+      get {
+        return resultMap["firstName"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "firstName")
       }
     }
   }
@@ -24227,6 +24237,7 @@ public struct DaialogListMessage: GraphQLFragment {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("name", type: .nonNull(.scalar(String.self))),
+        GraphQLField("firstName", type: .nonNull(.scalar(String.self))),
       ]
 
       public private(set) var resultMap: ResultMap
@@ -24235,8 +24246,8 @@ public struct DaialogListMessage: GraphQLFragment {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, name: String) {
-        self.init(unsafeResultMap: ["__typename": "User", "id": id, "name": name])
+      public init(id: GraphQLID, name: String, firstName: String) {
+        self.init(unsafeResultMap: ["__typename": "User", "id": id, "name": name, "firstName": firstName])
       }
 
       public var __typename: String {
@@ -24263,6 +24274,15 @@ public struct DaialogListMessage: GraphQLFragment {
         }
         set {
           resultMap.updateValue(newValue, forKey: "name")
+        }
+      }
+
+      public var firstName: String {
+        get {
+          return resultMap["firstName"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "firstName")
         }
       }
     }

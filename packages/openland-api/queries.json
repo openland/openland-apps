@@ -1822,8 +1822,8 @@
 			"fragmentsReferenced": [
 				"DaialogListMessage"
 			],
-			"sourceWithFragments": "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      id\n      cid\n      fid\n      kind\n      isChannel\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...DaialogListMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}\nfragment DaialogListMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    id\n    name\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}",
-			"operationId": "545e4920d9db63247d8a37fb0a47d1c1a6ab8dae1032ad757d1ecb7d3454b310"
+			"sourceWithFragments": "query Dialogs($after: String) {\n  dialogs(first: 20, after: $after) {\n    __typename\n    items {\n      __typename\n      id\n      cid\n      fid\n      kind\n      isChannel\n      title\n      photo\n      unreadCount\n      isMuted\n      haveMention\n      topMessage: alphaTopMessage {\n        __typename\n        ...DaialogListMessage\n      }\n    }\n    cursor\n  }\n  state: dialogsState {\n    __typename\n    state\n  }\n  counter: alphaNotificationCounter {\n    __typename\n    id\n    unreadCount\n  }\n}\nfragment DaialogListMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    id\n    name\n    firstName\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}",
+			"operationId": "fe1bba7e86cf5bb55968999336a60205372e49034b4755212afeeee346ef7226"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -14714,7 +14714,7 @@
 			],
 			"fragmentName": "DaialogListMessage",
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/fragments/Message.ts",
-			"source": "fragment DaialogListMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    id\n    name\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}",
+			"source": "fragment DaialogListMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    id\n    name\n    firstName\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -14760,6 +14760,13 @@
 						{
 							"responseName": "name",
 							"fieldName": "name",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "firstName",
+							"fieldName": "firstName",
 							"type": "String!",
 							"isConditional": false,
 							"isDeprecated": false
@@ -14836,6 +14843,13 @@
 								{
 									"responseName": "name",
 									"fieldName": "name",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "firstName",
+									"fieldName": "firstName",
 									"type": "String!",
 									"isConditional": false,
 									"isDeprecated": false

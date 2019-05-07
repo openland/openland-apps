@@ -9,6 +9,7 @@ export const DaialogListMessage = gql`
         sender {
             id
             name
+            firstName
         }
         message
         fallback

@@ -812,6 +812,7 @@ export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
 }
 
 export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
@@ -833,6 +834,7 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
 }
 
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentPost {
@@ -40236,6 +40238,7 @@ export interface DaialogListMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
 }
 
 export interface DaialogListMessage_ServiceMessage {
@@ -40257,6 +40260,7 @@ export interface DaialogListMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
 }
 
 export interface DaialogListMessage_GeneralMessage_attachments_MessageAttachmentPost {

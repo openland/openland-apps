@@ -511,6 +511,7 @@ private val DaialogListMessageSelector = obj(listOf(
             field("message","message", scalar("String")),
             field("sender","sender", notNull(obj(listOf(
                     field("__typename","__typename", notNull(scalar("String"))),
+                    field("firstName","firstName", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID"))),
                     field("name","name", notNull(scalar("String")))
                 )))),
@@ -2608,7 +2609,7 @@ object Operations {
     val Dialogs = object: OperationDefinition {
         override val name = "Dialogs"
         override val kind = OperationKind.QUERY
-        override val body = "query Dialogs(\$after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:\$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename ...DaialogListMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}fragment DaialogListMessage on ModernMessage{__typename date fallback id message sender{__typename id name}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}"
+        override val body = "query Dialogs(\$after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:\$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename ...DaialogListMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}fragment DaialogListMessage on ModernMessage{__typename date fallback id message sender{__typename firstName id name}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}"
         override val selector = DialogsSelector
     }
     val ExploreCommunity = object: OperationDefinition {

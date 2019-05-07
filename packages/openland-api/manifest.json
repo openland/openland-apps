@@ -177,10 +177,10 @@
       }
     },
     {
-      "signature": "0af61cc246b04268076ec05844dbc2a5db5f9f78ae8be242283ea9068d3599b1",
-      "document": "fragment DaialogListMessage on ModernMessage{__typename date fallback id message sender{__typename id name}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}query Dialogs($after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename...DaialogListMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}",
+      "signature": "d8643433629e808d7a9da31f117a0397db538c08e779d59f77260c9cdd4da1f8",
+      "document": "fragment DaialogListMessage on ModernMessage{__typename date fallback id message sender{__typename firstName id name}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}query Dialogs($after:String){counter:alphaNotificationCounter{__typename id unreadCount}dialogs(after:$after,first:20){__typename cursor items{__typename topMessage:alphaTopMessage{__typename...DaialogListMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}state:dialogsState{__typename state}}",
       "metadata": {
-        "engineSignature": "fragment DaialogListMessage on ModernMessage{__typename date fallback id message sender{__typename id name}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}query Dialogs($after:String){alphaNotificationCounter{__typename id unreadCount}dialogs(after:$after,first:0){__typename cursor items{__typename alphaTopMessage{__typename...DaialogListMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}dialogsState{__typename state}}"
+        "engineSignature": "fragment DaialogListMessage on ModernMessage{__typename date fallback id message sender{__typename firstName id name}...on GeneralMessage{attachments{__typename fallback id...on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}query Dialogs($after:String){alphaNotificationCounter{__typename id unreadCount}dialogs(after:$after,first:0){__typename cursor items{__typename alphaTopMessage{__typename...DaialogListMessage}cid fid haveMention id isChannel isMuted kind photo title unreadCount}}dialogsState{__typename state}}"
       }
     },
     {
