@@ -1,7 +1,7 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatInitQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
-import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_ServiceMessage_spans, UserShort } from 'openland-api/Types';
+import { FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_quotedMessages, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -11,6 +11,7 @@ import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 import { MessagesActionsStateEngine } from './MessagesActionsState';
+import { findSpans, convertSpansFromInput } from 'openland-y-utils/findSpans';
 
 const log = createLogger('Engine-Messages');
 
@@ -39,7 +40,7 @@ export interface DataSourceMessageItem {
     reply?: FullMessage_GeneralMessage_quotedMessages[];
     reactions?: FullMessage_GeneralMessage_reactions[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
-    spans?: FullMessage_ServiceMessage_spans[];
+    spans?: FullMessage_GeneralMessage_spans[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
@@ -313,7 +314,7 @@ export class ConversationEngine implements MessageSendHandler {
             callback: this,
             quoted: (quoted || []).map(q => q.id!),
         });
-        let spans = prepareLegacyMentions(message, mentions || []);
+        let spans = [...prepareLegacyMentions(message, mentions || []), ...convertSpansFromInput(findSpans(message))];
 
         let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans, quoted };
         this.messages = [...this.messages, msgs];

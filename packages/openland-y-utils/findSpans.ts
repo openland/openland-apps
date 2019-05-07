@@ -1,4 +1,4 @@
-import { MessageSpanType, MessageSpanInput } from 'openland-api/Types';
+import { MessageSpanType, MessageSpanInput, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 
 const whiteListBeforeSpec = ['', ' ', '\n', ',', '.', '(', ')'];
 
@@ -66,6 +66,30 @@ export const findSpans = (text: string): MessageSpanInput[] => {
             }
         }
     }
+
+    return res;
+}
+
+const spanInputMap = {
+    'CodeBlock': 'MessageSpanCodeBlock',
+    'InlineCode': 'MessageSpanInlineCode',
+    'Insane': 'MessageSpanInsane',
+    'Irony': 'MessageSpanIrony',
+    'Italic': 'MessageSpanItalic',
+    'Loud': 'MessageSpanLoud',
+    'Rotating': 'MessageSpanRotating',
+};
+
+export const convertSpansFromInput = (spans: MessageSpanInput[]) => {
+    let res: FullMessage_GeneralMessage_spans[] = [];
+
+    spans.map(span => {
+        res.push({
+            __typename: spanInputMap[span.type],
+            offset: span.offset,
+            length: span.length
+        });
+    });
 
     return res;
 }
