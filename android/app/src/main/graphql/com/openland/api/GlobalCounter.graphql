@@ -1,7 +1,0 @@
-query GlobalCounter {
-  alphaNotificationCounter {
-    __typename
-    id
-    unreadCount
-  }
-}

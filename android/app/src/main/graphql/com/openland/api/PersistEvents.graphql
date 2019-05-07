@@ -1,3 +1,0 @@
-mutation PersistEvents($did: String!, $events: [Event!]!, $isProd: Boolean, $platform: EventPlatform) {
-  track(did: $did, events: $events, isProd: $isProd, platform: $platform)
-}

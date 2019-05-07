@@ -1,7 +1,0 @@
-mutation RoomSettingsUpdate($roomId: ID!, $settings: RoomUserNotificaionSettingsInput!) {
-  betaRoomUpdateUserNotificationSettings(roomId: $roomId, settings: $settings) {
-    __typename
-    id
-    mute
-  }
-}

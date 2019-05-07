@@ -1,7 +1,0 @@
-query AccountInvites {
-  invites: alphaInvites {
-    __typename
-    id
-    key
-  }
-}

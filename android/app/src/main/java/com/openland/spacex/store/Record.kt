@@ -1,8 +1,5 @@
 package com.openland.spacex.store
 
-import org.json.JSONArray
-import org.json.JSONObject
-
 sealed class RecordValue {
     class String(val value: kotlin.String) : RecordValue() {
         override fun equals(other: Any?): kotlin.Boolean {
@@ -12,15 +9,24 @@ sealed class RecordValue {
         override fun toString(): kotlin.String {
             return value
         }
+
+        override fun hashCode(): Int {
+            return value.hashCode()
+        }
     }
 
-    class Number(val value: kotlin.Float) : RecordValue() {
+    class Number(val value: kotlin.Double) : RecordValue() {
+
         override fun equals(other: Any?): kotlin.Boolean {
             return other != null && other is RecordValue.Number && other.value == value
         }
 
         override fun toString(): kotlin.String {
             return value.toString()
+        }
+
+        override fun hashCode(): Int {
+            return value.hashCode()
         }
     }
 
@@ -31,6 +37,10 @@ sealed class RecordValue {
 
         override fun toString(): kotlin.String {
             return value.toString()
+        }
+
+        override fun hashCode(): Int {
+            return value.hashCode()
         }
     }
 
@@ -48,6 +58,10 @@ sealed class RecordValue {
         override fun toString(): kotlin.String {
             return "<Ref: $key>"
         }
+
+        override fun hashCode(): Int {
+            return key.hashCode()
+        }
     }
 
     class List(val items: kotlin.collections.List<RecordValue>) : RecordValue() {
@@ -57,6 +71,10 @@ sealed class RecordValue {
 
         override fun toString(): kotlin.String {
             return "<List>"
+        }
+
+        override fun hashCode(): Int {
+            return items.hashCode()
         }
     }
 }
@@ -89,50 +107,3 @@ class Record(val key: String, val fields: Map<String, RecordValue>) {
 }
 
 class RecordSet(val records: Map<String, Record>)
-
-private fun serializeValue(value: RecordValue): Any? {
-    return when (value) {
-        is RecordValue.String -> value.value
-        is RecordValue.Number -> value.value
-        is RecordValue.Boolean -> value.value
-        RecordValue.Null -> null
-        is RecordValue.Reference -> JSONObject(mapOf("key" to value.key))
-        is RecordValue.List -> JSONArray(value.items.map { serializeValue(it) })
-    }
-}
-
-fun serializeRecord(record: Record): String {
-    return JSONObject(record.fields.mapValues { serializeValue(it.value) }).toString()
-}
-
-fun parseValue(f: Any?): RecordValue {
-    if (f == null) {
-        return RecordValue.Null
-    } else if (f is String) {
-        return RecordValue.String(f)
-    } else if (f is Boolean) {
-        return RecordValue.Boolean(f)
-    } else if (f is Float) {
-        return RecordValue.Number(f)
-    } else if (f is JSONObject) {
-        return RecordValue.Reference(f["key"] as String)
-    } else if (f is JSONArray) {
-        val res = mutableListOf<RecordValue>()
-        for (i in 0 until f.length()) {
-            res.add(parseValue(f.get(i)))
-        }
-        return RecordValue.List(res)
-    } else {
-        throw Error()
-    }
-}
-
-fun parseRecord(key: String, src: String): Record {
-    val field = JSONObject(src)
-    val fields = mutableMapOf<String, RecordValue>()
-    for (key in field.keys()) {
-        val f = field[key]!!
-        fields[key] = parseValue(f)
-    }
-    return Record(key, fields)
-}

@@ -70,14 +70,8 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         fontSize={16}
                                         fontWeight={TextStyles.weight.regular}
                                     >
-<<<<<<< HEAD
-
-                                        {preprocessText(generalMesage!.message!, generalMesage.spans as any).map((p: Span, j: number) => renderPreprocessedText(p, j, this.props.message, this.props.theme, this.props.onUserPress))}
-                                        {(!this.props.message.text && (i + 1 === this.props.message.reply!!.length)) ? (this.props.message.isOut ? paddedTextOut : paddedText) : undefined}
-=======
                                         {preprocessText(generalMesage!.message!, generalMesage.spans).map((p: Span, j: number) => renderPreprocessedText(p, j, message, this.props.theme, this.props.onUserPress))}
                                         {(!message.text && (i + 1 === message.reply!!.length)) ? (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)) : undefined}
->>>>>>> e856ce6a18dcd02049a66f1aa05f370d2ed24b2f
                                     </ASText>}
                                     {attachFile && attachFile.fileMetadata.isImage ? <AsyncReplyMessageMediaView attach={attachFile} onPress={this.props.onMediaPress} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}
                                     {attachFile && !attachFile.fileMetadata.isImage ? <AsyncReplyMessageDocumentView theme={this.props.theme} attach={attachFile} onPress={this.props.onDocumentPress} parent={message} message={convertMessage(m as any, '', getMessenger().engine)} /> : null}

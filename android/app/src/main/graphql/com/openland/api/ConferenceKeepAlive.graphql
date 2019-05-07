@@ -1,6 +1,0 @@
-mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {
-  conferenceKeepAlive(id: $id, peerId: $peerId) {
-    __typename
-    ...ConferenceFull
-  }
-}

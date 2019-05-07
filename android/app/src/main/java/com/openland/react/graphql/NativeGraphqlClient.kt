@@ -3,7 +3,6 @@ package com.openland.react.graphql
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.openland.spacex.*
-import com.openland.spacex.gen.Operations
 import org.json.JSONObject
 
 class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?, storage: String?) {

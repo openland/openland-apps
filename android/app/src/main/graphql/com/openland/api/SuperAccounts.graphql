@@ -1,9 +1,0 @@
-query SuperAccounts {
-  superAccounts {
-    __typename
-    id
-    orgId
-    state
-    title
-  }
-}

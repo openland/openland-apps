@@ -1,8 +1,9 @@
 package com.openland.spacex.store
 
 import android.util.Log
-import com.openland.spacex.model.OutputType
-import com.openland.spacex.model.Selector
+import com.openland.spacex.InvalidDataException
+import com.openland.spacex.OutputType
+import com.openland.spacex.Selector
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -22,7 +23,7 @@ private fun normalizeValue(
     if (value is OutputType.NotNull) {
         val res = normalizeValue(parentCacheKey, collection, value.inner, arguments, data)
         if (res == RecordValue.Null) {
-            error("Null value in the place of not-nullable")
+            throw InvalidDataException("Unexpected null value")
         } else {
             return res
         }
@@ -32,14 +33,28 @@ private fun normalizeValue(
     }
     if (value is OutputType.Scalar) {
         return when {
-            value.name == "String" -> RecordValue.String(data as String)
-            value.name == "ID" -> RecordValue.String(data as String)
-            value.name == "Date" -> RecordValue.String(data as String)
-            value.name == "Int" || value.name == "Float" -> {
-                return RecordValue.Number((data as Number).toFloat())
+            value.name == "String" || value.name == "ID" || value.name == "Date" -> {
+                return when (data) {
+                    is Number -> RecordValue.String(data.toString())
+                    is Boolean -> RecordValue.String(data.toString())
+                    else -> RecordValue.String(data as String)
+                }
             }
-            value.name == "Boolean" -> RecordValue.Boolean(data as Boolean)
-            else -> error("Unknown scalar type: " + value.name)
+            value.name == "Int" || value.name == "Float" -> {
+                if (data is Number) {
+                    RecordValue.Number(data.toDouble())
+                } else {
+                    throw InvalidDataException("Unexpected value for " + value.name + ": " + data)
+                }
+            }
+            value.name == "Boolean" -> {
+                if (data is Boolean) {
+                    RecordValue.Boolean(data)
+                } else {
+                    throw InvalidDataException("Unexpected value for " + value.name + ": " + data)
+                }
+            }
+            else -> throw InvalidDataException("Unsupported Scalar: " + value.name)
         }
     } else if (value is OutputType.List) {
         val arr = (data as JSONArray)
@@ -52,7 +67,7 @@ private fun normalizeValue(
         return normalizeSelector(parentCacheKey, collection, value.selectors, arguments, data as JSONObject)!!
     }
 
-    error("Unknown type")
+    error("Unreachable code")
 }
 
 private fun normalizeSelector(
@@ -65,7 +80,12 @@ private fun normalizeSelector(
     val map: MutableMap<String, RecordValue>?
     val id: String?
     if (data.has("id")) {
-        id = data.getString("id")
+        val v = data["id"]
+        if (v == JSONObject.NULL) {
+            id = parentCacheKey
+        } else {
+            id = v.toString()
+        }
     } else {
         id = parentCacheKey
     }
@@ -85,20 +105,16 @@ private fun normalizeSelector(
         if (f is Selector.Field) {
             if (map != null) {
                 val key = selectorKey(f.name, f.arguments, arguments)
-                map[key] = normalizeValue(id!! + "." + key, collection, f.type, arguments, data[f.alias])
+                map[key] = normalizeValue(id!! + "." + key, collection, f.type, arguments, data.opt(f.alias))
             }
         } else if (f is Selector.TypeCondition) {
-            if (data["__typename"] == RecordValue.String(f.type)) {
+            if (data["__typename"] == f.type) {
                 normalizeSelector(parentCacheKey, collection, f.fragment.selectors, arguments, data)
             }
         } else if (f is Selector.Fragment) {
-            // Can't check for type since there typename could be subclass
-//            if (record.fields["__typename"] != RecordValue.String(f.type)) {
-//                return false
-//            }
             normalizeSelector(parentCacheKey, collection, f.fragment.selectors, arguments, data)
         } else {
-            error("Unsupported selector")
+            error("Unreachable code")
         }
     }
 
@@ -133,6 +149,12 @@ private fun normalizeRootSelector(rootCacheKey: String?, collection: NormalizedC
     } else {
         normalizeSelector(null, collection, selectors, arguments, data)
     }
+}
+
+fun normalizeData(id: String, type: OutputType.Object, arguments: JSONObject, data: JSONObject): RecordSet {
+    val collection = NormalizedCollection()
+    normalizeSelector(id, collection, type.selectors, arguments, data)
+    return collection.build()
 }
 
 fun normalizeResponse(rootCacheKey: String?, type: OutputType.Object, arguments: JSONObject, data: JSONObject): RecordSet {

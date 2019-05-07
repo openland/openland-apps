@@ -2,15 +2,12 @@ package com.openland.spacex
 
 import android.content.Context
 import android.util.Log
-import com.openland.spacex.model.OperationDefinition
-import com.openland.spacex.model.OperationKind
 import com.openland.spacex.store.*
 import com.openland.spacex.transport.RunningOperation
 import com.openland.spacex.transport.TransportOperationCallback
 import com.openland.spacex.transport.WebSocketTransport
 import com.openland.spacex.utils.DispatchQueue
 import org.json.JSONObject
-import java.util.concurrent.Executors
 
 interface OperationCallback {
     fun onResult(result: JSONObject)

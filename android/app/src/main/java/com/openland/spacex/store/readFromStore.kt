@@ -1,57 +1,14 @@
 package com.openland.spacex.store
 
-import com.openland.spacex.model.*
+import com.openland.spacex.OutputType
+import com.openland.spacex.Selector
 import org.json.JSONArray
 import org.json.JSONObject
-
-private fun selectorKey(value: InputValue, arguments: JSONObject): String? {
-    if (value is InputValue.Int) {
-        return value.value.toString()
-    } else if (value is InputValue.Reference) {
-        if (arguments.has(value.name)) {
-            val ex = arguments.get(value.name)
-            if (ex == null) {
-                return "null"
-            } else if (ex is String) {
-                return "\"" + ex + "\""
-            } else if (ex is Number) {
-                return ex.toString()
-            } else if (ex is Boolean) {
-                return ex.toString()
-            } else if (ex is JSONArray) {
-                val res = mutableListOf<String>()
-
-                return "[]"
-            } else {
-                error("Unknown input value")
-            }
-        } else {
-            return null
-        }
-    } else {
-        error("Unknown input value")
-    }
-}
-
-fun selectorKey(name: String, fieldArguments: Map<String, InputValue>, arguments: JSONObject): String {
-    if (fieldArguments.isEmpty()) {
-        return name
-    }
-    val mapped = fieldArguments.mapValues { selectorKey(it.value, arguments) }
-    val sortedKeys = mapped.keys.sortedBy { it }
-    val converted = mutableListOf<String>()
-    for (k in sortedKeys) {
-        if (mapped[k] != null) {
-            converted.add(k + ":" + mapped[k])
-        }
-    }
-    return name + "(" + converted.joinToString(",") + ")"
-}
 
 private fun readValue(value: RecordValue, type: OutputType, store: RecordStore, arguments: JSONObject): Pair<Boolean, Any?> {
     if (type is OutputType.Scalar) {
         if (value == RecordValue.Null) {
-            return true to null
+            return true to JSONObject.NULL
         } else if (type.name == "String") {
             return if (value is RecordValue.String) {
                 true to value.value
@@ -152,10 +109,6 @@ private fun readSelector(
                 }
             }
         } else if (f is Selector.Fragment) {
-            // Can't check for type since there typename could be subclass
-//            if (record.fields["__typename"] != RecordValue.String(f.type)) {
-//                return false
-//            }
             if (!readSelector(record, fields, store, f.fragment.selectors, arguments)) {
                 return false
             }

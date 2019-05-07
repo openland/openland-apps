@@ -9,7 +9,7 @@ fun ReadableArray.toKotlinX(): Any? {
     for (i in 0 until size()) {
         val v = getDynamic(i)
         when {
-            v.isNull -> res.add(null)
+            v.isNull -> res.add(JSONObject.NULL)
             v.type == ReadableType.String -> res.add(v.asString())
             v.type == ReadableType.Boolean -> res.add(v.asBoolean())
             v.type == ReadableType.Number -> res.add(v.asDouble().toBigDecimal())
@@ -29,6 +29,7 @@ fun ReadableMap.toKotlinX(): JSONObject {
         val k = i.nextKey()
         val v = getDynamic(k)
         if (v.isNull) {
+            res[k] = JSONObject.NULL
             continue
         }
         when {
@@ -46,7 +47,7 @@ fun ReadableMap.toKotlinX(): JSONObject {
 fun JSONArray.toReact(): WritableArray {
     val res = WritableNativeArray()
     for (i in 0 until length()) {
-        if (this[i] == null) {
+        if (this[i] == null || this[i] == JSONObject.NULL) {
             res.pushNull()
         } else if (this[i] is String) {
             res.pushString(this[i] as String)
@@ -66,7 +67,7 @@ fun JSONArray.toReact(): WritableArray {
 fun JSONObject.toReact(): WritableMap {
     val res = WritableNativeMap()
     for (k in this.keys()) {
-        if (this[k] == null) {
+        if (this[k] == null || this[k] == JSONObject.NULL) {
             res.putNull(k)
         } else if (this[k] is String) {
             res.putString(k, this[k] as String)

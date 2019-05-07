@@ -1,7 +1,0 @@
-query MyOrganizations {
-  myOrganizations {
-    __typename
-    isPrimary: betaIsPrimary
-    ...OrganizationShort
-  }
-}

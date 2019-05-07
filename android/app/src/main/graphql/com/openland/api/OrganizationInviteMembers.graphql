@@ -1,3 +1,0 @@
-mutation OrganizationInviteMembers($inviteRequests: [InviteRequest!]!, $organizationId: ID) {
-  alphaOrganizationInviteMembers(inviteRequests: $inviteRequests, organizationId: $organizationId)
-}

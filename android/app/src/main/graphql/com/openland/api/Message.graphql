@@ -1,6 +1,0 @@
-query Message($messageId: ID!) {
-  message(messageId: $messageId) {
-    __typename
-    ...FullMessage
-  }
-}

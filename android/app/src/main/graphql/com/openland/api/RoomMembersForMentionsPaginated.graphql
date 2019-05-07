@@ -1,9 +1,0 @@
-query RoomMembersForMentionsPaginated($after: ID, $first: Int, $roomId: ID!) {
-  members: roomMembers(after: $after, first: $first, roomId: $roomId) {
-    __typename
-    user {
-      __typename
-      ...UserForMention
-    }
-  }
-}
