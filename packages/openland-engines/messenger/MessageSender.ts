@@ -2,9 +2,8 @@ import UUID from 'uuid/v4';
 import { UploadingFile, UploadStatus } from './types';
 import { UserShort, MentionInput, FileAttachmentInput, MessageSpanInput } from 'openland-api/Types';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { Track } from 'openland-engines/Tracking';
-import { prepareLegacyMentions, prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
-import { findSpans } from 'openland-y-utils/findSpans';
+import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
+
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
     onCompleted(key: string): void;
@@ -105,12 +104,14 @@ export class MessageSender {
         mentions,
         callback,
         quoted,
+        spans,
     }: {
         conversationId: string;
         message: string;
         mentions: UserShort[] | null;
         callback: MessageSendHandler;
         quoted?: string[];
+        spans: MessageSpanInput[] | null;
     }) {
         message = message.trim();
         if (message.length === 0 && (!quoted || (quoted && quoted.length === 0))) {
@@ -126,7 +127,7 @@ export class MessageSender {
             key,
             callback,
             replyMessages: quoted || null,
-            spans: findSpans(message)
+            spans
         });
         return key;
     }
@@ -153,6 +154,7 @@ export class MessageSender {
                 }
             };
             this.sendMessage({
+                spans: null,
                 conversationId,
                 message,
                 mentions,

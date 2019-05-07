@@ -13,6 +13,17 @@ const spanMap: { [key: string]: { type: MessageSpanType, master?: boolean }} = {
     '🔄': { type: MessageSpanType.Rotating },
 };
 
+const spanInputMap = {
+    'Bold': 'MessageSpanBold',
+    'CodeBlock': 'MessageSpanCodeBlock',
+    'InlineCode': 'MessageSpanInlineCode',
+    'Insane': 'MessageSpanInsane',
+    'Irony': 'MessageSpanIrony',
+    'Italic': 'MessageSpanItalic',
+    'Loud': 'MessageSpanLoud',
+    'Rotating': 'MessageSpanRotating',
+};
+
 const getCurrentSymbol = (text: string, index: number, currentSpecSymbol: string): string | false => {
     let isSpec = false;
     let symbol = '';
@@ -70,22 +81,12 @@ export const findSpans = (text: string): MessageSpanInput[] => {
     return res;
 }
 
-const spanInputMap = {
-    'CodeBlock': 'MessageSpanCodeBlock',
-    'InlineCode': 'MessageSpanInlineCode',
-    'Insane': 'MessageSpanInsane',
-    'Irony': 'MessageSpanIrony',
-    'Italic': 'MessageSpanItalic',
-    'Loud': 'MessageSpanLoud',
-    'Rotating': 'MessageSpanRotating',
-};
-
-export const convertSpansFromInput = (spans: MessageSpanInput[]) => {
+export const prepareLegacySpans = (spans: MessageSpanInput[]): FullMessage_GeneralMessage_spans[] => {
     let res: FullMessage_GeneralMessage_spans[] = [];
 
     spans.map(span => {
         res.push({
-            __typename: spanInputMap[span.type],
+            __typename: spanInputMap[span.type] as any,
             offset: span.offset,
             length: span.length
         });

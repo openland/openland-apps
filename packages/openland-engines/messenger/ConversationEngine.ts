@@ -11,7 +11,7 @@ import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 import { MessagesActionsStateEngine } from './MessagesActionsState';
-import { findSpans, convertSpansFromInput } from 'openland-y-utils/findSpans';
+import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 
 const log = createLogger('Engine-Messages');
 
@@ -307,14 +307,17 @@ export class ConversationEngine implements MessageSendHandler {
             this.messagesActionsState.clear();
         }
 
+        let styledSpans = findSpans(message);
+
         let key = this.engine.sender.sendMessage({
             conversationId: this.conversationId,
             message,
             mentions,
             callback: this,
             quoted: (quoted || []).map(q => q.id!),
+            spans: styledSpans
         });
-        let spans = [...prepareLegacyMentions(message, mentions || []), ...convertSpansFromInput(findSpans(message))];
+        let spans = [...prepareLegacyMentions(message, mentions || []), ...prepareLegacySpans(styledSpans)];
 
         let msgs = { date, key, local: true, message, progress: 0, file: null, isImage: false, failed: false, spans, quoted };
         this.messages = [...this.messages, msgs];
